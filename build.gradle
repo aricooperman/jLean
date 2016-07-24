@@ -1,0 +1,17 @@
+apply plugin: 'java'
+
+repositories {
+    jcenter()
+}
+
+// In this section you declare the dependencies for your production and test code
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.21'
+//    compile 'com.google.code.gson:gson:2.7'
+	compile 'org.json:json:20160212'
+	compile 'io.javaslang:javaslang:2.0.2'
+	compile 'org.apache.commons:commons-lang3:3.4'
+	compile 'com.google.guava:guava:19.0'
+	
+    testCompile 'junit:junit:4.12'
+}

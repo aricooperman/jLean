@@ -12,6 +12,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 */
+
+package com.quantconnect.lean.api;
+
+import java.util.ArrayList;
+import java.util.List;
+
+/// Base API response class for the QuantConnect API.
+public class RestResponse {
+    
+    /// Indicate if the API request was successful.
+//    [JsonProperty(PropertyName = "success")]
+    public boolean success;
+    
+    /// List of errors with the API call.
+//    [JsonProperty(PropertyName = "errors")]
+    public List<String> errors;
+
+    /// JSON Constructor
+    public RestResponse() {
+        success = false;
+        errors = new ArrayList<String>();
+    }
+}
+
+/*
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
@@ -44,3 +69,4 @@ namespace QuantConnect.Api
         public List<string> Errors;
     }
 }
+*/

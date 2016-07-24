@@ -19,8 +19,9 @@ package com.quantconnect.lean.packets;
 import java.util.HashMap;
 import java.util.Map;
 
-//using System.Collections.Generic;
-//using Newtonsoft.Json;
+import com.quantconnect.lean.Global.Language;
+import com.quantconnect.lean.Global.ServerType;
+import com.quantconnect.lean.Global.UserPlan;
 
 /// Algorithm Node Packet is a work task for the Lean Engine
 public class AlgorithmNodePacket extends Packet {
@@ -54,44 +55,44 @@ public class AlgorithmNodePacket extends Packet {
 
     /// User session Id for authentication
 //    [JsonProperty(PropertyName = "sSessionID")]
-    public String SessionId = "";
+    public String sessionId = "";
 
     /// User subscriptions state - free or paid.
 //    [JsonProperty(PropertyName = "sUserPlan")]
-    public UserPlan UserPlan = UserPlan.Free;
+    public UserPlan userPlan = UserPlan.Free;
 
     /// Language flag: Currently represents IL code or Dynamic Scripted Types.
 //    [JsonProperty(PropertyName = "eLanguage")]
-    public Language Language = Language.CSharp;
+    public Language language = Language.CSharp;
 
     /// Server type for the deployment (512, 1024, 2048)
 //    [JsonProperty(PropertyName = "sServerType")]
-    public ServerType ServerType = ServerType.Server512;
+    public ServerType serverType = ServerType.Server512;
 
     /// Unique compile id of this backtest
 //    [JsonProperty(PropertyName = "sCompileID")]
-    public String CompileId = "";
+    public String compileId = "";
 
     /// Version number identifier for the lean engine.
 //    [JsonProperty(PropertyName = "sVersion")]
-    public String Version;
+    public String version;
 
     /// An algorithm packet which has already been run and is being redelivered on this node.
     /// In this event we don't want to relaunch the task as it may result in unexpected behaviour for user.
 //    [JsonProperty(PropertyName = "bRedelivered")]
-    public boolean Redelivered = false;
+    public boolean redelivered = false;
 
     /// Algorithm binary with zip of contents
 //    [JsonProperty(PropertyName = "oAlgorithm")]
-    public byte[] Algorithm = new byte[] { };
+    public byte[] algorithm = new byte[] { };
 
     /// Request source - Web IDE or API - for controling result handler behaviour
 //    [JsonProperty(PropertyName = "sRequestSource")]
-    public String RequestSource = "WebIDE";
+    public String requestSource = "WebIDE";
 
     /// The maximum amount of RAM (in MB) this algorithm is allowed to utilize
 //    [JsonProperty(PropertyName = "iMaxRamAllocation")]
-    public int RamAllocation;
+    public int ramAllocation;
 
     /// Specifies values to control algorithm limits
 //    [JsonProperty(PropertyName = "oControls")]

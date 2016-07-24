@@ -16,26 +16,23 @@
 
 package com.quantconnect.lean.packets;
 
-//using Newtonsoft.Json;
-//using Newtonsoft.Json.Converters;
-
     /// Base class for packet messaging system
 public class Packet {
     /// Packet type defined by a String enum
 //    [JsonProperty(PropertyName = "eType")]
-    public PacketType Type = PacketType.None;
+    public PacketType type = PacketType.None;
 
     /// User unique specific channel endpoint to send the packets
 //    [JsonProperty(PropertyName = "sChannel")]
-    public String Channel = "";
+    public String channel = "";
 
     /// <summary>
     /// Initialize the base class and setup the packet type.
     /// </summary>
     /// <param name="type">PacketType for the class.</param>
     public Packet( PacketType type ) {
-        this.Channel = "";
-        this.Type = type;
+        this.channel = "";
+        this.type = type;
     }
 
     /// Classifications of internal packet system

@@ -17,6 +17,19 @@
 package com.quantconnect.lean.interfaces;
 
 import java.io.Closeable;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+
+import com.quantconnect.lean.Global.AlgorithmControl;
+import com.quantconnect.lean.Global.AlgorithmStatus;
+import com.quantconnect.lean.Global.Language;
+import com.quantconnect.lean.Global.StoragePermissions;
+import com.quantconnect.lean.api.Compile;
+import com.quantconnect.lean.api.Project;
+import com.quantconnect.lean.api.ProjectFile;
+import com.quantconnect.lean.api.ProjectList;
+import com.quantconnect.lean.api.RestResponse;
 
 //using System;
 //using System.Collections.Generic;
@@ -51,44 +64,36 @@ public interface IApi extends Closeable {
     /// <param name="projectId">Project id for project to be updated</param>
     /// <param name="files">Files list to update</param>
     /// <returns>RestResponse indicating success</returns>
-    RestResponse updateProject(int projectId, List<ProjectFile> files );
+    RestResponse updateProject( int projectId, List<ProjectFile> files );
 
     /// <summary>
     /// Delete a specific project owned by the user from QuantConnect.com
     /// </summary>
     /// <param name="projectId">Project id we own and wish to delete</param>
     /// <returns>RestResponse indicating success</returns>
-    RestResponse delete(int projectId);
+    RestResponse delete( int projectId );
 
-    /// <summary>
     /// Read back a list of all projects on the account for a user.
-    /// </summary>
     /// <returns>Container for list of projects</returns>
     ProjectList projectList();
 
-    /// <summary>
     /// Create a new compile job request for this project id.
-    /// </summary>
     /// <param name="projectId">Project id we wish to compile.</param>
     /// <returns>Compile object result</returns>
-    Compile createCompile(int projectId);
+    Compile createCompile( int projectId );
 
-    /// <summary>
     /// Read a compile packet job result.
-    /// </summary>
     /// <param name="projectId">Project id we sent for compile</param>
     /// <param name="compileId">Compile id return from the creation request</param>
     /// <returns>Compile object result</returns>
-    Compile readCompile(int projectId, String compileId);
+    Compile readCompile( int projectId, String compileId );
 
-    /// <summary>
     /// Create a new backtest from a specified projectId and compileId
-    /// </summary>
     /// <param name="projectId"></param>
     /// <param name="compileId"></param>
     /// <param name="backtestName"></param>
     /// <returns></returns>
-    Backtest createBacktest(int projectId, String compileId, String backtestName);
+    Backtest createBacktest( int projectId, String compileId, String backtestName );
 
     /// <summary>
     /// Read out the full result of a specific backtest
@@ -145,12 +150,14 @@ public interface IApi extends Closeable {
     /// <summary>
     /// Read the maximum log allowance
     /// </summary>
-    int[] ReadLogAllowance(int userId, String userToken);
+    int[] readLogAllowance( int userId, String userToken );
 
-    /// <summary>
     /// Update running total of log usage
-    /// </summary>
-    void UpdateDailyLogUsed(int userId, String backtestId, String url, int length, String userToken, boolean hitLimit = false);
+    default void updateDailyLogUsed( int userId, String backtestId, String url, int length, String userToken ) {
+        updateDailyLogUsed( userId, backtestId, url, length, userToken, false );
+    }
+    
+    void updateDailyLogUsed( int userId, String backtestId, String url, int length, String userToken, boolean hitLimit );
 
     /// <summary>
     /// Get the algorithm current status, active or cancelled from the user
@@ -158,7 +165,7 @@ public interface IApi extends Closeable {
     /// <param name="algorithmId"></param>
     /// <param name="userId">The user id of the algorithm</param>
     /// <returns></returns>
-    AlgorithmControl GetAlgorithmStatus( String algorithmId, int userId);
+    AlgorithmControl getAlgorithmStatus( String algorithmId, int userId );
 
     /// <summary>
     /// Set the algorithm status from the worker to update the UX e.g. if there was an error.
@@ -166,7 +173,7 @@ public interface IApi extends Closeable {
     /// <param name="algorithmId">Algorithm id we're setting.</param>
     /// <param name="status">Status enum of the current worker</param>
     /// <param name="message">Message for the algorithm status event</param>
-    void SetAlgorithmStatus( String algorithmId, AlgorithmStatus status, String message = "");
+    void setAlgorithmStatus( String algorithmId, AlgorithmStatus status, String message = "" );
 
     /// <summary>
     /// Send the statistics to storage for performance tracking.
@@ -181,7 +188,7 @@ public interface IApi extends Closeable {
     /// <param name="volume">Volume traded</param>
     /// <param name="trades">Total trades since inception</param>
     /// <param name="sharpe">Sharpe ratio since inception</param>
-    void SendStatistics( String algorithmId, BigDecimal unrealized, BigDecimal fees, BigDecimal netProfit, BigDecimal holdings, BigDecimal equity, BigDecimal netReturn, BigDecimal volume, int trades, double sharpe);
+    void sendStatistics( String algorithmId, BigDecimal unrealized, BigDecimal fees, BigDecimal netProfit, BigDecimal holdings, BigDecimal equity, BigDecimal netReturn, BigDecimal volume, int trades, double sharpe);
 
     /// <summary>
     /// Market Status Today: REST call.

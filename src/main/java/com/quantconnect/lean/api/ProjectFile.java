@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
@@ -13,34 +13,41 @@
  * limitations under the License.
 */
 
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+package com.quantconnect.lean.api;
+
+/// File for a project
+public class ProjectFile
+{
+    /// Name of a project file
+//    [JsonProperty(PropertyName = "name")]
+    public String name;
+
+    /// Contents of the project file
+//    [JsonProperty(PropertyName = "code")]
+    public String code;
+}
+
+/*
+sing Newtonsoft.Json;
 
 namespace QuantConnect.Api
 {
     /// <summary>
-    /// Response from the compiler on a build event
+    /// File for a project
     /// </summary>
-    public class Compile : RestResponse
+    public class ProjectFile
     {
         /// <summary>
-        /// Compile Id for a sucessful build
+        /// Name of a project file
         /// </summary>
-        [JsonProperty(PropertyName = "compileId")]
-        public String CompileId;
+        [JsonProperty(PropertyName = "name")]
+        public String Name;
 
         /// <summary>
-        /// True on successful compile
+        /// Contents of the project file
         /// </summary>
-        [JsonProperty(PropertyName = "state")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public CompileState State;
-
-        /// <summary>
-        /// Logs of the compilation request
-        /// </summary>
-        [JsonProperty(PropertyName = "logs")]
-        public List<string> Logs;
+        [JsonProperty(PropertyName = "code")]
+        public String Code;
     }
 }
+*/

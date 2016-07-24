@@ -12,6 +12,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 */
+
+package com.quantconnect.lean.api;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+/// Response from reading a project by id.
+public class Project extends RestResponse {
+
+    /// Project id
+//    [JsonProperty(PropertyName = "projectId")]
+    public int projectId;
+
+    /// Name of the project
+//    [JsonProperty(PropertyName = "name")]
+    public String name;
+
+    /// Date the project was created
+//    [JsonProperty(PropertyName = "created")]
+    public LocalDateTime created;
+
+    /// Modified date for the project
+//    [JsonProperty(PropertyName = "modified")]
+    public LocalDateTime modified;
+
+    /// Files for the project
+//    [JsonProperty(PropertyName = "files")]
+    public List<ProjectFile> files;
+}
+
+/*
 using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
@@ -66,3 +97,4 @@ namespace QuantConnect.Api
         public List<Project> Projects;
     }
 }
+*/

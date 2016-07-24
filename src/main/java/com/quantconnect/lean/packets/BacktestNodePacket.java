@@ -19,8 +19,8 @@ package com.quantconnect.lean.packets;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-//using System;
-//using Newtonsoft.Json;
+import com.quantconnect.lean.Global.Language;
+import com.quantconnect.lean.Global.UserPlan;
 
 /// Algorithm backtest task information packet.
 public class BacktestNodePacket extends AlgorithmNodePacket {
@@ -66,12 +66,12 @@ public class BacktestNodePacket extends AlgorithmNodePacket {
         this();
         
         this.userId = userId;
-        this.Algorithm = algorithmData;
-        this.SessionId = sessionId;
+        this.algorithm = algorithmData;
+        this.sessionId = sessionId;
         this.projectId = projectId;
-        this.UserPlan = userPlan;
+        this.userPlan = userPlan;
         this.name = name;
-        this.Language = Language.CSharp;
+        this.language = Language.CSharp;
     }
 }
 

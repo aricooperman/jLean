@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Securities.Option
+package com.quantconnect.lean.Securities.Option
 {
     /// <summary>
     /// Option packet by packet data filtering mechanism for dynamically detecting bad ticks.

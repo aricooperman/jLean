@@ -18,7 +18,7 @@ using QuantConnect.Orders.Fills;
 using QuantConnect.Orders.Slippage;
 using QuantConnect.Securities.Interfaces;
 
-namespace QuantConnect.Securities.Equity 
+package com.quantconnect.lean.Securities.Equity 
 {
     /// <summary>
     /// Transaction model for equity security trades. 

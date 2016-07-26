@@ -16,7 +16,7 @@
 
 using System;
 
-namespace QuantConnect.Data.Consolidators
+package com.quantconnect.lean.Data.Consolidators
 {
     /// <summary>
     /// Represents a type that consumes BaseData instances and fires an event with consolidated

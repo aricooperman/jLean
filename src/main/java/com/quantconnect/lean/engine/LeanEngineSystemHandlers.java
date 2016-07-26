@@ -116,7 +116,7 @@ using QuantConnect.Configuration;
 using QuantConnect.Interfaces;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine
+package com.quantconnect.lean.Lean.Engine
 {
     /// <summary>
     /// Provides a container for the system level handlers

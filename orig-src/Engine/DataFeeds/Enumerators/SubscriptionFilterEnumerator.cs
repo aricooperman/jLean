@@ -7,7 +7,7 @@ using QuantConnect.Logging;
 using QuantConnect.Securities;
 using QuantConnect.Securities.Interfaces;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /// <summary>
     /// Implements a wrapper around a base data enumerator to provide a final filtering step

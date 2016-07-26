@@ -8,7 +8,7 @@ using NodaTime;
 using QuantConnect.Logging;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides json conversion for the <see cref="MarketHoursDatabase"/> class
@@ -58,7 +58,7 @@ namespace QuantConnect.Util
             /// The entries in the market hours database, keyed by <see cref="MarketHoursDatabase.Key.ToString"/>
             /// </summary>
             [JsonProperty("entries")]
-            public Dictionary<string, MarketHoursDatabaseEntryJson> Entries;
+            public Map<String, MarketHoursDatabaseEntryJson> Entries;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MarketHoursDatabaseJson"/> class
@@ -67,7 +67,7 @@ namespace QuantConnect.Util
             public MarketHoursDatabaseJson(MarketHoursDatabase database)
             {
                 if (database == null) return;
-                Entries = new Dictionary<string, MarketHoursDatabaseEntryJson>();
+                Entries = new Map<String, MarketHoursDatabaseEntryJson>();
                 foreach (kvp in database.ExchangeHoursListing)
                 {
                     key = kvp.Key;
@@ -82,7 +82,7 @@ namespace QuantConnect.Util
             /// <returns>A new instance of the <see cref="MarketHoursDatabase"/> class</returns>
             public MarketHoursDatabase Convert()
             {
-                entries = new Dictionary<SecurityDatabaseKey, MarketHoursDatabase.Entry>();
+                entries = new Map<SecurityDatabaseKey, MarketHoursDatabase.Entry>();
                 foreach (entry in Entries)
                 {
                     try
@@ -154,7 +154,7 @@ namespace QuantConnect.Util
             /// Holiday date strings
             /// </summary>
             [JsonProperty("holidays")]
-            public List<string> Holidays;
+            public List<String> Holidays;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="MarketHoursDatabaseEntryJson"/> class
@@ -182,7 +182,7 @@ namespace QuantConnect.Util
             /// <returns>A new instance of the <see cref="MarketHoursDatabase.Entry"/> class</returns>
             public MarketHoursDatabase.Entry Convert()
             {
-                hours = new Dictionary<DayOfWeek, LocalMarketHours>
+                hours = new Map<DayOfWeek, LocalMarketHours>
                 {
                     { DayOfWeek.Sunday, new LocalMarketHours(DayOfWeek.Sunday, Sunday) },
                     { DayOfWeek.Monday, new LocalMarketHours(DayOfWeek.Monday, Monday) },

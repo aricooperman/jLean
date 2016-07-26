@@ -15,7 +15,7 @@
 
 using NodaTime;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Provides access to common time zones

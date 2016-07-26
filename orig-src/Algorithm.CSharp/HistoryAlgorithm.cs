@@ -22,7 +22,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 using QuantConnect.Securities.Equity;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// This algorithm demonstrates the various ways you can call the History function,
@@ -115,7 +115,7 @@ namespace QuantConnect.Algorithm.CSharp
 
             // the return is a series of dictionaries containing all quandl data at each time
             // we can loop over it to get the individual dictionaries
-            foreach (DataDictionary<Quandl> quandlsDataDictionary in allQuandlData)
+            foreach (DataMap<Quandl> quandlsDataDictionary in allQuandlData)
             {
                 // we can access the dictionary to get the quandl data we want
                 quandl = quandlsDataDictionary["YAHOO/INDEX_SPY"];

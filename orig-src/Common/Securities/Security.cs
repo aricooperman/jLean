@@ -25,7 +25,7 @@ using QuantConnect.Securities.Equity;
 using QuantConnect.Securities.Forex;
 using QuantConnect.Securities.Interfaces;
 
-namespace QuantConnect.Securities 
+package com.quantconnect.lean.Securities 
 {
     /// <summary>
     /// A base vehicle properties class for providing a common interface to all assets in QuantConnect.

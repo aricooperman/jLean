@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Statistics
+package com.quantconnect.lean.Statistics
 {
     /// <summary>
     /// Direction of a trade

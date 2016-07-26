@@ -23,7 +23,7 @@ using QuantConnect.Orders;
 using QuantConnect.Orders.Fees;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Algorithm
+package com.quantconnect.lean.Tests.Algorithm
 {
     [TestFixture]
     public class AlgorithmSetHoldingsTests
@@ -32,7 +32,7 @@ namespace QuantConnect.Tests.Algorithm
         public enum FeeType { None, Small, Large, InteractiveBrokers }
         public enum PriceMovement { Static, RisingSmall, FallingSmall, RisingLarge, FallingLarge }
 
-        private readonly Dictionary<FeeType, IFeeModel> _feeModels = new Dictionary<FeeType, IFeeModel>
+        private readonly Map<FeeType, IFeeModel> _feeModels = new Map<FeeType, IFeeModel>
         {
             { FeeType.None, new ConstantFeeModel(0) },
             { FeeType.Small, new ConstantFeeModel(1) },
@@ -85,7 +85,7 @@ namespace QuantConnect.Tests.Algorithm
                 finalPositions = Enum.GetValues(typeof(Position)).Cast<Position>().ToList();
                 feeTypes = Enum.GetValues(typeof(FeeType)).Cast<FeeType>().ToList();
                 priceMovements = Enum.GetValues(typeof(PriceMovement)).Cast<PriceMovement>().ToList();
-                leverages = new List<int> { 1, 100 };
+                leverages = new List<Integer> { 1, 100 };
 
                 data = new List<List<object>>
                 {

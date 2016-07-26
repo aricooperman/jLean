@@ -23,7 +23,7 @@ using QuantConnect.Orders.Fills;
 using QuantConnect.Orders.Fees;
 using QuantConnect.Orders.Slippage;
 
-namespace QuantConnect.Tests.Common.Securities
+package com.quantconnect.lean.Tests.Common.Securities
 {
     [TestFixture]
     public class SecurityTests
@@ -57,7 +57,7 @@ namespace QuantConnect.Tests.Common.Securities
             Assert.IsNotNull(security.FillModel);
             Assert.IsInstanceOf<ImmediateFillModel>(security.FillModel);
             Assert.IsNotNull(security.PortfolioModel);
-            Assert.IsInstanceOf<InteractiveBrokersFeeModel>(security.FeeModel);
+            Assert.IsInstanceOf<IntegereractiveBrokersFeeModel>(security.FeeModel);
             Assert.IsNotNull(security.SlippageModel);
             Assert.IsInstanceOf<SpreadSlippageModel>(security.SlippageModel);
             Assert.IsNotNull(security.SettlementModel);

@@ -16,13 +16,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Ticks collection which implements an IDictionary-string-list of ticks. This way users can iterate over the String indexed ticks of the requested symbol.
     /// </summary>
     /// <remarks>Ticks are timestamped to the nearest second in QuantConnect</remarks>
-    public class Ticks : DataDictionary<List<Tick>>
+    public class Ticks : DataMap<List<Tick>>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Ticks"/> dictionary
@@ -34,7 +34,7 @@ namespace QuantConnect.Data.Market
         /// <summary>
         /// Initializes a new instance of the <see cref="Ticks"/> dictionary
         /// </summary>
-        /// <param name="frontier">The time associated with the data in this dictionary</param>
+        /// <param name="frontier">The time associated with the data in this Map</param>
         public Ticks(DateTime frontier)
             : base(frontier)
         {

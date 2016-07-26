@@ -17,7 +17,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Defines a <see cref="JsonConverter"/> to be used when you only want to serialize

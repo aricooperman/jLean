@@ -21,7 +21,7 @@ using CloneExtensions;
 using Fasterflect;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides methods for creating new instances of objects
@@ -30,8 +30,8 @@ namespace QuantConnect.Util
     {
         private static readonly object _lock = new object();
         private static readonly object[] _emptyObjectArray = new object[0];
-        private static readonly Dictionary<Type, MethodInvoker> _cloneMethodsByType = new Dictionary<Type, MethodInvoker>();
-        private static readonly Dictionary<Type, Func<object[], object>> _activatorsByType = new Dictionary<Type, Func<object[], object>>();
+        private static readonly Map<Type, MethodInvoker> _cloneMethodsByType = new Map<Type, MethodInvoker>();
+        private static readonly Map<Type, Func<object[], object>> _activatorsByType = new Map<Type, Func<object[], object>>();
 
         static ObjectActivator()
         {

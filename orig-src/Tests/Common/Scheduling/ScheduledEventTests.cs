@@ -18,7 +18,7 @@ using System;
 using NUnit.Framework;
 using QuantConnect.Scheduling;
 
-namespace QuantConnect.Tests.Common.Scheduling
+package com.quantconnect.lean.Tests.Common.Scheduling
 {
     [TestFixture]
     public class ScheduledEventTests

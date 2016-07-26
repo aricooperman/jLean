@@ -25,7 +25,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using Environment = QuantConnect.Brokerages.Oanda.Environment;
 
-namespace QuantConnect.Tests.Brokerages.Oanda
+package com.quantconnect.lean.Tests.Brokerages.Oanda
 {
     [TestFixture, Ignore("This test requires a configured and testable Oanda practice account")]
     public partial class OandaBrokerageTests : BrokerageTests
@@ -38,7 +38,7 @@ namespace QuantConnect.Tests.Brokerages.Oanda
         {
             environment = Config.Get("oanda-environment").ConvertTo<Environment>();
             accessToken = Config.Get("oanda-access-token");
-            accountId = Config.Get("oanda-account-id").ConvertTo<int>();
+            accountId = Config.Get("oanda-account-id").ConvertTo<Integer>();
 
             return new OandaBrokerage(orderProvider, securityProvider, environment, accessToken, accountId);
         }
@@ -81,7 +81,7 @@ namespace QuantConnect.Tests.Brokerages.Oanda
         protected override BigDecimal GetAskPrice(Symbol symbol)
         {
             oanda = (OandaBrokerage) Brokerage;
-            quotes = oanda.GetRates(new List<string> { new OandaSymbolMapper().GetBrokerageSymbol(symbol) });
+            quotes = oanda.GetRates(new List<String> { new OandaSymbolMapper().GetBrokerageSymbol(symbol) });
             return (decimal)quotes[0].ask;
         }
 
@@ -90,7 +90,7 @@ namespace QuantConnect.Tests.Brokerages.Oanda
         {
             oanda = (OandaBrokerage)Brokerage;
             symbol = Symbol;
-            quotes = oanda.GetRates(new List<string> { new OandaSymbolMapper().GetBrokerageSymbol(symbol) });
+            quotes = oanda.GetRates(new List<String> { new OandaSymbolMapper().GetBrokerageSymbol(symbol) });
 
             // Buy Limit order below market
             limitPrice = Convert.ToDecimal(quotes[0].bid - 0.5);
@@ -110,7 +110,7 @@ namespace QuantConnect.Tests.Brokerages.Oanda
         {
             oanda = (OandaBrokerage)Brokerage;
             symbol = Symbol;
-            quotes = oanda.GetRates(new List<string> { new OandaSymbolMapper().GetBrokerageSymbol(symbol) });
+            quotes = oanda.GetRates(new List<String> { new OandaSymbolMapper().GetBrokerageSymbol(symbol) });
 
             // Buy StopMarket order below market
             price = Convert.ToDecimal(quotes[0].bid - 0.5);
@@ -138,7 +138,7 @@ namespace QuantConnect.Tests.Brokerages.Oanda
         {
             oanda = (OandaBrokerage) Brokerage;
             symbol = Symbol;
-            quotes = oanda.GetRates(new List<string> {new OandaSymbolMapper().GetBrokerageSymbol(symbol)});
+            quotes = oanda.GetRates(new List<String> {new OandaSymbolMapper().GetBrokerageSymbol(symbol)});
 
             // Buy StopLimit order below market (Oanda accepts this order but cancels it immediately)
             stopPrice = Convert.ToDecimal(quotes[0].bid - 0.5);

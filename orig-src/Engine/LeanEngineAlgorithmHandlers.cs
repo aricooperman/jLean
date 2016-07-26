@@ -25,7 +25,7 @@ using QuantConnect.Lean.Engine.Setup;
 using QuantConnect.Lean.Engine.TransactionHandlers;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine
+package com.quantconnect.lean.Lean.Engine
 {
     /// <summary>
     /// Provides a container for the algorithm specific handlers

@@ -22,7 +22,7 @@ using QuantConnect.Orders.Fills;
 using QuantConnect.Orders.Slippage;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// This algorithm shows how you can define your own custom models.
@@ -66,7 +66,7 @@ namespace QuantConnect.Algorithm.CSharp
         {
             private readonly QCAlgorithm _algorithm;
             private readonly Random _random = new Random(387510346); // seed it for reproducibility
-            private readonly Dictionary<long, decimal> _absoluteRemainingByOrderId = new Dictionary<long, decimal>();
+            private readonly Map<long, decimal> _absoluteRemainingByOrderId = new Map<long, decimal>();
 
             public CustomFillModel(QCAlgorithm algorithm)
             {

@@ -22,7 +22,7 @@ using System.Net;
 using QuantConnect.Brokerages.Oanda.DataType;
 using QuantConnect.Brokerages.Oanda.DataType.Communications;
 
-namespace QuantConnect.Brokerages.Oanda.Session
+package com.quantconnect.lean.Brokerages.Oanda.Session
 {
 #pragma warning disable 1591
     public class RatesSession : StreamSession<RateStreamResponse>

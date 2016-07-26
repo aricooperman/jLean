@@ -19,7 +19,7 @@
 
 using System.Collections.Generic;
 
-namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
+package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 {
 	public enum EServer
 	{
@@ -53,9 +53,9 @@ namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
 			return null;
 		}
 
-		private static readonly Dictionary<EEnvironment, Dictionary<EServer, string>> Servers = new Dictionary<EEnvironment, Dictionary<EServer, string>>
+		private static readonly Map<EEnvironment, Map<EServer,String>> Servers = new Map<EEnvironment, Map<EServer,String>>
 			{
-				{EEnvironment.Sandbox, new Dictionary<EServer, string>
+				{EEnvironment.Sandbox, new Map<EServer,String>
 					{
 						{EServer.Account, "http://api-sandbox.oanda.com/v1/"},
 						{EServer.Rates, "http://api-sandbox.oanda.com/v1/"},
@@ -63,7 +63,7 @@ namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
 						{EServer.StreamingEvents, "http://stream-sandbox.oanda.com/v1/"},
 					}
 				},
-				{EEnvironment.Practice, new Dictionary<EServer, string>
+				{EEnvironment.Practice, new Map<EServer,String>
 					{
 						{EServer.StreamingRates, "https://stream-fxpractice.oanda.com/v1/"},
 						{EServer.StreamingEvents, "https://stream-fxpractice.oanda.com/v1/"},
@@ -72,7 +72,7 @@ namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
 						{EServer.Labs, "https://api-fxpractice.oanda.com/labs/v1/"},
 					}
 				},
-				{EEnvironment.Trade, new Dictionary<EServer, string>
+				{EEnvironment.Trade, new Map<EServer,String>
 					{
 						{EServer.StreamingRates, "https://stream-fxtrade.oanda.com/v1/"},
 						{EServer.StreamingEvents, "https://stream-fxtrade.oanda.com/v1/"},

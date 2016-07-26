@@ -19,7 +19,7 @@ using System.IO.Compression;
 using System.Text;
 using QuantConnect.Logging;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Provides an implementation of <see cref="TextWriter"/> to write to a zip file

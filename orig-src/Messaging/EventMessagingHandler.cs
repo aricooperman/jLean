@@ -20,7 +20,7 @@ using QuantConnect.Logging;
 using QuantConnect.Notifications;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Messaging
+package com.quantconnect.lean.Messaging
 {
     /// <summary>
     /// Desktop implementation of messaging system for Lean Engine

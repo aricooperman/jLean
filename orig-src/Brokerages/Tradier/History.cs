@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages.Tradier
+package com.quantconnect.lean.Brokerages.Tradier
 {
     /// <summary>
     /// Tradier deserialization container for history
@@ -27,7 +27,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierEventContainer
     {
         /// Event Contents:
-        [JsonProperty(PropertyName = "history")]
+        @JsonProperty( "history")]
         public TradierEvents TradierEvents;
 
         /// Default constructor for json serialization
@@ -41,7 +41,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierEvents 
     { 
         /// Events List:
-        [JsonProperty(PropertyName = "event")]
+        @JsonProperty( "event")]
         [JsonConverter(typeof(SingleValueListConverter<TradierEvent>))]
         public List<TradierEvent> Events;
 
@@ -56,31 +56,31 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierEvent
     { 
         /// Tradier Event: Amount
-        [JsonProperty(PropertyName = "amount")]
+        @JsonProperty( "amount")]
         public BigDecimal Amount;
 
         /// Tradier Event: Date
-        [JsonProperty(PropertyName = "date")]
+        @JsonProperty( "date")]
         public DateTime Date;
 
         /// Tradier Event: Type
-        [JsonProperty(PropertyName = "type")]
+        @JsonProperty( "type")]
         public TradierEventType Type;
 
         /// Tradier Event: TradeEvent
-        [JsonProperty(PropertyName = "trade")]
+        @JsonProperty( "trade")]
         public TradierTradeEvent TradeEvent;
 
         /// Tradier Event: Journal Event
-        [JsonProperty(PropertyName = "journal")]
+        @JsonProperty( "journal")]
         public TradierJournalEvent JournalEvent;
 
         /// Tradier Event: Option Event
-        [JsonProperty(PropertyName = "option")]
+        @JsonProperty( "option")]
         public TradierOptionEvent OptionEvent;
 
         /// Tradier Event: Dividend Event
-        [JsonProperty(PropertyName = "dividend")]
+        @JsonProperty( "dividend")]
         public TradierOptionEvent DividendEvent;
     }
 
@@ -90,11 +90,11 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierEventDetail 
     {
         /// Tradier Event: Description
-        [JsonProperty(PropertyName = "description")]
+        @JsonProperty( "description")]
         public String Description;
 
         /// Tradier Event: Quantity
-        [JsonProperty(PropertyName = "quantity")]
+        @JsonProperty( "quantity")]
         public BigDecimal Quantity;
         
         /// Empty Constructor
@@ -108,19 +108,19 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierTradeEvent : TradierEventDetail
     {
         /// Tradier Event: Comission
-        [JsonProperty(PropertyName = "commission")]
+        @JsonProperty( "commission")]
         public BigDecimal Commission;
 
         /// Tradier Event: Price
-        [JsonProperty(PropertyName = "price")]
+        @JsonProperty( "price")]
         public BigDecimal Price;
 
         /// Tradier Event: Symbol
-        [JsonProperty(PropertyName = "symbol")]
+        @JsonProperty( "symbol")]
         public String Symbol;
 
         /// Tradier Event: Trade Type
-        [JsonProperty(PropertyName = "trade_type")]
+        @JsonProperty( "trade_type")]
         public TradierTradeType TradeType;
 
         /// Empty constructor
@@ -154,7 +154,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierOptionEvent : TradierEventDetail
     {
         ///
-        [JsonProperty(PropertyName = "option_type")]
+        @JsonProperty( "option_type")]
         public TradierOptionStatus Type;
         ///
         public TradierOptionEvent()

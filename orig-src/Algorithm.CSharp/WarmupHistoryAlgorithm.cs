@@ -16,7 +16,7 @@
 using QuantConnect.Data;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// This algorithm demonstrates using the history provider to retrieve data

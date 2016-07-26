@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Market order type definition

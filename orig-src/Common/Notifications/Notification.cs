@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Notifications
+package com.quantconnect.lean.Notifications
 {
     /// <summary>
     /// Local/desktop implementation of messaging system for Lean Engine.

@@ -22,7 +22,7 @@ using System.Threading;
 using QuantConnect.Configuration;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Brokerages.InteractiveBrokers
+package com.quantconnect.lean.Brokerages.InteractiveBrokers
 {
     /// <summary>
     /// Handles launching and killing the IB Controller script

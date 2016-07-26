@@ -20,7 +20,7 @@ using System.Threading;
 using QuantConnect.Interfaces;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Data.Auxiliary
+package com.quantconnect.lean.Data.Auxiliary
 {
     /// <summary>
     /// Provides a default implementation of <see cref="IMapFileProvider"/> that reads from
@@ -29,7 +29,7 @@ namespace QuantConnect.Data.Auxiliary
     public class LocalDiskMapFileProvider : IMapFileProvider
     {
         private static int _wroteTraceStatement;
-        private readonly ConcurrentDictionary<string, MapFileResolver> _cache = new ConcurrentDictionary<string, MapFileResolver>();
+        private readonly ConcurrentMap<String, MapFileResolver> _cache = new ConcurrentMap<String, MapFileResolver>();
 
         /// <summary>
         /// Gets a <see cref="MapFileResolver"/> representing all the map
@@ -39,13 +39,13 @@ namespace QuantConnect.Data.Auxiliary
         /// <returns>A <see cref="MapFileRow"/> containing all map files for the specified market</returns>
         public MapFileResolver Get( String market)
         {
-            market = market.ToLower();
+            market = market.toLowerCase();
             return _cache.GetOrAdd(market, GetMapFileResolver);
         }
 
         private static MapFileResolver GetMapFileResolver( String market)
         {
-            mapFileDirectory = Path.Combine(Globals.DataFolder, "equity", market.ToLower(), "map_files");
+            mapFileDirectory = Path.Combine(Globals.DataFolder, "equity", market.toLowerCase(), "map_files");
             if (!Directory.Exists(mapFileDirectory))
             {
                 // only write this message once per application instance

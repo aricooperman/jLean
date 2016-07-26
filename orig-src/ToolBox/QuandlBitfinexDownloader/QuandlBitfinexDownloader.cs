@@ -19,7 +19,7 @@ using System.Net;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.ToolBox.QuandlBitfinexDownloader
+package com.quantconnect.lean.ToolBox.QuandlBitfinexDownloader
 {
     /// <summary>
     /// Quandl Bitfinex Data Downloader class 

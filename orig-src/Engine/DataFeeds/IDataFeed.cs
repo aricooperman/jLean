@@ -24,7 +24,7 @@ using QuantConnect.Lean.Engine.Results;
 using QuantConnect.Packets;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Lean.Engine.DataFeeds
+package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// Datafeed interface for creating custom datafeed sources.

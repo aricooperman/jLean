@@ -26,29 +26,29 @@ import com.quantconnect.lean.Global.UserPlan;
 public class BacktestNodePacket extends AlgorithmNodePacket {
 
     /// Name of the backtest as randomly defined in the IDE.
-//    [JsonProperty(PropertyName = "sName")]
+//    @JsonProperty( "sName")]
     public String name = "";
 
     /// BacktestId / Algorithm Id for this task
-//    [JsonProperty(PropertyName = "sBacktestID")]
+//    @JsonProperty( "sBacktestID")]
     public String backtestId = "";
 
     /// Backtest start-date as defined in the Initialize() method.
-//    [JsonProperty(PropertyName = "dtPeriodStart")]
+//    @JsonProperty( "dtPeriodStart")]
     public LocalDate periodStart = LocalDate.now();
 
     /// Backtest end date as defined in the Initialize() method.
-//    [JsonProperty(PropertyName = "dtPeriodFinish")]
+//    @JsonProperty( "dtPeriodFinish")]
     public LocalDate periodFinish = LocalDate.now();
 
     /// Estimated number of trading days in this backtest task based on the start-end dates.
-//    [JsonProperty(PropertyName = "iTradeableDates")]
+//    @JsonProperty( "iTradeableDates")]
     public int tradeableDates = 0;
 
     /// Series or parallel runmode for the backtest
     /// <obsolete>The RunMode property is now obsolete and will always default to Series mode.</obsolete>
 //    [Obsolete("This property is no longer in use and will always default to series mode.")]
-//    [JsonProperty(PropertyName = "eRunMode")]
+//    @JsonProperty( "eRunMode")]
 //    public RunMode RunMode = RunMode.Series;
 
     /// Default constructor for JSON
@@ -80,7 +80,7 @@ public class BacktestNodePacket extends AlgorithmNodePacket {
 using System;
 using Newtonsoft.Json;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Algorithm backtest task information packet.
@@ -90,31 +90,31 @@ namespace QuantConnect.Packets
         /// <summary>
         /// Name of the backtest as randomly defined in the IDE.
         /// </summary>
-        [JsonProperty(PropertyName = "sName")]
+        @JsonProperty( "sName")]
         public String Name = "";
 
         /// <summary>
         /// BacktestId / Algorithm Id for this task
         /// </summary>
-        [JsonProperty(PropertyName = "sBacktestID")]
+        @JsonProperty( "sBacktestID")]
         public String BacktestId = "";
 
         /// <summary>
         /// Backtest start-date as defined in the Initialize() method.
         /// </summary>
-        [JsonProperty(PropertyName = "dtPeriodStart")]
+        @JsonProperty( "dtPeriodStart")]
         public DateTime PeriodStart = DateTime.Now;
 
         /// <summary>
         /// Backtest end date as defined in the Initialize() method.
         /// </summary>
-        [JsonProperty(PropertyName = "dtPeriodFinish")]
+        @JsonProperty( "dtPeriodFinish")]
         public DateTime PeriodFinish = DateTime.Now;
 
         /// <summary>
         /// Estimated number of trading days in this backtest task based on the start-end dates.
         /// </summary>
-        [JsonProperty(PropertyName = "iTradeableDates")]
+        @JsonProperty( "iTradeableDates")]
         public int TradeableDates = 0;
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace QuantConnect.Packets
         /// </summary>
         /// <obsolete>The RunMode property is now obsolete and will always default to Series mode.</obsolete>
         [Obsolete("This property is no longer in use and will always default to series mode.")]
-        [JsonProperty(PropertyName = "eRunMode")]
+        @JsonProperty( "eRunMode")]
         public RunMode RunMode = RunMode.Series;
 
         /// <summary>

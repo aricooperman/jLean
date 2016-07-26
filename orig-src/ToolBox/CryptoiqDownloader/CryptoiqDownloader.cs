@@ -20,7 +20,7 @@ using QuantConnect.Data.Market;
 using Newtonsoft.Json;
 using System.Linq;
 
-namespace QuantConnect.ToolBox.CryptoiqDownloader
+package com.quantconnect.lean.ToolBox.CryptoiqDownloader
 {
     /// <summary>
     /// Cryptoiq Data Downloader class 

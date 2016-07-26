@@ -15,7 +15,7 @@
 
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// This indicator computes the Slow Stochastics %K and %D. The Fast Stochastics %K is is computed by 

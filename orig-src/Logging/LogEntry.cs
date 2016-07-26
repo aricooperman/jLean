@@ -16,7 +16,7 @@
 
 using System;
 
-namespace QuantConnect.Logging
+package com.quantconnect.lean.Logging
 {
     /// <summary>
     /// Log entry wrapper to make logging simpler:

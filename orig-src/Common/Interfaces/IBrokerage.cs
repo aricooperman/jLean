@@ -19,7 +19,7 @@ using QuantConnect.Brokerages;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Interfaces
+package com.quantconnect.lean.Interfaces
 {
     /// <summary>
     /// Brokerage interface that defines the operations all brokerages must implement. The IBrokerage implementation

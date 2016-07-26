@@ -21,12 +21,12 @@ using System.Linq;
 using System.Text;
 using QuantConnect.Data;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Provides a means of keeping track of the different cash holdings of an algorithm
     /// </summary>
-    public class CashBook : IDictionary<string, Cash>
+    public class CashBook : Map<String, Cash>
     {
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace QuantConnect.Securities
         /// </summary>
         public static final String AccountCurrency = "USD";
 
-        private readonly Dictionary<string, Cash> _currencies;
+        private readonly Map<String, Cash> _currencies;
 
         /// <summary>
         /// Gets the total value of the cash book in units of the base currency
@@ -49,7 +49,7 @@ namespace QuantConnect.Securities
         /// </summary>
         public CashBook()
         {
-            _currencies = new Dictionary<string, Cash>();
+            _currencies = new Map<String, Cash>();
             _currencies.Add(AccountCurrency, new Cash(AccountCurrency, 0, 1.0m));
         }
 
@@ -75,7 +75,7 @@ namespace QuantConnect.Securities
         /// <param name="symbolPropertiesDatabase">A symbol properties database instance</param>
         /// <param name="marketMap">The market map that decides which market the new security should be in</param>
         /// <returns>Returns a list of added currency securities</returns>
-        public List<Security> EnsureCurrencyDataFeeds(SecurityManager securities, SubscriptionManager subscriptions, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase, IReadOnlyDictionary<SecurityType, string> marketMap)
+        public List<Security> EnsureCurrencyDataFeeds(SecurityManager securities, SubscriptionManager subscriptions, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase, IReadOnlyMap<SecurityType,String> marketMap)
         {
             addedSecurities = new List<Security>();
             foreach (cash in _currencies.Values)
@@ -156,14 +156,14 @@ namespace QuantConnect.Securities
         /// <value><c>true</c> if this instance is read only; otherwise, <c>false</c>.</value>
         public boolean IsReadOnly
         {
-            get { return ((IDictionary<string, Cash>) _currencies).IsReadOnly; }
+            get { return ((Map<String, Cash>) _currencies).IsReadOnly; }
         }
 
         /// <summary>
         /// Add the specified item to this CashBook.
         /// </summary>
         /// <param name="item">KeyValuePair of symbol -> Cash item</param>
-        public void Add(KeyValuePair<string, Cash> item)
+        public void Add(KeyValuePair<String, Cash> item)
         {
             _currencies.Add(item.Key, item.Value);
         }
@@ -199,7 +199,7 @@ namespace QuantConnect.Securities
         /// Remove the specified item.
         /// </summary>
         /// <param name="item">Item.</param>
-        public boolean Remove(KeyValuePair<string, Cash> item)
+        public boolean Remove(KeyValuePair<String, Cash> item)
         {
             return _currencies.Remove(item.Key);
         }
@@ -230,7 +230,7 @@ namespace QuantConnect.Securities
         /// Determines whether the current collection contains the specified value.
         /// </summary>
         /// <param name="item">Item.</param>
-        public boolean Contains(KeyValuePair<string, Cash> item)
+        public boolean Contains(KeyValuePair<String, Cash> item)
         {
             return _currencies.Contains(item);
         }
@@ -240,9 +240,9 @@ namespace QuantConnect.Securities
         /// </summary>
         /// <param name="array">Array.</param>
         /// <param name="arrayIndex">Array index.</param>
-        public void CopyTo(KeyValuePair<string, Cash>[] array, int arrayIndex)
+        public void CopyTo(KeyValuePair<String, Cash>[] array, int arrayIndex)
         {
-            ((IDictionary<string, Cash>) _currencies).CopyTo(array, arrayIndex);
+            ((Map<String, Cash>) _currencies).CopyTo(array, arrayIndex);
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace QuantConnect.Securities
         /// Gets the keys.
         /// </summary>
         /// <value>The keys.</value>
-        public ICollection<string> Keys
+        public ICollection<String> Keys
         {
             get { return _currencies.Keys; }
         }
@@ -285,7 +285,7 @@ namespace QuantConnect.Securities
         /// Gets the enumerator.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public IEnumerator<KeyValuePair<string, Cash>> GetEnumerator()
+        public IEnumerator<KeyValuePair<String, Cash>> GetEnumerator()
         {
             return _currencies.GetEnumerator();
         }

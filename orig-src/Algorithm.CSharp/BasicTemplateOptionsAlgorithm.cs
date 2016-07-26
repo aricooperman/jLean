@@ -20,7 +20,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// This example demonstrates how to add options for a given underlying equity security.

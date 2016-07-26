@@ -18,7 +18,7 @@ using System.Linq.Expressions;
 using NUnit.Framework;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Common.Util
+package com.quantconnect.lean.Tests.Common.Util
 {
     [TestFixture]
     public class ExpressionBuilderTests
@@ -27,9 +27,9 @@ namespace QuantConnect.Tests.Common.Util
         public void MakesPropertyOrFieldSelectorThatWorks()
         {
             static final String DayOfYear = "DayOfYear";
-            Expression<Func<DateTime, int>> expected = x => x.DayOfYear;
+            Expression<Func<DateTime,Integer>> expected = x => x.DayOfYear;
 
-            actual = ExpressionBuilder.MakePropertyOrFieldSelector<DateTime, int>(DayOfYear);
+            actual = ExpressionBuilder.MakePropertyOrFieldSelector<DateTime,Integer>(DayOfYear);
 
             DateTime now = DateTime.UtcNow;
 
@@ -39,9 +39,9 @@ namespace QuantConnect.Tests.Common.Util
         public void NonGenericMakesPropertyOrFieldSelectorThatWorks()
         {
             static final String DayOfYear = "DayOfYear";
-            Expression<Func<DateTime, int>> expected = x => x.DayOfYear;
+            Expression<Func<DateTime,Integer>> expected = x => x.DayOfYear;
 
-            actual = ExpressionBuilder.MakePropertyOrFieldSelector(typeof (DateTime), DayOfYear) as Expression<Func<DateTime, int>>; 
+            actual = ExpressionBuilder.MakePropertyOrFieldSelector(typeof (DateTime), DayOfYear) as Expression<Func<DateTime,Integer>>; 
             Assert.IsNotNull(actual);
 
             DateTime now = DateTime.UtcNow;

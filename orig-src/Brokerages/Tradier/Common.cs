@@ -18,7 +18,7 @@ using System.Runtime.Serialization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace QuantConnect.Brokerages.Tradier
+package com.quantconnect.lean.Brokerages.Tradier
 {
     /// <summary>
     /// Rate limiting categorization

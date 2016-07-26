@@ -16,7 +16,7 @@
 using QuantConnect.Data.Market;
 using System;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// The Fisher transform is a mathematical process which is used to convert any data set to a modified

@@ -19,7 +19,7 @@ using System.Text;
 using Ionic.Zip;
 using NUnit.Framework;
 
-namespace QuantConnect.Tests.Compression
+package com.quantconnect.lean.Tests.Compression
 {
     [TestFixture]
     public class CompressionTests

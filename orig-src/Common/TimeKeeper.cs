@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using NodaTime;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Provides a means of centralizing time for various time zones.
@@ -27,7 +27,7 @@ namespace QuantConnect
     {
         private DateTime _utcDateTime;
 
-        private readonly Dictionary<DateTimeZone, LocalTimeKeeper> _localTimeKeepers;
+        private readonly Map<DateTimeZone, LocalTimeKeeper> _localTimeKeepers;
 
         /// <summary>
         /// Gets the current time in UTC

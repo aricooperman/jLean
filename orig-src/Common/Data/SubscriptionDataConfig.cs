@@ -21,7 +21,7 @@ using NodaTime;
 using QuantConnect.Data.Consolidators;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Data
+package com.quantconnect.lean.Data
 {
     /// <summary>
     /// Subscription data required including the type of data.

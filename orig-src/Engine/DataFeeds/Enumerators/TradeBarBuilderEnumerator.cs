@@ -21,7 +21,7 @@ using NodaTime;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /// <summary>
     /// Aggregates ticks into trade bars ready to be time synced

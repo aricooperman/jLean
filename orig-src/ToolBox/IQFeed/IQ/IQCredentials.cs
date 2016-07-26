@@ -14,7 +14,7 @@
  *
 */
 
-namespace QuantConnect.ToolBox.IQFeed
+package com.quantconnect.lean.ToolBox.IQFeed
 {
     public class IQCredentials
     {

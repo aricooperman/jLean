@@ -18,7 +18,7 @@ using System.Collections;
 using System.Text;
 using System.Threading;
 
-namespace QuantConnect.Logging 
+package com.quantconnect.lean.Logging 
 {
     /// <summary>
     /// Logging management class.

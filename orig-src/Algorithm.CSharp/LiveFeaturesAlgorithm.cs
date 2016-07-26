@@ -20,7 +20,7 @@ using QuantConnect.Algorithm;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// QuantConnect University: Live Trading Functionality Demonstration:

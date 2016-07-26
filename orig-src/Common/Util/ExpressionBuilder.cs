@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides methods for constructing expressions at runtime

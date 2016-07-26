@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Net;
 using QuantConnect.Brokerages.Oanda.DataType;
 
-namespace QuantConnect.Brokerages.Oanda.Session
+package com.quantconnect.lean.Brokerages.Oanda.Session
 {
 #pragma warning disable 1591
     /// <summary>
@@ -39,7 +39,7 @@ namespace QuantConnect.Brokerages.Oanda.Session
 
         protected override WebResponse GetSession()
         {
-            return _brokerage.StartEventsSession(new List<int> {_accountId});
+            return _brokerage.StartEventsSession(new List<Integer> {_accountId});
         }
     }
 #pragma warning restore 1591

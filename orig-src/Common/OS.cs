@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 
-namespace QuantConnect 
+package com.quantconnect.lean 
 {
     /// <summary>
     /// Operating systems class for managing anything that is operation system specific.
@@ -214,9 +214,9 @@ namespace QuantConnect
         /// <summary>
         /// Gets the statistics of the machine, including CPU% and RAM
         /// </summary>
-        public static Dictionary<string, string> GetServerStatistics()
+        public static Map<String,String> GetServerStatistics()
         {
-            return new Dictionary<string, string>
+            return new Map<String,String>
             {
                 {"CPU Usage",            CpuUsage.NextValue().ToString("0.0") + "%"},
                 {"Used RAM (MB)",        TotalPhysicalMemoryUsed.ToString()},

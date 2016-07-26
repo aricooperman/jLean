@@ -19,7 +19,7 @@ using NodaTime;
 using QuantConnect.Data.Consolidators;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Data
+package com.quantconnect.lean.Data
 {
     /// <summary>
     /// Enumerable Subscription Management Class

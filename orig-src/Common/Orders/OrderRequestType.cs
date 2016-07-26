@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Specifies the type of <see cref="OrderRequest"/>

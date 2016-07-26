@@ -19,7 +19,7 @@ using System.Collections;
 using System.Collections.Generic;
 using QuantConnect.Data;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /// <summary>
     /// Provides augmentation of how often an enumerator can be called. Time is measured using

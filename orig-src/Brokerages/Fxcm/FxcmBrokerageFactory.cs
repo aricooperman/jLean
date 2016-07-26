@@ -20,7 +20,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages.Fxcm
+package com.quantconnect.lean.Brokerages.Fxcm
 {
     /// <summary>
     /// Provides an implementation of <see cref="IBrokerageFactory"/> that produces a <see cref="FxcmBrokerage"/>
@@ -45,11 +45,11 @@ namespace QuantConnect.Brokerages.Fxcm
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
         /// </remarks>
-        public override Dictionary<string, string> BrokerageData
+        public override Map<String,String> BrokerageData
         {
             get
             {
-                return new Dictionary<string, string>
+                return new Map<String,String>
                 {
                     { "fxcm-server", Config.Get("fxcm-server", DefaultServer) },
                     { "fxcm-terminal", Config.Get("fxcm-terminal", DefaultTerminal) },
@@ -76,14 +76,14 @@ namespace QuantConnect.Brokerages.Fxcm
         /// <returns>A new brokerage instance</returns>
         public override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm)
         {
-            errors = new List<string>();
+            errors = new List<String>();
 
             // read values from the brokerage data
-            server = Read<string>(job.BrokerageData, "fxcm-server", errors);
-            terminal = Read<string>(job.BrokerageData, "fxcm-terminal", errors);
-            userName = Read<string>(job.BrokerageData, "fxcm-user-name", errors);
-            password = Read<string>(job.BrokerageData, "fxcm-password", errors);
-            accountId = Read<string>(job.BrokerageData, "fxcm-account-id", errors);
+            server = Read<String>(job.BrokerageData, "fxcm-server", errors);
+            terminal = Read<String>(job.BrokerageData, "fxcm-terminal", errors);
+            userName = Read<String>(job.BrokerageData, "fxcm-user-name", errors);
+            password = Read<String>(job.BrokerageData, "fxcm-password", errors);
+            accountId = Read<String>(job.BrokerageData, "fxcm-account-id", errors);
 
             if (errors.Count != 0)
             {

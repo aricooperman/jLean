@@ -19,7 +19,7 @@ using NodaTime;
 using QuantConnect.Data.Market;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Data
+package com.quantconnect.lean.Data
 {
     /// <summary>
     /// Represents a request for historical data

@@ -20,7 +20,7 @@ using System.Linq;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Scheduling
+package com.quantconnect.lean.Scheduling
 {
     /// <summary>
     /// Helper class used to provide better syntax when defining date rules

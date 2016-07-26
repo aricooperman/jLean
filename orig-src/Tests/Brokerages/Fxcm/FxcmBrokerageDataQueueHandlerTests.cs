@@ -20,7 +20,7 @@ using QuantConnect.Brokerages.Fxcm;
 using QuantConnect.Data.Market;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Tests.Brokerages.Fxcm
+package com.quantconnect.lean.Tests.Brokerages.Fxcm
 {
     [TestFixture]
     public partial class FxcmBrokerageTests

@@ -5,7 +5,7 @@ using QuantConnect.Indicators;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     public class HistoryAndWarmupRegressionAlgorithm : QCAlgorithm
     {
@@ -15,7 +15,7 @@ namespace QuantConnect.Algorithm.CSharp
         private static final String BAC    = "BAC";
         private static final String GOOGL  = "GOOGL";
 
-        private readonly Dictionary<Symbol, SymbolData> _sd = new Dictionary<Symbol, SymbolData>();
+        private readonly Map<Symbol, SymbolData> _sd = new Map<Symbol, SymbolData>();
 
         public override void Initialize()
         {

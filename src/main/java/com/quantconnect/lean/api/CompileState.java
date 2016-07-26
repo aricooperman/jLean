@@ -28,7 +28,7 @@ public enum CompileState {
 }
 
 /*
-namespace QuantConnect.Api
+package com.quantconnect.lean.Api
 {
     /// <summary>
     /// State of the compilation request

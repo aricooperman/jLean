@@ -18,7 +18,7 @@ using System;
 using NUnit.Framework;
 using QuantConnect.Brokerages.Oanda;
 
-namespace QuantConnect.Tests.Brokerages.Oanda
+package com.quantconnect.lean.Tests.Brokerages.Oanda
 {
     [TestFixture]
     public class OandaSymbolMapperTests

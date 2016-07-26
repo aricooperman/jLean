@@ -27,7 +27,7 @@ using QuantConnect.Orders;
 using QuantConnect.Packets;
 using QuantConnect.Statistics;
 
-namespace QuantConnect.Lean.Engine 
+package com.quantconnect.lean.Lean.Engine 
 {
     /// <summary>
     /// LEAN ALGORITHMIC TRADING ENGINE: ENTRY POINT.
@@ -266,10 +266,10 @@ namespace QuantConnect.Lean.Engine
                     try
                     {
                         trades = algorithm.TradeBuilder.ClosedTrades;
-                        charts = new Dictionary<string, Chart>(_algorithmHandlers.Results.Charts);
-                        orders = new Dictionary<int, Order>(_algorithmHandlers.Transactions.Orders);
-                        holdings = new Dictionary<string, Holding>();
-                        banner = new Dictionary<string, string>();
+                        charts = new Map<String, Chart>(_algorithmHandlers.Results.Charts);
+                        orders = new Map<Integer, Order>(_algorithmHandlers.Transactions.Orders);
+                        holdings = new Map<String, Holding>();
+                        banner = new Map<String,String>();
                         statisticsResults = new StatisticsResults();
 
                         try
@@ -287,7 +287,7 @@ namespace QuantConnect.Lean.Engine
                             {
                                 equity = charts[strategyEquityKey].Series[equityKey].Values;
                                 performance = charts[strategyEquityKey].Series[dailyPerformanceKey].Values;
-                                profitLoss = new SortedDictionary<DateTime, decimal>(algorithm.Transactions.TransactionRecord);
+                                profitLoss = new SortedMap<DateTime, decimal>(algorithm.Transactions.TransactionRecord);
                                 totalTransactions = algorithm.Transactions.GetOrders(x => x.Status.IsFill()).Count();
                                 benchmark = charts[benchmarkKey].Series[benchmarkKey].Values;
 

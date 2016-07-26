@@ -21,7 +21,7 @@ using QuantConnect.Data;
 using QuantConnect.Lean.Engine.DataFeeds.Transport;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine.DataFeeds
+package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// Provides an implementations of <see cref="ISubscriptionDataSourceReader"/> that uses the 

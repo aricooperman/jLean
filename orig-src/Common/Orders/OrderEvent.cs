@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Order Event - Messaging class signifying a change in an order state and record the change in the user's algorithm portfolio 

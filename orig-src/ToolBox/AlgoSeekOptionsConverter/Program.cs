@@ -21,7 +21,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using QuantConnect.Logging;
 
-namespace QuantConnect.ToolBox.AlgoSeekOptionsConverter
+package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
 {
     public class Program
     {
@@ -67,14 +67,14 @@ namespace QuantConnect.ToolBox.AlgoSeekOptionsConverter
             root = Path.Combine(dataDirectory, "option", "usa");
             fine =
                 from res in new[] {Resolution.Tick, Resolution.Second, Resolution.Minute}
-                let path = Path.Combine(root, res.ToLower())
+                let path = Path.Combine(root, res.toLowerCase())
                 from sym in Directory.EnumerateDirectories(path)
                 from dir in Directory.EnumerateDirectories(sym)
                 select new DirectoryInfo(dir).FullName;
 
             coarse =
                 from res in new[] {Resolution.Hour, Resolution.Daily}
-                let path = Path.Combine(root, res.ToLower())
+                let path = Path.Combine(root, res.toLowerCase())
                 from dir in Directory.EnumerateDirectories(path)
                 select new DirectoryInfo(dir).FullName;
 

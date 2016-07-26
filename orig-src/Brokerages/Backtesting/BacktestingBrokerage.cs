@@ -22,7 +22,7 @@ using QuantConnect.Logging;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Brokerages.Backtesting
+package com.quantconnect.lean.Brokerages.Backtesting
 {
     /// <summary>
     /// Represents a brokerage to be used during backtesting. This is intended to be only be used with the BacktestingTransactionHandler
@@ -36,7 +36,7 @@ namespace QuantConnect.Brokerages.Backtesting
         private boolean _needsScan;
         // this is the algorithm under test
         protected readonly IAlgorithm Algorithm;
-        private readonly ConcurrentDictionary<int, Order> _pending;
+        private readonly ConcurrentMap<Integer, Order> _pending;
         private readonly object _needsScanLock = new object();
 
         /// <summary>
@@ -47,7 +47,7 @@ namespace QuantConnect.Brokerages.Backtesting
             : base("Backtesting Brokerage")
         {
             Algorithm = algorithm;
-            _pending = new ConcurrentDictionary<int, Order>();
+            _pending = new ConcurrentMap<Integer, Order>();
         }
 
         /// <summary>
@@ -59,7 +59,7 @@ namespace QuantConnect.Brokerages.Backtesting
             : base(name)
         {
             Algorithm = algorithm;
-            _pending = new ConcurrentDictionary<int, Order>();
+            _pending = new ConcurrentMap<Integer, Order>();
         }
 
         /// <summary>
@@ -353,7 +353,7 @@ namespace QuantConnect.Brokerages.Backtesting
         /// <summary>
         /// Sets the pending order as a clone to prevent object reference nastiness
         /// </summary>
-        /// <param name="order">The order to be added to the pending orders dictionary</param>
+        /// <param name="order">The order to be added to the pending orders Map</param>
         /// <returns></returns>
         private void SetPendingOrder(Order order)
         {

@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// This indicator computes the n-period change in a value using the following:

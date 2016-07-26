@@ -20,7 +20,7 @@ using QuantConnect.Securities;
 using System.Globalization;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     public class TestSetHoldingAlgorithm : QCAlgorithm
     {

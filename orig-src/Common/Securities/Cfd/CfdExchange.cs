@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Securities.Cfd
+package com.quantconnect.lean.Securities.Cfd
 {
     /// <summary>
     /// CFD exchange class - information and helper tools for CFD exchange properties

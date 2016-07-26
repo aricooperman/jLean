@@ -15,7 +15,7 @@
 
 using System.Linq;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// Represents an indictor capable of tracking the maximum value and how many periods ago it occurred

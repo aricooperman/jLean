@@ -18,7 +18,7 @@ using System.Collections;
 using System.Collections.Generic;
 using QuantConnect.Data;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /// <summary>
     /// Provides an implementation of <see cref="IEnumerator{BaseData}"/> that will not emit

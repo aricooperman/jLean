@@ -18,7 +18,7 @@
 */
 using System;
 
-namespace QuantConnect.Brokerages.Oanda.DataType
+package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
     /// <summary>

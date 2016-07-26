@@ -17,7 +17,7 @@ using System;
 using QuantConnect.Data.Consolidators;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     /// <summary>
     /// This algorithm shows how to initialize and use the RenkoConsolidator

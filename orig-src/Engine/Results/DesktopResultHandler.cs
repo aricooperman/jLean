@@ -27,7 +27,7 @@ using QuantConnect.Orders;
 using QuantConnect.Packets;
 using QuantConnect.Statistics;
 
-namespace QuantConnect.Lean.Engine.Results
+package com.quantconnect.lean.Lean.Engine.Results
 {
     /// <summary>
     /// Desktop Result Handler - Desktop GUI Result Handler for Piping Results to WinForms:
@@ -48,7 +48,7 @@ namespace QuantConnect.Lean.Engine.Results
         /// <summary>
         /// A dictionary containing summary statistics
         /// </summary>
-        public Dictionary<string, string> FinalStatistics { get; private set; } 
+        public Map<String,String> FinalStatistics { get; private set; } 
 
         /// <summary>
         /// Messaging to store notification messages for processing.
@@ -77,7 +77,7 @@ namespace QuantConnect.Lean.Engine.Results
         /// <summary>
         /// Charts collection for storing the master copy of user charting data.
         /// </summary>
-        public ConcurrentDictionary<string, Chart> Charts 
+        public ConcurrentMap<String, Chart> Charts 
         {
             get;
             set;
@@ -123,9 +123,9 @@ namespace QuantConnect.Lean.Engine.Results
         /// </summary>
         public DesktopResultHandler() 
         {
-            FinalStatistics = new Dictionary<string, string>();
+            FinalStatistics = new Map<String,String>();
             Messages = new ConcurrentQueue<Packet>();
-            Charts = new ConcurrentDictionary<string, Chart>();
+            Charts = new ConcurrentMap<String, Chart>();
 
             _chartLock = new Object();
             _isActive = true;
@@ -228,7 +228,7 @@ namespace QuantConnect.Lean.Engine.Results
                 //Add a copy locally:
                 if (!Charts.ContainsKey(chartName))
                 {
-                    Charts.AddOrUpdate<string, Chart>(chartName, new Chart(chartName));
+                    Charts.AddOrUpdate<String, Chart>(chartName, new Chart(chartName));
                 }
 
                 //Add the sample to our chart:
@@ -348,10 +348,10 @@ namespace QuantConnect.Lean.Engine.Results
         /// <param name="holdings">Current holdings state for the algorithm</param>
         /// <param name="statisticsResults">Statistics information for the algorithm (empty if not finished)</param>
         /// <param name="banner">Runtime statistics banner information</param>
-        public void SendFinalResult(AlgorithmNodePacket job, Dictionary<int, Order> orders, Dictionary<DateTime, decimal> profitLoss, Dictionary<string, Holding> holdings, StatisticsResults statisticsResults, Dictionary<string, string> banner)
+        public void SendFinalResult(AlgorithmNodePacket job, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, StatisticsResults statisticsResults, Map<String,String> banner)
         {
             // uncomment these code traces to help write regression tests
-            //Log.Trace("statistics = new Dictionary<string, string>();");
+            //Log.Trace("statistics = new Map<String,String>();");
             
             // Bleh. Nicely format statistical analysis on your algorithm results. Save to file etc.
             foreach (pair in statisticsResults.Summary) 

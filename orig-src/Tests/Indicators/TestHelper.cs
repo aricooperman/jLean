@@ -24,7 +24,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Tests.Indicators
+package com.quantconnect.lean.Tests.Indicators
 {
     /// <summary>
     /// Provides helper methods for testing indicatora
@@ -38,7 +38,7 @@ namespace QuantConnect.Tests.Indicators
         /// <param name="count">The number of data points to stream</param>
         /// <param name="valueProducer">Function to produce the value of the data, null to use the index</param>
         /// <returns>A stream of IndicatorDataPoints</returns>
-        public static IEnumerable<IndicatorDataPoint> GetDataStream(int count, Func<int, decimal> valueProducer = null)
+        public static IEnumerable<IndicatorDataPoint> GetDataStream(int count, Func<Integer, decimal> valueProducer = null)
         {
             reference = DateTime.Today;
             valueProducer = valueProducer ?? (x => x);
@@ -241,7 +241,7 @@ namespace QuantConnect.Tests.Indicators
             AssertIndicatorIsInDefaultState(indicator);
         }
 
-        public static IEnumerable<IReadOnlyDictionary<string, string>> GetCsvFileStream( String externalDataFilename)
+        public static IEnumerable<IReadOnlyMap<String,String>> GetCsvFileStream( String externalDataFilename)
         {
             enumerator = File.ReadLines(Path.Combine("TestData", externalDataFilename)).GetEnumerator();
             if (!enumerator.MoveNext())
@@ -255,7 +255,7 @@ namespace QuantConnect.Tests.Indicators
                 values = enumerator.Current.Split(',');
                 headerAndValues = header.Zip(values, (h, v) => new {h, v});
                 dictionary = headerAndValues.ToDictionary(x => x.h.Trim(), x => x.v.Trim(), StringComparer.OrdinalIgnoreCase);
-                yield return new ReadOnlyDictionary<string, string>(dictionary);
+                yield return new ReadOnlyMap<String,String>(dictionary);
             }
         }
 
@@ -342,7 +342,7 @@ namespace QuantConnect.Tests.Indicators
         /// <summary>
         /// Grabs the first value from the set of keys
         /// </summary>
-        private static String GetCsvValue(this IReadOnlyDictionary<string, string> dictionary, params string[] keys)
+        private static String GetCsvValue(this IReadOnlyMap<String,String> dictionary, params string[] keys)
         {
             String value = null;
             if (keys.Any(key => dictionary.TryGetValue(key, out value)))

@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Data;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// Represents a piece of data at a specific time

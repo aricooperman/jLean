@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Defines the first-order greeks

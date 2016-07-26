@@ -18,7 +18,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     ///     This is a window that allows for list access semantics,

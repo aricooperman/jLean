@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Data
+package com.quantconnect.lean.Data
 {
     /// <summary>
     /// Represents the source location and transport medium for a subscription

@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Securities.Forex 
+package com.quantconnect.lean.Securities.Forex 
 {
     /// <summary>
     /// FOREX holdings implementation of the base securities class

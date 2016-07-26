@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuantConnect.Algorithm.CSharp.Benchmarks
+package com.quantconnect.lean.Algorithm.CSharp.Benchmarks
 {
     public static class Symbols
     {
         public static class Equity
         {
             #region All
-            public static readonly HashSet<string> All = new HashSet<string>
+            public static readonly HashSet<String> All = new HashSet<String>
             {
                 "SPY",
                 "AAPL",

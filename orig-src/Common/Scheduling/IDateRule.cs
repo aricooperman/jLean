@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Scheduling
+package com.quantconnect.lean.Scheduling
 {
     /// <summary>
     /// Specifies dates that events should be fired, used in conjunction with the <see cref="ITimeRule"/>

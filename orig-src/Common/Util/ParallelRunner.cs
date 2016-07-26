@@ -22,7 +22,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Controller type used to schedule <see cref="IParallelRunnerWorkItem"/> instances

@@ -19,7 +19,7 @@ using Microsoft.Win32;
 using System.Threading;
 using QuantConnect.Configuration;
 
-namespace QuantConnect.ToolBox.IQFeed
+package com.quantconnect.lean.ToolBox.IQFeed
 {
 
     public class IQConnect

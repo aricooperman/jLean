@@ -20,7 +20,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.UniverseSelection;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Algorithm
+package com.quantconnect.lean.Algorithm
 {
     public partial class QCAlgorithm
     {
@@ -81,7 +81,7 @@ namespace QuantConnect.Algorithm
         /// <typeparam name="T">The data type</typeparam>
         /// <param name="name">A unique name for this universe</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, Func<IEnumerable<T>, IEnumerable<string>> selector)
+        public void AddUniverse<T>( String name, Func<IEnumerable<T>, IEnumerable<String>> selector)
         {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, UniverseSettings, selector);
         }
@@ -109,7 +109,7 @@ namespace QuantConnect.Algorithm
         /// <param name="name">A unique name for this universe</param>
         /// <param name="universeSettings">The settings used for securities added by this universe</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<string>> selector)
+        public void AddUniverse<T>( String name, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector)
         {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, universeSettings, selector);
         }
@@ -137,7 +137,7 @@ namespace QuantConnect.Algorithm
         /// <param name="name">A unique name for this universe</param>
         /// <param name="resolution">The epected resolution of the universe data</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, Resolution resolution, Func<IEnumerable<T>, IEnumerable<string>> selector)
+        public void AddUniverse<T>( String name, Resolution resolution, Func<IEnumerable<T>, IEnumerable<String>> selector)
         {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, UniverseSettings, selector);
         }
@@ -167,7 +167,7 @@ namespace QuantConnect.Algorithm
         /// <param name="resolution">The epected resolution of the universe data</param>
         /// <param name="universeSettings">The settings used for securities added by this universe</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, Resolution resolution, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<string>> selector)
+        public void AddUniverse<T>( String name, Resolution resolution, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector)
         {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, universeSettings, selector);
         }
@@ -197,7 +197,7 @@ namespace QuantConnect.Algorithm
         /// <param name="resolution">The epected resolution of the universe data</param>
         /// <param name="market">The market for selected symbols</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, Func<IEnumerable<T>, IEnumerable<string>> selector)
+        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, Func<IEnumerable<T>, IEnumerable<String>> selector)
         {
             AddUniverse(securityType, name, resolution, market, UniverseSettings, selector);
         }
@@ -232,7 +232,7 @@ namespace QuantConnect.Algorithm
         /// <param name="market">The market for selected symbols</param>
         /// <param name="universeSettings">The subscription settings to use for newly created subscriptions</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<string>> selector)
+        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector)
         {
             marketHoursDbEntry = _marketHoursDatabase.GetEntry(market, name, securityType);
             dataTimeZone = marketHoursDbEntry.DataTimeZone;
@@ -260,7 +260,7 @@ namespace QuantConnect.Algorithm
         /// </summary>
         /// <param name="name">A unique name for this universe</param>
         /// <param name="selector">Function delegate that accepts a DateTime and returns a collection of String symbols</param>
-        public void AddUniverse( String name, Func<DateTime, IEnumerable<string>> selector)
+        public void AddUniverse( String name, Func<DateTime, IEnumerable<String>> selector)
         {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, UniverseSettings, selector);
         }
@@ -272,7 +272,7 @@ namespace QuantConnect.Algorithm
         /// <param name="name">A unique name for this universe</param>
         /// <param name="resolution">The resolution this universe should be triggered on</param>
         /// <param name="selector">Function delegate that accepts a DateTime and returns a collection of String symbols</param>
-        public void AddUniverse( String name, Resolution resolution, Func<DateTime, IEnumerable<string>> selector)
+        public void AddUniverse( String name, Resolution resolution, Func<DateTime, IEnumerable<String>> selector)
         {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, UniverseSettings, selector);
         }
@@ -286,7 +286,7 @@ namespace QuantConnect.Algorithm
         /// <param name="market">The market of the universe</param>
         /// <param name="universeSettings">The subscription settings used for securities added from this universe</param>
         /// <param name="selector">Function delegate that accepts a DateTime and returns a collection of String symbols</param>
-        public void AddUniverse(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<DateTime, IEnumerable<string>> selector)
+        public void AddUniverse(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<DateTime, IEnumerable<String>> selector)
         {
             marketHoursDbEntry = _marketHoursDatabase.GetEntry(market, name, securityType);
             dataTimeZone = marketHoursDbEntry.DataTimeZone;

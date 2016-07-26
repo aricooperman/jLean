@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.IO;
 using QuantConnect.Data;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Represents a type capable of accepting a stream and parsing it into an enumerable of data

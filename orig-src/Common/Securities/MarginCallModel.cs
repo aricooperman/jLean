@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Represents the model responsible for picking which orders should be executed during a margin call

@@ -30,7 +30,7 @@ using QuantConnect.Packets;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine.Setup
+package com.quantconnect.lean.Lean.Engine.Setup
 {
     /// <summary>
     /// Console setup handler to initialize and setup the Lean Engine properties for a local backtest
@@ -40,7 +40,7 @@ namespace QuantConnect.Lean.Engine.Setup
         /// <summary>
         /// Error which occured during setup may appear here.
         /// </summary>
-        public List<string> Errors { get;  set; }
+        public List<String> Errors { get;  set; }
 
         /// <summary>
         /// Maximum runtime of the strategy. (Set to 10 years for local backtesting).
@@ -71,7 +71,7 @@ namespace QuantConnect.Lean.Engine.Setup
             StartingPortfolioValue = 0;
             StartingDate = new DateTime(1998, 01, 01);
             MaximumRuntime = TimeSpan.FromDays(10 * 365);
-            Errors = new List<string>();
+            Errors = new List<String>();
         }
 
         /// <summary>

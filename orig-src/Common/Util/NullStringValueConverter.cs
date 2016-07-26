@@ -16,7 +16,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Converts the String "null" into a new instance of T.

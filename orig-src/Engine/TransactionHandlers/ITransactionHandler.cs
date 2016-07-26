@@ -21,7 +21,7 @@ using QuantConnect.Lean.Engine.Results;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Lean.Engine.TransactionHandlers
+package com.quantconnect.lean.Lean.Engine.TransactionHandlers
 {
     /// <summary>
     /// Transaction handlers define how the transactions are processed and set the order fill information.
@@ -42,7 +42,7 @@ namespace QuantConnect.Lean.Engine.TransactionHandlers
         /// <summary>
         /// Gets the permanent storage for all orders
         /// </summary>
-        ConcurrentDictionary<int, Order> Orders
+        ConcurrentMap<Integer, Order> Orders
         {
             get;
         }

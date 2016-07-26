@@ -18,7 +18,7 @@ using System.IO;
 using NUnit.Framework;
 using QuantConnect.Lean.Engine.DataFeeds.Transport;
 
-namespace QuantConnect.Tests.Engine.DataFeeds.Transport
+package com.quantconnect.lean.Tests.Engine.DataFeeds.Transport
 {
     [TestFixture]
     public class LocalFileSubscriptionStreamReaderTests

@@ -20,7 +20,7 @@ using NUnit.Framework;
 using QuantConnect.Data.Market;
 using QuantConnect.Lean.Engine.DataFeeds.Enumerators;
 
-namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
 {
     [TestFixture]
     public class SynchronizingEnumeratorTests

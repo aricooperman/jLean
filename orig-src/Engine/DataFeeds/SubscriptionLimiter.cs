@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QuantConnect.Lean.Engine.DataFeeds
+package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// Provides logic to prevent an algorithm from adding too many data subscriptions
@@ -155,7 +155,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
         private String GetCountLimitReason(Resolution resolution)
         {
             limit = GetResolutionLimit(resolution);
-            return string.Format("We currently only support {0} {1} at a time due to physical memory limitations", limit, resolution.ToString().ToLower());
+            return string.Format("We currently only support {0} {1} at a time due to physical memory limitations", limit, resolution.ToString().toLowerCase());
         }
 
         /// <summary>

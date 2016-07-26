@@ -18,7 +18,7 @@ using System;
 using QuantConnect.Data.Market;
 using QuantConnect.Data.UniverseSelection;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// This algorithm shows some of the various helper methods available

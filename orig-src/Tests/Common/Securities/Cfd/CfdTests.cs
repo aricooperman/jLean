@@ -19,7 +19,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Common.Securities.Cfd
+package com.quantconnect.lean.Tests.Common.Securities.Cfd
 {
     [TestFixture]
     public class CfdTests

@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Represents a single instrument as listed in the file instruments.txt

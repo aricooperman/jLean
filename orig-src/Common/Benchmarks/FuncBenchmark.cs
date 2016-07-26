@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Benchmarks
+package com.quantconnect.lean.Benchmarks
 {
     /// <summary>
     /// Creates a benchmark defined by a function

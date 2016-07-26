@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Specifies an order field that does not apply to all order types

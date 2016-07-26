@@ -33,7 +33,7 @@ using QuantConnect.Securities;
 using QuantConnect.Util;
 using IB = Krs.Ats.IBNet;
 
-namespace QuantConnect.Brokerages.InteractiveBrokers
+package com.quantconnect.lean.Brokerages.InteractiveBrokers
 {
     /// <summary>
     /// The Interactive Brokers brokerage
@@ -63,16 +63,16 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
 
         // IB likes to duplicate/triplicate some events, keep track of them and swallow the dupes
         // we're keeping track of the .ToString() of the order event here
-        private readonly FixedSizeHashQueue<string> _recentOrderEvents = new FixedSizeHashQueue<string>(50);
+        private readonly FixedSizeHashQueue<String> _recentOrderEvents = new FixedSizeHashQueue<String>(50);
 
         private readonly object _orderFillsLock = new object();
-        private readonly ConcurrentDictionary<int, int> _orderFills = new ConcurrentDictionary<int, int>(); 
-        private readonly ConcurrentDictionary<string, decimal> _cashBalances = new ConcurrentDictionary<string, decimal>(); 
-        private readonly ConcurrentDictionary<string, string> _accountProperties = new ConcurrentDictionary<string, string>();
+        private readonly ConcurrentMap<Integer,Integer> _orderFills = new ConcurrentMap<Integer,Integer>(); 
+        private readonly ConcurrentMap<String, decimal> _cashBalances = new ConcurrentMap<String, decimal>(); 
+        private readonly ConcurrentMap<String,String> _accountProperties = new ConcurrentMap<String,String>();
         // number of shares per symbol
-        private readonly ConcurrentDictionary<string, Holding> _accountHoldings = new ConcurrentDictionary<string, Holding>();
+        private readonly ConcurrentMap<String, Holding> _accountHoldings = new ConcurrentMap<String, Holding>();
 
-        private readonly ConcurrentDictionary<string, IB.ContractDetails> _contractDetails = new ConcurrentDictionary<string, IB.ContractDetails>();
+        private readonly ConcurrentMap<String, IB.ContractDetails> _contractDetails = new ConcurrentMap<String, IB.ContractDetails>();
 
         private readonly InteractiveBrokersSymbolMapper _symbolMapper = new InteractiveBrokersSymbolMapper();
 
@@ -504,9 +504,9 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
         /// <summary>
         /// Gets the raw account values sent from IB
         /// </summary>
-        public Dictionary<string, string> GetAccountValues()
+        public Map<String,String> GetAccountValues()
         {
-            return new Dictionary<string, string>(_accountProperties);
+            return new Map<String,String>(_accountProperties);
         }
 
         /// <summary>
@@ -1535,14 +1535,14 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
 
         }
 
-        private ConcurrentDictionary<Symbol, int> _subscribedSymbols = new ConcurrentDictionary<Symbol, int>();
-        private ConcurrentDictionary<int, Symbol> _subscribedTickets = new ConcurrentDictionary<int, Symbol>();
-        private ConcurrentDictionary<Symbol, decimal> _lastPrices = new ConcurrentDictionary<Symbol, decimal>();
-        private ConcurrentDictionary<Symbol, int> _lastVolumes = new ConcurrentDictionary<Symbol, int>();
-        private ConcurrentDictionary<Symbol, decimal> _lastBidPrices = new ConcurrentDictionary<Symbol, decimal>();
-        private ConcurrentDictionary<Symbol, int> _lastBidSizes = new ConcurrentDictionary<Symbol, int>();
-        private ConcurrentDictionary<Symbol, decimal> _lastAskPrices = new ConcurrentDictionary<Symbol, decimal>();
-        private ConcurrentDictionary<Symbol, int> _lastAskSizes = new ConcurrentDictionary<Symbol, int>();
+        private ConcurrentMap<Symbol,Integer> _subscribedSymbols = new ConcurrentMap<Symbol,Integer>();
+        private ConcurrentMap<Integer, Symbol> _subscribedTickets = new ConcurrentMap<Integer, Symbol>();
+        private ConcurrentMap<Symbol, decimal> _lastPrices = new ConcurrentMap<Symbol, decimal>();
+        private ConcurrentMap<Symbol,Integer> _lastVolumes = new ConcurrentMap<Symbol,Integer>();
+        private ConcurrentMap<Symbol, decimal> _lastBidPrices = new ConcurrentMap<Symbol, decimal>();
+        private ConcurrentMap<Symbol,Integer> _lastBidSizes = new ConcurrentMap<Symbol,Integer>();
+        private ConcurrentMap<Symbol, decimal> _lastAskPrices = new ConcurrentMap<Symbol, decimal>();
+        private ConcurrentMap<Symbol,Integer> _lastAskSizes = new ConcurrentMap<Symbol,Integer>();
         private List<Tick> _ticks = new List<Tick>();
 
 
@@ -1554,19 +1554,19 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
         }
 
         // these are fatal errors from IB
-        private static readonly HashSet<int> ErrorCodes = new HashSet<int>
+        private static readonly HashSet<Integer> ErrorCodes = new HashSet<Integer>
         {
             100, 101, 103, 138, 139, 142, 143, 144, 145, 200, 203, 300,301,302,306,308,309,310,311,316,317,320,321,322,323,324,326,327,330,331,332,333,344,346,354,357,365,366,381,384,401,414,431,432,438,501,502,503,504,505,506,507,508,510,511,512,513,514,515,516,517,518,519,520,521,522,523,524,525,526,527,528,529,530,531,10000,10001,10005,10013,10015,10016,10021,10022,10023,10024,10025,10026,10027,1300
         };
 
         // these are warning messages from IB
-        private static readonly HashSet<int> WarningCodes = new HashSet<int>
+        private static readonly HashSet<Integer> WarningCodes = new HashSet<Integer>
         {
             102, 104, 105, 106, 107, 109, 110, 111, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 129, 131, 132, 133, 134, 135, 136, 137, 140, 141, 146, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166, 167, 168, 201, 202, 303,313,314,315,319,325,328,329,334,335,336,337,338,339,340,341,342,343,345,347,348,349,350,352,353,355,356,358,359,360,361,362,363,364,367,368,369,370,371,372,373,374,375,376,377,378,379,380,382,383,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,400,402,403,404,405,406,407,408,409,410,411,412,413,417,418,419,420,421,422,423,424,425,426,427,428,429,430,433,434,435,436,437,439,440,441,442,443,444,445,446,447,448,449,450,1100,10002,10003,10006,10007,10008,10009,10010,10011,10012,10014,10018,10019,10020,1101,1102,2100,2101,2102,2103,2104,2105,2106,2107,2108,2109,2110
         };
 
         // these require us to issue invalidated order events
-        private static readonly HashSet<int> InvalidatingCodes = new HashSet<int>
+        private static readonly HashSet<Integer> InvalidatingCodes = new HashSet<Integer>
         {
             104, 105, 106, 107, 109, 110, 111, 113, 114, 115, 116, 117, 118, 119, 120, 121, 122, 123, 124, 125, 126, 129, 131, 132, 133, 134, 135, 136, 137, 140, 141, 146, 147, 148, 151, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 163, 167, 168, 201, 202,313,314,315,325,328,329,334,335,336,337,338,339340,341,342,343,345,347,348,349,350,352,353,355,356,358,359,360,361,362,363,364,367,368,369,370,371,372,373,374,375,376,377,378,379,380,382,383,387,388,389,390,391,392,393,394,395,396,397,398,400,401,402,403,404,405,406,407,408,409,410,411,412,413,417,418,419,421,423,424,427,428,429,433,434,435,436,437,439,440,441,442,443,444,445,446,447,448,449,10002,10006,10007,10008,10009,10010,10011,10012,10014,10020,2102
         };

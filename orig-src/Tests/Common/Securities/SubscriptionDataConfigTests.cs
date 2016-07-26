@@ -18,7 +18,7 @@ using NUnit.Framework;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Tests.Common.Securities
+package com.quantconnect.lean.Tests.Common.Securities
 {
     [TestFixture]
     public class SubscriptionDataConfigTests

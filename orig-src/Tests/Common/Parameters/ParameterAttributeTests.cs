@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using QuantConnect.Parameters;
 
-namespace QuantConnect.Tests.Common.Parameters
+package com.quantconnect.lean.Tests.Common.Parameters
 {
     [TestFixture]
     public class ParameterAttributeTests
@@ -31,7 +31,7 @@ namespace QuantConnect.Tests.Common.Parameters
         public void SetsParameterValues()
         {
             instance = new Instance();
-            parameters = new Dictionary<string, string>
+            parameters = new Map<String,String>
             {
                 {"PublicField", "1"},
                 {"PublicProperty", "1"},

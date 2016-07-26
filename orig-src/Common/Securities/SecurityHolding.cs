@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Securities 
+package com.quantconnect.lean.Securities 
 {
     /// <summary>
     /// SecurityHolding is a base class for purchasing and holding a market item which manages the asset portfolio

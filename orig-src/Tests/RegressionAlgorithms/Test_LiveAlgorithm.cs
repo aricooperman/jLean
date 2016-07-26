@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     // Name your algorithm class anything, as long as it inherits QCAlgorithm
     public class TestLiveAlgorithm : QCAlgorithm

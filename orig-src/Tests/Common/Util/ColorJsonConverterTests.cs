@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Common.Util
+package com.quantconnect.lean.Tests.Common.Util
 {
     [TestFixture]
     public class ColorJsonConverterTests

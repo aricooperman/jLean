@@ -18,7 +18,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Logging;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Commands
+package com.quantconnect.lean.Commands
 {
     /// <summary>
     /// Represents a command to add a security to the algorithm

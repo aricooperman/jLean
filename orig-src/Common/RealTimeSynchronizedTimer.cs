@@ -17,7 +17,7 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 
-namespace QuantConnect 
+package com.quantconnect.lean 
 {
     /// <summary>
     /// Real time timer class for precise callbacks on a millisecond resolution in a self managed thread.

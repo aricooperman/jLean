@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Data.Consolidators
+package com.quantconnect.lean.Data.Consolidators
 {
     /// <summary>
     /// Consolidates quotebars into larger quotebars

@@ -19,7 +19,7 @@ using System.Linq;
 using System.Threading;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Provides a single reference to an order for the algorithm to maintain. As the order gets

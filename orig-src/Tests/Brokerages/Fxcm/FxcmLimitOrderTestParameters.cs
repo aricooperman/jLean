@@ -21,7 +21,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Logging;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Tests.Brokerages.Fxcm
+package com.quantconnect.lean.Tests.Brokerages.Fxcm
 {
     public class FxcmLimitOrderTestParameters : LimitOrderTestParameters
     {
@@ -39,7 +39,7 @@ namespace QuantConnect.Tests.Brokerages.Fxcm
             previousLimit = limit.LimitPrice;
 
             fxcmBrokerage = (FxcmBrokerage)brokerage;
-            quotes = fxcmBrokerage.GetBidAndAsk(new List<string> { new FxcmSymbolMapper().GetBrokerageSymbol(order.Symbol) });
+            quotes = fxcmBrokerage.GetBidAndAsk(new List<String> { new FxcmSymbolMapper().GetBrokerageSymbol(order.Symbol) });
 
             if (order.Quantity > 0)
             {

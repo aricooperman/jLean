@@ -27,7 +27,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine.TransactionHandlers
+package com.quantconnect.lean.Lean.Engine.TransactionHandlers
 {
     /// <summary>
     /// Transaction handler for all brokerages
@@ -58,21 +58,21 @@ namespace QuantConnect.Lean.Engine.TransactionHandlers
         /// The orders dictionary holds orders which are sent to exchange, partially filled, completely filled or cancelled.
         /// Once the transaction thread has worked on them they get put here while witing for fill updates.
         /// </summary>
-        private readonly ConcurrentDictionary<int, Order> _orders = new ConcurrentDictionary<int, Order>();
+        private readonly ConcurrentMap<Integer, Order> _orders = new ConcurrentMap<Integer, Order>();
 
         /// <summary>
         /// The orders tickets dictionary holds order tickets that the algorithm can use to reference a specific order. This
         /// includes invoking update and cancel commands. In the future, we can add more features to the ticket, such as events
         /// and async events (such as run this code when this order fills)
         /// </summary>
-        private readonly ConcurrentDictionary<int, OrderTicket> _orderTickets = new ConcurrentDictionary<int, OrderTicket>();
+        private readonly ConcurrentMap<Integer, OrderTicket> _orderTickets = new ConcurrentMap<Integer, OrderTicket>();
 
         private IResultHandler _resultHandler;
 
         /// <summary>
         /// Gets the permanent storage for all orders
         /// </summary>
-        public ConcurrentDictionary<int, Order> Orders
+        public ConcurrentMap<Integer, Order> Orders
         {
             get { return _orders; }
         }

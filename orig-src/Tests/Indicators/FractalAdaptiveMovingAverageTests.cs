@@ -18,7 +18,7 @@ using NUnit.Framework;
 using QuantConnect.Indicators;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Tests.Indicators
+package com.quantconnect.lean.Tests.Indicators
 {
     [TestFixture]
     public class FractalAdaptiveMovingAverageTests

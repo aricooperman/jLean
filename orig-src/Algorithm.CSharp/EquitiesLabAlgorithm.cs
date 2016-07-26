@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 using QuantConnect.Data.Market;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// This algorithm demonstrates how you can get your symbol list each day from a remote server
@@ -111,21 +111,21 @@ namespace QuantConnect.Algorithm.CSharp
 
         class EquitiesLabResponse
         {
-            [JsonProperty(PropertyName = "securities")]
+            @JsonProperty( "securities")]
             public List<EquitiesLabTarget> Securities = new List<EquitiesLabTarget>();
         }
 
         class EquitiesLabTarget
         {
-            [JsonProperty(PropertyName = "ticker")]
+            @JsonProperty( "ticker")]
             public String Ticker;
-            [JsonProperty(PropertyName = "stop_loss")]
+            @JsonProperty( "stop_loss")]
             public BigDecimal StopLoss;
-            [JsonProperty(PropertyName = "stop_gain")]
+            @JsonProperty( "stop_gain")]
             public BigDecimal StopGain;
         }
 
-        public static readonly HashSet<string> ValidSymbols = new HashSet<string>
+        public static readonly HashSet<String> ValidSymbols = new HashSet<String>
         {
             {"NP"},
             {"PKX"},

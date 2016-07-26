@@ -17,7 +17,7 @@ using System;
 using System.IO;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Data.UniverseSelection
+package com.quantconnect.lean.Data.UniverseSelection
 {
     /// <summary>
     /// Defines summary information about a single symbol for a given date
@@ -124,7 +124,7 @@ namespace QuantConnect.Data.UniverseSelection
         /// <returns>A coarse universe symbol for the specified market</returns>
         public static Symbol CreateUniverseSymbol( String market)
         {
-            market = market.ToLower();
+            market = market.toLowerCase();
             ticker = "qc-universe-coarse-" + market;
             sid = SecurityIdentifier.GenerateEquity(SecurityIdentifier.DefaultDate, ticker, market);
             return new Symbol(sid, ticker);

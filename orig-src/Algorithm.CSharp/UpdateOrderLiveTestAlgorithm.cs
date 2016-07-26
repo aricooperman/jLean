@@ -21,7 +21,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// Provides a regression baseline focused on updating orders
@@ -57,7 +57,7 @@ namespace QuantConnect.Algorithm.CSharp
 
         private readonly List<OrderTicket> _tickets = new List<OrderTicket>();
 
-        private readonly HashSet<int> _immediateCancellations = new HashSet<int>();
+        private readonly HashSet<Integer> _immediateCancellations = new HashSet<Integer>();
 
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.

@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// An indicator that delays its input for a certain period

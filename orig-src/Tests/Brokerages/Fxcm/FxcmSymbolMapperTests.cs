@@ -18,7 +18,7 @@ using System;
 using NUnit.Framework;
 using QuantConnect.Brokerages.Fxcm;
 
-namespace QuantConnect.Tests.Brokerages.Fxcm
+package com.quantconnect.lean.Tests.Brokerages.Fxcm
 {
     [TestFixture]
     public class FxcmSymbolMapperTests

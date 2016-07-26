@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Statistics
+package com.quantconnect.lean.Statistics
 {
     /// <summary>
     /// Represents a closed trade

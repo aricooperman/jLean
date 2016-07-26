@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Brokerages
+package com.quantconnect.lean.Brokerages
 {
     /// <summary>
     /// Specifies the type of message received from an IBrokerage implementation

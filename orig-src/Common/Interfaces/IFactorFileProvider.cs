@@ -17,7 +17,7 @@
 using System.ComponentModel.Composition;
 using QuantConnect.Data.Auxiliary;
 
-namespace QuantConnect.Interfaces
+package com.quantconnect.lean.Interfaces
 {
     /// <summary>
     /// Provides instances of <see cref="FactorFile"/> at run time

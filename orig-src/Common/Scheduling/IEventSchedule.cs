@@ -14,7 +14,7 @@
  *
 */
 
-namespace QuantConnect.Scheduling
+package com.quantconnect.lean.Scheduling
 {
     /// <summary>
     /// Provides the ability to add/remove scheduled events from the real time handler

@@ -220,7 +220,7 @@ using QuantConnect.Api;
 using QuantConnect.API;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Interfaces
+package com.quantconnect.lean.Interfaces
 {
     /// <summary>
     /// API for QuantConnect.com 

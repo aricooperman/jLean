@@ -17,7 +17,7 @@
 using System;
 using System.Threading;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides extension methods to make working with the <see cref="ReaderWriterLockSlim"/> class easier

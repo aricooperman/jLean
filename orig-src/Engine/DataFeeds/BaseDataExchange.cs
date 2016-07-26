@@ -23,7 +23,7 @@ using QuantConnect.Data;
 using QuantConnect.Interfaces;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Lean.Engine.DataFeeds
+package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// Provides a means of distributing output from enumerators from a dedicated separate thread
@@ -36,8 +36,8 @@ namespace QuantConnect.Lean.Engine.DataFeeds
 
         private readonly String _name;
         private readonly object _enumeratorsWriteLock = new object();
-        private readonly ConcurrentDictionary<Symbol, DataHandler> _dataHandlers;
-        private ConcurrentDictionary<Symbol, EnumeratorHandler> _enumerators;
+        private readonly ConcurrentMap<Symbol, DataHandler> _dataHandlers;
+        private ConcurrentMap<Symbol, EnumeratorHandler> _enumerators;
 
         /// <summary>
         /// Gets or sets how long this thread will sleep when no data is available
@@ -65,8 +65,8 @@ namespace QuantConnect.Lean.Engine.DataFeeds
         {
             _name = name;
             _isFatalError = x => false;
-            _dataHandlers = new ConcurrentDictionary<Symbol, DataHandler>();
-            _enumerators = new ConcurrentDictionary<Symbol, EnumeratorHandler>();
+            _dataHandlers = new ConcurrentMap<Symbol, DataHandler>();
+            _enumerators = new ConcurrentMap<Symbol, EnumeratorHandler>();
         }
 
         /// <summary>

@@ -19,7 +19,7 @@ using System.Linq;
 using QuantConnect.Data.Market;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     /// <summary>
     /// This algorithm showcases two margin related event handlers.

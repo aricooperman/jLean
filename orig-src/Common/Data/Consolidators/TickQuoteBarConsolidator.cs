@@ -17,7 +17,7 @@
 using System;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Data.Consolidators
+package com.quantconnect.lean.Data.Consolidators
 {
     /// <summary>
     /// Consolidates ticks into quote bars. This consolidator ignores trade ticks

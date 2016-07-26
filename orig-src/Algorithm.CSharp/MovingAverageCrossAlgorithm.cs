@@ -18,7 +18,7 @@ using System.Linq;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     /// <summary>
     /// In this example we look at the canonical 15/30 day moving average cross. This algorithm

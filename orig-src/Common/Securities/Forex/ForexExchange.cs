@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Securities.Forex 
+package com.quantconnect.lean.Securities.Forex 
 {
     /// <summary>
     /// Forex exchange class - information and helper tools for forex exchange properties

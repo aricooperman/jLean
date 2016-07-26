@@ -15,7 +15,7 @@
 
 using System.Collections.Generic;
 
-namespace QuantConnect.Util 
+package com.quantconnect.lean.Util 
 {
     /// <summary>
     /// Helper method for a limited length queue which self-removes the extra elements.

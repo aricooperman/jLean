@@ -20,7 +20,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Data.UniverseSelection;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// In this algorithm we demonstrate how to perform some technical analysis as
@@ -35,7 +35,7 @@ namespace QuantConnect.Algorithm.CSharp
         private static final BigDecimal TargetPercent = 0.1m;
         private SecurityChanges _changes = SecurityChanges.None;
         // holds our coarse fundamental indicators by symbol
-        private readonly ConcurrentDictionary<Symbol, SelectionData> _averages = new ConcurrentDictionary<Symbol, SelectionData>();
+        private readonly ConcurrentMap<Symbol, SelectionData> _averages = new ConcurrentMap<Symbol, SelectionData>();
 
 
         // class used to improve readability of the coarse selection function

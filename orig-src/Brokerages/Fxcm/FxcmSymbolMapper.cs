@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Brokerages.Fxcm
+package com.quantconnect.lean.Brokerages.Fxcm
 {
     /// <summary>
     /// Provides the mapping between Lean symbols and FXCM symbols.
@@ -38,7 +38,7 @@ namespace QuantConnect.Brokerages.Fxcm
         /// The list of mappings from FXCM symbols to Lean symbols.
         /// </summary>
         /// <remarks>T1 is FXCM symbol, T2 is Lean symbol</remarks>
-        private static readonly TupleList<string, string> FxcmSymbolMappings = new TupleList<string, string>
+        private static readonly TupleList<String,String> FxcmSymbolMappings = new TupleList<String,String>
         {
             { "AUD/CAD", "AUDCAD" },
             { "AUD/CHF", "AUDCHF" },
@@ -105,13 +105,13 @@ namespace QuantConnect.Brokerages.Fxcm
             { "ZAR/JPY", "ZARJPY" }
         };
 
-        private static readonly Dictionary<string, string> MapFxcmToLean = new Dictionary<string, string>();
-        private static readonly Dictionary<string, string> MapLeanToFxcm = new Dictionary<string, string>();
+        private static readonly Map<String,String> MapFxcmToLean = new Map<String,String>();
+        private static readonly Map<String,String> MapLeanToFxcm = new Map<String,String>();
 
         /// <summary>
         /// The list of known FXCM currencies.
         /// </summary>
-        private static readonly HashSet<string> KnownCurrencies = new HashSet<string>
+        private static readonly HashSet<String> KnownCurrencies = new HashSet<String>
         {
             "AUD", "CAD", "CHF", "CNH", "EUR", "GBP", "HKD", "JPY", "MXN", "NOK", "NZD", "SEK", "TRY", "USD", "ZAR"
         };

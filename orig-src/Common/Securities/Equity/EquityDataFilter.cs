@@ -15,7 +15,7 @@
 
 using QuantConnect.Data;
 
-namespace QuantConnect.Securities.Equity 
+package com.quantconnect.lean.Securities.Equity 
 {
     /// <summary>
     /// Equity security type data filter 

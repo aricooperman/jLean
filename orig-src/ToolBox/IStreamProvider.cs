@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Defines how to open/close a source file

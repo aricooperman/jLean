@@ -17,7 +17,7 @@ using System;
 using QuantConnect.Logging;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Provides a default implementation of <see cref="ISecurityPortfolioModel"/> that simply

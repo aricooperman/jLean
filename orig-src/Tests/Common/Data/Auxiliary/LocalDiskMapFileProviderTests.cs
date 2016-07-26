@@ -17,7 +17,7 @@
 using NUnit.Framework;
 using QuantConnect.Data.Auxiliary;
 
-namespace QuantConnect.Tests.Common.Data.Auxiliary
+package com.quantconnect.lean.Tests.Common.Data.Auxiliary
 {
     [TestFixture]
     public class LocalDiskMapFileProviderTests

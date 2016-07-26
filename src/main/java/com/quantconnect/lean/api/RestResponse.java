@@ -22,11 +22,11 @@ import java.util.List;
 public class RestResponse {
     
     /// Indicate if the API request was successful.
-//    [JsonProperty(PropertyName = "success")]
+//    @JsonProperty( "success")]
     public boolean success;
     
     /// List of errors with the API call.
-//    [JsonProperty(PropertyName = "errors")]
+//    @JsonProperty( "errors")]
     public List<String> errors;
 
     /// JSON Constructor
@@ -40,7 +40,7 @@ public class RestResponse {
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace QuantConnect.Api
+package com.quantconnect.lean.Api
 {
     /// <summary>
     /// Base API response class for the QuantConnect API.
@@ -53,20 +53,20 @@ namespace QuantConnect.Api
         public RestResponse()
         {
             Success = false;
-            Errors = new List<string>();
+            Errors = new List<String>();
         }
 
         /// <summary>
         /// Indicate if the API request was successful.
         /// </summary>
-        [JsonProperty(PropertyName = "success")]
+        @JsonProperty( "success")]
         public boolean Success;
 
         /// <summary>
         /// List of errors with the API call.
         /// </summary>
-        [JsonProperty(PropertyName = "errors")]
-        public List<string> Errors;
+        @JsonProperty( "errors")]
+        public List<String> Errors;
     }
 }
 */

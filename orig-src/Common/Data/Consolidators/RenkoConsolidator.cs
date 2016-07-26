@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Data.Consolidators
+package com.quantconnect.lean.Data.Consolidators
 {
     /// <summary>
     /// This consolidator can transform a stream of <see cref="BaseData"/> instances into a stream of <see cref="RenkoBar"/>

@@ -15,12 +15,12 @@
 
 using System;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Collection of <see cref="OptionChain"/> keyed by canonical option symbol
     /// </summary>
-    public class OptionChains : DataDictionary<OptionChain>
+    public class OptionChains : DataMap<OptionChain>
     {
         /// <summary>
         /// Creates a new instance of the <see cref="OptionChains"/> dictionary

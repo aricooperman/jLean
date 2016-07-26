@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using QuantConnect.Data;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Lean.Engine.DataFeeds
+package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// Defines a container type to hold data produced by a data feed subscription

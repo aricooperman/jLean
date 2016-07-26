@@ -20,7 +20,7 @@ using NUnit.Framework;
 using QuantConnect.Data.Market;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Common.Securities
+package com.quantconnect.lean.Tests.Common.Securities
 {
     [TestFixture]
     public class StrikeExpiryOptionFilterTests

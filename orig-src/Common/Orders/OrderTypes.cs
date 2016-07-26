@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Type of the order: market, limit or stop

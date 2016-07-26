@@ -21,7 +21,7 @@ using QuantConnect.Data;
 using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Tests.Engine.DataFeeds
+package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     /// <summary>
     /// Provides an implementation of <see cref="IDataQueueHandler"/> that can be specified

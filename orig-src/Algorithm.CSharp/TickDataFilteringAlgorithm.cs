@@ -5,7 +5,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Securities;
 using QuantConnect.Securities.Interfaces;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     /// <summary>
     /// Tick Filter Example
@@ -70,7 +70,7 @@ namespace QuantConnect.Algorithm.Examples
         public static class MarketCodesFilter
         {
             /// US Market Codes
-            public static Dictionary<string, string> US = new Dictionary<string, string>() 
+            public static Map<String,String> US = new Map<String,String>() 
             {
                 {"A", "American Stock Exchange"},
                 {"B", "Boston Stock Exchange"},
@@ -93,7 +93,7 @@ namespace QuantConnect.Algorithm.Examples
             };
 
             /// Canada Market Short Codes:
-            public static Dictionary<string, string> Canada = new Dictionary<string, string>() 
+            public static Map<String,String> Canada = new Map<String,String>() 
             {
                 {"T", "Toronto"},
                 {"V", "Venture"}
@@ -102,7 +102,7 @@ namespace QuantConnect.Algorithm.Examples
             /// <summary>
             /// Select allowed exchanges for this filter: e.g. top 4
             /// </summary>
-            public static List<string> AllowedExchanges = new List<string>() { 
+            public static List<String> AllowedExchanges = new List<String>() { 
                 "P",    //NYSE ARCA - SPY PRIMARY EXCHANGE
                         //https://www.google.com/finance?q=NYSEARCA%3ASPY&ei=XcA2VKCSLs228waMhYCIBg
             };

@@ -17,7 +17,7 @@
 using System;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Indicators.CandlestickPatterns
+package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /// <summary>
     /// Mat Hold candlestick pattern

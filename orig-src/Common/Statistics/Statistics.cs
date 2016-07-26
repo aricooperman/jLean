@@ -22,7 +22,7 @@ using System.Net;
 using MathNet.Numerics.Statistics;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Statistics
+package com.quantconnect.lean.Statistics
 {
     /// <summary>
     /// Calculate all the statistics required from the backtest, based on the equity curve and the profit loss statement.
@@ -33,11 +33,11 @@ namespace QuantConnect.Statistics
         /// <summary>
         /// Retrieve a static S-P500 Benchmark for the statistics calculations. Update the benchmark once per day.
         /// </summary>
-        public static SortedDictionary<DateTime, decimal> YahooSPYBenchmark
+        public static SortedMap<DateTime, decimal> YahooSPYBenchmark
         {
             get
             {
-                benchmark = new SortedDictionary<DateTime, decimal>();
+                benchmark = new SortedMap<DateTime, decimal>();
                 url = "http://real-chart.finance.yahoo.com/table.csv?s=SPY&a=11&b=31&c=1997&d=" + (DateTime.Now.Month - 1) + "&e=" + DateTime.Now.Day + "&f=" + DateTime.Now.Year + "&g=d&ignore=.csv";
                 using (net = new WebClient())
                 {
@@ -70,9 +70,9 @@ namespace QuantConnect.Statistics
         /// <remarks>This is required to convert the equity plot into a usable form for the statistics calculation</remarks>
         /// <param name="points">ChartPoints Array</param>
         /// <returns>SortedDictionary of the equity BigDecimal values ordered in time</returns>
-        private static SortedDictionary<DateTime, decimal> ChartPointToDictionary(IEnumerable<ChartPoint> points)
+        private static SortedMap<DateTime, decimal> ChartPointToDictionary(IEnumerable<ChartPoint> points)
         {
-            dictionary = new SortedDictionary<DateTime, decimal>();
+            dictionary = new SortedMap<DateTime, decimal>();
             try
             {
                 foreach (point in points)
@@ -108,10 +108,10 @@ namespace QuantConnect.Statistics
         /// <param name="totalTrades">Total number of orders executed.</param>
         /// <param name="tradingDaysPerYear">Number of trading days per year</param>
         /// <returns>Statistics Array, Broken into Annual Periods</returns>
-        public static Dictionary<string, string> Generate(IEnumerable<ChartPoint> pointsEquity, 
-            SortedDictionary<DateTime, decimal> profitLoss, 
+        public static Map<String,String> Generate(IEnumerable<ChartPoint> pointsEquity, 
+            SortedMap<DateTime, decimal> profitLoss, 
             IEnumerable<ChartPoint> pointsPerformance, 
-            Dictionary<DateTime, decimal> unsortedBenchmark, 
+            Map<DateTime, decimal> unsortedBenchmark, 
             BigDecimal startingCash, 
             BigDecimal totalFees, 
             BigDecimal totalTrades, 
@@ -134,27 +134,27 @@ namespace QuantConnect.Statistics
             BigDecimal algoCompoundingPerformance = 0;
             BigDecimal finalBenchmarkCash = 0;
             BigDecimal benchCompoundingPerformance = 0;
-            years = new List<int>();
-            annualTrades = new SortedDictionary<int, int>();
-            annualWins = new SortedDictionary<int, int>();
-            annualLosses = new SortedDictionary<int, int>();
-            annualLossTotal = new SortedDictionary<int, decimal>();
-            annualWinTotal = new SortedDictionary<int, decimal>();
-            annualNetProfit = new SortedDictionary<int, decimal>();
-            statistics = new Dictionary<string, string>();
+            years = new List<Integer>();
+            annualTrades = new SortedMap<Integer,Integer>();
+            annualWins = new SortedMap<Integer,Integer>();
+            annualLosses = new SortedMap<Integer,Integer>();
+            annualLossTotal = new SortedMap<Integer, decimal>();
+            annualWinTotal = new SortedMap<Integer, decimal>();
+            annualNetProfit = new SortedMap<Integer, decimal>();
+            statistics = new Map<String,String>();
             dtPrevious = new DateTime();
             listPerformance = new List<double>();
             listBenchmark = new List<double>();
-            equity = new SortedDictionary<DateTime, decimal>();
-            performance = new SortedDictionary<DateTime, decimal>();
-            SortedDictionary<DateTime, decimal>  benchmark = null;
+            equity = new SortedMap<DateTime, decimal>();
+            performance = new SortedMap<DateTime, decimal>();
+            SortedMap<DateTime, decimal>  benchmark = null;
             try
             {
                 //Get array versions of the performance:
                 performance = ChartPointToDictionary(pointsPerformance);
                 equity = ChartPointToDictionary(pointsEquity);
                 performance.Values.ToList().ForEach(i => listPerformance.Add((double)(i / 100)));
-                benchmark = new SortedDictionary<DateTime, decimal>(unsortedBenchmark);
+                benchmark = new SortedMap<DateTime, decimal>(unsortedBenchmark);
 
                 // to find the delta in benchmark for first day, we need to know the price at the opening
                 // moment of the day, but since we cannot find this, we cannot find the first benchmark's delta,
@@ -321,7 +321,7 @@ namespace QuantConnect.Statistics
                 if (profitLossRatio == -1) profitLossRatioHuman = "0";
 
                 //Add the over all results first, break down by year later:
-                statistics = new Dictionary<string, string> { 
+                statistics = new Map<String,String> { 
                     { "Total Trades", Math.Round(totalTrades, 0).ToString(CultureInfo.InvariantCulture) },
                     { "Average Win", Math.Round(averageWin * 100, 2) + "%"  },
                     { "Average Loss", Math.Round(averageLoss * 100, 2) + "%" },
@@ -368,7 +368,7 @@ namespace QuantConnect.Statistics
         /// <param name="equityOverTime"></param>
         /// <param name="rounding"></param>
         /// <returns></returns>
-        public static BigDecimal DrawdownPercent(SortedDictionary<DateTime, decimal> equityOverTime, int rounding = 2)
+        public static BigDecimal DrawdownPercent(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2)
         {
             dd = 0m;
             try
@@ -396,7 +396,7 @@ namespace QuantConnect.Statistics
         /// <param name="equityOverTime">Array of portfolio value over time.</param>
         /// <param name="rounding">Round the drawdown statistics.</param>
         /// <returns>Draw down percentage over period.</returns>
-        public static BigDecimal DrawdownValue(SortedDictionary<DateTime, decimal> equityOverTime, int rounding = 2)
+        public static BigDecimal DrawdownValue(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2)
         {
             //Initialise:
             priceMaximum = 0;

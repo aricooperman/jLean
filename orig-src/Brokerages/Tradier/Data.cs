@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages.Tradier
+package com.quantconnect.lean.Brokerages.Tradier
 {
     /// <summary>
     /// Container for timeseries array
@@ -27,7 +27,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierTimeSeriesContainer
     {
         /// Data Time Series
-        [JsonProperty(PropertyName = "data")]
+        @JsonProperty( "data")]
         [JsonConverter(typeof(SingleValueListConverter<TradierTimeSeries>))]
         public List<TradierTimeSeries> TimeSeries;
     }
@@ -38,31 +38,31 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierTimeSeries
     {
         /// Time of Price Sample
-        [JsonProperty(PropertyName = "time")]
+        @JsonProperty( "time")]
         public DateTime Time;
 
         /// Tick data requests:
-        [JsonProperty(PropertyName = "price")]
+        @JsonProperty( "price")]
         public BigDecimal Price;
 
         /// Bar Requests: Open
-        [JsonProperty(PropertyName = "open")]
+        @JsonProperty( "open")]
         public BigDecimal Open;
 
         /// Bar Requests: High
-        [JsonProperty(PropertyName = "high")]
+        @JsonProperty( "high")]
         public BigDecimal High;
 
         /// Bar Requests: Low
-        [JsonProperty(PropertyName = "low")]
+        @JsonProperty( "low")]
         public BigDecimal Low;
 
         /// Bar Requests: Close
-        [JsonProperty(PropertyName = "close")]
+        @JsonProperty( "close")]
         public BigDecimal Close;
 
         /// Bar Requests: Volume
-        [JsonProperty(PropertyName = "volume")]
+        @JsonProperty( "volume")]
         public long Volume;
     }
 
@@ -73,7 +73,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierQuoteContainer
     {
         /// Price Quotes:
-        [JsonProperty(PropertyName = "quote")]
+        @JsonProperty( "quote")]
         [JsonConverter(typeof(SingleValueListConverter<TradierQuote>))]
         public List<TradierQuote> Quotes;
     }
@@ -84,135 +84,135 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierQuote
     {
         /// Quote Symbol
-        [JsonProperty(PropertyName = "symbol")]
+        @JsonProperty( "symbol")]
         public String Symbol = "";
 
         /// Quote Description
-        [JsonProperty(PropertyName = "description")]
+        @JsonProperty( "description")]
         public String Description = "";
 
         /// Quote Exchange
-        [JsonProperty(PropertyName = "exch")]
+        @JsonProperty( "exch")]
         public String Exchange = "";
 
         /// Quote Type
-        [JsonProperty(PropertyName = "type")]
+        @JsonProperty( "type")]
         public String Type = "";
 
         /// Quote Last Price
-        [JsonProperty(PropertyName = "last")]
+        @JsonProperty( "last")]
         public BigDecimal Last = 0;
 
         /// Quote Change Absolute
-        [JsonProperty(PropertyName = "change")]
+        @JsonProperty( "change")]
         public BigDecimal Change = 0;
 
         /// Quote Change Percentage
-        [JsonProperty(PropertyName = "change_percentage")]
+        @JsonProperty( "change_percentage")]
         public BigDecimal PercentageChange = 0;
 
         /// Quote Volume
-        [JsonProperty(PropertyName = "volume")]
+        @JsonProperty( "volume")]
         public BigDecimal Volume = 0;
 
         /// Quote Average Volume
-        [JsonProperty(PropertyName = "average_volume")]
+        @JsonProperty( "average_volume")]
         public BigDecimal AverageVolume = 0;
 
         /// Quote Last Volume
-        [JsonProperty(PropertyName = "last_volume")]
+        @JsonProperty( "last_volume")]
         public BigDecimal LastVolume = 0;
 
         /// Last Trade Date in Unix Time
-        [JsonProperty(PropertyName = "trade_date")]
+        @JsonProperty( "trade_date")]
         public long TradeDateUnix = 0;
 
         /// Open Price
-        [JsonProperty(PropertyName = "open")]
+        @JsonProperty( "open")]
         public decimal? Open = 0;
 
         /// High Price
-        [JsonProperty(PropertyName = "high")]
+        @JsonProperty( "high")]
         public decimal? High = 0;
 
         /// Low Price
-        [JsonProperty(PropertyName = "low")]
+        @JsonProperty( "low")]
         public decimal? Low = 0;
 
         /// Closng Price
-        [JsonProperty(PropertyName = "close")]
+        @JsonProperty( "close")]
         public decimal? Close = 0;
 
         /// Previous Close
-        [JsonProperty(PropertyName = "prevclose")]
+        @JsonProperty( "prevclose")]
         public BigDecimal PreviousClose = 0;
 
         /// 52 W high
-        [JsonProperty(PropertyName = "week_52_high")]
+        @JsonProperty( "week_52_high")]
         public BigDecimal Week52High = 0;
 
         /// 52 W Low
-        [JsonProperty(PropertyName = "week_52_low")]
+        @JsonProperty( "week_52_low")]
         public BigDecimal Week52Low = 0;
 
         /// Bid Price
-        [JsonProperty(PropertyName = "bid")]
+        @JsonProperty( "bid")]
         public BigDecimal Bid = 0;
 
         /// Bid Size:
-        [JsonProperty(PropertyName = "bidsize")]
+        @JsonProperty( "bidsize")]
         public BigDecimal BidSize = 0;
         
         /// Bid Exchange
-        [JsonProperty(PropertyName = "bidexch")]
+        @JsonProperty( "bidexch")]
         public String BigExchange = "";
 
         /// Bid Date Unix
-        [JsonProperty(PropertyName = "bid_date")]
+        @JsonProperty( "bid_date")]
         private long BidDateUnix = 0;
 
         /// Asking Price
-        [JsonProperty(PropertyName = "ask")]
+        @JsonProperty( "ask")]
         public BigDecimal Ask = 0;
 
         /// Asking Quantity
-        [JsonProperty(PropertyName = "asksize")]
+        @JsonProperty( "asksize")]
         public BigDecimal AskSize = 0;
 
         /// Ask Exchange
-        [JsonProperty(PropertyName = "askexch")]
+        @JsonProperty( "askexch")]
         public String AskExchange = "";
 
         /// Date of Ask
-        [JsonProperty(PropertyName = "ask_date")]
+        @JsonProperty( "ask_date")]
         private long AskDateUnix = 0;
 
         /// Open Interest
-        [JsonProperty(PropertyName = "open_interest")]
+        @JsonProperty( "open_interest")]
         private long Options_OpenInterest = 0;
 
         ///Option Underlying Asset
-        [JsonProperty(PropertyName = "underlying")]
+        @JsonProperty( "underlying")]
         private String Options_UnderlyingAsset = "";
 
         ///Option Strike Price
-        [JsonProperty(PropertyName = "strike")]
+        @JsonProperty( "strike")]
         private BigDecimal Options_Strike = 0;
 
         ///Option Constract Size
-        [JsonProperty(PropertyName = "contract_size")]
+        @JsonProperty( "contract_size")]
         private int Options_ContractSize = 0;
 
         ///Option Exp Date
-        [JsonProperty(PropertyName = "expiration_date")]
+        @JsonProperty( "expiration_date")]
         private long Options_ExpirationDate = 0;
 
         ///Option Exp Type
-        [JsonProperty(PropertyName = "expiration_type")]
+        @JsonProperty( "expiration_type")]
         private TradierOptionExpirationType Options_ExpirationType = TradierOptionExpirationType.Standard;
 
         /// Option Type
-        [JsonProperty(PropertyName = "option_type")]
+        @JsonProperty( "option_type")]
         private TradierOptionType Options_OptionType = TradierOptionType.Call;
 
         /// Empty Constructor
@@ -226,7 +226,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierHistoryDataContainer
     {
         /// Historical Data Contents
-        [JsonProperty(PropertyName = "day")]
+        @JsonProperty( "day")]
         [JsonConverter(typeof(SingleValueListConverter<TradierHistoryBar>))]
         public List<TradierHistoryBar> Data;
     }
@@ -237,27 +237,27 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierHistoryBar
     {
         /// Historical Data Bar: Date
-        [JsonProperty(PropertyName = "date")]
+        @JsonProperty( "date")]
         public DateTime Time;
 
         /// Historical Data Bar: Open
-        [JsonProperty(PropertyName = "open")]
+        @JsonProperty( "open")]
         public BigDecimal Open;
 
         /// Historical Data Bar: High
-        [JsonProperty(PropertyName = "high")]
+        @JsonProperty( "high")]
         public BigDecimal High;
 
         /// Historical Data Bar: Low
-        [JsonProperty(PropertyName = "low")]
+        @JsonProperty( "low")]
         public BigDecimal Low;
 
         /// Historical Data Bar: Close
-        [JsonProperty(PropertyName = "close")]
+        @JsonProperty( "close")]
         public BigDecimal Close;
 
         /// Historical Data Bar: Volume
-        [JsonProperty(PropertyName = "volume")]
+        @JsonProperty( "volume")]
         public long Volume;
     }
 
@@ -267,23 +267,23 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierMarketStatus
     {
         /// Market Status: Date
-        [JsonProperty(PropertyName = "date")]
+        @JsonProperty( "date")]
         public DateTime Date;
 
         /// Market Status: Description
-        [JsonProperty(PropertyName = "description")]
+        @JsonProperty( "description")]
         public String Description;
 
         /// Market Status: Next Change in Status
-        [JsonProperty(PropertyName = "next_change")]
+        @JsonProperty( "next_change")]
         public String NextChange;
 
         /// Market Status: State 
-        [JsonProperty(PropertyName = "state")]
+        @JsonProperty( "state")]
         public String State;
 
         /// Market Status: Timestamp
-        [JsonProperty(PropertyName = "timestamp")]
+        @JsonProperty( "timestamp")]
         public long TimeStamp;
     }
 
@@ -293,15 +293,15 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierCalendarStatus
     {
         /// Trading Calendar: Day
-        [JsonProperty(PropertyName = "days")]
+        @JsonProperty( "days")]
         public TradierCalendarDayContainer Days;
 
         /// Trading Calendar: month
-        [JsonProperty(PropertyName = "month")]
+        @JsonProperty( "month")]
         public int Month;
 
         /// Trading Calendar: year
-        [JsonProperty(PropertyName = "year")]
+        @JsonProperty( "year")]
         public int Year;
     }
 
@@ -311,7 +311,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierCalendarDayContainer
     {
         /// Trading Calendar: Days List
-        [JsonProperty(PropertyName = "day")]
+        @JsonProperty( "day")]
         [JsonConverter(typeof(SingleValueListConverter<TradierCalendarDay>))]
         public List<TradierCalendarDay> Days;
     }
@@ -322,27 +322,27 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierCalendarDay
     {
         /// Trading Calendar: Day
-        [JsonProperty(PropertyName = "date")]
+        @JsonProperty( "date")]
         public DateTime Date;
 
         /// Trading Calendar: Sattus
-        [JsonProperty(PropertyName = "status")]
+        @JsonProperty( "status")]
         public String Status;
 
         /// Trading Calendar: Description
-        [JsonProperty(PropertyName = "description")]
+        @JsonProperty( "description")]
         public String Description;
 
         /// Trading Calendar: Premarket Hours
-        [JsonProperty(PropertyName = "premarket")]
+        @JsonProperty( "premarket")]
         public TradierCalendarDayMarketHours Premarket;
 
         /// Trading Calendar: Open Hours
-        [JsonProperty(PropertyName = "open")]
+        @JsonProperty( "open")]
         public TradierCalendarDayMarketHours Open;
 
         /// Trading Calendar: Post Hours
-        [JsonProperty(PropertyName = "postmarket")]
+        @JsonProperty( "postmarket")]
         public TradierCalendarDayMarketHours Postmarket;
     }
 
@@ -352,11 +352,11 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierCalendarDayMarketHours
     {
         /// Trading Calendar: Start Hours
-        [JsonProperty(PropertyName = "start")]
+        @JsonProperty( "start")]
         public DateTime Start;
 
         /// Trading Calendar: End Hours
-        [JsonProperty(PropertyName = "end")]
+        @JsonProperty( "end")]
         public DateTime End;
     }
 
@@ -366,7 +366,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierSearchContainer
     {
         /// Trading Search container
-        [JsonProperty(PropertyName = "security")]
+        @JsonProperty( "security")]
         public List<TradierSearchResult> Results;
     }
 
@@ -376,19 +376,19 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierSearchResult
     {
         /// Trading Search: Symbol
-        [JsonProperty(PropertyName = "symbol")]
+        @JsonProperty( "symbol")]
         public String Symbol;
 
         /// Trading Search: Exch
-        [JsonProperty(PropertyName = "exchange")]
+        @JsonProperty( "exchange")]
         public String Exchange;
 
         /// Trading Search: Type
-        [JsonProperty(PropertyName = "type")]
+        @JsonProperty( "type")]
         public String Type;
 
         /// Trading Search: Description
-        [JsonProperty(PropertyName = "description")]
+        @JsonProperty( "description")]
         public String Description;
     }
 
@@ -409,75 +409,75 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierStreamData
     {
         /// Trading Stream: Type
-        [JsonProperty(PropertyName = "type")]
+        @JsonProperty( "type")]
         public String Type;
 
         /// Trading Stream: Symbol
-        [JsonProperty(PropertyName = "symbol")]
+        @JsonProperty( "symbol")]
         public String Symbol;
 
         /// Trading Stream: Open
-        [JsonProperty(PropertyName = "open")]
+        @JsonProperty( "open")]
         public BigDecimal SummaryOpen;
 
         /// Trading Stream: High
-        [JsonProperty(PropertyName = "high")]
+        @JsonProperty( "high")]
         public BigDecimal SummaryHigh;
 
         /// Trading Stream: Low
-        [JsonProperty(PropertyName = "low")]
+        @JsonProperty( "low")]
         public BigDecimal SummaryLow;
 
         /// Trading Stream: Close
-        [JsonProperty(PropertyName = "close")]
+        @JsonProperty( "close")]
         public BigDecimal SummaryClose;
 
         /// Trading Stream: Bid Price
-        [JsonProperty(PropertyName = "bid")]
+        @JsonProperty( "bid")]
         public BigDecimal BidPrice;
 
         /// Trading Stream: BidSize
-        [JsonProperty(PropertyName = "bidsz")]
+        @JsonProperty( "bidsz")]
         public int BidSize;
 
         /// Trading Stream: Bid Exhc
-        [JsonProperty(PropertyName = "bidexch")]
+        @JsonProperty( "bidexch")]
         public String BidExchange;
 
         /// Trading Stream: Bid Time
-        [JsonProperty(PropertyName = "biddate")]
+        @JsonProperty( "biddate")]
         public long BidDateUnix;
 
         /// Trading Stream: Last Price
-        [JsonProperty(PropertyName = "price")]
+        @JsonProperty( "price")]
         public BigDecimal TradePrice;
 
         /// Trading Stream: Last Size
-        [JsonProperty(PropertyName = "size")]
+        @JsonProperty( "size")]
         public BigDecimal TradeSize;
 
         /// Trading Stream: Last Exh
-        [JsonProperty(PropertyName = "exch")]
+        @JsonProperty( "exch")]
         public String TradeExchange;
 
         /// Trading Stream: Last Vol
-        [JsonProperty(PropertyName = "cvol")]
+        @JsonProperty( "cvol")]
         public long TradeCVol;
 
         /// Trading Stream: Ask Price
-        [JsonProperty(PropertyName = "ask")]
+        @JsonProperty( "ask")]
         public BigDecimal AskPrice;
 
         /// Trading Stream: Ask Size
-        [JsonProperty(PropertyName = "asksz")]
+        @JsonProperty( "asksz")]
         public int AskSize;
 
         /// Trading Stream: Ask Exhc
-        [JsonProperty(PropertyName = "askexch")]
+        @JsonProperty( "askexch")]
         public String AskExchange;
 
         /// Trading Stream: Ask Date
-        [JsonProperty(PropertyName = "askdate")]
+        @JsonProperty( "askdate")]
         public long AskDateUnix;
     }
 }

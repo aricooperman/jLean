@@ -17,7 +17,7 @@ using System;
 using System.Globalization;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// QuoteBar class for second and minute resolution data: 

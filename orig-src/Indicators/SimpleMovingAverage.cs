@@ -14,7 +14,7 @@
 */
 
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     ///     Represents the traditional simple moving average indicator (SMA)

@@ -23,7 +23,7 @@ using QuantConnect.Data;
 using QuantConnect.Logging;
 using QuantConnect.Util;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Provides access to exchange hours and raw data times zones in various markets
@@ -34,7 +34,7 @@ namespace QuantConnect.Securities
         private static MarketHoursDatabase _dataFolderMarketHoursDatabase;
         private static readonly object DataFolderMarketHoursDatabaseLock = new object();
 
-        private readonly IReadOnlyDictionary<SecurityDatabaseKey, Entry> _entries;
+        private readonly IReadOnlyMap<SecurityDatabaseKey, Entry> _entries;
 
         /// <summary>
         /// Gets an instant of <see cref="MarketHoursDatabase"/> that will always return <see cref="SecurityExchangeHours.AlwaysOpen"/>
@@ -57,7 +57,7 @@ namespace QuantConnect.Securities
         /// Initializes a new instance of the <see cref="MarketHoursDatabase"/> class
         /// </summary>
         /// <param name="exchangeHours">The full listing of exchange hours by key</param>
-        public MarketHoursDatabase(IReadOnlyDictionary<SecurityDatabaseKey, Entry> exchangeHours)
+        public MarketHoursDatabase(IReadOnlyMap<SecurityDatabaseKey, Entry> exchangeHours)
         {
             _entries = exchangeHours.ToDictionary();
         }

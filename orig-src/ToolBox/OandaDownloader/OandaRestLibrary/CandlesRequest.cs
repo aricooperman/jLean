@@ -19,7 +19,7 @@
 
 using System.ComponentModel;
 
-namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
+package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 {
 	public class CandlesRequest : Request
 	{
@@ -27,7 +27,7 @@ namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
 		{
 		}
 
-		public SmartProperty<string> instrument;
+		public SmartProperty<String> instrument;
 
 		[IsOptional]
 		[DefaultValue(EGranularity.S5)]
@@ -35,13 +35,13 @@ namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
 
 		[IsOptional]
 		[DefaultValue(500)]
-		public SmartProperty<int> count;
+		public SmartProperty<Integer> count;
 
 		[IsOptional]
-		public SmartProperty<string> start;
+		public SmartProperty<String> start;
 
 		[IsOptional]
-		public SmartProperty<string> end;
+		public SmartProperty<String> end;
 
 		[IsOptional]
 		[DefaultValue(ECandleFormat.bidask)]
@@ -52,10 +52,10 @@ namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
 		public SmartProperty<bool> includeFirst;
 
 		[IsOptional]
-		public SmartProperty<string> dailyAlignment;
+		public SmartProperty<String> dailyAlignment;
 
 		[IsOptional]
-		public SmartProperty<string> weeklyAlignment;
+		public SmartProperty<String> weeklyAlignment;
 
 		public override String EndPoint
 		{

@@ -19,7 +19,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators.CandlestickPatterns;
 
-namespace QuantConnect.Algorithm
+package com.quantconnect.lean.Algorithm
 {
     /// <summary>
     /// Provides helpers for using candlestick patterns

@@ -15,7 +15,7 @@
 
 using QuantConnect.Data;
 
-namespace QuantConnect.Securities.Forex 
+package com.quantconnect.lean.Securities.Forex 
 {
     /// <summary>
     /// Forex packet by packet data filtering mechanism for dynamically detecting bad ticks.

@@ -19,18 +19,18 @@ package com.quantconnect.lean.api;
 public class ProjectFile
 {
     /// Name of a project file
-//    [JsonProperty(PropertyName = "name")]
+//    @JsonProperty( "name")]
     public String name;
 
     /// Contents of the project file
-//    [JsonProperty(PropertyName = "code")]
+//    @JsonProperty( "code")]
     public String code;
 }
 
 /*
 sing Newtonsoft.Json;
 
-namespace QuantConnect.Api
+package com.quantconnect.lean.Api
 {
     /// <summary>
     /// File for a project
@@ -40,13 +40,13 @@ namespace QuantConnect.Api
         /// <summary>
         /// Name of a project file
         /// </summary>
-        [JsonProperty(PropertyName = "name")]
+        @JsonProperty( "name")]
         public String Name;
 
         /// <summary>
         /// Contents of the project file
         /// </summary>
-        [JsonProperty(PropertyName = "code")]
+        @JsonProperty( "code")]
         public String Code;
     }
 }

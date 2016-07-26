@@ -20,7 +20,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data
+package com.quantconnect.lean.Data
 {
     /// <summary>
     /// Dynamic Data Class: Accept flexible data, adapting to the columns provided by source.
@@ -28,7 +28,7 @@ namespace QuantConnect.Data
     /// <remarks>Intended for use with Quandl class.</remarks>
     public abstract class DynamicData : BaseData, IDynamicMetaObjectProvider
     {
-        private readonly IDictionary<string, object> _storage = new Dictionary<string, object>();
+        private readonly Map<String, object> _storage = new Map<String, object>();
 
         /// <summary>
         /// Get the metaObject required for Dynamism.
@@ -46,7 +46,7 @@ namespace QuantConnect.Data
         /// <returns>Returns the input value back to the caller</returns>
         public object SetProperty( String name, object value)
         {
-            name = name.ToLower();
+            name = name.toLowerCase();
 
             if (name == "time")
             {
@@ -83,7 +83,7 @@ namespace QuantConnect.Data
         /// <returns>object value of BaseData</returns>
         public object GetProperty( String name)
         {
-            name = name.ToLower();
+            name = name.toLowerCase();
 
             // redirect these calls to the base types properties
             if (name == "time")
@@ -121,7 +121,7 @@ namespace QuantConnect.Data
         /// <returns>True if the property exists, false otherwise</returns>
         public boolean HasProperty( String name)
         {
-            return _storage.ContainsKey(name.ToLower());
+            return _storage.ContainsKey(name.toLowerCase());
         }
 
         /// <summary>

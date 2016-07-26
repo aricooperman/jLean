@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Indicators.CandlestickPatterns
+package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /// <summary>
     /// Takuri (Dragonfly Doji with very long lower shadow) candlestick pattern indicator

@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using QuantConnect.Brokerages;
 
-namespace QuantConnect.ToolBox.DukascopyDownloader
+package com.quantconnect.lean.ToolBox.DukascopyDownloader
 {
     /// <summary>
     /// Provides the mapping between Lean symbols and Dukascopy symbols.
@@ -39,7 +39,7 @@ namespace QuantConnect.ToolBox.DukascopyDownloader
         /// The list of mappings from Dukascopy symbols to Lean symbols.
         /// </summary>
         /// <remarks>T1 is Dukascopy symbol, T2 is Lean symbol, T3 is point value (used by downloader)</remarks>
-        private static readonly TupleList<string, string, int> DukascopySymbolMappings = new TupleList<string, string, int>
+        private static readonly TupleList<String, string,Integer> DukascopySymbolMappings = new TupleList<String, string,Integer>
         {
             { "AUDCAD", "AUDCAD", 100000 },
             { "AUDCHF", "AUDCHF", 100000 },
@@ -127,14 +127,14 @@ namespace QuantConnect.ToolBox.DukascopyDownloader
             { "ZARJPY", "ZARJPY", 100000 }
         };
 
-        private static readonly Dictionary<string, string> MapDukascopyToLean = new Dictionary<string, string>();
-        private static readonly Dictionary<string, string> MapLeanToDukascopy = new Dictionary<string, string>();
-        private static readonly Dictionary<string, int> PointValues = new Dictionary<string, int>();
+        private static readonly Map<String,String> MapDukascopyToLean = new Map<String,String>();
+        private static readonly Map<String,String> MapLeanToDukascopy = new Map<String,String>();
+        private static readonly Map<String,Integer> PointValues = new Map<String,Integer>();
 
         /// <summary>
         /// The list of known Dukascopy currencies.
         /// </summary>
-        private static readonly HashSet<string> KnownCurrencies = new HashSet<string>
+        private static readonly HashSet<String> KnownCurrencies = new HashSet<String>
         {
             "AUD", "BRL", "CAD", "CHF", "CNH", "DKK", "EUR", "GBP", "HKD", "HUF", "JPY", "MXN", "NOK", "NZD", "PLN", "RUB", "SEK", "SGD", "TRY", "USD", "ZAR"
         };

@@ -18,7 +18,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Auxiliary;
 using QuantConnect.Data.UniverseSelection;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /// <summary>
     /// Aggregates an enumerator into <see cref="OptionChainUniverseDataCollection"/> instances

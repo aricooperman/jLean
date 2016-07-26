@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// Event handler type for the IndicatorBase.Updated event

@@ -35,7 +35,7 @@ using QuantConnect.Statistics;
 using QuantConnect.Util;
 using QuantConnect.Securities.Forex;
 
-namespace QuantConnect.Lean.Engine.Results
+package com.quantconnect.lean.Lean.Engine.Results
 {
     /// <summary>
     /// Live trading result handler implementation passes the messages to the QC live trading interface.
@@ -50,13 +50,13 @@ namespace QuantConnect.Lean.Engine.Results
         private String _compileId;
         private String _deployId;
         private LiveNodePacket _job;
-        private ConcurrentDictionary<string, Chart> _charts;
+        private ConcurrentMap<String, Chart> _charts;
         private ConcurrentQueue<OrderEvent> _orderEvents; 
         private ConcurrentQueue<Packet> _messages;
         private IAlgorithm _algorithm;
         private volatile boolean _exitTriggered;
         private readonly DateTime _startTime;
-        private readonly Dictionary<string, string> _runtimeStatistics = new Dictionary<string, string>();
+        private readonly Map<String,String> _runtimeStatistics = new Map<String,String>();
 
         //Sampling Periods:
         private readonly TimeSpan _resamplePeriod;
@@ -105,7 +105,7 @@ namespace QuantConnect.Lean.Engine.Results
         ///     Potential memory leak when the algorithm has been running for a long time. Infinitely storing the results isn't wise.
         ///     The results should be stored to disk daily, and then the caches reset.
         /// </remarks>
-        public ConcurrentDictionary<string, Chart> Charts
+        public ConcurrentMap<String, Chart> Charts
         {
             get
             {
@@ -157,11 +157,11 @@ namespace QuantConnect.Lean.Engine.Results
         /// </summary>
         public LiveTradingResultHandler()
         {
-            _charts = new ConcurrentDictionary<string, Chart>();
+            _charts = new ConcurrentMap<String, Chart>();
             _orderEvents = new ConcurrentQueue<OrderEvent>();
             _messages = new ConcurrentQueue<Packet>();
             _isActive = true;
-            _runtimeStatistics = new Dictionary<string, string>();
+            _runtimeStatistics = new Map<String,String>();
 
             _resamplePeriod = TimeSpan.FromSeconds(1);
             _notificationPeriod = TimeSpan.FromSeconds(1);
@@ -236,7 +236,7 @@ namespace QuantConnect.Lean.Engine.Results
         public void Update()
         {
             //Initialize:
-            Dictionary<int, Order> deltaOrders;
+            Map<Integer, Order> deltaOrders;
 
             //Error checks if the algorithm & threads have not loaded yet, or are closing down.
             if (_algorithm == null || _algorithm.Transactions == null || _transactionHandler.Orders == null || !_algorithm.GetLocked())
@@ -251,7 +251,7 @@ namespace QuantConnect.Lean.Engine.Results
                 {
                     //Extract the orders created since last update
                     OrderEvent orderEvent;
-                    deltaOrders = new Dictionary<int, Order>();
+                    deltaOrders = new Map<Integer, Order>();
 
                     stopwatch = Stopwatch.StartNew();
                     while (_orderEvents.TryDequeue(out orderEvent) && stopwatch.ElapsedMilliseconds < 15)
@@ -274,7 +274,7 @@ namespace QuantConnect.Lean.Engine.Results
                     //if (deltaOrders.Count > 50) deltaOrders.Clear();
 
                     //Create and send back the changes in chart since the algorithm started.
-                    deltaCharts = new Dictionary<string, Chart>();
+                    deltaCharts = new Map<String, Chart>();
                     Log.Debug("LiveTradingResultHandler.Update(): Build delta charts");
                     lock (_chartLock)
                     {
@@ -289,9 +289,9 @@ namespace QuantConnect.Lean.Engine.Results
                     Log.Debug("LiveTradingResultHandler.Update(): End build delta charts");
 
                     //Profit loss changes, get the banner statistics, summary information on the performance for the headers.
-                    holdings = new Dictionary<string, Holding>();
-                    deltaStatistics = new Dictionary<string, string>();
-                    runtimeStatistics = new Dictionary<string, string>();
+                    holdings = new Map<String, Holding>();
+                    deltaStatistics = new Map<String,String>();
+                    runtimeStatistics = new Map<String,String>();
                     serverStatistics = OS.GetServerStatistics();
                     upTime = DateTime.UtcNow - _launchTimeUtc;
                     serverStatistics["Up Time"] = string.Format("{0}d {1:hh\\:mm\\:ss}", upTime.Days, upTime);
@@ -341,7 +341,7 @@ namespace QuantConnect.Lean.Engine.Results
                     {
                         Log.Debug("LiveTradingResultHandler.Update(): Pre-store result");
                         _nextChartsUpdate = DateTime.Now.AddMinutes(1);
-                        chartComplete = new Dictionary<string, Chart>();
+                        chartComplete = new Map<String, Chart>();
                         lock (_chartLock)
                         {
                             foreach (chart in Charts)
@@ -351,7 +351,7 @@ namespace QuantConnect.Lean.Engine.Results
                                 chartComplete.Add(safeName, chart.Value);
                             }
                         }
-                        orders = new Dictionary<int, Order>(_transactionHandler.Orders);
+                        orders = new Map<Integer, Order>(_transactionHandler.Orders);
                         complete = new LiveResultPacket(_job, new LiveResult(chartComplete, orders, _algorithm.Transactions.TransactionRecord, holdings, deltaStatistics, runtimeStatistics, serverStatistics));
                         StoreResult(complete);
                         Log.Debug("LiveTradingResultHandler.Update(): End-store result");
@@ -435,17 +435,17 @@ namespace QuantConnect.Lean.Engine.Results
         /// <summary>
         /// Run over all the data and break it into smaller packets to ensure they all arrive at the terminal
         /// </summary>
-        private IEnumerable<LiveResultPacket> SplitPackets(Dictionary<string, Chart> deltaCharts,
-            Dictionary<int, Order> deltaOrders,
-            Dictionary<string, Holding> holdings,
-            Dictionary<string, string> deltaStatistics,
-            Dictionary<string, string> runtimeStatistics,
-            Dictionary<string, string> serverStatistics)
+        private IEnumerable<LiveResultPacket> SplitPackets(Map<String, Chart> deltaCharts,
+            Map<Integer, Order> deltaOrders,
+            Map<String, Holding> holdings,
+            Map<String,String> deltaStatistics,
+            Map<String,String> runtimeStatistics,
+            Map<String,String> serverStatistics)
         {
             // break the charts into groups
 
             static final int groupSize = 10;
-            Dictionary<string, Chart> current = new Dictionary<string, Chart>();
+            Map<String, Chart> current = new Map<String, Chart>();
             chartPackets = new List<LiveResultPacket>();
 
             // we only want to send data for the chart the user is subscribed to, but
@@ -464,7 +464,7 @@ namespace QuantConnect.Lean.Engine.Results
             Chart subscriptionChart;
             if (_subscription != null && deltaCharts.TryGetValue(_subscription, out subscriptionChart))
             {
-                scharts = new Dictionary<string,Chart>();
+                scharts = new Map<String,Chart>();
                 scharts.Add(_subscription, subscriptionChart);
                 chartPackets.Add(new LiveResultPacket(_job, new LiveResult { Charts = scharts }));
             }
@@ -753,12 +753,12 @@ namespace QuantConnect.Lean.Engine.Results
         /// <param name="holdings">Current holdings state for the algorithm</param>
         /// <param name="statisticsResults">Statistics information for the algorithm (empty if not finished)</param>
         /// <param name="runtime">Runtime statistics banner information</param>
-        public void SendFinalResult(AlgorithmNodePacket job, Dictionary<int, Order> orders, Dictionary<DateTime, decimal> profitLoss, Dictionary<string, Holding> holdings, StatisticsResults statisticsResults, Dictionary<string, string> runtime)
+        public void SendFinalResult(AlgorithmNodePacket job, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, StatisticsResults statisticsResults, Map<String,String> runtime)
         {
             try
             {
                 //Convert local dictionary:
-                charts = new Dictionary<string, Chart>(Charts);
+                charts = new Map<String, Chart>(Charts);
 
                 //Create a packet:
                 result = new LiveResultPacket((LiveNodePacket)job, new LiveResult(charts, orders, profitLoss, holdings, statisticsResults.Summary, runtime));
@@ -839,7 +839,7 @@ namespace QuantConnect.Lean.Engine.Results
                         // truncate to just today, we don't need more than this for anyone
                         Truncate(live.Results, start, stop);
 
-                        highResolutionCharts = new Dictionary<string, Chart>(live.Results.Charts);
+                        highResolutionCharts = new Map<String, Chart>(live.Results.Charts);
 
                         // minute resoluton data, save today
                         minuteSampler = new SeriesSampler(TimeSpan.FromMinutes(1));
@@ -874,9 +874,9 @@ namespace QuantConnect.Lean.Engine.Results
                         foreach (name in live.Results.Charts.Keys)
                         {
                             newPacket = new LiveResult();
-                            newPacket.Orders = new Dictionary<int, Order>(live.Results.Orders);
-                            newPacket.Holdings = new Dictionary<string, Holding>(live.Results.Holdings);
-                            newPacket.Charts = new Dictionary<string, Chart>();
+                            newPacket.Orders = new Map<Integer, Order>(live.Results.Orders);
+                            newPacket.Holdings = new Map<String, Holding>(live.Results.Holdings);
+                            newPacket.Charts = new Map<String, Chart>();
                             newPacket.Charts.Add(name, live.Results.Charts[name]);
 
                             data_keys.Add(new
@@ -952,7 +952,7 @@ namespace QuantConnect.Lean.Engine.Results
             //Log.Trace("LiveTradingResultHandler.Truncate: Start: " + start.ToString("u") + " Stop : " + stop.ToString("u"));
             //Log.Trace("LiveTradingResultHandler.Truncate: Truncate Delta: " + (unixDateStop - unixDateStart) + " Incoming Points: " + result.Charts["Strategy Equity"].Series["Equity"].Values.Count);
 
-            charts = new Dictionary<string, Chart>();
+            charts = new Map<String, Chart>();
             foreach (kvp in result.Charts)
             {
                 chart = kvp.Value;

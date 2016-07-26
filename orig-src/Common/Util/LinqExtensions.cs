@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides more extension methods for the enumerable types
@@ -30,9 +30,9 @@ namespace QuantConnect.Util
         /// </summary>
         /// <typeparam name="K">The key type</typeparam>
         /// <typeparam name="V">The value type</typeparam>
-        /// <param name="lookup">The ILookup instance to convert to a dictionary</param>
+        /// <param name="lookup">The ILookup instance to convert to a Map</param>
         /// <returns>A dictionary holding the same data as 'lookup'</returns>
-        public static Dictionary<K, List<V>> ToDictionary<K, V>(this ILookup<K, V> lookup)
+        public static Map<K, List<V>> ToMap<K, V>(this ILookup<K, V> lookup)
         {
             return lookup.ToDictionary(grouping => grouping.Key, grouping => grouping.ToList());
         }
@@ -42,9 +42,9 @@ namespace QuantConnect.Util
         /// </summary>
         /// <typeparam name="K">The key type</typeparam>
         /// <typeparam name="V">The value type</typeparam>
-        /// <param name="enumerable">The IEnumerable of KeyValuePair instances to convert to a dictionary</param>
+        /// <param name="enumerable">The IEnumerable of KeyValuePair instances to convert to a Map</param>
         /// <returns>A dictionary holding the same data as the enumerable</returns>
-        public static Dictionary<K, V> ToDictionary<K, V>(this IEnumerable<KeyValuePair<K, V>> enumerable)
+        public static Map<K, V> ToMap<K, V>(this IEnumerable<KeyValuePair<K, V>> enumerable)
         {
             return enumerable.ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
         }
@@ -54,11 +54,11 @@ namespace QuantConnect.Util
         /// </summary>
         /// <typeparam name="K">The key type</typeparam>
         /// <typeparam name="V">The value type</typeparam>
-        /// <param name="enumerable">The IEnumerable of KeyValuePair instances to convert to a dictionary</param>
+        /// <param name="enumerable">The IEnumerable of KeyValuePair instances to convert to a Map</param>
         /// <returns>A read-only dictionary holding the same data as the enumerable</returns>
-        public static IReadOnlyDictionary<K, V> ToReadOnlyDictionary<K, V>(this IEnumerable<KeyValuePair<K, V>> enumerable)
+        public static IReadOnlyMap<K, V> ToReadOnlyMap<K, V>(this IEnumerable<KeyValuePair<K, V>> enumerable)
         {
-            return new ReadOnlyDictionary<K, V>(enumerable.ToDictionary());
+            return new ReadOnlyMap<K, V>(enumerable.ToDictionary());
         }
 
         /// <summary>
@@ -150,7 +150,7 @@ namespace QuantConnect.Util
         /// <param name="value">The value to search for.</param>
         /// <param name="comparer">The comparer that is used to compare the value with the list items.</param>
         /// <returns>The index of the item if found, otherwise the bitwise complement where the value should be per MSDN specs</returns>
-        public static int BinarySearch<TItem, TSearch>(this IList<TItem> list, TSearch value, Func<TSearch, TItem, int> comparer)
+        public static int BinarySearch<TItem, TSearch>(this IList<TItem> list, TSearch value, Func<TSearch, TItem,Integer> comparer)
         {
             if (list == null)
             {

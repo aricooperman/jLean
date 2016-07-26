@@ -19,7 +19,7 @@ using System.ComponentModel.Composition;
 using QuantConnect.Commands;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Interfaces
+package com.quantconnect.lean.Interfaces
 {
     /// <summary>
     /// Represents a command queue for the algorithm. This is an entry point

@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Data
+package com.quantconnect.lean.Data
 {
     /// <summary>
     /// Base Data Class: Type, Timestamp, Key -- Base Features.

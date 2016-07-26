@@ -19,7 +19,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Tests.Indicators
+package com.quantconnect.lean.Tests.Indicators
 {
     public abstract class CommonIndicatorTests<T> 
         where T : BaseData, new()

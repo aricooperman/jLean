@@ -18,7 +18,7 @@ using System.Linq;
 using NUnit.Framework;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Common.Util
+package com.quantconnect.lean.Tests.Common.Util
 {
     [TestFixture]
     public class MemoizingEnumerableTests
@@ -26,8 +26,8 @@ namespace QuantConnect.Tests.Common.Util
         [Test]
         public void EnumeratesList()
         {
-            list = new List<int> {1, 2, 3, 4, 5};
-            memoized = new MemoizingEnumerable<int>(list);
+            list = new List<Integer> {1, 2, 3, 4, 5};
+            memoized = new MemoizingEnumerable<Integer>(list);
             CollectionAssert.AreEqual(list, memoized);
         }
 
@@ -36,7 +36,7 @@ namespace QuantConnect.Tests.Common.Util
         {
             int i = 0;
             enumerable = Enumerable.Range(0, 10).Select(x => i++);
-            memoized = new MemoizingEnumerable<int>(enumerable);
+            memoized = new MemoizingEnumerable<Integer>(enumerable);
             // enumerating memoized twice shouldn't matter
             CollectionAssert.AreEqual(memoized.ToList(), memoized.ToList());
         }

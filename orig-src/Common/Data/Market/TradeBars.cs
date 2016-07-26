@@ -15,12 +15,12 @@
 
 using System;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Collection of TradeBars to create a data type for generic data handler:
     /// </summary>
-    public class TradeBars : DataDictionary<TradeBar>
+    public class TradeBars : DataMap<TradeBar>
     {
         /// <summary>
         /// Creates a new instance of the <see cref="TradeBars"/> dictionary
@@ -32,7 +32,7 @@ namespace QuantConnect.Data.Market
         /// <summary>
         /// Creates a new instance of the <see cref="TradeBars"/> dictionary
         /// </summary>
-        /// <param name="frontier">The time associated with the data in this dictionary</param>
+        /// <param name="frontier">The time associated with the data in this Map</param>
         public TradeBars(DateTime frontier)
             : base(frontier)
         {

@@ -16,7 +16,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
 
     /// <summary>
@@ -27,31 +27,31 @@ namespace QuantConnect.Packets
         /// <summary>
         /// Date this packet was generated.
         /// </summary>
-        [JsonProperty(PropertyName = "date")]
+        @JsonProperty( "date")]
         public DateTime Date { get; set; }
 
         /// <summary>
         /// Given the dates and times above, what is the current market status - open or closed.
         /// </summary>
-        [JsonProperty(PropertyName = "status")]
+        @JsonProperty( "status")]
         public String Status = "";
 
         /// <summary>
         /// Premarket hours for today
         /// </summary>
-        [JsonProperty(PropertyName = "premarket")]
+        @JsonProperty( "premarket")]
         public MarketHours PreMarket;
 
         /// <summary>
         /// Normal trading market hours for today
         /// </summary>
-        [JsonProperty(PropertyName = "open")]
+        @JsonProperty( "open")]
         public MarketHours Open;
 
         /// <summary>
         /// Post market hours for today
         /// </summary>
-        [JsonProperty(PropertyName = "postmarket")]
+        @JsonProperty( "postmarket")]
         public MarketHours PostMarket;
 
         /// <summary>
@@ -69,13 +69,13 @@ namespace QuantConnect.Packets
         /// <summary>
         /// Start time for this market hour category
         /// </summary>
-        [JsonProperty(PropertyName = "start")]
+        @JsonProperty( "start")]
         public DateTime Start;
 
         /// <summary>
         /// End time for this market hour category
         /// </summary>
-        [JsonProperty(PropertyName = "end")]
+        @JsonProperty( "end")]
         public DateTime End;
 
         /// <summary>

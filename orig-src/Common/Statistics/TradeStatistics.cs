@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Statistics
+package com.quantconnect.lean.Statistics
 {
     /// <summary>
     /// The <see cref="TradeStatistics"/> class represents a set of statistics calculated from a list of closed trades

@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Provides extension methods for the <see cref="Order"/> class and for the <see cref="OrderStatus"/> enumeration

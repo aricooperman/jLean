@@ -17,7 +17,7 @@ using System.Globalization;
 using QuantConnect.Configuration;
 using QuantConnect.Logging;
 
-namespace QuantConnect.ToolBox.YahooDownloader
+package com.quantconnect.lean.ToolBox.YahooDownloader
 {
     class Program
     {

@@ -17,7 +17,7 @@ using System;
 using QuantConnect.Interfaces;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Tests.Brokerages
+package com.quantconnect.lean.Tests.Brokerages
 {
     /// <summary>
     /// Helper class to abstract test cases from individual order types

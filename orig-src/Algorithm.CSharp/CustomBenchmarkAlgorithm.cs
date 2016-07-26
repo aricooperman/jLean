@@ -15,7 +15,7 @@
 
 using QuantConnect.Data;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// Shows how to set a custom benchmark for you algorithms

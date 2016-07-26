@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Scheduling
+package com.quantconnect.lean.Scheduling
 {
     /// <summary>
     /// Real time self scheduling event
@@ -40,13 +40,13 @@ namespace QuantConnect.Scheduling
         private boolean _endOfScheduledEvents;
 
         private readonly String _name;
-        private readonly Action<string, DateTime> _callback;
+        private readonly Action<String, DateTime> _callback;
         private readonly IEnumerator<DateTime> _orderedEventUtcTimes;
 
         /// <summary>
         /// Event that fires each time this scheduled event happens
         /// </summary>
-        public event Action<string, DateTime> EventFired;
+        public event Action<String, DateTime> EventFired;
 
         /// <summary>
         /// Gets or sets whether this event is enabled
@@ -86,7 +86,7 @@ namespace QuantConnect.Scheduling
         /// <param name="name">An identifier for this event</param>
         /// <param name="eventUtcTime">The date time the event should fire</param>
         /// <param name="callback">Delegate to be called when the event time passes</param>
-        public ScheduledEvent( String name, DateTime eventUtcTime, Action<string, DateTime> callback = null)
+        public ScheduledEvent( String name, DateTime eventUtcTime, Action<String, DateTime> callback = null)
             : this(name, new[] { eventUtcTime }.AsEnumerable().GetEnumerator(), callback)
         {
         }
@@ -97,7 +97,7 @@ namespace QuantConnect.Scheduling
         /// <param name="name">An identifier for this event</param>
         /// <param name="orderedEventUtcTimes">An enumerable that emits event times</param>
         /// <param name="callback">Delegate to be called each time an event passes</param>
-        public ScheduledEvent( String name, IEnumerable<DateTime> orderedEventUtcTimes, Action<string, DateTime> callback = null)
+        public ScheduledEvent( String name, IEnumerable<DateTime> orderedEventUtcTimes, Action<String, DateTime> callback = null)
             : this(name, orderedEventUtcTimes.GetEnumerator(), callback)
         {
         }
@@ -108,7 +108,7 @@ namespace QuantConnect.Scheduling
         /// <param name="name">An identifier for this event</param>
         /// <param name="orderedEventUtcTimes">An enumerator that emits event times</param>
         /// <param name="callback">Delegate to be called each time an event passes</param>
-        public ScheduledEvent( String name, IEnumerator<DateTime> orderedEventUtcTimes, Action<string, DateTime> callback = null)
+        public ScheduledEvent( String name, IEnumerator<DateTime> orderedEventUtcTimes, Action<String, DateTime> callback = null)
         {
             _name = name;
             _callback = callback;

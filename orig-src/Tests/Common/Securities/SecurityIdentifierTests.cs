@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using NUnit.Framework;
 
-namespace QuantConnect.Tests.Common.Securities
+package com.quantconnect.lean.Tests.Common.Securities
 {
     [TestFixture]
     public class SecurityIdentifierTests

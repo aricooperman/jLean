@@ -17,7 +17,7 @@
 using System;
 using NUnit.Framework;
 
-namespace QuantConnect.Tests.Common
+package com.quantconnect.lean.Tests.Common
 {
     [TestFixture]
     public class TimeZoneOffsetProviderTests

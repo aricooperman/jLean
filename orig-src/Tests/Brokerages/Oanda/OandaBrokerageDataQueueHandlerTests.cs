@@ -22,7 +22,7 @@ using QuantConnect.Brokerages.Oanda;
 using QuantConnect.Data.Market;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Tests.Brokerages.Oanda
+package com.quantconnect.lean.Tests.Brokerages.Oanda
 {
     [TestFixture]
     public partial class OandaBrokerageTests
@@ -77,7 +77,7 @@ namespace QuantConnect.Tests.Brokerages.Oanda
         [Test]
         public void GroupsMultipleSubscriptions()
         {
-            symbols = new List<string>
+            symbols = new List<String>
             {
                 "AUDJPY", "AUDUSD", "EURCHF", "EURGBP", "EURJPY", "EURUSD", "GBPAUD", 
                 "GBPJPY", "GBPUSD", "NZDUSD", "USDCAD", "USDCHF", "USDJPY"

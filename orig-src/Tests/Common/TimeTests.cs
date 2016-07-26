@@ -20,7 +20,7 @@ using NUnit.Framework;
 using QuantConnect.Securities;
 using QuantConnect.Tests.Common.Securities;
 
-namespace QuantConnect.Tests.Common
+package com.quantconnect.lean.Tests.Common
 {
     [TestFixture]
     public class TimeTests

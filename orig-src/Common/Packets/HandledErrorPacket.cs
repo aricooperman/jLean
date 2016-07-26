@@ -16,7 +16,7 @@
 
 using Newtonsoft.Json;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Algorithm runtime error packet from the lean engine. 
@@ -27,19 +27,19 @@ namespace QuantConnect.Packets
         /// <summary>
         /// Runtime error message from the exception
         /// </summary>
-        [JsonProperty(PropertyName = "sMessage")]
+        @JsonProperty( "sMessage")]
         public String Message;
 
         /// <summary>
         /// Algorithm id which generated this runtime error
         /// </summary>
-        [JsonProperty(PropertyName = "sAlgorithmID")]
+        @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId;
 
         /// <summary>
         /// Error stack trace information String passed through from the Lean exception
         /// </summary>
-        [JsonProperty(PropertyName = "sStackTrace")]
+        @JsonProperty( "sStackTrace")]
         public String StackTrace;
 
         /// <summary>

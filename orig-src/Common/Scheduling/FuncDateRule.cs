@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Scheduling
+package com.quantconnect.lean.Scheduling
 {
     /// <summary>
     /// Uses a function to define an enumerable of dates over a requested start/end period

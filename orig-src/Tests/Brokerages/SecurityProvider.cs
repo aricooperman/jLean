@@ -17,23 +17,23 @@
 using System.Collections.Generic;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Brokerages
+package com.quantconnect.lean.Tests.Brokerages
 {
     /// <summary>
     /// Provides a test implementation of a security provider
     /// </summary>
     public class SecurityProvider : ISecurityProvider
     {
-        private readonly Dictionary<Symbol, Security> _securities;
+        private readonly Map<Symbol, Security> _securities;
 
-        public SecurityProvider(Dictionary<Symbol, Security> securities)
+        public SecurityProvider(Map<Symbol, Security> securities)
         {
             _securities = securities;
         }
 
         public SecurityProvider()
         {
-            _securities = new Dictionary<Symbol, Security>();
+            _securities = new Map<Symbol, Security>();
         }
 
         public Security this[Symbol symbol]

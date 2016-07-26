@@ -34,7 +34,7 @@ using QuantConnect.Securities.Equity;
 using QuantConnect.Util;
 using RestSharp;
 
-namespace QuantConnect.Brokerages.Tradier
+package com.quantconnect.lean.Brokerages.Tradier
 {
     /// <summary>
     /// Tradier Class: 
@@ -63,8 +63,8 @@ namespace QuantConnect.Brokerages.Tradier
         private Timer _orderFillTimer;
 
         //Tradier Spec:
-        private readonly Dictionary<TradierApiRequestType, TimeSpan> _rateLimitPeriod;
-        private readonly Dictionary<TradierApiRequestType, DateTime> _rateLimitNextRequest;
+        private readonly Map<TradierApiRequestType, TimeSpan> _rateLimitPeriod;
+        private readonly Map<TradierApiRequestType, DateTime> _rateLimitNextRequest;
 
         //Endpoints:
         private static final String RequestEndpoint = @"https://api.tradier.com/v1/";
@@ -73,17 +73,17 @@ namespace QuantConnect.Brokerages.Tradier
 
         private readonly object _fillLock = new object();
         private readonly DateTime _initializationDateTime = DateTime.Now;
-        private readonly ConcurrentDictionary<long, TradierCachedOpenOrder> _cachedOpenOrdersByTradierOrderID;
+        private readonly ConcurrentMap<long, TradierCachedOpenOrder> _cachedOpenOrdersByTradierOrderID;
         // this is used to block reentrance when doing look ups for orders with IDs we don't have cached
         private readonly HashSet<long> _reentranceGuardByTradierOrderID = new HashSet<long>();
         private readonly FixedSizeHashQueue<long> _filledTradierOrderIDs = new FixedSizeHashQueue<long>(10000); 
         // this is used to handle the zero crossing case, when the first order is filled we'll submit the next order
-        private readonly ConcurrentDictionary<long, ContingentOrderQueue> _contingentOrdersByQCOrderID = new ConcurrentDictionary<long, ContingentOrderQueue>();
+        private readonly ConcurrentMap<long, ContingentOrderQueue> _contingentOrdersByQCOrderID = new ConcurrentMap<long, ContingentOrderQueue>();
         // this is used to block reentrance when handling contingent orders
         private readonly HashSet<long> _contingentReentranceGuardByQCOrderID = new HashSet<long>();
         private readonly HashSet<long> _unknownTradierOrderIDs = new HashSet<long>(); 
         private readonly FixedSizeHashQueue<long> _verifiedUnknownTradierOrderIDs = new FixedSizeHashQueue<long>(1000);
-        private readonly FixedSizeHashQueue<int> _cancelledQcOrderIDs = new FixedSizeHashQueue<int>(10000);  
+        private readonly FixedSizeHashQueue<Integer> _cancelledQcOrderIDs = new FixedSizeHashQueue<Integer>(10000);  
 
         /// <summary>
         /// Event fired when our session has been refreshed/tokens updated
@@ -131,11 +131,11 @@ namespace QuantConnect.Brokerages.Tradier
             _securityProvider = securityProvider;
             _accountID = accountID;
 
-            _cachedOpenOrdersByTradierOrderID = new ConcurrentDictionary<long, TradierCachedOpenOrder>();
+            _cachedOpenOrdersByTradierOrderID = new ConcurrentMap<long, TradierCachedOpenOrder>();
 
             //Tradier Specific Initialization:
-            _rateLimitPeriod = new Dictionary<TradierApiRequestType, TimeSpan>();
-            _rateLimitNextRequest = new Dictionary<TradierApiRequestType, DateTime>();
+            _rateLimitPeriod = new Map<TradierApiRequestType, TimeSpan>();
+            _rateLimitNextRequest = new Map<TradierApiRequestType, DateTime>();
 
             //Go through each API request type and initialize:
             foreach (TradierApiRequestType requestType in Enum.GetValues(typeof(TradierApiRequestType)))
@@ -592,7 +592,7 @@ namespace QuantConnect.Brokerages.Tradier
         /// <summary>
         /// List of quotes for symbols 
         /// </summary>
-        public List<TradierQuote> GetQuotes(List<string> symbols)
+        public List<TradierQuote> GetQuotes(List<String> symbols)
         {
             if (symbols.Count == 0)
             {
@@ -699,7 +699,7 @@ namespace QuantConnect.Brokerages.Tradier
         /// </summary>
         /// <param name="symbols">symbol list</param>
         /// <returns></returns>
-        public IEnumerable<TradierStreamData> Stream(List<string> symbols)
+        public IEnumerable<TradierStreamData> Stream(List<String> symbols)
         {
             boolean success;
             symbolJoined = String.Join(",", symbols);
@@ -1964,7 +1964,7 @@ namespace QuantConnect.Brokerages.Tradier
 
         #endregion
 
-        private readonly HashSet<string> ErrorsDuringMarketHours = new HashSet<string>
+        private readonly HashSet<String> ErrorsDuringMarketHours = new HashSet<String>
         {
             "CheckForFillsError", "UnknownIdResolution", "ContingentOrderError", "NullResponse", "PendingOrderNotReturned"
         };

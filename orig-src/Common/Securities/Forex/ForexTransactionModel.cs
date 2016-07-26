@@ -19,7 +19,7 @@ using QuantConnect.Orders.Fills;
 using QuantConnect.Orders.Slippage;
 using QuantConnect.Securities.Interfaces;
 
-namespace QuantConnect.Securities.Forex
+package com.quantconnect.lean.Securities.Forex
 {
     /// <summary>
     /// Forex Transaction Model Class: Specific transaction fill models for FOREX orders

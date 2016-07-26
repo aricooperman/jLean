@@ -23,7 +23,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Algorithm
+package com.quantconnect.lean.Algorithm
 {
     public partial class QCAlgorithm
     {
@@ -151,7 +151,7 @@ namespace QuantConnect.Algorithm
         /// <param name="span">The span over which to retrieve recent historical data</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<DataDictionary<T>> History<T>(TimeSpan span, Resolution? resolution = null)
+        public IEnumerable<DataMap<T>> History<T>(TimeSpan span, Resolution? resolution = null)
             where T : BaseData
         {
             return History<T>(Securities.Keys, span, resolution).Memoize();
@@ -166,7 +166,7 @@ namespace QuantConnect.Algorithm
         /// <param name="span">The span over which to retrieve recent historical data</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<DataDictionary<T>> History<T>(IEnumerable<Symbol> symbols, TimeSpan span, Resolution? resolution = null)
+        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, TimeSpan span, Resolution? resolution = null)
             where T : BaseData
         {
             return History<T>(symbols, Time - span, Time, resolution).Memoize();
@@ -182,7 +182,7 @@ namespace QuantConnect.Algorithm
         /// <param name="periods">The number of bars to request</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<DataDictionary<T>> History<T>(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null) 
+        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null) 
             where T : BaseData
         {
             requests = symbols.Select(x =>
@@ -208,7 +208,7 @@ namespace QuantConnect.Algorithm
         /// <param name="end">The end time in the algorithm's time zone</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<DataDictionary<T>> History<T>(IEnumerable<Symbol> symbols, DateTime start, DateTime end, Resolution? resolution = null) 
+        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, DateTime start, DateTime end, Resolution? resolution = null) 
             where T : BaseData
         {
             requests = symbols.Select(x =>

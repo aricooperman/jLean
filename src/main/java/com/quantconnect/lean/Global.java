@@ -17,13 +17,29 @@
 package com.quantconnect.lean;
 
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.guava.GuavaModule;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
 
 public class Global {
+    
+    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
+            .registerModule( new GuavaModule() )
+            .registerModule( new Jdk8Module() )
+            .registerModule( new JavaTimeModule() )
+            .configure( DeserializationFeature.READ_ENUMS_USING_TO_STRING, true )
+            .configure( SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true );
     
     /// Shortcut date format strings
     public static class DateFormat {
@@ -180,9 +196,7 @@ public class Global {
     }
 
 
-    /// <summary>
     /// Type of tradable security / underlying asset
-    /// </summary>
     public enum SecurityType {
         /// Base class for all security types:
         Base,
@@ -203,7 +217,15 @@ public class Global {
         Future,
 
         /// Contract For a Difference Security Type.
-        Cfd
+        Cfd;
+        
+        private static final ImmutableMap<Integer,SecurityType> ordinalToTypeMap = ImmutableMap.<Integer,SecurityType>builder()
+                .putAll( Arrays.stream( SecurityType.values() ).collect( Collectors.toMap( st -> st.ordinal(), Function.identity() ) ) )
+                .build();
+
+        public static SecurityType fromOrdinal( int ord ) {
+            return ordinalToTypeMap.get( ord );
+        }
     }
 
     /// Account type: margin or cash
@@ -291,7 +313,15 @@ public class Global {
         Call,
 
         /// A put option, the right to sell at the strike price
-        Put
+        Put;
+
+        private static final ImmutableMap<Integer,OptionRight> ordinalToTypeMap = ImmutableMap.<Integer,OptionRight>builder()
+                .putAll( Arrays.stream( OptionRight.values() ).collect( Collectors.toMap( or -> or.ordinal(), Function.identity() ) ) )
+                .build();
+
+        public static OptionRight fromOrdinal( int ord ) {
+            return ordinalToTypeMap.get( ord );
+        }
     }
 
     /// Specifies the style of an option
@@ -300,7 +330,15 @@ public class Global {
         American,
 
         /// European style options are able to be exercised on the expiration date only.
-        European
+        European;
+
+        private static final ImmutableMap<Integer,OptionStyle> ordinalToTypeMap = ImmutableMap.<Integer,OptionStyle>builder()
+                .putAll( Arrays.stream( OptionStyle.values() ).collect( Collectors.toMap( os -> os.ordinal(), Function.identity() ) ) )
+                .build();
+
+        public static OptionStyle fromOrdinal( int ord ) {
+            return ordinalToTypeMap.get( ord );
+        }
     }
 
     /// Wrapper for algorithm status enum to include the charting subscription.
@@ -410,7 +448,7 @@ public class Global {
     /// Global Market Short Codes and their full versions: (used in tick objects)
     public static class MarketCodes {
         /// US Market Codes
-        public static final Map<String, String> US = ImmutableMap.<String,String>builder()
+        public static final Map<String,String> US = ImmutableMap.<String,String>builder()
                 .put( "A", "American Stock Exchange" )
                 .put( "B", "Boston Stock Exchange" )
                 .put( "C", "National Stock Exchange" )
@@ -432,7 +470,7 @@ public class Global {
                 .build();
 
         /// Canada Market Short Codes:
-        public static final Map<String, String> Canada = ImmutableMap.<String,String>builder()
+        public static final Map<String,String> Canada = ImmutableMap.<String,String>builder()
                 .put( "T", "Toronto" )
                 .put( "V", "Venture" )
                 .build();
@@ -669,7 +707,7 @@ using QuantConnect.Securities;
 using QuantConnect.Securities.Cfd;
 using QuantConnect.Securities.Forex;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Shortcut date format strings
@@ -1205,7 +1243,7 @@ namespace QuantConnect
     public static class MarketCodes
     {
         /// US Market Codes
-        public static Dictionary<string, string> US = new Dictionary<string, string>()
+        public static Map<String,String> US = new Map<String,String>()
         {
             {"A", "American Stock Exchange"},
             {"B", "Boston Stock Exchange"},
@@ -1228,7 +1266,7 @@ namespace QuantConnect
         };
 
         /// Canada Market Short Codes:
-        public static Dictionary<string, string> Canada = new Dictionary<string, string>()
+        public static Map<String,String> Canada = new Map<String,String>()
         {
             {"T", "Toronto"},
             {"V", "Venture"}

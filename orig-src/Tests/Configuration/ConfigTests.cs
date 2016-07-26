@@ -20,7 +20,7 @@ using Newtonsoft.Json.Linq;
 using NUnit.Framework;
 using QuantConnect.Configuration;
 
-namespace QuantConnect.Tests.Configuration
+package com.quantconnect.lean.Tests.Configuration
 {
     [TestFixture]
     public class ConfigTests

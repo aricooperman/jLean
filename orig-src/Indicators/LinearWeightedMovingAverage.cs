@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// Represents the traditional Weighted Moving Average indicator.  The weight are linearly

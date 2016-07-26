@@ -26,7 +26,7 @@ using QuantConnect.Orders;
 using QuantConnect.Packets;
 using QuantConnect.Statistics;
 
-namespace QuantConnect.Lean.Engine.Results
+package com.quantconnect.lean.Lean.Engine.Results
 {
     /// <summary>
     /// Handle the results of the backtest: where should we send the profit, portfolio updates:
@@ -47,7 +47,7 @@ namespace QuantConnect.Lean.Engine.Results
         /// <summary>
         /// Charts collection for storing the master copy of user charting data.
         /// </summary>
-        ConcurrentDictionary<string, Chart> Charts
+        ConcurrentMap<String, Chart> Charts
         {
             get;
             set;
@@ -204,7 +204,7 @@ namespace QuantConnect.Lean.Engine.Results
         /// <param name="holdings">Current holdings state for the algorithm</param>
         /// <param name="statisticsResults">Statistics information for the algorithm (empty if not finished)</param>
         /// <param name="banner">Runtime statistics banner information</param>
-        void SendFinalResult(AlgorithmNodePacket job, Dictionary<int, Order> orders, Dictionary<DateTime, decimal> profitLoss, Dictionary<string, Holding> holdings, StatisticsResults statisticsResults, Dictionary<string, string> banner);
+        void SendFinalResult(AlgorithmNodePacket job, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, StatisticsResults statisticsResults, Map<String,String> banner);
 
         /// <summary>
         /// Send a algorithm status update to the user of the algorithms running state.

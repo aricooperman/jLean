@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Reads json and always produces a List, even if the input has just an object

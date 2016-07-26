@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages.Tradier
+package com.quantconnect.lean.Brokerages.Tradier
 {
     /// <summary>
     /// Empty class for deserializing positions held.
@@ -27,7 +27,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierPositionsContainer
     {
         /// Positions Class
-        [JsonProperty(PropertyName = "positions")]
+        @JsonProperty( "positions")]
         [JsonConverter(typeof(NullStringValueConverter<TradierPositions>))]
         public TradierPositions TradierPositions;
 
@@ -42,7 +42,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierPositions 
     { 
         /// Positions Class List
-        [JsonProperty(PropertyName = "position")]
+        @JsonProperty( "position")]
         [JsonConverter(typeof(SingleValueListConverter<TradierPosition>))]
         public List<TradierPosition> Positions;
 
@@ -58,23 +58,23 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierPosition
     { 
         /// Position Id
-        [JsonProperty(PropertyName = "id")]
+        @JsonProperty( "id")]
         public long Id;
 
         /// Postion Date Acquired,
-        [JsonProperty(PropertyName = "date_acquired")]
+        @JsonProperty( "date_acquired")]
         public DateTime DateAcquired;
 
         /// Position Quantity
-        [JsonProperty(PropertyName = "quantity")]
+        @JsonProperty( "quantity")]
         public long Quantity;
 
         /// Position Cost:
-        [JsonProperty(PropertyName = "cost_basis")]
+        @JsonProperty( "cost_basis")]
         public BigDecimal CostBasis;
 
         ///Position Symbol
-        [JsonProperty(PropertyName = "symbol")]
+        @JsonProperty( "symbol")]
         public String Symbol;
     }
 

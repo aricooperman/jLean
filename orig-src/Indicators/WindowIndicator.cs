@@ -15,7 +15,7 @@
 
 using QuantConnect.Data;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     ///     Represents an indicator that acts on a rolling window of data

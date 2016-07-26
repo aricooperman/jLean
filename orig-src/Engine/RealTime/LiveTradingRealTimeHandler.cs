@@ -27,7 +27,7 @@ using QuantConnect.Scheduling;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine.RealTime
+package com.quantconnect.lean.Lean.Engine.RealTime
 {
     /// <summary>
     /// Live trading realtime event processing.
@@ -38,7 +38,7 @@ namespace QuantConnect.Lean.Engine.RealTime
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
         // initialize this immediately since the Initialzie method gets called after IAlgorithm.Initialize,
         // so we want to be ready to accept events as soon as possible
-        private readonly ConcurrentDictionary<string, ScheduledEvent> _scheduledEvents = new ConcurrentDictionary<string, ScheduledEvent>();
+        private readonly ConcurrentMap<String, ScheduledEvent> _scheduledEvents = new ConcurrentMap<String, ScheduledEvent>();
 
         //Algorithm and Handlers:
         private IApi _api;

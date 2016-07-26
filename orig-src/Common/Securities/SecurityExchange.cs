@@ -19,7 +19,7 @@ using System.Linq;
 using NodaTime;
 using QuantConnect.Util;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Base exchange class providing information and helper tools for reading the current exchange situation

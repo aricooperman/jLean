@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Tests
+package com.quantconnect.lean.Tests
 {
     /// <summary>
     /// Provides symbol instancs for unit tests

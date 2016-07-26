@@ -15,7 +15,7 @@
 
 using QuantConnect.Orders;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Represents a security's model of margining

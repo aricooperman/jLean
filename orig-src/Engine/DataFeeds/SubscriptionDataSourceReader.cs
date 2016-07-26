@@ -17,7 +17,7 @@
 using System;
 using QuantConnect.Data;
 
-namespace QuantConnect.Lean.Engine.DataFeeds
+package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// Provides a factory method for creating <see cref="ISubscriptionDataSourceReader"/> instances

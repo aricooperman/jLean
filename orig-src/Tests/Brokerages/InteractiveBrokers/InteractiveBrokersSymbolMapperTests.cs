@@ -17,7 +17,7 @@ using System;
 using NUnit.Framework;
 using QuantConnect.Brokerages.InteractiveBrokers;
 
-namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
+package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 {
     [TestFixture]
     class InteractiveBrokersSymbolMapperTests

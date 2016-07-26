@@ -20,7 +20,7 @@ using QuantConnect.Orders.Fees;
 using QuantConnect.Orders.Fills;
 using QuantConnect.Orders.Slippage;
 
-namespace QuantConnect.Securities.Option
+package com.quantconnect.lean.Securities.Option
 {
     /// <summary>
     /// Option Security Object Implementation for Option Assets

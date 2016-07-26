@@ -19,7 +19,7 @@ using NUnit.Framework;
 using QuantConnect.Scheduling;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Engine.RealTime
+package com.quantconnect.lean.Tests.Engine.RealTime
 {
     [TestFixture]
     public class ScheduledEventTests

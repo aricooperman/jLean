@@ -25,7 +25,7 @@ using QuantConnect.Data.UniverseSelection;
 using QuantConnect.Lean.Engine.DataFeeds;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Engine.DataFeeds
+package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     [TestFixture]
     public class TimeSliceTests

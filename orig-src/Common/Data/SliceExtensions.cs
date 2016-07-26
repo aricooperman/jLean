@@ -19,7 +19,7 @@ using System.Linq;
 using QuantConnect.Data.Market;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data
+package com.quantconnect.lean.Data
 {
     /// <summary>
     /// Provides extension methods to slice enumerables
@@ -66,7 +66,7 @@ namespace QuantConnect.Data
         /// <param name="dataDictionaries">The data dictionary enumerable to access</param>
         /// <param name="symbol">The symbol to retrieve</param>
         /// <returns>An enumerable of T for the matching symbol, if no T is found for symbol, empty enumerable is returned</returns>
-        public static IEnumerable<T> Get<T>(this IEnumerable<DataDictionary<T>> dataDictionaries, Symbol symbol)
+        public static IEnumerable<T> Get<T>(this IEnumerable<DataMap<T>> dataDictionaries, Symbol symbol)
             where T : BaseData
         {
             return dataDictionaries.Where(x => x.ContainsKey(symbol)).Select(x => x[symbol]);
@@ -80,7 +80,7 @@ namespace QuantConnect.Data
         /// <param name="symbol">The symbol to retrieve</param>
         /// <param name="field">The field to access</param>
         /// <returns>An enumerable of decimals</returns>
-        public static IEnumerable<decimal> Get<T>(this IEnumerable<DataDictionary<T>> dataDictionaries, Symbol symbol, String field)
+        public static IEnumerable<decimal> Get<T>(this IEnumerable<DataMap<T>> dataDictionaries, Symbol symbol, String field)
         {
             Func<T, decimal> selector;
             if (typeof (DynamicData).IsAssignableFrom(typeof (T)))
@@ -119,7 +119,7 @@ namespace QuantConnect.Data
         /// <typeparam name="T">The data type</typeparam>
         /// <param name="slices">The enumerable of slice</param>
         /// <returns>An enumerable of data dictionary of the requested type</returns>
-        public static IEnumerable<DataDictionary<T>> Get<T>(this IEnumerable<Slice> slices)
+        public static IEnumerable<DataMap<T>> Get<T>(this IEnumerable<Slice> slices)
             where T : BaseData
         {
             return slices.Select(x => x.Get<T>()).Where(x => x.Count > 0);

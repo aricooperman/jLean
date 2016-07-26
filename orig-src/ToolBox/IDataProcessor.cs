@@ -20,7 +20,7 @@ using QuantConnect.Data.Consolidators;
 using QuantConnect.Data.Market;
 using QuantConnect.Util;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Specifies a piece of processing that should be performed against a source file

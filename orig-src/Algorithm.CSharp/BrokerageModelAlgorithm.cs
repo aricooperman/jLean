@@ -19,7 +19,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     /// <summary>
     /// Quick demo algorithm showing usage of the BrokerageModel property. The BrokerageModel helps to

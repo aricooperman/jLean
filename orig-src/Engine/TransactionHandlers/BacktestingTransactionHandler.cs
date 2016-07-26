@@ -18,7 +18,7 @@ using QuantConnect.Brokerages.Backtesting;
 using QuantConnect.Interfaces;
 using QuantConnect.Lean.Engine.Results;
 
-namespace QuantConnect.Lean.Engine.TransactionHandlers
+package com.quantconnect.lean.Lean.Engine.TransactionHandlers
 {
     /// <summary>
     /// This transaction handler is used for processing transactions during backtests

@@ -20,7 +20,7 @@ using System.Threading;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Brokerages
+package com.quantconnect.lean.Tests.Brokerages
 {
     /// <summary>
     /// Provides a test implementation of order mapping

@@ -20,7 +20,7 @@ using NUnit.Framework;
 using QuantConnect.Brokerages.InteractiveBrokers;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
+package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 {
     [TestFixture]
     [Ignore("These tests require the IBController and IB TraderWorkstation to be installed.")]

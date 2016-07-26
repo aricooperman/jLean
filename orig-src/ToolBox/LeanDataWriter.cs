@@ -25,7 +25,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Logging;
 using QuantConnect.Util;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Data writer for saving an IEnumerable of BaseData into the LEAN data directory.
@@ -52,7 +52,7 @@ namespace QuantConnect.ToolBox
             _dataDirectory = dataDirectory;
             _resolution = resolution;
             _symbol = symbol;
-            _market = symbol.ID.Market.ToLower();
+            _market = symbol.ID.Market.toLowerCase();
             _dataType = dataType;
 
             // All fx data is quote data.
@@ -143,8 +143,8 @@ namespace QuantConnect.ToolBox
             outputFile = GetZipOutputFileName(_dataDirectory, lastTime);
 
             // Load new data rows into a SortedDictionary for easy merge/update
-            newRows = new SortedDictionary<DateTime, string>(source.ToDictionary(x => x.Time, x => LeanData.GenerateLine(x, _securityType, _resolution)));
-            SortedDictionary<DateTime, string> rows;
+            newRows = new SortedMap<DateTime,String>(source.ToDictionary(x => x.Time, x => LeanData.GenerateLine(x, _securityType, _resolution)));
+            SortedMap<DateTime,String> rows;
 
             if (File.Exists(outputFile))
             {
@@ -178,9 +178,9 @@ namespace QuantConnect.ToolBox
         /// <summary>
         /// Loads an existing hourly or daily Lean zip file into a SortedDictionary
         /// </summary>
-        private static SortedDictionary<DateTime, string> LoadHourlyOrDailyFile( String fileName)
+        private static SortedMap<DateTime,String> LoadHourlyOrDailyFile( String fileName)
         {
-            rows = new SortedDictionary<DateTime, string>();
+            rows = new SortedMap<DateTime,String>();
 
             using (zip = ZipFile.Read(fileName))
             {

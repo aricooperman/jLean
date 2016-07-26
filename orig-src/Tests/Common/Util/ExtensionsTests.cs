@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Common.Util
+package com.quantconnect.lean.Tests.Common.Util
 {
     [TestFixture]
     public class ExtensionsTests
@@ -33,7 +33,7 @@ namespace QuantConnect.Tests.Common.Util
         [Test]
         public void IsSubclassOfGenericWorksForGenericTypeWithParameter()
         {
-            Assert.IsTrue(typeof(Derived1).IsSubclassOfGeneric(typeof(Super<int>)));
+            Assert.IsTrue(typeof(Derived1).IsSubclassOfGeneric(typeof(Super<Integer>)));
             Assert.IsFalse(typeof(Derived1).IsSubclassOfGeneric(typeof(Super<bool>)));
         }
 
@@ -55,8 +55,8 @@ namespace QuantConnect.Tests.Common.Util
         [Test]
         public void GetBetterTypeNameHandlesRecursiveGenericTypes()
         {
-            type = typeof (Dictionary<List<int>, Dictionary<int, string>>);
-            static final String expected = "Dictionary<List<Int32>, Dictionary<Int32, String>>";
+            type = typeof (Map<List<Integer>, Map<Integer,String>>);
+            static final String expected = "Map<List<Integer32>, Map<Integer32,String>>";
             actual = type.GetBetterTypeName();
             Assert.AreEqual(expected, actual);
         }
@@ -131,9 +131,9 @@ namespace QuantConnect.Tests.Common.Util
         [Test]
         public void ConvertsDictionaryFromString()
         {
-            expected = new Dictionary<string, int> {{"a", 1}, {"b", 2}};
+            expected = new Map<String,Integer> {{"a", 1}, {"b", 2}};
             input = JsonConvert.SerializeObject(expected);
-            actual = input.ConvertTo<Dictionary<string, int>>();
+            actual = input.ConvertTo<Map<String,Integer>>();
             CollectionAssert.AreEqual(expected, actual);
         }
 
@@ -141,8 +141,8 @@ namespace QuantConnect.Tests.Common.Util
         public void DictionaryAddsItemToExistsList()
         {
             static final int key = 0;
-            list = new List<int> {1, 2};
-            dictionary = new Dictionary<int, List<int>> {{key, list}};
+            list = new List<Integer> {1, 2};
+            dictionary = new Map<Integer, List<Integer>> {{key, list}};
             Extensions.Add(dictionary, key, 3);
             Assert.AreEqual(3, list.Count);
             Assert.AreEqual(3, list[2]);
@@ -152,7 +152,7 @@ namespace QuantConnect.Tests.Common.Util
         public void DictionaryAddCreatesNewList()
         {
             static final int key = 0;
-            dictionary = new Dictionary<int, List<int>>();
+            dictionary = new Map<Integer, List<Integer>>();
             Extensions.Add(dictionary, key, 1);
             Assert.IsTrue(dictionary.ContainsKey(key));
             list = dictionary[key];
@@ -188,7 +188,7 @@ namespace QuantConnect.Tests.Common.Util
         {
         }
 
-        private class Derived1 : Super<int>
+        private class Derived1 : Super<Integer>
         {
         }
 

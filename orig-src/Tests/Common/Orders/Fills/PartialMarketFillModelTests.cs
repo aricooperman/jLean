@@ -27,7 +27,7 @@ using QuantConnect.Orders.Fills;
 using QuantConnect.Securities;
 using QuantConnect.Tests.Engine;
 
-namespace QuantConnect.Tests.Common.Orders.Fills
+package com.quantconnect.lean.Tests.Common.Orders.Fills
 {
     [TestFixture, Ignore]
     public class PartialMarketFillModelTests

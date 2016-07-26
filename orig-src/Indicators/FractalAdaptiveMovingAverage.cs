@@ -17,7 +17,7 @@ using QuantConnect.Data.Market;
 using System;
 using System.Linq;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
 
     /// <summary>

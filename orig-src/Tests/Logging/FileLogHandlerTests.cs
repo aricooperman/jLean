@@ -18,7 +18,7 @@ using System.IO;
 using NUnit.Framework;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Tests.Logging
+package com.quantconnect.lean.Tests.Logging
 {
     [TestFixture]
     public class FileLogHandlerTests

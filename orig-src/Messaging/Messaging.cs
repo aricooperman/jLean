@@ -20,7 +20,7 @@ using QuantConnect.Logging;
 using QuantConnect.Notifications;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Messaging
+package com.quantconnect.lean.Messaging
 {
     /// <summary>
     /// Local/desktop implementation of messaging system for Lean Engine.
@@ -93,7 +93,7 @@ namespace QuantConnect.Messaging
                     if (result.Progress == 1)
                     {
                         // uncomment these code traces to help write regression tests
-                        //Console.WriteLine("new Dictionary<string, string>");
+                        //Console.WriteLine("new Map<String,String>");
                         //Console.WriteLine("\t\t\t{");
                         foreach (pair in result.Results.Statistics)
                         {

@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// This indicator computes the Kaufman Adaptive Moving Average (KAMA).

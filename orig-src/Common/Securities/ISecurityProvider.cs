@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Represents a type capable of fetching the holdings for the specified symbol

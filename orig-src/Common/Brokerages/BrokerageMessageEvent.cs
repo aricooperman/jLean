@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Brokerages
+package com.quantconnect.lean.Brokerages
 {
     /// <summary>
     /// Represents a message received from a brokerage

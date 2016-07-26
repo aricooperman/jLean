@@ -16,7 +16,7 @@
 
 using Newtonsoft.Json;
 
-namespace QuantConnect.Brokerages.Tradier
+package com.quantconnect.lean.Brokerages.Tradier
 {
     /// <summary>
     /// Wrapper container for fault:
@@ -24,7 +24,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierFaultContainer
     {
         /// Inner Fault Object
-        [JsonProperty(PropertyName = "fault")]
+        @JsonProperty( "fault")]
         public TradierFault Fault;
 
         /// Fault Container Constructor:
@@ -39,11 +39,11 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierFault
     {
         /// Description of fault
-        [JsonProperty(PropertyName = "faultstring")]
+        @JsonProperty( "faultstring")]
         public String Description = "";
 
         /// Detail object for fault exception
-        [JsonProperty(PropertyName = "detail")]
+        @JsonProperty( "detail")]
         public TradierFaultDetail Details = new TradierFaultDetail();
 
         /// Tradier Fault Constructor:
@@ -57,7 +57,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierFaultDetail
     {
         /// Error code for fault
-        [JsonProperty(PropertyName = "errorcode")]
+        @JsonProperty( "errorcode")]
         public String ErrorCode;
 
         /// Tradier Detail Fault Constructor

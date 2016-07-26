@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// This indicator computes the Rate Of Change Ratio (ROCR). 

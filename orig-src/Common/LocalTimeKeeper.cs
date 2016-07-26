@@ -16,7 +16,7 @@
 using System;
 using NodaTime;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Represents the current local time. This object is created via the <see cref="TimeKeeper"/> to

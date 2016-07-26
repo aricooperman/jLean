@@ -20,7 +20,7 @@ using System.Linq;
 using QuantConnect.Data;
 using QuantConnect.Util;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Provides an implementation of <see cref="IDerivativeSecurityFilter"/> for use in selecting

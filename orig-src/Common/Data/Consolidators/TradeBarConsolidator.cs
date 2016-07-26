@@ -17,7 +17,7 @@
 using System;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Data.Consolidators
+package com.quantconnect.lean.Data.Consolidators
 {
     /// <summary>
     /// A data consolidator that can make bigger bars from smaller ones over a given

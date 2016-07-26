@@ -19,7 +19,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Common.Securities.Forex
+package com.quantconnect.lean.Tests.Common.Securities.Forex
 {
     [TestFixture]
     public class ForexTests

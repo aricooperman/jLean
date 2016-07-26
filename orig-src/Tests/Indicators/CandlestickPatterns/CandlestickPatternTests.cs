@@ -20,7 +20,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 using QuantConnect.Indicators.CandlestickPatterns;
 
-namespace QuantConnect.Tests.Indicators.CandlestickPatterns
+package com.quantconnect.lean.Tests.Indicators.CandlestickPatterns
 {
     [TestFixture]
     public class CandlestickPatternTests

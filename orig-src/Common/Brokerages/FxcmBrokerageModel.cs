@@ -21,7 +21,7 @@ using QuantConnect.Orders.Slippage;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages
+package com.quantconnect.lean.Brokerages
 {
     /// <summary>
     /// Provides FXCM specific properties
@@ -31,7 +31,7 @@ namespace QuantConnect.Brokerages
         /// <summary>
         /// The default markets for the fxcm brokerage
         /// </summary>
-        public new static readonly IReadOnlyDictionary<SecurityType, string> DefaultMarketMap = new Dictionary<SecurityType, string>
+        public new static readonly IReadOnlyMap<SecurityType,String> DefaultMarketMap = new Map<SecurityType,String>
         {
             {SecurityType.Base, Market.USA},
             {SecurityType.Equity, Market.USA},
@@ -43,7 +43,7 @@ namespace QuantConnect.Brokerages
         /// <summary>
         /// Gets a map of the default markets to be used for each security type
         /// </summary>
-        public override IReadOnlyDictionary<SecurityType, string> DefaultMarkets
+        public override IReadOnlyMap<SecurityType,String> DefaultMarkets
         {
             get { return DefaultMarketMap; }
         }

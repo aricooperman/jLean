@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Market on close order type - submits a market order on exchange close

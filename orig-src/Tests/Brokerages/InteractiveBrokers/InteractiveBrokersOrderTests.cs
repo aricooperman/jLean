@@ -7,7 +7,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
+package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 {
     [TestFixture, Ignore("These tests require the IBController and IB TraderWorkstation to be installed.")]
     public class InteractiveBrokersForexOrderTests : BrokerageTests

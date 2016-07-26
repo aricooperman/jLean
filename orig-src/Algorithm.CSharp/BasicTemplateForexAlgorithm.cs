@@ -16,7 +16,7 @@
 using QuantConnect.Data;
 using System.Linq;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// Basic template algorithm simply initializes the date range and cash

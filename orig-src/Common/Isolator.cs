@@ -18,7 +18,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using QuantConnect.Logging;
 
-namespace QuantConnect 
+package com.quantconnect.lean 
 {
     /// <summary>
     /// Isolator class - create a new instance of the algorithm and ensure it doesn't 
@@ -67,7 +67,7 @@ namespace QuantConnect
         /// <param name="codeBlock">Action codeblock to execute</param>
         /// <param name="memoryCap">Maximum memory allocation, default 1024Mb</param>
         /// <returns>True if algorithm exited successfully, false if cancelled because it exceeded limits.</returns>
-        public boolean ExecuteWithTimeLimit(TimeSpan timeSpan, Func<string> withinCustomLimits, Action codeBlock, long memoryCap = 1024)
+        public boolean ExecuteWithTimeLimit(TimeSpan timeSpan, Func<String> withinCustomLimits, Action codeBlock, long memoryCap = 1024)
         {
             // default to always within custom limits
             withinCustomLimits = withinCustomLimits ?? (() => null);

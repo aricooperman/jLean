@@ -24,15 +24,15 @@ package com.quantconnect.lean.packets;
 public class Controls
 {
     /// The maximum number of minute symbols
-//    [JsonProperty(PropertyName = "iMinuteLimit")]
+//    @JsonProperty( "iMinuteLimit")]
     public int minuteLimit = 500;
     
     /// The maximum number of second symbols
-//    [JsonProperty(PropertyName = "iSecondLimit")]
+//    @JsonProperty( "iSecondLimit")]
     public int secondLimit = 100;
 
     /// The maximum number of tick symbol
-//    [JsonProperty(PropertyName = "iTickLimit")]
+//    @JsonProperty( "iTickLimit")]
     public int tickLimit = 30;
 
     /// Initializes a new default instance of the <see cref="Controls"/> class
@@ -49,7 +49,7 @@ public class Controls
 
 using Newtonsoft.Json;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Specifies values used to control algorithm limits
@@ -59,19 +59,19 @@ namespace QuantConnect.Packets
         /// <summary>
         /// The maximum number of minute symbols
         /// </summary>
-        [JsonProperty(PropertyName = "iMinuteLimit")]
+        @JsonProperty( "iMinuteLimit")]
         public int MinuteLimit;
         
         /// <summary>
         /// The maximum number of second symbols
         /// </summary>
-        [JsonProperty(PropertyName = "iSecondLimit")]
+        @JsonProperty( "iSecondLimit")]
         public int SecondLimit;
 
         /// <summary>
         /// The maximum number of tick symbol
         /// </summary>
-        [JsonProperty(PropertyName = "iTickLimit")]
+        @JsonProperty( "iTickLimit")]
         public int TickLimit;
 
         /// <summary>

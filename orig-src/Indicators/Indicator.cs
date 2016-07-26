@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// Represents a type capable of ingesting a piece of data and producing a new piece of data.

@@ -16,7 +16,7 @@
 using QuantConnect.Data;
 using QuantConnect.Securities.Interfaces;
 
-namespace QuantConnect.Securities 
+package com.quantconnect.lean.Securities 
 {
     /// <summary>
     /// Base class implementation for packet by packet data filtering mechanism to dynamically detect bad ticks.

@@ -23,14 +23,14 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Common.Securities
+package com.quantconnect.lean.Tests.Common.Securities
 {
     [TestFixture]
     public class CashTests
     {
         private static readonly DateTimeZone TimeZone = TimeZones.NewYork;
         private static readonly SecurityExchangeHours SecurityExchangeHours = SecurityExchangeHours.AlwaysOpen(TimeZone);
-        private static readonly IReadOnlyDictionary<SecurityType, string> MarketMap = DefaultBrokerageModel.DefaultMarketMap;
+        private static readonly IReadOnlyMap<SecurityType,String> MarketMap = DefaultBrokerageModel.DefaultMarketMap;
 
         [Test]
         public void ConstructorCapitalizedSymbol()

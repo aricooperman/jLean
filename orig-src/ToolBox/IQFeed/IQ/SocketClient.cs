@@ -19,7 +19,7 @@ using System.Text;
 using System.Net;
 using System.Net.Sockets;
 
-namespace QuantConnect.ToolBox.IQFeed
+package com.quantconnect.lean.ToolBox.IQFeed
 {
 
     public class TextLineEventArgs : EventArgs

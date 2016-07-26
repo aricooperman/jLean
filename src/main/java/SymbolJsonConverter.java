@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QuantConnect.Securities;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Defines a <see cref="JsonConverter"/> to be used when deserializing to 

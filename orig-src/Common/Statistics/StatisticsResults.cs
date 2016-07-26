@@ -15,7 +15,7 @@
 
 using System.Collections.Generic;
 
-namespace QuantConnect.Statistics
+package com.quantconnect.lean.Statistics
 {
     /// <summary>
     /// The <see cref="StatisticsResults"/> class represents total and rolling statistics for an algorithm
@@ -30,20 +30,20 @@ namespace QuantConnect.Statistics
         /// <summary>
         /// The rolling performance of the algorithm over 1, 3, 6, 12 month periods
         /// </summary>
-        public Dictionary<string, AlgorithmPerformance> RollingPerformances { get; private set; }
+        public Map<String, AlgorithmPerformance> RollingPerformances { get; private set; }
 
         /// <summary>
         /// Returns a summary of the algorithm performance as a dictionary
         /// </summary>
-        public Dictionary<string, string> Summary { get; private set; }
+        public Map<String,String> Summary { get; private set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="StatisticsResults"/> class
         /// </summary>
         /// <param name="totalPerformance">The algorithm total performance</param>
         /// <param name="rollingPerformances">The algorithm rolling performances</param>
-        /// <param name="summary">The summary performance dictionary</param>
-        public StatisticsResults(AlgorithmPerformance totalPerformance, Dictionary<string, AlgorithmPerformance> rollingPerformances, Dictionary<string, string> summary)
+        /// <param name="summary">The summary performance Map</param>
+        public StatisticsResults(AlgorithmPerformance totalPerformance, Map<String, AlgorithmPerformance> rollingPerformances, Map<String,String> summary)
         {
             TotalPerformance = totalPerformance;
             RollingPerformances = rollingPerformances;
@@ -56,8 +56,8 @@ namespace QuantConnect.Statistics
         public StatisticsResults()
         {
             TotalPerformance = new AlgorithmPerformance();
-            RollingPerformances = new Dictionary<string, AlgorithmPerformance>();
-            Summary = new Dictionary<string, string>();
+            RollingPerformances = new Map<String, AlgorithmPerformance>();
+            Summary = new Map<String,String>();
         }
     }
 }

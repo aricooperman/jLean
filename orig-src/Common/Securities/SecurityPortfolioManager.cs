@@ -20,13 +20,13 @@ using System.Linq;
 using QuantConnect.Data.Market;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Securities 
+package com.quantconnect.lean.Securities 
 {
     /// <summary>
     /// Portfolio manager class groups popular properties and makes them accessible through one interface.
     /// It also provide indexing by the vehicle symbol to get the Security.Holding objects.
     /// </summary>
-    public class SecurityPortfolioManager : IDictionary<Symbol, SecurityHolding>, ISecurityProvider 
+    public class SecurityPortfolioManager : Map<Symbol, SecurityHolding>, ISecurityProvider 
     {
         /// <summary>
         /// Local access to the securities collection for the portfolio summation.
@@ -85,7 +85,7 @@ namespace QuantConnect.Securities
         /// <summary>
         /// Add a new securities string-security to the portfolio.
         /// </summary>
-        /// <param name="symbol">Symbol of dictionary</param>
+        /// <param name="symbol">Symbol of Map</param>
         /// <param name="holding">SecurityHoldings object</param>
         /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
         /// <remarks>This method is not implemented and using it will throw an exception</remarks>
@@ -94,7 +94,7 @@ namespace QuantConnect.Securities
         /// <summary>
         /// Add a new securities key value pair to the portfolio.
         /// </summary>
-        /// <param name="pair">Key value pair of dictionary</param>
+        /// <param name="pair">Key value pair of Map</param>
         /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
         /// <remarks>This method is not implemented and using it will throw an exception</remarks>
         public void Add(KeyValuePair<Symbol, SecurityHolding> pair) { throw new NotImplementedException("Portfolio object is an adaptor for Security Manager. To add a new asset add the required data during initialization."); }
@@ -110,7 +110,7 @@ namespace QuantConnect.Securities
         /// Remove this keyvalue pair from the portfolio.
         /// </summary>
         /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
-        /// <param name="pair">Key value pair of dictionary</param>
+        /// <param name="pair">Key value pair of Map</param>
         /// <remarks>This method is not implemented and using it will throw an exception</remarks>
         public boolean Remove(KeyValuePair<Symbol, SecurityHolding> pair) { throw new NotImplementedException("Portfolio object is an adaptor for Security Manager and objects cannot be removed."); }
 
@@ -118,7 +118,7 @@ namespace QuantConnect.Securities
         /// Remove this symbol from the portfolio.
         /// </summary>
         /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
-        /// <param name="symbol">Symbol of dictionary</param>
+        /// <param name="symbol">Symbol of Map</param>
         /// <remarks>This method is not implemented and using it will throw an exception</remarks>
         public boolean Remove(Symbol symbol) { throw new NotImplementedException("Portfolio object is an adaptor for Security Manager and objects cannot be removed."); }
 

@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Concurrent;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Provides a string->Symbol mapping to allow for user defined strings to be lifted into a Symbol
@@ -117,8 +117,8 @@ namespace QuantConnect
 
         class Cache
         {
-            public readonly ConcurrentDictionary<string, Symbol> Symbols = new ConcurrentDictionary<string, Symbol>(StringComparer.OrdinalIgnoreCase);
-            public readonly ConcurrentDictionary<Symbol, string> Tickers = new ConcurrentDictionary<Symbol, string>();
+            public readonly ConcurrentMap<String, Symbol> Symbols = new ConcurrentMap<String, Symbol>(StringComparer.OrdinalIgnoreCase);
+            public readonly ConcurrentMap<Symbol,String> Tickers = new ConcurrentMap<Symbol,String>();
 
             /// <summary>
             /// Attempts to resolve the ticker to a Symbol via the cache. If not found in the

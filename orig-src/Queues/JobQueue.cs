@@ -23,7 +23,7 @@ using QuantConnect.Logging;
 using QuantConnect.Packets;
 using QuantConnect.Util;
 
-namespace QuantConnect.Queues
+package com.quantconnect.lean.Queues
 {
     /// <summary>
     /// Implementation of local/desktop job request:
@@ -70,11 +70,11 @@ namespace QuantConnect.Queues
             Log.Trace("JobQueue.NextJob(): Selected " + location);
 
             // check for parameters in the config
-            parameters = new Dictionary<string, string>();
+            parameters = new Map<String,String>();
             parametersConfigString = Config.Get("parameters");
             if (parametersConfigString != string.Empty)
             {
-                parameters = JsonConvert.DeserializeObject<Dictionary<string, string>>(parametersConfigString);
+                parameters = JsonConvert.DeserializeObject<Map<String,String>>(parametersConfigString);
             }
 
             //If this isn't a backtesting mode/request, attempt a live job.

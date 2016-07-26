@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Data;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Provides an implementation of <see cref="IDataProcessor"/> that filters the incoming

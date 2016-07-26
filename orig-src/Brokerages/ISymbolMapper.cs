@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Brokerages
+package com.quantconnect.lean.Brokerages
 {
     /// <summary>
     /// Provides the mapping between Lean symbols and brokerage specific symbols.

@@ -25,7 +25,7 @@ using QuantConnect.Packets;
 using QuantConnect.Securities;
 using QuantConnect.Tests.Engine.DataFeeds;
 
-namespace QuantConnect.Tests.Engine
+package com.quantconnect.lean.Tests.Engine
 {
     [TestFixture, Category("TravisExclude")]
     public class DefaultBrokerageMessageHandlerTests
@@ -34,7 +34,7 @@ namespace QuantConnect.Tests.Engine
         public void DoesNotSetAlgorithmRunTimeErrorOnDisconnectIfAllSecuritiesClosed()
         {
             referenceTime = DateTime.UtcNow;
-            algorithm = new AlgorithmStub(equities: new List<string> { "SPY" });
+            algorithm = new AlgorithmStub(equities: new List<String> { "SPY" });
             algorithm.SetDateTime(referenceTime);
             algorithm.Securities[Symbols.SPY].Exchange.SetMarketHours(Enumerable.Empty<MarketHoursSegment>(), referenceTime.ConvertFromUtc(TimeZones.NewYork).DayOfWeek);
             job = new LiveNodePacket();
@@ -54,7 +54,7 @@ namespace QuantConnect.Tests.Engine
         [Test]
         public void DoesNotSetRunTimeErrorWhenReconnectMessageComesThrough()
         {
-            algorithm = new AlgorithmStub(equities: new List<string> { "SPY" });
+            algorithm = new AlgorithmStub(equities: new List<String> { "SPY" });
             referenceTime = DateTime.UtcNow;
             algorithm.SetDateTime(referenceTime);
             localReferencTime = referenceTime.ConvertFromUtc(TimeZones.NewYork);

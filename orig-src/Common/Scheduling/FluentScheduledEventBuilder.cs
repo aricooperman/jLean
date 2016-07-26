@@ -19,7 +19,7 @@ using System.Linq;
 using NodaTime;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Scheduling
+package com.quantconnect.lean.Scheduling
 {
     /// <summary>
     /// Provides a builder class to allow for fluent syntax when constructing new events
@@ -201,7 +201,7 @@ namespace QuantConnect.Scheduling
         /// <summary>
         /// Register the defined event with the callback
         /// </summary>
-        ScheduledEvent IFluentSchedulingRunnable.Run(Action<string, DateTime> callback)
+        ScheduledEvent IFluentSchedulingRunnable.Run(Action<String, DateTime> callback)
         {
             name = _name ?? _dateRule.Name + ": " + _timeRule.Name;
             // back the date up to ensure we get all events, the event scheduler will skip past events that whose time has passed
@@ -395,6 +395,6 @@ namespace QuantConnect.Scheduling
         /// <summary>
         /// Register the defined event with the callback
         /// </summary>
-        ScheduledEvent Run(Action<string, DateTime> callback);
+        ScheduledEvent Run(Action<String, DateTime> callback);
     }
 }

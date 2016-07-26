@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Orders.Fees
+package com.quantconnect.lean.Orders.Fees
 {
     /// <summary>
     /// Provides an order fee model that always returns the same order fee.

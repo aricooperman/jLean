@@ -17,7 +17,7 @@
 using System.IO;
 using Ionic.Zip;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Transport
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
 {
     /// <summary>
     /// Represents a stream reader capable of reading lines from disk

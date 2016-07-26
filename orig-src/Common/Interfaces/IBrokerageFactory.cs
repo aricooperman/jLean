@@ -19,7 +19,7 @@ using System.ComponentModel.Composition;
 using QuantConnect.Brokerages;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Interfaces
+package com.quantconnect.lean.Interfaces
 {
     /// <summary>
     /// Defines factory types for brokerages. Every IBrokerage is expected to also implement an IBrokerageFactory.
@@ -39,7 +39,7 @@ namespace QuantConnect.Interfaces
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
         /// </remarks>
-        Dictionary<string, string> BrokerageData { get; }
+        Map<String,String> BrokerageData { get; }
 
         /// <summary>
         /// Gets a brokerage model that can be used to model this brokerage's unique

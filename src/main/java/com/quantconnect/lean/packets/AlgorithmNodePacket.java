@@ -33,15 +33,15 @@ public class AlgorithmNodePacket extends Packet {
     }
 
     /// User Id placing request
-//    [JsonProperty(PropertyName = "iUserID")]
+//    @JsonProperty( "iUserID")]
     public int userId = 0;
 
     /// Project Id of the request
-//    [JsonProperty(PropertyName = "iProjectID")]
+//    @JsonProperty( "iProjectID")]
     public int projectId = 0;
 
     /// Algorithm Id - BacktestId or DeployId - Common Id property between packets.
-//    [JsonProperty(PropertyName = "sAlgorithmID")]
+//    @JsonProperty( "sAlgorithmID")]
     public String algorithmId;
     
     
@@ -54,53 +54,53 @@ public class AlgorithmNodePacket extends Packet {
     }
 
     /// User session Id for authentication
-//    [JsonProperty(PropertyName = "sSessionID")]
+//    @JsonProperty( "sSessionID")]
     public String sessionId = "";
 
     /// User subscriptions state - free or paid.
-//    [JsonProperty(PropertyName = "sUserPlan")]
+//    @JsonProperty( "sUserPlan")]
     public UserPlan userPlan = UserPlan.Free;
 
     /// Language flag: Currently represents IL code or Dynamic Scripted Types.
-//    [JsonProperty(PropertyName = "eLanguage")]
+//    @JsonProperty( "eLanguage")]
     public Language language = Language.CSharp;
 
     /// Server type for the deployment (512, 1024, 2048)
-//    [JsonProperty(PropertyName = "sServerType")]
+//    @JsonProperty( "sServerType")]
     public ServerType serverType = ServerType.Server512;
 
     /// Unique compile id of this backtest
-//    [JsonProperty(PropertyName = "sCompileID")]
+//    @JsonProperty( "sCompileID")]
     public String compileId = "";
 
     /// Version number identifier for the lean engine.
-//    [JsonProperty(PropertyName = "sVersion")]
+//    @JsonProperty( "sVersion")]
     public String version;
 
     /// An algorithm packet which has already been run and is being redelivered on this node.
     /// In this event we don't want to relaunch the task as it may result in unexpected behaviour for user.
-//    [JsonProperty(PropertyName = "bRedelivered")]
+//    @JsonProperty( "bRedelivered")]
     public boolean redelivered = false;
 
     /// Algorithm binary with zip of contents
-//    [JsonProperty(PropertyName = "oAlgorithm")]
+//    @JsonProperty( "oAlgorithm")]
     public byte[] algorithm = new byte[] { };
 
     /// Request source - Web IDE or API - for controling result handler behaviour
-//    [JsonProperty(PropertyName = "sRequestSource")]
+//    @JsonProperty( "sRequestSource")]
     public String requestSource = "WebIDE";
 
     /// The maximum amount of RAM (in MB) this algorithm is allowed to utilize
-//    [JsonProperty(PropertyName = "iMaxRamAllocation")]
+//    @JsonProperty( "iMaxRamAllocation")]
     public int ramAllocation;
 
     /// Specifies values to control algorithm limits
-//    [JsonProperty(PropertyName = "oControls")]
+//    @JsonProperty( "oControls")]
     public Controls controls;
 
     /// The parameter values used to set algorithm parameters
-//    [JsonProperty(PropertyName = "aParameters")]
-    public Map<String, String> parameters = new HashMap<String, String>();
+//    @JsonProperty( "aParameters")]
+    public Map<String,String> parameters = new HashMap<String,String>();
 
 } // End Node Packet:
 
@@ -110,7 +110,7 @@ public class AlgorithmNodePacket extends Packet {
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Algorithm Node Packet is a work task for the Lean Engine
@@ -128,19 +128,19 @@ namespace QuantConnect.Packets
         /// <summary>
         /// User Id placing request
         /// </summary>
-        [JsonProperty(PropertyName = "iUserID")]
+        @JsonProperty( "iUserID")]
         public int UserId = 0;
 
         /// <summary>
         /// Project Id of the request
         /// </summary>
-        [JsonProperty(PropertyName = "iProjectID")]
+        @JsonProperty( "iProjectID")]
         public int ProjectId = 0;
 
         /// <summary>
         /// Algorithm Id - BacktestId or DeployId - Common Id property between packets.
         /// </summary>
-        [JsonProperty(PropertyName = "sAlgorithmID")]
+        @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId
         {
             get
@@ -156,75 +156,75 @@ namespace QuantConnect.Packets
         /// <summary>
         /// User session Id for authentication
         /// </summary>
-        [JsonProperty(PropertyName = "sSessionID")]
+        @JsonProperty( "sSessionID")]
         public String SessionId = "";
 
         /// <summary>
         /// User subscriptions state - free or paid.
         /// </summary>
-        [JsonProperty(PropertyName = "sUserPlan")]
+        @JsonProperty( "sUserPlan")]
         public UserPlan UserPlan = UserPlan.Free;
 
         /// <summary>
         /// Language flag: Currently represents IL code or Dynamic Scripted Types.
         /// </summary>
-        [JsonProperty(PropertyName = "eLanguage")]
+        @JsonProperty( "eLanguage")]
         public Language Language = Language.CSharp;
 
         /// <summary>
         /// Server type for the deployment (512, 1024, 2048)
         /// </summary>
-        [JsonProperty(PropertyName = "sServerType")]
+        @JsonProperty( "sServerType")]
         public ServerType ServerType = ServerType.Server512;
 
         /// <summary>
         /// Unique compile id of this backtest
         /// </summary>
-        [JsonProperty(PropertyName = "sCompileID")]
+        @JsonProperty( "sCompileID")]
         public String CompileId = "";
 
         /// <summary>
         /// Version number identifier for the lean engine.
         /// </summary>
-        [JsonProperty(PropertyName = "sVersion")]
+        @JsonProperty( "sVersion")]
         public String Version;
 
         /// <summary>
         /// An algorithm packet which has already been run and is being redelivered on this node.
         /// In this event we don't want to relaunch the task as it may result in unexpected behaviour for user.
         /// </summary>
-        [JsonProperty(PropertyName = "bRedelivered")]
+        @JsonProperty( "bRedelivered")]
         public boolean Redelivered = false;
 
         /// <summary>
         /// Algorithm binary with zip of contents
         /// </summary>
-        [JsonProperty(PropertyName = "oAlgorithm")]
+        @JsonProperty( "oAlgorithm")]
         public byte[] Algorithm = new byte[] { };
 
         /// <summary>
         /// Request source - Web IDE or API - for controling result handler behaviour
         /// </summary>
-        [JsonProperty(PropertyName = "sRequestSource")]
+        @JsonProperty( "sRequestSource")]
         public String RequestSource = "WebIDE";
 
         /// <summary>
         /// The maximum amount of RAM (in MB) this algorithm is allowed to utilize
         /// </summary>
-        [JsonProperty(PropertyName = "iMaxRamAllocation")]
+        @JsonProperty( "iMaxRamAllocation")]
         public int RamAllocation;
 
         /// <summary>
         /// Specifies values to control algorithm limits
         /// </summary>
-        [JsonProperty(PropertyName = "oControls")]
+        @JsonProperty( "oControls")]
         public Controls Controls;
 
         /// <summary>
         /// The parameter values used to set algorithm parameters
         /// </summary>
-        [JsonProperty(PropertyName = "aParameters")]
-        public Dictionary<string, string> Parameters = new Dictionary<string, string>();
+        @JsonProperty( "aParameters")]
+        public Map<String,String> Parameters = new Map<String,String>();
     } // End Node Packet:
 
 } // End of Namespace:

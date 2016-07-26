@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data
+package com.quantconnect.lean.Data
 {
     /// <summary>
     /// Abstract base data class of QuantConnect. It is intended to be extended to define 

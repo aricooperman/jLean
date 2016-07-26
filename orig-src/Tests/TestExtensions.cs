@@ -16,7 +16,7 @@
 using System.Threading;
 using NUnit.Framework;
 
-namespace QuantConnect.Tests
+package com.quantconnect.lean.Tests
 {
     /// <summary>
     /// Provides extension methods to make test code easier to read/write

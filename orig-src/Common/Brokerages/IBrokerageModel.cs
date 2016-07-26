@@ -23,7 +23,7 @@ using QuantConnect.Orders.Fills;
 using QuantConnect.Orders.Slippage;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Brokerages
+package com.quantconnect.lean.Brokerages
 {
     /// <summary>
     /// Models brokerage transactions, fees, and order
@@ -41,7 +41,7 @@ namespace QuantConnect.Brokerages
         /// <summary>
         /// Gets a map of the default markets to be used for each security type
         /// </summary>
-        IReadOnlyDictionary<SecurityType, string> DefaultMarkets { get; }
+        IReadOnlyMap<SecurityType,String> DefaultMarkets { get; }
 
         /// <summary>
         /// Returns true if the brokerage could accept this order. This takes into account

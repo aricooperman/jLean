@@ -22,23 +22,23 @@ import java.util.List;
 public class Project extends RestResponse {
 
     /// Project id
-//    [JsonProperty(PropertyName = "projectId")]
+//    @JsonProperty( "projectId")]
     public int projectId;
 
     /// Name of the project
-//    [JsonProperty(PropertyName = "name")]
+//    @JsonProperty( "name")]
     public String name;
 
     /// Date the project was created
-//    [JsonProperty(PropertyName = "created")]
+//    @JsonProperty( "created")]
     public LocalDateTime created;
 
     /// Modified date for the project
-//    [JsonProperty(PropertyName = "modified")]
+//    @JsonProperty( "modified")]
     public LocalDateTime modified;
 
     /// Files for the project
-//    [JsonProperty(PropertyName = "files")]
+//    @JsonProperty( "files")]
     public List<ProjectFile> files;
 }
 
@@ -47,7 +47,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace QuantConnect.Api
+package com.quantconnect.lean.Api
 {
     /// <summary>
     /// Response from reading a project by id.
@@ -57,31 +57,31 @@ namespace QuantConnect.Api
         /// <summary>
         /// Project id
         /// </summary>
-        [JsonProperty(PropertyName = "projectId")]
+        @JsonProperty( "projectId")]
         public int ProjectId;
 
         /// <summary>
         /// Name of the project
         /// </summary>
-        [JsonProperty(PropertyName = "name")]
+        @JsonProperty( "name")]
         public String Name;
 
         /// <summary>
         /// Date the project was created
         /// </summary>
-        [JsonProperty(PropertyName = "created")]
+        @JsonProperty( "created")]
         public DateTime Created;
 
         /// <summary>
         /// Modified date for the project
         /// </summary>
-        [JsonProperty(PropertyName = "modified")]
+        @JsonProperty( "modified")]
         public DateTime Modified;
 
         /// <summary>
         /// Files for the project
         /// </summary>
-        [JsonProperty(PropertyName = "files")]
+        @JsonProperty( "files")]
         public List<ProjectFile> Files;
     }
 
@@ -93,7 +93,7 @@ namespace QuantConnect.Api
         /// <summary>
         /// List of projects for the authenticated user
         /// </summary>
-        [JsonProperty(PropertyName = "projects")]
+        @JsonProperty( "projects")]
         public List<Project> Projects;
     }
 }

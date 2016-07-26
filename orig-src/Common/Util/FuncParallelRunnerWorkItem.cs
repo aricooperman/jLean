@@ -16,7 +16,7 @@
 
 using System;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides a functional implementation of the <see cref="IParallelRunnerWorkItem"/> interface

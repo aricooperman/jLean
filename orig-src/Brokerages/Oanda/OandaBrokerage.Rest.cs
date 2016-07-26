@@ -30,7 +30,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using Order = QuantConnect.Orders.Order;
 
-namespace QuantConnect.Brokerages.Oanda
+package com.quantconnect.lean.Brokerages.Oanda
 {
     /// <summary>
     /// Oanda Brokerage - REST API related functions
@@ -41,7 +41,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// Gets the list of available tradable instruments/products from Oanda
         /// </summary>
         /// <returns></returns>
-        private List<Instrument> GetInstruments(List<string> instrumentNames = null)
+        private List<Instrument> GetInstruments(List<String> instrumentNames = null)
         {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Rates) + "instruments?accountId=" + _accountId;
             if (instrumentNames != null)
@@ -51,7 +51,7 @@ namespace QuantConnect.Brokerages.Oanda
             return MakeRequest<InstrumentsResponse>(requestString).instruments;
         }
 
-        private static void PopulateOrderRequestParameters(Order order, Dictionary<string, string> requestParams)
+        private static void PopulateOrderRequestParameters(Order order, Map<String,String> requestParams)
         {
             if (order.Direction != OrderDirection.Buy && order.Direction != OrderDirection.Sell)
             {
@@ -162,7 +162,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// </summary>
         /// <param name="orderId">the identifier of the order to update</param>
         /// <param name="requestParams">the parameters to update (name, value pairs)</param>
-        private void UpdateOrder(long orderId, Dictionary<string, string> requestParams)
+        private void UpdateOrder(long orderId, Map<String,String> requestParams)
         {
             orderRequest = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId + "/orders/" + orderId;
 
@@ -188,7 +188,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// </summary>
         /// <param name="instruments">the list of instruments to check</param>
         /// <returns>List of Price objects with the current price for each instrument</returns>
-        public List<Price> GetRates(List<string> instruments)
+        public List<Price> GetRates(List<String> instruments)
         {
             requestBuilder = new StringBuilder(EndpointResolver.ResolveEndpoint(_environment, Server.Rates) + "prices?instruments=");
             requestBuilder.Append( String.Join(",", instruments));
@@ -202,7 +202,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// </summary>
         /// <param name="requestParams">the parameters to use in the request</param>
         /// <returns>PostOrderResponse with details of the results (throws if if fails)</returns>
-        private PostOrderResponse PostOrderAsync(Dictionary<string, string> requestParams)
+        private PostOrderResponse PostOrderAsync(Map<String,String> requestParams)
         {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId + "/orders";
             return MakeRequestWithBody<PostOrderResponse>(requestString, "POST", requestParams);
@@ -213,7 +213,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// </summary>
         /// <param name="requestParams">optional additional parameters for the request (name, value pairs)</param>
         /// <returns>List of Order objects (or empty list, if no orders)</returns>
-        private List<DataType.Order> GetOrderList(Dictionary<string, string> requestParams = null)
+        private List<DataType.Order> GetOrderList(Map<String,String> requestParams = null)
         {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId + "/orders";
             ordersResponse = MakeRequest<OrdersResponse>(requestString, "GET", requestParams);
@@ -274,7 +274,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// </summary>
         /// <param name="accountId">the account IDs you want to stream on</param>
         /// <returns>the WebResponse object that can be used to retrieve the events as they stream</returns>
-        public WebResponse StartEventsSession(List<int> accountId = null)
+        public WebResponse StartEventsSession(List<Integer> accountId = null)
         {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.StreamingEvents) + "events";
 
@@ -310,7 +310,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// <param name="method">method for the request (defaults to GET)</param>
         /// <param name="requestParams">optional parameters (note that if provided, it's assumed the requestString doesn't contain any)</param>
         /// <returns>response via type T</returns>
-        private T MakeRequest<T>( String requestString, String method = "GET", Dictionary<string, string> requestParams = null)
+        private T MakeRequest<T>( String requestString, String method = "GET", Map<String,String> requestParams = null)
         {
             if (requestParams != null && requestParams.Count > 0)
             {
@@ -348,7 +348,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// <param name="requestParams">the parameters to pass in the request body</param>
         /// <param name="requestString">the request to make</param>
         /// <returns>response, via type T</returns>
-        private T MakeRequestWithBody<T>( String requestString, String method, Dictionary<string, string> requestParams)
+        private T MakeRequestWithBody<T>( String requestString, String method, Map<String,String> requestParams)
         {
             // Create the body
             requestBody = CreateParamString(requestParams);
@@ -400,7 +400,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// </summary>
         /// <param name="requestParams">the parameters to convert</param>
         /// <returns>string containing all the parameters for use in requests</returns>
-        private static String CreateParamString(Dictionary<string, string> requestParams)
+        private static String CreateParamString(Map<String,String> requestParams)
         {
             return string.Join("&", requestParams.Select(x => WebUtility.UrlEncode(x.Key) + "=" + WebUtility.UrlEncode(x.Value)));
         }
@@ -524,7 +524,7 @@ namespace QuantConnect.Brokerages.Oanda
             isInverted = _oandaInstruments.ContainsKey(invertedSymbol);
             oandaSymbol = isInverted ? invertedSymbol : normalSymbol;
 
-            quote = GetRates(new List<string> { oandaSymbol }).First();
+            quote = GetRates(new List<String> { oandaSymbol }).First();
             rate = (decimal)(quote.bid + quote.ask) / 2;
 
             return isInverted ? 1 / rate : rate;

@@ -16,7 +16,7 @@
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Securities.Option
+package com.quantconnect.lean.Securities.Option
 {
     /// <summary>
     /// Defines a model used to calculate the theoretical price of an option contract.

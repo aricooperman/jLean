@@ -24,7 +24,7 @@ using QuantConnect.Configuration;
 using QuantConnect.Logging;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
+package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 {
     [TestFixture]
     [Ignore("These tests require the IBController and IB TraderWorkstation to be installed.")]

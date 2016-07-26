@@ -25,7 +25,7 @@ using QuantConnect.Securities.Cfd;
 using QuantConnect.Securities.Equity;
 using QuantConnect.Securities.Forex;
 
-namespace QuantConnect.Tests.Common.Orders
+package com.quantconnect.lean.Tests.Common.Orders
 {
     [TestFixture]
     public class OrderTests

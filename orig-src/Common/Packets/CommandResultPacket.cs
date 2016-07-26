@@ -16,7 +16,7 @@
 
 using QuantConnect.Commands;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Contains data held as the result of executing a command

@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Brokerages
+package com.quantconnect.lean.Brokerages
 {
     /// <summary>
     /// Provides a base implementation of IBrokerageFactory that provides a helper for reading data from a job's brokerage data dictionary
@@ -48,7 +48,7 @@ namespace QuantConnect.Brokerages
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
         /// </remarks>
-        public abstract Dictionary<string, string> BrokerageData { get; }
+        public abstract Map<String,String> BrokerageData { get; }
 
         /// <summary>
         /// Gets a brokerage model that can be used to model this brokerage's unique
@@ -76,7 +76,7 @@ namespace QuantConnect.Brokerages
         /// <summary>
         /// Reads a value from the brokerage data, adding an error if the key is not found
         /// </summary>
-        protected static T Read<T>(IReadOnlyDictionary<string, string> brokerageData, String key, ICollection<string> errors) 
+        protected static T Read<T>(IReadOnlyMap<String,String> brokerageData, String key, ICollection<String> errors) 
             where T : IConvertible
         {
             String value;

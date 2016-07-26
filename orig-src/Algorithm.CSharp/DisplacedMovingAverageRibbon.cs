@@ -19,7 +19,7 @@ using System.Linq;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     /// <summary>
     /// Constructs a displaced moving average ribbon and buys when all are lined up, liquidates when they all line down

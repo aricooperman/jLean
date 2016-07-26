@@ -25,7 +25,7 @@ using QuantConnect.Securities.Equity;
 using QuantConnect.Securities.Option;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages
+package com.quantconnect.lean.Brokerages
 {
     /// <summary>
     /// Provides a default implementation of <see cref="IBrokerageModel"/> that allows all orders and uses
@@ -36,7 +36,7 @@ namespace QuantConnect.Brokerages
         /// <summary>
         /// The default markets for the backtesting brokerage
         /// </summary>
-        public static readonly IReadOnlyDictionary<SecurityType, string> DefaultMarketMap = new Dictionary<SecurityType, string>
+        public static readonly IReadOnlyMap<SecurityType,String> DefaultMarketMap = new Map<SecurityType,String>
         {
             {SecurityType.Base, Market.USA},
             {SecurityType.Equity, Market.USA},
@@ -57,7 +57,7 @@ namespace QuantConnect.Brokerages
         /// <summary>
         /// Gets a map of the default markets to be used for each security type
         /// </summary>
-        public virtual IReadOnlyDictionary<SecurityType, string> DefaultMarkets
+        public virtual IReadOnlyMap<SecurityType,String> DefaultMarkets
         {
             get { return DefaultMarketMap; }
         }

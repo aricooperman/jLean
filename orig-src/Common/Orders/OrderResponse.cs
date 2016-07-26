@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Represents a response to an <see cref="OrderRequest"/>. See <see cref="OrderRequest.Response"/> property for
@@ -156,7 +156,7 @@ namespace QuantConnect.Orders
         {
             static final String format = "Unable to {0} order with id {1} that have zero quantity.";
             return Error(request, OrderResponseErrorCode.OrderQuantityZero,
-                string.Format(format, request.OrderRequestType.ToString().ToLower(), request.OrderId));
+                string.Format(format, request.OrderRequestType.ToString().toLowerCase(), request.OrderId));
         }
 
         /// <summary>

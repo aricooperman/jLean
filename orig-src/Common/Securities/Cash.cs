@@ -20,7 +20,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Represents a holding of a currency in cash.
@@ -74,7 +74,7 @@ namespace QuantConnect.Securities
             }
             Amount = amount;
             ConversionRate = conversionRate;
-            Symbol = symbol.ToUpper();
+            Symbol = symbol.toUpperCase();
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ namespace QuantConnect.Securities
         /// <param name="marketMap">The market map that decides which market the new security should be in</param>
         /// <param name="cashBook">The cash book - used for resolving quote currencies for created conversion securities</param>
         /// <returns>Returns the added currency security if needed, otherwise null</returns>
-        public Security EnsureCurrencyDataFeed(SecurityManager securities, SubscriptionManager subscriptions, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase, IReadOnlyDictionary<SecurityType, string> marketMap, CashBook cashBook)
+        public Security EnsureCurrencyDataFeed(SecurityManager securities, SubscriptionManager subscriptions, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase, IReadOnlyMap<SecurityType,String> marketMap, CashBook cashBook)
         {
             if (Symbol == CashBook.AccountCurrency)
             {

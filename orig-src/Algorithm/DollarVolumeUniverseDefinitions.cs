@@ -20,7 +20,7 @@ using MathNet.Numerics.Statistics;
 using QuantConnect.Data;
 using QuantConnect.Data.UniverseSelection;
 
-namespace QuantConnect.Algorithm
+package com.quantconnect.lean.Algorithm
 {
     /// <summary>
     /// Provides helpers for defining universes based on the daily dollar volume

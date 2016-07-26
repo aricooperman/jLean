@@ -19,7 +19,7 @@ using System.Linq;
 using QuantConnect.Data;
 using QuantConnect.Data.UniverseSelection;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// In this algortihm we show how you can easily use the universe selection feature to fetch symbols
@@ -104,7 +104,7 @@ namespace QuantConnect.Algorithm.CSharp
             /// <summary>
             /// The symbols to be selected
             /// </summary>
-            public List<string> Symbols { get; set; }
+            public List<String> Symbols { get; set; }
 
             /// <summary>
             /// Required default constructor
@@ -112,7 +112,7 @@ namespace QuantConnect.Algorithm.CSharp
             public StockDataSource()
             {
                 // initialize our list to empty
-                Symbols = new List<string>();
+                Symbols = new List<String>();
             }
 
             /// <summary>

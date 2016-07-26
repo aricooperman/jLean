@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// Regression algorithm for custom data

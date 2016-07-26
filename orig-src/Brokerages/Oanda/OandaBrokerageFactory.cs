@@ -20,7 +20,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages.Oanda
+package com.quantconnect.lean.Brokerages.Oanda
 {
     /// <summary>
     /// Provides an implementations of <see cref="IBrokerageFactory"/> that produces a <see cref="OandaBrokerage"/>
@@ -49,11 +49,11 @@ namespace QuantConnect.Brokerages.Oanda
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
         /// </remarks>
-        public override Dictionary<string, string> BrokerageData
+        public override Map<String,String> BrokerageData
         {
             get
             {
-                return new Dictionary<string, string>
+                return new Map<String,String>
                 {
                     { "oanda-environment", Config.Get("oanda-environment") },
                     { "oanda-access-token", Config.Get("oanda-access-token") },
@@ -78,12 +78,12 @@ namespace QuantConnect.Brokerages.Oanda
         /// <returns>A new brokerage instance</returns>
         public override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm)
         {
-            errors = new List<string>();
+            errors = new List<String>();
 
             // read values from the brokerage data
             environment = Read<Environment>(job.BrokerageData, "oanda-environment", errors);
-            accessToken = Read<string>(job.BrokerageData, "oanda-access-token", errors);
-            accountId = Read<int>(job.BrokerageData, "oanda-account-id", errors);
+            accessToken = Read<String>(job.BrokerageData, "oanda-access-token", errors);
+            accountId = Read<Integer>(job.BrokerageData, "oanda-account-id", errors);
 
             if (errors.Count != 0)
             {

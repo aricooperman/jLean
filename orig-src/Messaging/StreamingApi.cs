@@ -22,7 +22,7 @@ using QuantConnect.Logging;
 using QuantConnect.Packets;
 using RestSharp;
 
-namespace QuantConnect.Messaging
+package com.quantconnect.lean.Messaging
 {
     /// <summary>
     /// Provides a common transmit method for utilizing the QC streaming API

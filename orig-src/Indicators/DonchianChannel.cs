@@ -15,7 +15,7 @@
 
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// This indicator computes the upper and lower band of the Donchian Channel.

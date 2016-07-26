@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// Algorithm used for regression tests purposes

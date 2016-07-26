@@ -15,7 +15,7 @@
 
 using System.Threading;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Base Bar Class: Open, High, Low, Close and Period.

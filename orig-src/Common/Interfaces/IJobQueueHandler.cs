@@ -17,7 +17,7 @@
 using System.ComponentModel.Composition;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Interfaces
+package com.quantconnect.lean.Interfaces
 {
     /// <summary>
     /// Task requestor interface with cloud system

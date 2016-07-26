@@ -2,15 +2,15 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Provides a base class for types holding base data instances keyed by symbol
     /// </summary>
-    public class DataDictionary<T> : IDictionary<Symbol, T>
+    public class DataMap<T> : Map<Symbol, T>
     {
         // storage for the data
-        private readonly IDictionary<Symbol, T> _data = new Dictionary<Symbol, T>();
+        private readonly Map<Symbol, T> _data = new Map<Symbol, T>();
 
        /// <summary>
        /// Initializes a new instance of the <see cref="QuantConnect.Data.Market.DataDictionary{T}"/> class.
@@ -23,7 +23,7 @@ namespace QuantConnect.Data.Market
         /// Initializes a new instance of the <see cref="QuantConnect.Data.Market.DataDictionary{T}"/> class
         /// using the specified <paramref name="data"/> as a data source
         /// </summary>
-        /// <param name="data">The data source for this data dictionary</param>
+        /// <param name="data">The data source for this data Map</param>
         /// <param name="keySelector">Delegate used to select a key from the value</param>
         public DataDictionary(IEnumerable<T> data, Func<T, Symbol> keySelector)
         {
@@ -47,7 +47,7 @@ namespace QuantConnect.Data.Market
         /// <summary>
         /// Gets or sets the time associated with this collection of data
         /// </summary>
-        [Obsolete("The DataDictionary<T> Time property is now obsolete. All algorithms should use algorithm.Time instead.")]
+        [Obsolete("The DataMap<T> Time property is now obsolete. All algorithms should use algorithm.Time instead.")]
         public DateTime Time { get; set; }
 
         /// <summary>
@@ -282,7 +282,7 @@ namespace QuantConnect.Data.Market
         /// <summary>
         /// Provides a convenience method for adding a base data instance to our data dictionary
         /// </summary>
-        public static void Add<T>(this DataDictionary<T> dictionary, T data)
+        public static void Add<T>(this DataMap<T> dictionary, T data)
             where T : BaseData
         {
             dictionary.Add(data.Symbol, data);

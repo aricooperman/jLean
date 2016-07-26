@@ -1,4 +1,4 @@
-﻿namespace QuantConnect.Views.WinForms
+﻿package com.quantconnect.lean.Views.WinForms
 {
     partial class LeanWinForm
     {

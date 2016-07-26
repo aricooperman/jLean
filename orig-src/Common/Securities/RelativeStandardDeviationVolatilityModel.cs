@@ -18,7 +18,7 @@ using MathNet.Numerics.Statistics;
 using QuantConnect.Data;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Provides an implementation of <see cref="IVolatilityModel"/> that computes the

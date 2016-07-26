@@ -17,7 +17,7 @@ using System;
 using QuantConnect.Data.Market;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Orders.Fills
+package com.quantconnect.lean.Orders.Fills
 {
     /// <summary>
     /// Represents the default fill model used to simulate order fills

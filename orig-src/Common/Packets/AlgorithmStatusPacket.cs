@@ -17,7 +17,7 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Algorithm status update information packet
@@ -27,38 +27,38 @@ namespace QuantConnect.Packets
         /// <summary>
         /// Current algorithm status
         /// </summary>
-        [JsonProperty(PropertyName = "eStatus")]
+        @JsonProperty( "eStatus")]
         [JsonConverter(typeof(StringEnumConverter))]
         public AlgorithmStatus Status;
 
         /// <summary>
         /// Chart we're subscribed to for live trading.
         /// </summary>
-        [JsonProperty(PropertyName = "sChartSubscription")]
+        @JsonProperty( "sChartSubscription")]
         public String ChartSubscription;
 
         /// <summary>
         /// Optional message or reason for state change.
         /// </summary>
-        [JsonProperty(PropertyName = "sMessage")]
+        @JsonProperty( "sMessage")]
         public String Message;
 
         /// <summary>
         /// Algorithm Id associated with this status packet
         /// </summary>
-        [JsonProperty(PropertyName = "sAlgorithmID")]
+        @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId;
 
         /// <summary>
         /// Project Id associated with this status packet
         /// </summary>
-        [JsonProperty(PropertyName = "iProjectID")]
+        @JsonProperty( "iProjectID")]
         public int ProjectId;
 
         /// <summary>
         /// The current state of the channel
         /// </summary>
-        [JsonProperty(PropertyName = "sChannelStatus")]
+        @JsonProperty( "sChannelStatus")]
         public String ChannelStatus;
 
         /// <summary>

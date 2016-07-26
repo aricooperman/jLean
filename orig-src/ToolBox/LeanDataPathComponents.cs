@@ -16,7 +16,7 @@
 using System;
 using System.IO;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Type representing the various pieces of information emebedded into a lean data file path

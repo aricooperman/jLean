@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// The possible states returned by <see cref="IndicatorBase{T}.ComputeNextValue"/>

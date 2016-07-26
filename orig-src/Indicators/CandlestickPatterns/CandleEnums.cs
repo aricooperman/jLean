@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Indicators.CandlestickPatterns
+package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /// <summary>
     /// Types of candlestick settings

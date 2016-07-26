@@ -15,12 +15,12 @@
 
 using System;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Collection of <see cref="OptionContract"/> keyed by option symbol
     /// </summary>
-    public class OptionContracts : DataDictionary<OptionContract>
+    public class OptionContracts : DataMap<OptionContract>
     {
         /// <summary>
         /// Creates a new instance of the <see cref="OptionContracts"/> dictionary

@@ -23,7 +23,7 @@ using QuantConnect.Data;
 using QuantConnect.Algorithm;
 using QuantConnect.Orders;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
 
     public class TestCashStrategy : QCAlgorithm

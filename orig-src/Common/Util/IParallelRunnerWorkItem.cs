@@ -14,7 +14,7 @@
  *
 */
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Represents a work item to be processed

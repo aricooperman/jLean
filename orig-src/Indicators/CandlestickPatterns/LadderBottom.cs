@@ -15,7 +15,7 @@
 
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Indicators.CandlestickPatterns
+package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /// <summary>
     /// Ladder Bottom candlestick pattern indicator

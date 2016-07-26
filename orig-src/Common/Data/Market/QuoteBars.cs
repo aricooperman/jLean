@@ -15,12 +15,12 @@
 
 using System;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Collection of <see cref="QuoteBar"/> keyed by symbol
     /// </summary>
-    public class QuoteBars : DataDictionary<QuoteBar>
+    public class QuoteBars : DataMap<QuoteBar>
     {
         /// <summary>
         /// Creates a new instance of the <see cref="QuoteBars"/> dictionary

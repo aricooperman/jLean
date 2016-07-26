@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// This indicator creates a moving average (middle band) with an upper band and lower band

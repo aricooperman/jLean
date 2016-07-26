@@ -22,7 +22,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data.UniverseSelection
+package com.quantconnect.lean.Data.UniverseSelection
 {
     /// <summary>
     /// Provides a base class for all universes to derive from.
@@ -36,7 +36,7 @@ namespace QuantConnect.Data.UniverseSelection
 
         private HashSet<Symbol> _previousSelections; 
 
-        private readonly ConcurrentDictionary<Symbol, Member> _securities;
+        private readonly ConcurrentMap<Symbol, Member> _securities;
 
         /// <summary>
         /// Gets the security type of this universe
@@ -82,7 +82,7 @@ namespace QuantConnect.Data.UniverseSelection
         /// Gets the current listing of members in this universe. Modifications
         /// to this dictionary do not change universe membership.
         /// </summary>
-        public Dictionary<Symbol, Security> Members
+        public Map<Symbol, Security> Members
         {
             get { return _securities.Select(x => x.Value.Security).ToDictionary(x => x.Symbol); }
         }
@@ -95,7 +95,7 @@ namespace QuantConnect.Data.UniverseSelection
         protected Universe(SubscriptionDataConfig config, ISecurityInitializer securityInitializer = null)
         {
             _previousSelections = new HashSet<Symbol>();
-            _securities = new ConcurrentDictionary<Symbol, Member>();
+            _securities = new ConcurrentMap<Symbol, Member>();
 
             Configuration = config;
             SecurityInitializer = securityInitializer ?? Securities.SecurityInitializer.Null;
@@ -236,7 +236,7 @@ namespace QuantConnect.Data.UniverseSelection
         /// Provides a value to indicate that no changes should be made to the universe.
         /// This value is intended to be return reference via <see cref="Universe.SelectSymbols"/>
         /// </summary>
-        public sealed class UnchangedUniverse : IEnumerable<string>, IEnumerable<Symbol>
+        public sealed class UnchangedUniverse : IEnumerable<String>, IEnumerable<Symbol>
         {
             /// <summary>
             /// Read-only instance of the <see cref="UnchangedUniverse"/> value
@@ -244,7 +244,7 @@ namespace QuantConnect.Data.UniverseSelection
             public static readonly UnchangedUniverse Instance = new UnchangedUniverse();
             private UnchangedUniverse() { }
             IEnumerator<Symbol> IEnumerable<Symbol>.GetEnumerator() { yield break; }
-            IEnumerator<string> IEnumerable<string>.GetEnumerator() { yield break; }
+            IEnumerator<String> IEnumerable<String>.GetEnumerator() { yield break; }
             IEnumerator IEnumerable.GetEnumerator() { yield break; }
         }
 

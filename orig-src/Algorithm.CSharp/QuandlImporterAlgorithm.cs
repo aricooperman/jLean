@@ -17,7 +17,7 @@ using System;
 using QuantConnect.Data.Custom;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     /// <summary>
     /// QuantConnect University: Generic Quandl Data Importer

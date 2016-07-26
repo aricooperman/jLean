@@ -18,7 +18,7 @@
 */
 using System;
 
-namespace QuantConnect.Brokerages.Oanda.Framework
+package com.quantconnect.lean.Brokerages.Oanda.Framework
 {
     /// <summary>
     /// Helper class to resolve the endpoint for the Oanda RESTful call.

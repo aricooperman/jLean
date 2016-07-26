@@ -26,15 +26,15 @@ import java.util.Map;
 public class LiveNodePacket extends AlgorithmNodePacket {
 
     /// Deploy Id for this live algorithm.
-//    [JsonProperty(PropertyName = "sDeployID")]
+//    @JsonProperty( "sDeployID")]
     public String DeployId = "";
 
     /// String name of the brokerage we're trading with
-//    [JsonProperty(PropertyName = "sBrokerage")]
+//    @JsonProperty( "sBrokerage")]
     public String Brokerage = "";
 
     /// String-String Dictionary of Brokerage Data for this Live Job
-//    [JsonProperty(PropertyName = "aBrokerageData")]
+//    @JsonProperty( "aBrokerageData")]
     public Map<String,String> BrokerageData = new HashMap<String,String>();
 
     /// <summary>
@@ -52,7 +52,7 @@ public class LiveNodePacket extends AlgorithmNodePacket {
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Live job task packet: container for any live specific job variables
@@ -62,20 +62,20 @@ namespace QuantConnect.Packets
         /// <summary>
         /// Deploy Id for this live algorithm.
         /// </summary>
-        [JsonProperty(PropertyName = "sDeployID")]
+        @JsonProperty( "sDeployID")]
         public String DeployId = "";
 
         /// <summary>
         /// String name of the brokerage we're trading with
         /// </summary>
-        [JsonProperty(PropertyName = "sBrokerage")]
+        @JsonProperty( "sBrokerage")]
         public String Brokerage = "";
 
         /// <summary>
         /// String-String Dictionary of Brokerage Data for this Live Job
         /// </summary>
-        [JsonProperty(PropertyName = "aBrokerageData")]
-        public Dictionary<string, string> BrokerageData = new Dictionary<string, string>();
+        @JsonProperty( "aBrokerageData")]
+        public Map<String,String> BrokerageData = new Map<String,String>();
 
         /// <summary>
         /// Default constructor for JSON of the Live Task Packet

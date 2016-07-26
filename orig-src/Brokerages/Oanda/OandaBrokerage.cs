@@ -26,7 +26,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using Order = QuantConnect.Orders.Order;
 
-namespace QuantConnect.Brokerages.Oanda
+package com.quantconnect.lean.Brokerages.Oanda
 {
     /// <summary>
     /// Oanda Brokerage - implementation of IBrokerage interface
@@ -40,7 +40,7 @@ namespace QuantConnect.Brokerages.Oanda
         private readonly int _accountId;
 
         private EventsSession _eventsSession;
-        private Dictionary<string, Instrument> _oandaInstruments; 
+        private Map<String, Instrument> _oandaInstruments; 
         private readonly OandaSymbolMapper _symbolMapper = new OandaSymbolMapper();
 
         private boolean _isConnected;
@@ -288,7 +288,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// <returns>True if the request for a new order has been placed, false otherwise</returns>
         public override boolean PlaceOrder(Order order)
         {
-            requestParams = new Dictionary<string, string>
+            requestParams = new Map<String,String>
             {
                 { "instrument", _symbolMapper.GetBrokerageSymbol(order.Symbol) },
                 { "units", Convert.ToInt32(order.AbsoluteQuantity).ToString() }
@@ -383,7 +383,7 @@ namespace QuantConnect.Brokerages.Oanda
                 return false;
             }
             
-            requestParams = new Dictionary<string, string>
+            requestParams = new Map<String,String>
             {
                 { "instrument", _symbolMapper.GetBrokerageSymbol(order.Symbol) },
                 { "units", Convert.ToInt32(order.AbsoluteQuantity).ToString() },

@@ -17,7 +17,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides an implementation of an add-only fixed length, unique queue system

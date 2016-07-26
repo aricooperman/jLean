@@ -20,7 +20,7 @@ using System.Linq;
 using QuantConnect.Data.Custom;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Data
+package com.quantconnect.lean.Data
 {
     /// <summary>
     /// Provides a data structure for all of an algorithm's data at a single time step
@@ -40,9 +40,9 @@ namespace QuantConnect.Data
 
         // String -> data   for non-tick data
         // String -> list{data} for tick data
-        private readonly Lazy<DataDictionary<SymbolData>> _data;
+        private readonly Lazy<DataMap<SymbolData>> _data;
         // Quandl -> DataDictonary<Quandl>
-        private readonly Dictionary<Type, Lazy<object>> _dataByType;
+        private readonly Map<Type, Lazy<object>> _dataByType;
 
         /// <summary>
         /// Gets the timestamp for this slice of data
@@ -178,10 +178,10 @@ namespace QuantConnect.Data
         {
             Time = time;
 
-            _dataByType = new Dictionary<Type, Lazy<object>>();
+            _dataByType = new Map<Type, Lazy<object>>();
 
             // market data
-            _data = new Lazy<DataDictionary<SymbolData>>(() => CreateDynamicDataDictionary(data));
+            _data = new Lazy<DataMap<SymbolData>>(() => CreateDynamicDataDictionary(data));
 
             HasData = hasData ?? _data.Value.Count > 0;
 
@@ -223,7 +223,7 @@ namespace QuantConnect.Data
         /// </summary>
         /// <typeparam name="T">The type of data we want, for example, <see cref="TradeBar"/> or <see cref="Quandl"/>, ect...</typeparam>
         /// <returns>The <see cref="DataDictionary{T}"/> containing the data of the specified type</returns>
-        public DataDictionary<T> Get<T>()
+        public DataMap<T> Get<T>()
             where T : BaseData
         {
             Lazy<object> dictionary;
@@ -231,16 +231,16 @@ namespace QuantConnect.Data
             {
                 if (typeof(T) == typeof(Tick))
                 {
-                    dictionary = new Lazy<object>(() => new DataDictionary<T>(_data.Value.Values.SelectMany<dynamic, dynamic>(x => x.GetData()).OfType<T>(), x => x.Symbol));
+                    dictionary = new Lazy<object>(() => new DataMap<T>(_data.Value.Values.SelectMany<dynamic, dynamic>(x => x.GetData()).OfType<T>(), x => x.Symbol));
                 }
                 else
                 {
-                    dictionary = new Lazy<object>(() => new DataDictionary<T>(_data.Value.Values.Select(x => x.GetData()).OfType<T>(), x => x.Symbol));
+                    dictionary = new Lazy<object>(() => new DataMap<T>(_data.Value.Values.Select(x => x.GetData()).OfType<T>(), x => x.Symbol));
                 }
 
                 _dataByType[typeof(T)] = dictionary;
             }
-            return (DataDictionary<T>)dictionary.Value;
+            return (DataMap<T>)dictionary.Value;
         }
 
         /// <summary>
@@ -286,9 +286,9 @@ namespace QuantConnect.Data
         /// <summary>
         /// Produces the dynamic data dictionary from the input data
         /// </summary>
-        private static DataDictionary<SymbolData> CreateDynamicDataDictionary(IEnumerable<BaseData> data)
+        private static DataMap<SymbolData> CreateDynamicDataDictionary(IEnumerable<BaseData> data)
         {
-            allData = new DataDictionary<SymbolData>();
+            allData = new DataMap<SymbolData>();
             foreach (datum in data)
             {
                 SymbolData symbolData;
@@ -344,11 +344,11 @@ namespace QuantConnect.Data
         /// Returns the input collection if onon-null, otherwise produces one from the dynamic data dictionary
         /// </summary>
         /// <typeparam name="T">The data dictionary type</typeparam>
-        /// <typeparam name="TItem">The item type of the data dictionary</typeparam>
+        /// <typeparam name="TItem">The item type of the data Map</typeparam>
         /// <param name="collection">The input collection, if non-null, returned immediately</param>
         /// <returns>The data dictionary of <typeparamref name="TItem"/> containing all the data of that type in this slice</returns>
         private T CreateCollection<T, TItem>(T collection)
-            where T : DataDictionary<TItem>, new()
+            where T : DataMap<TItem>, new()
             where TItem : BaseData
         {
             if (collection != null) return collection;

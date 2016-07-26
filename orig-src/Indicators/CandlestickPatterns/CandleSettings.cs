@@ -15,7 +15,7 @@
 
 using System.Collections.Generic;
 
-namespace QuantConnect.Indicators.CandlestickPatterns
+package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /// <summary>
     /// Candle settings for all candlestick patterns
@@ -25,7 +25,7 @@ namespace QuantConnect.Indicators.CandlestickPatterns
         /// <summary>
         /// Default settings for all candle setting types
         /// </summary>
-        private static readonly Dictionary<CandleSettingType, CandleSetting> DefaultSettings = new Dictionary<CandleSettingType, CandleSetting>
+        private static readonly Map<CandleSettingType, CandleSetting> DefaultSettings = new Map<CandleSettingType, CandleSetting>
         {
             { CandleSettingType.BodyLong, new CandleSetting(CandleRangeType.RealBody, 10, 1m) },
             { CandleSettingType.BodyVeryLong, new CandleSetting(CandleRangeType.RealBody, 10, 3m) },

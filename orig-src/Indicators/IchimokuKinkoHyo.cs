@@ -15,7 +15,7 @@
 
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// This indicator computes the Ichimoku Kinko Hyo indicator. It consists of the following main indicators:

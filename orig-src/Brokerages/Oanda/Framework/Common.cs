@@ -19,7 +19,7 @@
 using System;
 using System.Reflection;
 
-namespace QuantConnect.Brokerages.Oanda.Framework
+package com.quantconnect.lean.Brokerages.Oanda.Framework
 {
 #pragma warning disable 1591
     /// <summary>

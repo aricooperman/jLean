@@ -6,6 +6,6 @@ import java.util.List;
 public class ProjectList extends RestResponse {
 
     /// List of projects for the authenticated user
-//    [JsonProperty(PropertyName = "projects")]
+//    @JsonProperty( "projects")]
     public List<Project> projects;
 }

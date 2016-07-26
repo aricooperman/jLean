@@ -17,7 +17,7 @@
 using Newtonsoft.Json;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Order event packet for passing updates on the state of an order to the portfolio. 
@@ -28,13 +28,13 @@ namespace QuantConnect.Packets
         /// <summary>
         /// Order event object
         /// </summary>
-        [JsonProperty(PropertyName = "oOrderEvent")]
+        @JsonProperty( "oOrderEvent")]
         public OrderEvent Event;
 
         /// <summary>
         /// Algorithm id for this order event
         /// </summary>
-        [JsonProperty(PropertyName = "sAlgorithmID")]
+        @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId;
 
         /// <summary>

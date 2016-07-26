@@ -16,7 +16,7 @@
 using System;
 using System.Linq;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// This indicator computes the n-period mean absolute deviation.

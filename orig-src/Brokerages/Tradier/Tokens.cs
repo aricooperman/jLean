@@ -17,7 +17,7 @@
 using System;
 using Newtonsoft.Json;
 
-namespace QuantConnect.Brokerages.Tradier
+package com.quantconnect.lean.Brokerages.Tradier
 {
     /// <summary>
     /// Token response model from QuantConnect terminal
@@ -25,27 +25,27 @@ namespace QuantConnect.Brokerages.Tradier
     public class TokenResponse
     {
         /// Access token for current requests:
-        [JsonProperty(PropertyName = "sAccessToken")]
+        @JsonProperty( "sAccessToken")]
         public String AccessToken;
 
         /// Refersh token for next time
-        [JsonProperty(PropertyName = "sRefreshToken")]
+        @JsonProperty( "sRefreshToken")]
         public String RefreshToken;
 
         /// Seconds the tokens expires
-        [JsonProperty(PropertyName = "iExpiresIn")]
+        @JsonProperty( "iExpiresIn")]
         public int ExpiresIn;
 
         /// Scope of token access
-        [JsonProperty(PropertyName = "sScope")]
+        @JsonProperty( "sScope")]
         public String Scope;
 
         /// Time the token was issued:
-        [JsonProperty(PropertyName = "dtIssuedAt")]
+        @JsonProperty( "dtIssuedAt")]
         public DateTime IssuedAt;
 
         /// Success flag:
-        [JsonProperty(PropertyName = "success")]
+        @JsonProperty( "success")]
         public boolean Success;
 
         /// <summary>

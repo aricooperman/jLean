@@ -28,7 +28,7 @@ using QuantConnect.Logging;
 using QuantConnect.Packets;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages.Oanda
+package com.quantconnect.lean.Brokerages.Oanda
 {
     /// <summary>
     /// Oanda Brokerage - implementation of IDataQueueHandler interface

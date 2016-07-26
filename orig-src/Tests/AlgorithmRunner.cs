@@ -23,7 +23,7 @@ using QuantConnect.Lean.Engine.Results;
 using QuantConnect.Logging;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests
+package com.quantconnect.lean.Tests
 {
     /// <summary>
     /// Provides methods for running an algorithm and testing it's performance metrics
@@ -36,9 +36,9 @@ namespace QuantConnect.Tests
             try { System.IO.File.Delete("regression.log"); } catch { /*NOP*/ }
         }
 
-        public static void RunLocalBacktest( String algorithm, Dictionary<string, string> expectedStatistics, Language language)
+        public static void RunLocalBacktest( String algorithm, Map<String,String> expectedStatistics, Language language)
         {
-            statistics = new Dictionary<string, string>();
+            statistics = new Map<String,String>();
 
             Composer.Instance.Reset();
 

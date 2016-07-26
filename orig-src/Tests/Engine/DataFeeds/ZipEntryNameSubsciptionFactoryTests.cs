@@ -21,7 +21,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Auxiliary;
 using QuantConnect.Lean.Engine.DataFeeds;
 
-namespace QuantConnect.Tests.Engine.DataFeeds
+package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     [TestFixture]
     public class ZipEntryNameSubsciptionFactoryTests

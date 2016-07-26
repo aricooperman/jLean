@@ -20,7 +20,7 @@ using System.Reflection;
 using NUnit.Framework;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Tests.Indicators
+package com.quantconnect.lean.Tests.Indicators
 {
     /// <summary>
     ///     Test class for QuantConnect.Indicators.Indicator
@@ -127,7 +127,7 @@ namespace QuantConnect.Tests.Indicators
         [Test]
         public void ComparisonFunctions()
         {   
-            TestComparisonOperators<int>();
+            TestComparisonOperators<Integer>();
             TestComparisonOperators<long>();
             TestComparisonOperators<float>();
             TestComparisonOperators<double>();

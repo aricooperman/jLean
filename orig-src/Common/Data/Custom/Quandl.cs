@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace QuantConnect.Data.Custom
+package com.quantconnect.lean.Data.Custom
 {
     /// <summary>
     /// Quandl Data Type - Import generic data from quandl, without needing to define Reader methods. 
@@ -26,7 +26,7 @@ namespace QuantConnect.Data.Custom
     public class Quandl : DynamicData
     {
         private boolean _isInitialized;
-        private readonly List<string> _propertyNames = new List<string>();
+        private readonly List<String> _propertyNames = new List<String>();
         private readonly String _valueColumn;
         private static String _authCode = "";
 

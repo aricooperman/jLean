@@ -20,7 +20,7 @@ using System.Linq;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data.UniverseSelection
+package com.quantconnect.lean.Data.UniverseSelection
 {
     /// <summary>
     /// Represents the universe defined by the user's algorithm. This is
@@ -83,7 +83,7 @@ namespace QuantConnect.Data.UniverseSelection
         /// <param name="interval">The interval at which selection should be performed</param>
         /// <param name="selector">Universe selection function invoked for each time returned via GetTriggerTimes.
         /// The function parameter is a DateTime in the time zone of configuration.ExchangeTimeZone</param>
-        public UserDefinedUniverse(SubscriptionDataConfig configuration, UniverseSettings universeSettings, ISecurityInitializer securityInitializer, TimeSpan interval, Func<DateTime,IEnumerable<string>> selector)
+        public UserDefinedUniverse(SubscriptionDataConfig configuration, UniverseSettings universeSettings, ISecurityInitializer securityInitializer, TimeSpan interval, Func<DateTime,IEnumerable<String>> selector)
             : base(configuration, securityInitializer)
         {
             _interval = interval;
@@ -105,7 +105,7 @@ namespace QuantConnect.Data.UniverseSelection
         /// <returns>A symbol for user defined universe of the specified security type and market</returns>
         public static Symbol CreateSymbol(SecurityType securityType, String market)
         {
-            ticker = string.Format("qc-universe-userdefined-{0}-{1}", market.ToLower(), securityType);
+            ticker = string.Format("qc-universe-userdefined-{0}-{1}", market.toLowerCase(), securityType);
             SecurityIdentifier sid;
             switch (securityType)
             {

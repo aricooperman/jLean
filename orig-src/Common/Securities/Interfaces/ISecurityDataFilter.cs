@@ -15,7 +15,7 @@
 
 using QuantConnect.Data;
 
-namespace QuantConnect.Securities.Interfaces
+package com.quantconnect.lean.Securities.Interfaces
 {
     /// <summary>
     /// Security data filter interface. Defines pattern for the user defined data filter techniques.

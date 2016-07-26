@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
 */
-namespace QuantConnect.Api
+package com.quantconnect.lean.Api
 {
     /// <summary>
     /// Verify if the credentials are OK.

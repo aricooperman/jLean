@@ -16,7 +16,7 @@
 
 using System;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Dividend event from a security

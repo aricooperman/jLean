@@ -20,7 +20,7 @@ using QuantConnect.Brokerages.Backtesting;
 using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Brokerages.Paper
+package com.quantconnect.lean.Brokerages.Paper
 {
     /// <summary>
     /// The factory type for the <see cref="PaperBrokerage"/>
@@ -42,9 +42,9 @@ namespace QuantConnect.Brokerages.Paper
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
         /// </remarks>
-        public Dictionary<string, string> BrokerageData
+        public Map<String,String> BrokerageData
         {
-            get { return new Dictionary<string, string>(); }
+            get { return new Map<String,String>(); }
         }
 
         /// <summary>

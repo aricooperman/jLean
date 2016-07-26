@@ -16,14 +16,14 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Provides an implementation of <see cref="IStreamProvider"/> that just returns a file stream
     /// </summary>
     public class FileStreamProvider : IStreamProvider
     {
-        private readonly Dictionary<string, FileStream> _files = new Dictionary<string, FileStream>();
+        private readonly Map<String, FileStream> _files = new Map<String, FileStream>();
 
         /// <summary>
         /// Opens the specified source as read to be consumed stream

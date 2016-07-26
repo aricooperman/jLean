@@ -19,7 +19,7 @@ using System.Linq;
 using QuantConnect.Orders;
 using QuantConnect.Util;
 
-namespace QuantConnect.Statistics
+package com.quantconnect.lean.Statistics
 {
     /// <summary>
     /// The <see cref="TradeBuilder"/> class generates trades from executions and market price updates
@@ -49,8 +49,8 @@ namespace QuantConnect.Statistics
         private static final int MaxOrderIdCacheSize = 1000;
 
         private readonly List<Trade> _closedTrades = new List<Trade>();
-        private readonly Dictionary<Symbol, Position> _positions = new Dictionary<Symbol, Position>();
-        private readonly FixedSizeHashQueue<int> _ordersWithFeesAssigned = new FixedSizeHashQueue<int>(MaxOrderIdCacheSize);
+        private readonly Map<Symbol, Position> _positions = new Map<Symbol, Position>();
+        private readonly FixedSizeHashQueue<Integer> _ordersWithFeesAssigned = new FixedSizeHashQueue<Integer>(MaxOrderIdCacheSize);
         private readonly FillGroupingMethod _groupingMethod;
         private readonly FillMatchingMethod _matchingMethod;
         private boolean _liveMode;

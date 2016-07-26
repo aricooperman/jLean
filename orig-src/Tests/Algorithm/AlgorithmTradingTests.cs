@@ -20,7 +20,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Securities;
 using QuantConnect.Brokerages;
 
-namespace QuantConnect.Tests.Algorithm
+package com.quantconnect.lean.Tests.Algorithm
 {
     [TestFixture]
     public class AlgorithmTradingTests

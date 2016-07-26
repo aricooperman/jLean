@@ -20,7 +20,7 @@ using System.IO;
 using System.Linq;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Data.Auxiliary
+package com.quantconnect.lean.Data.Auxiliary
 {
     /// <summary>
     /// Represents an entire factor file for a specified symbol
@@ -39,7 +39,7 @@ namespace QuantConnect.Data.Auxiliary
         /// </summary>
         public FactorFile( String permtick, IEnumerable<FactorFileRow> data)
         {
-            Permtick = permtick.ToUpper();
+            Permtick = permtick.toUpperCase();
             _data = new SortedList<DateTime, FactorFileRow>(data.ToDictionary(x => x.Date));
         }
 
@@ -87,7 +87,7 @@ namespace QuantConnect.Data.Auxiliary
         public static boolean HasScalingFactors( String permtick, String market)
         {
             // check for factor files
-            path = Path.Combine(Globals.DataFolder, "equity", market, "factor_files", permtick.ToLower() + ".csv");
+            path = Path.Combine(Globals.DataFolder, "equity", market, "factor_files", permtick.toLowerCase() + ".csv");
             if (File.Exists(path))
             {
                 return true;

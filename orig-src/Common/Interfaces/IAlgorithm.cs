@@ -26,7 +26,7 @@ using QuantConnect.Scheduling;
 using QuantConnect.Securities;
 using QuantConnect.Statistics;
 
-namespace QuantConnect.Interfaces
+package com.quantconnect.lean.Interfaces
 {
     /// <summary>
     /// Interface for QuantConnect algorithm implementations. All algorithms must implement these
@@ -216,7 +216,7 @@ namespace QuantConnect.Interfaces
         /// <summary>
         /// Debug messages from the strategy:
         /// </summary>
-        List<string> DebugMessages
+        List<String> DebugMessages
         {
             get;
         }
@@ -224,7 +224,7 @@ namespace QuantConnect.Interfaces
         /// <summary>
         /// Error messages from the strategy:
         /// </summary>
-        List<string> ErrorMessages
+        List<String> ErrorMessages
         {
             get;
         }
@@ -232,7 +232,7 @@ namespace QuantConnect.Interfaces
         /// <summary>
         /// Log messages from the strategy:
         /// </summary>
-        List<string> LogMessages
+        List<String> LogMessages
         {
             get;
         }
@@ -249,7 +249,7 @@ namespace QuantConnect.Interfaces
         /// <summary>
         /// Customizable dynamic statistics displayed during live trading:
         /// </summary>
-        Dictionary<string, string> RuntimeStatistics
+        Map<String,String> RuntimeStatistics
         {
             get;
         }
@@ -302,7 +302,7 @@ namespace QuantConnect.Interfaces
         /// Sets the parameters from the dictionary
         /// </summary>
         /// <param name="parameters">Dictionary containing the parameter names to values</param>
-        void SetParameters(Dictionary<string, string> parameters);
+        void SetParameters(Map<String,String> parameters);
 
         /// <summary>
         /// Sets the brokerage model used to resolve transaction models, settlement models,
@@ -316,13 +316,13 @@ namespace QuantConnect.Interfaces
         // v1.0 Handler for Tick Events [DEPRECATED June-2014]
         // </summary>
         // <param name="ticks">Tick Data Packet</param>
-        //void OnTick(Dictionary<string, List<Tick>> ticks);
+        //void OnTick(Map<String, List<Tick>> ticks);
 
         // <summary>
         // v1.0 Handler for TradeBar Events [DEPRECATED June-2014]
         // </summary>
         // <param name="tradebars">TradeBar Data Packet</param>
-        //void OnTradeBar(Dictionary<string, TradeBar> tradebars);
+        //void OnTradeBar(Map<String, TradeBar> tradebars);
 
         // <summary>
         // v2.0 Handler for Generic Data Events
@@ -468,7 +468,7 @@ namespace QuantConnect.Interfaces
         /// </summary>
         /// <param name="symbolToLiquidate">Specific asset to liquidate, defaults to all.</param>
         /// <returns>list of order ids</returns>
-        List<int> Liquidate(Symbol symbolToLiquidate = null);
+        List<Integer> Liquidate(Symbol symbolToLiquidate = null);
 
         /// <summary>
         /// Set live mode state of the algorithm run: Public setter for the algorithm property LiveMode.

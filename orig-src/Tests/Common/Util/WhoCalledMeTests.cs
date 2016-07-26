@@ -16,7 +16,7 @@
 using NUnit.Framework;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Tests.Common.Util
+package com.quantconnect.lean.Tests.Common.Util
 {
     [TestFixture]
     public class WhoCalledMeTests

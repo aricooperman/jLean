@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using QuantConnect.Data;
 using QuantConnect.Data.Consolidators;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Provides an implementation of <see cref="IDataProcessor"/> that consolidates the data
@@ -29,7 +29,7 @@ namespace QuantConnect.ToolBox
         private DateTime _frontier;
         private readonly IDataProcessor _destination;
         private readonly Func<BaseData, IDataConsolidator> _createConsolidator;
-        private readonly Dictionary<Symbol, IDataConsolidator> _consolidators;
+        private readonly Map<Symbol, IDataConsolidator> _consolidators;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ConsolidatorDataProcessor"/> class
@@ -40,7 +40,7 @@ namespace QuantConnect.ToolBox
         {
             _destination = destination;
             _createConsolidator = createConsolidator;
-            _consolidators = new Dictionary<Symbol, IDataConsolidator>();
+            _consolidators = new Map<Symbol, IDataConsolidator>();
         }
 
         /// <summary>

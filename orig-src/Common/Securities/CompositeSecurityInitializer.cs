@@ -14,7 +14,7 @@
  *
 */
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Provides an implementation of <see cref="ISecurityInitializer"/> that executes

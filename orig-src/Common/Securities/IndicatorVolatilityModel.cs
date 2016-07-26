@@ -17,7 +17,7 @@ using System;
 using QuantConnect.Data;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Provides an implementation of <see cref="IVolatilityModel"/> that uses an indicator

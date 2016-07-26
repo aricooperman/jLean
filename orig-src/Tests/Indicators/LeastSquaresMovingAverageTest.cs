@@ -17,7 +17,7 @@ using NUnit.Framework;
 using QuantConnect.Indicators;
 using System;
 
-namespace QuantConnect.Tests.Indicators
+package com.quantconnect.lean.Tests.Indicators
 {
     /// <summary>
     /// Result tested vs. Python available at: http://tinyurl.com/o7redso

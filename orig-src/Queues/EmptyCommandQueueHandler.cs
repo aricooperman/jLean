@@ -19,7 +19,7 @@ using QuantConnect.Commands;
 using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Queues
+package com.quantconnect.lean.Queues
 {
     /// <summary>
     /// Provides an implementation of <see cref="ICommandQueueHandler"/> that never

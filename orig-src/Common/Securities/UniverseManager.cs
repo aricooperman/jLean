@@ -21,14 +21,14 @@ using System.Collections.Specialized;
 using System.Linq;
 using QuantConnect.Data.UniverseSelection;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Manages the algorithm's collection of universes
     /// </summary>
-    public class UniverseManager : IDictionary<Symbol, Universe>, INotifyCollectionChanged
+    public class UniverseManager : Map<Symbol, Universe>, INotifyCollectionChanged
     {
-        private readonly ConcurrentDictionary<Symbol, Universe> _universes;
+        private readonly ConcurrentMap<Symbol, Universe> _universes;
 
         /// <summary>
         /// Event fired when a universe is added or removed
@@ -40,7 +40,7 @@ namespace QuantConnect.Securities
         /// </summary>
         public UniverseManager()
         {
-            _universes = new ConcurrentDictionary<Symbol, Universe>();
+            _universes = new ConcurrentMap<Symbol, Universe>();
         }
 
         #region IDictionary implementation
@@ -105,7 +105,7 @@ namespace QuantConnect.Securities
         /// <param name="array">The one-dimensional <see cref="T:System.Array"/> that is the destination of the elements copied from <see cref="T:System.Collections.Generic.ICollection`1"/>. The <see cref="T:System.Array"/> must have zero-based indexing.</param><param name="arrayIndex">The zero-based index in <paramref name="array"/> at which copying begins.</param><exception cref="T:System.ArgumentNullException"><paramref name="array"/> is null.</exception><exception cref="T:System.ArgumentOutOfRangeException"><paramref name="arrayIndex"/> is less than 0.</exception><exception cref="T:System.ArgumentException">The number of elements in the source <see cref="T:System.Collections.Generic.ICollection`1"/> is greater than the available space from <paramref name="arrayIndex"/> to the end of the destination <paramref name="array"/>.</exception>
         public void CopyTo(KeyValuePair<Symbol, Universe>[] array, int arrayIndex)
         {
-            ((IDictionary<Symbol, Universe>)_universes).CopyTo(array, arrayIndex);
+            ((Map<Symbol, Universe>)_universes).CopyTo(array, arrayIndex);
         }
 
         /// <summary>

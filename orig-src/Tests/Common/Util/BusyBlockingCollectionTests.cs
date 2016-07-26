@@ -19,7 +19,7 @@ using System.Threading;
 using NUnit.Framework;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Common.Util
+package com.quantconnect.lean.Tests.Common.Util
 {
     [TestFixture]
     public class BusyBlockingCollectionTests
@@ -27,14 +27,14 @@ namespace QuantConnect.Tests.Common.Util
         [Test]
         public void IsNotBusyWithZeroItemsWaiting()
         {
-            collection = new BusyBlockingCollection<int>();
+            collection = new BusyBlockingCollection<Integer>();
             Assert.IsTrue(collection.WaitHandle.WaitOne(0));
         }
 
         [Test]
         public void IsBusyWithItemsWaiting()
         {
-            collection = new BusyBlockingCollection<int>();
+            collection = new BusyBlockingCollection<Integer>();
             collection.Add(1);
             Assert.IsFalse(collection.WaitHandle.WaitOne(0));
         }
@@ -42,7 +42,7 @@ namespace QuantConnect.Tests.Common.Util
         [Test]
         public void GetConsumingEnumerableReturnsItemsInOrder()
         {
-            collection = new BusyBlockingCollection<int>();
+            collection = new BusyBlockingCollection<Integer>();
             collection.Add(1);
             collection.Add(2);
             collection.Add(3);
@@ -53,7 +53,7 @@ namespace QuantConnect.Tests.Common.Util
         [Test]
         public void WaitForProcessingCompletedDuringGetConsumingEnumerable()
         {
-            collection = new BusyBlockingCollection<int>();
+            collection = new BusyBlockingCollection<Integer>();
             collection.Add(1);
             collection.Add(2);
             collection.Add(3);

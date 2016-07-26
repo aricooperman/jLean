@@ -20,7 +20,7 @@ using QuantConnect.Orders.Slippage;
 using QuantConnect.Securities.Equity;
 using QuantConnect.Securities.Forex;
 
-namespace QuantConnect.Securities.Interfaces
+package com.quantconnect.lean.Securities.Interfaces
 {
     /// <summary>
     /// Security transaction model interface for QuantConnect security objects

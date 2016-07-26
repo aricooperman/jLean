@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages.Tradier
+package com.quantconnect.lean.Brokerages.Tradier
 {
     /// <summary>
     /// Gain loss parent class for deserialization
@@ -27,7 +27,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierGainLossContainer
     {
         /// Profit Loss
-        [JsonProperty(PropertyName = "gainloss")]
+        @JsonProperty( "gainloss")]
         public TradierGainLossClosed GainLossClosed;
 
         /// Null Constructor
@@ -41,7 +41,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierGainLossClosed
     {
         /// Array of user account details:
-        [JsonProperty(PropertyName = "closed_position")]
+        @JsonProperty( "closed_position")]
         [JsonConverter(typeof(SingleValueListConverter<TradierGainLoss>))]
         public List<TradierGainLoss> ClosedPositions = new List<TradierGainLoss>();
     }
@@ -52,39 +52,39 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierGainLoss 
     {
         /// Date the position was closed.
-        [JsonProperty(PropertyName = "close_date")]
+        @JsonProperty( "close_date")]
         public DateTime CloseDate;
 
         /// Date the position was opened
-        [JsonProperty(PropertyName = "open_date")]
+        @JsonProperty( "open_date")]
         public DateTime OpenDate;
 
         /// Total cost of the order.
-        [JsonProperty(PropertyName = "cost")]
+        @JsonProperty( "cost")]
         public BigDecimal Cost;
 
         /// Gain or loss on the position.
-        [JsonProperty(PropertyName = "gain_loss")]
+        @JsonProperty( "gain_loss")]
         public BigDecimal GainLoss;
 
         /// Percentage of gain or loss on the position.
-        [JsonProperty(PropertyName = "gain_loss_percent")]
+        @JsonProperty( "gain_loss_percent")]
         public BigDecimal GainLossPercentage;
 
         /// Total amount received for the order.
-        [JsonProperty(PropertyName = "proceeds")]
+        @JsonProperty( "proceeds")]
         public BigDecimal Proceeds;
 
         /// Number of shares/contracts
-        [JsonProperty(PropertyName = "quantity")]
+        @JsonProperty( "quantity")]
         public BigDecimal Quantity;
 
         /// Symbol
-        [JsonProperty(PropertyName = "symbol")]
+        @JsonProperty( "symbol")]
         public String Symbol;
 
         /// Number of shares/contracts
-        [JsonProperty(PropertyName = "term")]
+        @JsonProperty( "term")]
         public BigDecimal Term;
 
         /// <summary>

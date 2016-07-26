@@ -22,7 +22,7 @@ using QuantConnect.Packets;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages.InteractiveBrokers
+package com.quantconnect.lean.Brokerages.InteractiveBrokers
 {
     /// <summary>
     /// Factory type for the <see cref="InteractiveBrokersBrokerage"/>
@@ -44,11 +44,11 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
         /// </remarks>
-        public override Dictionary<string, string> BrokerageData
+        public override Map<String,String> BrokerageData
         {
             get
             {
-                data = new Dictionary<string, string>();
+                data = new Map<String,String>();
                 data.Add("ib-account", Config.Get("ib-account"));
                 data.Add("ib-user-name", Config.Get("ib-user-name"));
                 data.Add("ib-password", Config.Get("ib-password"));
@@ -73,7 +73,7 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
         /// <returns>A new brokerage instance</returns>
         public override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm)
         {
-            errors = new List<string>();
+            errors = new List<String>();
 
             // read values from the brokerage datas
             useTws = Config.GetBool("ib-use-tws");
@@ -82,9 +82,9 @@ namespace QuantConnect.Brokerages.InteractiveBrokers
             twsDirectory = Config.Get("ib-tws-dir", "C:\\Jts");
             ibControllerDirectory = Config.Get("ib-controller-dir", "C:\\IBController");
 
-            account = Read<string>(job.BrokerageData, "ib-account", errors);
-            userID = Read<string>(job.BrokerageData, "ib-user-name", errors);
-            password = Read<string>(job.BrokerageData, "ib-password", errors);
+            account = Read<String>(job.BrokerageData, "ib-account", errors);
+            userID = Read<String>(job.BrokerageData, "ib-user-name", errors);
+            password = Read<String>(job.BrokerageData, "ib-password", errors);
             agentDescription = Read<AgentDescription>(job.BrokerageData, "ib-agent-description", errors);
 
             if (errors.Count != 0)

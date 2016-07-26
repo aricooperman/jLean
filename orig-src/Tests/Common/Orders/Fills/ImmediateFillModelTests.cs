@@ -21,7 +21,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using QuantConnect.Securities.Forex;
 
-namespace QuantConnect.Tests.Common.Orders.Fills
+package com.quantconnect.lean.Tests.Common.Orders.Fills
 {
     [TestFixture]
     public class ImmediateFillModelTests

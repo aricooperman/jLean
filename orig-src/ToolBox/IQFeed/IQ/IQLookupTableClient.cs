@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Concurrent;
 
-namespace QuantConnect.ToolBox.IQFeed
+package com.quantconnect.lean.ToolBox.IQFeed
 {
 
     public class LookupTableMarketEventArgs : LookupEventArgs

@@ -17,7 +17,7 @@ using System;
 using NUnit.Framework;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Tests.Common.Data.Market
+package com.quantconnect.lean.Tests.Common.Data.Market
 {
     [TestFixture]
     public class TickTests

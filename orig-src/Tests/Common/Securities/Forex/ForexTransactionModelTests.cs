@@ -22,7 +22,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using QuantConnect.Securities.Forex;
 
-namespace QuantConnect.Tests.Common.Securities.Forex
+package com.quantconnect.lean.Tests.Common.Securities.Forex
 {
     public class ForexTransactionModelTests
     {

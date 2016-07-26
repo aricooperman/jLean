@@ -19,7 +19,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Consolidators;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Tests.Common.Data
+package com.quantconnect.lean.Tests.Common.Data
 {
     [TestFixture]
     public class DynamicDataConsolidatorTests

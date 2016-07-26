@@ -20,7 +20,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using QuantConnect.Securities.Forex;
 
-namespace QuantConnect.Algorithm
+package com.quantconnect.lean.Algorithm
 {
     public partial class QCAlgorithm
     {
@@ -421,9 +421,9 @@ namespace QuantConnect.Algorithm
         /// <param name="symbolToLiquidate">Symbols we wish to liquidate</param>
         /// <returns>Array of order ids for liquidated symbols</returns>
         /// <seealso cref="MarketOrder"/>
-        public List<int> Liquidate(Symbol symbolToLiquidate = null)
+        public List<Integer> Liquidate(Symbol symbolToLiquidate = null)
         {
-            orderIdList = new List<int>();
+            orderIdList = new List<Integer>();
             symbolToLiquidate = symbolToLiquidate ?? QuantConnect.Symbol.Empty;
 
             foreach (symbol in Securities.Keys.OrderBy(x => x.Value))

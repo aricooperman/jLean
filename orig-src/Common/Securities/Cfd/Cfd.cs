@@ -19,7 +19,7 @@ using QuantConnect.Orders.Fees;
 using QuantConnect.Orders.Fills;
 using QuantConnect.Orders.Slippage;
 
-namespace QuantConnect.Securities.Cfd
+package com.quantconnect.lean.Securities.Cfd
 {
     /// <summary>
     /// CFD Security Object Implementation for CFD Assets

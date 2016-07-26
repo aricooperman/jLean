@@ -16,7 +16,7 @@
 using System;
 using System.ComponentModel.Composition;
 
-namespace QuantConnect.Logging
+package com.quantconnect.lean.Logging
 {
     /// <summary>
     /// ILogHandler implementation that writes log output to result handler
@@ -25,9 +25,9 @@ namespace QuantConnect.Logging
     public class FunctionalLogHandler : ILogHandler
     {
         private static final String DateFormat = "yyyyMMdd HH:mm:ss";
-        private readonly Action<string> _debug;
-        private readonly Action<string> _trace;
-        private readonly Action<string> _error;
+        private readonly Action<String> _debug;
+        private readonly Action<String> _trace;
+        private readonly Action<String> _error;
 
         /// <summary>
         /// Default constructor to handle MEF.
@@ -40,7 +40,7 @@ namespace QuantConnect.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="QuantConnect.Logging.FunctionalLogHandler"/> class.
         /// </summary>
-        public FunctionalLogHandler(Action<string> debug, Action<string> trace, Action<string> error)
+        public FunctionalLogHandler(Action<String> debug, Action<String> trace, Action<String> error)
         {
             // saves references to the real console text writer since in a deployed state we may overwrite this in order
             // to redirect messages from algorithm to result handler

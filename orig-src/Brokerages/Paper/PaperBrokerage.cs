@@ -21,7 +21,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Brokerages.Paper
+package com.quantconnect.lean.Brokerages.Paper
 {
     /// <summary>
     /// Paper Trading Brokerage

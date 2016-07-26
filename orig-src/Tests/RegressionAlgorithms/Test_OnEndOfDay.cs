@@ -19,7 +19,7 @@ using System.Diagnostics;
 using QuantConnect.Data.Market;
 using QuantConnect.Orders;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     using QuantConnect.Securities;
     
@@ -36,7 +36,7 @@ namespace QuantConnect
             AddSecurity(SecurityType.Equity, symbol, Resolution.Minute);
         }
 
-        public override void OnTradeBar(Dictionary<string, TradeBar> data)
+        public override void OnTradeBar(Map<String, TradeBar> data)
         {
             if (Portfolio.HoldStock == false)
             {

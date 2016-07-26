@@ -32,7 +32,7 @@ using QuantConnect.Packets;
 using QuantConnect.Statistics;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine.Results
+package com.quantconnect.lean.Lean.Engine.Results
 {
     /// <summary>
     /// Backtesting result handler passes messages back from the Lean to the User.
@@ -48,15 +48,15 @@ namespace QuantConnect.Lean.Engine.Results
         private DateTime _nextS3Update = new DateTime();
         DateTime _lastUpdate = new DateTime();
         private String _debugMessage = "";
-        private List<string> _log = new List<string>();
+        private List<String> _log = new List<String>();
         private String _errorMessage = "";
         private IAlgorithm _algorithm;
         private ConcurrentQueue<Packet> _messages;
-        private ConcurrentDictionary<string, Chart> _charts;
+        private ConcurrentMap<String, Chart> _charts;
         private boolean _isActive = true;
         private object _chartLock = new Object();
         private object _runtimeLock = new Object();
-        private readonly Dictionary<string, string> _runtimeStatistics = new Dictionary<string, string>();
+        private readonly Map<String,String> _runtimeStatistics = new Map<String,String>();
         private double _daysProcessed = 0;
         private double _lastDaysProcessed = 1;
         private boolean _processingFinalPacket = false;
@@ -116,7 +116,7 @@ namespace QuantConnect.Lean.Engine.Results
         /// <summary>
         /// Charts collection for storing the master copy of user charting data.
         /// </summary>
-        public ConcurrentDictionary<string, Chart> Charts 
+        public ConcurrentMap<String, Chart> Charts 
         {
             get
             {
@@ -168,7 +168,7 @@ namespace QuantConnect.Lean.Engine.Results
         /// <summary>
         /// A dictionary containing summary statistics
         /// </summary>
-        public Dictionary<string, string> FinalStatistics { get; private set; }
+        public Map<String,String> FinalStatistics { get; private set; }
 
         /// <summary>
         /// Default initializer for 
@@ -177,7 +177,7 @@ namespace QuantConnect.Lean.Engine.Results
         {
             //Initialize Properties:
             _messages = new ConcurrentQueue<Packet>();
-            _charts = new ConcurrentDictionary<string, Chart>();
+            _charts = new ConcurrentMap<String, Chart>();
             _chartLock = new Object();
             _isActive = true;
 
@@ -280,7 +280,7 @@ namespace QuantConnect.Lean.Engine.Results
                 if (DateTime.Now <= _nextUpdate || !(_daysProcessed > (_lastDaysProcessed + 1))) return;
 
                 //Extract the orders since last update
-                deltaOrders = new Dictionary<int, Order>();
+                deltaOrders = new Map<Integer, Order>();
 
                 try
                 {
@@ -308,7 +308,7 @@ namespace QuantConnect.Lean.Engine.Results
                     Log.Error(err, "Can't update variables");
                 }
 
-                deltaCharts = new Dictionary<string, Chart>();
+                deltaCharts = new Map<String, Chart>();
                 lock (_chartLock)
                 {
                     //Get the updates since the last chart
@@ -319,7 +319,7 @@ namespace QuantConnect.Lean.Engine.Results
                 }
 
                 //Get the runtime statistics from the user algorithm:
-                runtimeStatistics = new Dictionary<string, string>();
+                runtimeStatistics = new Map<String,String>();
                 lock (_runtimeLock)
                 {
                     foreach (pair in _runtimeStatistics)
@@ -338,7 +338,7 @@ namespace QuantConnect.Lean.Engine.Results
                 if (progress > 0.999m) progress = 0.999m;
 
                 //1. Cloud Upload -> Upload the whole packet to S3  Immediately:
-                completeResult = new BacktestResult(Charts, _transactionHandler.Orders, Algorithm.Transactions.TransactionRecord, new Dictionary<string, string>(), runtimeStatistics, new Dictionary<string, AlgorithmPerformance>());
+                completeResult = new BacktestResult(Charts, _transactionHandler.Orders, Algorithm.Transactions.TransactionRecord, new Map<String,String>(), runtimeStatistics, new Map<String, AlgorithmPerformance>());
                 complete = new BacktestResultPacket(_job, completeResult, progress);
 
                 if (DateTime.Now > _nextS3Update)
@@ -364,7 +364,7 @@ namespace QuantConnect.Lean.Engine.Results
         /// <summary>
         /// Run over all the data and break it into smaller packets to ensure they all arrive at the terminal
         /// </summary>
-        public IEnumerable<BacktestResultPacket> SplitPackets(Dictionary<string, Chart> deltaCharts, Dictionary<int, Order> deltaOrders, Dictionary<string,string> runtimeStatistics, BigDecimal progress)
+        public IEnumerable<BacktestResultPacket> SplitPackets(Map<String, Chart> deltaCharts, Map<Integer, Order> deltaOrders, Map<String,string> runtimeStatistics, BigDecimal progress)
         {
             // break the charts into groups
             splitPackets = new List<BacktestResultPacket>();
@@ -373,7 +373,7 @@ namespace QuantConnect.Lean.Engine.Results
                 //Don't add packet if the series is empty:
                 if (chart.Series.Values.Sum(x => x.Values.Count) == 0) continue;
 
-                splitPackets.Add(new BacktestResultPacket(_job, new BacktestResult { Charts = new Dictionary<string, Chart>()
+                splitPackets.Add(new BacktestResultPacket(_job, new BacktestResult { Charts = new Map<String, Chart>()
                 {
                     {chart.Name,chart}
                 }  }, progress));
@@ -442,14 +442,14 @@ namespace QuantConnect.Lean.Engine.Results
         /// <param name="holdings">Current holdings state for the algorithm</param>
         /// <param name="statisticsResults">Statistics information for the algorithm (empty if not finished)</param>
         /// <param name="banner">Runtime statistics banner information</param>
-        public void SendFinalResult(AlgorithmNodePacket job, Dictionary<int, Order> orders, Dictionary<DateTime, decimal> profitLoss, Dictionary<string, Holding> holdings, StatisticsResults statisticsResults, Dictionary<string, string> banner)
+        public void SendFinalResult(AlgorithmNodePacket job, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, StatisticsResults statisticsResults, Map<String,String> banner)
         { 
             try
             {
                 FinalStatistics = statisticsResults.Summary;
 
                 //Convert local dictionary:
-                charts = new Dictionary<string, Chart>(Charts);
+                charts = new Map<String, Chart>(Charts);
                 _processingFinalPacket = true;
 
                 // clear the trades collection before placing inside the backtest result

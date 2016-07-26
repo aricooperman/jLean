@@ -25,7 +25,7 @@ using QuantConnect.Logging;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Brokerages
+package com.quantconnect.lean.Tests.Brokerages
 {
     public abstract class BrokerageTests
     {

@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Brokerages.Oanda
+package com.quantconnect.lean.Brokerages.Oanda
 {
     /// <summary>
     /// Provides the mapping between Lean symbols and Oanda symbols.
@@ -26,7 +26,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// <summary>
         /// The list of known Oanda symbols.
         /// </summary>
-        private static readonly HashSet<string> KnownSymbols = new HashSet<string>
+        private static readonly HashSet<String> KnownSymbols = new HashSet<String>
         {
             "AU200_AUD",
             "AUD_CAD",
@@ -157,7 +157,7 @@ namespace QuantConnect.Brokerages.Oanda
         /// <summary>
         /// The list of known Oanda currencies.
         /// </summary>
-        private static readonly HashSet<string> KnownCurrencies = new HashSet<string>
+        private static readonly HashSet<String> KnownCurrencies = new HashSet<String>
         {
             "AUD", "CAD", "CHF", "CNY", "CZK", "DKK", "EUR", "GBP", "HKD", "HUF", "INR", "JPY", 
             "MXN", "NOK", "NZD", "PLN", "SAR", "SEK", "SGD", "THB", "TRY", "TWD", "USD", "ZAR"

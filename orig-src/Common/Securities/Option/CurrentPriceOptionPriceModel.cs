@@ -16,7 +16,7 @@
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Securities.Option
+package com.quantconnect.lean.Securities.Option
 {
     /// <summary>
     /// Provides a default implementation of <see cref="IOptionPriceModel"/> that does not compute any

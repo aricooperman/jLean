@@ -25,17 +25,18 @@
 package com.quantconnect.lean.configuration;
 
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.quantconnect.lean.Global;
 
 import javaslang.Lazy;
 
@@ -44,23 +45,25 @@ public class Config {
     private static final String ENVIRONMENT_CONFIG_NAME = "environment";
     private static final String CONFIG_FILE_NAME = "config.json";
     private static final Logger LOG = LoggerFactory.getLogger( Config.class );
-    private static final Lazy<JSONObject> settings = Lazy.of( () -> {
+    private static final Lazy<Map<String,Object>> settings = Lazy.of( () -> {
 //            // initialize settings inside a lazy for free thread-safe, one-time initialization
 //        
         final URL configFileUrl = Config.class.getResource( CONFIG_FILE_NAME );
         if( configFileUrl != null ) {
             try {
-                final Path configPath = Paths.get( configFileUrl.toURI() );
-                if( Files.exists( configPath ) )
-                    return new JSONObject( Files.lines( configPath ).collect( Collectors.joining() ) );
+//                final Path configPath = Paths.get( configFileUrl.toURI() );
+//                if( Files.exists( configPath ) ) {
+//                    return new JSONObject( Files.lines( configPath ).collect( Collectors.joining() ) );
+                return Global.OBJECT_MAPPER.readValue( configFileUrl, new TypeReference<Map<String,Object>>() { } );
+//                }
             }
             catch( Exception e ) {
                 LOG.warn( "Unable to find config file", e );
             }
         }
 
-        final JSONObject configObject = new JSONObject();
-        configObject.put( "algorithm-type-name", "BasicTemplateAlgorithm" );
+        final Map<String,Object> configObject = new HashMap<>();
+        configObject.put( "algorithm-type-name", "BasicTemplateAlgorithm" ); //TODO
 //                {"live-mode", false},
 //                {"data-folder", "../../../Data/"},
 //                {"messaging-handler", "QuantConnect.Messaging.Messaging"},
@@ -79,19 +82,20 @@ public class Config {
     /// Gets the currently selected environment. If sub-environments are defined,
     /// they'll be returned as {env1}.{env2}
     /// <returns>The fully qualified currently selected environment</returns>
+    @SuppressWarnings("unchecked")
     public static String getEnvironment() {
         final List<String> environments = new ArrayList<String>();
 
-        JSONObject currentEnvironment = settings.get();
-        String currentEnv = currentEnvironment.getString( ENVIRONMENT_CONFIG_NAME );
+        Map<String,Object> currentEnvironment = settings.get(); //TODO better type checks
+        String currentEnv = (String)currentEnvironment.get( ENVIRONMENT_CONFIG_NAME );
         while( currentEnvironment != null && currentEnv != null ) {
             environments.add( currentEnv );
-            final JSONObject moreEnvironments = currentEnvironment.getJSONObject( "environments" );
+            final Map<String,Object> moreEnvironments = (Map<String,Object>)currentEnvironment.get( "environments" );
             if( moreEnvironments == null )
                 break;
 
-            currentEnvironment = moreEnvironments.getJSONObject( currentEnv );
-            currentEnv = currentEnvironment.getString( ENVIRONMENT_CONFIG_NAME );
+            currentEnvironment = (Map<String,Object>)moreEnvironments.get( currentEnv );
+            currentEnv = (String)currentEnvironment.get( ENVIRONMENT_CONFIG_NAME );
         }
         
         return environments.stream().collect( Collectors.joining( "." ) );
@@ -110,7 +114,7 @@ public class Config {
         if( key.equals( ENVIRONMENT_CONFIG_NAME ) ) 
             return getEnvironment();
 
-        final JSONObject token = getToken( settings.get(), key );
+        final Map<String,Object> token = getToken( settings.get(), key );
         if( token == null ) {
             LOG.trace( "Config.Get(): Configuration key not found. Key: {} - Using default value: {}", key, defaultValue );
             return defaultValue;
@@ -122,7 +126,7 @@ public class Config {
     /// <summary>
     /// Gets the underlying JToken for the specified key
     /// </summary>
-    public static JSONObject getToken( String key ) {
+    public static Map<String,Object> getToken( String key ) {
         return getToken( settings.get(), key );
     }
 
@@ -132,15 +136,16 @@ public class Config {
     /// </summary>
     /// <param name="key">The key to be set</param>
     /// <param name="value">The new value</param>
+    @SuppressWarnings("unchecked")
     public static void set( String key, String value ) {
-        JSONObject environment = settings.get();
+        Map<String,Object> environment = settings.get();
         while( key.contains( "." ) ) {
             String envName = key.substring( 0, key.indexOf( "." ) );
             key = key.substring( key.indexOf( "." ) + 1 );
-            JSONObject environments = environment.getJSONObject( "environments" );
+            Map<String,Object> environments = (Map<String,Object>)environment.get( "environments" );
             if( environments == null )
-                environment.put( "environments", environments = new JSONObject() );
-            environment = environments.getJSONObject( envName );
+                environment.put( "environments", environments = new HashMap<String,Object>() );
+            environment = (Map<String,Object>)environments.get( envName );
         }
         
         environment.put( key, value );
@@ -216,7 +221,7 @@ public class Config {
 //        String value;
 //        try
 //        {
-//            value = token.Value<string>();
+//            value = token.Value<String>();
 //        }
 //        catch (Exception err)
 //        {
@@ -311,7 +316,7 @@ public class Config {
     /// </summary>
     /// <param name="overrideEnvironment">The environment to use</param>
     /// <returns>The flattened JObject</returns>
-    public static JSONObject flatten( String overrideEnvironment ) {
+    public static Map<String,Object> flatten( String overrideEnvironment ) {
         return flatten( settings.get(), overrideEnvironment );
     }
 
@@ -322,9 +327,9 @@ public class Config {
     /// <param name="config">The configuration represented as a JObject</param>
     /// <param name="overrideEnvironment">The environment to use</param>
     /// <returns>The flattened JObject</returns>
-    public static JSONObject flatten( JSONObject config, String overrideEnvironment ) {
-        JSONObject clone = null;
-//        clone = (JSONObject)config.DeepClone();
+    public static Map<String,Object> flatten( Map<String,Object> config, String overrideEnvironment ) {
+        Map<String,Object> clone = null;
+//        clone = (Map<String,Object>)config.DeepClone();
 //
 //        // remove the environment declaration
 //        environmentProperty = clone.Property("environment");
@@ -368,16 +373,18 @@ public class Config {
         return clone ;
     }
 
-    private static JSONObject getToken( JSONObject settings, String key ) {
-        return getToken( settings, key, settings.getJSONObject( key ) );
+    @SuppressWarnings("unchecked")
+    private static Map<String,Object> getToken( Map<String,Object> settings, String key ) {
+        return getToken( settings, key, (Map<String,Object>)settings.get( key ) );
     }
 
-    private static JSONObject getToken( JSONObject settings, String key, JSONObject current ) {
-        final String environmentSetting = settings.getString( ENVIRONMENT_CONFIG_NAME );
+    @SuppressWarnings("unchecked")
+    private static Map<String,Object> getToken( Map<String,Object> settings, String key, Map<String,Object> current ) {
+        final String environmentSetting = (String)settings.get( ENVIRONMENT_CONFIG_NAME );
         if( StringUtils.isNotBlank( environmentSetting ) ) {
-            final JSONObject environment = settings.getJSONObject( "environments." + environmentSetting );
+            final Map<String,Object> environment = (Map<String,Object>)settings.get( "environments." + environmentSetting );
             if( environment != null ) {
-                final JSONObject setting = environment.getJSONObject( key );
+                final Map<String,Object> setting = (Map<String,Object>)environment.get( key );
                 if( setting != null )
                     current = setting;
                     // allows nesting of environments, live.tradier, live.interactive, ect...
@@ -386,7 +393,7 @@ public class Config {
         }
         
         if( current == null )
-            return settings.getJSONObject( key );
+            return (Map<String,Object>)settings.get( key );
 
         return current;
     }
@@ -404,7 +411,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Configuration
+package com.quantconnect.lean.Configuration
 {
     /// <summary>
     /// Configuration class loads the required external setup variables to launch the Lean engine.
@@ -445,12 +452,12 @@ namespace QuantConnect.Configuration
         /// <returns>The fully qualified currently selected environment</returns>
         public static String GetEnvironment()
         {
-            environments = new List<string>();
+            environments = new List<String>();
             JToken currentEnvironment = Settings.Value;
             env = currentEnvironment["environment"];
             while (currentEnvironment != null && env != null)
             {
-                currentEnv = env.Value<string>();
+                currentEnv = env.Value<String>();
                 environments.Add(currentEnv);
                 moreEnvironments = currentEnvironment["environments"];
                 if (moreEnvironments == null)
@@ -572,7 +579,7 @@ namespace QuantConnect.Configuration
             String value;
             try
             {
-                value = token.Value<string>();
+                value = token.Value<String>();
             }
             catch (Exception err)
             {
@@ -738,7 +745,7 @@ namespace QuantConnect.Configuration
             environmentSetting = settings.SelectToken("environment");
             if (environmentSetting != null)
             {
-                environmentSettingValue = environmentSetting.Value<string>();
+                environmentSettingValue = environmentSetting.Value<String>();
                 if (!string.IsNullOrWhiteSpace(environmentSettingValue))
                 {
                     environment = settings.SelectToken("environments." + environmentSettingValue);

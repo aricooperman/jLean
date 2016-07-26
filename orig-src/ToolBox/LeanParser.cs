@@ -20,7 +20,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.ToolBox.AlgoSeekOptionsConverter;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Provides an implementation of <see cref="IStreamParser"/> that reads files in the lean format
@@ -36,7 +36,7 @@ namespace QuantConnect.ToolBox
         public IEnumerable<BaseData> Parse( String source, Stream stream)
         {
             pathComponents = LeanDataPathComponents.Parse(source);
-            tickType = pathComponents.Filename.ToLower().Contains("_trade")
+            tickType = pathComponents.Filename.toLowerCase().Contains("_trade")
                 ? TickType.Trade
                 : TickType.Quote;
 

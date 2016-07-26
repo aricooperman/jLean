@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using QuantConnect.Securities;
 using QuantConnect.Securities.Option;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Defines a single option contract at a specific expiration and strike price

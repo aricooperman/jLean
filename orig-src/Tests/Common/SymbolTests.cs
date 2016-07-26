@@ -23,7 +23,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Common
+package com.quantconnect.lean.Tests.Common
 {
     [TestFixture]
     public class SymbolTests
@@ -71,7 +71,7 @@ namespace QuantConnect.Tests.Common
         public void UsesSidForDictionaryKey()
         {
             sid = SecurityIdentifier.GenerateEquity("SPY", Market.USA);
-            dictionary = new Dictionary<Symbol, int>
+            dictionary = new Map<Symbol,Integer>
             {
                 {new Symbol(sid, "value"), 1}
             };

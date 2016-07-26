@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data.Auxiliary
+package com.quantconnect.lean.Data.Auxiliary
 {
     /// <summary>
     /// Defines a data type that just produces data points from the zip entry names in a zip file

@@ -19,7 +19,7 @@ using QuantConnect.Data;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// Provides extension methods for Indicator

@@ -20,7 +20,7 @@ using System.Collections.Generic;
 using NodaTime;
 using QuantConnect.Data;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /// <summary>
     /// Provides the ability to fast forward an enumerator based on the age of the data

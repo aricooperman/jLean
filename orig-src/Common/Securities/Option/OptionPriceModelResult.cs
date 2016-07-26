@@ -15,7 +15,7 @@
 
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Securities.Option
+package com.quantconnect.lean.Securities.Option
 {
     /// <summary>
     /// Result type for <see cref="IOptionPriceModel.Evaluate"/>

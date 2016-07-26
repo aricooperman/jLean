@@ -14,7 +14,7 @@
 */
 
 
-namespace QuantConnect.Indicators {
+package com.quantconnect.lean.Indicators {
     /// <summary>
     /// Represents an indictor capable of tracking the sum for the given period
     /// </summary>

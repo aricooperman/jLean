@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Represents common properties for a specific security, uniquely identified by market, symbol and security type
@@ -84,7 +84,7 @@ namespace QuantConnect.Securities
         /// <returns>A default instance of the<see cref="SymbolProperties"/> class</returns>
         public static SymbolProperties GetDefault( String quoteCurrency)
         {
-            return new SymbolProperties("", quoteCurrency.ToUpper(), 1, 0.01m, 1);
+            return new SymbolProperties("", quoteCurrency.toUpperCase(), 1, 0.01m, 1);
         }
     }
 }

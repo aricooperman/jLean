@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Brokerages.InteractiveBrokers
+package com.quantconnect.lean.Brokerages.InteractiveBrokers
 {
     /// <summary>
     /// Provides the mapping between Lean symbols and InteractiveBrokers symbols.

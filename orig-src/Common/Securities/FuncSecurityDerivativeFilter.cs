@@ -18,7 +18,7 @@ using System;
 using System.Collections.Generic;
 using QuantConnect.Data;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Provides a functional implementation of <see cref="IDerivativeSecurityFilter"/>

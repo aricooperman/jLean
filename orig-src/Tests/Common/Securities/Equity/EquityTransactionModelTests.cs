@@ -22,7 +22,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using QuantConnect.Securities.Equity;
 
-namespace QuantConnect.Tests.Common.Securities.Equity
+package com.quantconnect.lean.Tests.Common.Securities.Equity
 {
     [TestFixture]
     public class EquityTransactionModelTests

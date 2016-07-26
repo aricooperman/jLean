@@ -33,7 +33,7 @@ using QuantConnect.Securities;
 using QuantConnect.Securities.Option;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine.DataFeeds
+package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// Historical datafeed stream reader for processing files on a local disk.

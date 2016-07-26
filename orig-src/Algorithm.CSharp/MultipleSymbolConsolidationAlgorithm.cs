@@ -20,7 +20,7 @@ using QuantConnect.Data.Consolidators;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     /// <summary>
     /// This algorithm provides a structure for defining consolidators and indicators for many different symbols.
@@ -42,11 +42,11 @@ namespace QuantConnect.Algorithm.Examples
         /// <summary>
         /// Holds all of our data keyed by each symbol
         /// </summary>
-        public readonly Dictionary<string, SymbolData> Data = new Dictionary<string, SymbolData>();
+        public readonly Map<String, SymbolData> Data = new Map<String, SymbolData>();
         /// <summary>
         /// Contains all of our equity symbols
         /// </summary>
-        public readonly IReadOnlyList<string> EquitySymbols = new List<string>
+        public readonly IReadOnlyList<String> EquitySymbols = new List<String>
         {
             "AAPL", 
             "SPY", 
@@ -55,7 +55,7 @@ namespace QuantConnect.Algorithm.Examples
         /// <summary>
         /// Contains all of our forex symbols
         /// </summary>
-        public readonly IReadOnlyList<string> ForexSymbols = new List<string>
+        public readonly IReadOnlyList<String> ForexSymbols = new List<String>
         {
             "EURUSD",
             "USDJPY",

@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Represents a type capable of fetching Order instances by its QC order id or by a brokerage id

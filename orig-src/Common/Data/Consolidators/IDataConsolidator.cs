@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Data.Consolidators
+package com.quantconnect.lean.Data.Consolidators
 {
     /// <summary>
     /// Event handler type for the IDataConsolidator.DataConsolidated event

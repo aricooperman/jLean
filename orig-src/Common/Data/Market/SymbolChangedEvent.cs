@@ -16,7 +16,7 @@
 
 using System;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Symbol changed event of a security. This is generated when a symbol is remapped for a given

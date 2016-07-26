@@ -20,7 +20,7 @@
 using System.Reflection;
 using System.Text;
 
-namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
+package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 {
 	public interface ISmartProperty
 	{
@@ -68,7 +68,7 @@ namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
 			// This is ugly, but c'est la vie for now
 			if (_value is bool)
 			{	// boolean values need to be lower case to be parsed correctly
-				return _value.ToString().ToLower();
+				return _value.ToString().toLowerCase();
 			}
 			return _value.ToString();
 		}

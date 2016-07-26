@@ -16,7 +16,7 @@
 using System;
 using System.ComponentModel.Composition;
 
-namespace QuantConnect.Logging
+package com.quantconnect.lean.Logging
 {
     /// <summary>
     /// Interface for redirecting log output

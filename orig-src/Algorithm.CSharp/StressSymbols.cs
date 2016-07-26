@@ -16,19 +16,19 @@
 using System.Collections.Generic;
 using QuantConnect.Securities.Forex;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     public static class StressSymbols
     {
         /// <summary>
         /// The forex symbols.
         /// </summary>
-        public static HashSet<string> ForexSymbols = new HashSet<string>(Currencies.CurrencyPairs);
+        public static HashSet<String> ForexSymbols = new HashSet<String>(Currencies.CurrencyPairs);
 
         /// <summary>
         /// The stock symbols.
         /// </summary>
-        public static HashSet<string> StockSymbols = new HashSet<string>
+        public static HashSet<String> StockSymbols = new HashSet<String>
         {
             "A",
             "AA",

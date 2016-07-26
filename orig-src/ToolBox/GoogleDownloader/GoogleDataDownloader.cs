@@ -20,7 +20,7 @@ using System.Net;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.ToolBox.GoogleDownloader
+package com.quantconnect.lean.ToolBox.GoogleDownloader
 {
     /// <summary>
     /// Google Data Downloader class

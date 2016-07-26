@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Securities.Equity
+package com.quantconnect.lean.Securities.Equity
 {
     /// <summary>
     /// Equity cache override.

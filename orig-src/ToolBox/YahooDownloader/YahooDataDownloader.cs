@@ -18,7 +18,7 @@ using System.Net;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.ToolBox.YahooDownloader
+package com.quantconnect.lean.ToolBox.YahooDownloader
 {
     /// <summary>
     /// Yahoo Data Downloader class 

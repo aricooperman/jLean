@@ -18,7 +18,7 @@ using System.Collections.Concurrent;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Securities 
+package com.quantconnect.lean.Securities 
 {
     /// <summary>
     /// Base class caching caching spot for security data and any other temporary properties.
@@ -32,7 +32,7 @@ namespace QuantConnect.Securities
         // this is used to prefer quote bar data over the tradebar data
         private DateTime _lastQuoteBarUpdate;
         private BaseData _lastData;
-        private readonly ConcurrentDictionary<Type, BaseData> _dataByType = new ConcurrentDictionary<Type, BaseData>();
+        private readonly ConcurrentMap<Type, BaseData> _dataByType = new ConcurrentMap<Type, BaseData>();
 
         /// <summary>
         /// Gets the most recent price submitted to this cache

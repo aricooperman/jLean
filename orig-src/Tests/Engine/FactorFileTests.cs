@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using QuantConnect.Data.Auxiliary;
 
-namespace QuantConnect.Tests.Engine
+package com.quantconnect.lean.Tests.Engine
 {
     [TestFixture]
     public class FactorFileTests

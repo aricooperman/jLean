@@ -2,7 +2,7 @@
 using System.Linq;
 using QuantConnect.Data;
 
-namespace QuantConnect.Algorithm.CSharp.Benchmarks
+package com.quantconnect.lean.Algorithm.CSharp.Benchmarks
 {
     public class EmptyMinute400EquityAlgorithm : QCAlgorithm
     {

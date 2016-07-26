@@ -23,7 +23,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Logging;
 using SevenZip;
 
-namespace QuantConnect.ToolBox.DukascopyDownloader
+package com.quantconnect.lean.ToolBox.DukascopyDownloader
 {
     /// <summary>
     /// Dukascopy Data Downloader class
@@ -205,9 +205,9 @@ namespace QuantConnect.ToolBox.DukascopyDownloader
 
                         for (int i = 0; i < count; i++)
                         {
-                            ReverseBytes(p); uint time = *p++;
-                            ReverseBytes(p); uint ask = *p++;
-                            ReverseBytes(p); uint bid = *p++;
+                            ReverseBytes(p); UnsignedInt time = *p++;
+                            ReverseBytes(p); UnsignedInt ask = *p++;
+                            ReverseBytes(p); UnsignedInt bid = *p++;
                             p++; p++;
 
                             if (bid > 0 && ask > 0)

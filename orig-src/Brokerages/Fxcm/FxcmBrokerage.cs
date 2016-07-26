@@ -29,7 +29,7 @@ using QuantConnect.Logging;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Brokerages.Fxcm
+package com.quantconnect.lean.Brokerages.Fxcm
 {
     /// <summary>
     /// FXCM brokerage - implementation of IBrokerage interface

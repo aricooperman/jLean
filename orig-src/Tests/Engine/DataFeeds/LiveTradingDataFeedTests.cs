@@ -32,7 +32,7 @@ using QuantConnect.Packets;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Engine.DataFeeds
+package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     [TestFixture, Ignore("These tests depend on a remote server")]
     public class LiveTradingDataFeedTests
@@ -40,7 +40,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds
         [Test]
         public void EmitsData()
         {
-            algorithm = new AlgorithmStub(forex: new List<string> {"EURUSD"});
+            algorithm = new AlgorithmStub(forex: new List<String> {"EURUSD"});
 
             // job is used to send into DataQueueHandler
             job = new LiveNodePacket();
@@ -89,8 +89,8 @@ namespace QuantConnect.Tests.Engine.DataFeeds
         public void HandlesMultipleSecurities()
         {
             algorithm = new AlgorithmStub(
-                equities: new List<string> {"SPY", "IBM", "AAPL", "GOOG", "MSFT", "BAC", "GS"},
-                forex: new List<string> {"EURUSD", "USDJPY", "GBPJPY", "AUDUSD", "NZDUSD"}
+                equities: new List<String> {"SPY", "IBM", "AAPL", "GOOG", "MSFT", "BAC", "GS"},
+                forex: new List<String> {"EURUSD", "USDJPY", "GBPJPY", "AUDUSD", "NZDUSD"}
                 );
             feed = RunDataFeed(algorithm);
 
@@ -160,7 +160,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds
             // new impl sends all, the restriction shouldn't live in the feed, but rather in the
             // queue handler impl
 
-            algorithm = new AlgorithmStub(equities: new List<string> { "SPY" }, forex: new List<string> { "EURUSD" });
+            algorithm = new AlgorithmStub(equities: new List<String> { "SPY" }, forex: new List<String> { "EURUSD" });
             algorithm.AddData<RemoteFileBaseData>("RemoteFile");
             remoteFile = SymbolCache.GetSymbol("RemoteFile");
             FuncDataQueueHandler dataQueueHandler;
@@ -175,7 +175,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds
         [Test]
         public void Unsubscribes()
         {
-            algorithm = new AlgorithmStub(equities: new List<string> { "SPY" }, forex: new List<string> { "EURUSD" });
+            algorithm = new AlgorithmStub(equities: new List<String> { "SPY" }, forex: new List<String> { "EURUSD" });
             algorithm.AddData<RemoteFileBaseData>("RemoteFile");
             remoteFile = SymbolCache.GetSymbol("RemoteFile");
             FuncDataQueueHandler dataQueueHandler;
@@ -221,7 +221,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds
         [Test]
         public void EmitsForexDataWithRoundedUtcTimes()
         {
-            algorithm = new AlgorithmStub(forex: new List<string> { "EURUSD" });
+            algorithm = new AlgorithmStub(forex: new List<String> { "EURUSD" });
 
             feed = RunDataFeed(algorithm);
 

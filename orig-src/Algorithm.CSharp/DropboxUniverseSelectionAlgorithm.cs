@@ -20,7 +20,7 @@ using System.Net;
 using QuantConnect.Data;
 using QuantConnect.Data.UniverseSelection;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// In this algortihm we show how you can easily use the universe selection feature to fetch symbols
@@ -32,7 +32,7 @@ namespace QuantConnect.Algorithm.CSharp
         // the changes from the previous universe selection
         private SecurityChanges _changes = SecurityChanges.None;
         // only used in backtest for caching the file results
-        private readonly Dictionary<DateTime, List<string>> _backtestSymbolsPerDay = new Dictionary<DateTime, List<string>>();
+        private readonly Map<DateTime, List<String>> _backtestSymbolsPerDay = new Map<DateTime, List<String>>();
 
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
@@ -85,7 +85,7 @@ namespace QuantConnect.Algorithm.CSharp
                     }
 
                     // if we have symbols for this date return them, else specify Universe.Unchanged
-                    List<string> result;
+                    List<String> result;
                     if (_backtestSymbolsPerDay.TryGetValue(dateTime.Date, out result))
                     {
                         return result;

@@ -17,7 +17,7 @@ using QuantConnect.Brokerages;
 using QuantConnect.Data.Market;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// This algorithm shows how to set a custom security initializer.

@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using QuantConnect.Data.UniverseSelection;
 
-namespace QuantConnect.Data.Custom
+package com.quantconnect.lean.Data.Custom
 {
     /// <summary>
     /// Helper data type for FXCM's public macro economic sentiment API.
@@ -40,13 +40,13 @@ namespace QuantConnect.Data.Custom
         /// <summary>
         /// Title of the event.
         /// </summary>
-        [JsonProperty(PropertyName = "title")]
+        @JsonProperty( "title")]
         public String Title;
 
         /// <summary>
         /// Date the event was displayed on DailyFX
         /// </summary>
-        [JsonProperty(PropertyName = "displayDate")]
+        @JsonProperty( "displayDate")]
         public DateTimeOffset DisplayDate; 
 
         /// <summary>
@@ -55,62 +55,62 @@ namespace QuantConnect.Data.Custom
         /// <remarks>
         ///  This is dated 1970, ignore the date component.
         /// </remarks>
-        [JsonProperty(PropertyName = "displayTime")]
+        @JsonProperty( "displayTime")]
         public DateTimeOffset DisplayTime;
 
         /// <summary>
         /// Importance assignment from FxDaily API.
         /// </summary>
-        [JsonProperty(PropertyName = "importance")]
+        @JsonProperty( "importance")]
         public FxDailyImportance Importance;
 
         /// <summary>
         /// What is the perceived meaning of this announcement result?
         /// </summary>
-        [JsonProperty(PropertyName = "better")]
+        @JsonProperty( "better")]
         [JsonConverter(typeof(DailyFxMeaningEnumConverter))]
         public FxDailyMeaning Meaning;
 
         /// <summary>
         /// Currency for this event.
         /// </summary>
-        [JsonProperty(PropertyName = "currency")]
+        @JsonProperty( "currency")]
         public String Currency;
 
         /// <summary>
         /// Realized value of the economic tracker
         /// </summary>
-        [JsonProperty(PropertyName = "actual")]
+        @JsonProperty( "actual")]
         public String Actual;
 
         /// <summary>
         /// Forecast value of the economic tracker
         /// </summary>
-        [JsonProperty(PropertyName = "forecast")]
+        @JsonProperty( "forecast")]
         public String Forecast;
 
         /// <summary>
         /// Previous value of the economic tracker
         /// </summary>
-        [JsonProperty(PropertyName = "previous")]
+        @JsonProperty( "previous")]
         public String Previous;
 
         /// <summary>
         /// Is this a daily event?
         /// </summary>
-        [JsonProperty(PropertyName = "daily")]
+        @JsonProperty( "daily")]
         public boolean DailyEvent;
 
         /// <summary>
         /// Description and commentary on the event.
         /// </summary>
-        [JsonProperty(PropertyName = "commentary")]
+        @JsonProperty( "commentary")]
         public String Commentary;
 
         /// <summary>
         /// Language for this event.
         /// </summary>
-        [JsonProperty(PropertyName = "language")]
+        @JsonProperty( "language")]
         public String Language;
 
         /// <summary>
@@ -245,19 +245,19 @@ namespace QuantConnect.Data.Custom
         /// <summary>
         /// Low importance
         /// </summary>
-        [JsonProperty(PropertyName = "low")]
+        @JsonProperty( "low")]
         Low,
 
         /// <summary>
         /// Medium importance
         /// </summary>
-        [JsonProperty(PropertyName = "medium")]
+        @JsonProperty( "medium")]
         Medium,
 
         /// <summary>
         /// High importance
         /// </summary>
-        [JsonProperty(PropertyName = "high")]
+        @JsonProperty( "high")]
         High
     }
 
@@ -269,19 +269,19 @@ namespace QuantConnect.Data.Custom
         /// <summary>
         /// The impact is perceived to be neutral.
         /// </summary>
-        [JsonProperty(PropertyName = "NONE")]
+        @JsonProperty( "NONE")]
         None,
 
         /// <summary>
         /// The economic impact is perceived to be better.
         /// </summary>
-        [JsonProperty(PropertyName = "TRUE")]
+        @JsonProperty( "TRUE")]
         Better,
 
         /// <summary>
         /// The economic impact is perceived to be worse.
         /// </summary>
-        [JsonProperty(PropertyName = "FALSE")]
+        @JsonProperty( "FALSE")]
         Worse
     }
 

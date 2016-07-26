@@ -23,7 +23,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Logging;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Queues
+package com.quantconnect.lean.Queues
 {
     /// <summary>
     /// Represents a command queue handler that sources it's commands from

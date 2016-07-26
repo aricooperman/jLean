@@ -17,7 +17,7 @@
 using System;
 using QuantConnect.Data;
 
-namespace QuantConnect.Tests.Engine.DataFeeds
+package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     /// <summary>
     /// Custom data type that uses a remote file download
@@ -27,7 +27,7 @@ namespace QuantConnect.Tests.Engine.DataFeeds
         public override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode)
         {
             csv = line.Split(',');
-            if (csv[1].ToLower() != config.Symbol.ToString().ToLower())
+            if (csv[1].toLowerCase() != config.Symbol.ToString().toLowerCase())
             {
                 // this row isn't for me
                 return null;

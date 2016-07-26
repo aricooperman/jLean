@@ -15,7 +15,7 @@
 
 using QuantConnect.Securities;
 
-namespace QuantConnect.Orders.Fees
+package com.quantconnect.lean.Orders.Fees
 {
     /// <summary>
     /// Represents a model the simulates order fees

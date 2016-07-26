@@ -15,7 +15,7 @@
 
 using System.ComponentModel;
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Specifies the possible error states during presubmission checks

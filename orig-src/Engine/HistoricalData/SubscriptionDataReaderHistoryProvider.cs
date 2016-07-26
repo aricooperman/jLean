@@ -36,7 +36,7 @@ using QuantConnect.Statistics;
 using QuantConnect.Util;
 using HistoryRequest = QuantConnect.Data.HistoryRequest;
 
-namespace QuantConnect.Lean.Engine.HistoricalData
+package com.quantconnect.lean.Lean.Engine.HistoricalData
 {
     /// <summary>
     /// Provides an implementation of <see cref="IHistoryProvider"/> that uses <see cref="BaseData"/>
@@ -63,7 +63,7 @@ namespace QuantConnect.Lean.Engine.HistoricalData
         /// <param name="mapFileProvider">Provider used to get a map file resolver to handle equity mapping</param>
         /// <param name="factorFileProvider">Provider used to get factor files to handle equity price scaling</param>
         /// <param name="statusUpdate">Function used to send status updates</param>
-        public void Initialize(AlgorithmNodePacket job, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider, Action<int> statusUpdate)
+        public void Initialize(AlgorithmNodePacket job, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider, Action<Integer> statusUpdate)
         {
             _mapFileProvider = mapFileProvider;
             _factorFileProvider = factorFileProvider;
@@ -224,7 +224,7 @@ namespace QuantConnect.Lean.Engine.HistoricalData
             #region Implementation of IResultHandler
 
             public ConcurrentQueue<Packet> Messages { get; set; }
-            public ConcurrentDictionary<string, Chart> Charts { get; set; }
+            public ConcurrentMap<String, Chart> Charts { get; set; }
             public TimeSpan ResamplePeriod { get; private set; }
             public TimeSpan NotificationPeriod { get; private set; }
             public boolean IsActive { get; private set; }
@@ -249,7 +249,7 @@ namespace QuantConnect.Lean.Engine.HistoricalData
             public void SampleRange(List<Chart> samples) { }
             public void SetAlgorithm(IAlgorithm algorithm) { }
             public void StoreResult(Packet packet, boolean async = false) { }
-            public void SendFinalResult(AlgorithmNodePacket job, Dictionary<int, Order> orders, Dictionary<DateTime, decimal> profitLoss, Dictionary<string, Holding> holdings, StatisticsResults statisticsResults, Dictionary<string, string> banner) { }
+            public void SendFinalResult(AlgorithmNodePacket job, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, StatisticsResults statisticsResults, Map<String,String> banner) { }
             public void SendStatusUpdate(AlgorithmStatus status, String message = "") { }
             public void SetChartSubscription( String symbol) { }
             public void RuntimeStatistic( String key, String value) { }

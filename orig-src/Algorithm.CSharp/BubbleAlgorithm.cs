@@ -23,7 +23,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 using QuantConnect.Securities;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Based on a macroeconomic indicator(CAPE Ratio), we are looking for entry/exit points for momentum stocks
@@ -44,8 +44,8 @@ namespace QuantConnect
         RelativeStrengthIndex rsi = new RelativeStrengthIndex(14);
         ArrayList symbols = new ArrayList();
 
-        Dictionary<string, RelativeStrengthIndex> rsiDic = new Dictionary<string, RelativeStrengthIndex>();
-        Dictionary<string, MovingAverageConvergenceDivergence> macdDic = new Dictionary<string, MovingAverageConvergenceDivergence>();
+        Map<String, RelativeStrengthIndex> rsiDic = new Map<String, RelativeStrengthIndex>();
+        Map<String, MovingAverageConvergenceDivergence> macdDic = new Map<String, MovingAverageConvergenceDivergence>();
 
         /// <summary>
         /// Called at the start of your algorithm to setup your requirements:

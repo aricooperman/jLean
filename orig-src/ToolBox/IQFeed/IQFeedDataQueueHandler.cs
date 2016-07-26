@@ -29,7 +29,7 @@ using System.Threading;
 using HistoryRequest = QuantConnect.Data.HistoryRequest;
 using Timer = System.Timers.Timer;
 
-namespace QuantConnect.ToolBox.IQFeed
+package com.quantconnect.lean.ToolBox.IQFeed
 {
     /// <summary>
     /// IQFeedDataQueueHandler is an implementation of IDataQueueHandler and IHistoryProvider
@@ -152,7 +152,7 @@ namespace QuantConnect.ToolBox.IQFeed
         /// <param name="mapFileProvider">Provider used to get a map file resolver to handle equity mapping</param>
         /// <param name="factorFileProvider">Provider used to get factor files to handle equity price scaling</param>
         /// <param name="statusUpdate">Function used to send status updates</param>
-        public void Initialize(AlgorithmNodePacket job, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider, Action<int> statusUpdate)
+        public void Initialize(AlgorithmNodePacket job, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider, Action<Integer> statusUpdate)
         {
             return;
         }
@@ -293,7 +293,7 @@ namespace QuantConnect.ToolBox.IQFeed
             private Stopwatch _stopwatch = new Stopwatch();
             private readonly Timer _timer;
             private readonly BlockingCollection<BaseData> _dataQueue;
-            private readonly ConcurrentDictionary<string, double> _prices;
+            private readonly ConcurrentMap<String, double> _prices;
 
             public DateTime FeedTime
             {
@@ -313,7 +313,7 @@ namespace QuantConnect.ToolBox.IQFeed
                 : base(80)
             {
                 start = DateTime.Now;
-                _prices = new ConcurrentDictionary<string, double>();
+                _prices = new ConcurrentMap<String, double>();
 
                 _dataQueue = dataQueue;
                 Level1SummaryUpdateEvent += OnLevel1SummaryUpdateEvent;
@@ -458,8 +458,8 @@ namespace QuantConnect.ToolBox.IQFeed
         public class HistoryPort : IQLookupHistorySymbolClient
         {
             private boolean _inProgress;
-            private ConcurrentDictionary<string, HistoryRequest> _requestDataByRequestId;
-            private ConcurrentDictionary<string, List<BaseData>> _currentRequest;
+            private ConcurrentMap<String, HistoryRequest> _requestDataByRequestId;
+            private ConcurrentMap<String, List<BaseData>> _currentRequest;
             private readonly String DataDirectory = Config.Get("data-directory", "../../../Data");
             private readonly double MaxHistoryRequestMinutes = Config.GetDouble("max-history-minutes", 5);
 
@@ -469,8 +469,8 @@ namespace QuantConnect.ToolBox.IQFeed
             public HistoryPort()
                 : base(80)
             {
-                _requestDataByRequestId = new ConcurrentDictionary<string, HistoryRequest>();
-                _currentRequest = new ConcurrentDictionary<string, List<BaseData>>();
+                _requestDataByRequestId = new ConcurrentMap<String, HistoryRequest>();
+                _currentRequest = new ConcurrentMap<String, List<BaseData>>();
             }
 
             /// <summary>

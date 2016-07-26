@@ -20,7 +20,7 @@ using NodaTime;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Tests.Engine.DataFeeds
+package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     /// <summary>
     /// Custom data type that causes rest api calls

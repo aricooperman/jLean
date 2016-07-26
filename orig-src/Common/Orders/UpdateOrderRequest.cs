@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Defines a request to update an order's values
@@ -54,7 +54,7 @@ namespace QuantConnect.Orders
         /// <filterpriority>2</filterpriority>
         public override String ToString()
         {
-            updates = new List<string>();
+            updates = new List<String>();
             if (Quantity.HasValue)
             {
                 updates.Add("Quantity: " + Quantity.Value);

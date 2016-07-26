@@ -19,18 +19,18 @@ using System.Linq;
 using QuantConnect.Data;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Algorithm
+package com.quantconnect.lean.Algorithm
 {
     public partial class QCAlgorithm
     {
-        private Dictionary<string, Chart> _charts = new Dictionary<string, Chart>();
-        private Dictionary<string, string> _runtimeStatistics = new Dictionary<string, string>();
+        private Map<String, Chart> _charts = new Map<String, Chart>();
+        private Map<String,String> _runtimeStatistics = new Map<String,String>();
 
         /// <summary>
         /// Access to the runtime statistics property. User provided statistics.
         /// </summary>
         /// <remarks> RuntimeStatistics are displayed in the head banner in live trading</remarks>
-        public Dictionary<string, string> RuntimeStatistics
+        public Map<String,String> RuntimeStatistics
         {
             get
             {

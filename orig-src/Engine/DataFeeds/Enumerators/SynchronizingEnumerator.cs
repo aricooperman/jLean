@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QuantConnect.Data;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /// <summary>
     /// Represents an enumerator capable of synchronizing other base data enumerators in time.
@@ -116,7 +116,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
         private static IEnumerator<BaseData> GetSynchronizedEnumerator(IEnumerator<BaseData>[] enumerators)
         {
             ticks = DateTime.MaxValue.Ticks;
-            collection = new ConcurrentDictionary<IEnumerator<BaseData>, int>();
+            collection = new ConcurrentMap<IEnumerator<BaseData>,Integer>();
             foreach (enumerator in enumerators)
             {
                 if (enumerator.MoveNext())

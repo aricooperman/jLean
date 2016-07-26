@@ -21,7 +21,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Logging;
 
-namespace QuantConnect.ToolBox.AlgoSeekOptionsConverter
+package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
 {
     /// <summary>
     /// Provides an implementation of <see cref="IStreamParser"/> that parses raw algo seek options data

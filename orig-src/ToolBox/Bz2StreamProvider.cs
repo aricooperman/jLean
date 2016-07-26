@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using System.IO;
 using Ionic.BZip2;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     public class Bz2StreamProvider : IStreamProvider
     {

@@ -18,7 +18,7 @@ using Newtonsoft.Json;
 using NUnit.Framework;
 using QuantConnect.Brokerages.Tradier;
 
-namespace QuantConnect.Tests.Brokerages.Tradier
+package com.quantconnect.lean.Tests.Brokerages.Tradier
 {
     [TestFixture]
     public class TradierBrokerageSerializationTests

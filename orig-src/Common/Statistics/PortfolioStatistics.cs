@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MathNet.Numerics.Statistics;
 
-namespace QuantConnect.Statistics
+package com.quantconnect.lean.Statistics
 {
     /// <summary>
     /// The <see cref="PortfolioStatistics"/> class represents a set of statistics calculated from equity and benchmark samples
@@ -130,8 +130,8 @@ namespace QuantConnect.Statistics
         /// <param name="startingCapital">The algorithm starting capital</param>
         /// <param name="tradingDaysPerYear">The number of trading days per year</param>
         public PortfolioStatistics(
-            SortedDictionary<DateTime, decimal> profitLoss,
-            SortedDictionary<DateTime, decimal> equity,
+            SortedMap<DateTime, decimal> profitLoss,
+            SortedMap<DateTime, decimal> equity,
             List<double> listPerformance, 
             List<double> listBenchmark, 
             BigDecimal startingCapital, 
@@ -226,7 +226,7 @@ namespace QuantConnect.Statistics
         /// <param name="equityOverTime">The list of daily equity values</param>
         /// <param name="rounding">The number of BigDecimal places to round the result</param>
         /// <returns>The drawdown percentage</returns>
-        private static BigDecimal DrawdownPercent(SortedDictionary<DateTime, decimal> equityOverTime, int rounding = 2)
+        private static BigDecimal DrawdownPercent(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2)
         {
             prices = equityOverTime.Values.ToList();
             if (prices.Count == 0) return 0;

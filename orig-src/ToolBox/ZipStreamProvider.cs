@@ -18,7 +18,7 @@ using System.IO;
 using System.Linq;
 using Ionic.Zip;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Provides an implementation of <see cref="IStreamProvider"/> that opens zip files
@@ -26,7 +26,7 @@ namespace QuantConnect.ToolBox
     public class ZipStreamProvider : IStreamProvider
     {
         private readonly object _sync = new object();
-        private readonly Dictionary<string, ZipFile> _zipFiles = new Dictionary<string, ZipFile>();
+        private readonly Map<String, ZipFile> _zipFiles = new Map<String, ZipFile>();
 
         /// <summary>
         /// Opens the specified source as read to be consumed stream

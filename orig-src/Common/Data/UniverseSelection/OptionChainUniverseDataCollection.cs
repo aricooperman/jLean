@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Data.UniverseSelection
+package com.quantconnect.lean.Data.UniverseSelection
 {
     /// <summary>
     /// Defines the universe selection data type for <see cref="OptionChainUniverse"/>

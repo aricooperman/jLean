@@ -23,7 +23,7 @@ using QuantConnect.Lean.Engine.Results;
 using QuantConnect.Lean.Engine.TransactionHandlers;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Lean.Engine.Setup
+package com.quantconnect.lean.Lean.Engine.Setup
 {
     /// <summary>
     /// Interface to setup the algorithm. Pass in a raw algorithm, return one with portfolio, cash, etc already preset.
@@ -34,7 +34,7 @@ namespace QuantConnect.Lean.Engine.Setup
         /// <summary>
         /// Any errors from the initialization stored here:
         /// </summary>
-        List<string> Errors 
+        List<String> Errors 
         { 
             get; 
             set; 

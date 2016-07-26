@@ -18,7 +18,7 @@
 */
 using System.Collections.Generic;
 
-namespace QuantConnect.Brokerages.Oanda.DataType.Communications
+package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
     /// <summary>

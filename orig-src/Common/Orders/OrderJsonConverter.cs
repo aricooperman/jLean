@@ -21,7 +21,7 @@ using QuantConnect.Configuration;
 using QuantConnect.Interfaces;
 using QuantConnect.Util;
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Provides an implementation of <see cref="JsonConverter"/> that can deserialize Orders
@@ -88,39 +88,39 @@ namespace QuantConnect.Orders
         public static Order CreateOrderFromJObject(JObject jObject)
         {
             // create order instance based on order type field
-            orderType = (OrderType) jObject["Type"].Value<int>();
+            orderType = (OrderType) jObject["Type"].Value<Integer>();
             order = CreateOrder(orderType, jObject);
 
             // populate common order properties
-            order.Id = jObject["Id"].Value<int>();
-            order.Quantity = jObject["Quantity"].Value<int>();
-            order.Status = (OrderStatus) jObject["Status"].Value<int>();
+            order.Id = jObject["Id"].Value<Integer>();
+            order.Quantity = jObject["Quantity"].Value<Integer>();
+            order.Status = (OrderStatus) jObject["Status"].Value<Integer>();
             order.Time = jObject["Time"].Value<DateTime>();
-            order.Tag = jObject["Tag"].Value<string>();
-            order.Quantity = jObject["Quantity"].Value<int>();
+            order.Tag = jObject["Tag"].Value<String>();
+            order.Quantity = jObject["Quantity"].Value<Integer>();
             order.Price = jObject["Price"].Value<decimal>();
-            securityType = (SecurityType) jObject["SecurityType"].Value<int>();
-            order.BrokerId = jObject["BrokerId"].Select(x => x.Value<string>()).ToList();
-            order.ContingentId = jObject["ContingentId"].Value<int>();
+            securityType = (SecurityType) jObject["SecurityType"].Value<Integer>();
+            order.BrokerId = jObject["BrokerId"].Select(x => x.Value<String>()).ToList();
+            order.ContingentId = jObject["ContingentId"].Value<Integer>();
 
             market = Market.USA;
             if (securityType == SecurityType.Forex) market = Market.FXCM;
 
             if (jObject.SelectTokens("Symbol.ID").Any())
             {
-                sid = SecurityIdentifier.Parse(jObject.SelectTokens("Symbol.ID").Single().Value<string>());
-                ticker = jObject.SelectTokens("Symbol.Value").Single().Value<string>();
+                sid = SecurityIdentifier.Parse(jObject.SelectTokens("Symbol.ID").Single().Value<String>());
+                ticker = jObject.SelectTokens("Symbol.Value").Single().Value<String>();
                 order.Symbol = new Symbol(sid, ticker);
             }
             else if (jObject.SelectTokens("Symbol.Value").Any())
             {
                 // provide for backwards compatibility
-                ticker = jObject.SelectTokens("Symbol.Value").Single().Value<string>();
+                ticker = jObject.SelectTokens("Symbol.Value").Single().Value<String>();
                 order.Symbol = Symbol.Create(ticker, securityType, market);
             }
             else
             {
-                tickerstring = jObject["Symbol"].Value<string>();
+                tickerstring = jObject["Symbol"].Value<String>();
                 order.Symbol = Symbol.Create(tickerstring, securityType, market);
             }
             return order;

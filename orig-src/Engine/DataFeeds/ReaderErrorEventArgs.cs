@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Lean.Engine.DataFeeds
+package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// Event arguments for the <see cref="TextSubscriptionDataSourceReader.ReaderError"/> event.

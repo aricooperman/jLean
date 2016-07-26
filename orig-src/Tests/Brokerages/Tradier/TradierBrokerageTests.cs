@@ -25,7 +25,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Brokerages.Tradier
+package com.quantconnect.lean.Tests.Brokerages.Tradier
 {
     [TestFixture, Ignore("This test requires a configured and active Tradier account")]
     public class TradierBrokerageTests : BrokerageTests
@@ -90,7 +90,7 @@ namespace QuantConnect.Tests.Brokerages.Tradier
         protected override BigDecimal GetAskPrice(Symbol symbol)
         {
             tradier = (TradierBrokerage) Brokerage;
-            quotes = tradier.GetQuotes(new List<string> {symbol.Value});
+            quotes = tradier.GetQuotes(new List<String> {symbol.Value});
             return quotes.Single().Ask;
         }
 

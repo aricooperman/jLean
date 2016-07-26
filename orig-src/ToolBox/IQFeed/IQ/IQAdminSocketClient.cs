@@ -20,7 +20,7 @@ using System.Globalization;
 
 // ToDo: When a command is given, create a default event - command applied.........
 
-namespace QuantConnect.ToolBox.IQFeed
+package com.quantconnect.lean.ToolBox.IQFeed
 {
  
     public class ClientStatsEventArgs : EventArgs 

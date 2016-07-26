@@ -16,7 +16,7 @@
 using System;
 using NodaTime;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Event arguments class for the <see cref="LocalTimeKeeper.TimeUpdated"/> event

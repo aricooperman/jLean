@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// A never ending queue that will dequeue and reenqueue the same item

@@ -16,7 +16,7 @@
 
 using Newtonsoft.Json;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Simple log message instruction from the lean engine.
@@ -26,13 +26,13 @@ namespace QuantConnect.Packets
         /// <summary>
         /// Log message to the users console:
         /// </summary>
-        [JsonProperty(PropertyName = "sMessage")]
+        @JsonProperty( "sMessage")]
         public String Message;
 
         /// <summary>
         /// Algorithm Id requesting this logging
         /// </summary>
-        [JsonProperty(PropertyName = "sAlgorithmID")]
+        @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId;
 
         /// <summary>

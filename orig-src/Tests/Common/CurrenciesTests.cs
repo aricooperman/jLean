@@ -16,7 +16,7 @@
 using NUnit.Framework;
 using QuantConnect.Securities.Forex;
 
-namespace QuantConnect.Tests.Common
+package com.quantconnect.lean.Tests.Common
 {
     [TestFixture]
     public class CurrenciesTests

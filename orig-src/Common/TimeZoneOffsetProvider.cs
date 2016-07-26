@@ -19,7 +19,7 @@ using System.Linq;
 using NodaTime;
 using NodaTime.TimeZones;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Represents the discontinuties in a single time zone and provides offsets to UTC.

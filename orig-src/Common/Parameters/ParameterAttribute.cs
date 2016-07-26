@@ -20,7 +20,7 @@ using System.Reflection;
 using QuantConnect.Logging;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Parameters
+package com.quantconnect.lean.Parameters
 {
     /// <summary>
     /// Specifies a field or property is a parameter that can be set
@@ -56,9 +56,9 @@ namespace QuantConnect.Parameters
         /// Uses reflections to inspect the instance for any parameter attributes.
         /// If a value is found in the parameters dictionary, it is set.
         /// </summary>
-        /// <param name="parameters">The parameters dictionary</param>
+        /// <param name="parameters">The parameters Map</param>
         /// <param name="instance">The instance to set parameters on</param>
-        public static void ApplyAttributes(Dictionary<string, string> parameters, object instance)
+        public static void ApplyAttributes(Map<String,String> parameters, object instance)
         {
             if (instance == null) throw new ArgumentNullException("instance");
 
@@ -118,9 +118,9 @@ namespace QuantConnect.Parameters
         /// </summary>
         /// <param name="assembly">The assembly to inspect</param>
         /// <returns>Parameters dictionary keyed by parameter name with a value of the member type</returns>
-        public static Dictionary<string, string> GetParametersFromAssembly(Assembly assembly)
+        public static Map<String,String> GetParametersFromAssembly(Assembly assembly)
         {
-            parameters = new Dictionary<string, string>();
+            parameters = new Map<String,String>();
             foreach (type in assembly.GetTypes())
             {
                 Log.Debug("ParameterAttribute.GetParametersFromAssembly(): Checking type " + type.Name);

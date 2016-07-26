@@ -19,7 +19,7 @@ using System.Collections.Concurrent;
 using System.Threading;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Runner type used to run <see cref="IParallelRunnerWorkItem"/>

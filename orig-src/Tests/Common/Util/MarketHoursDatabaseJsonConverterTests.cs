@@ -24,7 +24,7 @@ using NUnit.Framework;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Common.Util
+package com.quantconnect.lean.Tests.Common.Util
 {
     [TestFixture]
     public class MarketHoursDatabaseJsonConverterTests
@@ -72,7 +72,7 @@ namespace QuantConnect.Tests.Common.Util
                     csv = line.ToCsv();
                     dates.Add(new DateTime(int.Parse(csv[0]), int.Parse(csv[1]), int.Parse(csv[2])));
                 }
-                return new KeyValuePair<string, IEnumerable<DateTime>>(market, dates);
+                return new KeyValuePair<String, IEnumerable<DateTime>>(market, dates);
             }).ToDictionary();
             database = FromCsvFile(input, allHolidays);
             File.WriteAllText(output, JsonConvert.SerializeObject(database, Formatting.Indented));
@@ -86,9 +86,9 @@ namespace QuantConnect.Tests.Common.Util
         /// <param name="file">The csv file to be read</param>
         /// <param name="holidaysByMarket">The holidays for each market in the file, if no holiday is present then none is used</param>
         /// <returns>A new instance of the <see cref="MarketHoursDatabase"/> class representing the data in the specified file</returns>
-        public static MarketHoursDatabase FromCsvFile( String file, IReadOnlyDictionary<string, IEnumerable<DateTime>> holidaysByMarket)
+        public static MarketHoursDatabase FromCsvFile( String file, IReadOnlyMap<String, IEnumerable<DateTime>> holidaysByMarket)
         {
-            exchangeHours = new Dictionary<SecurityDatabaseKey, MarketHoursDatabase.Entry>();
+            exchangeHours = new Map<SecurityDatabaseKey, MarketHoursDatabase.Entry>();
 
             if (!File.Exists(file))
             {
@@ -119,7 +119,7 @@ namespace QuantConnect.Tests.Common.Util
         /// <param name="key">The key used to uniquely identify these market hours</param>
         /// <returns>A new <see cref="SecurityExchangeHours"/> for the specified csv line and holidays</returns>
         private static MarketHoursDatabase.Entry FromCsvLine( String line,
-            IReadOnlyDictionary<string, IEnumerable<DateTime>> holidaysByMarket,
+            IReadOnlyMap<String, IEnumerable<DateTime>> holidaysByMarket,
             out SecurityDatabaseKey key)
         {
             csv = line.Split(',');

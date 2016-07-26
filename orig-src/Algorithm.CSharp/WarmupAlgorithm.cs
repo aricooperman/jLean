@@ -2,7 +2,7 @@
 using QuantConnect.Data;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     public class WarmupAlgorithm : QCAlgorithm
     {

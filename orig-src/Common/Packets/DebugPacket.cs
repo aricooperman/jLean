@@ -16,7 +16,7 @@
 
 using Newtonsoft.Json;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Send a simple debug message from the users algorithm to the console.
@@ -26,32 +26,32 @@ namespace QuantConnect.Packets
         /// <summary>
         /// String debug message to send to the users console
         /// </summary>
-        [JsonProperty(PropertyName = "sMessage")]
+        @JsonProperty( "sMessage")]
         public String Message;
 
         /// <summary>
         /// Associated algorithm Id.
         /// </summary>
-        [JsonProperty(PropertyName = "sAlgorithmID")]
+        @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId;
 
         /// <summary>
         /// Compile id of the algorithm sending this message
         /// </summary>
-        [JsonProperty(PropertyName = "sCompileID")]
+        @JsonProperty( "sCompileID")]
         public String CompileId;
 
         /// <summary>
         /// Project Id for this message
         /// </summary>
-        [JsonProperty(PropertyName = "iProjectID")]
+        @JsonProperty( "iProjectID")]
         public int ProjectId;
 
         /// <summary>
         /// True to emit message as a popup notification (toast),
         /// false to emit message in console as text
         /// </summary>
-        [JsonProperty(PropertyName = "bToast")]
+        @JsonProperty( "bToast")]
         public boolean Toast;
 
         /// <summary>

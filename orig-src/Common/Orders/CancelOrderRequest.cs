@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Defines a request to cancel an order

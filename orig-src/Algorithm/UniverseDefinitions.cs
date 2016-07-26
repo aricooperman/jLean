@@ -16,7 +16,7 @@
 
 using QuantConnect.Data.UniverseSelection;
 
-namespace QuantConnect.Algorithm
+package com.quantconnect.lean.Algorithm
 {
     /// <summary>
     /// Provides helpers for defining universes in algorithms

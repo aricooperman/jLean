@@ -19,7 +19,7 @@ using System.Linq;
 using NodaTime;
 using QuantConnect.Util;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Represents the schedule of a security exchange. This includes daily regular and extended market hours
@@ -42,7 +42,7 @@ namespace QuantConnect.Securities
         private readonly LocalMarketHours _thursday;
         private readonly LocalMarketHours _friday;
         private readonly LocalMarketHours _saturday;
-        private readonly Dictionary<DayOfWeek, LocalMarketHours> _openHoursByDay;
+        private readonly Map<DayOfWeek, LocalMarketHours> _openHoursByDay;
 
         /// <summary>
         /// Gets the time zone this exchange resides in
@@ -63,7 +63,7 @@ namespace QuantConnect.Securities
         /// <summary>
         /// Gets the market hours for this exchange
         /// </summary>
-        public IReadOnlyDictionary<DayOfWeek, LocalMarketHours> MarketHours
+        public IReadOnlyMap<DayOfWeek, LocalMarketHours> MarketHours
         {
             get { return _openHoursByDay; }
         }
@@ -86,12 +86,12 @@ namespace QuantConnect.Securities
         /// <param name="timeZone">The time zone the dates and hours are represented in</param>
         /// <param name="holidayDates">The dates this exchange is closed for holiday</param>
         /// <param name="marketHoursForEachDayOfWeek">The exchange's schedule for each day of the week</param>
-        public SecurityExchangeHours(DateTimeZone timeZone, IEnumerable<DateTime> holidayDates, IReadOnlyDictionary<DayOfWeek, LocalMarketHours> marketHoursForEachDayOfWeek)
+        public SecurityExchangeHours(DateTimeZone timeZone, IEnumerable<DateTime> holidayDates, IReadOnlyMap<DayOfWeek, LocalMarketHours> marketHoursForEachDayOfWeek)
         {
             _timeZone = timeZone;
             _holidays = holidayDates.Select(x => x.Date.Ticks).ToHashSet();
             // make a copy of the dictionary for internal use
-            _openHoursByDay = new Dictionary<DayOfWeek, LocalMarketHours>(marketHoursForEachDayOfWeek.ToDictionary());
+            _openHoursByDay = new Map<DayOfWeek, LocalMarketHours>(marketHoursForEachDayOfWeek.ToDictionary());
 
             SetMarketHoursForDay(DayOfWeek.Sunday, out _sunday);
             SetMarketHoursForDay(DayOfWeek.Monday, out _monday);

@@ -19,7 +19,7 @@
 
 using System.Collections.Generic;
 
-namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
+package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 {
     public class CandlesResponse
     {

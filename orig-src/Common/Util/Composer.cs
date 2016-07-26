@@ -26,7 +26,7 @@ using System.Reflection;
 using QuantConnect.Configuration;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides methods for obtaining exported MEF instances
@@ -51,7 +51,7 @@ namespace QuantConnect.Util
 
         private CompositionContainer _compositionContainer;
         private readonly object _exportedValuesLockObject = new object();
-        private readonly Dictionary<Type, IEnumerable> _exportedValues = new Dictionary<Type, IEnumerable>();
+        private readonly Map<Type, IEnumerable> _exportedValues = new Map<Type, IEnumerable>();
 
         /// <summary>
         /// Gets the export matching the predicate

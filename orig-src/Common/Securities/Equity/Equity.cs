@@ -19,7 +19,7 @@ using QuantConnect.Orders.Fees;
 using QuantConnect.Orders.Fills;
 using QuantConnect.Orders.Slippage;
 
-namespace QuantConnect.Securities.Equity 
+package com.quantconnect.lean.Securities.Equity 
 {
     /// <summary>
     /// Equity Security Type : Extension of the underlying Security class for equity specific behaviours.

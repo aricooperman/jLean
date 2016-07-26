@@ -19,7 +19,7 @@ using System.IO;
 using QuantConnect.Logging;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Tick class is the base representation for tick data. It is grouped into a Ticks object

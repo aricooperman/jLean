@@ -17,7 +17,7 @@ using System;
 using QuantConnect.Algorithm;
 using QuantConnect.Data.Custom;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// QuantConnect University: Futures Example

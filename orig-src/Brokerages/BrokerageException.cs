@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Brokerages
+package com.quantconnect.lean.Brokerages
 {
     /// <summary>
     /// Represents an error retuned from a broker's server

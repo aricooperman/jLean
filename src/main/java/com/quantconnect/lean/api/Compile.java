@@ -21,16 +21,16 @@ import java.util.List;
 public class Compile extends RestResponse {
 
     /// Compile Id for a sucessful build
-//    [JsonProperty(PropertyName = "compileId")]
+//    @JsonProperty( "compileId")]
     public String compileId;
 
     /// True on successful compile
-//    [JsonProperty(PropertyName = "state")]
+//    @JsonProperty( "state")]
 //    [JsonConverter(typeof(StringEnumConverter))]
     public CompileState state;
 
     /// Logs of the compilation request
-//    [JsonProperty(PropertyName = "logs")]
+//    @JsonProperty( "logs")]
     public List<String> logs;
 }
 
@@ -39,7 +39,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace QuantConnect.Api
+package com.quantconnect.lean.Api
 {
     /// <summary>
     /// Response from the compiler on a build event
@@ -49,21 +49,21 @@ namespace QuantConnect.Api
         /// <summary>
         /// Compile Id for a sucessful build
         /// </summary>
-        [JsonProperty(PropertyName = "compileId")]
+        @JsonProperty( "compileId")]
         public String CompileId;
 
         /// <summary>
         /// True on successful compile
         /// </summary>
-        [JsonProperty(PropertyName = "state")]
+        @JsonProperty( "state")]
         [JsonConverter(typeof(StringEnumConverter))]
         public CompileState State;
 
         /// <summary>
         /// Logs of the compilation request
         /// </summary>
-        [JsonProperty(PropertyName = "logs")]
-        public List<string> Logs;
+        @JsonProperty( "logs")]
+        public List<String> Logs;
     }
 }
 */

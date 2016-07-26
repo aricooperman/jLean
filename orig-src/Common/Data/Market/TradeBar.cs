@@ -20,7 +20,7 @@ using System.Threading;
 using QuantConnect.Logging;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// TradeBar class for second and minute resolution data: 

@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using QuantConnect.Data;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// In this algorithm we submit/update/cancel each order type

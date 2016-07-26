@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using NodaTime;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Scheduling
+package com.quantconnect.lean.Scheduling
 {
     /// <summary>
     /// Provides access to the real time handler's event scheduling feature
@@ -135,7 +135,7 @@ namespace QuantConnect.Scheduling
         /// <param name="dateRule">Specifies what dates the event should run</param>
         /// <param name="timeRule">Specifies the times on those dates the event should run</param>
         /// <param name="callback">The callback to be invoked</param>
-        public ScheduledEvent On(IDateRule dateRule, ITimeRule timeRule, Action<string, DateTime> callback)
+        public ScheduledEvent On(IDateRule dateRule, ITimeRule timeRule, Action<String, DateTime> callback)
         {
             name = dateRule.Name + ": " + timeRule.Name;
             return On(name, dateRule, timeRule, callback);
@@ -160,7 +160,7 @@ namespace QuantConnect.Scheduling
         /// <param name="dateRule">Specifies what dates the event should run</param>
         /// <param name="timeRule">Specifies the times on those dates the event should run</param>
         /// <param name="callback">The callback to be invoked</param>
-        public ScheduledEvent On( String name, IDateRule dateRule, ITimeRule timeRule, Action<string, DateTime> callback)
+        public ScheduledEvent On( String name, IDateRule dateRule, ITimeRule timeRule, Action<String, DateTime> callback)
         {
             // back the date up to ensure we get all events, the event scheduler will skip past events that whose time has passed
             dates = dateRule.GetDates(_securities.UtcTime.Date.AddDays(-1), Time.EndOfTime);

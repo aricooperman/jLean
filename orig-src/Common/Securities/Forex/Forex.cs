@@ -19,7 +19,7 @@ using QuantConnect.Orders.Fees;
 using QuantConnect.Orders.Fills;
 using QuantConnect.Orders.Slippage;
 
-namespace QuantConnect.Securities.Forex 
+package com.quantconnect.lean.Securities.Forex 
 {
     /// <summary>
     /// FOREX Security Object Implementation for FOREX Assets

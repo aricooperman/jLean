@@ -21,7 +21,7 @@ using QuantConnect.Configuration;
 using QuantConnect.Data.Market;
 using QuantConnect.Logging;
 
-namespace QuantConnect.ToolBox.FxcmDownloader
+package com.quantconnect.lean.ToolBox.FxcmDownloader
 {
     class Program
     {
@@ -48,7 +48,7 @@ namespace QuantConnect.ToolBox.FxcmDownloader
 
                 // Load settings from command line
                 tickers = args[0].Split(',');
-                allResolutions = args[1].ToLower() == "all";
+                allResolutions = args[1].toLowerCase() == "all";
                 resolution = allResolutions ? Resolution.Tick : (Resolution)Enum.Parse(typeof(Resolution), args[1]);
 
                 startDate = DateTime.ParseExact(args[2], "yyyyMMdd", CultureInfo.InvariantCulture);

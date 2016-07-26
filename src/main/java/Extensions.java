@@ -29,7 +29,7 @@ using QuantConnect.Data;
 using QuantConnect.Securities;
 using Timer = System.Timers.Timer;
 
-namespace QuantConnect 
+package com.quantconnect.lean 
 {
     /// <summary>
     /// Extensions function collections - group all static extensions functions here.
@@ -109,12 +109,12 @@ namespace QuantConnect
         /// Extension method to automatically set the update value to same as "add" value for TryAddUpdate. 
         /// This makes the API similar for traditional and concurrent dictionaries.
         /// </summary>
-        /// <typeparam name="K">Key type for dictionary</typeparam>
+        /// <typeparam name="K">Key type for Map</typeparam>
         /// <typeparam name="V">Value type for dictonary</typeparam>
         /// <param name="dictionary">Dictionary object we're operating on</param>
         /// <param name="key">Key we want to add or update.</param>
         /// <param name="value">Value we want to set.</param>
-        public static void AddOrUpdate<K, V>(this ConcurrentDictionary<K, V> dictionary, K key, V value)
+        public static void AddOrUpdate<K, V>(this ConcurrentMap<K, V> dictionary, K key, V value)
         {
             dictionary.AddOrUpdate(key, value, (oldkey, oldvalue) => value);
         }
@@ -129,7 +129,7 @@ namespace QuantConnect
         /// <param name="dictionary">The source dictionary to be added to</param>
         /// <param name="key">The key</param>
         /// <param name="element">The element to be added</param>
-        public static void Add<TKey, TElement, TCollection>(this IDictionary<TKey, TCollection> dictionary, TKey key, TElement element)
+        public static void Add<TKey, TElement, TCollection>(this Map<TKey, TCollection> dictionary, TKey key, TElement element)
             where TCollection : ICollection<TElement>, new()
         {
             TCollection list;
@@ -275,10 +275,10 @@ namespace QuantConnect
         /// <param name="str">The String to be broken into csv</param>
         /// <param name="size">The expected size of the output list</param>
         /// <returns>A list of the csv pieces</returns>
-        public static List<string> ToCsv(this String str, int size = 4)
+        public static List<String> ToCsv(this String str, int size = 4)
         {
             int last = 0;
-            csv = new List<string>(size);
+            csv = new List<String>(size);
             for (int i = 0; i < str.Length; i++)
             {
                 if (str[i] == ',')
@@ -318,7 +318,7 @@ namespace QuantConnect
         /// <returns>Last 4 character String of string.</returns>
         public static String GetExtension(this String str) {
             ext = str.Substring(Math.Max(0, str.Length - 4));
-            allowedExt = new List<string>() { ".zip", ".csv", ".json" };
+            allowedExt = new List<String>() { ".zip", ".csv", ".json" };
             if (!allowedExt.Contains(ext))
             {
                 ext = ".custom";
@@ -725,7 +725,7 @@ namespace QuantConnect
         /// <returns>A lower-case String representation of the specified enumeration value</returns>
         public static String ToLower(this Enum @enum)
         {
-            return @enum.ToString().ToLower();
+            return @enum.ToString().toLowerCase();
         }
     }
 }

@@ -23,7 +23,7 @@ using QuantConnect.Logging;
 using QuantConnect.Scheduling;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Lean.Engine.RealTime
+package com.quantconnect.lean.Lean.Engine.RealTime
 {
     /// <summary>
     /// Provides methods for creating common scheduled events
@@ -42,7 +42,7 @@ namespace QuantConnect.Lean.Engine.RealTime
         /// <param name="callback">The delegate to call when an event fires</param>
         /// <param name="currentUtcTime">Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.</param>
         /// <returns>A new <see cref="ScheduledEvent"/> instance that fires events each tradeable day from the start to the finish at the specified time</returns>
-        public static ScheduledEvent EveryDayAt( String name, IEnumerable<DateTime> dates, TimeSpan timeOfDay, Action<string, DateTime> callback, DateTime? currentUtcTime = null)
+        public static ScheduledEvent EveryDayAt( String name, IEnumerable<DateTime> dates, TimeSpan timeOfDay, Action<String, DateTime> callback, DateTime? currentUtcTime = null)
         {
             eventTimes = dates.Select(x => x.Date + timeOfDay);
             if (currentUtcTime.HasValue)

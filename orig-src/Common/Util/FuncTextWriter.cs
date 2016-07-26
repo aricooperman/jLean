@@ -18,14 +18,14 @@ using System;
 using System.IO;
 using System.Text;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides an implementation of <see cref="TextWriter"/> that redirects Write( String) and WriteLine( String)
     /// </summary>
     public class FuncTextWriter : TextWriter
     {
-        private readonly Action<string> _writer;
+        private readonly Action<String> _writer;
 
         /// <inheritdoc />
         public override Encoding Encoding
@@ -38,7 +38,7 @@ namespace QuantConnect.Util
         /// messages to the algorithm's Debug function.
         /// </summary>
         /// <param name="writer">The algorithm hosting the Debug function where messages will be directed</param>
-        public FuncTextWriter(Action<string> writer)
+        public FuncTextWriter(Action<String> writer)
         {
             _writer = writer;
         }

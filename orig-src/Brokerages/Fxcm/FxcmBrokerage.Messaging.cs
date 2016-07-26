@@ -28,7 +28,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Logging;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Brokerages.Fxcm
+package com.quantconnect.lean.Brokerages.Fxcm
 {
     /// <summary>
     /// FXCM brokerage - Java API related functions and interface implementations
@@ -43,16 +43,16 @@ namespace QuantConnect.Brokerages.Fxcm
         private boolean _isOrderUpdateOrCancelRejected;
         private boolean _isOrderSubmitRejected;
 
-        private readonly Dictionary<string, TradingSecurity> _fxcmInstruments = new Dictionary<string, TradingSecurity>();
-        private readonly Dictionary<string, CollateralReport> _accounts = new Dictionary<string, CollateralReport>();
-        private readonly Dictionary<string, MarketDataSnapshot> _rates = new Dictionary<string, MarketDataSnapshot>();
+        private readonly Map<String, TradingSecurity> _fxcmInstruments = new Map<String, TradingSecurity>();
+        private readonly Map<String, CollateralReport> _accounts = new Map<String, CollateralReport>();
+        private readonly Map<String, MarketDataSnapshot> _rates = new Map<String, MarketDataSnapshot>();
 
-        private readonly Dictionary<string, ExecutionReport> _openOrders = new Dictionary<string, ExecutionReport>();
-        private readonly Dictionary<string, PositionReport> _openPositions = new Dictionary<string, PositionReport>();
+        private readonly Map<String, ExecutionReport> _openOrders = new Map<String, ExecutionReport>();
+        private readonly Map<String, PositionReport> _openPositions = new Map<String, PositionReport>();
 
-        private readonly Dictionary<string, Order> _mapRequestsToOrders = new Dictionary<string, Order>();
-        private readonly Dictionary<string, Order> _mapFxcmOrderIdsToOrders = new Dictionary<string, Order>();
-        private readonly Dictionary<string, AutoResetEvent> _mapRequestsToAutoResetEvents = new Dictionary<string, AutoResetEvent>();
+        private readonly Map<String, Order> _mapRequestsToOrders = new Map<String, Order>();
+        private readonly Map<String, Order> _mapFxcmOrderIdsToOrders = new Map<String, Order>();
+        private readonly Map<String, AutoResetEvent> _mapRequestsToAutoResetEvents = new Map<String, AutoResetEvent>();
 
         private String _fxcmAccountCurrency = "USD";
 
@@ -125,7 +125,7 @@ namespace QuantConnect.Brokerages.Fxcm
         /// Provides as public access to this data without requiring consumers to reference
         /// IKVM libraries
         /// </summary>
-        public List<Tick> GetBidAndAsk(List<string> fxcmSymbols)
+        public List<Tick> GetBidAndAsk(List<String> fxcmSymbols)
         {
             return GetQuotes(fxcmSymbols).Select(x => new Tick
             {
@@ -141,7 +141,7 @@ namespace QuantConnect.Brokerages.Fxcm
         /// <summary>
         /// Gets the quotes for the symbol
         /// </summary>
-        private List<MarketDataSnapshot> GetQuotes(List<string> fxcmSymbols)
+        private List<MarketDataSnapshot> GetQuotes(List<String> fxcmSymbols)
         {
             // get current quotes for the instrument
             request = new MarketDataRequest();
@@ -181,7 +181,7 @@ namespace QuantConnect.Brokerages.Fxcm
             fxcmSymbol = isInverted ? invertedSymbol : normalSymbol;
 
             // get current quotes for the instrument
-            quotes = GetQuotes(new List<string> { fxcmSymbol });
+            quotes = GetQuotes(new List<String> { fxcmSymbol });
 
             rate = (decimal)(quotes[0].getBidClose() + quotes[0].getAskClose()) / 2;
 

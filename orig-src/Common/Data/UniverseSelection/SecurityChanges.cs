@@ -18,7 +18,7 @@ using System.Linq;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data.UniverseSelection
+package com.quantconnect.lean.Data.UniverseSelection
 {
     /// <summary>
     /// Defines the additions and subtractions to the algorithm's security subscriptions

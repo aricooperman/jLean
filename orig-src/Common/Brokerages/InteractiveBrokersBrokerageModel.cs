@@ -19,7 +19,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using QuantConnect.Securities.Forex;
 
-namespace QuantConnect.Brokerages
+package com.quantconnect.lean.Brokerages
 {
     /// <summary>
     /// Provides properties specific to interactive brokers
@@ -156,7 +156,7 @@ namespace QuantConnect.Brokerages
         }
 
 
-        private static readonly IReadOnlyDictionary<string, decimal> ForexCurrencyLimits = new Dictionary<string, decimal>()
+        private static readonly IReadOnlyMap<String, decimal> ForexCurrencyLimits = new Map<String, decimal>()
         {
             {"USD", 7000000m},
             {"AUD", 6000000m},

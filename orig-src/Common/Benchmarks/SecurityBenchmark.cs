@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Benchmarks
+package com.quantconnect.lean.Benchmarks
 {
     /// <summary>
     /// Creates a benchmark defined by the closing price of a <see cref="Security"/> instance

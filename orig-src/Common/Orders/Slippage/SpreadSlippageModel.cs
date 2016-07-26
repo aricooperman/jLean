@@ -16,7 +16,7 @@
 using QuantConnect.Data.Market;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Orders.Slippage
+package com.quantconnect.lean.Orders.Slippage
 {
     /// <summary>
     /// A slippage model that uses half of the bid/ask spread if available,

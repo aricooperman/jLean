@@ -17,7 +17,7 @@ using System;
 using QuantConnect.Interfaces;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Tests.Brokerages
+package com.quantconnect.lean.Tests.Brokerages
 {
     public class MarketOrderTestParameters : OrderTestParameters
     {

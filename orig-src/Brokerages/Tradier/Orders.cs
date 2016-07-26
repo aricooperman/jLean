@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages.Tradier
+package com.quantconnect.lean.Brokerages.Tradier
 {
     /// <summary>
     /// Order parent class for deserialization
@@ -27,7 +27,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierOrdersContainer
     {
         /// Orders Contents:
-        [JsonProperty(PropertyName = "orders")]
+        @JsonProperty( "orders")]
         [JsonConverter(typeof(NullStringValueConverter<TradierOrders>))]
         public TradierOrders Orders;
 
@@ -42,7 +42,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierOrders
     {
         /// Array of user account details:
-        [JsonProperty(PropertyName = "order")]
+        @JsonProperty( "order")]
         [JsonConverter(typeof(SingleValueListConverter<TradierOrder>))]
         public List<TradierOrder> Orders = new List<TradierOrder>();
 
@@ -57,75 +57,75 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierOrder 
     {
         /// Unique order id.
-        [JsonProperty(PropertyName = "id")]
+        @JsonProperty( "id")]
         public long Id;
 
         /// Market, Limit Order etc.
-        [JsonProperty(PropertyName = "type")]
+        @JsonProperty( "type")]
         public TradierOrderType Type;
 
         /// Symbol
-        [JsonProperty(PropertyName = "symbol")]
+        @JsonProperty( "symbol")]
         public String Symbol;
 
         ///Long short.
-        [JsonProperty(PropertyName = "side")]
+        @JsonProperty( "side")]
         public TradierOrderDirection Direction;
 
         /// Quantity
-        [JsonProperty(PropertyName = "quantity")]
+        @JsonProperty( "quantity")]
         public BigDecimal Quantity;
 
         /// Status of the order (filled, canceled, open, expired, rejected, pending, partially_filled, submitted).
-        [JsonProperty(PropertyName = "status")]
+        @JsonProperty( "status")]
         public TradierOrderStatus Status;
 
         /// Duration of the order (day, gtc)
-        [JsonProperty(PropertyName = "duration")]
+        @JsonProperty( "duration")]
         public TradierOrderDuration Duration;
 
         /// Percentage of gain or loss on the position.
-        [JsonProperty(PropertyName = "price")]
+        @JsonProperty( "price")]
         public BigDecimal Price;
 
         /// Average fill price
-        [JsonProperty(PropertyName = "avg_fill_price")]
+        @JsonProperty( "avg_fill_price")]
         public BigDecimal AverageFillPrice;
 
         /// Quantity executed
-        [JsonProperty(PropertyName = "exec_quantity")]
+        @JsonProperty( "exec_quantity")]
         public BigDecimal QuantityExecuted;
 
         /// Last fill price
-        [JsonProperty(PropertyName = "last_fill_price")]
+        @JsonProperty( "last_fill_price")]
         public BigDecimal LastFillPrice;
 
         /// Last amount filled
-        [JsonProperty(PropertyName = "last_fill_quantity")]
+        @JsonProperty( "last_fill_quantity")]
         public BigDecimal LastFillQuantity;
 
         /// Quantity Remaining in Order.
-        [JsonProperty(PropertyName = "remaining_quantity")]
+        @JsonProperty( "remaining_quantity")]
         public BigDecimal RemainingQuantity;
 
         /// Date order was created.
-        [JsonProperty(PropertyName = "create_date")]
+        @JsonProperty( "create_date")]
         public DateTime CreatedDate;
 
         /// Date order was created.
-        [JsonProperty(PropertyName = "transaction_date")]
+        @JsonProperty( "transaction_date")]
         public DateTime TransactionDate;
 
         ///Classification of order (equity, option, multileg, combo)
-        [JsonProperty(PropertyName = "class")]
+        @JsonProperty( "class")]
         public TradierOrderClass Class;
 
         ///The number of legs
-        [JsonProperty(PropertyName = "num_legs")]
+        @JsonProperty( "num_legs")]
         public int NumberOfLegs;
 
         /// Numberof legs in order
-        [JsonProperty(PropertyName = "leg")]
+        @JsonProperty( "leg")]
         public List<TradierOrderLeg> Legs;
 
         /// Closed position trade summary
@@ -139,7 +139,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierOrderDetailedContainer
     {
         /// Details of the order
-        [JsonProperty(PropertyName = "order")]
+        @JsonProperty( "order")]
         public TradierOrderDetailed DetailedOrder;
     }
 
@@ -150,11 +150,11 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierOrderResponse
     {
         /// Tradier Order information
-        [JsonProperty(PropertyName = "order")]
+        @JsonProperty( "order")]
         public TradierOrderResponseOrder Order = new TradierOrderResponseOrder();
 
         /// Errors in request
-        [JsonProperty(PropertyName = "errors")]
+        @JsonProperty( "errors")]
         public TradierOrderResponseError Errors = new TradierOrderResponseError();
     }
 
@@ -164,9 +164,9 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierOrderResponseError
     {
         /// List of errors
-        [JsonProperty(PropertyName = "error")]
-        [JsonConverter(typeof(SingleValueListConverter<string>))]
-        public List<string> Errors;
+        @JsonProperty( "error")]
+        [JsonConverter(typeof(SingleValueListConverter<String>))]
+        public List<String> Errors;
     }
 
     /// <summary>
@@ -175,15 +175,15 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierOrderResponseOrder
     { 
         /// id or order response
-        [JsonProperty(PropertyName = "id")]
+        @JsonProperty( "id")]
         public long Id;
 
         /// Partner id - me
-        [JsonProperty(PropertyName = "partner_id")]
+        @JsonProperty( "partner_id")]
         public String PartnerId;
 
         /// Status of order
-        [JsonProperty(PropertyName = "status")]
+        @JsonProperty( "status")]
         public String Status;
     }
 
@@ -193,23 +193,23 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierOrderDetailed : TradierOrder
     {
         /// Order exchange
-        [JsonProperty(PropertyName = "exch")]
+        @JsonProperty( "exch")]
         public String Exchange;
 
         /// Executed Exchange
-        [JsonProperty(PropertyName = "exec_exch")]
+        @JsonProperty( "exec_exch")]
         public String ExecutionExchange;
 
         /// Option type
-        [JsonProperty(PropertyName = "option_type")]
+        @JsonProperty( "option_type")]
         public TradierOptionType OptionType;
 
         /// Expiration date
-        [JsonProperty(PropertyName = "expiration_date")]
+        @JsonProperty( "expiration_date")]
         public DateTime OptionExpirationDate;
 
         /// Stop Price
-        [JsonProperty(PropertyName = "stop_price")]
+        @JsonProperty( "stop_price")]
         public BigDecimal StopPrice;
     }
 
@@ -219,59 +219,59 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierOrderLeg
     {
         /// Date order was created.
-        [JsonProperty(PropertyName = "type")]
+        @JsonProperty( "type")]
         public TradierOrderType Type;
 
         /// Symbol
-        [JsonProperty(PropertyName = "symbol")]
+        @JsonProperty( "symbol")]
         public String Symbol;
 
         ///Long short.
-        [JsonProperty(PropertyName = "side")]
+        @JsonProperty( "side")]
         public TradierOrderDirection Direction;
 
         /// Quantity
-        [JsonProperty(PropertyName = "quantity")]
+        @JsonProperty( "quantity")]
         public BigDecimal Quantity;
 
         /// Status of the order (filled, canceled, open, expired, rejected, pending, partially_filled, submitted).
-        [JsonProperty(PropertyName = "status")]
+        @JsonProperty( "status")]
         public TradierOrderStatus Status;
 
         /// Duration of the order (day, gtc)
-        [JsonProperty(PropertyName = "duration")]
+        @JsonProperty( "duration")]
         public TradierOrderDuration Duration;
 
         /// Percentage of gain or loss on the position.
-        [JsonProperty(PropertyName = "price")]
+        @JsonProperty( "price")]
         public BigDecimal Price;
 
         /// Average fill price
-        [JsonProperty(PropertyName = "avg_fill_price")]
+        @JsonProperty( "avg_fill_price")]
         public BigDecimal AverageFillPrice;
 
         /// Quantity executed
-        [JsonProperty(PropertyName = "exec_quantity")]
+        @JsonProperty( "exec_quantity")]
         public BigDecimal QuantityExecuted;
 
         /// Last fill price
-        [JsonProperty(PropertyName = "last_fill_price")]
+        @JsonProperty( "last_fill_price")]
         public BigDecimal LastFillPrice;
 
         /// Last amount filled
-        [JsonProperty(PropertyName = "last_fill_quantity")]
+        @JsonProperty( "last_fill_quantity")]
         public BigDecimal LastFillQuantity;
 
         /// Quantity Remaining in Order.
-        [JsonProperty(PropertyName = "remaining_quantity")]
+        @JsonProperty( "remaining_quantity")]
         public BigDecimal RemainingQuantity;
 
         /// Date order was created.
-        [JsonProperty(PropertyName = "create_date")]
+        @JsonProperty( "create_date")]
         public DateTime CreatedDate;
 
         /// Date order was created.
-        [JsonProperty(PropertyName = "transaction_date")]
+        @JsonProperty( "transaction_date")]
         public DateTime TransacionDate;
 
         /// Constructor

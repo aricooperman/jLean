@@ -16,7 +16,7 @@
 using System.Collections.Generic;
 using QuantConnect.Securities;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Provides commonly used currency pairs and symbols
@@ -30,7 +30,7 @@ namespace QuantConnect
         /// This listing should be in sync with the data available at: https://www.quantconnect.com/data/FOREX#2.1.1
         /// It must include all currency pairs needed to resolve quote currencies in <see cref="Cash.EnsureCurrencyDataFeed"/>
         /// </remarks>
-        public static readonly IReadOnlyList<string> CurrencyPairs = new List<string>
+        public static readonly IReadOnlyList<String> CurrencyPairs = new List<String>
         {
             // these are listed at the top to ensure they get selected first when resolving
             // currency data feeds. the case that showcases the issue is we would select jpyusd
@@ -229,7 +229,7 @@ namespace QuantConnect
         /// <remarks>
         /// Now used by Forex and CFD, should probably be moved out into its own class
         /// </remarks>
-        public static readonly IReadOnlyDictionary<string, string> CurrencySymbols = new Dictionary<string, string>
+        public static readonly IReadOnlyMap<String,String> CurrencySymbols = new Map<String,String>
         {
             {"USD", "$"},
             {"GBP", "₤"},

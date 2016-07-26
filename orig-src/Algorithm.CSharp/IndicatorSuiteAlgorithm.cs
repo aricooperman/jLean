@@ -19,7 +19,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// QuantConnect University: Indicator Suite Example.

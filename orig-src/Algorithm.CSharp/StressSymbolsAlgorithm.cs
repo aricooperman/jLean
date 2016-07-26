@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     /// <summary>
     /// Randomly selects the specified number of symbols from the lists below
@@ -47,7 +47,7 @@ namespace QuantConnect.Algorithm.Examples
             }
 
 
-            hash = new HashSet<string> {"DNY", "MLNK"};
+            hash = new HashSet<String> {"DNY", "MLNK"};
             ticks = GetRandomSymbols(allSymbols, hash, TickSymbolsToRun).ToList();
             seconds = GetRandomSymbols(allSymbols, hash, SecondSymbolsToRun).ToList();
             minutes = GetRandomSymbols(allSymbols, hash, MinuteSymbolsToRun).ToList();
@@ -63,7 +63,7 @@ namespace QuantConnect.Algorithm.Examples
             //SetUniverse(coarse => coarse.Take(1));
         }
 
-        private void AddSecurity(IEnumerable<string> symbols, Resolution resolution)
+        private void AddSecurity(IEnumerable<String> symbols, Resolution resolution)
         {
             foreach (symbol in symbols)
             {
@@ -72,13 +72,13 @@ namespace QuantConnect.Algorithm.Examples
             }
         }
 
-        private IEnumerable<string> GetRandomSymbols(List<string> allSymbols, HashSet<string> hash, int numberOfSymbols)
+        private IEnumerable<String> GetRandomSymbols(List<String> allSymbols, HashSet<String> hash, int numberOfSymbols)
         {
             return Enumerable.Range(0, numberOfSymbols).Select(x => GetRandomItem(allSymbols, hash));
         }
 
         private readonly Random _random = new Random();
-        private String GetRandomItem(IReadOnlyList<string> list, HashSet<string> hash)
+        private String GetRandomItem(IReadOnlyList<String> list, HashSet<String> hash)
         {
             count = 0;
             String item;

@@ -21,7 +21,7 @@ using QuantConnect.Data.Custom;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Tests.Common.Data
+package com.quantconnect.lean.Tests.Common.Data
 {
     [TestFixture]
     public class SliceTests
@@ -93,7 +93,7 @@ namespace QuantConnect.Tests.Common.Data
             Quandl quandlAapl = new Quandl { Symbol = Symbols.AAPL, Time = DateTime.Now };
             Slice slice = new Slice(DateTime.Now, new[] { quandlSpy, quandlAapl });
 
-            DataDictionary<Quandl> quandlData = slice.Get<Quandl>();
+            DataMap<Quandl> quandlData = slice.Get<Quandl>();
             Assert.AreEqual(2, quandlData.Count);
         }
 
@@ -104,7 +104,7 @@ namespace QuantConnect.Tests.Common.Data
             Tick TickAapl = new Tick { Symbol = Symbols.AAPL, Time = DateTime.Now };
             Slice slice = new Slice(DateTime.Now, new[] { TickSpy, TickAapl });
 
-            DataDictionary<Tick> TickData = slice.Get<Tick>();
+            DataMap<Tick> TickData = slice.Get<Tick>();
             Assert.AreEqual(2, TickData.Count);
         }
 
@@ -116,7 +116,7 @@ namespace QuantConnect.Tests.Common.Data
             TradeBar TradeBarAapl = new TradeBar { Symbol = Symbols.AAPL, Time = DateTime.Now };
             Slice slice = new Slice(DateTime.Now, new[] { TradeBarSpy, TradeBarAapl });
 
-            DataDictionary<TradeBar> TradeBarData = slice.Get<TradeBar>();
+            DataMap<TradeBar> TradeBarData = slice.Get<TradeBar>();
             Assert.AreEqual(2, TradeBarData.Count);
         }
 

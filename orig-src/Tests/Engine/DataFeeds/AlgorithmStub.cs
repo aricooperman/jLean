@@ -18,22 +18,22 @@ using System.Collections.Generic;
 using QuantConnect.Algorithm;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Engine.DataFeeds
+package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     /// <summary>
     /// This type allows tests to easily create an algorith that is mostly initialized in one line
     /// </summary>
     public class AlgorithmStub : QCAlgorithm
     {
-        public AlgorithmStub(Resolution resolution = Resolution.Second, List<string> equities = null, List<string> forex = null)
+        public AlgorithmStub(Resolution resolution = Resolution.Second, List<String> equities = null, List<String> forex = null)
         {
-            foreach (ticker in equities ?? new List<string>())
+            foreach (ticker in equities ?? new List<String>())
             {
                 AddSecurity(SecurityType.Equity, ticker, resolution);
                 symbol = SymbolCache.GetSymbol(ticker);
                 Securities[symbol].Exchange = new SecurityExchange(SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork));
             }
-            foreach (ticker in forex ?? new List<string>())
+            foreach (ticker in forex ?? new List<String>())
             {
                 AddSecurity(SecurityType.Forex, ticker, resolution);
                 symbol = SymbolCache.GetSymbol(ticker);

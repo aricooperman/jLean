@@ -18,7 +18,7 @@ using NUnit.Framework;
 using QuantConnect.Indicators;
 using System.Linq;
 
-namespace QuantConnect.Tests.Indicators
+package com.quantconnect.lean.Tests.Indicators
 {
     [TestFixture]
     public class IndicatorExtensionsTests

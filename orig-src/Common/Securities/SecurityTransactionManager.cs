@@ -20,7 +20,7 @@ using System.Threading;
 using QuantConnect.Logging;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Securities 
+package com.quantconnect.lean.Securities 
 {
     /// <summary>
     /// Algorithm Transactions Manager - Recording Transactions
@@ -34,7 +34,7 @@ namespace QuantConnect.Securities
         private TimeSpan _marketOrderFillTimeout = TimeSpan.FromSeconds(5);
 
         private IOrderProcessor _orderProcessor;
-        private Dictionary<DateTime, decimal> _transactionRecord;
+        private Map<DateTime, decimal> _transactionRecord;
 
         /// <summary>
         /// Gets the time the security information was last updated
@@ -53,13 +53,13 @@ namespace QuantConnect.Securities
             _securities = security;
 
             //Internal storage for transaction records:
-            _transactionRecord = new Dictionary<DateTime, decimal>();
+            _transactionRecord = new Map<DateTime, decimal>();
         }
 
         /// <summary>
         /// Trade record of profits and losses for each trade statistics calculations
         /// </summary>
-        public Dictionary<DateTime, decimal> TransactionRecord
+        public Map<DateTime, decimal> TransactionRecord
         {
             get
             {

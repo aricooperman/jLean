@@ -18,7 +18,7 @@ using QuantConnect.Orders.Fills;
 using QuantConnect.Securities;
 using QuantConnect.Securities.Forex;
 
-namespace QuantConnect.Orders.Fees
+package com.quantconnect.lean.Orders.Fees
 {
     /// <summary>
     /// Provides the default implementation of <see cref="IFeeModel"/>

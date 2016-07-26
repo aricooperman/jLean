@@ -24,7 +24,7 @@ using QuantConnect.Logging;
 using QuantConnect.Packets;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages.Tradier
+package com.quantconnect.lean.Brokerages.Tradier
 {
     /// <summary>
     /// Provides an implementations of IBrokerageFactory that produces a TradierBrokerage
@@ -105,7 +105,7 @@ namespace QuantConnect.Brokerages.Tradier
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
         /// </remarks>
-        public override Dictionary<string, string> BrokerageData
+        public override Map<String,String> BrokerageData
         {
             get
             {
@@ -113,7 +113,7 @@ namespace QuantConnect.Brokerages.Tradier
                 
                 // always need to grab account ID from configuration
                 accountID = Configuration.AccountID.ToString();
-                data = new Dictionary<string, string>();
+                data = new Map<String,String>();
                 if (File.Exists(TokensFile))
                 {
                     tokens = JsonConvert.DeserializeObject<TokenResponse>(File.ReadAllText(TokensFile));
@@ -154,10 +154,10 @@ namespace QuantConnect.Brokerages.Tradier
         /// <returns>A new brokerage instance</returns>
         public override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm)
         {
-            errors = new List<string>();
+            errors = new List<String>();
             accountID = Read<long>(job.BrokerageData, "tradier-account-id", errors);
-            accessToken = Read<string>(job.BrokerageData, "tradier-access-token", errors);
-            refreshToken = Read<string>(job.BrokerageData, "tradier-refresh-token", errors);
+            accessToken = Read<String>(job.BrokerageData, "tradier-access-token", errors);
+            refreshToken = Read<String>(job.BrokerageData, "tradier-refresh-token", errors);
             issuedAt = Read<DateTime>(job.BrokerageData, "tradier-issued-at", errors);
             lifeSpan = TimeSpan.FromSeconds(Read<double>(job.BrokerageData, "tradier-lifespan", errors));
 

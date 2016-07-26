@@ -27,7 +27,7 @@ using QuantConnect.Lean.Engine.Results;
 using QuantConnect.Packets;
 using Equity = QuantConnect.Algorithm.CSharp.Benchmarks.Symbols.Equity;
 
-namespace QuantConnect.Tests.Engine.DataFeeds
+package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     [TestFixture, Category("TravisExclude")]
     public class FileSystemDataFeedTests

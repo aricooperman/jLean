@@ -17,7 +17,7 @@ using System;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     /// <summary>
     /// Uses daily data and a simple moving average cross to place trades and an ema for stop placement

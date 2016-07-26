@@ -22,7 +22,7 @@ using QuantConnect.Api;
 using QuantConnect.Configuration;
 using QuantConnect.Interfaces;
 
-namespace QuantConnect.Tests.API
+package com.quantconnect.lean.Tests.API
 {
     [TestFixture, Category("TravisExclude")]
     class RestApiTests

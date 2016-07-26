@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Security types packet contains information on the markets the user data has requested.
@@ -27,7 +27,7 @@ namespace QuantConnect.Packets
         /// <summary>
         /// List of Security Type the user has requested (Equity, Forex, Futures etc).
         /// </summary>
-        [JsonProperty(PropertyName = "aMarkets")]
+        @JsonProperty( "aMarkets")]
         public List<SecurityType> Types = new List<SecurityType>();
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace QuantConnect.Packets
                     result += type + ",";
                 }
                 result = result.TrimEnd(',');
-                return result.ToLower();
+                return result.toLowerCase();
             }
         }
 

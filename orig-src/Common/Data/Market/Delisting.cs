@@ -17,7 +17,7 @@
 using System;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Delisting event of a security

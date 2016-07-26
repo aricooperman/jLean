@@ -17,7 +17,7 @@ using System.Globalization;
 using QuantConnect.Configuration;
 using QuantConnect.Logging;
 
-namespace QuantConnect.ToolBox.CryptoiqDownloader
+package com.quantconnect.lean.ToolBox.CryptoiqDownloader
 {
     class Program
     {

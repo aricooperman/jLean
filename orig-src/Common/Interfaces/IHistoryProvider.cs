@@ -21,7 +21,7 @@ using QuantConnect.Data;
 using QuantConnect.Packets;
 using HistoryRequest = QuantConnect.Data.HistoryRequest;
 
-namespace QuantConnect.Interfaces
+package com.quantconnect.lean.Interfaces
 {
     /// <summary>
     /// Provides historical data to an algorithm at runtime
@@ -41,7 +41,7 @@ namespace QuantConnect.Interfaces
         /// <param name="mapFileProvider">Provider used to get a map file resolver to handle equity mapping</param>
         /// <param name="factorFileProvider">Provider used to get factor files to handle equity price scaling</param>
         /// <param name="statusUpdate">Function used to send status updates</param>
-        void Initialize(AlgorithmNodePacket job, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider, Action<int> statusUpdate);
+        void Initialize(AlgorithmNodePacket job, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider, Action<Integer> statusUpdate);
 
         /// <summary>
         /// Gets the history for the requested securities

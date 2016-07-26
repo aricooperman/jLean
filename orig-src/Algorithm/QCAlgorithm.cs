@@ -37,9 +37,9 @@ using QuantConnect.Securities.Forex;
 using QuantConnect.Securities.Option;
 using QuantConnect.Statistics;
 using QuantConnect.Util;
-using SecurityTypeMarket = System.Tuple<QuantConnect.SecurityType, string>;
+using SecurityTypeMarket = System.Tuple<QuantConnect.SecurityType,String>;
 
-namespace QuantConnect.Algorithm
+package com.quantconnect.lean.Algorithm
 {
     /// <summary>
     /// QC Algorithm Base Class - Handle the basic requirements of a trading algorithm, 
@@ -57,9 +57,9 @@ namespace QuantConnect.Algorithm
         private boolean _locked;
         private boolean _liveMode;
         private String _algorithmId = "";
-        private List<string> _debugMessages = new List<string>();
-        private List<string> _logMessages = new List<string>();
-        private List<string> _errorMessages = new List<string>();
+        private List<String> _debugMessages = new List<String>();
+        private List<String> _logMessages = new List<String>();
+        private List<String> _errorMessages = new List<String>();
         
         //Error tracking to avoid message flooding:
         private String _previousDebugMessage = "";
@@ -81,7 +81,7 @@ namespace QuantConnect.Algorithm
         // warmup resolution variables
         private TimeSpan? _warmupTimeSpan;
         private int? _warmupBarCount;
-        private Dictionary<string, string> _parameters = new Dictionary<string, string>();
+        private Map<String,String> _parameters = new Map<String,String>();
 
         /// <summary>
         /// QCAlgorithm Base Class Constructor - Initialize the underlying QCAlgorithm components.
@@ -371,7 +371,7 @@ namespace QuantConnect.Algorithm
         /// Storage for debugging messages before the event handler has passed control back to the Lean Engine.
         /// </summary>
         /// <seealso cref="Debug( String)"/>
-        public List<string> DebugMessages
+        public List<String> DebugMessages
         {
             get
             {
@@ -387,7 +387,7 @@ namespace QuantConnect.Algorithm
         /// Storage for log messages before the event handlers have passed control back to the Lean Engine.
         /// </summary>
         /// <seealso cref="Log( String)"/>
-        public List<string> LogMessages
+        public List<String> LogMessages
         {
             get
             {
@@ -409,7 +409,7 @@ namespace QuantConnect.Algorithm
         /// </summary>
         /// <remarks>This method is best used within a try-catch bracket to handle any runtime errors from a user algorithm.</remarks>
         /// <see cref="Error( String)"/>
-        public List<string> ErrorMessages
+        public List<String> ErrorMessages
         {
             get
             {
@@ -528,7 +528,7 @@ namespace QuantConnect.Algorithm
         /// Sets the parameters from the dictionary
         /// </summary>
         /// <param name="parameters">Dictionary containing the parameter names to values</param>
-        public void SetParameters(Dictionary<string, string> parameters)
+        public void SetParameters(Map<String,String> parameters)
         {
             // save off a copy and try to apply the parameters
             _parameters = parameters.ToDictionary();
@@ -897,7 +897,7 @@ namespace QuantConnect.Algorithm
         public void SetBenchmark( String symbol)
         {
             // check existence
-            symbol = symbol.ToUpper();
+            symbol = symbol.toUpperCase();
             security = Securities.FirstOrDefault(x => x.Key.Value == symbol).Value;
             _benchmarkSymbol = security == null 
                 ? QuantConnect.Symbol.Create(symbol, SecurityType.Equity, Market.USA)

@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Benchmarks
+package com.quantconnect.lean.Benchmarks
 {
     /// <summary>
     /// Specifies how to compute a benchmark for an algorithm

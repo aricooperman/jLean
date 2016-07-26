@@ -19,11 +19,11 @@ package com.quantconnect.lean.packets;
     /// Base class for packet messaging system
 public class Packet {
     /// Packet type defined by a String enum
-//    [JsonProperty(PropertyName = "eType")]
+//    @JsonProperty( "eType")]
     public PacketType type = PacketType.None;
 
     /// User unique specific channel endpoint to send the packets
-//    [JsonProperty(PropertyName = "sChannel")]
+//    @JsonProperty( "sChannel")]
     public String channel = "";
 
     /// <summary>
@@ -121,7 +121,7 @@ public class Packet {
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Base class for packet messaging system
@@ -131,13 +131,13 @@ namespace QuantConnect.Packets
         /// <summary>
         /// Packet type defined by a String enum
         /// </summary>
-        [JsonProperty(PropertyName = "eType")]
+        @JsonProperty( "eType")]
         public PacketType Type = PacketType.None;
 
         /// <summary>
         /// User unique specific channel endpoint to send the packets
         /// </summary>
-        [JsonProperty(PropertyName = "sChannel")]
+        @JsonProperty( "sChannel")]
         public String Channel = "";
 
         /// <summary>

@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using System.Linq;
 
-namespace QuantConnect.Tests
+package com.quantconnect.lean.Tests
 {
     [TestFixture, Category("TravisExclude")]
     public class RegressionTests
@@ -30,7 +30,7 @@ namespace QuantConnect.Tests
 
         private static TestCaseData[] GetRegressionTestParameters()
         {
-            basicTemplateStatistics = new Dictionary<string, string>
+            basicTemplateStatistics = new Map<String,String>
             {
                 {"Total Trades", "1"},
                 {"Average Win", "0%"},
@@ -53,7 +53,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$3.09"}
             };
 
-            basicTemplateOptionsStatistics = new Dictionary<string, string>
+            basicTemplateOptionsStatistics = new Map<String,String>
             {
                 {"Total Trades", "2"},
                 {"Average Win", "18.70%"},
@@ -76,7 +76,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$0.00"},
             };
 
-            limitFillRegressionStatistics = new Dictionary<string, string>
+            limitFillRegressionStatistics = new Map<String,String>
             {
                 {"Total Trades", "34"},
                 {"Average Win", "0.02%"},
@@ -99,7 +99,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$34.00"}
             };
 
-            updateOrderRegressionStatistics = new Dictionary<string, string>
+            updateOrderRegressionStatistics = new Map<String,String>
             {
                 {"Total Trades", "21"},
                 {"Average Win", "0%"},
@@ -122,7 +122,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$21.00"}
             };
 
-            regressionStatistics = new Dictionary<string, string>
+            regressionStatistics = new Map<String,String>
             {
                 {"Total Trades", "5433"},
                 {"Average Win", "0.00%"},
@@ -145,7 +145,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$5433.00"}
             };
 
-            universeSelectionRegressionStatistics = new Dictionary<string, string>
+            universeSelectionRegressionStatistics = new Map<String,String>
             {
                 {"Total Trades", "4"},
                 {"Average Win", "0.70%"},
@@ -168,7 +168,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$2.00"}
             };
 
-            customDataRegressionStatistics = new Dictionary<string, string>
+            customDataRegressionStatistics = new Map<String,String>
             {
                 {"Total Trades", "1"},
                 {"Average Win", "0%"},
@@ -191,7 +191,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$0.00"}
             };
 
-            addRemoveSecurityRegressionStatistics = new Dictionary<string, string>
+            addRemoveSecurityRegressionStatistics = new Map<String,String>
             {
                 {"Total Trades", "5"},
                 {"Average Win", "0.49%"},
@@ -214,7 +214,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$25.20"}
             };
 
-            dropboxBaseDataUniverseSelectionStatistics = new Dictionary<string, string>
+            dropboxBaseDataUniverseSelectionStatistics = new Map<String,String>
             {
                 {"Total Trades", "67"},
                 {"Average Win", "1.13%"},
@@ -237,7 +237,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$300.15"}
             };
 
-            dropboxUniverseSelectionStatistics = new Dictionary<string, string>
+            dropboxUniverseSelectionStatistics = new Map<String,String>
             {
                 {"Total Trades", "49"},
                 {"Average Win", "1.58%"},
@@ -260,7 +260,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$232.92"}
             };
 
-            parameterizedStatistics = new Dictionary<string, string>
+            parameterizedStatistics = new Map<String,String>
             {
                 {"Total Trades", "1"},
                 {"Average Win", "0%"},
@@ -283,7 +283,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$3.09"},
             };
 
-            historyAlgorithmStatistics = new Dictionary<string, string>
+            historyAlgorithmStatistics = new Map<String,String>
             {
                 {"Total Trades", "1"},
                 {"Average Win", "0%"},
@@ -306,7 +306,7 @@ namespace QuantConnect.Tests
                 {"Total Fees", "$3.09"},
             };
 
-            coarseFundamentalTop5AlgorithmStatistics = new Dictionary<string, string>
+            coarseFundamentalTop5AlgorithmStatistics = new Map<String,String>
             {
                 {"Total Trades", "8"},
                 {"Average Win", "1.15%"},
@@ -357,10 +357,10 @@ namespace QuantConnect.Tests
         public class AlgorithmStatisticsTestParameters
         {
             public readonly String Algorithm;
-            public readonly Dictionary<string, string> Statistics;
+            public readonly Map<String,String> Statistics;
             public readonly Language Language;
 
-            public AlgorithmStatisticsTestParameters( String algorithm, Dictionary<string, string> statistics, Language language)
+            public AlgorithmStatisticsTestParameters( String algorithm, Map<String,String> statistics, Language language)
             {
                 Algorithm = algorithm;
                 Statistics = statistics;

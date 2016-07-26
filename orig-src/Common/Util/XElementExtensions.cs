@@ -17,7 +17,7 @@ using System;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides extension methods for the XML to LINQ types

@@ -17,7 +17,7 @@
 using System;
 using System.Linq;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary> 
     /// Oscillator indicator that measures momentum and mean-reversion over a specified

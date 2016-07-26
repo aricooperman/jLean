@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Scheduling
+package com.quantconnect.lean.Scheduling
 {
     /// <summary>
     /// Uses a function to define a time rule as a projection of date times to date times

@@ -16,7 +16,7 @@
 
 using System;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Represents a pending cash amount waiting for settlement time

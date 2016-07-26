@@ -20,7 +20,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Algorithm.Examples
+package com.quantconnect.lean.Algorithm.Examples
 {
     /// <summary>
     /// ETF Global Rotation Strategy
@@ -33,7 +33,7 @@ namespace QuantConnect.Algorithm.Examples
         private boolean first = true;
 
         // these are the growth symbols we'll rotate through
-        List<string> GrowthSymbols = new List<string>
+        List<String> GrowthSymbols = new List<String>
         {
             "MDY", // US S&P mid cap 400
             "IEV", // iShares S&P europe 350
@@ -43,7 +43,7 @@ namespace QuantConnect.Algorithm.Examples
         };
 
         // these are the safety symbols we go to when things are looking bad for growth
-        List<string> SafetySymbols = new List<string>
+        List<String> SafetySymbols = new List<String>
         {
             "EDV", // Vangaurd TSY 25yr+
             "SHY"  // Barclays Low Duration TSY

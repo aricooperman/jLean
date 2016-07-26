@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QuantConnect.Util;
 
-namespace QuantConnect.Scheduling
+package com.quantconnect.lean.Scheduling
 {
     /// <summary>
     /// Combines multiple time rules into a single rule that emits for each rule

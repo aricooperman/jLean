@@ -14,7 +14,7 @@
 */
 using System;
 
-namespace QuantConnect.ToolBox.CryptoiqDownloader
+package com.quantconnect.lean.ToolBox.CryptoiqDownloader
 {
     /// <summary>
     /// Defines the JSON response structure from the Cryptoiq API

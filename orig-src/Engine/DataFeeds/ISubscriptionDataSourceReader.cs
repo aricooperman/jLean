@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using QuantConnect.Data;
 
-namespace QuantConnect.Lean.Engine.DataFeeds
+package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// Represents a type responsible for accepting an input <see cref="SubscriptionDataSource"/>

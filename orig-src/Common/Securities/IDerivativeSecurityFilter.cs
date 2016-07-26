@@ -17,7 +17,7 @@
 using System.Collections.Generic;
 using QuantConnect.Data;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Filters a set of derivative symbols using the underlying price data.

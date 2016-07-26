@@ -20,7 +20,7 @@ using System.Linq;
 using NodaTime;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Scheduling
+package com.quantconnect.lean.Scheduling
 {
     /// <summary>
     /// Helper class used to provide better syntax when defining time rules

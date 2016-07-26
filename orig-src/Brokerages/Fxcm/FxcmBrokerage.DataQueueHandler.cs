@@ -22,7 +22,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Logging;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Brokerages.Fxcm
+package com.quantconnect.lean.Brokerages.Fxcm
 {
     /// <summary>
     /// FXCM brokerage - implementation of IDataQueueHandler interface

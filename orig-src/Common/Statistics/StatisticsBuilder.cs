@@ -19,7 +19,7 @@ using System.Globalization;
 using System.Linq;
 using QuantConnect.Logging;
 
-namespace QuantConnect.Statistics
+package com.quantconnect.lean.Statistics
 {
     /// <summary>
     /// The <see cref="StatisticsBuilder"/> class creates summary and rolling statistics from trades, equity and benchmark points
@@ -40,7 +40,7 @@ namespace QuantConnect.Statistics
         /// <returns>Returns a <see cref="StatisticsResults"/> object</returns>
         public static StatisticsResults Generate(
             List<Trade> trades, 
-            SortedDictionary<DateTime, decimal> profitLoss,
+            SortedMap<DateTime, decimal> profitLoss,
             List<ChartPoint> pointsEquity, 
             List<ChartPoint> pointsPerformance, 
             List<ChartPoint> pointsBenchmark, 
@@ -76,15 +76,15 @@ namespace QuantConnect.Statistics
             DateTime fromDate, 
             DateTime toDate, 
             List<Trade> trades, 
-            SortedDictionary<DateTime, decimal> profitLoss, 
-            SortedDictionary<DateTime, decimal> equity, 
+            SortedMap<DateTime, decimal> profitLoss, 
+            SortedMap<DateTime, decimal> equity, 
             List<ChartPoint> pointsPerformance, 
             List<ChartPoint> pointsBenchmark, 
             BigDecimal startingCapital)
         {
             periodTrades = trades.Where(x => x.ExitTime.Date >= fromDate && x.ExitTime < toDate.AddDays(1)).ToList();
-            periodProfitLoss = new SortedDictionary<DateTime, decimal>(profitLoss.Where(x => x.Key >= fromDate && x.Key.Date < toDate.AddDays(1)).ToDictionary(x => x.Key, y => y.Value));
-            periodEquity = new SortedDictionary<DateTime, decimal>(equity.Where(x => x.Key.Date >= fromDate && x.Key.Date < toDate.AddDays(1)).ToDictionary(x => x.Key, y => y.Value));
+            periodProfitLoss = new SortedMap<DateTime, decimal>(profitLoss.Where(x => x.Key >= fromDate && x.Key.Date < toDate.AddDays(1)).ToDictionary(x => x.Key, y => y.Value));
+            periodEquity = new SortedMap<DateTime, decimal>(equity.Where(x => x.Key.Date >= fromDate && x.Key.Date < toDate.AddDays(1)).ToDictionary(x => x.Key, y => y.Value));
 
             listPerformance = new List<double>();
             performance = ChartPointToDictionary(pointsPerformance, fromDate, toDate);
@@ -111,17 +111,17 @@ namespace QuantConnect.Statistics
         /// <param name="pointsBenchmark">The list of benchmark values</param>
         /// <param name="startingCapital">The algorithm starting capital</param>
         /// <returns>A dictionary with the rolling performances</returns>
-        private static Dictionary<string, AlgorithmPerformance> GetRollingPerformances(
+        private static Map<String, AlgorithmPerformance> GetRollingPerformances(
             DateTime firstDate, 
             DateTime lastDate, 
             List<Trade> trades, 
-            SortedDictionary<DateTime, decimal> profitLoss, 
-            SortedDictionary<DateTime, decimal> equity, 
+            SortedMap<DateTime, decimal> profitLoss, 
+            SortedMap<DateTime, decimal> equity, 
             List<ChartPoint> pointsPerformance, 
             List<ChartPoint> pointsBenchmark, 
             BigDecimal startingCapital)
         {
-            rollingPerformances = new Dictionary<string, AlgorithmPerformance>();
+            rollingPerformances = new Map<String, AlgorithmPerformance>();
             
             monthPeriods = new[] { 1, 3, 6, 12 };
             foreach (monthPeriod in monthPeriods)
@@ -142,9 +142,9 @@ namespace QuantConnect.Statistics
         /// <summary>
         /// Returns a summary of the algorithm performance as a dictionary
         /// </summary>
-        private static Dictionary<string, string> GetSummary(AlgorithmPerformance totalPerformance, BigDecimal totalFees, int totalTransactions)
+        private static Map<String,String> GetSummary(AlgorithmPerformance totalPerformance, BigDecimal totalFees, int totalTransactions)
         {
-            return new Dictionary<string, string> 
+            return new Map<String,String> 
             { 
                 { "Total Trades", totalTransactions.ToString(CultureInfo.InvariantCulture) },
                 { "Average Win", Math.Round(totalPerformance.PortfolioStatistics.AverageWinRate.SafeMultiply100(), 2) + "%"  },
@@ -229,9 +229,9 @@ namespace QuantConnect.Statistics
         /// <param name="fromDate">An optional starting date</param>
         /// <param name="toDate">An optional ending date</param>
         /// <returns>SortedDictionary of the equity BigDecimal values ordered in time</returns>
-        private static SortedDictionary<DateTime, decimal> ChartPointToDictionary(IEnumerable<ChartPoint> points, DateTime? fromDate = null, DateTime? toDate = null)
+        private static SortedMap<DateTime, decimal> ChartPointToDictionary(IEnumerable<ChartPoint> points, DateTime? fromDate = null, DateTime? toDate = null)
         {
-            dictionary = new SortedDictionary<DateTime, decimal>();
+            dictionary = new SortedMap<DateTime, decimal>();
 
             foreach (point in points)
             {
@@ -252,7 +252,7 @@ namespace QuantConnect.Statistics
         /// <param name="benchmark">The benchmark values</param>
         /// <param name="equity">The equity values</param>
         /// <returns>The list of benchmark differences</returns>
-        private static List<double> CreateBenchmarkDifferences(SortedDictionary<DateTime, decimal> benchmark, SortedDictionary<DateTime, decimal> equity)
+        private static List<double> CreateBenchmarkDifferences(SortedMap<DateTime, decimal> benchmark, SortedMap<DateTime, decimal> equity)
         {
             // to find the delta in benchmark for first day, we need to know the price at
             // the opening moment of the day, but since we cannot find this, we cannot find

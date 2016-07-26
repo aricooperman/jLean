@@ -24,7 +24,7 @@ using QuantConnect.Lean.Engine.DataFeeds.Enumerators;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
 {
     [TestFixture]
     public class LiveFillForwardEnumeratorTests

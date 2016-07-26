@@ -21,7 +21,7 @@ using QuantConnect.Lean.Engine.Results;
 using QuantConnect.Logging;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Lean.Engine
+package com.quantconnect.lean.Lean.Engine
 {
     /// <summary>
     /// Algorithm status monitor reads the central command directive for this algorithm/backtest. When it detects

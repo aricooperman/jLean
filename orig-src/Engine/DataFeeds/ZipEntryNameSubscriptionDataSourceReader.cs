@@ -19,7 +19,7 @@ using System.IO;
 using Ionic.Zip;
 using QuantConnect.Data;
 
-namespace QuantConnect.Lean.Engine.DataFeeds
+package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// Provides an implementation of <see cref="ISubscriptionDataSourceReader"/> that reads zip entry names

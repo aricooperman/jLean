@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Orders.Fees
+package com.quantconnect.lean.Orders.Fees
 {
     /// <summary>
     /// Provides an implementation of <see cref="IFeeModel"/> that models FXCM order fees

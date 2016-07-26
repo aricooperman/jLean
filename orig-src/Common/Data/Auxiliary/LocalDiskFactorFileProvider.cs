@@ -20,7 +20,7 @@ using QuantConnect.Configuration;
 using QuantConnect.Interfaces;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data.Auxiliary
+package com.quantconnect.lean.Data.Auxiliary
 {
     /// <summary>
     /// Provides an implementation of <see cref="IFactorFileProvider"/> that searches the local disk
@@ -28,7 +28,7 @@ namespace QuantConnect.Data.Auxiliary
     public class LocalDiskFactorFileProvider : IFactorFileProvider
     {
         private readonly IMapFileProvider _mapFileProvider;
-        private readonly ConcurrentDictionary<Symbol, FactorFile> _cache;
+        private readonly ConcurrentMap<Symbol, FactorFile> _cache;
 
         /// <summary>
         /// Initializes a new instance of <see cref="LocalDiskFactorFileProvider"/> that uses configuration
@@ -47,7 +47,7 @@ namespace QuantConnect.Data.Auxiliary
         public LocalDiskFactorFileProvider(IMapFileProvider mapFileProvider)
         {
             _mapFileProvider = mapFileProvider;
-            _cache = new ConcurrentDictionary<Symbol, FactorFile>();
+            _cache = new ConcurrentMap<Symbol, FactorFile>();
         }
 
         /// <summary>

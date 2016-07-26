@@ -19,7 +19,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace QuantConnect.ToolBox.QuantQuoteConverter
+package com.quantconnect.lean.ToolBox.QuantQuoteConverter
 {
     class Program
     {
@@ -63,7 +63,7 @@ namespace QuantConnect.ToolBox.QuantQuoteConverter
                 destinationDirectory = (Console.ReadLine() ?? "");
                 Console.WriteLine("3. Enter Resolution (minute/second/tick): ");
                 resolution = (Console.ReadLine() ?? "");
-                resolution = resolution.ToLower();
+                resolution = resolution.toLowerCase();
             }
 
             //Validate the user input:
@@ -87,7 +87,7 @@ namespace QuantConnect.ToolBox.QuantQuoteConverter
                 {
                     symbol = GetSymbol(file);
                     fileContents = File.ReadAllText(file);
-                    data = new Dictionary<string, string> { { string.Format("{0}_{1}_Trade_Second.csv", date.ToString("yyyyMMdd"), symbol), fileContents } };
+                    data = new Map<String,String> { { string.Format("{0}_{1}_Trade_Second.csv", date.ToString("yyyyMMdd"), symbol), fileContents } };
 
                     fileDestination = string.Format("{0}/equity/{1}/{2}/{3}_trade.zip",  destinationDirectory, resolution, symbol, date.ToString("yyyyMMdd"));
 

@@ -17,7 +17,7 @@
 using System;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Data.Consolidators
+package com.quantconnect.lean.Data.Consolidators
 {
     /// <summary>
     /// Provides a base class for consolidators that emit data based on the passing of a period of time

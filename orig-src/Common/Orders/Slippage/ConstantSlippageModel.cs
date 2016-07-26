@@ -16,7 +16,7 @@
 using QuantConnect.Data;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Orders.Slippage
+package com.quantconnect.lean.Orders.Slippage
 {
     /// <summary>
     /// Represents a slippage model that uses a constant percentage of slip

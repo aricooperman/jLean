@@ -21,7 +21,7 @@ using QuantConnect.Logging;
 using RestSharp;
 using RestSharp.Authenticators;
 
-namespace QuantConnect.Api
+package com.quantconnect.lean.Api
 {
     /// <summary>
     /// API Connection and Hash Manager

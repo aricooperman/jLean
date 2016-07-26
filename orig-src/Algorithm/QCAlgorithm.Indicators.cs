@@ -20,7 +20,7 @@ using QuantConnect.Data.Consolidators;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Algorithm
+package com.quantconnect.lean.Algorithm
 {
     public partial class QCAlgorithm
     {

@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using QuantConnect.Data;
 using QuantConnect.Util;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Provides an implementation of <see cref="IDataProcessor"/> that simply forwards all

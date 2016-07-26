@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Data
+package com.quantconnect.lean.Data
 {
     /// <summary>
     /// Specifies the format of data in a subscription

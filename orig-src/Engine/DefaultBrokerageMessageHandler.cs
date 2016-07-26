@@ -23,7 +23,7 @@ using QuantConnect.Lean.Engine.Results;
 using QuantConnect.Logging;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Lean.Engine
+package com.quantconnect.lean.Lean.Engine
 {
     /// <summary>
     /// Provides a default implementation o <see cref="IBrokerageMessageHandler"/> that will forward

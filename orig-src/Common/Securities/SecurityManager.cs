@@ -23,13 +23,13 @@ using NodaTime;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Securities 
+package com.quantconnect.lean.Securities 
 {
     /// <summary>
     /// Enumerable security management class for grouping security objects into an array and providing any common properties.
     /// </summary>
     /// <remarks>Implements IDictionary for the index searching of securities by symbol</remarks>
-    public class SecurityManager : IDictionary<Symbol, Security>, INotifyCollectionChanged
+    public class SecurityManager : Map<Symbol, Security>, INotifyCollectionChanged
     {
         /// <summary>
         /// Event fired when a security is added or removed from this collection
@@ -39,7 +39,7 @@ namespace QuantConnect.Securities
         private readonly TimeKeeper _timeKeeper;
 
         //Internal dictionary implementation:
-        private readonly ConcurrentDictionary<Symbol, Security> _securityManager;
+        private readonly ConcurrentMap<Symbol, Security> _securityManager;
 
         /// <summary>
         /// Gets the most recent time this manager was updated
@@ -56,7 +56,7 @@ namespace QuantConnect.Securities
         public SecurityManager(TimeKeeper timeKeeper)
         {
             _timeKeeper = timeKeeper;
-            _securityManager = new ConcurrentDictionary<Symbol, Security>();
+            _securityManager = new ConcurrentMap<Symbol, Security>();
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace QuantConnect.Securities
         /// <remarks>IDictionary implementation</remarks>
         public void CopyTo(KeyValuePair<Symbol, Security>[] array, int number)
         {
-            ((IDictionary<Symbol, Security>)_securityManager).CopyTo(array, number);
+            ((Map<Symbol, Security>)_securityManager).CopyTo(array, number);
         }
 
         /// <summary>

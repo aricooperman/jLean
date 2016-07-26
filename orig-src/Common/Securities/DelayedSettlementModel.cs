@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Represents the model responsible for applying cash settlement rules

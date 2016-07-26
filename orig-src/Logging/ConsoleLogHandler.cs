@@ -16,7 +16,7 @@
 using System;
 using System.IO;
 
-namespace QuantConnect.Logging
+package com.quantconnect.lean.Logging
 {
     /// <summary>
     /// ILogHandler implementation that writes log output to console.

@@ -17,7 +17,7 @@ using System;
 using QuantConnect.Data;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Provides static properties to be used as selectors with the indicator system

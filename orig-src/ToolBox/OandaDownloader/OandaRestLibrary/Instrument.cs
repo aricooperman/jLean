@@ -19,7 +19,7 @@
 
 using System;
 
-namespace QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary
+package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 {
 	public class IsOptionalAttribute : Attribute
 	{

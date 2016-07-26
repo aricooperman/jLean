@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Brokerages
+package com.quantconnect.lean.Brokerages
 {
     /// <summary>
     /// Provides an plugin point to allow algorithms to directly handle the messages

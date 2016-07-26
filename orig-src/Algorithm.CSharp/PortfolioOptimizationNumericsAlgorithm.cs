@@ -22,7 +22,7 @@ using System;
 using QuantConnect.Indicators;
 using QuantConnect.Data.Market;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// This algorithm uses Math.NET Numerics library, specifically Linear Algebra object (Vector and Matrix) and operations, in order to solve a portfolio optimization problem.

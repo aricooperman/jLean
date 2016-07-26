@@ -31,7 +31,7 @@ using QuantConnect.Packets;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine.Setup
+package com.quantconnect.lean.Lean.Engine.Setup
 {
     /// <summary>
     /// Backtesting setup handler processes the algorithm initialize method and sets up the internal state of the algorithm class.
@@ -46,7 +46,7 @@ namespace QuantConnect.Lean.Engine.Setup
         /// <summary>
         /// Internal errors list from running the setup proceedures.
         /// </summary>
-        public List<string> Errors
+        public List<String> Errors
         { 
             get; 
             set; 
@@ -106,7 +106,7 @@ namespace QuantConnect.Lean.Engine.Setup
         /// </summary>
         public BacktestingSetupHandler() 
         {
-            Errors = new List<string>();
+            Errors = new List<String>();
         }
 
         /// <summary>

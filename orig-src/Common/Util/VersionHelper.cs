@@ -16,7 +16,7 @@
 using System.Globalization;
 using System.Linq;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides methods for dealing with lean assembly versions

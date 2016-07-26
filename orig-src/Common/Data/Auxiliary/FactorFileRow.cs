@@ -20,7 +20,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 
-namespace QuantConnect.Data.Auxiliary
+package com.quantconnect.lean.Data.Auxiliary
 {
     /// <summary>
     /// Defines a single row in a factor_factor file. This is a csv file ordered as {date, price factor, split factor}
@@ -65,7 +65,7 @@ namespace QuantConnect.Data.Auxiliary
         /// </summary>
         public static IEnumerable<FactorFileRow> Read( String permtick, String market)
         {
-            String path = Path.Combine(Globals.DataFolder, "equity", market, "factor_files", permtick.ToLower() + ".csv");
+            String path = Path.Combine(Globals.DataFolder, "equity", market, "factor_files", permtick.toLowerCase() + ".csv");
             return File.ReadAllLines(path).Where(l => !string.IsNullOrWhiteSpace(l)).Select(Parse);
         }
 

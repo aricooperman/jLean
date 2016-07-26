@@ -17,7 +17,7 @@ using System.Collections.Generic;
 using QuantConnect.Data;
 using QuantConnect.Data.UniverseSelection;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// This algorithm shows how you can handle universe selection in anyway you like,
@@ -26,7 +26,7 @@ namespace QuantConnect.Algorithm.CSharp
     /// </summary>
     public class UserDefinedUniverseAlgorithm : QCAlgorithm
     {
-        private static readonly IReadOnlyList<string> Symbols = new List<string>
+        private static readonly IReadOnlyList<String> Symbols = new List<String>
         {
             "SPY", "GOOG", "IBM", "AAPL", "MSFT", "CSCO", "ADBE", "WMT",
         };
@@ -42,7 +42,7 @@ namespace QuantConnect.Algorithm.CSharp
             {
                 hour = time.Hour;
                 index = hour%Symbols.Count;
-                return new List<string> {Symbols[index]};
+                return new List<String> {Symbols[index]};
             });
         }
 

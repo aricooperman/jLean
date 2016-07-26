@@ -18,7 +18,7 @@ using System.Linq;
 using NUnit.Framework;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Common.Util
+package com.quantconnect.lean.Tests.Common.Util
 {
     [TestFixture]
     public class LinqExtensionsTests
@@ -27,7 +27,7 @@ namespace QuantConnect.Tests.Common.Util
         public void ExceptProducesSameResultsAsEnumerableExcept()
         {
             enumerable = Enumerable.Range(0, 100);
-            set = new HashSet<int>(Enumerable.Range(40, 20));
+            set = new HashSet<Integer>(Enumerable.Range(40, 20));
 
             expected = Enumerable.Except(enumerable, set);
             actual = LinqExtensions.Except(enumerable, set);

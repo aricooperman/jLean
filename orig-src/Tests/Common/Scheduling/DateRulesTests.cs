@@ -23,7 +23,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.Scheduling;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Common.Scheduling
+package com.quantconnect.lean.Tests.Common.Scheduling
 {
     [TestFixture]
     public class DateRulesTests

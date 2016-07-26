@@ -16,7 +16,7 @@
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 
-namespace QuantConnect.Logging
+package com.quantconnect.lean.Logging
 {
     /// <summary>
     /// Provides methods for determining higher stack frames

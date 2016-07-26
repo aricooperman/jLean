@@ -21,7 +21,7 @@ using System.Globalization;
 using System.IO;
 using System.Timers;
 
-namespace QuantConnect.ToolBox.IQFeed
+package com.quantconnect.lean.ToolBox.IQFeed
 {
     public class Level1ServerDisconnectedArgs : Level1TextLineEventArgs
     {
@@ -631,7 +631,7 @@ namespace QuantConnect.ToolBox.IQFeed
         public IQLevel1Client(int bufferSize)
             : base(IQSocket.GetEndPoint(PortType.Level1), bufferSize)
         {
-            _key = new Dictionary<string,IQLevel1WatchItem>();
+            _key = new Map<String,IQLevel1WatchItem>();
             IsNewsOn = false;
         }
 
@@ -829,7 +829,7 @@ namespace QuantConnect.ToolBox.IQFeed
         }
 
         #region private
-        private Dictionary<string,IQLevel1WatchItem> _key;
+        private Map<String,IQLevel1WatchItem> _key;
 
         #endregion
      }

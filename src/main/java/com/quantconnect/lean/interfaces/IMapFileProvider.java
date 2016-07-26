@@ -14,23 +14,19 @@
  *
 */
 
-using System.ComponentModel.Composition;
-using QuantConnect.Data.Auxiliary;
+package com.quantconnect.lean.interfaces;
 
-namespace QuantConnect.Interfaces
-{
-    /// <summary>
-    /// Provides instances of <see cref="MapFileResolver"/> at run time
-    /// </summary>
-    [InheritedExport(typeof(IMapFileProvider))]
-    public interface IMapFileProvider
-    {
-        /// <summary>
-        /// Gets a <see cref="MapFileResolver"/> representing all the map
-        /// files for the specified market
-        /// </summary>
-        /// <param name="market">The equity market, for example, 'usa'</param>
-        /// <returns>A <see cref="MapFileResolver"/> containing all map files for the specified market</returns>
-        MapFileResolver Get( String market);
-    }
+import com.quantconnect.lean.data.auxiliary.MapFileResolver;
+
+//using System.ComponentModel.Composition;
+//using QuantConnect.Data.Auxiliary;
+
+/// Provides instances of <see cref="MapFileResolver"/> at run time
+//[InheritedExport(typeof(IMapFileProvider))]
+public interface IMapFileProvider {
+    /// Gets a <see cref="MapFileResolver"/> representing all the map
+    /// files for the specified market
+    /// <param name="market">The equity market, for example, 'usa'</param>
+    /// <returns>A <see cref="MapFileResolver"/> containing all map files for the specified market</returns>
+    MapFileResolver get( String market );
 }

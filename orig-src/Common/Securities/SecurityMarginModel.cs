@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Represents a simple, constant margining model by specifying the percentages of required margin.

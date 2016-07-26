@@ -28,7 +28,7 @@ using QuantConnect.Logging;
 using QuantConnect.Packets;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine.Setup
+package com.quantconnect.lean.Lean.Engine.Setup
 {
     /// <summary>
     /// Defines a set up handler that initializes the algorithm instance using values retrieved from the user's brokerage account
@@ -38,7 +38,7 @@ namespace QuantConnect.Lean.Engine.Setup
         /// <summary>
         /// Any errors from the initialization stored here:
         /// </summary>
-        public List<string> Errors { get; set; }
+        public List<String> Errors { get; set; }
 
         /// <summary>
         /// Get the maximum runtime for this algorithm job.
@@ -69,7 +69,7 @@ namespace QuantConnect.Lean.Engine.Setup
         /// </summary>
         public BrokerageSetupHandler()
         {
-            Errors = new List<string>();
+            Errors = new List<String>();
             MaximumRuntime = TimeSpan.FromDays(10*365);
             MaxOrders = int.MaxValue;
         }

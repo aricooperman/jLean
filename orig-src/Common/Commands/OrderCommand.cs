@@ -18,7 +18,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Orders;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Commands
+package com.quantconnect.lean.Commands
 {
     /// <summary>
     /// Represents a command to submit an order to the algorithm

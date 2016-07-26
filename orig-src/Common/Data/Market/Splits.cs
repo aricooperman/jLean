@@ -16,12 +16,12 @@
 
 using System;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Collection of splits keyed by <see cref="Symbol"/>
     /// </summary>
-    public class Splits : DataDictionary<Split>
+    public class Splits : DataMap<Split>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Splits"/> dictionary
@@ -33,7 +33,7 @@ namespace QuantConnect.Data.Market
         /// <summary>
         /// Initializes a new instance of the <see cref="Splits"/> dictionary
         /// </summary>
-        /// <param name="frontier">The time associated with the data in this dictionary</param>
+        /// <param name="frontier">The time associated with the data in this Map</param>
         public Splits(DateTime frontier)
             : base(frontier)
         {

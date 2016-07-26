@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// Provides extension methods for the MovingAverageType enumeration

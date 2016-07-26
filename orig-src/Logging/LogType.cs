@@ -14,7 +14,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Logging
+package com.quantconnect.lean.Logging
 {
     /// <summary>
     /// Error level

@@ -19,7 +19,7 @@ using System.IO;
 using System.Linq;
 using QuantConnect.Logging;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Processing harness used to read files in, parse them, and process them.
@@ -55,7 +55,7 @@ namespace QuantConnect.ToolBox
         /// <param name="streamParser">Instance capable of parsing the provided stream</param>
         /// <param name="processors">The data processors to process the parsed data</param>
         /// <returns>True if the operation completed without error, otherwise false</returns>
-        public static boolean Run( String name, IEnumerable<string> sources, IStreamProvider streamProvider, IStreamParser streamParser, params IDataProcessor[] processors)
+        public static boolean Run( String name, IEnumerable<String> sources, IStreamProvider streamProvider, IStreamParser streamParser, params IDataProcessor[] processors)
         {
             using (processor = new RawFileProcessor(streamProvider, streamParser, processors) { Name = name })
             {

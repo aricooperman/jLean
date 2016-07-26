@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Data.Consolidators
+package com.quantconnect.lean.Data.Consolidators
 {
     /// <summary>
     /// This consolidator wires up the events on its First and Second consolidators

@@ -25,7 +25,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 using Timer = System.Timers.Timer;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Queues
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
 {
     /// <summary>
     /// This is an implementation of <see cref="IDataQueueHandler"/> used for testing

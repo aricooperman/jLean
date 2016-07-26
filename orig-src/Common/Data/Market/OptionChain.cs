@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using QuantConnect.Util;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Represents an entire chain of option contracts for a single underying security.
@@ -27,7 +27,7 @@ namespace QuantConnect.Data.Market
     /// </summary>
     public class OptionChain : BaseData, IEnumerable<OptionContract>
     {
-        private readonly Dictionary<Type, Dictionary<Symbol, List<BaseData>>> _auxiliaryData = new Dictionary<Type, Dictionary<Symbol, List<BaseData>>>();
+        private readonly Map<Type, Map<Symbol, List<BaseData>>> _auxiliaryData = new Map<Type, Map<Symbol, List<BaseData>>>();
 
         /// <summary>
         /// Gets the most recent trade information for the underlying. This may
@@ -182,7 +182,7 @@ namespace QuantConnect.Data.Market
         public T GetAux<T>(Symbol symbol)
         {
             List<BaseData> list;
-            Dictionary<Symbol, List<BaseData>> dictionary;
+            Map<Symbol, List<BaseData>> dictionary;
             if (!_auxiliaryData.TryGetValue(typeof(T), out dictionary) || !dictionary.TryGetValue(symbol, out list))
             {
                 return default(T);
@@ -195,14 +195,14 @@ namespace QuantConnect.Data.Market
         /// </summary>
         /// <typeparam name="T">The type of auxiliary data</typeparam>
         /// <returns>A dictionary containing all auxiliary data of the specified type</returns>
-        public DataDictionary<T> GetAux<T>()
+        public DataMap<T> GetAux<T>()
         {
-            Dictionary<Symbol, List<BaseData>> d;
+            Map<Symbol, List<BaseData>> d;
             if (!_auxiliaryData.TryGetValue(typeof(T), out d))
             {
-                return new DataDictionary<T>();
+                return new DataMap<T>();
             }
-            dictionary = new DataDictionary<T>();
+            dictionary = new DataMap<T>();
             foreach (kvp in d)
             {
                 item = kvp.Value.OfType<T>().LastOrDefault();
@@ -219,12 +219,12 @@ namespace QuantConnect.Data.Market
         /// </summary>
         /// <typeparam name="T">The type of auxiliary data</typeparam>
         /// <returns>A dictionary containing all auxiliary data of the specified type</returns>
-        public Dictionary<Symbol, List<BaseData>> GetAuxList<T>()
+        public Map<Symbol, List<BaseData>> GetAuxList<T>()
         {
-            Dictionary<Symbol, List<BaseData>> dictionary;
+            Map<Symbol, List<BaseData>> dictionary;
             if (!_auxiliaryData.TryGetValue(typeof(T), out dictionary))
             {
-                return new Dictionary<Symbol, List<BaseData>>();
+                return new Map<Symbol, List<BaseData>>();
             }
             return dictionary;
         }
@@ -238,7 +238,7 @@ namespace QuantConnect.Data.Market
         public List<T> GetAuxList<T>(Symbol symbol)
         {
             List<BaseData> list;
-            Dictionary<Symbol, List<BaseData>> dictionary;
+            Map<Symbol, List<BaseData>> dictionary;
             if (!_auxiliaryData.TryGetValue(typeof(T), out dictionary) || !dictionary.TryGetValue(symbol, out list))
             {
                 return new List<T>();
@@ -296,10 +296,10 @@ namespace QuantConnect.Data.Market
         internal void AddAuxData(BaseData baseData)
         {
             type = baseData.GetType();
-            Dictionary<Symbol, List<BaseData>> dictionary;
+            Map<Symbol, List<BaseData>> dictionary;
             if (!_auxiliaryData.TryGetValue(type, out dictionary))
             {
-                dictionary = new Dictionary<Symbol, List<BaseData>>();
+                dictionary = new Map<Symbol, List<BaseData>>();
                 _auxiliaryData[type] = dictionary;
             }
 

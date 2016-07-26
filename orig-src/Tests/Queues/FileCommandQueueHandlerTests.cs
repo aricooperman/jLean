@@ -25,7 +25,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 using QuantConnect.Queues;
 
-namespace QuantConnect.Tests.Queues
+package com.quantconnect.lean.Tests.Queues
 {
     [TestFixture]
     public class FileCommandQueueHandlerTests

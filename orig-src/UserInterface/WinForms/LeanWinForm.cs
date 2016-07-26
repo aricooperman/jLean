@@ -10,7 +10,7 @@ using QuantConnect.Packets;
 //using Gecko;
 //using Gecko.JQuery;
 
-namespace QuantConnect.Views.WinForms
+package com.quantconnect.lean.Views.WinForms
 {
     public partial class LeanWinForm : Form
     {

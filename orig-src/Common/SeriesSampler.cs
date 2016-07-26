@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// A type capable of taking a chart and resampling using a linear interpolation strategy
@@ -127,9 +127,9 @@ namespace QuantConnect
         /// <param name="start">The date to start sampling</param>
         /// <param name="stop">The date to stop sampling</param>
         /// <returns>The sampled charts</returns>
-        public Dictionary<string, Chart> SampleCharts(IDictionary<string, Chart> charts, DateTime start, DateTime stop)
+        public Map<String, Chart> SampleCharts(Map<String, Chart> charts, DateTime start, DateTime stop)
         {
-            sampledCharts = new Dictionary<string, Chart>();
+            sampledCharts = new Map<String, Chart>();
             foreach (chart in charts.Values)
             {
                 sampledChart = new Chart(chart.Name);

@@ -25,7 +25,7 @@ using QuantConnect.Configuration;
 using QuantConnect.Interfaces;
 using QuantConnect.Logging;
 
-namespace QuantConnect.AlgorithmFactory 
+package com.quantconnect.lean.AlgorithmFactory 
 {
     /// <summary>
     /// Loader creates and manages the memory and exception space of the algorithm, ensuring if it explodes the Lean Engine is intact.
@@ -43,7 +43,7 @@ namespace QuantConnect.AlgorithmFactory
         private readonly String _ironPythonLibrary = Config.Get("ironpython-location", "../ironpython/Lib");
 
         // Defines how we resolve a list of type names into a single type name to be instantiated
-        private readonly Func<List<string>, string> _multipleTypeNameResolverFunction;
+        private readonly Func<List<String>,String> _multipleTypeNameResolverFunction;
 
         /// <summary>
         /// Memory space of the user algorithm
@@ -82,7 +82,7 @@ namespace QuantConnect.AlgorithmFactory
         /// for the QuantConnect.Algorithm assembly in this solution.  In order to pick the correct type, consumers must specify how to pick the type,
         /// that's what this function does, it picks the correct type from the list of types found within the assembly.
         /// </param>
-        public Loader(Language language, TimeSpan loaderTimeLimit, Func<List<string>, string> multipleTypeNameResolverFunction)
+        public Loader(Language language, TimeSpan loaderTimeLimit, Func<List<String>,String> multipleTypeNameResolverFunction)
         {
             _language = language;
 
@@ -158,13 +158,13 @@ namespace QuantConnect.AlgorithmFactory
                 engine.Runtime.LoadAssembly(library);
 
                 //Import the python dll: requires a main.py file to serve as starting point for the algorithm.
-                items = new List<KeyValuePair<string, dynamic>>();
+                items = new List<KeyValuePair<String, dynamic>>();
                 try
                 {
                     Log.Trace("Loader.TryCreatePythonAlgorithm(): Importing python module...");
                     algorithmName = Config.Get("algorithm-type-name");
                     scope = engine.Runtime.ImportModule( String.IsNullOrEmpty(algorithmName) ? "main" : algorithmName);
-                    items = (List<KeyValuePair<string, dynamic>>)scope.GetItems();
+                    items = (List<KeyValuePair<String, dynamic>>)scope.GetItems();
                 }
                 catch (Exception err)
                 {
@@ -321,9 +321,9 @@ namespace QuantConnect.AlgorithmFactory
         /// </summary>
         /// <param name="assembly">Assembly dll we're loading.</param>
         /// <returns>String list of types available.</returns>
-        public static List<string> GetExtendedTypeNames(Assembly assembly) 
+        public static List<String> GetExtendedTypeNames(Assembly assembly) 
         {
-            types = new List<string>();
+            types = new List<String>();
             try
             {
                 Type[] assemblyTypes;

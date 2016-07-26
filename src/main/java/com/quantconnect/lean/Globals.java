@@ -56,7 +56,7 @@ public class Globals {
 using System.Reflection;
 using QuantConnect.Configuration;
 
-namespace QuantConnect
+package com.quantconnect.lean
 {
     /// <summary>
     /// Provides application level constant values

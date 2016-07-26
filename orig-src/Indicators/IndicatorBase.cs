@@ -17,7 +17,7 @@ using System;
 using System.Diagnostics;
 using QuantConnect.Data;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// Provides a base type for all indicators

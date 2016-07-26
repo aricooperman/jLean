@@ -26,7 +26,7 @@ using QuantConnect.Data.Market;
 using QuantConnect.ToolBox.OandaDownloader.OandaRestLibrary;
 using QuantConnect.Brokerages.Oanda;
 
-namespace QuantConnect.ToolBox.OandaDownloader
+package com.quantconnect.lean.ToolBox.OandaDownloader
 {
     /// <summary>
     /// Oanda Data Downloader class
@@ -198,9 +198,9 @@ namespace QuantConnect.ToolBox.OandaDownloader
         /// </summary>
         /// <param name="bars"></param>
         /// <returns></returns>
-        private static SortedDictionary<DateTime, List<Candle>> GroupBarsByDate(List<Candle> bars)
+        private static SortedMap<DateTime, List<Candle>> GroupBarsByDate(List<Candle> bars)
         {
-            groupedBars = new SortedDictionary<DateTime, List<Candle>>();
+            groupedBars = new SortedMap<DateTime, List<Candle>>();
 
             foreach (bar in bars)
             {
@@ -270,7 +270,7 @@ namespace QuantConnect.ToolBox.OandaDownloader
         /// <param name="method">method for the request (defaults to GET)</param>
         /// <param name="requestParams">optional parameters (note that if provided, it's assumed the requestString doesn't contain any)</param>
         /// <returns>response via type T</returns>
-        private static T MakeRequest<T>( String requestString, String method = "GET", Dictionary<string, string> requestParams = null)
+        private static T MakeRequest<T>( String requestString, String method = "GET", Map<String,String> requestParams = null)
         {
             if (requestParams != null && requestParams.Count > 0)
             {
@@ -316,7 +316,7 @@ namespace QuantConnect.ToolBox.OandaDownloader
         /// </summary>
         /// <param name="requestParams">the parameters to convert</param>
         /// <returns>string containing all the parameters for use in requests</returns>
-        private static String CreateParamString(Dictionary<string, string> requestParams)
+        private static String CreateParamString(Map<String,String> requestParams)
         {
             return string.Join(",", requestParams.Select(x => x.Key + "=" + x.Value).Select(WebUtility.UrlEncode));
         }

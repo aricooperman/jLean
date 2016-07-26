@@ -26,7 +26,7 @@ using QuantConnect.Securities;
 using QuantConnect.Util;
 using Log = QuantConnect.Logging.Log;
 
-namespace QuantConnect.ToolBox.CoarseUniverseGenerator
+package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
 {
     public static class Program
     {
@@ -56,14 +56,14 @@ namespace QuantConnect.ToolBox.CoarseUniverseGenerator
                 updateMode = jtoken.Value<bool>();
                 if (config.TryGetValue("update-time-of-day", out jtoken))
                 {
-                    updateTime = TimeSpan.Parse(jtoken.Value<string>());
+                    updateTime = TimeSpan.Parse(jtoken.Value<String>());
                 }
             }
 
             dataDirectory = Globals.DataFolder;
             if (config.TryGetValue("data-directory", out jtoken))
             {
-                dataDirectory = jtoken.Value<string>();
+                dataDirectory = jtoken.Value<String>();
             }
 
             //Ignore symbols without a map file:
@@ -133,7 +133,7 @@ namespace QuantConnect.ToolBox.CoarseUniverseGenerator
         /// <param name="symbolResolver">Function used to provide symbol resolution. Default resolution uses the zip file name to resolve
         /// the symbol, specify null for this behavior.</param>
         /// <returns>A collection of the generated coarse files</returns>
-        public static ICollection<string> ProcessDailyFolder( String dailyFolder, String coarseFolder, MapFileResolver mapFileResolver, HashSet<string> exclusions, boolean ignoreMapless, DateTime startDate, Func<string, string> symbolResolver = null)
+        public static ICollection<String> ProcessDailyFolder( String dailyFolder, String coarseFolder, MapFileResolver mapFileResolver, HashSet<String> exclusions, boolean ignoreMapless, DateTime startDate, Func<String,String> symbolResolver = null)
         {
             static final BigDecimal scaleFactor = 10000m;
 
@@ -148,14 +148,14 @@ namespace QuantConnect.ToolBox.CoarseUniverseGenerator
             dates = new HashSet<DateTime>();
 
             // instead of opening/closing these constantly, open them once and dispose at the end (~3x speed improvement)
-            writers = new Dictionary<string, StreamWriter>();
+            writers = new Map<String, StreamWriter>();
 
             dailyFolderDirectoryInfo = new DirectoryInfo(dailyFolder).Parent;
             if (dailyFolderDirectoryInfo == null)
             {
                 throw new Exception("Unable to resolve market for daily folder: " + dailyFolder);
             }
-            market = dailyFolderDirectoryInfo.Name.ToLower();
+            market = dailyFolderDirectoryInfo.Name.toLowerCase();
 
             // open up each daily file to get the values and append to the daily coarse files
             foreach (file in Directory.EnumerateFiles(dailyFolder))
@@ -174,7 +174,7 @@ namespace QuantConnect.ToolBox.CoarseUniverseGenerator
                         symbol = symbolResolver(symbol);
                     }
 
-                    symbol = symbol.ToUpper();
+                    symbol = symbol.toUpperCase();
 
                     if (exclusions.Contains(symbol))
                     {
@@ -291,13 +291,13 @@ namespace QuantConnect.ToolBox.CoarseUniverseGenerator
         /// Reads the specified exclusions file into a new hash set.
         /// Returns an empty set if the file does not exist
         /// </summary>
-        public static HashSet<string> ReadExclusionsFile( String exclusionsFile)
+        public static HashSet<String> ReadExclusionsFile( String exclusionsFile)
         {
-            exclusions = new HashSet<string>();
+            exclusions = new HashSet<String>();
             if (File.Exists(exclusionsFile))
             {
                 excludedSymbols = File.ReadLines(exclusionsFile).Select(x => x.Trim()).Where(x => !x.StartsWith("#"));
-                exclusions = new HashSet<string>(excludedSymbols, StringComparer.InvariantCultureIgnoreCase);
+                exclusions = new HashSet<String>(excludedSymbols, StringComparer.InvariantCultureIgnoreCase);
                 Log.Trace("CoarseGenerator.ReadExclusionsFile(): Loaded {0} symbols into the exclusion set", exclusions.Count);
             }
             return exclusions;

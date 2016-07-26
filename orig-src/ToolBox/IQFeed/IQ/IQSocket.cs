@@ -19,7 +19,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Globalization;
 
-namespace QuantConnect.ToolBox.IQFeed
+package com.quantconnect.lean.ToolBox.IQFeed
 {
 
     public enum LookupSequence

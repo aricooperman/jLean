@@ -17,7 +17,7 @@ using System;
 using System.Collections.Generic;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Data.UniverseSelection
+package com.quantconnect.lean.Data.UniverseSelection
 {
     /// <summary>
     /// Provides a functional implementation of <see cref="Universe"/>

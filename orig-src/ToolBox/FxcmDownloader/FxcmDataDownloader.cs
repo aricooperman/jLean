@@ -28,7 +28,7 @@ using QuantConnect.Data;
 using QuantConnect.Data.Market;
 using TimeZone = java.util.TimeZone;
 
-namespace QuantConnect.ToolBox.FxcmDownloader
+package com.quantconnect.lean.ToolBox.FxcmDownloader
 {
     /// <summary>
     /// FXCM Data Downloader class
@@ -46,8 +46,8 @@ namespace QuantConnect.ToolBox.FxcmDownloader
         private readonly object _locker = new object();
         private String _currentRequest;
         private static final int ResponseTimeout = 2500;
-        private readonly Dictionary<string, AutoResetEvent> _mapRequestsToAutoResetEvents = new Dictionary<string, AutoResetEvent>();
-        private readonly Dictionary<string, TradingSecurity> _fxcmInstruments = new Dictionary<string, TradingSecurity>();
+        private readonly Map<String, AutoResetEvent> _mapRequestsToAutoResetEvents = new Map<String, AutoResetEvent>();
+        private readonly Map<String, TradingSecurity> _fxcmInstruments = new Map<String, TradingSecurity>();
         private readonly IList<BaseData> _currentBaseData = new List<BaseData>();
 
         /// <summary>

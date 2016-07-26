@@ -20,7 +20,7 @@ using Newtonsoft.Json;
 using QuantConnect.Logging;
 using QuantConnect.Orders;
 
-namespace QuantConnect.Packets
+package com.quantconnect.lean.Packets
 {
     /// <summary>
     /// Live result packet from a lean engine algorithm.
@@ -30,43 +30,43 @@ namespace QuantConnect.Packets
         /// <summary>
         /// User Id sending result packet
         /// </summary>
-        [JsonProperty(PropertyName = "iUserID")]
+        @JsonProperty( "iUserID")]
         public int UserId = 0;
 
         /// <summary>
         /// Project Id of the result packet
         /// </summary>
-        [JsonProperty(PropertyName = "iProjectID")]
+        @JsonProperty( "iProjectID")]
         public int ProjectId = 0;
 
         /// <summary>
         /// User session Id who issued the result packet
         /// </summary>
-        [JsonProperty(PropertyName = "sSessionID")]
+        @JsonProperty( "sSessionID")]
         public String SessionId = "";
 
         /// <summary>
         /// Live Algorithm Id (DeployId) for this result packet
         /// </summary>
-        [JsonProperty(PropertyName = "sDeployID")]
+        @JsonProperty( "sDeployID")]
         public String DeployId = "";
 
         /// <summary>
         /// Compile Id algorithm which generated this result packet
         /// </summary>
-        [JsonProperty(PropertyName = "sCompileID")]
+        @JsonProperty( "sCompileID")]
         public String CompileId = "";
 
         /// <summary>
         /// Result data object for this result packet
         /// </summary>
-        [JsonProperty(PropertyName = "oResults")]
+        @JsonProperty( "oResults")]
         public LiveResult Results = new LiveResult();
 
         /// <summary>
         /// Processing time / running time for the live algorithm.
         /// </summary>
-        [JsonProperty(PropertyName = "dProcessingTime")]
+        @JsonProperty( "dProcessingTime")]
         public double ProcessingTime = 0;
 
         /// <summary>
@@ -135,38 +135,38 @@ namespace QuantConnect.Packets
         /// <summary>
         /// Charts updates for the live algorithm since the last result packet
         /// </summary>
-        public Dictionary<string, Chart> Charts = new Dictionary<string, Chart>();
+        public Map<String, Chart> Charts = new Map<String, Chart>();
 
         /// <summary>
         /// Holdings dictionary of algorithm holdings information
         /// </summary>
-        public Dictionary<string, Holding> Holdings = new Dictionary<string, Holding>();
+        public Map<String, Holding> Holdings = new Map<String, Holding>();
         
         /// <summary>
         /// Order updates since the last result packet
         /// </summary>
-        public Dictionary<int, Order> Orders = new Dictionary<int, Order>();
+        public Map<Integer, Order> Orders = new Map<Integer, Order>();
         
         /// <summary>
         /// Trade profit and loss information since the last algorithm result packet
         /// </summary>
-        public Dictionary<DateTime, decimal> ProfitLoss = new Dictionary<DateTime, decimal>();
+        public Map<DateTime, decimal> ProfitLoss = new Map<DateTime, decimal>();
 
         /// <summary>
         /// Statistics information sent during the algorithm operations.
         /// </summary>
         /// <remarks>Intended for update mode -- send updates to the existing statistics in the result GUI. If statistic key does not exist in GUI, create it</remarks>
-        public Dictionary<string, string> Statistics = new Dictionary<string, string>();
+        public Map<String,String> Statistics = new Map<String,String>();
 
         /// <summary>
         /// Runtime banner/updating statistics in the title banner of the live algorithm GUI.
         /// </summary>
-        public Dictionary<string, string> RuntimeStatistics = new Dictionary<string, string>();
+        public Map<String,String> RuntimeStatistics = new Map<String,String>();
 
         /// <summary>
         /// Server status information, including CPU/RAM usage, ect...
         /// </summary>
-        public Dictionary<string, string> ServerStatistics = new Dictionary<string, string>();
+        public Map<String,String> ServerStatistics = new Map<String,String>();
 
         /// <summary>
         /// Default Constructor
@@ -177,7 +177,7 @@ namespace QuantConnect.Packets
         /// <summary>
         /// Constructor for the result class for dictionary objects
         /// </summary>
-        public LiveResult(Dictionary<string, Chart> charts, Dictionary<int, Order> orders, Dictionary<DateTime, decimal> profitLoss, Dictionary<string, Holding> holdings, Dictionary<string, string> statistics, Dictionary<string, string> runtime, Dictionary<string, string> serverStatistics = null)
+        public LiveResult(Map<String, Chart> charts, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, Map<String,String> statistics, Map<String,String> runtime, Map<String,String> serverStatistics = null)
         {
             Charts = charts;
             Orders = orders;

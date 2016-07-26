@@ -16,7 +16,7 @@
 using System;
 using QuantConnect.Data;
 
-namespace QuantConnect.Indicators
+package com.quantconnect.lean.Indicators
 {
     /// <summary>
     /// The functional indicator is used to lift any function into an indicator. This can be very useful

@@ -21,7 +21,7 @@ using System.Collections.Generic;
 using System.Threading;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /// <summary>
     /// An implementation of <see cref="IEnumerator{T}"/> that relies on the

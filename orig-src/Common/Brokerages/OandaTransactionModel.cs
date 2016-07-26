@@ -20,7 +20,7 @@ using QuantConnect.Orders.Slippage;
 using QuantConnect.Securities;
 using QuantConnect.Securities.Interfaces;
 
-namespace QuantConnect.Brokerages
+package com.quantconnect.lean.Brokerages
 {
     /// <summary>
     /// Oanda Transaction Model Class: Specific transaction fill models for Oanda orders

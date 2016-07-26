@@ -17,7 +17,7 @@
 using System.Linq;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Provides useful infrastructure methods to the <see cref="Security"/> class.

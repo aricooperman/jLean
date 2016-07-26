@@ -16,7 +16,7 @@
 
 using System;
 
-namespace QuantConnect.Util
+package com.quantconnect.lean.Util
 {
     /// <summary>
     /// Represents a read-only reference to any value, T

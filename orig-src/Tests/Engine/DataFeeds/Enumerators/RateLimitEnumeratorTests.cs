@@ -22,7 +22,7 @@ using QuantConnect.Lean.Engine.DataFeeds;
 using QuantConnect.Lean.Engine.DataFeeds.Enumerators;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Tests.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
 {
     [TestFixture]
     public class RateLimitEnumeratorTests

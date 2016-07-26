@@ -18,7 +18,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Common.Util
+package com.quantconnect.lean.Tests.Common.Util
 {
     [TestFixture]
     public class FuncTextWriterTests
@@ -26,8 +26,8 @@ namespace QuantConnect.Tests.Common.Util
         [Test]
         public void RedirectsWriteAndWriteLine()
         {
-            messages = new List<string>();
-            Action<string> redirector = s => messages.Add(s);
+            messages = new List<String>();
+            Action<String> redirector = s => messages.Add(s);
             writer = new FuncTextWriter(redirector);
 
             writer.Write("message");
@@ -42,8 +42,8 @@ namespace QuantConnect.Tests.Common.Util
         [Test]
         public void RedirectsConsoleOutAndError()
         {
-            messages = new List<string>();
-            Action<string> redirector = s => messages.Add(s);
+            messages = new List<String>();
+            Action<String> redirector = s => messages.Add(s);
             writer = new FuncTextWriter(redirector);
 
             Console.SetOut(writer);

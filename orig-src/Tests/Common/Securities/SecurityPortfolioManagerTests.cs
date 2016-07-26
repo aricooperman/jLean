@@ -28,7 +28,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Common.Securities
+package com.quantconnect.lean.Tests.Common.Securities
 {
     [TestFixture]
     public class SecurityPortfolioManagerTests
@@ -40,7 +40,7 @@ namespace QuantConnect.Tests.Common.Securities
         private static readonly Symbol USDJWB = new Symbol(SecurityIdentifier.GenerateForex("USDJWB", Market.FXCM), "USDJWB");
         private static readonly Symbol JWBUSD = new Symbol(SecurityIdentifier.GenerateForex("JWBUSD", Market.FXCM), "JWBUSD");
 
-        private static readonly Dictionary<string, Symbol> SymbolMap = new Dictionary<string, Symbol>
+        private static readonly Map<String, Symbol> SymbolMap = new Map<String, Symbol>
         {
             {"CASH", CASH},
             {"MCHJWB", MCHJWB},
@@ -59,15 +59,15 @@ namespace QuantConnect.Tests.Common.Securities
             static final String equityFile = "TestData\\test_cash_equity.xml";
 
             fills = XDocument.Load(fillsFile).Descendants("OrderEvent").Select(x => new OrderEvent(
-                x.Get<int>("OrderId"),
-                SymbolMap[x.Get<string>("Symbol")],
+                x.Get<Integer>("OrderId"),
+                SymbolMap[x.Get<String>("Symbol")],
                 DateTime.MinValue, 
                 x.Get<OrderStatus>("Status"),
-                x.Get<int>("FillQuantity") < 0 ? OrderDirection.Sell 
-              : x.Get<int>("FillQuantity") > 0 ? OrderDirection.Buy 
+                x.Get<Integer>("FillQuantity") < 0 ? OrderDirection.Sell 
+              : x.Get<Integer>("FillQuantity") > 0 ? OrderDirection.Buy 
                                                : OrderDirection.Hold,
                 x.Get<decimal>("FillPrice"),
-                x.Get<int>("FillQuantity"),
+                x.Get<Integer>("FillQuantity"),
                 0m)
                 ).ToList();
 
@@ -114,15 +114,15 @@ namespace QuantConnect.Tests.Common.Securities
             static final String jwbQuantityFile = "TestData\\test_forex_fills_jwb_quantity.xml";
 
             fills = XDocument.Load(fillsFile).Descendants("OrderEvent").Select(x => new OrderEvent(
-                x.Get<int>("OrderId"),
-                SymbolMap[x.Get<string>("Symbol")],
+                x.Get<Integer>("OrderId"),
+                SymbolMap[x.Get<String>("Symbol")],
                 DateTime.MinValue,
                 x.Get<OrderStatus>("Status"),
-                x.Get<int>("FillQuantity") < 0 ? OrderDirection.Sell 
-              : x.Get<int>("FillQuantity") > 0 ? OrderDirection.Buy 
+                x.Get<Integer>("FillQuantity") < 0 ? OrderDirection.Sell 
+              : x.Get<Integer>("FillQuantity") > 0 ? OrderDirection.Buy 
                                                : OrderDirection.Hold,
                 x.Get<decimal>("FillPrice"),
-                x.Get<int>("FillQuantity"),
+                x.Get<Integer>("FillQuantity"),
                 0)
                 ).ToList();
 
@@ -190,7 +190,7 @@ namespace QuantConnect.Tests.Common.Securities
                 usdCash.Update(new IndicatorDataPoint(MCHUSD, time, mchUsd));
                 mchCash.Update(new IndicatorDataPoint(JWBUSD, time, usdJwb));
 
-                updateData = new Dictionary<Security, BaseData>
+                updateData = new Map<Security, BaseData>
                 {
                     {mchJwbSecurity, new IndicatorDataPoint(MCHJWB, time, mchJwb)},
                     {mchUsdSecurity, new IndicatorDataPoint(MCHUSD, time, mchUsd)},
@@ -637,8 +637,8 @@ namespace QuantConnect.Tests.Common.Securities
 
         class OrderProcessor : IOrderProcessor
         {
-            private readonly ConcurrentDictionary<int, Order> _orders = new ConcurrentDictionary<int, Order>();
-            private readonly ConcurrentDictionary<int, OrderTicket> _tickets = new ConcurrentDictionary<int, OrderTicket>();
+            private readonly ConcurrentMap<Integer, Order> _orders = new ConcurrentMap<Integer, Order>();
+            private readonly ConcurrentMap<Integer, OrderTicket> _tickets = new ConcurrentMap<Integer, OrderTicket>();
             public void AddOrder(Order order)
             {
                 _orders[order.Id] = order;

@@ -20,7 +20,7 @@ using NodaTime;
 using QuantConnect.Logging;
 using QuantConnect.Securities;
 
-namespace QuantConnect 
+package com.quantconnect.lean 
 {
     /// <summary>
     /// Time helper class collection for working with trading dates

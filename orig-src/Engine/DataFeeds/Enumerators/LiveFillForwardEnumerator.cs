@@ -20,7 +20,7 @@ using QuantConnect.Data;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Enumerators
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /// <summary>
     /// An implementation of the <see cref="FillForwardEnumerator"/> that uses an <see cref="ITimeProvider"/>

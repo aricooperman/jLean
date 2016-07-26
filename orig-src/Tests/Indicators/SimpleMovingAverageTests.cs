@@ -19,7 +19,7 @@ using System.Linq;
 using NUnit.Framework;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Tests.Indicators
+package com.quantconnect.lean.Tests.Indicators
 {
     [TestFixture]
     public class SimpleMovingAverageTests

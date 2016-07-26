@@ -17,7 +17,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Scheduling
+package com.quantconnect.lean.Scheduling
 {
     /// <summary>
     /// Specifies times times on dates for events, used in conjunction with <see cref="IDateRule"/>

@@ -16,7 +16,7 @@
 using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Commands
+package com.quantconnect.lean.Commands
 {
     /// <summary>
     /// Represents a command that will liquidate the entire algorithm

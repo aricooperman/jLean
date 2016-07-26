@@ -27,7 +27,7 @@ using QuantConnect.Orders;
 using QuantConnect.Packets;
 using QuantConnect.Statistics;
 
-namespace QuantConnect.Tests.Engine
+package com.quantconnect.lean.Tests.Engine
 {
     /// <summary>
     /// Provides a result handler implementation that handles result packets via
@@ -43,7 +43,7 @@ namespace QuantConnect.Tests.Engine
         private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         public ConcurrentQueue<Packet> Messages { get; set; }
-        public ConcurrentDictionary<string, Chart> Charts { get; set; }
+        public ConcurrentMap<String, Chart> Charts { get; set; }
         public TimeSpan ResamplePeriod { get; private set; }
         public TimeSpan NotificationPeriod { get; private set; }
         public boolean IsActive { get; private set; }
@@ -185,11 +185,11 @@ namespace QuantConnect.Tests.Engine
         }
 
         public void SendFinalResult(AlgorithmNodePacket job,
-            Dictionary<int, Order> orders,
-            Dictionary<DateTime, decimal> profitLoss,
-            Dictionary<string, Holding> holdings,
+            Map<Integer, Order> orders,
+            Map<DateTime, decimal> profitLoss,
+            Map<String, Holding> holdings,
             StatisticsResults statisticsResults,
-            Dictionary<string, string> banner)
+            Map<String,String> banner)
         {
         }
 

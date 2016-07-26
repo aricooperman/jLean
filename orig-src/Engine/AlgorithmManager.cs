@@ -35,7 +35,7 @@ using QuantConnect.Packets;
 using QuantConnect.Securities;
 using QuantConnect.Util;
 
-namespace QuantConnect.Lean.Engine
+package com.quantconnect.lean.Lean.Engine
 {
     /// <summary>
     /// Algorithm manager class executes the algorithm and generates and passes through the algorithm events.
@@ -78,7 +78,7 @@ namespace QuantConnect.Lean.Engine
         /// Gets a function used with the Isolator for verifying we're not spending too much time in each
         /// algo manager timer loop
         /// </summary>
-        public readonly Func<string> TimeLoopWithinLimits;
+        public readonly Func<String> TimeLoopWithinLimits;
 
         private readonly boolean _liveMode;
 
@@ -135,7 +135,7 @@ namespace QuantConnect.Lean.Engine
             _algorithm = algorithm;
             portfolioValue = algorithm.Portfolio.TotalPortfolioValue;
             backtestMode = (job.Type == PacketType.BacktestNode);
-            methodInvokers = new Dictionary<Type, MethodInvoker>();
+            methodInvokers = new Map<Type, MethodInvoker>();
             marginCallFrequency = TimeSpan.FromMinutes(5);
             nextMarginCallTime = DateTime.MinValue;
             settlementScanFrequency = TimeSpan.FromMinutes(30);
@@ -834,7 +834,7 @@ namespace QuantConnect.Lean.Engine
         /// <param name="methodInvokers">The dictionary of method invokers</param>
         /// <param name="methodName">The name of the method to search for</param>
         /// <returns>True if the method existed and was added to the collection</returns>
-        private boolean AddMethodInvoker<T>(IAlgorithm algorithm, Dictionary<Type, MethodInvoker> methodInvokers, String methodName = "OnData")
+        private boolean AddMethodInvoker<T>(IAlgorithm algorithm, Map<Type, MethodInvoker> methodInvokers, String methodName = "OnData")
         {
             newSplitMethodInfo = algorithm.GetType().GetMethod(methodName, new[] {typeof (T)});
             if (newSplitMethodInfo != null)

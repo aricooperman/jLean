@@ -19,7 +19,7 @@ using System.IO;
 using System.Linq;
 using QuantConnect.Util;
 
-namespace QuantConnect.Securities
+package com.quantconnect.lean.Securities
 {
     /// <summary>
     /// Provides access to specific properties for various symbols
@@ -29,9 +29,9 @@ namespace QuantConnect.Securities
         private static SymbolPropertiesDatabase _dataFolderSymbolPropertiesDatabase;
         private static readonly object DataFolderSymbolPropertiesDatabaseLock = new object();
 
-        private readonly IReadOnlyDictionary<SecurityDatabaseKey, SymbolProperties> _entries;
+        private readonly IReadOnlyMap<SecurityDatabaseKey, SymbolProperties> _entries;
 
-        private SymbolPropertiesDatabase(IReadOnlyDictionary<SecurityDatabaseKey, SymbolProperties> entries)
+        private SymbolPropertiesDatabase(IReadOnlyMap<SecurityDatabaseKey, SymbolProperties> entries)
         {
             _entries = entries.ToDictionary();
         }
@@ -87,7 +87,7 @@ namespace QuantConnect.Securities
         /// <returns>A new instance of the <see cref="SymbolPropertiesDatabase"/> class representing the data in the specified file</returns>
         private static SymbolPropertiesDatabase FromCsvFile( String file)
         {
-            entries = new Dictionary<SecurityDatabaseKey, SymbolProperties>();
+            entries = new Map<SecurityDatabaseKey, SymbolProperties>();
 
             if (!File.Exists(file))
             {

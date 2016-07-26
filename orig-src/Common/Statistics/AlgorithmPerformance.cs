@@ -16,7 +16,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace QuantConnect.Statistics
+package com.quantconnect.lean.Statistics
 {
     /// <summary>
     /// The <see cref="AlgorithmPerformance"/> class is a wrapper for <see cref="TradeStatistics"/> and <see cref="PortfolioStatistics"/>
@@ -49,8 +49,8 @@ namespace QuantConnect.Statistics
         /// <param name="startingCapital">The algorithm starting capital</param>
         public AlgorithmPerformance(
             List<Trade> trades,
-            SortedDictionary<DateTime, decimal> profitLoss,
-            SortedDictionary<DateTime, decimal> equity,
+            SortedMap<DateTime, decimal> profitLoss,
+            SortedMap<DateTime, decimal> equity,
             List<double> listPerformance,
             List<double> listBenchmark, 
             BigDecimal startingCapital)

@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Logging
+package com.quantconnect.lean.Logging
 {
     /// <summary>
     /// Provides an <see cref="ILogHandler"/> implementation that composes multiple handlers

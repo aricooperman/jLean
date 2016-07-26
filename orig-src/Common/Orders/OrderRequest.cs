@@ -15,7 +15,7 @@
 
 using System;
 
-namespace QuantConnect.Orders
+package com.quantconnect.lean.Orders
 {
     /// <summary>
     /// Represents a request to submit, update, or cancel an order

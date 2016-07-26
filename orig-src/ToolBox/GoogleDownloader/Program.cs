@@ -18,7 +18,7 @@ using System.Globalization;
 using QuantConnect.Configuration;
 using QuantConnect.Logging;
 
-namespace QuantConnect.ToolBox.GoogleDownloader
+package com.quantconnect.lean.ToolBox.GoogleDownloader
 {
     class Program
     {

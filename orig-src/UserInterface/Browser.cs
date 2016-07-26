@@ -17,7 +17,7 @@ using System.IO;
 using System.Security;
 using Microsoft.Win32;
 
-namespace QuantConnect.Views
+package com.quantconnect.lean.Views
 {
     public enum BrowserEmulationVersion
     {

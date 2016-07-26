@@ -13,7 +13,7 @@
  * limitations under the License.
 */
 
-namespace QuantConnect.Securities.Equity
+package com.quantconnect.lean.Securities.Equity
 {
     /// <summary>
     /// Holdings class for equities securities: no specific properties here but it is a placeholder for future equities specific behaviours.

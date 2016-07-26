@@ -21,7 +21,7 @@ using QuantConnect.Lean.Engine.Results;
 using QuantConnect.Packets;
 using QuantConnect.Scheduling;
 
-namespace QuantConnect.Lean.Engine.RealTime
+package com.quantconnect.lean.Lean.Engine.RealTime
 {
     /// <summary>
     /// Real time event handler, trigger functions at regular or pretimed intervals

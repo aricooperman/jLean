@@ -19,7 +19,7 @@ using QuantConnect.Brokerages;
 using QuantConnect.Data.Market;
 using QuantConnect.Interfaces;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /*
     *	QCU How do I handle brokerage messages in a custom way?

@@ -19,21 +19,21 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using QuantConnect.Data;
 
-namespace QuantConnect.Lean.Engine.DataFeeds
+package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /// <summary>
     /// Provides a collection for holding subscriptions.
     /// </summary>
     public class SubscriptionCollection : IEnumerable<Subscription>
     {
-        private readonly ConcurrentDictionary<Symbol, ConcurrentDictionary<SubscriptionDataConfig, Subscription>> _subscriptions;
+        private readonly ConcurrentMap<Symbol, ConcurrentMap<SubscriptionDataConfig, Subscription>> _subscriptions;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SubscriptionCollection"/> class
         /// </summary>
         public SubscriptionCollection()
         {
-            _subscriptions = new ConcurrentDictionary<Symbol, ConcurrentDictionary<SubscriptionDataConfig, Subscription>>();
+            _subscriptions = new ConcurrentMap<Symbol, ConcurrentMap<SubscriptionDataConfig, Subscription>>();
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
         /// <returns>True if a subscription with the specified configuration is found in this collection, false otherwise</returns>
         public boolean Contains(SubscriptionDataConfig configuration)
         {
-            ConcurrentDictionary<SubscriptionDataConfig, Subscription> dictionary;
+            ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if (!_subscriptions.TryGetValue(configuration.Symbol, out dictionary))
             {
                 return false;
@@ -70,10 +70,10 @@ namespace QuantConnect.Lean.Engine.DataFeeds
         /// <returns>True if the subscription is successfully added, false otherwise</returns>
         public boolean TryAdd(Subscription subscription)
         {
-            ConcurrentDictionary<SubscriptionDataConfig, Subscription> dictionary;
+            ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if (!_subscriptions.TryGetValue(subscription.Configuration.Symbol, out dictionary))
             {
-                dictionary = new ConcurrentDictionary<SubscriptionDataConfig, Subscription>();
+                dictionary = new ConcurrentMap<SubscriptionDataConfig, Subscription>();
                 _subscriptions[subscription.Configuration.Symbol] = dictionary;
             }
 
@@ -88,7 +88,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
         /// <returns>True if the subscription is successfully retrieved, false otherwise</returns>
         public boolean TryGetValue(SubscriptionDataConfig configuration, out Subscription subscription)
         {
-            ConcurrentDictionary<SubscriptionDataConfig, Subscription> dictionary;
+            ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if (!_subscriptions.TryGetValue(configuration.Symbol, out dictionary))
             {
                 subscription = null;
@@ -106,7 +106,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
         /// <returns>True if the subscriptions are successfully retrieved, false otherwise</returns>
         public boolean TryGetAll(Symbol symbol, out ICollection<Subscription> subscriptions)
         {
-            ConcurrentDictionary<SubscriptionDataConfig, Subscription> dictionary;
+            ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if (!_subscriptions.TryGetValue(symbol, out dictionary))
             {
                 subscriptions = null;
@@ -125,7 +125,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
         /// <returns>True if the subscription is successfully removed, false otherwise</returns>
         public boolean TryRemove(SubscriptionDataConfig configuration, out Subscription subscription)
         {
-            ConcurrentDictionary<SubscriptionDataConfig, Subscription> dictionary;
+            ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if (!_subscriptions.TryRemove(configuration.Symbol, out dictionary))
             {
                 subscription = null;
@@ -143,7 +143,7 @@ namespace QuantConnect.Lean.Engine.DataFeeds
         /// <returns></returns>
         public boolean TryRemoveAll(Symbol symbol, out ICollection<Subscription> subscriptions)
         {
-            ConcurrentDictionary<SubscriptionDataConfig, Subscription> dictionary;
+            ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if (!_subscriptions.TryRemove(symbol, out dictionary))
             {
                 subscriptions = null;

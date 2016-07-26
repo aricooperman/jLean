@@ -20,7 +20,7 @@ using System.Threading.Tasks;
 using QuantConnect.Data;
 using QuantConnect.Util;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Provides an implementation of <see cref="IDataProcessor"/> that writes the incoming
@@ -34,7 +34,7 @@ namespace QuantConnect.ToolBox
         private readonly String _dataDirectory;
         private readonly Resolution _resolution;
         private readonly TickType _tickType;
-        private readonly Dictionary<Symbol, Writer> _writers;
+        private readonly Map<Symbol, Writer> _writers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CsvDataProcessor"/> class
@@ -47,7 +47,7 @@ namespace QuantConnect.ToolBox
             _dataDirectory = dataDirectory;
             _resolution = resolution;
             _tickType = tickType;
-            _writers = new Dictionary<Symbol, Writer>();
+            _writers = new Map<Symbol, Writer>();
         }
 
         /// <summary>

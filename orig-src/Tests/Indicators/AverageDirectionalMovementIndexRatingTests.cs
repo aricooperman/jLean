@@ -18,7 +18,7 @@ using NUnit.Framework;
 using QuantConnect.Data.Market;
 using QuantConnect.Indicators;
 
-namespace QuantConnect.Tests.Indicators
+package com.quantconnect.lean.Tests.Indicators
 {
     [TestFixture]
     public class AverageDirectionalMovementIndexRatingTests : CommonIndicatorTests<TradeBar>

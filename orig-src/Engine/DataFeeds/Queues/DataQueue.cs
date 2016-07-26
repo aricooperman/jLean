@@ -19,7 +19,7 @@ using QuantConnect.Data;
 using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 
-namespace QuantConnect.Lean.Engine.DataFeeds.Queues
+package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
 {
     /// <summary>
     /// Live Data Queue is the cut out implementation of how to bind a custom live data source 

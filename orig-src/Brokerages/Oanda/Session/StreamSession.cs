@@ -25,7 +25,7 @@ using System.Text;
 using System.Threading.Tasks;
 using QuantConnect.Brokerages.Oanda.DataType;
 
-namespace QuantConnect.Brokerages.Oanda.Session
+package com.quantconnect.lean.Brokerages.Oanda.Session
 {
 #pragma warning disable 1591
     /// <summary>

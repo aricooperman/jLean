@@ -19,7 +19,7 @@ using NodaTime;
 using QuantConnect.Data;
 using QuantConnect.Data.Custom;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// Daily Fx demonstration to call on and use the FXCM Calendar API
@@ -48,7 +48,7 @@ namespace QuantConnect.Algorithm.CSharp
         /// Trigger an event on a complete calendar event which has an actual value.
         /// </summary>
         private int _eventCount = 0;
-        private Dictionary<string, DailyFx> _uniqueConfirmation = new Dictionary<string, DailyFx>();
+        private Map<String, DailyFx> _uniqueConfirmation = new Map<String, DailyFx>();
         public void OnData(DailyFx calendar)
         {
             _uniqueConfirmation.Add(calendar.ToString(), calendar);

@@ -23,7 +23,7 @@ using QuantConnect.Orders;
 using QuantConnect.Securities;
 using RestSharp;
 
-namespace QuantConnect.Api
+package com.quantconnect.lean.Api
 {
     /// <summary>
     /// QuantConnect.com Interaction Via API.

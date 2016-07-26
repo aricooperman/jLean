@@ -18,7 +18,7 @@ using NUnit.Framework;
 using QuantConnect.Orders;
 using QuantConnect.Statistics;
 
-namespace QuantConnect.Tests.Common.Statistics
+package com.quantconnect.lean.Tests.Common.Statistics
 {
     [TestFixture]
     public class TradeBuilderTests

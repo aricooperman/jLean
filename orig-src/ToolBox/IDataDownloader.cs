@@ -16,7 +16,7 @@ using System;
 using System.Collections.Generic;
 using QuantConnect.Data;
 
-namespace QuantConnect.ToolBox
+package com.quantconnect.lean.ToolBox
 {
     /// <summary>
     /// Data Downloader Interface for pulling data from a remote source.

@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using QuantConnect.Util;
 
-namespace QuantConnect.Brokerages.Tradier
+package com.quantconnect.lean.Brokerages.Tradier
 {
     /// <summary>
     /// Model for a TradierUser returned from the API.
@@ -27,7 +27,7 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierUserContainer
     {
         /// User Profile Contents
-        [JsonProperty(PropertyName = "profile")]
+        @JsonProperty( "profile")]
         public TradierUser Profile;
 
         /// Constructor: Create user from tradier data.
@@ -41,15 +41,15 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierUser
     {
         /// Unique brokerage user id.
-        [JsonProperty(PropertyName = "id")]
+        @JsonProperty( "id")]
         public String Id { get; set; }
 
         /// Name of user:
-        [JsonProperty(PropertyName = "name")]
+        @JsonProperty( "name")]
         public String Name { get; set; }
 
         /// Array of user account details:
-        [JsonProperty(PropertyName = "account")]
+        @JsonProperty( "account")]
         [JsonConverter(typeof(SingleValueListConverter<TradierUserAccount>))]
         public List<TradierUserAccount> Accounts { get; set; }
 
@@ -68,31 +68,31 @@ namespace QuantConnect.Brokerages.Tradier
     public class TradierUserAccount 
     {
         /// Users account number
-        [JsonProperty(PropertyName = "account_number")]
+        @JsonProperty( "account_number")]
         public long AccountNumber { get; set; }
 
         /// Pattern Trader:
-        [JsonProperty(PropertyName = "day_trader")]
+        @JsonProperty( "day_trader")]
         public boolean DayTrader { get; set; }
 
         /// Options level permissions on account.
-        [JsonProperty(PropertyName = "option_level")]
+        @JsonProperty( "option_level")]
         public int OptionLevel { get; set; }
 
         /// Cash or Margin Account:
-        [JsonProperty(PropertyName = "type")]
+        @JsonProperty( "type")]
         public TradierAccountType Type { get; set; }
 
         /// Date time of the last update:
-        [JsonProperty(PropertyName = "last_update_date")]
+        @JsonProperty( "last_update_date")]
         public DateTime LastUpdated { get; set; }
 
         /// Status of the users account:
-        [JsonProperty(PropertyName = "status")]
+        @JsonProperty( "status")]
         public TradierAccountStatus Status { get; set; }
 
         /// Type of user account
-        [JsonProperty(PropertyName = "classification")]
+        @JsonProperty( "classification")]
         public TradierAccountClassification Classification { get; set; }
 
         /// <summary>

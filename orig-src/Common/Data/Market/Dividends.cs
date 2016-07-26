@@ -16,12 +16,12 @@
 
 using System;
 
-namespace QuantConnect.Data.Market
+package com.quantconnect.lean.Data.Market
 {
     /// <summary>
     /// Collection of dividends keyed by <see cref="Symbol"/>
     /// </summary>
-    public class Dividends : DataDictionary<Dividend>
+    public class Dividends : DataMap<Dividend>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="Dividends"/> dictionary
@@ -33,7 +33,7 @@ namespace QuantConnect.Data.Market
         /// <summary>
         /// Initializes a new instance of the <see cref="Dividends"/> dictionary
         /// </summary>
-        /// <param name="frontier">The time associated with the data in this dictionary</param>
+        /// <param name="frontier">The time associated with the data in this Map</param>
         public Dividends(DateTime frontier)
             : base(frontier)
         {

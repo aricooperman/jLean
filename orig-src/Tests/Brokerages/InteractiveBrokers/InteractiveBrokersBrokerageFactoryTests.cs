@@ -20,7 +20,7 @@ using QuantConnect.Interfaces;
 using QuantConnect.Packets;
 using QuantConnect.Util;
 
-namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
+package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 {
     [TestFixture]
     [Ignore("These tests require the IBController and IB TraderWorkstation to be installed.")]
@@ -39,7 +39,7 @@ namespace QuantConnect.Tests.Brokerages.InteractiveBrokers
                 job = new LiveNodePacket {BrokerageData = factory.BrokerageData};
                 brokerage = factory.CreateBrokerage(job, AlgorithmDependency);
                 Assert.IsNotNull(brokerage);
-                Assert.IsInstanceOf<InteractiveBrokersBrokerage>(brokerage);
+                Assert.IsInstanceOf<IntegereractiveBrokersBrokerage>(brokerage);
 
                 brokerage.Connect();
                 Assert.IsTrue(brokerage.IsConnected);

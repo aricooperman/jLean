@@ -22,7 +22,7 @@ using QuantConnect.Indicators;
 using QuantConnect.Orders;
 using QuantConnect.Securities;
 
-namespace QuantConnect.Algorithm.CSharp
+package com.quantconnect.lean.Algorithm.CSharp
 {
     /// <summary>
     /// 

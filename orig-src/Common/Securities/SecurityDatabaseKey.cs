@@ -101,8 +101,8 @@ package com.quantconnect.lean.Securities
         /// <param name="obj">The object to compare with the current object. </param>
         public override boolean Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
+            if( null == obj ) return false;
+            if( this == obj ) return true;
             if (obj.GetType() != this.GetType()) return false;
             return Equals((SecurityDatabaseKey) obj);
         }
@@ -113,12 +113,12 @@ package com.quantconnect.lean.Securities
         /// <returns>
         /// A hash code for the current object.
         /// </returns>
-        public override int GetHashCode()
+        public override int hashCode()
         {
             unchecked
             {
-                hashCode = (Market != null ? Market.GetHashCode() : 0);
-                hashCode = (hashCode*397) ^ (Symbol != null ? Symbol.GetHashCode() : 0);
+                hashCode = (Market != null ? Market.hashCode() : 0);
+                hashCode = (hashCode*397) ^ (Symbol != null ? Symbol.hashCode() : 0);
                 hashCode = (hashCode*397) ^ (int) SecurityType;
                 return hashCode;
             }
@@ -142,9 +142,9 @@ package com.quantconnect.lean.Securities
         /// <returns>
         /// A String that represents the current object.
         /// </returns>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("{0}-{1}-{2}", SecurityType, Market ?? Wildcard, Symbol ?? Wildcard);
+            return String.format("{0}-{1}-{2}", SecurityType, Market ?? Wildcard, Symbol ?? Wildcard);
         }
     }
 }

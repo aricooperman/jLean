@@ -66,7 +66,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>A new Identity indicator for the specified symbol and selector</returns>
         public Identity Identity(Symbol symbol, TimeSpan resolution, Func<BaseData, decimal> selector = null, String fieldName = null)
         {
-            String name = string.Format("{0}({1}_{2})", symbol, fieldName ?? "close", resolution);
+            String name = String.format("{0}({1}_{2})", symbol, fieldName ?? "close", resolution);
             identity = new Identity(name);
             RegisterIndicator(symbol, identity, ResolveConsolidator(symbol, resolution), selector);
             return identity;
@@ -87,7 +87,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>A new IchimokuKinkoHyo indicator with the specified periods and delays</returns>
         public IchimokuKinkoHyo ICHIMOKU(Symbol symbol, int tenkanPeriod, int kijunPeriod, int senkouAPeriod, int senkouBPeriod, int senkouADelayPeriod, int senkouBDelayPeriod, Resolution? resolution = null)
         {
-            name = CreateIndicatorName(symbol, string.Format("ICHIMOKU({0},{1})", tenkanPeriod, kijunPeriod), resolution);
+            name = CreateIndicatorName(symbol, String.format("ICHIMOKU({0},{1})", tenkanPeriod, kijunPeriod), resolution);
             ichimoku = new IchimokuKinkoHyo(name, tenkanPeriod, kijunPeriod, senkouAPeriod, senkouBPeriod, senkouADelayPeriod, senkouBDelayPeriod);
             RegisterIndicator(symbol, ichimoku, resolution);
             return ichimoku;
@@ -158,7 +158,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>The moving average convergence divergence between the fast and slow averages</returns>
         public MovingAverageConvergenceDivergence MACD(Symbol symbol, int fastPeriod, int slowPeriod, int signalPeriod, MovingAverageType type = MovingAverageType.Simple, Resolution? resolution = null, Func<BaseData, decimal> selector = null)
         {
-            name = CreateIndicatorName(symbol, string.Format("MACD({0},{1})", fastPeriod, slowPeriod), resolution);
+            name = CreateIndicatorName(symbol, String.format("MACD({0},{1})", fastPeriod, slowPeriod), resolution);
             macd = new MovingAverageConvergenceDivergence(name, fastPeriod, slowPeriod, signalPeriod, type);
             RegisterIndicator(symbol, macd, resolution, selector);
             return macd;
@@ -246,7 +246,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>An AroonOscillator configured with the specified periods</returns>
         public AroonOscillator AROON(Symbol symbol, int upPeriod, int downPeriod, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null)
         {
-            name = CreateIndicatorName(symbol, string.Format("AROON({0},{1})", upPeriod, downPeriod), resolution);
+            name = CreateIndicatorName(symbol, String.format("AROON({0},{1})", upPeriod, downPeriod), resolution);
             aroon = new AroonOscillator(name, upPeriod, downPeriod);
             RegisterIndicator(symbol, aroon, resolution, selector);
             return aroon;
@@ -367,7 +367,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>A BollingerBands configured with the specied period</returns>
         public BollingerBands BB(Symbol symbol, int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple, Resolution? resolution = null, Func<BaseData, decimal> selector = null)
         {
-            name = CreateIndicatorName(symbol, string.Format("BB({0},{1})", period, k), resolution);
+            name = CreateIndicatorName(symbol, String.format("BB({0},{1})", period, k), resolution);
             bb = new BollingerBands(name, period, k, movingAverageType);
             RegisterIndicator(symbol, bb, resolution, selector);
             return bb;
@@ -599,7 +599,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>A ParabolicStopAndReverse configured with the specified periods</returns>
         public ParabolicStopAndReverse PSAR(Symbol symbol, BigDecimal afStart = 0.02m, BigDecimal afIncrement = 0.02m, BigDecimal afMax = 0.2m, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null)
         {
-            name = CreateIndicatorName(symbol, string.Format("PSAR({0},{1},{2})", afStart, afIncrement, afMax), resolution);
+            name = CreateIndicatorName(symbol, String.format("PSAR({0},{1},{2})", afStart, afIncrement, afMax), resolution);
             psar = new ParabolicStopAndReverse(name, afStart, afIncrement, afMax);
             RegisterIndicator(symbol, psar, resolution, selector);
             return psar;
@@ -663,7 +663,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>The AccumulationDistributionOscillator indicator for the requested symbol over the speified period</returns>
         public AccumulationDistributionOscillator ADOSC(Symbol symbol, int fastPeriod, int slowPeriod, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null)
         {
-            name = CreateIndicatorName(symbol, string.Format("ADOSC({0},{1})", fastPeriod, slowPeriod), resolution);
+            name = CreateIndicatorName(symbol, String.format("ADOSC({0},{1})", fastPeriod, slowPeriod), resolution);
             adOsc = new AccumulationDistributionOscillator(name, fastPeriod, slowPeriod);
             RegisterIndicator(symbol, adOsc, resolution, selector);
             return adOsc;
@@ -791,7 +791,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>The Momersion indicator for the requested symbol over the specified period</returns>
         public MomersionIndicator MOMERSION(Symbol symbol, int minPeriod, int fullPeriod, Resolution? resolution = null, Func<BaseData, decimal> selector = null)
         {
-            name = CreateIndicatorName(symbol, string.Format("MOMERSION({0},{1})", minPeriod, fullPeriod), resolution);
+            name = CreateIndicatorName(symbol, String.format("MOMERSION({0},{1})", minPeriod, fullPeriod), resolution);
             momersion = new MomersionIndicator(name, minPeriod, fullPeriod);
             RegisterIndicator(symbol, momersion, resolution, selector);
             return momersion;
@@ -824,7 +824,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>The T3MovingAverage indicator for the requested symbol over the specified period</returns>
         public T3MovingAverage T3(Symbol symbol, int period, BigDecimal volumeFactor = 0.7m, Resolution? resolution = null, Func<BaseData, decimal> selector = null)
         {
-            name = CreateIndicatorName(symbol, string.Format("T3({0},{1})", period, volumeFactor), resolution);
+            name = CreateIndicatorName(symbol, String.format("T3({0},{1})", period, volumeFactor), resolution);
             t3 = new T3MovingAverage(name, period, volumeFactor);
             RegisterIndicator(symbol, t3, resolution, selector);
             return t3;
@@ -921,7 +921,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>The UltimateOscillator indicator for the requested symbol over the specified period</returns>
         public UltimateOscillator ULTOSC(Symbol symbol, int period1, int period2, int period3, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null)
         {
-            name = CreateIndicatorName(symbol, string.Format("ULTOSC({0},{1},{2})", period1, period2, period3), resolution);
+            name = CreateIndicatorName(symbol, String.format("ULTOSC({0},{1},{2})", period1, period2, period3), resolution);
             ultosc = new UltimateOscillator(name, period1, period2, period3);
             RegisterIndicator(symbol, ultosc, resolution, selector);
             return ultosc;
@@ -971,7 +971,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>The AbsolutePriceOscillator indicator for the requested symbol over the specified period</returns>
         public AbsolutePriceOscillator APO(Symbol symbol, int fastPeriod, int slowPeriod, MovingAverageType movingAverageType, Resolution? resolution = null, Func<BaseData, decimal> selector = null)
         {
-            name = CreateIndicatorName(symbol, string.Format("APO({0},{1})", fastPeriod, slowPeriod), resolution);
+            name = CreateIndicatorName(symbol, String.format("APO({0},{1})", fastPeriod, slowPeriod), resolution);
             apo = new AbsolutePriceOscillator(name, fastPeriod, slowPeriod, movingAverageType);
             RegisterIndicator(symbol, apo, resolution, selector);
             return apo;
@@ -989,7 +989,7 @@ package com.quantconnect.lean.Algorithm
         /// <returns>The PercentagePriceOscillator indicator for the requested symbol over the specified period</returns>
         public PercentagePriceOscillator PPO(Symbol symbol, int fastPeriod, int slowPeriod, MovingAverageType movingAverageType, Resolution? resolution = null, Func<BaseData, decimal> selector = null)
         {
-            name = CreateIndicatorName(symbol, string.Format("PPO({0},{1})", fastPeriod, slowPeriod), resolution);
+            name = CreateIndicatorName(symbol, String.format("PPO({0},{1})", fastPeriod, slowPeriod), resolution);
             ppo = new PercentagePriceOscillator(name, fastPeriod, slowPeriod, movingAverageType);
             RegisterIndicator(symbol, ppo, resolution, selector);
             return ppo;
@@ -1161,7 +1161,7 @@ package com.quantconnect.lean.Algorithm
             type = typeof(T);
             if (!type.IsAssignableFrom(consolidator.OutputType))
             {
-                throw new ArgumentException( String.Format("Type mismatch found between consolidator and indicator for symbol: {0}." +
+                throw new ArgumentException( String.format("Type mismatch found between consolidator and indicator for symbol: {0}." +
                     "Consolidator outputs type {1} but indicator expects input type {2}",
                     symbol, consolidator.OutputType.Name, type.Name)
                     );
@@ -1199,7 +1199,7 @@ package com.quantconnect.lean.Algorithm
             // data we won't be able to do anything good, we'll call it second, but it would really just be minute!
             if (timeSpan < subscription.Resolution.ToTimeSpan())
             {
-                throw new ArgumentException( String.Format("Unable to create {0} {1} consolidator because {0} is registered for {2} data. " +
+                throw new ArgumentException( String.format("Unable to create {0} {1} consolidator because {0} is registered for {2} data. " +
                     "Consolidators require higher resolution data to produce lower resolution data.",
                     symbol, resolution.Value, subscription.Resolution)
                     );
@@ -1230,7 +1230,7 @@ package com.quantconnect.lean.Algorithm
             // data we won't be able to do anything good, we'll call it second, but it would really just be minute!
             if (timeSpan.Value < subscription.Resolution.ToTimeSpan())
             {
-                throw new ArgumentException( String.Format("Unable to create {0} consolidator because {0} is registered for {1} data. " +
+                throw new ArgumentException( String.format("Unable to create {0} consolidator because {0} is registered for {1} data. " +
                     "Consolidators require higher resolution data to produce lower resolution data.",
                     symbol, subscription.Resolution)
                     );
@@ -1277,7 +1277,7 @@ package com.quantconnect.lean.Algorithm
             catch (InvalidOperationException)
             {
                 // this will happen if we did not find the subscription, let's give the user a decent error message
-                throw new Exception("Please register to receive data for symbol '" + symbol.ToString() + "' using the AddSecurity() function.");
+                throw new Exception("Please register to receive data for symbol '" + symbol.toString() + "' using the AddSecurity() function.");
             }
             return subscription;
         }
@@ -1320,7 +1320,7 @@ package com.quantconnect.lean.Algorithm
                     throw new ArgumentOutOfRangeException("resolution");
             }
 
-            return string.Format("{0}({1}{2})", type, symbol.ToString(), res);
+            return String.format("{0}({1}{2})", type, symbol.toString(), res);
         }
 
     } // End Partial Algorithm Template - Indicators.

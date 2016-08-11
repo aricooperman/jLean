@@ -92,7 +92,7 @@ package com.quantconnect.lean.Scheduling
         public IDateRule EveryDay(Symbol symbol)
         {
             security = GetSecurity(symbol);
-            return new FuncDateRule(symbol.ToString() + ": EveryDay", (start, end) => Time.EachTradeableDay(security, start, end));
+            return new FuncDateRule(symbol.toString() + ": EveryDay", (start, end) => Time.EachTradeableDay(security, start, end));
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ package com.quantconnect.lean.Scheduling
         /// <returns>A date rule that fires on the first tradeable date for the specified security each month</returns>
         public IDateRule MonthStart(Symbol symbol)
         {
-            return new FuncDateRule(symbol.ToString() + ": MonthStart", (start, end) => MonthStartIterator(GetSecurity(symbol), start, end));
+            return new FuncDateRule(symbol.toString() + ": MonthStart", (start, end) => MonthStartIterator(GetSecurity(symbol), start, end));
         }
 
         /// <summary>
@@ -126,7 +126,7 @@ package com.quantconnect.lean.Scheduling
             Security security;
             if (!_securities.TryGetValue(symbol, out security))
             {
-                throw new Exception(symbol.ToString() + " not found in portfolio. Request this data when initializing the algorithm.");
+                throw new Exception(symbol.toString() + " not found in portfolio. Request this data when initializing the algorithm.");
             }
             return security;
         }

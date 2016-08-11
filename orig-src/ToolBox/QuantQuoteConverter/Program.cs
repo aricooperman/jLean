@@ -87,9 +87,9 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
                 {
                     symbol = GetSymbol(file);
                     fileContents = File.ReadAllText(file);
-                    data = new Map<String,String> { { string.Format("{0}_{1}_Trade_Second.csv", date.ToString("yyyyMMdd"), symbol), fileContents } };
+                    data = new Map<String,String> { { String.format("{0}_{1}_Trade_Second.csv", date.toString("yyyyMMdd"), symbol), fileContents } };
 
-                    fileDestination = string.Format("{0}/equity/{1}/{2}/{3}_trade.zip",  destinationDirectory, resolution, symbol, date.ToString("yyyyMMdd"));
+                    fileDestination = String.format("{0}/equity/{1}/{2}/{3}_trade.zip",  destinationDirectory, resolution, symbol, date.toString("yyyyMMdd"));
 
                     if (!Compression.ZipData(fileDestination, data))
                     {

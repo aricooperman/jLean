@@ -28,7 +28,7 @@ package com.quantconnect.lean.Orders.Slippage
         /// Initializes a new instance of the <see cref="ConstantSlippageModel"/> class
         /// </summary>
         /// <param name="slippagePercent">The slippage percent for each order. Percent is ranged 0 to 1.</param>
-        public ConstantSlippageModel(decimal slippagePercent)
+        public ConstantSlippageModel( BigDecimal slippagePercent)
         {
             _slippagePercent = slippagePercent;
         }

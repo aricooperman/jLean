@@ -92,8 +92,8 @@ package com.quantconnect.lean.Lean.Engine.RealTime
                 }
                 catch (Exception err)
                 {
-                    resultHandler.RuntimeError(String.Format("Runtime error in {0} event: {1}", name, err.Message), err.StackTrace);
-                    Log.Error(err, string.Format("ScheduledEvent.{0}:", name));
+                    resultHandler.RuntimeError(String.format("Runtime error in {0} event: {1}", name, err.Message), err.StackTrace);
+                    Log.Error(err, String.format("ScheduledEvent.{0}:", name));
                 }
             });
         }
@@ -131,7 +131,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
                 where !currentUtcTime.HasValue || eventUtcTime > currentUtcTime
                 select eventUtcTime;
 
-            return new ScheduledEvent(CreateEventName(security.Symbol.ToString(), "EndOfDay"), times, (name, triggerTime) =>
+            return new ScheduledEvent(CreateEventName(security.Symbol.toString(), "EndOfDay"), times, (name, triggerTime) =>
             {
                 try
                 {
@@ -139,8 +139,8 @@ package com.quantconnect.lean.Lean.Engine.RealTime
                 }
                 catch (Exception err)
                 {
-                    resultHandler.RuntimeError(String.Format("Runtime error in {0} event: {1}", name, err.Message), err.StackTrace);
-                    Log.Error(err, string.Format("ScheduledEvent.{0}:", name));
+                    resultHandler.RuntimeError(String.format("Runtime error in {0} event: {1}", name, err.Message), err.StackTrace);
+                    Log.Error(err, String.format("ScheduledEvent.{0}:", name));
                 }
             });
         }
@@ -153,7 +153,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         /// <returns>A String representing a fully scoped event name</returns>
         public static String CreateEventName( String scope, String name)
         {
-            return String.Format("{0}.{1}", scope, name);
+            return String.format("{0}.{1}", scope, name);
         }
     }
 }

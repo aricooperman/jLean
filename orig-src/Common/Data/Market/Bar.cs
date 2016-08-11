@@ -56,7 +56,7 @@ package com.quantconnect.lean.Data.Market
         /// <param name="high">Decimal High Price of this bar</param>
         /// <param name="low">Decimal Low Price of this bar</param>
         /// <param name="close">Decimal Close price of this bar</param>
-        public Bar(decimal open, BigDecimal high, BigDecimal low, BigDecimal close)
+        public Bar( BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close)
         {
             Open = open;
             High = high;
@@ -68,7 +68,7 @@ package com.quantconnect.lean.Data.Market
         /// Updates the bar with a new value. This will aggregate the OHLC bar
         /// </summary>
         /// <param name="value">The new value</param>
-        public void Update(decimal value)
+        public void Update( BigDecimal value)
         {
             // Do not accept zero as a new value
             if (value == 0) return;

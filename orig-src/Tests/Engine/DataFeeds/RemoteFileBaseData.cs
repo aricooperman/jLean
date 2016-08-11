@@ -27,7 +27,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         public override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode)
         {
             csv = line.Split(',');
-            if (csv[1].toLowerCase() != config.Symbol.ToString().toLowerCase())
+            if (csv[1].toLowerCase() != config.Symbol.toString().toLowerCase())
             {
                 // this row isn't for me
                 return null;

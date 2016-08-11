@@ -265,7 +265,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                             {
                                 String orderId = "[unknown]";
                                 parameter = request.Parameters.FirstOrDefault(x => x.Name == "orderId");
-                                if (parameter != null) orderId = parameter.Value.ToString();
+                                if (parameter != null) orderId = parameter.Value.toString();
                                 OnMessage(new BrokerageMessageEvent(BrokerageMessageType.Warning, "OrderAlreadyFilled",
                                     "Unable to cancel the order because it has already been filled. TradierOrderId: " + orderId
                                     ));
@@ -292,7 +292,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                     }
 
                     Log.Trace(method + "(3): Parameters: " + string.Join(",", parameters));
-                    OnMessage(new BrokerageMessageEvent(BrokerageMessageType.Warning, raw.ErrorException.GetType().Name, raw.ErrorException.ToString()));
+                    OnMessage(new BrokerageMessageEvent(BrokerageMessageType.Warning, raw.ErrorException.GetType().Name, raw.ErrorException.toString()));
 
                     static final String message = "Error retrieving response.  Check inner details for more info.";
                     throw new ApplicationException(message, raw.ErrorException);
@@ -336,7 +336,7 @@ package com.quantconnect.lean.Brokerages.Tradier
 
                     //Create the GET call:
                     request = new RestRequest("processTradier", Method.GET);
-                    request.AddParameter("uid", UserId.ToString(), ParameterType.GetOrPost);
+                    request.AddParameter("uid", UserId.toString(), ParameterType.GetOrPost);
                     request.AddParameter("accessToken", AccessToken, ParameterType.GetOrPost);
                     request.AddParameter("refreshToken", RefreshToken, ParameterType.GetOrPost);
 
@@ -441,7 +441,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierEvent> GetAccountEvents(long accountId)
         {
             request = new RestRequest("accounts/{accountId}/history", Method.GET);
-            request.AddUrlSegment("accountId", accountId.ToString());
+            request.AddUrlSegment("accountId", accountId.toString());
 
             eventContainer = Execute<TradierEventContainer>(request, TradierApiRequestType.Standard);
 
@@ -461,7 +461,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierGainLoss> GetGainLoss(long accountId)
         {
             request = new RestRequest("accounts/{accountId}/gainloss");
-            request.AddUrlSegment("accountId", accountId.ToString());
+            request.AddUrlSegment("accountId", accountId.toString());
 
             gainLossContainer = Execute<TradierGainLossContainer>(request, TradierApiRequestType.Standard);
 
@@ -481,7 +481,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierOrder> GetIntradayAndPendingOrders()
         {
             request = new RestRequest("accounts/{accountId}/orders");
-            request.AddUrlSegment("accountId", _accountID.ToString());
+            request.AddUrlSegment("accountId", _accountID.toString());
             ordersContainer = Execute<TradierOrdersContainer>(request, TradierApiRequestType.Standard);
 
             if (ordersContainer.Orders == null)
@@ -500,7 +500,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierOrderDetailed GetOrder(long orderId)
         {
             request = new RestRequest("accounts/{accountId}/orders/" + orderId);
-            request.AddUrlSegment("accountId", _accountID.ToString());
+            request.AddUrlSegment("accountId", _accountID.toString());
             detailsParent = Execute<TradierOrderDetailedContainer>(request, TradierApiRequestType.Standard);
             if (detailsParent == null || detailsParent.DetailedOrder == null)
             {
@@ -527,7 +527,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         {
             //Compose the request:
             request = new RestRequest("accounts/{accountId}/orders");
-            request.AddUrlSegment("accountId", accountId.ToString());
+            request.AddUrlSegment("accountId", accountId.toString());
 
             //Add data:
             request.AddParameter("class", GetEnumDescription(classification));
@@ -560,15 +560,15 @@ package com.quantconnect.lean.Brokerages.Tradier
         {
             //Create Request:
             request = new RestRequest("accounts/{accountId}/orders/{orderId}");
-            request.AddUrlSegment("accountId", accountId.ToString());
-            request.AddUrlSegment("orderId", orderId.ToString());
+            request.AddUrlSegment("accountId", accountId.toString());
+            request.AddUrlSegment("orderId", orderId.toString());
             request.Method = Method.PUT;
 
             //Add Data:
             request.AddParameter("type", GetEnumDescription(type));
             request.AddParameter("duration", GetEnumDescription(duration));
-            if (price != 0) request.AddParameter("price", Math.Round(price, 2).ToString(CultureInfo.InvariantCulture));
-            if (stop != 0) request.AddParameter("stop", Math.Round(stop, 2).ToString(CultureInfo.InvariantCulture));
+            if (price != 0) request.AddParameter("price", Math.Round(price, 2).toString(CultureInfo.InvariantCulture));
+            if (stop != 0) request.AddParameter("stop", Math.Round(stop, 2).toString(CultureInfo.InvariantCulture));
 
             //Send:
             return Execute<TradierOrderResponse>(request, TradierApiRequestType.Orders);
@@ -581,8 +581,8 @@ package com.quantconnect.lean.Brokerages.Tradier
         {
             //Compose Request:
             request = new RestRequest("accounts/{accountId}/orders/{orderId}");
-            request.AddUrlSegment("accountId", accountId.ToString());
-            request.AddUrlSegment("orderId", orderId.ToString());
+            request.AddUrlSegment("accountId", accountId.toString());
+            request.AddUrlSegment("orderId", orderId.toString());
             request.Method = Method.DELETE;
 
             //Transmit Request:
@@ -617,8 +617,8 @@ package com.quantconnect.lean.Brokerages.Tradier
             request = new RestRequest("markets/timesales", Method.GET);
             request.AddParameter("symbol", symbol, ParameterType.QueryString);
             request.AddParameter("interval", GetEnumDescription(interval), ParameterType.QueryString);
-            request.AddParameter("start", start.ToString("yyyy-MM-dd HH:mm"), ParameterType.QueryString);
-            request.AddParameter("end", end.ToString("yyyy-MM-dd HH:mm"), ParameterType.QueryString);
+            request.AddParameter("start", start.toString("yyyy-MM-dd HH:mm"), ParameterType.QueryString);
+            request.AddParameter("end", end.toString("yyyy-MM-dd HH:mm"), ParameterType.QueryString);
             dataContainer = Execute<TradierTimeSeriesContainer>(request, TradierApiRequestType.Data, "series");
             return dataContainer.TimeSeries;
         }
@@ -633,8 +633,8 @@ package com.quantconnect.lean.Brokerages.Tradier
         {
             request = new RestRequest("markets/history", Method.GET);
             request.AddParameter("symbol", symbol, ParameterType.QueryString);
-            request.AddParameter("start", start.ToString("yyyy-MM-dd"), ParameterType.QueryString);
-            request.AddParameter("end", end.ToString("yyyy-MM-dd"), ParameterType.QueryString);
+            request.AddParameter("start", start.toString("yyyy-MM-dd"), ParameterType.QueryString);
+            request.AddParameter("end", end.toString("yyyy-MM-dd"), ParameterType.QueryString);
             request.AddParameter("interval", GetEnumDescription(interval));
             dataContainer = Execute<TradierHistoryDataContainer>(request, TradierApiRequestType.Data, "history");
             return dataContainer.Data;
@@ -655,8 +655,8 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierCalendarDay> GetMarketCalendar(int month, int year)
         {
             request = new RestRequest("markets/calendar", Method.GET);
-            request.AddParameter("month", month.ToString());
-            request.AddParameter("year", year.ToString());
+            request.AddParameter("month", month.toString());
+            request.AddParameter("year", year.toString());
             calendarContainer = Execute<TradierCalendarStatus>(request, TradierApiRequestType.Data, "calendar");
             return calendarContainer.Days.Days;
         }
@@ -668,7 +668,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         {
             request = new RestRequest("markets/search", Method.GET);
             request.AddParameter("q", query);
-            request.AddParameter("indexes", includeIndexes.ToString());
+            request.AddParameter("indexes", includeIndexes.toString());
             searchContainer = Execute<TradierSearchContainer>(request, TradierApiRequestType.Data, "securities");
             return searchContainer.Results;
         }
@@ -680,7 +680,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         {
             request = new RestRequest("markets/lookup", Method.GET);
             request.AddParameter("q", query);
-            request.AddParameter("indexes", includeIndexes.ToString());
+            request.AddParameter("indexes", includeIndexes.toString());
             searchContainer = Execute<TradierSearchContainer>(request, TradierApiRequestType.Data, "securities");
             return searchContainer.Results;
         }
@@ -813,7 +813,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         private String GetEnumDescription(Enum value)
         {
             // Get the Description attribute value for the enum value
-            fi = value.GetType().GetField(value.ToString());
+            fi = value.GetType().GetField(value.toString());
             attributes = (EnumMemberAttribute[]) fi.GetCustomAttributes(typeof (EnumMemberAttribute), false);
 
             if (attributes.Length > 0)
@@ -822,7 +822,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
             else
             {
-                return value.ToString();
+                return value.toString();
             }
         }
 
@@ -837,7 +837,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             {
                 //Dynamic deserialization:
                 dynamic dynDeserialized = JsonConvert.DeserializeObject(json);
-                obj = JsonConvert.DeserializeObject<T>(dynDeserialized[rootName].ToString());
+                obj = JsonConvert.DeserializeObject<T>(dynDeserialized[rootName].toString());
             }
             catch (Exception err)
             {
@@ -1024,7 +1024,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                 }
 
                 closingOrderID = response.Order.Id;
-                order.BrokerId.Add(closingOrderID.ToString());
+                order.BrokerId.Add(closingOrderID.toString());
                 return true;
             }
             else
@@ -1034,7 +1034,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                 {
                     return false;
                 }
-                order.BrokerId.Add(response.Order.Id.ToString());
+                order.BrokerId.Add(response.Order.Id.toString());
                 return true;
             }
         }
@@ -1207,13 +1207,13 @@ package com.quantconnect.lean.Brokerages.Tradier
             String stopLimit = string.Empty;
             if (order.Price != 0 || order.Stop != 0)
             {
-                stopLimit = string.Format(" at{0}{1}", 
+                stopLimit = String.format(" at{0}{1}", 
                     order.Stop == 0 ? "" : " stop " + order.Stop, 
                     order.Price == 0 ? "" : " limit " + order.Price
                     );
             }
 
-            Log.Trace( String.Format("TradierBrokerage.TradierPlaceOrder(): {0} to {1} {2} units of {3}{4}", 
+            Log.Trace( String.format("TradierBrokerage.TradierPlaceOrder(): {0} to {1} {2} units of {3}{4}", 
                 order.Type, order.Direction, order.Quantity, order.Symbol, stopLimit)
                 );
  
@@ -1297,7 +1297,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                             return;
                         }
 
-                        order.QCOrder.BrokerId.Add(recentOrder.Id.ToString());
+                        order.QCOrder.BrokerId.Add(recentOrder.Id.toString());
                         Log.Trace("TradierBrokerage.TradierPlaceOrder(): Successfully resolved missing order ID: " + recentOrder.Id);
                     });
                 }
@@ -1359,7 +1359,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                             updatedOrderLocal = GetOrder(cachedOrderLocal.Key);
                             if (updatedOrderLocal == null)
                             {
-                                Log.Error( String.Format("TradierBrokerage.CheckForFills(): Unable to locate order {0} in cached open orders.", cachedOrderLocal.Key));
+                                Log.Error( String.format("TradierBrokerage.CheckForFills(): Unable to locate order {0} in cached open orders.", cachedOrderLocal.Key));
                                 throw new Exception("TradierBrokerage.CheckForFills(): GetOrder() return null response");
                             }
 
@@ -1401,7 +1401,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                             // verify we don't have them in the order provider
                             Log.Trace("TradierBrokerage.CheckForFills(): Verifying missing brokerage IDs: " + string.Join(",", localUnknownTradierOrderIDs));
                             orders = localUnknownTradierOrderIDs.Select(x => _orderProvider.GetOrderByBrokerageId(x)).Where(x => x != null);
-                            stillUnknownOrderIDs = localUnknownTradierOrderIDs.Where(x => !orders.Any(y => y.BrokerId.Contains(x.ToString()))).ToList();
+                            stillUnknownOrderIDs = localUnknownTradierOrderIDs.Where(x => !orders.Any(y => y.BrokerId.Contains(x.toString()))).ToList();
                             if (stillUnknownOrderIDs.Count > 0)
                             {
                                 // fetch all rejected intraday orders within the last minute, we're going to exclude rejected orders from the error condition
@@ -1522,14 +1522,14 @@ package com.quantconnect.lean.Brokerages.Tradier
                                     if (response.Errors.Errors.IsNullOrEmpty())
                                     {
                                         // add the new brokerage id for retrieval later
-                                        qcOrder.BrokerId.Add(response.Order.Id.ToString());
+                                        qcOrder.BrokerId.Add(response.Order.Id.toString());
                                     }
                                     else
                                     {
                                         // if we failed to place this order I don't know what to do, we've filled the first part
                                         // and failed to place the second... strange. Should we invalidate the rest of the order??
                                         Log.Error("TradierBrokerage.SubmitContingentOrder(): Failed to submit contingent order.");
-                                        message = string.Format("{0} Failed submitting contingent order for QC id: {1} Filled Tradier Order id: {2}", qcOrder.Symbol, qcOrder.Id, updatedOrder.Id);
+                                        message = String.format("{0} Failed submitting contingent order for QC id: {1} Filled Tradier Order id: {2}", qcOrder.Symbol, qcOrder.Id, updatedOrder.Id);
                                         OnMessage(new BrokerageMessageEvent(BrokerageMessageType.Warning, "ContingentOrderFailed", message));
                                         OnOrderEvent(new OrderEvent(qcOrder, DateTime.UtcNow, orderFee) { Status = OrderStatus.Canceled });
                                     }
@@ -1650,7 +1650,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             qcOrder.Symbol = Symbol.Create(order.Symbol, SecurityType.Equity, Market.USA);
             qcOrder.Quantity = ConvertQuantity(order);
             qcOrder.Status = ConvertStatus(order.Status);
-            qcOrder.BrokerId.Add(order.Id.ToString());
+            qcOrder.BrokerId.Add(order.Id.toString());
             //qcOrder.ContingentId =
             qcOrder.Duration = ConvertDuration(order.Duration);
             orderByBrokerageId = _orderProvider.GetOrderByBrokerageId(order.Id);

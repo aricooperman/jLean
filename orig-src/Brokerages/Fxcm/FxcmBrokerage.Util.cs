@@ -30,7 +30,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
     /// </summary>
     public partial class FxcmBrokerage
     {
-        private static DateTimeZone _configTimeZone = null;
+        private static ZoneId _configTimeZone = null;
 
         /// <summary>
         /// Converts an FXCM order to a QuantConnect order.

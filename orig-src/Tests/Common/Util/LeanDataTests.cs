@@ -262,7 +262,7 @@ package com.quantconnect.lean.Tests.Common.Util
                 TickType = tickType;
                 ExpectedZipFileName = expectedZipFileName;
                 ExpectedZipEntryName = expectedZipEntryName;
-                ExpectedRelativeZipFilePath = Path.Combine(expectedRelativeZipFileDirectory, expectedZipFileName).Replace("/", Path.DirectorySeparatorChar.ToString());
+                ExpectedRelativeZipFilePath = Path.Combine(expectedRelativeZipFileDirectory, expectedZipFileName).Replace("/", Path.DirectorySeparatorChar.toString());
                 ExpectedZipFilePath = Path.Combine(Globals.DataFolder, ExpectedRelativeZipFilePath);
 
                 Name = SecurityType + "_" + resolution;

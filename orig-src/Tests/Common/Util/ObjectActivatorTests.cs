@@ -137,7 +137,7 @@ package com.quantconnect.lean.Tests.Common.Util
 
             public int GetHashCode(FieldInfo obj)
             {
-                return obj.Name.GetHashCode() ^ obj.DeclaringType.GetHashCode();
+                return obj.Name.hashCode() ^ obj.DeclaringType.hashCode();
             }
         }
 

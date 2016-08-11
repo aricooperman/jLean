@@ -325,7 +325,7 @@ package com.quantconnect.lean.Securities
 
             if (Math.Abs(initialMarginRequiredForRemainderOfOrder) > freeMargin)
             {
-                Log.Error( String.Format("SecurityTransactionManager.GetSufficientCapitalForOrder(): Id: {0}, Initial Margin: {1}, Free Margin: {2}", order.Id, initialMarginRequiredForOrder, freeMargin));
+                Log.Error( String.format("SecurityTransactionManager.GetSufficientCapitalForOrder(): Id: {0}, Initial Margin: {1}, Free Margin: {2}", order.Id, initialMarginRequiredForOrder, freeMargin));
                 return false;
             }
             return true;

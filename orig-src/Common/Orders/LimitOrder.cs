@@ -59,7 +59,7 @@ package com.quantconnect.lean.Orders
             if (tag == "")
             {
                 //Default tag values to display limit price in GUI.
-                Tag = "Limit Price: " + limitPrice.ToString("C");
+                Tag = "Limit Price: " + limitPrice.toString("C");
             }
         }
 
@@ -104,9 +104,9 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("{0} at limit {1}", base.ToString(), LimitPrice.SmartRounding());
+            return String.format("{0} at limit {1}", base.toString(), LimitPrice.SmartRounding());
         }
 
         /// <summary>

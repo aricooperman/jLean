@@ -144,7 +144,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
             {
                 timeOffset = hour * 3600000;
 
-                url = string.Format(@"http://www.dukascopy.com/datafeed/{0}/{1:D4}/{2:D2}/{3:D2}/{4:D2}h_ticks.bi5",
+                url = String.format(@"http://www.dukascopy.com/datafeed/{0}/{1:D4}/{2:D2}/{3:D2}/{4:D2}h_ticks.bi5",
                     dukascopySymbol, date.Year, date.Month - 1, date.Day, hour);
 
                 using (client = new WebClient())

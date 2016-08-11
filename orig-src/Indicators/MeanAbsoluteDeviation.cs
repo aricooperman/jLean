@@ -49,7 +49,7 @@ package com.quantconnect.lean.Indicators
         public MeanAbsoluteDeviation( String name, int period)
             : base(name, period)
         {
-            Mean = MovingAverageType.Simple.AsIndicator( String.Format("{0}_{1}", name, "Mean"), period);
+            Mean = MovingAverageType.Simple.AsIndicator( String.format("{0}_{1}", name, "Mean"), period);
         }
 
         /// <summary>

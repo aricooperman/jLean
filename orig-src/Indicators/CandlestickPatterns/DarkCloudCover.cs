@@ -57,7 +57,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Initializes a new instance of the <see cref="DarkCloudCover"/> class.
         /// </summary>
         /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
-        public DarkCloudCover(decimal penetration = 0.5m)
+        public DarkCloudCover( BigDecimal penetration = 0.5m)
             : this("DARKCLOUDCOVER", penetration)
         {
         }

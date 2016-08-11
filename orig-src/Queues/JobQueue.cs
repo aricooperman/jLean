@@ -103,7 +103,7 @@ package com.quantconnect.lean.Queues
                 }
                 catch (Exception err)
                 {
-                    Log.Error(err, string.Format("Error resolving BrokerageData for live job for brokerage {0}:", liveJob.Brokerage));
+                    Log.Error(err, String.format("Error resolving BrokerageData for live job for brokerage {0}:", liveJob.Brokerage));
                 }
 
                 return liveJob;

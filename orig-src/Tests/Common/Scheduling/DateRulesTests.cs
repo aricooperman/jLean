@@ -144,7 +144,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
 
         private static DateRules GetDateRules()
         {
-            timeKeeper = new TimeKeeper(DateTime.Today, new List<DateTimeZone>());
+            timeKeeper = new TimeKeeper(DateTime.Today, new List<ZoneId>());
             manager = new SecurityManager(timeKeeper);
             securityExchangeHours = MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.USA, null, SecurityType.Equity);
             config = new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Daily, TimeZones.NewYork, TimeZones.NewYork, true, false, false);

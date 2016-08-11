@@ -36,7 +36,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="fastPeriod">The fast moving average period</param>
         /// <param name="slowPeriod">The slow moving average period</param>
         public AccumulationDistributionOscillator(int fastPeriod, int slowPeriod)
-            : this( String.Format("ADOSC({0},{1})", fastPeriod, slowPeriod), fastPeriod, slowPeriod)
+            : this( String.format("ADOSC({0},{1})", fastPeriod, slowPeriod), fastPeriod, slowPeriod)
         {
         }
 

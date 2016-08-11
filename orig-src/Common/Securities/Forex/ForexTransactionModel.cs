@@ -32,7 +32,7 @@ package com.quantconnect.lean.Securities.Forex
         /// Initializes a new instance of the <see cref="ForexTransactionModel"/> class
         /// </summary>
         /// <param name="monthlyTradeAmountInUSDollars">The monthly dollar volume traded</param>
-        public ForexTransactionModel(decimal monthlyTradeAmountInUSDollars = 0)
+        public ForexTransactionModel( BigDecimal monthlyTradeAmountInUSDollars = 0)
             : base(new ImmediateFillModel(), new InteractiveBrokersFeeModel(monthlyTradeAmountInUSDollars), new SpreadSlippageModel())
         {   
         }

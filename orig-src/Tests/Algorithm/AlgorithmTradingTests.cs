@@ -54,7 +54,7 @@ package com.quantconnect.lean.Tests.Algorithm
         /*****************************************************/
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToLong(decimal leverage)
+        public void SetHoldings_ZeroToLong( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -65,7 +65,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToLong_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_ZeroToLong_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -77,7 +77,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToLong_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_ZeroToLong_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -89,7 +89,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToShort(decimal leverage)
+        public void SetHoldings_ZeroToShort( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -100,7 +100,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToShort_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_ZeroToShort_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -111,7 +111,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToShort_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_ZeroToShort_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -122,7 +122,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger(decimal leverage)
+        public void SetHoldings_LongToLonger( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -137,7 +137,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongToLonger_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -152,7 +152,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongToLonger_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -167,7 +167,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongerToLong(decimal leverage)
+        public void SetHoldings_LongerToLong( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -182,7 +182,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongerToLong_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongerToLong_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -197,7 +197,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongerToLong_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongerToLong_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -212,7 +212,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToZero(decimal leverage)
+        public void SetHoldings_LongToZero( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -227,7 +227,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToZero_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongToZero_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -242,7 +242,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToZero_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongToZero_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -257,7 +257,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToShort(decimal leverage)
+        public void SetHoldings_LongToShort( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -273,7 +273,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToShort_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongToShort_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -289,7 +289,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToShort_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongToShort_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -305,7 +305,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_HalfLongToFullShort(decimal leverage)
+        public void SetHoldings_HalfLongToFullShort( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -321,7 +321,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_HalfLongToFullShort_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_HalfLongToFullShort_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -337,7 +337,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_HalfLongToFullShort_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_HalfLongToFullShort_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -353,7 +353,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToZero(decimal leverage)
+        public void SetHoldings_ShortToZero( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -368,7 +368,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToZero_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_ShortToZero_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -383,7 +383,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToZero_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_ShortToZero_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -398,7 +398,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToShorter(decimal leverage)
+        public void SetHoldings_ShortToShorter( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -419,7 +419,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToShorter_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_ShortToShorter_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -440,7 +440,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToShorter_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_ShortToShorter_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -461,7 +461,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToLong(decimal leverage)
+        public void SetHoldings_ShortToLong( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -476,7 +476,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToLong_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_ShortToLong_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -491,7 +491,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToLong_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_ShortToLong_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -506,7 +506,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToHalfShort_DifferentMargins(decimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
+        public void SetHoldings_HalfLongToHalfShort_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
         {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 0);
@@ -522,7 +522,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToHalfShort_SmallConstantFeeStructure_DifferentMargins(decimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
+        public void SetHoldings_HalfLongToHalfShort_SmallConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
         {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 1);
@@ -538,7 +538,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToHalfShort_HighConstantFeeStructure_DifferentMargins(decimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
+        public void SetHoldings_HalfLongToHalfShort_HighConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
         {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 10000);
@@ -554,7 +554,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFullShort_DifferentMargins(decimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
+        public void SetHoldings_HalfLongToFullShort_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
         {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 0);
@@ -570,7 +570,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFullShort_SmallConstantFeeStructure_DifferentMargins(decimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
+        public void SetHoldings_HalfLongToFullShort_SmallConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
         {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 1);
@@ -586,7 +586,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFullShort_HighConstantFeeStructure_DifferentMargins(decimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
+        public void SetHoldings_HalfLongToFullShort_HighConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
         {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 10000);
@@ -602,7 +602,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFull2xShort_DifferentMargins(decimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
+        public void SetHoldings_HalfLongToFull2xShort_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
         {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 0);
@@ -618,7 +618,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFull2xShort_SmallConstantFeeStructure_DifferentMargins(decimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
+        public void SetHoldings_HalfLongToFull2xShort_SmallConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
         {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 1);
@@ -634,7 +634,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFull2xShort_HighConstantFeeStructure_DifferentMargins(decimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
+        public void SetHoldings_HalfLongToFull2xShort_HighConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
         {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 10000);
@@ -655,7 +655,7 @@ package com.quantconnect.lean.Tests.Algorithm
         /*****************************************************/
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongFixed_PriceRise(decimal leverage)
+        public void SetHoldings_LongFixed_PriceRise( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -678,7 +678,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongFixed_PriceRise_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongFixed_PriceRise_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -701,7 +701,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongFixed_PriceRise_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongFixed_PriceRise_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -724,7 +724,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger_PriceRise(decimal leverage)
+        public void SetHoldings_LongToLonger_PriceRise( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -746,7 +746,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger_PriceRise_SmallConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongToLonger_PriceRise_SmallConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
@@ -768,7 +768,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger_PriceRise_HighConstantFeeStructure(decimal leverage)
+        public void SetHoldings_LongToLonger_PriceRise_HighConstantFeeStructure( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
@@ -790,7 +790,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongerToLong_PriceRise(decimal leverage)
+        public void SetHoldings_LongerToLong_PriceRise( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -813,7 +813,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToShort_PriceRise(decimal leverage)
+        public void SetHoldings_LongToShort_PriceRise( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -834,7 +834,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToShorter_PriceRise(decimal leverage)
+        public void SetHoldings_ShortToShorter_PriceRise( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -860,7 +860,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToLong_PriceRise_ZeroValue(decimal leverage)
+        public void SetHoldings_ShortToLong_PriceRise_ZeroValue( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -881,7 +881,7 @@ package com.quantconnect.lean.Tests.Algorithm
         }
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToLong_PriceRise(decimal leverage)
+        public void SetHoldings_ShortToLong_PriceRise( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
@@ -913,7 +913,7 @@ package com.quantconnect.lean.Tests.Algorithm
         /*****************************************************/
 
         [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortFixed_PriceFall(decimal leverage)
+        public void SetHoldings_ShortFixed_PriceFall( BigDecimal leverage)
         {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);

@@ -52,7 +52,7 @@ package com.quantconnect.lean.Tests
                 Config.Set("job-queue-handler", "QuantConnect.Queues.JobQueue");
                 Config.Set("api-handler", "QuantConnect.Api.Api");
                 Config.Set("result-handler", "QuantConnect.Lean.Engine.Results.BacktestingResultHandler");
-                Config.Set("algorithm-language", language.ToString());
+                Config.Set("algorithm-language", language.toString());
                 Config.Set("algorithm-location", "QuantConnect.Algorithm." + language + ".dll");
 
                 debugEnabled = Log.DebuggingEnabled;

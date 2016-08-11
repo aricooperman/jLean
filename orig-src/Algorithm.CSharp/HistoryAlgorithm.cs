@@ -134,7 +134,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             // get the 'YAHOO/INDEX_SPY' quandls like above, but then only return the Low properties
             quandlSpyLows = allQuandlData.Get("YAHOO/INDEX_SPY", "Low");
             AssertHistoryCount("allQuandlData.Get(\"YAHOO/INDEX_SPY\", \"Low\")", quandlSpyLows, 250);
-            foreach (decimal low in quandlSpyLows)
+            foreach ( BigDecimal low in quandlSpyLows)
             {
                 // do something we each low value
             }
@@ -180,7 +180,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             // we can access all the closing prices in chronological order using this get function
             closeHistory = allHistory.Get("SPY", Field.Close);
             AssertHistoryCount("allHistory.Get(\"SPY\", Field.Close)", closeHistory, 390);
-            foreach (decimal close in closeHistory)
+            foreach ( BigDecimal close in closeHistory)
             {
                 // do something with each closing value in order
             }

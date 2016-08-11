@@ -32,7 +32,7 @@ package com.quantconnect.lean.Orders.Fees
         /// Initializes a new instance of the <see cref="ImmediateFillModel"/>
         /// </summary>
         /// <param name="monthlyForexTradeAmountInUSDollars">Monthly dollar volume traded</param>
-        public InteractiveBrokersFeeModel(decimal monthlyForexTradeAmountInUSDollars = 0)
+        public InteractiveBrokersFeeModel( BigDecimal monthlyForexTradeAmountInUSDollars = 0)
         {
             ProcessForexRateSchedule(monthlyForexTradeAmountInUSDollars, out _forexCommissionRate, out _forexMinimumOrderFee);
         }
@@ -83,7 +83,7 @@ package com.quantconnect.lean.Orders.Fees
         /// <summary>
         /// Determines which tier an account falls into based on the monthly trading volume
         /// </summary>
-        private static void ProcessForexRateSchedule(decimal monthlyForexTradeAmountInUSDollars, out BigDecimal commissionRate, out BigDecimal minimumOrderFee)
+        private static void ProcessForexRateSchedule( BigDecimal monthlyForexTradeAmountInUSDollars, out BigDecimal commissionRate, out BigDecimal minimumOrderFee)
         {
             static final BigDecimal bp = 0.0001m;
             if (monthlyForexTradeAmountInUSDollars <= 1000000000)      // 1 billion

@@ -89,8 +89,8 @@ package com.quantconnect.lean.Algorithm.CSharp
             ComputeWeights();
             ComputePortfolioRisk();
 
-            Log( String.Format("Lagrange Multiplier: {0,7:F4}", _lagrangeMultiplier));
-            Log( String.Format("Portfolio Risk:      {0,7:P2} ", _portfolioRisk));
+            Log( String.format("Lagrange Multiplier: {0,7:F4}", _lagrangeMultiplier));
+            Log( String.format("Portfolio Risk:      {0,7:P2} ", _portfolioRisk));
         }
 
         /// <summary>
@@ -177,9 +177,9 @@ package com.quantconnect.lean.Algorithm.CSharp
                 Weight = (decimal)value;
             }
 
-            public override String ToString()
+            public override String toString()
             {
-                return string.Format("{0}: {1,10:P2}\t{2,10:P2}\t{3,10:P2}", Symbol.Value, Weight, Return, Risk);
+                return String.format("{0}: {1,10:P2}\t{2,10:P2}\t{3,10:P2}", Symbol.Value, Weight, Return, Risk);
             }
         }
     }

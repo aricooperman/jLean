@@ -140,14 +140,14 @@ package com.quantconnect.lean.Scheduling
                     {
                         if (IsLoggingEnabled)
                         {
-                            Log.Trace( String.Format("ScheduledEvent.{0}: Completed scheduled events.", Name));
+                            Log.Trace( String.format("ScheduledEvent.{0}: Completed scheduled events.", Name));
                         }
                         _endOfScheduledEvents = true;
                         return;
                     }
                     if (IsLoggingEnabled)
                     {
-                        Log.Trace( String.Format("ScheduledEvent.{0}: Next event: {1} UTC", Name, _orderedEventUtcTimes.Current.ToString(DateFormat.UI)));
+                        Log.Trace( String.format("ScheduledEvent.{0}: Next event: {1} UTC", Name, _orderedEventUtcTimes.Current.toString(DateFormat.UI)));
                     }
                 }
 
@@ -156,9 +156,9 @@ package com.quantconnect.lean.Scheduling
                 {
                     if (IsLoggingEnabled)
                     {
-                        Log.Trace( String.Format("ScheduledEvent.{0}: Firing at {1} UTC Scheduled at {2} UTC", Name,
-                            utcTime.ToString(DateFormat.UI),
-                            _orderedEventUtcTimes.Current.ToString(DateFormat.UI))
+                        Log.Trace( String.format("ScheduledEvent.{0}: Firing at {1} UTC Scheduled at {2} UTC", Name,
+                            utcTime.toString(DateFormat.UI),
+                            _orderedEventUtcTimes.Current.toString(DateFormat.UI))
                             );
                     }
                     // fire the event
@@ -196,9 +196,9 @@ package com.quantconnect.lean.Scheduling
 
                     if (IsLoggingEnabled)
                     {
-                        Log.Trace( String.Format("ScheduledEvent.{0}: Skipped events before {1}. Next event: {2}", Name,
-                            utcTime.ToString(DateFormat.UI),
-                            _orderedEventUtcTimes.Current.ToString(DateFormat.UI)
+                        Log.Trace( String.format("ScheduledEvent.{0}: Skipped events before {1}. Next event: {2}", Name,
+                            utcTime.toString(DateFormat.UI),
+                            _orderedEventUtcTimes.Current.toString(DateFormat.UI)
                             ));
                     }
                     return;
@@ -206,8 +206,8 @@ package com.quantconnect.lean.Scheduling
             }
             if (IsLoggingEnabled)
             {
-                Log.Trace( String.Format("ScheduledEvent.{0}: Exhausted event stream during skip until {1}", Name,
-                    utcTime.ToString(DateFormat.UI)
+                Log.Trace( String.format("ScheduledEvent.{0}: Exhausted event stream during skip until {1}", Name,
+                    utcTime.toString(DateFormat.UI)
                     ));
             }
             _endOfScheduledEvents = true;

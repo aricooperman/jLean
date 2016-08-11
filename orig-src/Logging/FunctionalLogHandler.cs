@@ -57,7 +57,7 @@ package com.quantconnect.lean.Logging
         {
             if (_error != null)
             {
-                _error(DateTime.Now.ToString(DateFormat) + " ERROR " + text);
+                _error(DateTime.Now.toString(DateFormat) + " ERROR " + text);
             }
         }
 
@@ -69,7 +69,7 @@ package com.quantconnect.lean.Logging
         {
             if (_debug != null)
             {
-                _debug(DateTime.Now.ToString(DateFormat) + " DEBUG " + text);
+                _debug(DateTime.Now.toString(DateFormat) + " DEBUG " + text);
             }
         }
 
@@ -81,7 +81,7 @@ package com.quantconnect.lean.Logging
         {
             if (_trace != null)
             {
-                _trace(DateTime.Now.ToString(DateFormat) + " TRACE " + text);
+                _trace(DateTime.Now.toString(DateFormat) + " TRACE " + text);
             }
         }
 

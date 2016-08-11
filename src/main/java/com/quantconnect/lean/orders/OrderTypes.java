@@ -13,88 +13,46 @@
  * limitations under the License.
 */
 
-package com.quantconnect.lean.Orders
-{
-    /// <summary>
+package com.quantconnect.lean.orders;
+
+public class OrderTypes {
+    
     /// Type of the order: market, limit or stop
-    /// </summary>
-    public enum OrderType 
-    {
-        /// <summary>
+    public enum OrderType {
         /// Market Order Type
-        /// </summary>
         Market,
-
-        /// <summary>
         /// Limit Order Type
-        /// </summary>
         Limit,
-
-        /// <summary>
         /// Stop Market Order Type - Fill at market price when break target price
-        /// </summary>
         StopMarket,
-
-        /// <summary>
         /// Stop limit order type - trigger fill once pass the stop price; but limit fill to limit price.
-        /// </summary>
         StopLimit,
-
-        /// <summary>
         /// Market on open type - executed on exchange open
-        /// </summary>
         MarketOnOpen,
-
-        /// <summary>
         /// Market on close type - executed on exchange close
-        /// </summary>
         MarketOnClose
     }
 
 
-    /// <summary>
     /// Order duration in market
-    /// </summary>
-    public enum OrderDuration
-    {
-        /// <summary>
+    public enum OrderDuration {
         /// Order good until its filled.
-        /// </summary>
         GTC,
-
         /*
-        /// <summary>
         /// Order valid for today only: -- CURRENTLY ONLY GTC ORDER DURATION TYPE IN BACKTESTS.
-        /// </summary>
         Day
         */
-
-        /// <summary>
         /// Order valid until a custom set date time value.
-        /// </summary>
         Custom
-        
     }
 
-
-    /// <summary>
     /// Direction of the order
-    /// </summary>
     public enum OrderDirection {
-
-        /// <summary>
         /// Buy Order 
-        /// </summary>
         Buy,
-
-        /// <summary>
         /// Sell Order
-        /// </summary>
         Sell,
-
-        /// <summary>
         /// Default Value - No Order Direction
-        /// </summary>
         /// <remarks>
         /// Unfortunately this does not have a value of zero because
         /// there are backtests saved that reference the values in this order
@@ -102,46 +60,32 @@ package com.quantconnect.lean.Orders
         Hold
     }
 
-
-    /// <summary>
     /// Fill status of the order class.
-    /// </summary>
     public enum OrderStatus {
-        
-        /// <summary>
         /// New order pre-submission to the order processor.
-        /// </summary>
-        New = 0,
-
-        /// <summary>
+        New( 0 ),
         /// Order submitted to the market
-        /// </summary>
-        Submitted = 1,
-
-        /// <summary>
+        Submitted( 1 ),
         /// Partially filled, In Market Order.
-        /// </summary>
-        PartiallyFilled = 2,
-
-        /// <summary>
+        PartiallyFilled( 2 ),
         /// Completed, Filled, In Market Order.
-        /// </summary>
-        Filled = 3,
-
-        /// <summary>
+        Filled( 3 ),
         /// Order cancelled before it was filled
-        /// </summary>
-        Canceled = 5,
-
-        /// <summary>
+        Canceled( 5 ),
         /// No Order State Yet
-        /// </summary>
-        None = 6,
-
-        /// <summary>
+        None( 6 ),
         /// Order invalidated before it hit the market (e.g. insufficient capital)..
-        /// </summary>
-        Invalid = 7
-    }
+        Invalid( 7 );
+        
+        private final int value;
 
-} // End QC Namespace:
+        OrderStatus( int value ) {
+            this.value = value;
+        }
+        
+        public int getValue() {
+            return value;
+        }
+    }
+}
+

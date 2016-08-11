@@ -46,9 +46,9 @@ package com.quantconnect.lean
             String display = "";
             foreach (bar in data.Values)
             {
-                display += ">> " + bar.Symbol + ": " + bar.Value.ToString("C");
+                display += ">> " + bar.Symbol + ": " + bar.Value.toString("C");
             }
-            Debug("ALGO>> OnData(TradeBar) >> " + Time.ToString() + " >> " + data.Count + " >> " + display);
+            Debug("ALGO>> OnData(TradeBar) >> " + Time.toString() + " >> " + data.Count + " >> " + display);
         }
 
         //Bitcoin Handler:

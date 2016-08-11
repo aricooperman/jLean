@@ -112,7 +112,7 @@ package com.quantconnect.lean.Indicators
         /// <returns>The sum of the left and right indicators</returns>
         public static CompositeIndicator<IndicatorDataPoint> Plus(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant)
         {
-            constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.ToString(CultureInfo.InvariantCulture), constant);
+            constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.toString(CultureInfo.InvariantCulture), constant);
             return left.Plus(constantIndicator);
         }
 
@@ -156,7 +156,7 @@ package com.quantconnect.lean.Indicators
         /// <returns>The difference of the left and right indicators</returns>
         public static CompositeIndicator<IndicatorDataPoint> Minus(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant)
         {
-            constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.ToString(CultureInfo.InvariantCulture), constant);
+            constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.toString(CultureInfo.InvariantCulture), constant);
             return left.Minus(constantIndicator);
         }
 
@@ -200,7 +200,7 @@ package com.quantconnect.lean.Indicators
         /// <returns>The ratio of the left to the right indicator</returns>
         public static CompositeIndicator<IndicatorDataPoint> Over(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant)
         {
-            constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.ToString(CultureInfo.InvariantCulture), constant);
+            constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.toString(CultureInfo.InvariantCulture), constant);
             return left.Over(constantIndicator);
         }
 
@@ -244,7 +244,7 @@ package com.quantconnect.lean.Indicators
         /// <returns>The product of the left to the right indicators</returns>
         public static CompositeIndicator<IndicatorDataPoint> Times(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant)
         {
-            constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.ToString(CultureInfo.InvariantCulture), constant);
+            constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.toString(CultureInfo.InvariantCulture), constant);
             return left.Times(constantIndicator);
         }
 
@@ -288,7 +288,7 @@ package com.quantconnect.lean.Indicators
             where T : BaseData
         {
             BigDecimal k = smoothingFactor.HasValue ? k = smoothingFactor.Value : ExponentialMovingAverage.SmoothingFactorDefault(period);
-            ExponentialMovingAverage emaOfLeft = new ExponentialMovingAverage( String.Format("EMA{0}_Of_{1}", period, left.Name), period, k).Of(left, waitForFirstToReady);
+            ExponentialMovingAverage emaOfLeft = new ExponentialMovingAverage( String.format("EMA{0}_Of_{1}", period, left.Name), period, k).Of(left, waitForFirstToReady);
             return emaOfLeft;
         }
 
@@ -301,7 +301,7 @@ package com.quantconnect.lean.Indicators
         public static Maximum MAX<T>(this IndicatorBase<T> left, int period, boolean waitForFirstToReady = true)
             where T : BaseData
         {
-            Maximum maxOfLeft = new Maximum( String.Format("MAX{0}_Of_{1}", period, left.Name), period).Of(left, waitForFirstToReady);
+            Maximum maxOfLeft = new Maximum( String.format("MAX{0}_Of_{1}", period, left.Name), period).Of(left, waitForFirstToReady);
             return maxOfLeft;
         }
 
@@ -314,7 +314,7 @@ package com.quantconnect.lean.Indicators
         public static Minimum MIN<T>(this IndicatorBase<T> left, int period, boolean waitForFirstToReady = true)
             where T : BaseData
         {
-            Minimum minOfLeft = new Minimum( String.Format("MIN{0}_Of_{1}", period, left.Name), period).Of(left, waitForFirstToReady);
+            Minimum minOfLeft = new Minimum( String.format("MIN{0}_Of_{1}", period, left.Name), period).Of(left, waitForFirstToReady);
             return minOfLeft;
         }
 
@@ -327,7 +327,7 @@ package com.quantconnect.lean.Indicators
         public static SimpleMovingAverage SMA<T>(this IndicatorBase<T> left, int period, boolean waitForFirstToReady = true)
             where T : BaseData
         {
-            SimpleMovingAverage smaOfLeft = new SimpleMovingAverage( String.Format("SMA{0}_Of_{1}", period, left.Name), period).Of(left, waitForFirstToReady);
+            SimpleMovingAverage smaOfLeft = new SimpleMovingAverage( String.format("SMA{0}_Of_{1}", period, left.Name), period).Of(left, waitForFirstToReady);
             return smaOfLeft;
         }
     }

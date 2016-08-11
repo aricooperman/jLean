@@ -65,7 +65,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             try
             {
                 file = OS.IsWindows ? batchFilename : bashFilename;
-                arguments = string.Format("{0} {1} {2} {3} {4} {5}", file, ibControllerDirectory, twsDirectory, userID, password, useTwsSwitch);
+                arguments = String.format("{0} {1} {2} {3} {4} {5}", file, ibControllerDirectory, twsDirectory, userID, password, useTwsSwitch);
 
                 Log.Trace("InteractiveBrokersGatewayRunner.Start(): Launching IBController for account " + userID + "...");
 

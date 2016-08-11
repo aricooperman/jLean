@@ -106,7 +106,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         {
             symbolCount = 600;
             algorithm = new AlgorithmStub(Resolution.Tick,
-                equities: Enumerable.Range(0, symbolCount).Select(x => "E"+x.ToString()).ToList()
+                equities: Enumerable.Range(0, symbolCount).Select(x => "E"+x.toString()).ToList()
                 );
 
             securitiesCount = algorithm.Securities.Count;
@@ -120,7 +120,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
              
             ConsumeBridge(feed, TimeSpan.FromSeconds(5), ts =>
             {
-                Console.WriteLine("Count: " + ts.Slice.Keys.Count + " " + DateTime.UtcNow.ToString("o"));
+                Console.WriteLine("Count: " + ts.Slice.Keys.Count + " " + DateTime.UtcNow.toString("o"));
                 if (ts.Slice.Keys.Count != securitiesCount)
                 {
                     included = ts.Slice.Keys.ToHashSet();
@@ -193,8 +193,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         public void HandlesAtLeast10kTicksPerSecondWithTwentySymbols()
         {
             // this ran at ~25k ticks/per symbol for 20 symbols
-            algorithm = new AlgorithmStub(Resolution.Tick, Enumerable.Range(0, 20).Select(x => x.ToString()).ToList());
-            t = Enumerable.Range(0, 20).Select(x => new Tick {Symbol = SymbolCache.GetSymbol(x.ToString())}).ToList();
+            algorithm = new AlgorithmStub(Resolution.Tick, Enumerable.Range(0, 20).Select(x => x.toString()).ToList());
+            t = Enumerable.Range(0, 20).Select(x => new Tick {Symbol = SymbolCache.GetSymbol(x.toString())}).ToList();
             feed = RunDataFeed(algorithm, handler => t);
             flag = false;
             int ticks = 0;
@@ -252,7 +252,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             algorithm = new AlgorithmStub();
             for (int i = 0; i < 5; i++)
             {
-                algorithm.AddData<RemoteFileBaseData>((100+ i).ToString(), resolution, fillDataForward: false);
+                algorithm.AddData<RemoteFileBaseData>((100+ i).toString(), resolution, fillDataForward: false);
             }
 
             feed = RunDataFeed(algorithm);
@@ -260,7 +260,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             int count = 0;
             boolean receivedData = false;
             stopwatch = Stopwatch.StartNew();
-            Console.WriteLine("start: " + DateTime.UtcNow.ToString("o"));
+            Console.WriteLine("start: " + DateTime.UtcNow.toString("o"));
             ConsumeBridge(feed, TimeSpan.FromSeconds(5), ts =>
             {
                 // because this is a remote file we may skip data points while the newest
@@ -275,12 +275,12 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 time = ts.Slice.Min(x => x.Value.EndTime).ConvertToUtc(TimeZones.NewYork);
                 // make sure within 2 seconds
                 delta = DateTime.UtcNow.Subtract(time);
-                //Assert.IsTrue(delta <= TimeSpan.FromSeconds(2), delta.ToString());
+                //Assert.IsTrue(delta <= TimeSpan.FromSeconds(2), delta.toString());
                 Console.WriteLine("Count: " + ts.Slice.Count + "Data time: " + time.ConvertFromUtc(TimeZones.NewYork) + " Delta (ms): "
                     + ((decimal) delta.TotalMilliseconds).SmartRounding() + Environment.NewLine);
             });
 
-            Console.WriteLine("end: " + DateTime.UtcNow.ToString("o"));
+            Console.WriteLine("end: " + DateTime.UtcNow.toString("o"));
             Console.WriteLine("Spool up time: " + stopwatch.Elapsed);
 
             // even though we're doing 20 seconds, give a little
@@ -357,7 +357,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                     list = new BaseDataCollection {Symbol = symbol};
                     list.Data.AddRange(Enumerable.Range(0, coarseDataPointCount).Select(x => new CoarseFundamental
                     {
-                        Symbol = SymbolCache.GetSymbol(x.ToString()),
+                        Symbol = SymbolCache.GetSymbol(x.toString()),
                         Time = currentTime - Time.OneDay, // hard-coded coarse period of one day
                     }));
                 }
@@ -451,8 +451,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 if (!noOutput)
                 {
                     Console.WriteLine("\r\n" + "Now (EDT): {0} TimeSlice.Time (EDT): {1}",
-                        DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork).ToString("o"),
-                        timeSlice.Time.ConvertFromUtc(TimeZones.NewYork).ToString("o")
+                        DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork).toString("o"),
+                        timeSlice.Time.ConvertFromUtc(TimeZones.NewYork).toString("o")
                         );
                 }
 

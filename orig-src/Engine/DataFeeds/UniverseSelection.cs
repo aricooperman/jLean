@@ -136,7 +136,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     if (!_limiter.CanAddSubscription(config.Resolution, out reason))
                     {
                         _algorithm.Error(reason);
-                        Log.Trace("UniverseSelection.ApplyUniverseSelection(): Skipping adding subscription: " + config.Symbol.ToString() + ": " + reason);
+                        Log.Trace("UniverseSelection.ApplyUniverseSelection(): Skipping adding subscription: " + config.Symbol.toString() + ": " + reason);
                         continue;
                     }
 

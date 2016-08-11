@@ -68,7 +68,7 @@ package com.quantconnect.lean.Logging
             OnLogEvent(log);
 
             Console.ForegroundColor = ConsoleColor.Red;
-            _error.WriteLine(DateTime.Now.ToString(DateFormat) + " Error:: " + text);
+            _error.WriteLine(DateTime.Now.toString(DateFormat) + " Error:: " + text);
             Console.ResetColor();
         }
 
@@ -82,7 +82,7 @@ package com.quantconnect.lean.Logging
             _logs.Enqueue(log);
             OnLogEvent(log);
 
-            _trace.WriteLine(DateTime.Now.ToString(DateFormat) + " Debug:: " + text);
+            _trace.WriteLine(DateTime.Now.toString(DateFormat) + " Debug:: " + text);
         }
 
         /// <summary>
@@ -95,7 +95,7 @@ package com.quantconnect.lean.Logging
             _logs.Enqueue(log);
             OnLogEvent(log);
 
-            _trace.WriteLine(DateTime.Now.ToString(DateFormat) + " Trace:: " + text);
+            _trace.WriteLine(DateTime.Now.toString(DateFormat) + " Trace:: " + text);
         }
 
         /// <summary>

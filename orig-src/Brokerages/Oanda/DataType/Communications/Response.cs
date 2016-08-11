@@ -28,7 +28,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
     /// </summary>
 	public class Response
 	{
-		public override String ToString()
+		public override String toString()
 		{
 			// use reflection to display all the properties that have non default values
 			StringBuilder result = new StringBuilder();
@@ -43,14 +43,14 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 					object defaultValue = Common.GetDefault(prop.PropertyType);
 					bool defaultValueIsNull = defaultValue == null;
 					if ((valueIsNull != defaultValueIsNull) // one is null when the other isn't
-						|| (!valueIsNull && (value.ToString() != defaultValue.ToString()))) // both aren't null, so compare as strings
+						|| (!valueIsNull && (value.toString() != defaultValue.toString()))) // both aren't null, so compare as strings
 					{
 						result.AppendLine(prop.Name + " : " + prop.GetValue(this));
 					}
 				}
 			}
 			result.AppendLine("}");
-			return result.ToString();
+			return result.toString();
 		}
 	}
 #pragma warning restore 1591

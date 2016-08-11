@@ -58,7 +58,7 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
             endUnixTime = ToUnixTime(endUtc);
 
             // Create the Google formatted URL.
-            url = string.Format(UrlPrototype, symbol.Value, resolutionSeconds, numberOfDays, endUnixTime);
+            url = String.format(UrlPrototype, symbol.Value, resolutionSeconds, numberOfDays, endUnixTime);
 
             // Download the data from Google.
             string[] lines;

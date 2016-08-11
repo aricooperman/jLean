@@ -112,22 +112,22 @@ package com.quantconnect.lean.Brokerages.Tradier
                 String accessToken, refreshToken, issuedAt, lifeSpan;
                 
                 // always need to grab account ID from configuration
-                accountID = Configuration.AccountID.ToString();
+                accountID = Configuration.AccountID.toString();
                 data = new Map<String,String>();
                 if (File.Exists(TokensFile))
                 {
                     tokens = JsonConvert.DeserializeObject<TokenResponse>(File.ReadAllText(TokensFile));
                     accessToken = tokens.AccessToken;
                     refreshToken = tokens.RefreshToken;
-                    issuedAt = tokens.IssuedAt.ToString(CultureInfo.InvariantCulture);
+                    issuedAt = tokens.IssuedAt.toString(CultureInfo.InvariantCulture);
                     lifeSpan = "86399";
                 }
                 else
                 {
                     accessToken = Configuration.AccessToken;
                     refreshToken = Configuration.RefreshToken;
-                    issuedAt = Configuration.TokensIssuedAt.ToString(CultureInfo.InvariantCulture);
-                    lifeSpan = Configuration.LifeSpan.TotalSeconds.ToString(CultureInfo.InvariantCulture);
+                    issuedAt = Configuration.TokensIssuedAt.toString(CultureInfo.InvariantCulture);
+                    lifeSpan = Configuration.LifeSpan.TotalSeconds.toString(CultureInfo.InvariantCulture);
                 }
                 data.Add("tradier-account-id", accountID);
                 data.Add("tradier-access-token", accessToken);

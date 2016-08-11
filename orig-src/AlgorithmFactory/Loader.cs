@@ -180,7 +180,7 @@ package com.quantconnect.lean.AlgorithmFactory
                 {
                     try
                     {
-                        String baseName = item.Value.__bases__.ToString().ToString();
+                        String baseName = item.Value.__bases__.toString().toString();
                         if (baseName.Contains("QCAlgorithm"))
                         {
                             dynamicAlgorithm = item.Value;

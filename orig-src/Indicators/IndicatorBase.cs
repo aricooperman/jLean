@@ -77,7 +77,7 @@ package com.quantconnect.lean.Indicators
             if (_previousInput != null && input.Time < _previousInput.Time)
             {
                 // if we receive a time in the past, throw
-                throw new ArgumentException( String.Format("This is a forward only indicator: {0} Input: {1} Previous: {2}", Name, input.Time.ToString("u"), _previousInput.Time.ToString("u")));
+                throw new ArgumentException( String.format("This is a forward only indicator: {0} Input: {1} Previous: {2}", Name, input.Time.toString("u"), _previousInput.Time.toString("u")));
             }
             if (!ReferenceEquals(input, _previousInput))
             {
@@ -168,12 +168,12 @@ package com.quantconnect.lean.Indicators
         }
 
         /// <summary>
-        /// ToString Overload for Indicator Base
+        /// toString Overload for Indicator Base
         /// </summary>
         /// <returns>String representation of the indicator</returns>
-        public override String ToString()
+        public override String toString()
         {
-            return Current.Value.ToString("#######0.0####");
+            return Current.Value.toString("#######0.0####");
         }
 
         /// <summary>
@@ -182,7 +182,7 @@ package com.quantconnect.lean.Indicators
         /// <returns>A detailed String of this indicator's current state</returns>
         public String ToDetailedString()
         {
-            return string.Format("{0} - {1}", Name, this);
+            return String.format("{0} - {1}", Name, this);
         }
 
         /// <summary>

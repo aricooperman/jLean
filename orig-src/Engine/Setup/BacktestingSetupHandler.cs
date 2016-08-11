@@ -158,7 +158,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
                 throw new ArgumentException("Expected BacktestNodePacket but received " + baseJob.GetType().Name);
             }
 
-            Log.Trace( String.Format("BacktestingSetupHandler.Setup(): Setting up job: Plan: {0}, UID: {1}, PID: {2}, Version: {3}, Source: {4}", job.UserPlan, job.UserId, job.ProjectId, job.Version, job.RequestSource));
+            Log.Trace( String.format("BacktestingSetupHandler.Setup(): Setting up job: Plan: {0}, UID: {1}, PID: {2}, Version: {3}, Source: {4}", job.UserPlan, job.UserId, job.ProjectId, job.Version, job.RequestSource));
 
             if (algorithm == null)
             {
@@ -227,7 +227,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
 
             //Put into log for debugging:
             Log.Trace("SetUp Backtesting: User: " + job.UserId + " ProjectId: " + job.ProjectId + " AlgoId: " + job.AlgorithmId);
-            Log.Trace("Dates: Start: " + job.PeriodStart.ToShortDateString() + " End: " + job.PeriodFinish.ToShortDateString() + " Cash: " + _startingCaptial.ToString("C"));
+            Log.Trace("Dates: Start: " + job.PeriodStart.ToShortDateString() + " End: " + job.PeriodFinish.ToShortDateString() + " Cash: " + _startingCaptial.toString("C"));
 
             if (Errors.Count > 0)
             {

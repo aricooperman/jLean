@@ -48,7 +48,7 @@ package com.quantconnect.lean.ToolBox.YahooDownloader
                 throw new ArgumentException("The end date must be greater or equal than the start date.");
 
             // Note: Yahoo syntax requires the month zero-based (0-11)
-            url = string.Format(_urlPrototype, symbol.Value, startUtc.Month - 1, startUtc.Day, startUtc.Year, endUtc.Month - 1, endUtc.Day, endUtc.Year, "d");
+            url = String.format(_urlPrototype, symbol.Value, startUtc.Month - 1, startUtc.Day, startUtc.Year, endUtc.Month - 1, endUtc.Day, endUtc.Year, "d");
 
             using (cl = new WebClient())
             {

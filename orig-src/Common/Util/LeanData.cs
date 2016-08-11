@@ -31,8 +31,8 @@ package com.quantconnect.lean.Util
         /// </summary>
         public static String GenerateLine(IBaseData data, SecurityType securityType, Resolution resolution)
         {
-            milliseconds = data.Time.TimeOfDay.TotalMilliseconds.ToString(CultureInfo.InvariantCulture);
-            longTime = data.Time.ToString(DateFormat.TwelveCharacter);
+            milliseconds = data.Time.TimeOfDay.TotalMilliseconds.toString(CultureInfo.InvariantCulture);
+            longTime = data.Time.toString(DateFormat.TwelveCharacter);
 
             switch (securityType)
             {
@@ -210,7 +210,7 @@ package com.quantconnect.lean.Util
         /// </summary>
         public static String GenerateZipEntryName(Symbol symbol, DateTime date, Resolution resolution, TickType tickType)
         {
-            formattedDate = date.ToString(DateFormat.EightCharacter);
+            formattedDate = date.toString(DateFormat.EightCharacter);
             isHourOrDaily = resolution == Resolution.Hour || resolution == Resolution.Daily;
 
             switch (symbol.ID.SecurityType)
@@ -221,12 +221,12 @@ package com.quantconnect.lean.Util
                 case SecurityType.Cfd:
                     if (isHourOrDaily)
                     {
-                        return string.Format("{0}.csv", 
+                        return String.format("{0}.csv", 
                             symbol.Value.toLowerCase()
                             );
                     }
 
-                    return string.Format("{0}_{1}_{2}_{3}.csv", 
+                    return String.format("{0}_{1}_{2}_{3}.csv", 
                         formattedDate, 
                         symbol.Value.toLowerCase(), 
                         resolution.toLowerCase(), 
@@ -242,7 +242,7 @@ package com.quantconnect.lean.Util
                             symbol.ID.OptionStyle.toLowerCase(),
                             symbol.ID.OptionRight.toLowerCase(),
                             Scale(symbol.ID.StrikePrice),
-                            symbol.ID.Date.ToString(DateFormat.EightCharacter)
+                            symbol.ID.Date.toString(DateFormat.EightCharacter)
                             ) + ".csv";
                     }
 
@@ -254,7 +254,7 @@ package com.quantconnect.lean.Util
                         symbol.ID.OptionStyle.toLowerCase(),
                         symbol.ID.OptionRight.toLowerCase(),
                         Scale(symbol.ID.StrikePrice),
-                        symbol.ID.Date.ToString(DateFormat.EightCharacter)
+                        symbol.ID.Date.toString(DateFormat.EightCharacter)
                         ) + ".csv";
 
                 case SecurityType.Commodity:
@@ -287,7 +287,7 @@ package com.quantconnect.lean.Util
                 dataType = TickType.Quote;
             }
 
-            return string.Format("{0}_{1}_{2}_{3}.csv", date.ToString(DateFormat.EightCharacter), symbol, resolution.toLowerCase(), dataType.toLowerCase());
+            return String.format("{0}_{1}_{2}_{3}.csv", date.toString(DateFormat.EightCharacter), symbol, resolution.toLowerCase(), dataType.toLowerCase());
         }
 
         /// <summary>
@@ -296,7 +296,7 @@ package com.quantconnect.lean.Util
         public static String GenerateZipFileName(Symbol symbol, DateTime date, Resolution resolution, TickType tickType)
         {
             tickTypeString = tickType.toLowerCase();
-            formattedDate = date.ToString(DateFormat.EightCharacter);
+            formattedDate = date.toString(DateFormat.EightCharacter);
             isHourOrDaily = resolution == Resolution.Hour || resolution == Resolution.Daily;
 
             switch (symbol.ID.SecurityType)
@@ -307,12 +307,12 @@ package com.quantconnect.lean.Util
                 case SecurityType.Cfd:
                     if (isHourOrDaily)
                     {
-                        return string.Format("{0}.zip", 
+                        return String.format("{0}.zip", 
                             symbol.Value.toLowerCase()
                             );
                     }
 
-                    return string.Format("{0}_{1}.zip", 
+                    return String.format("{0}_{1}.zip", 
                         formattedDate, 
                         tickTypeString
                         );
@@ -320,14 +320,14 @@ package com.quantconnect.lean.Util
                 case SecurityType.Option:
                     if (isHourOrDaily)
                     {
-                        return string.Format("{0}_{1}_{2}.zip", 
+                        return String.format("{0}_{1}_{2}.zip", 
                             symbol.ID.Symbol.toLowerCase(), // underlying
                             tickTypeString,
                             symbol.ID.OptionStyle.toLowerCase()
                             );
                     }
 
-                    return string.Format("{0}_{1}_{2}.zip", 
+                    return String.format("{0}_{1}_{2}.zip", 
                         formattedDate, 
                         tickTypeString,
                         symbol.ID.OptionStyle.toLowerCase()
@@ -350,9 +350,9 @@ package com.quantconnect.lean.Util
                 return symbol.toLowerCase() + ".zip";
             }
 
-            zipFileName = date.ToString(DateFormat.EightCharacter);
+            zipFileName = date.toString(DateFormat.EightCharacter);
             tickType = tickType ?? (securityType == SecurityType.Forex || securityType == SecurityType.Cfd ? TickType.Quote : TickType.Trade);
-            suffix = string.Format("_{0}.zip", tickType.Value.toLowerCase());
+            suffix = String.format("_{0}.zip", tickType.Value.toLowerCase());
             return zipFileName + suffix;
         }
 
@@ -409,7 +409,7 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Scale and convert the resulting number to deci-cents int.
         /// </summary>
-        private static long Scale(decimal value)
+        private static long Scale( BigDecimal value)
         {
             return (long)(value*10000);
         }
@@ -425,7 +425,7 @@ package com.quantconnect.lean.Util
                 value = args[i];
                 if (value is decimal)
                 {
-                    args[i] = ((decimal) value).ToString(CultureInfo.InvariantCulture);
+                    args[i] = ((decimal) value).toString(CultureInfo.InvariantCulture);
                 }
             }
 

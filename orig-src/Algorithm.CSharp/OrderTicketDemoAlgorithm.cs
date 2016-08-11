@@ -162,7 +162,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
                 newLongLimit = longOrder.Get(OrderField.LimitPrice) + 0.01m;
                 newShortLimit = shortOrder.Get(OrderField.LimitPrice) - 0.01m;
-                Log("Updating limits - Long: " + newLongLimit.ToString("0.00") + " Short: " + newShortLimit.ToString("0.00"));
+                Log("Updating limits - Long: " + newLongLimit.toString("0.00") + " Short: " + newShortLimit.toString("0.00"));
 
                 longOrder.Update(new UpdateOrderFields
                 {
@@ -231,7 +231,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
                 newLongStop = longOrder.Get(OrderField.StopPrice) - 0.01m;
                 newShortStop = shortOrder.Get(OrderField.StopPrice) + 0.01m;
-                Log("Updating stops - Long: " + newLongStop.ToString("0.00") + " Short: " + newShortStop.ToString("0.00"));
+                Log("Updating stops - Long: " + newLongStop.toString("0.00") + " Short: " + newShortStop.toString("0.00"));
 
                 longOrder.Update(new UpdateOrderFields
                 {
@@ -313,8 +313,8 @@ package com.quantconnect.lean.Algorithm.CSharp
                 newLongLimit = longOrder.Get(OrderField.LimitPrice) + 0.01m;
                 newShortStop = shortOrder.Get(OrderField.StopPrice) + 0.01m;
                 newShortLimit = shortOrder.Get(OrderField.LimitPrice) - 0.01m;
-                Log("Updating stops  - Long: " + newLongStop.ToString("0.00") + " Short: " + newShortStop.ToString("0.00"));
-                Log("Updating limits - Long: " + newLongLimit.ToString("0.00") + " Short: " + newShortLimit.ToString("0.00"));
+                Log("Updating stops  - Long: " + newLongStop.toString("0.00") + " Short: " + newShortStop.toString("0.00"));
+                Log("Updating limits - Long: " + newLongLimit.toString("0.00") + " Short: " + newShortLimit.toString("0.00"));
 
                 longOrder.Update(new UpdateOrderFields
                 {

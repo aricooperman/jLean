@@ -78,8 +78,8 @@ package com.quantconnect.lean.Tests.Common
         {
             start = new DateTime(2016, 2, 11);
             end = new DateTime(2016, 2, 12);
-            equityExchange = SecurityExchangeHours.AlwaysOpen(DateTimeZone.ForOffset(Offset.FromHours(-5)));
-            dataTimeZone = DateTimeZone.ForOffset(Offset.FromHours(7));
+            equityExchange = SecurityExchangeHours.AlwaysOpen(ZoneId.ForOffset(Offset.FromHours(-5)));
+            dataTimeZone = ZoneId.ForOffset(Offset.FromHours(7));
 
             // given this arrangement we should still start on the same date and end a day late
             expected = new[] {start, end, end.AddDays(1)};
@@ -92,8 +92,8 @@ package com.quantconnect.lean.Tests.Common
         {
             start = new DateTime(2016, 2, 11);
             end = new DateTime(2016, 2, 12);
-            exchange = SecurityExchangeHours.AlwaysOpen(DateTimeZone.ForOffset(Offset.FromHours(5)));
-            dataTimeZone = DateTimeZone.ForOffset(Offset.FromHours(-7));
+            exchange = SecurityExchangeHours.AlwaysOpen(ZoneId.ForOffset(Offset.FromHours(5)));
+            dataTimeZone = ZoneId.ForOffset(Offset.FromHours(-7));
 
             // given this arrangement we should still start a day early but still end on the same date
             expected = new[] {start.AddDays(-1), start, end};
@@ -106,8 +106,8 @@ package com.quantconnect.lean.Tests.Common
         {
             start = new DateTime(2016, 2, 11);
             end = new DateTime(2016, 2, 12);
-            exchange = SecurityExchangeHours.AlwaysOpen(DateTimeZone.ForOffset(Offset.FromHours(12)));
-            dataTimeZone = DateTimeZone.ForOffset(Offset.FromHours(-13));
+            exchange = SecurityExchangeHours.AlwaysOpen(ZoneId.ForOffset(Offset.FromHours(12)));
+            dataTimeZone = ZoneId.ForOffset(Offset.FromHours(-13));
 
             // given this arrangement we should still start a day early but still end on the same date
             expected = new[] {start.AddDays(-2), start.AddDays(-1), start};

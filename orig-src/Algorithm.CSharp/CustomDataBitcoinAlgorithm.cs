@@ -63,7 +63,7 @@ package com.quantconnect.lean.Algorithm.Examples
                 }
                 Console.WriteLine("Buying BTC 'Shares': BTC: " + data.Close);
             }
-            Console.WriteLine("Time: " + Time.ToLongDateString() + " " + Time.ToLongTimeString() + data.Close.ToString());
+            Console.WriteLine("Time: " + Time.ToLongDateString() + " " + Time.ToLongTimeString() + data.Close.toString());
         }
     }
 }

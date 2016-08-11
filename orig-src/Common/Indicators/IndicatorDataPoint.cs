@@ -114,9 +114,9 @@ package com.quantconnect.lean.Indicators
         /// A <see cref="T:System.String" /> containing a fully qualified type name.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("{0} - {1}", Time.ToString("s"), Value);
+            return String.format("{0} - {1}", Time.toString("s"), Value);
         }
 
         /// <summary>
@@ -129,7 +129,7 @@ package com.quantconnect.lean.Indicators
         /// <filterpriority>2</filterpriority>
         public override boolean Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
+            if( null == obj ) return false;
             return obj is IndicatorDataPoint && Equals((IndicatorDataPoint) obj);
         }
 
@@ -140,11 +140,11 @@ package com.quantconnect.lean.Indicators
         /// A 32-bit signed integer that is the hash code for this instance.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override int GetHashCode()
+        public override int hashCode()
         {
             unchecked
             {
-                return (Value.GetHashCode()*397) ^ Time.GetHashCode();
+                return (Value.hashCode()*397) ^ Time.hashCode();
             }
         }
 

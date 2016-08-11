@@ -42,7 +42,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="barSize">The constant value size of each bar</param>
         /// <param name="evenBars">When true bar open/close will be a multiple of the barSize</param>
-        public RenkoConsolidator(decimal barSize, boolean evenBars = true)
+        public RenkoConsolidator( BigDecimal barSize, boolean evenBars = true)
         {
             _barSize = barSize;
             _selector = x => x.Value;
@@ -59,7 +59,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <param name="volumeSelector">Extracts the volume from a data instance. The default value is null which does 
         /// not aggregate volume per bar.</param>
         /// <param name="evenBars">When true bar open/close will be a multiple of the barSize</param>
-        public RenkoConsolidator(decimal barSize, Func<IBaseData, decimal> selector, Func<IBaseData, long> volumeSelector = null, boolean evenBars = true)
+        public RenkoConsolidator( BigDecimal barSize, Func<IBaseData, decimal> selector, Func<IBaseData, long> volumeSelector = null, boolean evenBars = true)
         {
             if (barSize < Extensions.GetDecimalEpsilon())
             {
@@ -171,7 +171,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <param name="volumeSelector">Extracts the volume from a data instance. The default value is null which does 
         /// not aggregate volume per bar.</param>
         /// <param name="evenBars">When true bar open/close will be a multiple of the barSize</param>
-        public RenkoConsolidator(decimal barSize, Func<TInput, decimal> selector, Func<TInput, long> volumeSelector = null, boolean evenBars = true)
+        public RenkoConsolidator( BigDecimal barSize, Func<TInput, decimal> selector, Func<TInput, long> volumeSelector = null, boolean evenBars = true)
             : base(barSize, x => selector((TInput)x), volumeSelector == null ? (Func<IBaseData, long>) null : x => volumeSelector((TInput)x), evenBars)
         {
         }
@@ -183,7 +183,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="barSize">The constant value size of each bar</param>
         /// <param name="evenBars">When true bar open/close will be a multiple of the barSize</param>
-        public RenkoConsolidator(decimal barSize, boolean evenBars = true)
+        public RenkoConsolidator( BigDecimal barSize, boolean evenBars = true)
             : base(barSize, evenBars)
         {
         }

@@ -89,7 +89,7 @@ package com.quantconnect.lean.Views.WinForms
             hold = holdReady == false ? "0" : "1";
             embedPage = liveMode ? "embeddedLive" : "embedded";
 
-            url = string.Format(
+            url = String.format(
                 "https://www.quantconnect.com/terminal/{0}?user={1}&token={2}&pid={3}&version={4}&holdReady={5}&bid={6}",
                 embedPage, job.UserId, job.Channel, job.ProjectId, Globals.Version, hold, job.AlgorithmId);
 
@@ -128,7 +128,7 @@ package com.quantconnect.lean.Views.WinForms
         /// </summary>
         private void timer_Tick(object sender, EventArgs e)
         {
-            StatisticsToolStripStatusLabel.Text = string.Concat("Performance: CPU: ", OS.CpuUsage.NextValue().ToString("0.0"), "%",
+            StatisticsToolStripStatusLabel.Text = string.Concat("Performance: CPU: ", OS.CpuUsage.NextValue().toString("0.0"), "%",
                                                                 " Ram: ", OS.TotalPhysicalMemoryUsed, " Mb");
 
             if (_logging == null) return;
@@ -139,14 +139,14 @@ package com.quantconnect.lean.Views.WinForms
                 switch (log.MessageType)
                 {
                     case LogType.Debug:
-                        LogTextBox.AppendText(log.ToString(), Color.Black);
+                        LogTextBox.AppendText(log.toString(), Color.Black);
                         break;
                     default:
                     case LogType.Trace:
-                        LogTextBox.AppendText(log.ToString(), Color.Black);
+                        LogTextBox.AppendText(log.toString(), Color.Black);
                         break;
                     case LogType.Error:
-                        LogTextBox.AppendText(log.ToString(), Color.DarkRed);
+                        LogTextBox.AppendText(log.toString(), Color.DarkRed);
                         break;
                 }
             }
@@ -167,8 +167,8 @@ package com.quantconnect.lean.Views.WinForms
             jObj = new JObject();
             dateFormat = "yyyy-MM-dd HH:mm:ss";
             dynamic final = jObj;
-            final.dtPeriodStart = packet.PeriodStart.ToString(dateFormat);
-            final.dtPeriodFinished = packet.PeriodFinish.AddDays(1).ToString(dateFormat);
+            final.dtPeriodStart = packet.PeriodStart.toString(dateFormat);
+            final.dtPeriodFinished = packet.PeriodFinish.AddDays(1).toString(dateFormat);
             dynamic resultData = new JObject();
             resultData.version = "3";
             resultData.results = JObject.FromObject(packet.Results);

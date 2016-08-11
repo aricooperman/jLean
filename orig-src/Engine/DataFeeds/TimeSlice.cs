@@ -108,7 +108,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="data">The data in this <see cref="TimeSlice"/></param>
         /// <param name="changes">The new changes that are seen in this time slice as a result of universe selection</param>
         /// <returns>A new <see cref="TimeSlice"/> containing the specified data</returns>
-        public static TimeSlice Create(DateTime utcDateTime, DateTimeZone algorithmTimeZone, CashBook cashBook, List<DataFeedPacket> data, SecurityChanges changes)
+        public static TimeSlice Create(DateTime utcDateTime, ZoneId algorithmTimeZone, CashBook cashBook, List<DataFeedPacket> data, SecurityChanges changes)
         {
             int count = 0;
             security = new List<UpdateData<Security>>();

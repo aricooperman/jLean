@@ -46,7 +46,7 @@ public class ColorJsonConverters {
         @Override
         public void serialize( Color value, JsonGenerator gen, SerializerProvider serializers )
                 throws IOException, JsonProcessingException {
-//            return value.IsEmpty ? string.Empty : string.Format("#{0:X2}{1:X2}{2:X2}", value.getRed(), value.G, value.B);
+//            return value.IsEmpty ? string.Empty : String.format("#{0:X2}{1:X2}{2:X2}", value.getRed(), value.G, value.B);
             
             gen.writeStartObject();
             if( value == null )

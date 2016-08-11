@@ -427,7 +427,7 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
             counts = "Request Count: " + RequestCount() + " Response Count: " + ResponseCount();
             if (_order != null)
@@ -478,7 +478,7 @@ package com.quantconnect.lean.Orders
             {
                 return orderSelector(typedOrder);
             }
-            throw new ArgumentException( String.Format("Unable to access property {0} on order of type {1}", field, order.Type));
+            throw new ArgumentException( String.format("Unable to access property {0} on order of type {1}", field, order.Type));
         }
     }
 }

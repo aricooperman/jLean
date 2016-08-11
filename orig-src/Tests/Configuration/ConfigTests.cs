@@ -67,8 +67,8 @@ package com.quantconnect.lean.Tests.Configuration
             Assert.IsNull(clone.Property("environments"));
 
             // properly applied environment
-            Assert.AreEqual("true", clone.Property("some-setting").Value.ToString());
-            Assert.AreEqual("true", clone.Property("some-setting2").Value.ToString());
+            Assert.AreEqual("true", clone.Property("some-setting").Value.toString());
+            Assert.AreEqual("true", clone.Property("some-setting2").Value.toString());
 
             Assert.AreEqual(configCopy, config);
         }
@@ -87,7 +87,7 @@ package com.quantconnect.lean.Tests.Configuration
 
         private void GetValueHandles<T>(T value)
         {
-            configValue = value.ToString();
+            configValue = value.toString();
             Config.Set("temp-value", configValue);
             actual = Config.GetValue<T>("temp-value");
             Assert.AreEqual(value, actual);

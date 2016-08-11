@@ -86,7 +86,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <remarks>This method can be called asynchronously and so should only be used by seasoned C# experts. Ensure you use proper locks on thread-unsafe objects</remarks>
         public override void OnOrderEvent(OrderEvent orderEvent)
         {
-            Log(orderEvent.ToString());
+            Log(orderEvent.toString());
         }
     }
 }

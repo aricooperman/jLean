@@ -53,7 +53,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <summary>
         /// Gets the data time zone associated with this subscription
         /// </summary>
-        public DateTimeZone TimeZone
+        public ZoneId TimeZone
         {
             get { return Security.Exchange.TimeZone; }
         }
@@ -187,9 +187,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// A hash code for the current <see cref="T:System.Object"/>.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override int GetHashCode()
+        public override int hashCode()
         {
-            return Configuration.Symbol.GetHashCode();
+            return Configuration.Symbol.hashCode();
         }
     }
 }

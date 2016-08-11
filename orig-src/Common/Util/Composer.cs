@@ -157,7 +157,7 @@ package com.quantconnect.lean.Util
                 foreach (exception in err.LoaderExceptions)
                 {
                     Log.Error(exception);
-                    Log.Error(exception.ToString());
+                    Log.Error(exception.toString());
                 }
 
                 if (err.InnerException != null) Log.Error(err.InnerException);

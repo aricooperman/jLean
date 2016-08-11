@@ -387,7 +387,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="newEvent">New order event details</param>
         public void OrderEvent(OrderEvent newEvent)
         {
-            DebugMessage("DesktopResultHandler.OrderEvent(): id:" + newEvent.OrderId + " >> Status:" + newEvent.Status + " >> Fill Price: " + newEvent.FillPrice.ToString("C") + " >> Fill Quantity: " + newEvent.FillQuantity);
+            DebugMessage("DesktopResultHandler.OrderEvent(): id:" + newEvent.OrderId + " >> Status:" + newEvent.Status + " >> Fill Price: " + newEvent.FillPrice.toString("C") + " >> Fill Quantity: " + newEvent.FillQuantity);
         }
 
 
@@ -434,7 +434,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// This method is triggered from the algorithm manager thread.
         /// </summary>
         /// <remarks>Prime candidate for putting into a base class. Is identical across all result handlers.</remarks>
-        public void ProcessSynchronousEvents(bool forceProcess = false)
+        public void ProcessSynchronousEvents( boolean forceProcess = false)
         {
             time = _algorithm.Time;
 

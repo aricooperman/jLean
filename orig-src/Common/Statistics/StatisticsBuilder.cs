@@ -130,7 +130,7 @@ package com.quantconnect.lean.Statistics
 
                 foreach (period in ranges)
                 {
-                    key = "M" + monthPeriod + "_" + period.EndDate.ToString("yyyyMMdd");
+                    key = "M" + monthPeriod + "_" + period.EndDate.toString("yyyyMMdd");
                     periodPerformance = GetAlgorithmPerformance(period.StartDate, period.EndDate, trades, profitLoss, equity, pointsPerformance, pointsBenchmark, startingCapital);
                     rollingPerformances[key] = periodPerformance;
                 }
@@ -146,25 +146,25 @@ package com.quantconnect.lean.Statistics
         {
             return new Map<String,String> 
             { 
-                { "Total Trades", totalTransactions.ToString(CultureInfo.InvariantCulture) },
+                { "Total Trades", totalTransactions.toString(CultureInfo.InvariantCulture) },
                 { "Average Win", Math.Round(totalPerformance.PortfolioStatistics.AverageWinRate.SafeMultiply100(), 2) + "%"  },
                 { "Average Loss", Math.Round(totalPerformance.PortfolioStatistics.AverageLossRate.SafeMultiply100(), 2) + "%" },
                 { "Compounding Annual Return", Math.Round(totalPerformance.PortfolioStatistics.CompoundingAnnualReturn.SafeMultiply100(), 3) + "%" },
                 { "Drawdown", (Math.Round(totalPerformance.PortfolioStatistics.Drawdown.SafeMultiply100(), 3)) + "%" },
-                { "Expectancy", Math.Round(totalPerformance.PortfolioStatistics.Expectancy, 3).ToString(CultureInfo.InvariantCulture) },
+                { "Expectancy", Math.Round(totalPerformance.PortfolioStatistics.Expectancy, 3).toString(CultureInfo.InvariantCulture) },
                 { "Net Profit", Math.Round(totalPerformance.PortfolioStatistics.TotalNetProfit.SafeMultiply100(), 3) + "%"},
-                { "Sharpe Ratio", Math.Round((double)totalPerformance.PortfolioStatistics.SharpeRatio, 3).ToString(CultureInfo.InvariantCulture) },
+                { "Sharpe Ratio", Math.Round((double)totalPerformance.PortfolioStatistics.SharpeRatio, 3).toString(CultureInfo.InvariantCulture) },
                 { "Loss Rate", Math.Round(totalPerformance.PortfolioStatistics.LossRate.SafeMultiply100()) + "%" },
                 { "Win Rate", Math.Round(totalPerformance.PortfolioStatistics.WinRate.SafeMultiply100()) + "%" }, 
-                { "Profit-Loss Ratio", Math.Round(totalPerformance.PortfolioStatistics.ProfitLossRatio, 2).ToString(CultureInfo.InvariantCulture) },
-                { "Alpha", Math.Round((double)totalPerformance.PortfolioStatistics.Alpha, 3).ToString(CultureInfo.InvariantCulture) },
-                { "Beta", Math.Round((double)totalPerformance.PortfolioStatistics.Beta, 3).ToString(CultureInfo.InvariantCulture) },
-                { "Annual Standard Deviation", Math.Round((double)totalPerformance.PortfolioStatistics.AnnualStandardDeviation, 3).ToString(CultureInfo.InvariantCulture) },
-                { "Annual Variance", Math.Round((double)totalPerformance.PortfolioStatistics.AnnualVariance, 3).ToString(CultureInfo.InvariantCulture) },
-                { "Information Ratio", Math.Round((double)totalPerformance.PortfolioStatistics.InformationRatio, 3).ToString(CultureInfo.InvariantCulture) },
-                { "Tracking Error", Math.Round((double)totalPerformance.PortfolioStatistics.TrackingError, 3).ToString(CultureInfo.InvariantCulture) },
-                { "Treynor Ratio", Math.Round((double)totalPerformance.PortfolioStatistics.TreynorRatio, 3).ToString(CultureInfo.InvariantCulture) },
-                { "Total Fees", "$" + totalFees.ToString("0.00") }
+                { "Profit-Loss Ratio", Math.Round(totalPerformance.PortfolioStatistics.ProfitLossRatio, 2).toString(CultureInfo.InvariantCulture) },
+                { "Alpha", Math.Round((double)totalPerformance.PortfolioStatistics.Alpha, 3).toString(CultureInfo.InvariantCulture) },
+                { "Beta", Math.Round((double)totalPerformance.PortfolioStatistics.Beta, 3).toString(CultureInfo.InvariantCulture) },
+                { "Annual Standard Deviation", Math.Round((double)totalPerformance.PortfolioStatistics.AnnualStandardDeviation, 3).toString(CultureInfo.InvariantCulture) },
+                { "Annual Variance", Math.Round((double)totalPerformance.PortfolioStatistics.AnnualVariance, 3).toString(CultureInfo.InvariantCulture) },
+                { "Information Ratio", Math.Round((double)totalPerformance.PortfolioStatistics.InformationRatio, 3).toString(CultureInfo.InvariantCulture) },
+                { "Tracking Error", Math.Round((double)totalPerformance.PortfolioStatistics.TrackingError, 3).toString(CultureInfo.InvariantCulture) },
+                { "Treynor Ratio", Math.Round((double)totalPerformance.PortfolioStatistics.TreynorRatio, 3).toString(CultureInfo.InvariantCulture) },
+                { "Total Fees", "$" + totalFees.toString("0.00") }
             };
         }
 

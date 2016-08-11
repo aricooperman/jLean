@@ -120,7 +120,7 @@ package com.quantconnect.lean
         {
             get
             {
-                return Path.DirectorySeparatorChar.ToString();
+                return Path.DirectorySeparatorChar.toString();
             }
         }
 
@@ -218,11 +218,11 @@ package com.quantconnect.lean
         {
             return new Map<String,String>
             {
-                {"CPU Usage",            CpuUsage.NextValue().ToString("0.0") + "%"},
-                {"Used RAM (MB)",        TotalPhysicalMemoryUsed.ToString()},
-                {"Total RAM (MB)",        TotalPhysicalMemory.ToString()},
-                {"Used Disk Space (MB)", DriveSpaceUsed.ToString() },
-                {"Total Disk Space (MB)", DriveTotalSpace.ToString() },
+                {"CPU Usage",            CpuUsage.NextValue().toString("0.0") + "%"},
+                {"Used RAM (MB)",        TotalPhysicalMemoryUsed.toString()},
+                {"Total RAM (MB)",        TotalPhysicalMemory.toString()},
+                {"Used Disk Space (MB)", DriveSpaceUsed.toString() },
+                {"Total Disk Space (MB)", DriveTotalSpace.toString() },
                 {"LEAN Version", "v" + Globals.Version}
             };
         }

@@ -78,7 +78,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 // we'll submit the next type of order from the queue
                 orderType = _orderTypesQueue.Dequeue();
                 //Log("");
-                Log("\r\n--------------MONTH: " + Time.ToString("MMMM") + ":: " + orderType + "\r\n");
+                Log("\r\n--------------MONTH: " + Time.toString("MMMM") + ":: " + orderType + "\r\n");
                 //Log("");
                 LastMonth = Time.Month;
                 Log("ORDER TYPE:: " + orderType);
@@ -89,7 +89,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 {
                     limitPrice = !isLong ? (1 + LimitPercentage) * data.Bars[Symbol].High : (1 - LimitPercentage) * data.Bars[Symbol].Low;
                 }
-                request = new SubmitOrderRequest(orderType, SecType, Symbol, Quantity, stopPrice, limitPrice, Time, orderType.ToString());
+                request = new SubmitOrderRequest(orderType, SecType, Symbol, Quantity, stopPrice, limitPrice, Time, orderType.toString());
                 ticket = Transactions.AddOrder(request);
                 _tickets.Add(ticket);
             }
@@ -143,7 +143,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
             else
             {
-                Log(orderEvent.ToString());
+                Log(orderEvent.toString());
                 Log("TICKET:: " + _tickets.Last());
             }
         }

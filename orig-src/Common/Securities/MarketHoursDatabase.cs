@@ -38,7 +38,7 @@ package com.quantconnect.lean.Securities
 
         /// <summary>
         /// Gets an instant of <see cref="MarketHoursDatabase"/> that will always return <see cref="SecurityExchangeHours.AlwaysOpen"/>
-        /// for each call to <see cref="GetExchangeHours( String, Symbol, SecurityType,DateTimeZone)"/>
+        /// for each call to <see cref="GetExchangeHours( String, Symbol, SecurityType,ZoneId)"/>
         /// </summary>
         public static MarketHoursDatabase AlwaysOpen
         {
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Securities
         /// <param name="overrideTimeZone">Specify this time zone to override the resolved time zone from the market hours database.
         /// This value will also be used as the time zone for SecurityType.Base with no market hours database entry.
         /// If null is specified, no override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.</param>
-        public SecurityExchangeHours GetExchangeHours(SubscriptionDataConfig configuration, DateTimeZone overrideTimeZone = null)
+        public SecurityExchangeHours GetExchangeHours(SubscriptionDataConfig configuration, ZoneId overrideTimeZone = null)
         {
             // we don't expect base security types to be in the market-hours-database, so set overrideTimeZone
             if (configuration.SecurityType == SecurityType.Base && overrideTimeZone == null) overrideTimeZone = configuration.ExchangeTimeZone;
@@ -93,7 +93,7 @@ package com.quantconnect.lean.Securities
         /// This value will also be used as the time zone for SecurityType.Base with no market hours database entry.
         /// If null is specified, no override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.</param>
         /// <returns>The exchange hours for the specified security</returns>
-        public SecurityExchangeHours GetExchangeHours( String market, Symbol symbol, SecurityType securityType, DateTimeZone overrideTimeZone = null)
+        public SecurityExchangeHours GetExchangeHours( String market, Symbol symbol, SecurityType securityType, ZoneId overrideTimeZone = null)
         {
             stringSymbol = symbol == null ? string.Empty : symbol.Value;
             return GetEntry(market, stringSymbol, securityType, overrideTimeZone).ExchangeHours;
@@ -107,7 +107,7 @@ package com.quantconnect.lean.Securities
         /// <param name="symbol">The particular symbol being traded</param>
         /// <param name="securityType">The security type of the symbol</param>
         /// <returns>The raw data time zone for the specified security</returns>
-        public DateTimeZone GetDataTimeZone( String market, Symbol symbol, SecurityType securityType)
+        public ZoneId GetDataTimeZone( String market, Symbol symbol, SecurityType securityType)
         {
             stringSymbol = symbol == null ? string.Empty : symbol.Value;
             return GetEntry(market, stringSymbol, securityType).DataTimeZone;
@@ -151,7 +151,7 @@ package com.quantconnect.lean.Securities
         /// This value will also be used as the time zone for SecurityType.Base with no market hours database entry.
         /// If null is specified, no override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.</param>
         /// <returns>The entry matching the specified market/symbol/security-type</returns>
-        public virtual Entry GetEntry( String market, String symbol, SecurityType securityType, DateTimeZone overrideTimeZone = null)
+        public virtual Entry GetEntry( String market, String symbol, SecurityType securityType, ZoneId overrideTimeZone = null)
         {
             Entry entry;
             key = new SecurityDatabaseKey(market, symbol, securityType);
@@ -171,7 +171,7 @@ package com.quantconnect.lean.Securities
                         return new Entry(overrideTimeZone, SecurityExchangeHours.AlwaysOpen(overrideTimeZone));
                     }
 
-                    Log.Error( String.Format("MarketHoursDatabase.GetExchangeHours(): Unable to locate exchange hours for {0}." + "Available keys: {1}", key, string.Join(", ", _entries.Keys)));
+                    Log.Error( String.format("MarketHoursDatabase.GetExchangeHours(): Unable to locate exchange hours for {0}." + "Available keys: {1}", key, string.Join(", ", _entries.Keys)));
 
                     // there was nothing that really matched exactly... what should we do here?
                     throw new ArgumentException("Unable to locate exchange hours for " + key);
@@ -196,7 +196,7 @@ package com.quantconnect.lean.Securities
             /// <summary>
             /// Gets the raw data time zone for this entry
             /// </summary>
-            public readonly DateTimeZone DataTimeZone;
+            public readonly ZoneId DataTimeZone;
             /// <summary>
             /// Gets the exchange hours for this entry
             /// </summary>
@@ -206,7 +206,7 @@ package com.quantconnect.lean.Securities
             /// </summary>
             /// <param name="dataTimeZone">The raw data time zone</param>
             /// <param name="exchangeHours">The security exchange hours for this entry</param>
-            public Entry(DateTimeZone dataTimeZone, SecurityExchangeHours exchangeHours)
+            public Entry(ZoneId dataTimeZone, SecurityExchangeHours exchangeHours)
             {
                 DataTimeZone = dataTimeZone;
                 ExchangeHours = exchangeHours;
@@ -215,7 +215,7 @@ package com.quantconnect.lean.Securities
 
         class AlwaysOpenMarketHoursDatabase : MarketHoursDatabase
         {
-            public override Entry GetEntry( String market, String symbol, SecurityType securityType, DateTimeZone overrideTimeZone = null)
+            public override Entry GetEntry( String market, String symbol, SecurityType securityType, ZoneId overrideTimeZone = null)
             {
                 tz = overrideTimeZone ?? TimeZones.Utc;
                 return new Entry(tz, SecurityExchangeHours.AlwaysOpen(tz));

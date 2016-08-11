@@ -29,7 +29,7 @@ package com.quantconnect.lean.Orders.Fees
         /// Initializes a new instance of the <see cref="ConstantFeeModel"/> class with the specified <paramref name="fee"/>
         /// </summary>
         /// <param name="fee">The constant order fee used by the model</param>
-        public ConstantFeeModel(decimal fee)
+        public ConstantFeeModel( BigDecimal fee)
         {
             _fee = Math.Abs(fee);
         }

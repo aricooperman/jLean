@@ -114,7 +114,7 @@ package com.quantconnect.lean.Algorithm.Examples
                             Log("PREBUY>>LIQUIDATE>>");
                             Liquidate();
                         }
-                        Log(">>BUY>>" + bestGrowth.Symbol + "@" + (100 * bestGrowth.OneMonthPerformance).ToString("00.00"));
+                        Log(">>BUY>>" + bestGrowth.Symbol + "@" + (100 * bestGrowth.OneMonthPerformance).toString("00.00"));
                         BigDecimal qty = Portfolio.Cash / Securities[bestGrowth.Symbol].Close;
                         MarketOrder(bestGrowth.Symbol, (int) qty);
                     }

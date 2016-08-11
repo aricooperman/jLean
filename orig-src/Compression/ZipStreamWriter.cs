@@ -115,7 +115,7 @@ package com.quantconnect.lean
         /// Releases the unmanaged resources used by the <see cref="T:System.IO.TextWriter"/> and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
-        protected override void Dispose(bool disposing)
+        protected override void Dispose( boolean disposing)
         {
             if (_writer == null || !disposing)
                 return;
@@ -151,7 +151,7 @@ package com.quantconnect.lean
 
             if (throwOnFailure)
             {
-                throw new Exception( String.Format("Unable to save file: {0} after {1} attempts.", _filename, attempts));
+                throw new Exception( String.format("Unable to save file: {0} after {1} attempts.", _filename, attempts));
             }
         }
     }

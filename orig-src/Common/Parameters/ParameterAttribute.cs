@@ -91,7 +91,7 @@ package com.quantconnect.lean.Parameters
                 // if it's a read-only property with a parameter value we can't really do anything, bail
                 if (propertyInfo != null && !propertyInfo.CanWrite)
                 {
-                    message = string.Format("The specified property is read only: {0}.{1}", propertyInfo.DeclaringType, propertyInfo.Name);
+                    message = String.format("The specified property is read only: {0}.{1}", propertyInfo.DeclaringType, propertyInfo.Name);
                     throw new Exception(message);
                 }
 

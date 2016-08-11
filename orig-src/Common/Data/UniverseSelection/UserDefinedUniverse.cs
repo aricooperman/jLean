@@ -105,7 +105,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <returns>A symbol for user defined universe of the specified security type and market</returns>
         public static Symbol CreateSymbol(SecurityType securityType, String market)
         {
-            ticker = string.Format("qc-universe-userdefined-{0}-{1}", market.toLowerCase(), securityType);
+            ticker = String.format("qc-universe-userdefined-{0}-{1}", market.toLowerCase(), securityType);
             SecurityIdentifier sid;
             switch (securityType)
             {

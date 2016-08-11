@@ -160,7 +160,7 @@ package com.quantconnect.lean.Interfaces
         /// <summary>
         /// Gets the time zone of the algorithm
         /// </summary>
-        DateTimeZone TimeZone
+        ZoneId TimeZone
         {
             get;
         }
@@ -435,7 +435,7 @@ package com.quantconnect.lean.Interfaces
         /// </summary>
         /// <param name="clearChartData"></param>
         /// <returns>List of Chart Updates</returns>
-        List<Chart> GetChartUpdates(bool clearChartData = false);
+        List<Chart> GetChartUpdates( boolean clearChartData = false);
 
         /// <summary>
         /// Set a required SecurityType-symbol and resolution for algorithm
@@ -453,7 +453,7 @@ package com.quantconnect.lean.Interfaces
         /// Set the starting capital for the strategy
         /// </summary>
         /// <param name="startingCash">decimal starting capital, default $100,000</param>
-        void SetCash(decimal startingCash);
+        void SetCash( BigDecimal startingCash);
 
         /// <summary>
         /// Set the cash for the specified symbol
@@ -474,7 +474,7 @@ package com.quantconnect.lean.Interfaces
         /// Set live mode state of the algorithm run: Public setter for the algorithm property LiveMode.
         /// </summary>
         /// <param name="live">Bool live mode flag</param>
-        void SetLiveMode(bool live);
+        void SetLiveMode( boolean live);
 
         /// <summary>
         /// Sets <see cref="IsWarmingUp"/> to false to indicate this algorithm has finished its warm up

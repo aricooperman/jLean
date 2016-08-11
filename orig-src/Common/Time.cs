@@ -155,7 +155,7 @@ package com.quantconnect.lean
             } 
             catch (Exception err) 
             {
-                Log.Error(err, time.ToString("o"));
+                Log.Error(err, time.toString("o"));
             }
             return timestamp;
         }
@@ -301,7 +301,7 @@ package com.quantconnect.lean
         /// <param name="timeZone">The timezone to project the dates into (inclusive of the final day)</param>
         /// <param name="includeExtendedMarketHours">True to include extended market hours trading in the search, false otherwise</param>
         /// <returns></returns>
-        public static IEnumerable<DateTime> EachTradeableDayInTimeZone(SecurityExchangeHours exchange, DateTime from, DateTime thru, DateTimeZone timeZone, boolean includeExtendedMarketHours = true)
+        public static IEnumerable<DateTime> EachTradeableDayInTimeZone(SecurityExchangeHours exchange, DateTime from, DateTime thru, ZoneId timeZone, boolean includeExtendedMarketHours = true)
         {
             currentExchangeTime = from;
             thru = thru.Date.AddDays(1); // we want to include the full thru date

@@ -65,7 +65,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <returns>String URL of source file.</returns>
         public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
         {
-            path = Path.Combine(Globals.DataFolder, "equity", config.Market, "fundamental", "coarse", date.ToString("yyyyMMdd") + ".csv");
+            path = Path.Combine(Globals.DataFolder, "equity", config.Market, "fundamental", "coarse", date.toString("yyyyMMdd") + ".csv");
             return new SubscriptionDataSource(path, SubscriptionTransportMedium.LocalFile, FileFormat.Csv);
         }
 

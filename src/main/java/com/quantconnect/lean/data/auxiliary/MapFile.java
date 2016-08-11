@@ -45,31 +45,31 @@ public class MapFile implements Iterable<MapFileRow> {
     
     private static final Logger LOG = LoggerFactory.getLogger( MapFile.class );
     
-    private final SortedMap<LocalDate,MapFileRow> _data;
+    private final SortedMap<LocalDate,MapFileRow> data;
 
     /// Gets the entity's unique symbol, i.e OIH.1
-    private  String Permtick;
+    private String permtick;
 
     public String getPermtick() {
-        return Permtick;
+        return permtick;
     }
 
     /// Gets the last date in the map file which is indicative of a delisting event
     public LocalDate getDelistingDate() {
-        return _data.isEmpty() ? LocalDate.MAX : _data.lastKey();
+        return data.isEmpty() ? LocalDate.MAX : data.lastKey();
     }
 
     /// Gets the first date in this map file
     public LocalDate getFirstDate() {
-        return _data.isEmpty() ? LocalDate.MIN : _data.firstKey();
+        return data.isEmpty() ? LocalDate.MIN : data.firstKey();
     }
 
     /// Initializes a new instance of the <see cref="MapFile"/> class.
     public MapFile( String permtick, Stream<MapFileRow> stream ) {
-        this.Permtick = permtick.toUpperCase();
+        this.permtick = permtick.toUpperCase();
         final Builder<LocalDate,MapFileRow> builder = ImmutableSortedMap.<LocalDate,MapFileRow>naturalOrder();
         builder.putAll( stream.distinct().collect( Collectors.toMap( x -> x.getDate(), Function.identity() ) ) );
-        _data = builder.build();
+        data = builder.build();
     }
 
     /// Memory overload search method for finding the mapped symbol for this date.
@@ -78,9 +78,9 @@ public class MapFile implements Iterable<MapFileRow> {
     public String getMappedSymbol( LocalDate searchDate ) {
         String mappedSymbol = "";
         //Iterate backwards to find the most recent factor:
-        for( LocalDate splitDate : _data.keySet() ) {
+        for( LocalDate splitDate : data.keySet() ) {
             if( splitDate.isBefore( searchDate ) ) continue;
-            mappedSymbol = _data.get( splitDate ).getMappedSymbol();
+            mappedSymbol = data.get( splitDate ).getMappedSymbol();
             break;
         }
         
@@ -90,10 +90,10 @@ public class MapFile implements Iterable<MapFileRow> {
     /// Determines if there's data for the requested date
     public boolean hasData( LocalDate date ) {
         // handle the case where we don't have any data
-        if( _data.isEmpty() )
+        if( data.isEmpty() )
             return true;
 
-        if( date.isBefore( _data.firstKey() ) || date.isAfter( _data.lastKey() ) ) {
+        if( date.isBefore( data.firstKey() ) || date.isAfter( data.lastKey() ) ) {
             // don't even bother checking the disk if the map files state we don't have ze dataz
             return false;
         }
@@ -148,6 +148,14 @@ public class MapFile implements Iterable<MapFileRow> {
     /// <filterpriority>1</filterpriority>
     @Override
     public Iterator<MapFileRow> iterator() {
-        return _data.values().iterator();
+        return data.values().iterator();
+    }
+
+    public boolean isEmpty() {
+        return data.isEmpty();
+    }
+
+    public MapFileRow getFirst() {
+        return data.isEmpty() ? null : data.get( data.firstKey() );
     }
 }

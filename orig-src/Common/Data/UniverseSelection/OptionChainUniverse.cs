@@ -68,7 +68,7 @@ package com.quantconnect.lean.Data.UniverseSelection
             optionsUniverseDataCollection = data as OptionChainUniverseDataCollection;
             if (optionsUniverseDataCollection == null)
             {
-                throw new ArgumentException( String.Format("Expected data of type '{0}'", typeof (OptionChainUniverseDataCollection).Name));
+                throw new ArgumentException( String.format("Expected data of type '{0}'", typeof (OptionChainUniverseDataCollection).Name));
             }
 
             _underlying = optionsUniverseDataCollection.Underlying ?? _underlying;

@@ -92,7 +92,7 @@ package com.quantconnect.lean.Tests.Indicators
         public void SortsTheSameAsDecimalDescending()
         {
             int count = 100;
-            targets = Enumerable.Range(0, count).Select(x => new TestIndicator(x.ToString())).ToList();
+            targets = Enumerable.Range(0, count).Select(x => new TestIndicator(x.toString())).ToList();
             for (int i = 0; i < targets.Count; i++)
             {
                 targets[i].Update(DateTime.Today, i);
@@ -110,7 +110,7 @@ package com.quantconnect.lean.Tests.Indicators
         public void SortsTheSameAsDecimalAsecending()
         {
             int count = 100;
-            targets = Enumerable.Range(0, count).Select(x => new TestIndicator(x.ToString())).ToList();
+            targets = Enumerable.Range(0, count).Select(x => new TestIndicator(x.toString())).ToList();
             for (int i = 0; i < targets.Count; i++)
             {
                 targets[i].Update(DateTime.Today, i);

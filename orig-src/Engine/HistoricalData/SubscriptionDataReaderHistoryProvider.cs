@@ -75,7 +75,7 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
         /// <param name="requests">The historical data requests</param>
         /// <param name="sliceTimeZone">The time zone used when time stamping the slice instances</param>
         /// <returns>An enumerable of the slices of data covering the span specified in each request</returns>
-        public IEnumerable<Slice> GetHistory(IEnumerable<HistoryRequest> requests, DateTimeZone sliceTimeZone)
+        public IEnumerable<Slice> GetHistory(IEnumerable<HistoryRequest> requests, ZoneId sliceTimeZone)
         {
             // create subscription objects from the configs
             subscriptions = new List<Subscription>();
@@ -152,7 +152,7 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
         /// <summary>
         /// Enumerates the subscriptions into slices
         /// </summary>
-        private IEnumerable<Slice> CreateSliceEnumerableFromSubscriptions(List<Subscription> subscriptions, DateTimeZone sliceTimeZone)
+        private IEnumerable<Slice> CreateSliceEnumerableFromSubscriptions(List<Subscription> subscriptions, ZoneId sliceTimeZone)
         {
             // required by TimeSlice.Create, but we don't need it's behavior
             cashBook = new CashBook();
@@ -256,7 +256,7 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
             public void OrderEvent(OrderEvent newEvent) { }
             public void Exit() { }
             public void PurgeQueue() { }
-            public void ProcessSynchronousEvents(bool forceProcess = false) { }
+            public void ProcessSynchronousEvents( boolean forceProcess = false) { }
 
             #endregion
         }

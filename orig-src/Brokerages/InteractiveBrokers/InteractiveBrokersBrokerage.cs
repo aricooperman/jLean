@@ -62,7 +62,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         private readonly ManualResetEvent _accountHoldingsResetEvent = new ManualResetEvent(false);
 
         // IB likes to duplicate/triplicate some events, keep track of them and swallow the dupes
-        // we're keeping track of the .ToString() of the order event here
+        // we're keeping track of the .toString() of the order event here
         private readonly FixedSizeHashQueue<String> _recentOrderEvents = new FixedSizeHashQueue<String>(50);
 
         private readonly object _orderFillsLock = new object();
@@ -532,7 +532,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             {
                 // the order ids are generated for us by the SecurityTransactionManaer
                 int id = GetNextBrokerageOrderID();
-                order.BrokerId.Add(id.ToString());
+                order.BrokerId.Add(id.toString());
                 ibOrderID = id;
             }
             else if (order.BrokerId.Any())
@@ -727,7 +727,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
 
             // rewrite these messages to be single lined
             e.ErrorMsg = e.ErrorMsg.Replace("\r\n", ". ").Replace("\r", ". ").Replace("\n", ". ");
-            Log.Trace( String.Format("InteractiveBrokersBrokerage.HandleError(): Order: {0} ErrorCode: {1} - {2}", e.TickerId, e.ErrorCode, e.ErrorMsg));
+            Log.Trace( String.format("InteractiveBrokersBrokerage.HandleError(): Order: {0} ErrorCode: {1} - {2}", e.TickerId, e.ErrorCode, e.ErrorMsg));
 
             // figure out the message type based on our code collections below
             brokerageMessageType = BrokerageMessageType.Information;
@@ -757,7 +757,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
 
             if (InvalidatingCodes.Contains((int)e.ErrorCode))
             {
-                Log.Trace( String.Format("InteractiveBrokersBrokerage.HandleError.InvalidateOrder(): Order: {0} ErrorCode: {1} - {2}", e.TickerId, e.ErrorCode, e.ErrorMsg));
+                Log.Trace( String.format("InteractiveBrokersBrokerage.HandleError.InvalidateOrder(): Order: {0} ErrorCode: {1} - {2}", e.TickerId, e.ErrorCode, e.ErrorMsg));
 
                 // invalidate the order
                 order = _orderProvider.GetOrderByBrokerageId(e.TickerId);
@@ -889,7 +889,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
 
                 // if we're able to add to our fixed length, unique queue then send the event
                 // otherwise it is a duplicate, so skip it
-                if (_recentOrderEvents.Add(orderEvent.ToString() + update.Remaining))
+                if (_recentOrderEvents.Add(orderEvent.toString() + update.Remaining))
                 {
                     OnOrderEvent(orderEvent);
                 }
@@ -1024,7 +1024,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     throw new InvalidEnumArgumentException("orderType", (int) orderType, typeof (OrderType));
             }
 
-            order.BrokerId.Add(ibOrder.OrderId.ToString());
+            order.BrokerId.Add(ibOrder.OrderId.toString());
 
             return order;
         }
@@ -1050,7 +1050,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
 
             if (symbol.ID.SecurityType == SecurityType.Option)
             {
-                contract.Expiry = symbol.ID.Date.ToString(DateFormat.EightCharacter);
+                contract.Expiry = symbol.ID.Date.toString(DateFormat.EightCharacter);
                 contract.Right = symbol.ID.OptionRight == OptionRight.Call ? IB.RightType.Call : IB.RightType.Put;
                 contract.Strike = Convert.ToDouble(symbol.ID.StrikePrice);
                 contract.Symbol = symbol.ID.Symbol;
@@ -1263,7 +1263,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             return _symbolMapper.GetLeanSymbol(ibSymbol, securityType, market);
         }
 
-        private BigDecimal RoundPrice(decimal input, BigDecimal minTick)
+        private BigDecimal RoundPrice( BigDecimal input, BigDecimal minTick)
         {
             if (minTick == 0) return minTick;
             return Math.Round(input/minTick)*minTick;

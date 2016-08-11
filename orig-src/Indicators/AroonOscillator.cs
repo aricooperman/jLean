@@ -49,7 +49,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="upPeriod">The lookback period to determine the highest high for the AroonDown</param>
         /// <param name="downPeriod">The lookback period to determine the lowest low for the AroonUp</param>
         public AroonOscillator(int upPeriod, int downPeriod)
-            : this( String.Format("AROON({0},{1})", upPeriod, downPeriod), upPeriod, downPeriod)
+            : this( String.format("AROON({0},{1})", upPeriod, downPeriod), upPeriod, downPeriod)
         {
         }
 

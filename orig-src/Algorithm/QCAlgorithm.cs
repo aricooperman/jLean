@@ -295,7 +295,7 @@ package com.quantconnect.lean.Algorithm
         /// Gets the time zone used for the <see cref="Time"/> property. The default value
         /// is <see cref="TimeZones.NewYork"/>
         /// </summary>
-        public DateTimeZone TimeZone
+        public ZoneId TimeZone
         {
             get { return _localTimeKeeper.TimeZone; }
         }
@@ -723,7 +723,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="symbol">Asset symbol for this end of day event. Forex and equities have different closing hours.</param>
         public virtual void OnEndOfDay(Symbol symbol)
         {
-            OnEndOfDay(symbol.ToString());
+            OnEndOfDay(symbol.toString());
         }
 
         /// <summary>
@@ -784,14 +784,14 @@ package com.quantconnect.lean.Algorithm
         /// <param name="timeZone">The desired time zone</param>
         public void SetTimeZone( String timeZone)
         {
-            DateTimeZone tz;
+            ZoneId tz;
             try
             {
-                tz = DateTimeZoneProviders.Tzdb[timeZone];
+                tz = ZoneIdProviders.Tzdb[timeZone];
             }
-            catch (DateTimeZoneNotFoundException)
+            catch (ZoneIdNotFoundException)
             {
-                throw new ArgumentException( String.Format("TimeZone with id '{0}' was not found. For a complete list of time zones please visit: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones", timeZone));
+                throw new ArgumentException( String.format("TimeZone with id '{0}' was not found. For a complete list of time zones please visit: http://en.wikipedia.org/wiki/List_of_tz_database_time_zones", timeZone));
             }
 
             SetTimeZone(tz);
@@ -801,7 +801,7 @@ package com.quantconnect.lean.Algorithm
         /// Sets the time zone of the <see cref="Time"/> property in the algorithm
         /// </summary>
         /// <param name="timeZone">The desired time zone</param>
-        public void SetTimeZone(DateTimeZone timeZone)
+        public void SetTimeZone(ZoneId timeZone)
         {
             if (_locked)
             {
@@ -961,7 +961,7 @@ package com.quantconnect.lean.Algorithm
         /// and replaced with the actual cash of your brokerage account.
         /// </summary>
         /// <param name="startingCash">Starting cash for the strategy backtest</param>
-        public void SetCash(decimal startingCash)
+        public void SetCash( BigDecimal startingCash)
         {
             if (!_locked)
             {
@@ -1161,7 +1161,7 @@ package com.quantconnect.lean.Algorithm
         /// <summary>
         /// Set live mode state of the algorithm run: Public setter for the algorithm property LiveMode.
         /// </summary>
-        public void SetLiveMode(bool live) 
+        public void SetLiveMode( boolean live) 
         {
             if (!_locked)
             {
@@ -1405,7 +1405,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="fillDataForward">When no data available on a tradebar, return the last data that was generated</param>
         /// <param name="leverage">Custom leverage per security</param>
         /// <remarks>Generic type T must implement base data</remarks>
-        public void AddData<T>( String symbol, Resolution resolution, DateTimeZone timeZone, boolean fillDataForward = false, BigDecimal leverage = 1.0m)
+        public void AddData<T>( String symbol, Resolution resolution, ZoneId timeZone, boolean fillDataForward = false, BigDecimal leverage = 1.0m)
             where T : BaseData, new()
         {
             if (_locked) return;
@@ -1491,7 +1491,7 @@ package com.quantconnect.lean.Algorithm
         /// <remarks>Intended for internal use by the QuantConnect Lean Engine only.</remarks>
         /// <param name="quit">Boolean quit state</param>
         /// <seealso cref="Quit"/>
-        public void SetQuit(bool quit) 
+        public void SetQuit( boolean quit) 
         {
             if (quit)
             {

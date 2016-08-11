@@ -28,7 +28,7 @@ package com.quantconnect.lean.ToolBox.CryptoiqDownloader
         {
             if (args.Length == 3)
             {
-                args = new [] { args[0], DateTime.UtcNow.ToString("yyyyMMdd"), args[1], args[2] };
+                args = new [] { args[0], DateTime.UtcNow.toString("yyyyMMdd"), args[1], args[2] };
             }
             else if (args.Length < 4)
             {

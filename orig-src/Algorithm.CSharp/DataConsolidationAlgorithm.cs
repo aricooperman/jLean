@@ -125,12 +125,12 @@ package com.quantconnect.lean.Algorithm.Examples
         {
             if (_last != null && consolidated.Close > _last.Close)
             {
-                Log(consolidated.Time.ToString("o") + " >> SPY >> LONG  >> 100 >> " + Portfolio["SPY"].Quantity);
+                Log(consolidated.Time.toString("o") + " >> SPY >> LONG  >> 100 >> " + Portfolio["SPY"].Quantity);
                 Order("SPY", 100);
             }
             else if (_last != null && consolidated.Close < _last.Close)
             {
-                Log(consolidated.Time.ToString("o") + " >> SPY >> SHORT >> 100 >> " + Portfolio["SPY"].Quantity);
+                Log(consolidated.Time.toString("o") + " >> SPY >> SHORT >> 100 >> " + Portfolio["SPY"].Quantity);
                 Order("SPY", -100);
             }
             _last = consolidated;
@@ -143,7 +143,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// </summary>
         private void ThreeDayBarConsolidatedHandler(object sender, TradeBar consolidated)
         {
-            Log(consolidated.Time.ToString("0") + " >> Plotting!");
+            Log(consolidated.Time.toString("0") + " >> Plotting!");
             Plot(consolidated.Symbol, "3HourBar", consolidated.Close);
         }
     }

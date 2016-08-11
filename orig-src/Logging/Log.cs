@@ -123,7 +123,7 @@ package com.quantconnect.lean.Logging
         /// </summary>
         public static void Trace( String format, params object[] args)
         {
-            Trace( String.Format(format, args));
+            Trace( String.format(format, args));
         }
 
         /// <summary>
@@ -131,7 +131,7 @@ package com.quantconnect.lean.Logging
         /// </summary>
         public static void Error( String format, params object[] args)
         {
-            Error( String.Format(format, args));
+            Error( String.format(format, args));
         }
 
         /// <summary>
@@ -188,13 +188,13 @@ package com.quantconnect.lean.Logging
 
                         if (recursion > 0) 
                         {
-                            indent = new StringBuilder(trail).Insert(0, spaces, recursion - 1).ToString();
+                            indent = new StringBuilder(trail).Insert(0, spaces, recursion - 1).toString();
                         }
 
                         if (value != null) 
                         {
                             // If the value is a string, add quotation marks
-                            displayValue = value.ToString();
+                            displayValue = value.toString();
                             if (value is string) displayValue = String.Concat('"', displayValue, '"');
 
                             // Add property name and value to return string
@@ -217,11 +217,11 @@ package com.quantconnect.lean.Logging
                                     elementCount = 0;
                                     foreach (element in ((ICollection)value)) 
                                     {
-                                        elementName = String.Format("{0}[{1}]", property.Name, elementCount);
-                                        indent = new StringBuilder(trail).Insert(0, spaces, recursion).ToString();
+                                        elementName = String.format("{0}[{1}]", property.Name, elementCount);
+                                        indent = new StringBuilder(trail).Insert(0, spaces, recursion).toString();
 
                                         // Display the collection element name and type
-                                        result.AppendFormat("{0}{1} = {2}\n", indent, elementName, element.ToString());
+                                        result.AppendFormat("{0}{1} = {2}\n", indent, elementName, element.toString());
 
                                         // Display the child properties
                                         result.Append(VarDump(element, recursion + 2));
@@ -246,7 +246,7 @@ package com.quantconnect.lean.Logging
                 }
             }
 
-            return result.ToString();
+            return result.toString();
         }
     }
 }

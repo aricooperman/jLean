@@ -327,11 +327,11 @@ package com.quantconnect.lean.Lean.Engine.Results
                         runtimeStatistics.Add(pair.Key, pair.Value);
                     }
                 }
-                runtimeStatistics.Add("Unrealized", "$" + _algorithm.Portfolio.TotalUnrealizedProfit.ToString("N2"));
-                runtimeStatistics.Add("Fees", "-$" + _algorithm.Portfolio.TotalFees.ToString("N2"));
-                runtimeStatistics.Add("Net Profit", "$" + _algorithm.Portfolio.TotalProfit.ToString("N2"));
-                runtimeStatistics.Add("Return", ((_algorithm.Portfolio.TotalPortfolioValue - _setupHandler.StartingPortfolioValue) / _setupHandler.StartingPortfolioValue).ToString("P"));
-                runtimeStatistics.Add("Equity", "$" + _algorithm.Portfolio.TotalPortfolioValue.ToString("N2"));
+                runtimeStatistics.Add("Unrealized", "$" + _algorithm.Portfolio.TotalUnrealizedProfit.toString("N2"));
+                runtimeStatistics.Add("Fees", "-$" + _algorithm.Portfolio.TotalFees.toString("N2"));
+                runtimeStatistics.Add("Net Profit", "$" + _algorithm.Portfolio.TotalProfit.toString("N2"));
+                runtimeStatistics.Add("Return", ((_algorithm.Portfolio.TotalPortfolioValue - _setupHandler.StartingPortfolioValue) / _setupHandler.StartingPortfolioValue).toString("P"));
+                runtimeStatistics.Add("Equity", "$" + _algorithm.Portfolio.TotalPortfolioValue.toString("N2"));
 
                 //Profit Loss Changes:
                 progress = Convert.ToDecimal(_daysProcessed / _jobDays);
@@ -495,7 +495,7 @@ package com.quantconnect.lean.Lean.Engine.Results
             totalMinutes = (_job.PeriodFinish - _job.PeriodStart).TotalMinutes;
             resampleMinutes = (totalMinutes < (_minimumSamplePeriod * _samples)) ? _minimumSamplePeriod : (totalMinutes / _samples); // Space out the sampling every 
             _resamplePeriod = TimeSpan.FromMinutes(resampleMinutes);
-            Log.Trace("BacktestingResultHandler(): Sample Period Set: " + resampleMinutes.ToString("00.00"));
+            Log.Trace("BacktestingResultHandler(): Sample Period Set: " + resampleMinutes.toString("00.00"));
             
             //Setup the sampling periods:
             _jobDays = Time.TradeableDates(Algorithm.Securities.Values, _job.PeriodStart, _job.PeriodFinish);
@@ -535,7 +535,7 @@ package com.quantconnect.lean.Lean.Engine.Results
             Messages.Enqueue(new DebugPacket(_job.ProjectId, _backtestId, _compileId, message));
 
             //Save last message sent:
-            _log.Add(_algorithm.Time.ToString(DateFormat.UI) + " " + message);
+            _log.Add(_algorithm.Time.toString(DateFormat.UI) + " " + message);
             _debugMessage = message;
         }
 
@@ -547,7 +547,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         {
             Messages.Enqueue(new LogPacket(_backtestId, message)); 
 
-            _log.Add(_algorithm.Time.ToString(DateFormat.UI) + " " + message);
+            _log.Add(_algorithm.Time.toString(DateFormat.UI) + " " + message);
         }
 
         /// <summary>
@@ -818,7 +818,7 @@ package com.quantconnect.lean.Lean.Engine.Results
                 }
 
                 //Save the log: Upload this file to S3:
-                _api.Store(serialized.ToString(), key, StoragePermissions.Public);
+                _api.Store(serialized.toString(), key, StoragePermissions.Public);
                 //Record the data usage:
                 _api.UpdateDailyLogUsed(job.UserId, job.AlgorithmId, remoteUrl, logLength, job.Channel, hitLimit);
             }
@@ -843,7 +843,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// This method is triggered from the algorithm manager thread.
         /// </summary>
         /// <remarks>Prime candidate for putting into a base class. Is identical across all result handlers.</remarks>
-        public void ProcessSynchronousEvents(bool forceProcess = false)
+        public void ProcessSynchronousEvents( boolean forceProcess = false)
         {
             time = _algorithm.UtcTime;
 

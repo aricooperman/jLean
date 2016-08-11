@@ -82,7 +82,7 @@ package com.quantconnect.lean.Tests.Indicators
         public void ComparesWithExternalDataKijun()
         {
             ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
-            ichimoku.Current.Time.ToString();
+            ichimoku.Current.Time.toString();
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",

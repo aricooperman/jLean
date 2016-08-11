@@ -61,7 +61,7 @@ package com.quantconnect.lean
                 //Fraction of capital preserved for bonds:
                 _safeCapital = 1 - _deployedCapital;
 
-                tag = "Deployed: " + _deployedCapital.ToString("0.00") + " Safe: " + _safeCapital.ToString("0.00");
+                tag = "Deployed: " + _deployedCapital.toString("0.00") + " Safe: " + _safeCapital.toString("0.00");
 
                 SetHoldings("SPY", _deployedCapital, true, tag);
                 SetHoldings("IBM", _safeCapital - 0.01m, false, tag);

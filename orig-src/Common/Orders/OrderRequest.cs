@@ -110,9 +110,9 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("{0} UTC: Order: ({1}) - {2} Status: {3}", Time, OrderId, Tag, Status);
+            return String.format("{0} UTC: Order: ({1}) - {2} Status: {3}", Time, OrderId, Tag, Status);
         }
     }
 }

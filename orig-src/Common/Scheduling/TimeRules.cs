@@ -27,7 +27,7 @@ package com.quantconnect.lean.Scheduling
     /// </summary>
     public class TimeRules
     {
-        private DateTimeZone _timeZone;
+        private ZoneId _timeZone;
 
         private readonly SecurityManager _securities;
 
@@ -36,7 +36,7 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         /// <param name="securities">The security manager</param>
         /// <param name="timeZone">The algorithm's default time zone</param>
-        public TimeRules(SecurityManager securities, DateTimeZone timeZone)
+        public TimeRules(SecurityManager securities, ZoneId timeZone)
         {
             _securities = securities;
             _timeZone = timeZone;
@@ -46,7 +46,7 @@ package com.quantconnect.lean.Scheduling
         /// Sets the default time zone
         /// </summary>
         /// <param name="timeZone">The time zone to use for helper methods that can't resolve a time zone</param>
-        public void SetDefaultTimeZone(DateTimeZone timeZone)
+        public void SetDefaultTimeZone(ZoneId timeZone)
         {
             _timeZone = timeZone;
         }
@@ -80,7 +80,7 @@ package com.quantconnect.lean.Scheduling
         /// <param name="minute">The minute</param>
         /// <param name="timeZone">The time zone the event time is represented in</param>
         /// <returns>A time rule that fires at the specified time in the algorithm's time zone</returns>
-        public ITimeRule At(int hour, int minute, DateTimeZone timeZone)
+        public ITimeRule At(int hour, int minute, ZoneId timeZone)
         {
             return At(new TimeSpan(hour, minute, 0), timeZone);
         }
@@ -93,7 +93,7 @@ package com.quantconnect.lean.Scheduling
         /// <param name="second">The second</param>
         /// <param name="timeZone">The time zone the event time is represented in</param>
         /// <returns>A time rule that fires at the specified time in the algorithm's time zone</returns>
-        public ITimeRule At(int hour, int minute, int second, DateTimeZone timeZone)
+        public ITimeRule At(int hour, int minute, int second, ZoneId timeZone)
         {
             return At(new TimeSpan(hour, minute, second), timeZone);
         }
@@ -104,9 +104,9 @@ package com.quantconnect.lean.Scheduling
         /// <param name="timeOfDay">The time of day in the algorithm's time zone the event should fire</param>
         /// <param name="timeZone">The time zone the date time is expressed in</param>
         /// <returns>A time rule that fires at the specified time in the algorithm's time zone</returns>
-        public ITimeRule At(TimeSpan timeOfDay, DateTimeZone timeZone)
+        public ITimeRule At(TimeSpan timeOfDay, ZoneId timeZone)
         {
-            name = string.Join(",", timeOfDay.TotalHours.ToString("0.##"));
+            name = string.Join(",", timeOfDay.TotalHours.toString("0.##"));
             Func<IEnumerable<DateTime>, IEnumerable<DateTime>> applicator = dates =>
                 from date in dates
                 let localEventTime = date + timeOfDay
@@ -123,7 +123,7 @@ package com.quantconnect.lean.Scheduling
         /// <returns>A time rule that fires after each interval passes</returns>
         public ITimeRule Every(TimeSpan interval)
         {
-            name = "Every " + interval.TotalMinutes.ToString("0.##") + " min";
+            name = "Every " + interval.TotalMinutes.toString("0.##") + " min";
             Func<IEnumerable<DateTime>, IEnumerable<DateTime>> applicator = dates => EveryIntervalIterator(dates, interval);
             return new FuncTimeRule(name, applicator);
         }
@@ -140,7 +140,7 @@ package com.quantconnect.lean.Scheduling
             security = GetSecurity(symbol);
 
             type = extendedMarketOpen ? "ExtendedMarketOpen" : "MarketOpen";
-            name = string.Format("{0}: {1} min after {2}", symbol, minutesAfterOpen.ToString("0.##"), type);
+            name = String.format("{0}: {1} min after {2}", symbol, minutesAfterOpen.toString("0.##"), type);
 
             timeAfterOpen = TimeSpan.FromMinutes(minutesAfterOpen);
             Func<IEnumerable<DateTime>, IEnumerable<DateTime>> applicator = dates =>
@@ -166,7 +166,7 @@ package com.quantconnect.lean.Scheduling
             security = GetSecurity(symbol);
 
             type = extendedMarketClose ? "ExtendedMarketClose" : "MarketClose";
-            name = string.Format("{0}: {1} min before {2}", security.Symbol, minutesBeforeClose.ToString("0.##"), type);
+            name = String.format("{0}: {1} min before {2}", security.Symbol, minutesBeforeClose.toString("0.##"), type);
 
             timeBeforeClose = TimeSpan.FromMinutes(minutesBeforeClose);
             Func<IEnumerable<DateTime>, IEnumerable<DateTime>> applicator = dates =>
@@ -185,7 +185,7 @@ package com.quantconnect.lean.Scheduling
             Security security;
             if (!_securities.TryGetValue(symbol, out security))
             {
-                throw new Exception(symbol.ToString() + " not found in portfolio. Request this data when initializing the algorithm.");
+                throw new Exception(symbol.toString() + " not found in portfolio. Request this data when initializing the algorithm.");
             }
             return security;
         }

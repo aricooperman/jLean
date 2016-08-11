@@ -248,7 +248,7 @@ package com.quantconnect.lean.Tests.Common
             // this doesn't exist in the symbol cache
             eurusd = new Symbol(SecurityIdentifier.GenerateForex("NOT A SECURITY", Market.FXCM), "EURUSD");
             String stringEurusd = eurusd;
-            Assert.AreEqual(eurusd.ID.ToString(), stringEurusd);
+            Assert.AreEqual(eurusd.ID.toString(), stringEurusd);
 
             Symbol notASymbol = "this will not resolve to a proper Symbol instance";
             Assert.AreEqual(Symbol.Empty, notASymbol);
@@ -274,7 +274,7 @@ package com.quantconnect.lean.Tests.Common
 #pragma warning disable 0618 // This test requires implicit operators
             SymbolCache.Set("EURUSD", Symbol.Create("EURUSD", SecurityType.Forex, Market.FXCM));
             expected = SymbolCache.GetSymbol("EURUSD");
-            String sid = expected.ID.ToString();
+            String sid = expected.ID.toString();
             Symbol actual = sid;
             Assert.AreEqual(expected, actual);
             SymbolCache.Clear();
@@ -291,7 +291,7 @@ package com.quantconnect.lean.Tests.Common
             String stringValue = expected;
             String notFound = "EURGBP 5O";
             expectedNotFoundSymbol = Symbols.EURGBP;
-            String sid = expected.ID.ToString();
+            String sid = expected.ID.toString();
             Symbol actual = sid;
             if (!(expected == stringValue))
             {

@@ -13,31 +13,22 @@
  * limitations under the License.
 */
 
-package com.quantconnect.lean.Data
-{
-    /// <summary>
-    /// Specifies the format of data in a subscription
-    /// </summary>
-    public enum FileFormat
-    {
-        /// <summary>
-        /// Comma separated values
-        /// </summary>
-        Csv,
+package com.quantconnect.lean.data.market;
 
-        /// <summary>
-        /// Binary file data
-        /// </summary>
-        Binary,
+import java.math.BigDecimal;
 
-        /// <summary>
-        /// Only the zip entry names are read in as symbols
-        /// </summary>
-        ZipEntryName,
+/// Generic bar interface with Open, High, Low and Close.
+public interface IBar {
 
-        /// <summary>
-        /// Reader returns a BaseDataCollection object.
-        /// </summary>
-        Collection
-    }
+    /// Opening price of the bar: Defined as the price at the start of the time period.
+    BigDecimal getOpen();
+
+    /// High price of the bar during the time period.
+    BigDecimal getHigh();
+
+    /// Low price of the bar during the time period.
+    BigDecimal getLow();
+    
+    /// Closing price of the bar. Defined as the price at Start Time + TimeSpan.
+    BigDecimal getClose();
 }

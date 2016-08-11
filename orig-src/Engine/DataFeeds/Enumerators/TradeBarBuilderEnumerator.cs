@@ -29,7 +29,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
     public class TradeBarBuilderEnumerator : IEnumerator<BaseData>
     {
         private readonly TimeSpan _barSize;
-        private readonly DateTimeZone _timeZone;
+        private readonly ZoneId _timeZone;
         private readonly ITimeProvider _timeProvider;
         private readonly ConcurrentQueue<TradeBar> _queue;
 
@@ -40,7 +40,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="timeZone">The time zone the raw data is time stamped in</param>
         /// <param name="timeProvider">The time provider instance used to determine when bars are completed and
         /// can be emitted</param>
-        public TradeBarBuilderEnumerator(TimeSpan barSize, DateTimeZone timeZone, ITimeProvider timeProvider)
+        public TradeBarBuilderEnumerator(TimeSpan barSize, ZoneId timeZone, ITimeProvider timeProvider)
         {
             _barSize = barSize;
             _timeZone = timeZone;

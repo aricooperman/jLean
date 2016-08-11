@@ -111,7 +111,7 @@ package com.quantconnect.lean.ToolBox
                 {
                     // Write and clear the file contents
                     outputFile = GetZipOutputFileName(_dataDirectory, lastTime);
-                    WriteFile(outputFile, sb.ToString(), lastTime);
+                    WriteFile(outputFile, sb.toString(), lastTime);
                     sb.Clear();
                 }
 
@@ -125,7 +125,7 @@ package com.quantconnect.lean.ToolBox
             if (sb.Length > 0)
             {
                 outputFile = GetZipOutputFileName(_dataDirectory, lastTime);
-                WriteFile(outputFile, sb.ToString(), lastTime);
+                WriteFile(outputFile, sb.toString(), lastTime);
             }
         }
 
@@ -171,7 +171,7 @@ package com.quantconnect.lean.ToolBox
             // Write the file contents
             if (sb.Length > 0)
             {
-                WriteFile(outputFile, sb.ToString(), lastTime);
+                WriteFile(outputFile, sb.toString(), lastTime);
             }
         }
 

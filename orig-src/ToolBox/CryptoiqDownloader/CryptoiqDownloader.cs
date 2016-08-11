@@ -66,7 +66,7 @@ package com.quantconnect.lean.ToolBox.CryptoiqDownloader
                 {
                     using (cl = new WebClient())
                     {
-                        request = string.Format(url, counter.ToString("yyyy-MM-dd"), hour, symbol.Value, _exchange);
+                        request = String.format(url, counter.toString("yyyy-MM-dd"), hour, symbol.Value, _exchange);
                         data = cl.DownloadString(request);
 
                         mbtc = JsonConvert.DeserializeObject<List<CryptoiqBitcoin>>(data);

@@ -165,11 +165,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             // for some reason we couldn't create the subscription
             if (subscription == null)
             {
-                Log.Trace("Unable to add subscription for: " + security.Symbol.ToString());
+                Log.Trace("Unable to add subscription for: " + security.Symbol.toString());
                 return false;
             }
 
-            Log.Trace("LiveTradingDataFeed.AddSubscription(): Added " + security.Symbol.ToString());
+            Log.Trace("LiveTradingDataFeed.AddSubscription(): Added " + security.Symbol.toString());
 
             _subscriptions.TryAdd(subscription);
 
@@ -224,7 +224,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             _changes += SecurityChanges.Removed(security);
 
 
-            Log.Trace("LiveTradingDataFeed.RemoveSubscription(): Removed " + configuration.ToString());
+            Log.Trace("LiveTradingDataFeed.RemoveSubscription(): Removed " + configuration.toString());
             UpdateFillForwardResolution();
 
             return true;
@@ -493,7 +493,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             userDefined = universe as UserDefinedUniverse;
             if (userDefined != null)
             {
-                Log.Trace("LiveTradingDataFeed.CreateUniverseSubscription(): Creating user defined universe: " + config.Symbol.ToString());
+                Log.Trace("LiveTradingDataFeed.CreateUniverseSubscription(): Creating user defined universe: " + config.Symbol.toString());
 
                 // spoof a tick on the requested interval to trigger the universe selection function
                 enumerator = userDefined.GetTriggerTimes(startTimeUtc, endTimeUtc, marketHoursDatabase)
@@ -507,7 +507,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
             else if (config.Type == typeof (CoarseFundamental))
             {
-                Log.Trace("LiveTradingDataFeed.CreateUniverseSubscription(): Creating coarse universe: " + config.Symbol.ToString());
+                Log.Trace("LiveTradingDataFeed.CreateUniverseSubscription(): Creating coarse universe: " + config.Symbol.toString());
 
                 // since we're binding to the data queue exchange we'll need to let him
                 // know that we expect this data
@@ -522,7 +522,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
             else
             {
-                Log.Trace("LiveTradingDataFeed.CreateUniverseSubscription(): Creating custom universe: " + config.Symbol.ToString());
+                Log.Trace("LiveTradingDataFeed.CreateUniverseSubscription(): Creating custom universe: " + config.Symbol.toString());
 
                 // each time we exhaust we'll new up this enumerator stack
                 refresher = new RefreshEnumerator<BaseDataCollection>(() =>

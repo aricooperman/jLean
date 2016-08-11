@@ -31,6 +31,6 @@ public class ChartPoint {
     /// Provides a readable String representation of this instance.
     @Overrides
     public String toString() {
-        return Time.UnixTimeStampToDateTime(x).ToString("o") + " - " + y;
+        return Time.UnixTimeStampToDateTime(x).toString("o") + " - " + y;
     }
 }

@@ -66,7 +66,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         public void OnData(Dividends data) // update this to Dividends dictionary
         {
             dividend = data["MSFT"];
-            Console.WriteLine("{0} >> DIVIDEND >> {1} - {2} - {3} - {4}", dividend.Time.ToString("o"), dividend.Symbol, dividend.Distribution.ToString("C"), Portfolio.Cash, Portfolio["MSFT"].Price.ToString("C"));
+            Console.WriteLine("{0} >> DIVIDEND >> {1} - {2} - {3} - {4}", dividend.Time.toString("o"), dividend.Symbol, dividend.Distribution.toString("C"), Portfolio.Cash, Portfolio["MSFT"].Price.toString("C"));
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         {
             Debug("MSFT: " + Securities["MSFT"].Price);
             split = data["MSFT"];
-            Console.WriteLine("{0} >> SPLIT >> {1} - {2} - {3} - {4}", split.Time.ToString("o"), split.Symbol, split.SplitFactor, Portfolio.Cash, Portfolio["MSFT"].Quantity);
+            Console.WriteLine("{0} >> SPLIT >> {1} - {2} - {3} - {4}", split.Time.toString("o"), split.Symbol, split.SplitFactor, Portfolio.Cash, Portfolio["MSFT"].Quantity);
         }
 
         public override void OnOrderEvent(OrderEvent orderEvent)

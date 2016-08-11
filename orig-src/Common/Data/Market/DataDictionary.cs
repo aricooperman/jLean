@@ -211,7 +211,7 @@ package com.quantconnect.lean.Data.Market
                 {
                     return data;
                 }
-                throw new KeyNotFoundException( String.Format("'{0}' wasn't found in the {1} object, likely because there was no-data at this moment in time and it wasn't possible to fillforward historical data. Please check the data exists before accessing it with data.ContainsKey(\"{0}\")", symbol, GetType().GetBetterTypeName()));
+                throw new KeyNotFoundException( String.format("'{0}' wasn't found in the {1} object, likely because there was no-data at this moment in time and it wasn't possible to fillforward historical data. Please check the data exists before accessing it with data.ContainsKey(\"{0}\")", symbol, GetType().GetBetterTypeName()));
             }
             set
             {
@@ -236,7 +236,7 @@ package com.quantconnect.lean.Data.Market
                 Symbol symbol;
                 if (!SymbolCache.TryGetSymbol(ticker, out symbol))
                 {
-                    throw new KeyNotFoundException( String.Format("'{0}' wasn't found in the {1} object, likely because there was no-data at this moment in time and it wasn't possible to fillforward historical data. Please check the data exists before accessing it with data.ContainsKey(\"{0}\")", ticker, GetType().GetBetterTypeName()));
+                    throw new KeyNotFoundException( String.format("'{0}' wasn't found in the {1} object, likely because there was no-data at this moment in time and it wasn't possible to fillforward historical data. Please check the data exists before accessing it with data.ContainsKey(\"{0}\")", ticker, GetType().GetBetterTypeName()));
                 }
                 return this[symbol];
             }
@@ -245,7 +245,7 @@ package com.quantconnect.lean.Data.Market
                 Symbol symbol;
                 if (!SymbolCache.TryGetSymbol(ticker, out symbol))
                 {
-                    throw new KeyNotFoundException( String.Format("'{0}' wasn't found in the {1} object, likely because there was no-data at this moment in time and it wasn't possible to fillforward historical data. Please check the data exists before accessing it with data.ContainsKey(\"{0}\")", ticker, GetType().GetBetterTypeName()));
+                    throw new KeyNotFoundException( String.format("'{0}' wasn't found in the {1} object, likely because there was no-data at this moment in time and it wasn't possible to fillforward historical data. Please check the data exists before accessing it with data.ContainsKey(\"{0}\")", ticker, GetType().GetBetterTypeName()));
                 }
                 this[symbol] = value;
             }

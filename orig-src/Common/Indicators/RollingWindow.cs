@@ -152,7 +152,7 @@ package com.quantconnect.lean.Indicators
 
                     if (i >= Count)
                     {
-                        throw new ArgumentOutOfRangeException("i", i, string.Format("Must be between 0 and Count {0}", Count));
+                        throw new ArgumentOutOfRangeException("i", i, String.format("Must be between 0 and Count {0}", Count));
                     }
                     return _list[(Count + _tail - i - 1) % Count];
                 }
@@ -169,7 +169,7 @@ package com.quantconnect.lean.Indicators
 
                     if (i >= Count)
                     {
-                        throw new ArgumentOutOfRangeException("i", i, string.Format("Must be between 0 and Count {0}", Count));
+                        throw new ArgumentOutOfRangeException("i", i, String.format("Must be between 0 and Count {0}", Count));
                     }
                     _list[(Count + _tail - i - 1) % Count] = value;
                 }

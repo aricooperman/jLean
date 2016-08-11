@@ -26,14 +26,14 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
     public class ManualTimeProvider : ITimeProvider
     {
         private DateTime _currentTime;
-        private readonly DateTimeZone _setCurrentTimeTimeZone;
+        private readonly ZoneId _setCurrentTimeTimeZone;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ManualTimeProvider"/>
         /// </summary>
         /// <param name="setCurrentTimeTimeZone">Specify to use this time zone when calling <see cref="SetCurrentTime"/>,
         /// leave null for the deault of <see cref="TimeZones.Utc"/></param>
-        public ManualTimeProvider(DateTimeZone setCurrentTimeTimeZone = null)
+        public ManualTimeProvider(ZoneId setCurrentTimeTimeZone = null)
         {
             _setCurrentTimeTimeZone = setCurrentTimeTimeZone ?? TimeZones.Utc;
         }
@@ -45,7 +45,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// null then the time is interpreted as being in <see cref="TimeZones.Utc"/></param>
         /// <param name="setCurrentTimeTimeZone">Specify to use this time zone when calling <see cref="SetCurrentTime"/>,
         /// leave null for the deault of <see cref="TimeZones.Utc"/></param>
-        public ManualTimeProvider(DateTime currentTime, DateTimeZone setCurrentTimeTimeZone = null)
+        public ManualTimeProvider(DateTime currentTime, ZoneId setCurrentTimeTimeZone = null)
         {
             _setCurrentTimeTimeZone = setCurrentTimeTimeZone ?? TimeZones.Utc;
             _currentTime = currentTime.ConvertToUtc(_setCurrentTimeTimeZone);

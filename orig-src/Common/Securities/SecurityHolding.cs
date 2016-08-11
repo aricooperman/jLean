@@ -306,7 +306,7 @@ package com.quantconnect.lean.Securities
         /// Adds a fee to the running total of total fees.
         /// </summary>
         /// <param name="newFee"></param>
-        public void AddNewFee(decimal newFee) 
+        public void AddNewFee( BigDecimal newFee) 
         {
             _totalFees += newFee;
         }
@@ -315,7 +315,7 @@ package com.quantconnect.lean.Securities
         /// Adds a profit record to the running total of profit.
         /// </summary>
         /// <param name="profitLoss">The cash change in portfolio from closing a position</param>
-        public void AddNewProfit(decimal profitLoss) 
+        public void AddNewProfit( BigDecimal profitLoss) 
         {
             _profit += profitLoss;
         }
@@ -324,7 +324,7 @@ package com.quantconnect.lean.Securities
         /// Adds a new sale value to the running total trading volume in terms of the account currency
         /// </summary>
         /// <param name="saleValue"></param>
-        public void AddNewSale(decimal saleValue)
+        public void AddNewSale( BigDecimal saleValue)
         {
             _totalSaleVolume += saleValue;
         }
@@ -333,7 +333,7 @@ package com.quantconnect.lean.Securities
         /// Set the last trade profit for this security from a Portfolio.ProcessFill call.
         /// </summary>
         /// <param name="lastTradeProfit">Value of the last trade profit</param>
-        public void SetLastTradeProfit(decimal lastTradeProfit) 
+        public void SetLastTradeProfit( BigDecimal lastTradeProfit) 
         {
             _lastTradeProfit = lastTradeProfit;
         }
@@ -341,7 +341,7 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Set the quantity of holdings and their average price after processing a portfolio fill.
         /// </summary>
-        public virtual void SetHoldings(decimal averagePrice, int quantity) 
+        public virtual void SetHoldings( BigDecimal averagePrice, int quantity) 
         {
             _averagePrice = averagePrice;
             _quantity = quantity;
@@ -351,7 +351,7 @@ package com.quantconnect.lean.Securities
         /// Update local copy of closing price value.
         /// </summary>
         /// <param name="closingPrice">Price of the underlying asset to be used for calculating market price / portfolio value</param>
-        public virtual void UpdateMarketPrice(decimal closingPrice)
+        public virtual void UpdateMarketPrice( BigDecimal closingPrice)
         {
             _price = closingPrice;
         }

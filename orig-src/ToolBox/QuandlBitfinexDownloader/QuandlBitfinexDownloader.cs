@@ -58,7 +58,7 @@ package com.quantconnect.lean.ToolBox.QuandlBitfinexDownloader
             static final String collapse = "daily";
 
             url = "https://www.quandl.com/api/v3/datasets/BCHARTS/BITFINEXUSD.csv?order=asc&collapse=" + collapse + "&api_key=" + _apiKey + "&start_date="
-                + startUtc.ToString("yyyy-MM-dd");
+                + startUtc.toString("yyyy-MM-dd");
             using (cl = new WebClient())
             {
                 data = cl.DownloadString(url);

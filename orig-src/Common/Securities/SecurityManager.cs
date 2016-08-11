@@ -243,7 +243,7 @@ package com.quantconnect.lean.Securities
             {
                 if (!_securityManager.ContainsKey(symbol))
                 {
-                    throw new Exception( String.Format("This asset symbol ({0}) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"{1}\")'", symbol, SymbolCache.GetTicker(symbol)));
+                    throw new Exception( String.format("This asset symbol ({0}) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"{1}\")'", symbol, SymbolCache.GetTicker(symbol)));
                 } 
                 return _securityManager[symbol];
             }
@@ -252,7 +252,7 @@ package com.quantconnect.lean.Securities
                 Security existing;
                 if (_securityManager.TryGetValue(symbol, out existing) && existing != value)
                 {
-                    throw new ArgumentException("Unable to over write existing Security: " + symbol.ToString());
+                    throw new ArgumentException("Unable to over write existing Security: " + symbol.toString());
                 }
 
                 // no security exists for the specified symbol key, add it now
@@ -276,7 +276,7 @@ package com.quantconnect.lean.Securities
                 Symbol symbol;
                 if (!SymbolCache.TryGetSymbol(ticker, out symbol))
                 {
-                    throw new Exception( String.Format("This asset symbol ({0}) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"{0}\")'", ticker));
+                    throw new Exception( String.format("This asset symbol ({0}) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"{0}\")'", ticker));
                 }
                 return this[symbol];
             }
@@ -285,7 +285,7 @@ package com.quantconnect.lean.Securities
                 Symbol symbol;
                 if (!SymbolCache.TryGetSymbol(ticker, out symbol))
                 {
-                    throw new Exception( String.Format("This asset symbol ({0}) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"{0}\")'", ticker));
+                    throw new Exception( String.format("This asset symbol ({0}) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"{0}\")'", ticker));
                 }
                 this[symbol] = value;
             }
@@ -310,7 +310,7 @@ package com.quantconnect.lean.Securities
             SecurityPortfolioManager securityPortfolioManager,
             SubscriptionManager subscriptionManager,
             SecurityExchangeHours exchangeHours,
-            DateTimeZone dataTimeZone,
+            ZoneId dataTimeZone,
             SymbolProperties symbolProperties,
             ISecurityInitializer securityInitializer,
             Symbol symbol,

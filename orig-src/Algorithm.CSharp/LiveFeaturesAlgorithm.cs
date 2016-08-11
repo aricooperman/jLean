@@ -56,7 +56,7 @@ package com.quantconnect.lean
             if (LiveMode) //Live Mode Property
             {
                 //Configurable title header statistics numbers
-                SetRuntimeStatistic("BTC", data.Close.ToString("C"));
+                SetRuntimeStatistic("BTC", data.Close.toString("C"));
             }
 
             if (!Portfolio.HoldStock)
@@ -65,8 +65,8 @@ package com.quantconnect.lean
 
                 //Send a notification email/SMS/web request on events:
                 Notify.Email("myemail@gmail.com", "Test", "Test Body", "test attachment");
-                Notify.Sms("+11233456789", Time.ToString("u") + ">> Test message from live BTC server.");
-                Notify.Web("http://api.quantconnect.com", Time.ToString("u") + ">> Test data packet posted from live BTC server.");
+                Notify.Sms("+11233456789", Time.toString("u") + ">> Test message from live BTC server.");
+                Notify.Web("http://api.quantconnect.com", Time.toString("u") + ">> Test data packet posted from live BTC server.");
             }
         }
 
@@ -152,7 +152,7 @@ package com.quantconnect.lean
                 return new SubscriptionDataSource("https://www.bitstamp.net/api/ticker/", SubscriptionTransportMedium.Rest);
             }
 
-            //return "http://my-ftp-server.com/futures-data-" + date.ToString("Ymd") + ".zip";
+            //return "http://my-ftp-server.com/futures-data-" + date.toString("Ymd") + ".zip";
             // OR simply return a fixed small data file. Large files will slow down your backtest
             return new SubscriptionDataSource("http://www.quandl.com/api/v1/datasets/BCHARTS/BITSTAMPUSD.csv?sort_order=asc", SubscriptionTransportMedium.RemoteFile);
         }

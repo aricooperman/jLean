@@ -449,7 +449,7 @@ package com.quantconnect.lean.Orders.Fills
             {
             }
 
-            public Prices(decimal current, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close)
+            public Prices( BigDecimal current, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close)
             {
                 Current = current;
                 Open = open == 0 ? current : open;

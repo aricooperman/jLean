@@ -125,7 +125,7 @@ package com.quantconnect.lean.Lean.Engine
                         if (!algorithm.GetLocked() || algorithm.IsWarmingUp)
                         {
                             _algorithmHandlers.Results.SendStatusUpdate(AlgorithmStatus.History, 
-                                string.Format("Processing history {0}%...", progress));
+                                String.format("Processing history {0}%...", progress));
                         }
                     });
                     algorithm.HistoryProvider = _algorithmHandlers.HistoryProvider;
@@ -205,7 +205,7 @@ package com.quantconnect.lean.Lean.Engine
                     threadRealTime.Start(); // RealTime scan time for time based events:
 
                     // Result manager scanning message queue: (started earlier)
-                    _algorithmHandlers.Results.DebugMessage( String.Format("Launching analysis for {0} with LEAN Engine v{1}", job.AlgorithmId, Globals.Version));
+                    _algorithmHandlers.Results.DebugMessage( String.format("Launching analysis for {0} with LEAN Engine v{1}", job.AlgorithmId, Globals.Version));
 
                     try
                     {
@@ -237,8 +237,8 @@ package com.quantconnect.lean.Lean.Engine
 
                         if (!complete)
                         {
-                            Log.Error("Engine.Main(): Failed to complete in time: " + _algorithmHandlers.Setup.MaximumRuntime.ToString("F"));
-                            throw new Exception("Failed to complete algorithm within " + _algorithmHandlers.Setup.MaximumRuntime.ToString("F")
+                            Log.Error("Engine.Main(): Failed to complete in time: " + _algorithmHandlers.Setup.MaximumRuntime.toString("F"));
+                            throw new Exception("Failed to complete algorithm within " + _algorithmHandlers.Setup.MaximumRuntime.toString("F")
                                 + " seconds. Please make it run faster.");
                         }
 
@@ -300,11 +300,11 @@ package com.quantconnect.lean.Lean.Engine
                                                 : 0;
 
                                 //Add other fixed parameters.
-                                banner.Add("Unrealized", "$" + algorithm.Portfolio.TotalUnrealizedProfit.ToString("N2"));
-                                banner.Add("Fees", "-$" + algorithm.Portfolio.TotalFees.ToString("N2"));
-                                banner.Add("Net Profit", "$" + algorithm.Portfolio.TotalProfit.ToString("N2"));
-                                banner.Add("Return", netReturn.ToString("P"));
-                                banner.Add("Equity", "$" + algorithm.Portfolio.TotalPortfolioValue.ToString("N2"));
+                                banner.Add("Unrealized", "$" + algorithm.Portfolio.TotalUnrealizedProfit.toString("N2"));
+                                banner.Add("Fees", "-$" + algorithm.Portfolio.TotalFees.toString("N2"));
+                                banner.Add("Net Profit", "$" + algorithm.Portfolio.TotalProfit.toString("N2"));
+                                banner.Add("Return", netReturn.toString("P"));
+                                banner.Add("Equity", "$" + algorithm.Portfolio.TotalPortfolioValue.toString("N2"));
                             }
                         }
                         catch (Exception err)
@@ -316,9 +316,9 @@ package com.quantconnect.lean.Lean.Engine
                         totalSeconds = (DateTime.Now - startTime).TotalSeconds;
                         dataPoints = algorithmManager.DataPoints + _algorithmHandlers.HistoryProvider.DataPointCount;
                         _algorithmHandlers.Results.DebugMessage(
-                            string.Format("Algorithm Id:({0}) completed in {1} seconds at {2}k data points per second. Processing total of {3} data points.",
-                                job.AlgorithmId, totalSeconds.ToString("F2"), ((dataPoints/(double) 1000)/totalSeconds).ToString("F0"),
-                                dataPoints.ToString("N0")));
+                            String.format("Algorithm Id:({0}) completed in {1} seconds at {2}k data points per second. Processing total of {3} data points.",
+                                job.AlgorithmId, totalSeconds.toString("F2"), ((dataPoints/(double) 1000)/totalSeconds).toString("F0"),
+                                dataPoints.toString("N0")));
 
                         _algorithmHandlers.Results.SendFinalResult(job, orders, algorithm.Transactions.TransactionRecord, holdings, statisticsResults, banner);
                     }

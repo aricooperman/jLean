@@ -48,9 +48,9 @@ package com.quantconnect.lean.Securities
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("Account {0} Balance: {1}", CurrencySymbol, CashBalance.ToString("0.00"));
+            return String.format("Account {0} Balance: {1}", CurrencySymbol, CashBalance.toString("0.00"));
         }
     }
 }

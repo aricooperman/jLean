@@ -64,7 +64,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Initializes a new instance of the <see cref="MorningStar"/> class.
         /// </summary>
         /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
-        public MorningStar(decimal penetration = 0.3m)
+        public MorningStar( BigDecimal penetration = 0.3m)
             : this("MORNINGSTAR", penetration)
         {
         }

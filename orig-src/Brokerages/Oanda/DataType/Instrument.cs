@@ -26,7 +26,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
     /// </summary>
 	public class IsOptionalAttribute : Attribute
 	{
-		public override String ToString()
+		public override String toString()
 		{
 			return "Is Optional";
 		}

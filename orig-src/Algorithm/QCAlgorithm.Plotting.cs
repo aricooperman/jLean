@@ -272,7 +272,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="value">Decimal value of your runtime statistic</param>
         public void SetRuntimeStatistic( String name, BigDecimal value)
         {
-            SetRuntimeStatistic(name, value.ToString());
+            SetRuntimeStatistic(name, value.toString());
         }
 
         /// <summary>
@@ -282,7 +282,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="value">Int value of your runtime statistic</param>
         public void SetRuntimeStatistic( String name, int value)
         {
-            SetRuntimeStatistic(name, value.ToString());
+            SetRuntimeStatistic(name, value.toString());
         }
 
         /// <summary>
@@ -292,7 +292,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="value">Double value of your runtime statistic</param>
         public void SetRuntimeStatistic( String name, double value)
         {
-            SetRuntimeStatistic(name, value.ToString());
+            SetRuntimeStatistic(name, value.toString());
         }
 
         /// <summary>
@@ -301,7 +301,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="clearChartData"></param>
         /// <returns>List of chart updates since the last request</returns>
         /// <remarks>GetChartUpdates returns the latest updates since previous request.</remarks>
-        public List<Chart> GetChartUpdates(bool clearChartData = false)
+        public List<Chart> GetChartUpdates( boolean clearChartData = false)
         {
             updates = _charts.Values.Select(chart => chart.GetUpdates()).ToList();
 

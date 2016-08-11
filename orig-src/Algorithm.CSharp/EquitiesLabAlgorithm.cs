@@ -51,7 +51,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 using (client = new WebClient())
                 {
                     //2014-12-30
-                    file = client.DownloadString(String.Format(EquitiesLabUrlFormat, EquitiesLabKey, EquitiesLabScreener, date.ToString("yyyy-MM-dd")));
+                    file = client.DownloadString(String.format(EquitiesLabUrlFormat, EquitiesLabKey, EquitiesLabScreener, date.toString("yyyy-MM-dd")));
                     response = JsonConvert.DeserializeObject<EquitiesLabResponse>(file);
                     _todaysResponse = new EquitiesLabResponse();
                     _todaysResponse.Securities = response.Securities.Where(x => ValidSymbols.Contains(x.Ticker)).ToList();

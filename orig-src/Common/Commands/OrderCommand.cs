@@ -69,7 +69,7 @@ package com.quantconnect.lean.Commands
             request = new SubmitOrderRequest(OrderType, SecurityType, Symbol, Quantity, StopPrice, LimitPrice, DateTime.UtcNow, Tag);
             ticket = algorithm.Transactions.ProcessRequest(request);
             response = ticket.GetMostRecentOrderResponse();
-            message = string.Format("{0} for {1} units of {2}: {3}", OrderType, Quantity, Symbol, response);
+            message = String.format("{0} for {1} units of {2}: {3}", OrderType, Quantity, Symbol, response);
             
             if (response.IsSuccess)
             {
@@ -90,10 +90,10 @@ package com.quantconnect.lean.Commands
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
             // delegate to the order request
-            return new SubmitOrderRequest(OrderType, SecurityType, Symbol, Quantity, StopPrice, LimitPrice, DateTime.UtcNow, Tag).ToString();
+            return new SubmitOrderRequest(OrderType, SecurityType, Symbol, Quantity, StopPrice, LimitPrice, DateTime.UtcNow, Tag).toString();
         }
     }
 }

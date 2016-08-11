@@ -39,7 +39,7 @@ package com.quantconnect.lean.Notifications
         /// <summary>
         /// Initialize the messaging system
         /// </summary>
-        public NotificationManager(bool liveMode)
+        public NotificationManager( boolean liveMode)
         {
             _count = 0;
             _liveMode = liveMode;

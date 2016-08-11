@@ -68,7 +68,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
             if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.Format("FxcmBrokerage.LoadInstruments(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+                throw new TimeoutException( String.format("FxcmBrokerage.LoadInstruments(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
         }
 
         private void LoadAccounts()
@@ -81,7 +81,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
             if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.Format("FxcmBrokerage.LoadAccounts(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+                throw new TimeoutException( String.format("FxcmBrokerage.LoadAccounts(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
 
             if (!_accounts.ContainsKey(_accountId))
                 throw new ArgumentException("FxcmBrokerage.LoadAccounts(): The account id is invalid: " + _accountId);
@@ -103,7 +103,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
             if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.Format("FxcmBrokerage.LoadOpenOrders(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+                throw new TimeoutException( String.format("FxcmBrokerage.LoadOpenOrders(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
         }
 
         private void LoadOpenPositions()
@@ -118,7 +118,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
             if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.Format("FxcmBrokerage.LoadOpenPositions(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+                throw new TimeoutException( String.format("FxcmBrokerage.LoadOpenPositions(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
         }
 
         /// <summary>
@@ -160,7 +160,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
             if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.Format("FxcmBrokerage.GetQuotes(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+                throw new TimeoutException( String.format("FxcmBrokerage.GetQuotes(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
 
             return _rates.Where(x => fxcmSymbols.Contains(x.Key)).Select(x => x.Value).ToList();
         }

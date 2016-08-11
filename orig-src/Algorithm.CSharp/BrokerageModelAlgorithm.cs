@@ -108,7 +108,7 @@ package com.quantconnect.lean.Algorithm.Examples
                 {
                     // return a message describing why we're not allowing this order
                     message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "InsufficientRemainingCapital", 
-                        string.Format("Account must maintain a minimum of ${0} USD at all times. Order ID: {1}", _minimumAccountBalance, order.Id)
+                        String.format("Account must maintain a minimum of ${0} USD at all times. Order ID: {1}", _minimumAccountBalance, order.Id)
                         );
                     return false;
                 }

@@ -159,18 +159,18 @@ package com.quantconnect.lean.Tests.Common.Util
             return new MarketHoursDatabase.Entry(dataTimeZone, exchangeHours);
         }
 
-        private static DateTimeZone ParseTimeZone( String tz)
+        private static ZoneId ParseTimeZone( String tz)
         {
             // handle UTC directly
             if (tz == "UTC") return TimeZones.Utc;
             // if it doesn't start with UTC then it's a name, like America/New_York
-            if (!tz.StartsWith("UTC")) return DateTimeZoneProviders.Tzdb[tz];
+            if (!tz.StartsWith("UTC")) return ZoneIdProviders.Tzdb[tz];
 
             // it must be a UTC offset, parse the offset as hours
 
             // define the time zone as a constant offset time zone in the form: 'UTC-3.5' or 'UTC+10'
             millisecondsOffset = (int) TimeSpan.FromHours(double.Parse(tz.Replace("UTC", string.Empty))).TotalMilliseconds;
-            return DateTimeZone.ForOffset(Offset.FromMilliseconds(millisecondsOffset));
+            return ZoneId.ForOffset(Offset.FromMilliseconds(millisecondsOffset));
         }
 
         private static LocalMarketHours ReadCsvHours( String[] csv, int startIndex, DayOfWeek dayOfWeek)

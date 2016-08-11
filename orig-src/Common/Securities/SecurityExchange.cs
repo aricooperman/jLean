@@ -40,7 +40,7 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Gets the time zone for this exchange
         /// </summary>
-        public DateTimeZone TimeZone 
+        public ZoneId TimeZone 
         {
             get { return _exchangeHours.TimeZone; }
         }

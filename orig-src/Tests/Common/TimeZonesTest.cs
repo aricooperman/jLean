@@ -30,8 +30,8 @@ package com.quantconnect.lean.Tests.Common
             {
                 value = field.GetValue(null);
                 Assert.IsNotNull(value);
-                Assert.IsInstanceOf(typeof (DateTimeZone), value);
-                Console.WriteLine(((DateTimeZone)value).Id);
+                Assert.IsInstanceOf(typeof (ZoneId), value);
+                Console.WriteLine(((ZoneId)value).Id);
             }
         }
     }

@@ -175,9 +175,9 @@ package com.quantconnect.lean.Data.Market
         /// <returns>
         /// A String that represents the current object.
         /// </returns>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("{0}{1}{2}{3:00000000}", Symbol.ID.Symbol, Expiry.ToString(DateFormat.EightCharacter), Right.ToString()[0], Strike*1000m);
+            return String.format("{0}{1}{2}{3:00000000}", Symbol.ID.Symbol, Expiry.toString(DateFormat.EightCharacter), Right.toString()[0], Strike*1000m);
         }
     }
 }

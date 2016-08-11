@@ -117,11 +117,11 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
             // create a proxy order object to steal his to String method
             proxy = Order.CreateOrder(this);
-            return string.Format("{0} UTC: Submit Order: ({1}) - {2} {3}", Time, OrderId, proxy, Tag) + " Status: " + Status;
+            return String.format("{0} UTC: Submit Order: ({1}) - {2} {3}", Time, OrderId, proxy, Tag) + " Status: " + Status;
         }
     }
 }

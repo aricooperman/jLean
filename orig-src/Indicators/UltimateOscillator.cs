@@ -42,7 +42,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period2">The second period</param>
         /// <param name="period3">The third period</param>
         public UltimateOscillator(int period1, int period2, int period3)
-            : this( String.Format("ULTOSC({0},{1},{2})", period1, period2, period3), period1, period2, period3)
+            : this( String.format("ULTOSC({0},{1},{2})", period1, period2, period3), period1, period2, period3)
         {
         }
 

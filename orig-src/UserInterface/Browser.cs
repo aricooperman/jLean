@@ -58,7 +58,7 @@ package com.quantconnect.lean.Views
 
                     if (value != null)
                     {
-                        version = value.ToString();
+                        version = value.toString();
                         separator = version.IndexOf('.');
                         if (separator != -1)
                         {

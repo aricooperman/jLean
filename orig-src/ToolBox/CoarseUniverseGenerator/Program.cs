@@ -86,7 +86,7 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
         /// <param name="updateMode">True for update mode, false for run-once</param>
         /// <param name="updateTime">The time of day updates should be performed</param>
         /// <returns>True if in update mode, otherwise false</returns>
-        private static boolean WaitUntilTimeInUpdateMode(bool updateMode, TimeSpan updateTime)
+        private static boolean WaitUntilTimeInUpdateMode( boolean updateMode, TimeSpan updateTime)
         {
             if (!updateMode) return false;
 
@@ -227,7 +227,7 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
 
                             dollarVolume = close * runningAverageVolume;
 
-                            coarseFile = Path.Combine(coarseFolder, date.ToString("yyyyMMdd") + ".csv");
+                            coarseFile = Path.Combine(coarseFolder, date.toString("yyyyMMdd") + ".csv");
                             dates.Add(date);
 
                             // try to resolve a map file and if found, regen the sid
@@ -242,7 +242,7 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
                             if (mapFile == null && ignoreMapless)
                             {
                                 // if we're ignoring mapless files then we should always be able to resolve this
-                                Log.Error( String.Format("CoarseGenerator.ProcessDailyFolder(): Unable to resolve map file for {0} as of {1}", symbol, date.ToShortDateString()));
+                                Log.Error( String.format("CoarseGenerator.ProcessDailyFolder(): Unable to resolve map file for {0} as of {1}", symbol, date.ToShortDateString()));
                                 continue;
                             }
 
@@ -261,13 +261,13 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
 
                     if (symbols%1000 == 0)
                     {
-                        Log.Trace("CoarseGenerator.ProcessDailyFolder(): Completed processing {0} symbols. Current elapsed: {1} seconds", symbols, (DateTime.UtcNow - start).TotalSeconds.ToString("0.00"));
+                        Log.Trace("CoarseGenerator.ProcessDailyFolder(): Completed processing {0} symbols. Current elapsed: {1} seconds", symbols, (DateTime.UtcNow - start).TotalSeconds.toString("0.00"));
                     }
                 }
                 catch (Exception err)
                 {
                     // log the error and continue with the process
-                    Log.Error(err.ToString());
+                    Log.Error(err.toString());
                 }
             }
 
@@ -281,7 +281,7 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
 
             stop = DateTime.UtcNow;
 
-            Log.Trace("CoarseGenerator.ProcessDailyFolder(): Processed {0} symbols into {1} coarse files in {2} seconds", symbols, dates.Count, (stop - start).TotalSeconds.ToString("0.00"));
+            Log.Trace("CoarseGenerator.ProcessDailyFolder(): Processed {0} symbols into {1} coarse files in {2} seconds", symbols, dates.Count, (stop - start).TotalSeconds.toString("0.00"));
             Log.Trace("CoarseGenerator.ProcessDailyFolder(): Excluded {0} mapless symbols.", maplessCount);
 
             return writers.Keys;

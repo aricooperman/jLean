@@ -122,7 +122,7 @@ package com.quantconnect.lean.Data.Custom
             {
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 DateParseHandling = DateParseHandling.DateTimeOffset,
-                DateTimeZoneHandling = DateTimeZoneHandling.RoundtripKind
+                ZoneIdHandling = ZoneIdHandling.RoundtripKind
             };
         }
 
@@ -201,7 +201,7 @@ package com.quantconnect.lean.Data.Custom
         /// <returns></returns>
         private String GetQuarter(DateTime date)
         {
-            start = date.ToString("yyyy", CultureInfo.InvariantCulture);
+            start = date.toString("yyyy", CultureInfo.InvariantCulture);
             end = start;
 
             if (date.Month < 4)
@@ -224,16 +224,16 @@ package com.quantconnect.lean.Data.Custom
                 start += "1001";
                 end += "12312359";
             }
-            return string.Format("&startdate={0}&enddate={1}", start, end);
+            return String.format("&startdate={0}&enddate={1}", start, end);
         }
 
         /// <summary>
         /// Pretty format output String for the DailyFx.
         /// </summary>
         /// <returns></returns>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("DailyFx [{0} {1} {2} {3} {4}]", Time.ToString("u"), Title, Currency, Importance, Meaning);
+            return String.format("DailyFx [{0} {1} {2} {3} {4}]", Time.toString("u"), Title, Currency, Importance, Meaning);
         }
     }
 

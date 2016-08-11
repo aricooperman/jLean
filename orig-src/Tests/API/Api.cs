@@ -73,7 +73,7 @@ package com.quantconnect.lean.Tests.API
             foreach (source in sources)
             {
                 // Test create a new project successfully
-                name = DateTime.UtcNow.ToString("u") + " Test " + _testAccount + " Lang " + source.Language;
+                name = DateTime.UtcNow.toString("u") + " Test " + _testAccount + " Lang " + source.Language;
                 project = api.CreateProject(name, source.Language);
                 Assert.IsTrue(project.Success);
                 Assert.IsTrue(project.ProjectId > 0);
@@ -130,7 +130,7 @@ package com.quantconnect.lean.Tests.API
                 Console.WriteLine("API Test: {0} Project errored successfully", source.Language);
 
                 // Using our successful compile; launch a backtest! 
-                backtestName = DateTime.Now.ToString("u") + " API Backtest";
+                backtestName = DateTime.Now.toString("u") + " API Backtest";
                 backtest = api.CreateBacktest(project.ProjectId, compileSuccess.CompileId, backtestName);
                 Assert.IsTrue(backtest.Success);
                 Console.WriteLine("API Test: {0} Backtest created successfully", source.Language);
@@ -159,7 +159,7 @@ package com.quantconnect.lean.Tests.API
                 Console.WriteLine("API Test: {0} Backtest renamed successfully", source.Language);
 
                 //Update the note and make sure its been updated:
-                newNote = DateTime.Now.ToString("u");
+                newNote = DateTime.Now.toString("u");
                 noteBacktest = api.UpdateBacktest(project.ProjectId, backtest.BacktestId, backtestNote: newNote);
                 Assert.IsTrue(noteBacktest.Success);
                 backtestRead = api.ReadBacktest(project.ProjectId, backtest.BacktestId);

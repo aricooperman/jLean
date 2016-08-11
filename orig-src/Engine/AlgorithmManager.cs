@@ -103,7 +103,7 @@ package com.quantconnect.lean.Lean.Engine
         /// Initializes a new instance of the <see cref="AlgorithmManager"/> class
         /// </summary>
         /// <param name="liveMode">True if we're running in live mode, false for backtest mode</param>
-        public AlgorithmManager(bool liveMode)
+        public AlgorithmManager( boolean liveMode)
         {
             TimeLoopWithinLimits = () =>
             {
@@ -203,7 +203,7 @@ package com.quantconnect.lean.Lean.Engine
                 //Check this backtest is still running:
                 if (_algorithm.Status != AlgorithmStatus.Running)
                 {
-                    Log.Error( String.Format("AlgorithmManager.Run(): Algorithm state changed to {0} at {1}", _algorithm.Status, timeSlice.Time));
+                    Log.Error( String.format("AlgorithmManager.Run(): Algorithm state changed to {0} at {1}", _algorithm.Status, timeSlice.Time));
                     break;
                 }
 
@@ -227,7 +227,7 @@ package com.quantconnect.lean.Lean.Engine
                     catch (Exception err)
                     {
                         Log.Error(err);
-                        algorithm.Error( String.Format("{0} Error: {1}", command.GetType().Name, err.Message));
+                        algorithm.Error( String.format("{0} Error: {1}", command.GetType().Name, err.Message));
                         result = new CommandResultPacket(command, false);
                     }
 
@@ -340,7 +340,7 @@ package com.quantconnect.lean.Lean.Engine
                         {
                             algorithm.Securities.Remove(ticket.Symbol);
                             delistingTickets.RemoveAt(i--);
-                            Log.Trace("AlgorithmManager.Run(): Delisted Security removed: " + ticket.Symbol.ToString());
+                            Log.Trace("AlgorithmManager.Run(): Delisted Security removed: " + ticket.Symbol.toString());
                         }
                     }
                 }
@@ -354,7 +354,7 @@ package com.quantconnect.lean.Lean.Engine
                 if (algorithm.RunTimeError != null)
                 {
                     _algorithm.Status = AlgorithmStatus.RuntimeError;
-                    Log.Trace( String.Format("AlgorithmManager.Run(): Algorithm encountered a runtime error at {0}. Error: {1}", timeSlice.Time, algorithm.RunTimeError));
+                    Log.Trace( String.format("AlgorithmManager.Run(): Algorithm encountered a runtime error at {0}. Error: {1}", timeSlice.Time, algorithm.RunTimeError));
                     break;
                 }
 
@@ -378,7 +378,7 @@ package com.quantconnect.lean.Lean.Engine
                             executedTickets = algorithm.Portfolio.MarginCallModel.ExecuteMarginCall(marginCallOrders);
                             foreach (ticket in executedTickets)
                             {
-                                algorithm.Error( String.Format("{0} - Executed MarginCallOrder: {1} - Quantity: {2} @ {3}", algorithm.Time, ticket.Symbol, ticket.Quantity, ticket.AverageFillPrice));
+                                algorithm.Error( String.format("{0} - Executed MarginCallOrder: {1} - Quantity: {2} @ {3}", algorithm.Time, ticket.Symbol, ticket.Quantity, ticket.AverageFillPrice));
                             }
                         }
                         catch (Exception err)
@@ -386,7 +386,7 @@ package com.quantconnect.lean.Lean.Engine
                             algorithm.RunTimeError = err;
                             _algorithm.Status = AlgorithmStatus.RuntimeError;
                             locator = executingMarginCall ? "Portfolio.MarginCallModel.ExecuteMarginCall" : "OnMarginCall";
-                            Log.Error( String.Format("AlgorithmManager.Run(): RuntimeError: {0}: ", locator) + err);
+                            Log.Error( String.format("AlgorithmManager.Run(): RuntimeError: {0}: ", locator) + err);
                             return;
                         }
                     }
@@ -436,7 +436,7 @@ package com.quantconnect.lean.Lean.Engine
                 // apply dividends
                 foreach (dividend in timeSlice.Slice.Dividends.Values)
                 {
-                    Log.Trace("AlgorithmManager.Run(): {0}: Applying Dividend for {1}", algorithm.Time, dividend.Symbol.ToString());
+                    Log.Trace("AlgorithmManager.Run(): {0}: Applying Dividend for {1}", algorithm.Time, dividend.Symbol.toString());
                     algorithm.Portfolio.ApplyDividend(dividend);
                 }
 
@@ -445,7 +445,7 @@ package com.quantconnect.lean.Lean.Engine
                 {
                     try
                     {
-                        Log.Trace("AlgorithmManager.Run(): {0}: Applying Split for {1}", algorithm.Time, split.Symbol.ToString());
+                        Log.Trace("AlgorithmManager.Run(): {0}: Applying Split for {1}", algorithm.Time, split.Symbol.toString());
                         algorithm.Portfolio.ApplySplit(split);
                         // apply the split to open orders as well in raw mode, all other modes are split adjusted
                         if (_liveMode || algorithm.Securities[split.Symbol].DataNormalizationMode == DataNormalizationMode.Raw)
@@ -707,7 +707,7 @@ package com.quantconnect.lean.Lean.Engine
                 foreach (request in historyRequests)
                 {
                     start = Math.Min(request.StartTimeUtc.Ticks, start);
-                    Log.Trace( String.Format("AlgorithmManager.Stream(): WarmupHistoryRequest: {0}: Start: {1} End: {2} Resolution: {3}", request.Symbol, request.StartTimeUtc, request.EndTimeUtc, request.Resolution));
+                    Log.Trace( String.format("AlgorithmManager.Stream(): WarmupHistoryRequest: {0}: Start: {1} End: {2} Resolution: {3}", request.Symbol, request.StartTimeUtc, request.EndTimeUtc, request.Resolution));
                 }
 
                 // make the history request and build time slices
@@ -751,7 +751,7 @@ package com.quantconnect.lean.Lean.Engine
                             // catching up to real time data
                             nextStatusTime = DateTime.UtcNow.AddSeconds(1);
                             percent = (int)(100 * (timeSlice.Time.Ticks - start) / (double)(DateTime.UtcNow.Ticks - start));
-                            results.SendStatusUpdate(AlgorithmStatus.History, string.Format("Catching up to realtime {0}%...", percent));
+                            results.SendStatusUpdate(AlgorithmStatus.History, String.format("Catching up to realtime {0}%...", percent));
                         }
                         yield return timeSlice;
                         lastHistoryTimeUtc = timeSlice.Time;
@@ -819,7 +819,7 @@ package com.quantconnect.lean.Lean.Engine
                         // catching up to real time data
                         nextStatusTime = DateTime.UtcNow.AddSeconds(1);
                         percent = (int) (100*(timeSlice.Time.Ticks - start)/(double) (DateTime.UtcNow.Ticks - start));
-                        results.SendStatusUpdate(AlgorithmStatus.History, string.Format("Catching up to realtime {0}%...", percent));   
+                        results.SendStatusUpdate(AlgorithmStatus.History, String.format("Catching up to realtime {0}%...", percent));   
                     }
                 }
                 yield return timeSlice;
@@ -858,7 +858,7 @@ package com.quantconnect.lean.Lean.Engine
                 // submit an order to liquidate on market close
                 if (delisting.Type == DelistingType.Warning)
                 {
-                    Log.Trace("AlgorithmManager.Run(): Security delisting warning: " + delisting.Symbol.ToString());
+                    Log.Trace("AlgorithmManager.Run(): Security delisting warning: " + delisting.Symbol.toString());
                     security = algorithm.Securities[delisting.Symbol];
                     if (security.Holdings.Quantity == 0) continue;
                     submitOrderRequest = new SubmitOrderRequest(OrderType.MarketOnClose, security.Type, security.Symbol,
@@ -869,9 +869,9 @@ package com.quantconnect.lean.Lean.Engine
                 }
                 else
                 {
-                    Log.Trace("AlgorithmManager.Run(): Security delisted: " + delisting.Symbol.ToString());
+                    Log.Trace("AlgorithmManager.Run(): Security delisted: " + delisting.Symbol.toString());
                     algorithm.Securities.Remove(delisting.Symbol);
-                    Log.Trace("AlgorithmManager.Run(): Security removed: " + delisting.Symbol.ToString());
+                    Log.Trace("AlgorithmManager.Run(): Security removed: " + delisting.Symbol.toString());
                 }
             }
         }

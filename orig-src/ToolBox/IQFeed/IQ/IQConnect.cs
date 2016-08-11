@@ -52,7 +52,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             String sLocation = null;
             if (key != null)
             {
-                sLocation = key.GetValue("EXEDIR", "").ToString();
+                sLocation = key.GetValue("EXEDIR", "").toString();
                 // close the key since we don't need it anymore
                 key.Close();
                 // verify there is a \ on the end before we append the exe name

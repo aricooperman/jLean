@@ -23,7 +23,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 {
 	public class IsOptionalAttribute : Attribute
 	{
-		public override String ToString()
+		public override String toString()
 		{
 			return "Is Optional";
 		}

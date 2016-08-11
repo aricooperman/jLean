@@ -213,7 +213,7 @@ package com.quantconnect.lean.Tests.Common.Securities
                 //}
                 //Console.WriteLine("CashValue: " + portfolio.CashBook.TotalValueInAccountCurrency);
 
-                Console.WriteLine(i + 1 + "   " + portfolio.TotalPortfolioValue.ToString("C"));
+                Console.WriteLine(i + 1 + "   " + portfolio.TotalPortfolioValue.toString("C"));
                 //Assert.AreEqual((double) equity[i + 1], (double)portfolio.TotalPortfolioValue, 2e-2);
                 Assert.AreEqual((double) mchQuantity[i + 1], (double)portfolio.CashBook["MCH"].Amount);
                 Assert.AreEqual((double) jwbQuantity[i + 1], (double)portfolio.CashBook["JWB"].Amount);
@@ -627,7 +627,7 @@ package com.quantconnect.lean.Tests.Common.Securities
                 return new SubscriptionDataConfig(typeof (TradeBar), symbol, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, true);
             if (type == SecurityType.Forex)
                 return new SubscriptionDataConfig(typeof (TradeBar), symbol, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, true);
-            throw new NotImplementedException(type.ToString());
+            throw new NotImplementedException(type.toString());
         }
         
         private static TimeKeeper TimeKeeper

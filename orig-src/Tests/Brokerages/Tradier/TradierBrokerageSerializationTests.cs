@@ -91,7 +91,7 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
 	}
 }";
             dynamic dynDeserialized = JsonConvert.DeserializeObject(rawResponse);
-            deserialized = JsonConvert.DeserializeObject<TradierQuoteContainer>(( String)dynDeserialized["quotes"].ToString()).Quotes[0];
+            deserialized = JsonConvert.DeserializeObject<TradierQuoteContainer>(( String)dynDeserialized["quotes"].toString()).Quotes[0];
 
             Assert.IsNotNull(deserialized);
             Assert.AreEqual(null, deserialized.Open);

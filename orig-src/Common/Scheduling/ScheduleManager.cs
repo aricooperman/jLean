@@ -47,7 +47,7 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         /// <param name="securities">Securities manager containing the algorithm's securities</param>
         /// <param name="timeZone">The algorithm's time zone</param>
-        public ScheduleManager(SecurityManager securities, DateTimeZone timeZone)
+        public ScheduleManager(SecurityManager securities, ZoneId timeZone)
         {
             _securities = securities;
             DateRules = new DateRules(securities);

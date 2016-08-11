@@ -31,8 +31,11 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
+import com.google.common.eventbus.EventBus;
 
 public class Global {
+    
+    public static EventBus APP_EVENT_BUS = new EventBus( "Main Bus" );
     
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .registerModule( new GuavaModule() )
@@ -138,13 +141,13 @@ public class Global {
 //        /// <summary>
 //        /// Writes out the properties of this instance to string
 //        /// </summary>
-//        public override String ToString()
+//        public override String toString()
 //        {
 //            if (ConversionRate == 1.0m)
 //            {
-//                return string.Format("{0}: {1} @ {2}{3} - Market: {2}{4}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice);
+//                return String.format("{0}: {1} @ {2}{3} - Market: {2}{4}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice);
 //            }
-//            return string.Format("{0}: {1} @ {2}{3} - Market: {2}{4} - Conversion: {5}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice, ConversionRate);
+//            return String.format("{0}: {1} @ {2}{3} - Market: {2}{4} - Conversion: {5}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice, ConversionRate);
 //        }
 //    }
 
@@ -812,13 +815,13 @@ package com.quantconnect.lean
         /// <summary>
         /// Writes out the properties of this instance to string
         /// </summary>
-        public override String ToString()
+        public override String toString()
         {
             if (ConversionRate == 1.0m)
             {
-                return string.Format("{0}: {1} @ {2}{3} - Market: {2}{4}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice);
+                return String.format("{0}: {1} @ {2}{3} - Market: {2}{4}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice);
             }
-            return string.Format("{0}: {1} @ {2}{3} - Market: {2}{4} - Conversion: {5}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice, ConversionRate);
+            return String.format("{0}: {1} @ {2}{3} - Market: {2}{4} - Conversion: {5}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice, ConversionRate);
         }
     }
 

@@ -102,9 +102,9 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void ParsedToStringEqualsValue()
+        public void ParsedtoStringEqualsValue()
         {
-            value = SPY_Put_19550.ToString();
+            value = SPY_Put_19550.toString();
             Console.WriteLine(value);
             sid2 = SecurityIdentifier.Parse(value);
             Assert.AreEqual(SPY_Put_19550, sid2);
@@ -186,7 +186,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         [Test]
         public void RoundTripEmptyParse()
         {
-            Assert.AreEqual(SecurityIdentifier.Empty, SecurityIdentifier.Parse(SecurityIdentifier.Empty.ToString()));
+            Assert.AreEqual(SecurityIdentifier.Empty, SecurityIdentifier.Parse(SecurityIdentifier.Empty.toString()));
         }
 
         [Test]
@@ -201,7 +201,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         public void SerializesToSimpleString()
         {
             sid = SPY;
-            str = sid.ToString();
+            str = sid.toString();
             serialized = JsonConvert.SerializeObject(sid);
             Assert.AreEqual("\"" + str + "\"", serialized);
         }

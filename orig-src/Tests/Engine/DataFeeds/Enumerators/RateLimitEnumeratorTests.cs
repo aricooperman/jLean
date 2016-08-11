@@ -51,7 +51,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
 
         private static Symbol CreateSymbol(int x)
         {
-            return new Symbol(SecurityIdentifier.GenerateBase(x.ToString(), Market.USA), x.ToString());
+            return new Symbol(SecurityIdentifier.GenerateBase(x.toString(), Market.USA), x.toString());
         }
     }
 }

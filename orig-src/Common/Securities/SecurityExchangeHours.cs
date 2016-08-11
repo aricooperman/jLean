@@ -31,7 +31,7 @@ package com.quantconnect.lean.Securities
     /// </remarks>
     public class SecurityExchangeHours
     {
-        private readonly DateTimeZone _timeZone;
+        private readonly ZoneId _timeZone;
         private readonly HashSet<long> _holidays;
 
         // these are listed individually for speed
@@ -47,7 +47,7 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Gets the time zone this exchange resides in
         /// </summary>
-        public DateTimeZone TimeZone
+        public ZoneId TimeZone
         {
             get { return _timeZone; }
         }
@@ -71,7 +71,7 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Gets a <see cref="SecurityExchangeHours"/> instance that is always open
         /// </summary>
-        public static SecurityExchangeHours AlwaysOpen(DateTimeZone timeZone)
+        public static SecurityExchangeHours AlwaysOpen(ZoneId timeZone)
         {
             dayOfWeeks = Enum.GetValues(typeof (DayOfWeek)).OfType<DayOfWeek>();
             return new SecurityExchangeHours(timeZone,
@@ -86,7 +86,7 @@ package com.quantconnect.lean.Securities
         /// <param name="timeZone">The time zone the dates and hours are represented in</param>
         /// <param name="holidayDates">The dates this exchange is closed for holiday</param>
         /// <param name="marketHoursForEachDayOfWeek">The exchange's schedule for each day of the week</param>
-        public SecurityExchangeHours(DateTimeZone timeZone, IEnumerable<DateTime> holidayDates, IReadOnlyMap<DayOfWeek, LocalMarketHours> marketHoursForEachDayOfWeek)
+        public SecurityExchangeHours(ZoneId timeZone, IEnumerable<DateTime> holidayDates, IReadOnlyMap<DayOfWeek, LocalMarketHours> marketHoursForEachDayOfWeek)
         {
             _timeZone = timeZone;
             _holidays = holidayDates.Select(x => x.Date.Ticks).ToHashSet();

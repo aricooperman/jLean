@@ -94,7 +94,7 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
             if (this == Unprocessed)
             {
@@ -103,7 +103,7 @@ package com.quantconnect.lean.Orders
 
             if (IsError)
             {
-                return string.Format("Error: {0} - {1}", ErrorCode, ErrorMessage);
+                return String.format("Error: {0} - {1}", ErrorCode, ErrorMessage);
             }
             return "Success";
         }
@@ -137,7 +137,7 @@ package com.quantconnect.lean.Orders
         public static OrderResponse InvalidStatus(OrderRequest request, Order order)
         {
             return Error(request, OrderResponseErrorCode.InvalidOrderStatus,
-                string.Format("Unable to update order with id {0} because it already has {1} status", request.OrderId, order.Status));
+                String.format("Unable to update order with id {0} because it already has {1} status", request.OrderId, order.Status));
         }
 
         /// <summary>
@@ -146,7 +146,7 @@ package com.quantconnect.lean.Orders
         public static OrderResponse UnableToFindOrder(OrderRequest request)
         {
             return Error(request, OrderResponseErrorCode.UnableToFindOrder,
-                string.Format("Unable to locate order with id {0}.", request.OrderId));
+                String.format("Unable to locate order with id {0}.", request.OrderId));
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ package com.quantconnect.lean.Orders
         {
             static final String format = "Unable to {0} order with id {1} that have zero quantity.";
             return Error(request, OrderResponseErrorCode.OrderQuantityZero,
-                string.Format(format, request.OrderRequestType.ToString().toLowerCase(), request.OrderId));
+                String.format(format, request.OrderRequestType.toString().toLowerCase(), request.OrderId));
         }
 
         /// <summary>

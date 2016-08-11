@@ -465,7 +465,7 @@ package com.quantconnect.lean.Securities
         /// Set the base currrency cash this algorithm is to manage.
         /// </summary>
         /// <param name="cash">Decimal cash value of portfolio</param>
-        public void SetCash(decimal cash) 
+        public void SetCash( BigDecimal cash) 
         {
             _baseCurrencyCash.SetAmount(cash);
         }

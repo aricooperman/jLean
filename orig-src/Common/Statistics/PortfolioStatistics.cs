@@ -215,7 +215,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="finalCapital">Algorithm final capital</param>
         /// <param name="years">Years trading</param>
         /// <returns>Decimal fraction for annual compounding performance</returns>
-        private static BigDecimal CompoundingAnnualPerformance(decimal startingCapital, BigDecimal finalCapital, BigDecimal years)
+        private static BigDecimal CompoundingAnnualPerformance( BigDecimal startingCapital, BigDecimal finalCapital, BigDecimal years)
         {
             return (years == 0 ? 0d : Math.Pow((double)finalCapital / (double)startingCapital, 1 / (double)years) - 1).SafeDecimalCast();
         }

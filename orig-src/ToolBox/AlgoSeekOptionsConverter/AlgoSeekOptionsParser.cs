@@ -176,7 +176,7 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
             public static readonly EventType Ask = new EventType(true, TickType.Quote);
             public readonly boolean IsAsk;
             public readonly TickType TickType;
-            private EventType(bool isAsk, TickType tickType)
+            private EventType( boolean isAsk, TickType tickType)
             {
                 IsAsk = isAsk;
                 TickType = tickType;

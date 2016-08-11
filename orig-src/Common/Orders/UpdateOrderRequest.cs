@@ -52,7 +52,7 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
             updates = new List<String>();
             if (Quantity.HasValue)
@@ -67,7 +67,7 @@ package com.quantconnect.lean.Orders
             {
                 updates.Add("StopPrice: " + StopPrice.Value.SmartRounding());
             }
-            return string.Format("{0} UTC: Update Order: ({1}) - {2} {3} Status: {4}", Time, OrderId, string.Join(", ", updates), Tag, Status);
+            return String.format("{0} UTC: Update Order: ({1}) - {2} {3} Status: {4}", Time, OrderId, string.Join(", ", updates), Tag, Status);
         }
     }
 }

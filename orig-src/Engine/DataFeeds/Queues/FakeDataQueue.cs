@@ -67,7 +67,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
             {
                 elapsed = (DateTime.Now - lastTime);
                 ticksPerSecond = (count - lastCount)/elapsed.TotalSeconds;
-                Console.WriteLine("TICKS PER SECOND:: " + ticksPerSecond.ToString("000000.0") + " ITEMS IN QUEUE:: " + _ticks.Count);
+                Console.WriteLine("TICKS PER SECOND:: " + ticksPerSecond.toString("000000.0") + " ITEMS IN QUEUE:: " + _ticks.Count);
                 lastCount = count;
                 lastTime = DateTime.Now;
                 PopulateQueue();

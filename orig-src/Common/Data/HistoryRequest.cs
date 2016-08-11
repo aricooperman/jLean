@@ -65,7 +65,7 @@ package com.quantconnect.lean.Data
         /// <summary>
         /// Gets the time zone of the time stamps on the raw input data
         /// </summary>
-        public DateTimeZone TimeZone { get; set; }
+        public ZoneId TimeZone { get; set; }
         /// <summary>
         /// Gets the market for this subscription
         /// </summary>

@@ -66,9 +66,9 @@ package com.quantconnect.lean.Logging
         /// Helper override on the log entry.
         /// </summary>
         /// <returns></returns>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("{0} {1} {2}", Time.ToString("o"), MessageType, Message);
+            return String.format("{0} {1} {2}", Time.toString("o"), MessageType, Message);
         }
     }
 }

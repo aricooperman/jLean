@@ -122,7 +122,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             // ReSharper disable once PossibleMultipleEnumeration
             if (!tradeableDates.Any())
             {
-                _algorithm.Error( String.Format("No data loaded for {0} because there were no tradeable dates for this security.", security.Symbol));
+                _algorithm.Error( String.format("No data loaded for {0} because there were no tradeable dates for this security.", security.Symbol));
                 return null;
             }
 
@@ -221,12 +221,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             Subscription subscription;
             if (!_subscriptions.TryRemove(configuration, out subscription))
             {
-                Log.Error("FileSystemDataFeed.RemoveSubscription(): Unable to remove: " + configuration.ToString());
+                Log.Error("FileSystemDataFeed.RemoveSubscription(): Unable to remove: " + configuration.toString());
                 return false;
             }
 
                 subscription.Dispose();
-            Log.Debug("FileSystemDataFeed.RemoveSubscription(): Removed " + configuration.ToString());
+            Log.Debug("FileSystemDataFeed.RemoveSubscription(): Removed " + configuration.toString());
 
             UpdateFillForwardResolution();
 
@@ -429,13 +429,13 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         {
             // compute initial frontier time
             _frontierUtc = GetInitialFrontierTime();
-            Log.Trace( String.Format("FileSystemDataFeed.GetEnumerator(): Begin: {0} UTC", _frontierUtc));
+            Log.Trace( String.format("FileSystemDataFeed.GetEnumerator(): Begin: {0} UTC", _frontierUtc));
 
             syncer = new SubscriptionSynchronizer(_universeSelection);
             syncer.SubscriptionFinished += (sender, subscription) =>
             {
                 RemoveSubscription(subscription.Configuration);
-                    Log.Debug( String.Format("FileSystemDataFeed.GetEnumerator(): Finished subscription: {0} at {1} UTC", subscription.Security.Symbol.ID, _frontierUtc));
+                    Log.Debug( String.format("FileSystemDataFeed.GetEnumerator(): Finished subscription: {0} at {1} UTC", subscription.Security.Symbol.ID, _frontierUtc));
             };
 
             while (!_cancellationTokenSource.IsCancellationRequested)
@@ -476,7 +476,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 subscription.Dispose();
             }
 
-            Log.Trace( String.Format("FileSystemDataFeed.Run(): Data Feed Completed at {0} UTC", _frontierUtc));
+            Log.Trace( String.format("FileSystemDataFeed.Run(): Data Feed Completed at {0} UTC", _frontierUtc));
         }
 
         /// <summary>

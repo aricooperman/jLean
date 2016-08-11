@@ -51,7 +51,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period of the T3MovingAverage</param>
         /// <param name="volumeFactor">The volume factor of the T3MovingAverage (value must be in the [0,1] range, defaults to 0.7)</param>
         public T3MovingAverage(int period, BigDecimal volumeFactor = 0.7m)
-            : this( String.Format("T3({0},{1})", period, volumeFactor), period, volumeFactor)
+            : this( String.format("T3({0},{1})", period, volumeFactor), period, volumeFactor)
         {
         }
 

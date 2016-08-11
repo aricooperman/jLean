@@ -94,7 +94,7 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Initializes a new instance of the <see cref="FirstOrderGreeks"/> class
         /// </summary>
-        public FirstOrderGreeks(decimal delta, BigDecimal vega, BigDecimal theta, BigDecimal rho, BigDecimal lambda)
+        public FirstOrderGreeks( BigDecimal delta, BigDecimal vega, BigDecimal theta, BigDecimal rho, BigDecimal lambda)
         {
             Delta = delta;
             Vega = vega;

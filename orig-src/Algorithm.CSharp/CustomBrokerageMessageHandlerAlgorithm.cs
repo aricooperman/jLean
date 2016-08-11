@@ -64,7 +64,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <param name="message">Message object</param>
         public void Handle(BrokerageMessageEvent message)
         {
-            toLog = _algo.Time.ToString("o") + " Event: " + message.Message;
+            toLog = _algo.Time.toString("o") + " Event: " + message.Message;
             _algo.Debug(toLog);
             _algo.Log(toLog);
         }

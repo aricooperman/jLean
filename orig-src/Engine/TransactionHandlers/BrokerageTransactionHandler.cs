@@ -542,7 +542,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
                         {
                             // log the delta between 
                             Log.LogHandler.Trace("BrokerageTransactionHandler.PerformCashSync(): {0} Delta: {1}", balanceCash.Symbol,
-                                delta.ToString("0.00"));
+                                delta.toString("0.00"));
                         }
                         _algorithm.Portfolio.SetCash(balanceCash.Symbol, balanceCash.Amount, balanceCash.ConversionRate);
                     }
@@ -666,7 +666,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
             catch (Exception err)
             {
                 Log.Error(err);
-                _algorithm.Error( String.Format("Order Error: id: {0}, Error executing margin models: {1}", order.Id, err.Message));
+                _algorithm.Error( String.format("Order Error: id: {0}, Error executing margin models: {1}", order.Id, err.Message));
                 HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, 0m, "Error executing margin models"));
                 return OrderResponse.Error(request, OrderResponseErrorCode.ProcessingError, "Error in GetSufficientCapitalForOrder");
             }
@@ -674,7 +674,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
             if (!sufficientCapitalForOrder)
             {
                 order.Status = OrderStatus.Invalid;
-                response = OrderResponse.Error(request, OrderResponseErrorCode.InsufficientBuyingPower, string.Format("Order Error: id: {0}, Insufficient buying power to complete order (Value:{1}).", order.Id, order.GetValue(security).SmartRounding()));
+                response = OrderResponse.Error(request, OrderResponseErrorCode.InsufficientBuyingPower, String.format("Order Error: id: {0}, Insufficient buying power to complete order (Value:{1}).", order.Id, order.GetValue(security).SmartRounding()));
                 _algorithm.Error(response.ErrorMessage);
                 HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, 0m, "Insufficient buying power to complete order"));
                 return response;
@@ -875,11 +875,11 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
                 // Bug in FXCM API flipping the currencies -- disabling for now. 5/17/16 RFB
                 //if (fill.FillPriceCurrency != security.SymbolProperties.QuoteCurrency)
                 //{
-                //    Log.Error( String.Format("Currency mismatch: Fill currency: {0}, Symbol currency: {1}", fill.FillPriceCurrency, security.SymbolProperties.QuoteCurrency));
+                //    Log.Error( String.format("Currency mismatch: Fill currency: {0}, Symbol currency: {1}", fill.FillPriceCurrency, security.SymbolProperties.QuoteCurrency));
                 //}
                 //if (order.PriceCurrency != security.SymbolProperties.QuoteCurrency)
                 //{
-                //    Log.Error( String.Format("Currency mismatch: Order currency: {0}, Symbol currency: {1}", order.PriceCurrency, security.SymbolProperties.QuoteCurrency));
+                //    Log.Error( String.format("Currency mismatch: Order currency: {0}, Symbol currency: {1}", order.PriceCurrency, security.SymbolProperties.QuoteCurrency));
                 //}
 
                 try
@@ -893,7 +893,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
                 catch (Exception err)
                 {
                     Log.Error(err);
-                    _algorithm.Error( String.Format("Order Error: id: {0}, Error in Portfolio.ProcessFill: {1}", order.Id, err.Message));
+                    _algorithm.Error( String.format("Order Error: id: {0}, Error in Portfolio.ProcessFill: {1}", order.Id, err.Message));
                 }
             }
 
@@ -939,7 +939,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
             delta = _algorithm.Portfolio.CashBook[account.CurrencySymbol].Amount - account.CashBalance;
             if (delta != 0)
             {
-                Log.Trace( String.Format("BrokerageTransactionHandler.HandleAccountChanged(): {0} Cash Delta: {1}", account.CurrencySymbol, delta));
+                Log.Trace( String.format("BrokerageTransactionHandler.HandleAccountChanged(): {0} Cash Delta: {1}", account.CurrencySymbol, delta));
             }
 
             // maybe we don't actually want to do this, this data can be delayed. Must be explicitly supported by brokerage
@@ -980,7 +980,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
                 if (!_firstRoundOffMessage)
                 {
                     _algorithm.Error(
-                        string.Format(
+                        String.format(
                             "Warning: Due to brokerage limitations, orders will be rounded to the nearest lot size of {0}",
                             Convert.ToInt32(security.SymbolProperties.LotSize)));
                     _firstRoundOffMessage = true;

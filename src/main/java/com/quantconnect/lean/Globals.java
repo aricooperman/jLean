@@ -34,7 +34,7 @@ public class Globals {
 
     static {
         dataFolder = Config.get( "data-folder", Config.get( "data-directory", "../../../Data/" ) );
-        version = "jLean"; //Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        version = "jLean"; //Assembly.GetExecutingAssembly().GetName().Version.toString();
         String versionid = Config.get( "version-id" );
         if( StringUtils.isNotBlank( versionid ) )
             version += "." + versionid;
@@ -80,7 +80,7 @@ package com.quantconnect.lean
         {
             DataFolder = Config.Get("data-folder", Config.Get("data-directory", @"../../../Data/"));
 
-            Version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            Version = Assembly.GetExecutingAssembly().GetName().Version.toString();
             versionid = Config.Get("version-id");
             if (!string.IsNullOrWhiteSpace(versionid))
             {

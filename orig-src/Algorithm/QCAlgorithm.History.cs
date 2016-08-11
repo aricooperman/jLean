@@ -272,7 +272,7 @@ package com.quantconnect.lean.Algorithm
             if (config == null)
             {
                 actualType = security.Subscriptions.Select(x => x.Type.Name).DefaultIfEmpty("[None]").FirstOrDefault();
-                throw new ArgumentException("The specified security is not of the requested type. Symbol: " + symbol.ToString() + " Requested Type: " + requestedType.Name + " Actual Type: " + actualType);
+                throw new ArgumentException("The specified security is not of the requested type. Symbol: " + symbol.toString() + " Requested Type: " + requestedType.Name + " Actual Type: " + actualType);
             }
 
             start = GetStartTimeAlgoTz(symbol, periods, resolution);
@@ -297,7 +297,7 @@ package com.quantconnect.lean.Algorithm
             if (config == null)
             {
                 actualType = security.Subscriptions.Select(x => x.Type.Name).DefaultIfEmpty("[None]").FirstOrDefault();
-                throw new ArgumentException("The specified security is not of the requested type. Symbol: " + symbol.ToString() + " Requested Type: " + requestedType.Name + " Actual Type: " + actualType);
+                throw new ArgumentException("The specified security is not of the requested type. Symbol: " + symbol.toString() + " Requested Type: " + requestedType.Name + " Actual Type: " + actualType);
             }
 
             request = CreateHistoryRequest(security, config, start, end, resolution);
@@ -406,7 +406,7 @@ package com.quantconnect.lean.Algorithm
             return History(requests, TimeZone).Memoize();
         }
 
-        private IEnumerable<Slice> History(IEnumerable<HistoryRequest> requests, DateTimeZone timeZone)
+        private IEnumerable<Slice> History(IEnumerable<HistoryRequest> requests, ZoneId timeZone)
         {
             sentMessage = false;
             reqs = requests.ToList();

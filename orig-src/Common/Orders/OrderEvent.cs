@@ -144,14 +144,14 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
             message = FillQuantity == 0 
-                ? string.Format("Time: {0} OrderID: {1} Symbol: {2} Status: {3}", UtcTime, OrderId, Symbol, Status) 
-                : string.Format("Time: {0} OrderID: {1} Symbol: {2} Status: {3} Quantity: {4} FillPrice: {5} {6}", UtcTime, OrderId, Symbol, Status, FillQuantity, FillPrice, FillPriceCurrency);
+                ? String.format("Time: {0} OrderID: {1} Symbol: {2} Status: {3}", UtcTime, OrderId, Symbol, Status) 
+                : String.format("Time: {0} OrderID: {1} Symbol: {2} Status: {3} Quantity: {4} FillPrice: {5} {6}", UtcTime, OrderId, Symbol, Status, FillQuantity, FillPrice, FillPriceCurrency);
 
             // attach the order fee so it ends up in logs properly
-            if (OrderFee != 0m) message += string.Format(" OrderFee: {0} {1}", OrderFee, CashBook.AccountCurrency);
+            if (OrderFee != 0m) message += String.format(" OrderFee: {0} {1}", OrderFee, CashBook.AccountCurrency);
             
             return message;
         }

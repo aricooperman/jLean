@@ -294,7 +294,7 @@ package com.quantconnect.lean.Lean.Engine.Results
                     runtimeStatistics = new Map<String,String>();
                     serverStatistics = OS.GetServerStatistics();
                     upTime = DateTime.UtcNow - _launchTimeUtc;
-                    serverStatistics["Up Time"] = string.Format("{0}d {1:hh\\:mm\\:ss}", upTime.Days, upTime);
+                    serverStatistics["Up Time"] = String.format("{0}d {1:hh\\:mm\\:ss}", upTime.Days, upTime);
 
                     // Only send holdings updates when we have changes in orders, except for first time, then we want to send all
                     foreach (asset in _algorithm.Securities.Values.Where(x => !x.IsInternalFeed()).OrderBy(x => x.Symbol.Value))
@@ -319,13 +319,13 @@ package com.quantconnect.lean.Lean.Engine.Results
                                     : 0;
 
                     //Add other fixed parameters.
-                    runtimeStatistics.Add("Unrealized:", "$" + _algorithm.Portfolio.TotalUnrealizedProfit.ToString("N2"));
-                    runtimeStatistics.Add("Fees:", "-$" + _algorithm.Portfolio.TotalFees.ToString("N2"));
-                    runtimeStatistics.Add("Net Profit:", "$" + _algorithm.Portfolio.TotalProfit.ToString("N2"));
-                    runtimeStatistics.Add("Return:", netReturn.ToString("P"));
-                    runtimeStatistics.Add("Equity:", "$" + _algorithm.Portfolio.TotalPortfolioValue.ToString("N2"));
-                    runtimeStatistics.Add("Holdings:", "$" + _algorithm.Portfolio.TotalHoldingsValue.ToString("N2"));
-                    runtimeStatistics.Add("Volume:", "$" + _algorithm.Portfolio.TotalSaleVolume.ToString("N2"));
+                    runtimeStatistics.Add("Unrealized:", "$" + _algorithm.Portfolio.TotalUnrealizedProfit.toString("N2"));
+                    runtimeStatistics.Add("Fees:", "-$" + _algorithm.Portfolio.TotalFees.toString("N2"));
+                    runtimeStatistics.Add("Net Profit:", "$" + _algorithm.Portfolio.TotalProfit.toString("N2"));
+                    runtimeStatistics.Add("Return:", netReturn.toString("P"));
+                    runtimeStatistics.Add("Equity:", "$" + _algorithm.Portfolio.TotalPortfolioValue.toString("N2"));
+                    runtimeStatistics.Add("Holdings:", "$" + _algorithm.Portfolio.TotalHoldingsValue.toString("N2"));
+                    runtimeStatistics.Add("Volume:", "$" + _algorithm.Portfolio.TotalSaleVolume.toString("N2"));
 
                     // since we're sending multiple packets, let's do it async and forget about it
                     // chart data can get big so let's break them up into groups
@@ -521,7 +521,7 @@ package com.quantconnect.lean.Lean.Engine.Results
             Log.Debug("LiveTradingResultHandler.AddToLogStore(): Adding");
             lock (_logStoreLock)
             {
-                _logStore.Add(new LogEntry(DateTime.Now.ToString(DateFormat.UI) + " " + message));
+                _logStore.Add(new LogEntry(DateTime.Now.toString(DateFormat.UI) + " " + message));
             }
             Log.Debug("LiveTradingResultHandler.AddToLogStore(): Finished adding");
         }
@@ -792,7 +792,7 @@ package com.quantconnect.lean.Lean.Engine.Results
             {
                 //Concatenate and upload the log file:
                 joined = string.Join("\r\n", logs.Select(x=>x.Message));
-                key = "live/" + _job.UserId + "/" + _job.ProjectId + "/" + _job.DeployId + "-" + DateTime.UtcNow.ToString("yyyy-MM-dd-HH") + "-log.txt";
+                key = "live/" + _job.UserId + "/" + _job.ProjectId + "/" + _job.DeployId + "-" + DateTime.UtcNow.toString("yyyy-MM-dd-HH") + "-log.txt";
                 _api.Store(joined, key, StoragePermissions.Authenticated);
             }
             catch (Exception err)
@@ -918,10 +918,10 @@ package com.quantconnect.lean.Lean.Engine.Results
             Log.Trace("LiveTradingResultHandler.OrderEvent(): " + newEvent, true);
             Messages.Enqueue(new OrderEventPacket(_deployId, newEvent));
 
-            DebugMessage( String.Format("New Order Event: OrderId:{0} Symbol:{1} Quantity:{2} Status:{3}", newEvent.OrderId, newEvent.Symbol, newEvent.FillQuantity, newEvent.Status));
+            DebugMessage( String.format("New Order Event: OrderId:{0} Symbol:{1} Quantity:{2} Status:{3}", newEvent.OrderId, newEvent.Symbol, newEvent.FillQuantity, newEvent.Status));
 
             //Add the order event message to the log:
-            LogMessage("New Order Event: Id:" + newEvent.OrderId + " Symbol:" + newEvent.Symbol.ToString() + " Quantity:" + newEvent.FillQuantity + " Status:" + newEvent.Status);
+            LogMessage("New Order Event: Id:" + newEvent.OrderId + " Symbol:" + newEvent.Symbol.toString() + " Quantity:" + newEvent.FillQuantity + " Status:" + newEvent.Status);
         }
 
         /// <summary>
@@ -949,7 +949,7 @@ package com.quantconnect.lean.Lean.Engine.Results
             unixDateStart = Time.DateTimeToUnixTimeStamp(start);
             unixDateStop = Time.DateTimeToUnixTimeStamp(stop);
 
-            //Log.Trace("LiveTradingResultHandler.Truncate: Start: " + start.ToString("u") + " Stop : " + stop.ToString("u"));
+            //Log.Trace("LiveTradingResultHandler.Truncate: Start: " + start.toString("u") + " Stop : " + stop.toString("u"));
             //Log.Trace("LiveTradingResultHandler.Truncate: Truncate Delta: " + (unixDateStop - unixDateStart) + " Incoming Points: " + result.Charts["Strategy Equity"].Series["Equity"].Values.Count);
 
             charts = new Map<String, Chart>();
@@ -979,7 +979,7 @@ package com.quantconnect.lean.Lean.Engine.Results
 
         private String CreateKey( String suffix, String dateFormat = "yyyy-MM-dd")
         {
-            return string.Format("live/{0}/{1}/{2}-{3}_{4}.json", _job.UserId, _job.ProjectId, _job.DeployId, DateTime.UtcNow.ToString(dateFormat), suffix);
+            return String.format("live/{0}/{1}/{2}-{3}_{4}.json", _job.UserId, _job.ProjectId, _job.DeployId, DateTime.UtcNow.toString(dateFormat), suffix);
         }
 
 
@@ -996,7 +996,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// This method is triggered from the algorithm manager thread.
         /// </summary>
         /// <remarks>Prime candidate for putting into a base class. Is identical across all result handlers.</remarks>
-        public void ProcessSynchronousEvents(bool forceProcess = false)
+        public void ProcessSynchronousEvents( boolean forceProcess = false)
         {
             time = DateTime.Now;
 

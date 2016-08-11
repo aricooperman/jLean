@@ -79,7 +79,7 @@ package com.quantconnect.lean.Securities
         /// <returns>The first order matching the brokerage id, or null if no match is found</returns>
         public static Order GetOrderByBrokerageId(this IOrderProvider orderProvider, long brokerageId)
         {
-            return orderProvider.GetOrderByBrokerageId(brokerageId.ToString());
+            return orderProvider.GetOrderByBrokerageId(brokerageId.toString());
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ package com.quantconnect.lean.Securities
         /// <returns>The first order matching the brokerage id, or null if no match is found</returns>
         public static Order GetOrderByBrokerageId(this IOrderProvider orderProvider, int brokerageId)
         {
-            return orderProvider.GetOrderByBrokerageId(brokerageId.ToString());
+            return orderProvider.GetOrderByBrokerageId(brokerageId.toString());
         }
     }
 }

@@ -200,7 +200,7 @@ package com.quantconnect.lean.Data.Market
         /// <param name="volume">Volume of this trade</param>
         /// <param name="bidSize">The size of the current bid, if available, if not, pass 0</param>
         /// <param name="askSize">The size of the current ask, if available, if not, pass 0</param>
-        public override void Update(decimal lastTrade, BigDecimal bidPrice, BigDecimal askPrice, BigDecimal volume, BigDecimal bidSize, BigDecimal askSize)
+        public override void Update( BigDecimal lastTrade, BigDecimal bidPrice, BigDecimal askPrice, BigDecimal volume, BigDecimal bidSize, BigDecimal askSize)
         {
             // update our bid and ask bars - handle null values, this is to give good values for midpoint OHLC
             if (Bid == null && bidPrice != 0) Bid = new Bar();

@@ -29,7 +29,7 @@ package com.quantconnect.lean.Tests.Logging
             static final String file = "log.txt";
             File.Delete(file);
 
-            debugMessage = "*debug message*" + DateTime.UtcNow.ToString("o");
+            debugMessage = "*debug message*" + DateTime.UtcNow.toString("o");
             using (log = new FileLogHandler(file))
             {
                 log.Debug(debugMessage);

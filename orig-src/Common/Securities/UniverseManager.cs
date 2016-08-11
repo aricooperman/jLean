@@ -218,7 +218,7 @@ package com.quantconnect.lean.Securities
             {
                 if (!_universes.ContainsKey(symbol))
                 {
-                    throw new Exception( String.Format("This universe symbol ({0}) was not found in your universe list. Please add this security or check it exists before using it with 'Universes.ContainsKey(\"{1}\")'", symbol, SymbolCache.GetTicker(symbol)));
+                    throw new Exception( String.format("This universe symbol ({0}) was not found in your universe list. Please add this security or check it exists before using it with 'Universes.ContainsKey(\"{1}\")'", symbol, SymbolCache.GetTicker(symbol)));
                 }
                 return _universes[symbol];
             }
@@ -227,7 +227,7 @@ package com.quantconnect.lean.Securities
                 Universe existing;
                 if (_universes.TryGetValue(symbol, out existing) && existing != value)
                 {
-                    throw new ArgumentException("Unable to over write existing Universe: " + symbol.ToString());
+                    throw new ArgumentException("Unable to over write existing Universe: " + symbol.toString());
                 }
 
                 // no security exists for the specified symbol key, add it now

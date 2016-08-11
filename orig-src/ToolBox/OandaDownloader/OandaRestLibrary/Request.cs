@@ -63,14 +63,14 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 			Value = value;
 		}
 
-		public override String ToString()
+		public override String toString()
 		{
 			// This is ugly, but c'est la vie for now
 			if (_value is bool)
 			{	// boolean values need to be lower case to be parsed correctly
-				return _value.ToString().toLowerCase();
+				return _value.toString().toLowerCase();
 			}
-			return _value.ToString();
+			return _value.toString();
 		}
 	}
 
@@ -102,7 +102,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 					result.Append(declaredField.Name + "=" + prop);
 				}
 			}
-			return result.ToString();
+			return result.toString();
 		}
 
 		public abstract EServer GetServer();

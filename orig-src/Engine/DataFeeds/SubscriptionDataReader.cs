@@ -349,7 +349,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <summary>
         /// Resolves the next enumerator to be used in <see cref="MoveNext"/>
         /// </summary>
-        private IEnumerator<BaseData> ResolveDataEnumerator(bool endOfEnumerator)
+        private IEnumerator<BaseData> ResolveDataEnumerator( boolean endOfEnumerator)
         {
             do
             {
@@ -414,12 +414,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 {
                     case SubscriptionTransportMedium.LocalFile:
                         // the local uri doesn't exist, write an error and return null so we we don't try to get data for today
-                        Log.Trace( String.Format("SubscriptionDataReader.GetReader(): Could not find QC Data, skipped: {0}", source));
+                        Log.Trace( String.format("SubscriptionDataReader.GetReader(): Could not find QC Data, skipped: {0}", source));
                         _resultHandler.SamplePerformance(_tradeableDates.Current, 0);
                         break;
 
                     case SubscriptionTransportMedium.RemoteFile:
-                        _resultHandler.ErrorMessage( String.Format("Error downloading custom data source file, skipped: {0} Error: {1}", source, args.Exception.Message), args.Exception.StackTrace);
+                        _resultHandler.ErrorMessage( String.format("Error downloading custom data source file, skipped: {0} Error: {1}", source, args.Exception.Message), args.Exception.StackTrace);
                         _resultHandler.SamplePerformance(_tradeableDates.Current.Date, 0);
                         break;
 
@@ -437,17 +437,17 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 textSubscriptionFactory = (TextSubscriptionDataSourceReader)dataSourceReader;
                 textSubscriptionFactory.CreateStreamReaderError += (sender, args) =>
                 {
-                    Log.Error( String.Format("Failed to get StreamReader for data source({0}), symbol({1}). Skipping date({2}). Reader is null.", args.Source.Source, _mappedSymbol, args.Date.ToShortDateString()));
+                    Log.Error( String.format("Failed to get StreamReader for data source({0}), symbol({1}). Skipping date({2}). Reader is null.", args.Source.Source, _mappedSymbol, args.Date.ToShortDateString()));
                     if (_config.IsCustomData)
                     {
-                        _resultHandler.ErrorMessage( String.Format("We could not fetch the requested data. This may not be valid data, or a failed download of custom data. Skipping source ({0}).", args.Source.Source));
+                        _resultHandler.ErrorMessage( String.format("We could not fetch the requested data. This may not be valid data, or a failed download of custom data. Skipping source ({0}).", args.Source.Source));
                     }
                 };
 
                 // handle parser errors
                 textSubscriptionFactory.ReaderError += (sender, args) =>
                 {
-                    _resultHandler.RuntimeError( String.Format("Error invoking {0} data reader. Line: {1} Error: {2}", _config.Symbol, args.Line, args.Exception.Message), args.Exception.StackTrace);
+                    _resultHandler.RuntimeError( String.format("Error invoking {0} data reader. Line: {1} Error: {2}", _config.Symbol, args.Line, args.Exception.Message), args.Exception.StackTrace);
                 };
             }
         }

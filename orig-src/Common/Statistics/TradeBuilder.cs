@@ -68,7 +68,7 @@ package com.quantconnect.lean.Statistics
         /// Sets the live mode flag
         /// </summary>
         /// <param name="live">The live mode flag</param>
-        public void SetLiveMode(bool live)
+        public void SetLiveMode( boolean live)
         {
             _liveMode = live;
         }

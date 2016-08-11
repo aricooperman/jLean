@@ -92,7 +92,7 @@ package com.quantconnect.lean.Brokerages
             }
             catch (Exception err)
             {
-                errors.Add( String.Format("BrokerageFactory.CreateBrokerage(): Error converting key '{0}' with value '{1}'. {2}", key, value, err.Message));
+                errors.Add( String.format("BrokerageFactory.CreateBrokerage(): Error converting key '{0}' with value '{1}'. {2}", key, value, err.Message));
                 return default(T);
             }
         }

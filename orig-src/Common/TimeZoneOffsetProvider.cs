@@ -32,13 +32,13 @@ package com.quantconnect.lean
 
         private long _nextDiscontinuity;
         private long _currentOffsetTicks;
-        private readonly DateTimeZone _timeZone;
+        private readonly ZoneId _timeZone;
         private readonly Queue<long> _discontinuities;
 
         /// <summary>
         /// Gets the time zone this instances provides offsets for
         /// </summary>
-        public DateTimeZone TimeZone
+        public ZoneId TimeZone
         {
             get { return _timeZone; }
         }
@@ -49,15 +49,15 @@ package com.quantconnect.lean
         /// <param name="timeZone">The time zone to provide offsets for</param>
         /// <param name="utcStartTime">The start of the range of offsets</param>
         /// <param name="utcEndTime">The en of the range of offsets</param>
-        public TimeZoneOffsetProvider(DateTimeZone timeZone, DateTime utcStartTime, DateTime utcEndTime)
+        public TimeZoneOffsetProvider(ZoneId timeZone, DateTime utcStartTime, DateTime utcEndTime)
         {
             _timeZone = timeZone;
 
             // pad the end so we get the correct zone interval
             utcEndTime += TimeSpan.FromDays(2*365);
 
-            start = DateTimeZone.Utc.AtLeniently(LocalDateTime.FromDateTime(utcStartTime));
-            end = DateTimeZone.Utc.AtLeniently(LocalDateTime.FromDateTime(utcEndTime));
+            start = ZoneId.Utc.AtLeniently(LocalDateTime.FromDateTime(utcStartTime));
+            end = ZoneId.Utc.AtLeniently(LocalDateTime.FromDateTime(utcEndTime));
             zoneIntervals = _timeZone.GetZoneIntervals(start.ToInstant(), end.ToInstant()).ToList();
             
             // short circuit time zones with no discontinuities

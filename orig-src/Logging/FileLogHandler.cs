@@ -105,9 +105,9 @@ package com.quantconnect.lean.Logging
         {
             if (_useTimestampPrefix)
             {
-                return string.Format("{0} {1}:: {2}", DateTime.UtcNow.ToString("o"), level, text);
+                return String.format("{0} {1}:: {2}", DateTime.UtcNow.toString("o"), level, text);
             }
-            return string.Format("{0}:: {1}", level, text);
+            return String.format("{0}:: {1}", level, text);
         }
 
         /// <summary>

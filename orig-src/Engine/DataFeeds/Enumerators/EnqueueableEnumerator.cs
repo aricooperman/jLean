@@ -67,7 +67,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Initializes a new instance of the <see cref="EnqueueableEnumerator{T}"/> class
         /// </summary>
         /// <param name="blocking">Specifies whether or not to use the blocking behavior</param>
-        public EnqueueableEnumerator(bool blocking = false)
+        public EnqueueableEnumerator( boolean blocking = false)
         {
             _blockingCollection = new BlockingCollection<T>();
             _timeout = blocking ? Timeout.Infinite : 0;

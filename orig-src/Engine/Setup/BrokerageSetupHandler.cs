@@ -163,7 +163,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
             {
                 if (args.Type == BrokerageMessageType.Error)
                 {
-                    AddInitializationError( String.Format("Brokerage Error Code: {0} - {1}", args.Code, args.Message));
+                    AddInitializationError( String.format("Brokerage Error Code: {0} - {1}", args.Code, args.Message));
                 }
             };
 
@@ -230,7 +230,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
                 catch (Exception err)
                 {
                     Log.Error(err);
-                    AddInitializationError( String.Format("Error connecting to brokerage: {0}. " +
+                    AddInitializationError( String.format("Error connecting to brokerage: {0}. " +
                         "This may be caused by incorrect login credentials or an unsupported account type.", err.Message));
                     return false;
                 }
@@ -268,7 +268,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
                     foreach (order in openOrders)
                     {
                         // be sure to assign order IDs such that we increment from the SecurityTransactionManager to avoid ID collisions
-                        Log.Trace("BrokerageSetupHandler.Setup(): Has open order: " + order.Symbol.ToString() + " - " + order.Quantity);
+                        Log.Trace("BrokerageSetupHandler.Setup(): Has open order: " + order.Symbol.toString() + " - " + order.Quantity);
                         order.Id = algorithm.Transactions.GetIncrementOrderId();
                         transactionHandler.Orders.AddOrUpdate(order.Id, order, (i, o) => order);
                     }
@@ -304,7 +304,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
 
                         if (!algorithm.Portfolio.ContainsKey(holding.Symbol))
                         {
-                            Log.Trace("BrokerageSetupHandler.Setup(): Adding unrequested security: " + holding.Symbol.ToString());
+                            Log.Trace("BrokerageSetupHandler.Setup(): Adding unrequested security: " + holding.Symbol.toString());
                             // for items not directly requested set leverage to 1 and at the min resolution
                             algorithm.AddSecurity(holding.Type, holding.Symbol.Value, minResolution.Value, null, true, 1.0m, false);
                         }

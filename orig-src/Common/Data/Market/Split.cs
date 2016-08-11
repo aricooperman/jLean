@@ -96,9 +96,9 @@ package com.quantconnect.lean.Data.Market
         /// Returns a <see cref="System.String"/> that represents the current <see cref="QuantConnect.Data.Market.Split"/>.
         /// </summary>
         /// <returns>A <see cref="System.String"/> that represents the current <see cref="QuantConnect.Data.Market.Split"/>.</returns>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("{0}: {1}", Symbol, SplitFactor);
+            return String.format("{0}: {1}", Symbol, SplitFactor);
         }
 
         /// <summary>

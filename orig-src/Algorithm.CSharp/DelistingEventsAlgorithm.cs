@@ -58,7 +58,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             {
                 symbol = kvp.Key;
                 tradeBar = kvp.Value;
-                Console.WriteLine("OnData(Slice): {0}: {1}: {2}", Time, symbol, tradeBar.Close.ToString("0.00"));
+                Console.WriteLine("OnData(Slice): {0}: {1}: {2}", Time, symbol, tradeBar.Close.toString("0.00"));
             }
 
             // the slice can also contain delisting data: data.Delistings in a dictionary string->Delisting

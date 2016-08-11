@@ -148,7 +148,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
                 marketHours = _api.MarketToday(date, security.Symbol);
                 security.Exchange.SetMarketHours(marketHours, date.DayOfWeek);
                 localMarketHours = security.Exchange.Hours.MarketHours[date.DayOfWeek];
-                Log.Trace( String.Format("LiveTradingRealTimeHandler.SetupEvents({0}): Market hours set: Symbol: {1} {2}",
+                Log.Trace( String.format("LiveTradingRealTimeHandler.SetupEvents({0}): Market hours set: Symbol: {1} {2}",
                         security.Type, security.Symbol, localMarketHours));
             }
         }

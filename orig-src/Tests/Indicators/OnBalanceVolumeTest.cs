@@ -28,8 +28,8 @@ package com.quantconnect.lean.Tests.Indicators
 
             TestHelper.TestIndicator(onBalanceVolumeIndicator, "spy_with_obv.txt", "OBV",
                 (ind, expected) => Assert.AreEqual(
-                    expected.ToString("0.##E-00"),
-                    (onBalanceVolumeIndicator.Current.Value).ToString("0.##E-00")
+                    expected.toString("0.##E-00"),
+                    (onBalanceVolumeIndicator.Current.Value).toString("0.##E-00")
                     )
                 );
         }

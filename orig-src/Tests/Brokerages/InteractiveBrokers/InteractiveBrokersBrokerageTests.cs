@@ -97,11 +97,11 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
                     //filledResetEvent.Reset();
                 }
 
-                openOrdersText = _interactiveBrokersBrokerage.GetOpenOrders().Select(x => x.Symbol.ToString() + " " + x.Quantity);
+                openOrdersText = _interactiveBrokersBrokerage.GetOpenOrders().Select(x => x.Symbol.toString() + " " + x.Quantity);
                 Log.Trace("InteractiveBrokersBrokerageTests.Teardown(): Open orders: " + string.Join(", ", openOrdersText));
                 //Assert.AreEqual(0, actualOpenOrderCount, "Failed to verify that there are zero open orders.");
 
-                holdingsText = _interactiveBrokersBrokerage.GetAccountHoldings().Where(x => x.Quantity != 0).Select(x => x.Symbol.ToString() + " " + x.Quantity);
+                holdingsText = _interactiveBrokersBrokerage.GetAccountHoldings().Where(x => x.Quantity != 0).Select(x => x.Symbol.toString() + " " + x.Quantity);
                 Log.Trace("InteractiveBrokersBrokerageTests.Teardown(): Account holdings: " + string.Join(", ", holdingsText));
                 //Assert.AreEqual(0, holdingsCount, "Failed to verify that there are zero account holdings.");
 
@@ -598,7 +598,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             Assert.IsTrue(ib.IsConnected);
         }
 
-        private static Order AssertOrderOpened(bool orderFilled, InteractiveBrokersBrokerage ib, Order order)
+        private static Order AssertOrderOpened( boolean orderFilled, InteractiveBrokersBrokerage ib, Order order)
         {
             // if the order didn't fill check for it as an open order
             if (!orderFilled)

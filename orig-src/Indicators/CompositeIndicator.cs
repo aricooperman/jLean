@@ -98,7 +98,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="right">The right indidcator for the 'composoer'</param>
         /// <param name="composer">Function used to compose the left and right indicators</param>
         public CompositeIndicator(IndicatorBase<T> left, IndicatorBase<T> right, IndicatorComposer composer)
-            : base( String.Format("COMPOSE({0},{1})", left.Name, right.Name))
+            : base( String.format("COMPOSE({0},{1})", left.Name, right.Name))
         {
             _composer = composer;
             Left = left;

@@ -34,7 +34,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             SetStartDate(2016, 05, 26);  //Set Start Date
             SetEndDate(2016, 05, 27);    //Set End Date
             SetCash(100000);             //Set Strategy Cash
-            AddData<DailyFx>("DFX", Resolution.Second, DateTimeZone.Utc);
+            AddData<DailyFx>("DFX", Resolution.Second, ZoneId.Utc);
         }
 
         private int _sliceCount = 0;
@@ -51,7 +51,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         private Map<String, DailyFx> _uniqueConfirmation = new Map<String, DailyFx>();
         public void OnData(DailyFx calendar)
         {
-            _uniqueConfirmation.Add(calendar.ToString(), calendar);
+            _uniqueConfirmation.Add(calendar.toString(), calendar);
             Console.WriteLine("ONDATA >> {0}: {1}", _eventCount++, calendar);
         }
     }

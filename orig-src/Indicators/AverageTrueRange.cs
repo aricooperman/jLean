@@ -57,7 +57,7 @@ package com.quantconnect.lean.Indicators
         public AverageTrueRange( String name, int period, MovingAverageType movingAverageType = MovingAverageType.Wilders)
             : base(name)
         {
-            _smoother = movingAverageType.AsIndicator( String.Format("{0}_{1}", name, movingAverageType), period);
+            _smoother = movingAverageType.AsIndicator( String.format("{0}_{1}", name, movingAverageType), period);
 
             TradeBar previous = null;
             TrueRange = new FunctionalIndicator<TradeBar>(name + "_TrueRange", currentBar =>

@@ -89,9 +89,9 @@ package com.quantconnect.lean.Data.Auxiliary
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
-            return Date + ": " + PriceScaleFactor.ToString("0.0000");
+            return Date + ": " + PriceScaleFactor.toString("0.0000");
         }
     }
 }

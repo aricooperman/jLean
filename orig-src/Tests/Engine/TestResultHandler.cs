@@ -219,7 +219,7 @@ package com.quantconnect.lean.Tests.Engine
             Messages.Clear();
         }
 
-        public void ProcessSynchronousEvents(bool forceProcess = false)
+        public void ProcessSynchronousEvents( boolean forceProcess = false)
         {
         }
     }

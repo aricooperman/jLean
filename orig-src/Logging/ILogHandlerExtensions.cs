@@ -35,7 +35,7 @@ package com.quantconnect.lean.Logging
                 throw new ArgumentNullException("logHandler", "Log Handler cannot be null");
             }
 
-            logHandler.Error( String.Format(text, args));
+            logHandler.Error( String.format(text, args));
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ package com.quantconnect.lean.Logging
                 throw new ArgumentNullException("logHandler", "Log Handler cannot be null");
             }
 
-            logHandler.Debug( String.Format(text, args));
+            logHandler.Debug( String.format(text, args));
         }
 
         /// <summary>
@@ -67,7 +67,7 @@ package com.quantconnect.lean.Logging
                 throw new ArgumentNullException("logHandler", "Log Handler cannot be null");
             }
 
-            logHandler.Trace( String.Format(text, args));
+            logHandler.Trace( String.format(text, args));
         }
     }
 }

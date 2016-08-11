@@ -128,7 +128,7 @@ package com.quantconnect.lean.Tests.Indicators
         /// <param name="epsilon">The maximum delta between expected and actual</param>
         public static void TestIndicator(IndicatorBase<TradeBar> indicator, String externalDataFilename, String targetColumn, double epsilon = 1e-3)
         {
-            TestIndicator(indicator, externalDataFilename, targetColumn, (i, expected) => Assert.AreEqual(expected, (double)i.Current.Value, epsilon, "Failed at " + i.Current.Time.ToString("o")));
+            TestIndicator(indicator, externalDataFilename, targetColumn, (i, expected) => Assert.AreEqual(expected, (double)i.Current.Value, epsilon, "Failed at " + i.Current.Time.toString("o")));
         }
 
         /// <summary>
@@ -143,7 +143,7 @@ package com.quantconnect.lean.Tests.Indicators
         public static void TestIndicator<T>(T indicator, String externalDataFilename, String targetColumn, Func<T, double> selector, double epsilon = 1e-3)
             where T : Indicator
         {
-            TestIndicator(indicator, externalDataFilename, targetColumn, (i, expected) => Assert.AreEqual(expected, selector(indicator), epsilon, "Failed at " + i.Current.Time.ToString("o")));
+            TestIndicator(indicator, externalDataFilename, targetColumn, (i, expected) => Assert.AreEqual(expected, selector(indicator), epsilon, "Failed at " + i.Current.Time.toString("o")));
         }
 
         /// <summary>
@@ -333,7 +333,7 @@ package com.quantconnect.lean.Tests.Indicators
                 if (currentDelta - delta > epsilon)
                 {
                     Assert.Fail("The delta increased!");
-                    //Console.WriteLine(indicator.Value.Time.Date.ToShortDateString() + " - " + indicator.Value.Data.ToString("000.000") + " \t " + expected.ToString("000.000") + " \t " + currentDelta.ToString("0.000"));
+                    //Console.WriteLine(indicator.Value.Time.Date.ToShortDateString() + " - " + indicator.Value.Data.toString("000.000") + " \t " + expected.toString("000.000") + " \t " + currentDelta.toString("0.000"));
                 }
                 delta = currentDelta;
             };

@@ -161,7 +161,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
             // initialize session
             RequestTradingSessionStatus();
 
-            Console.WriteLine("Downloading {0} data from {1} to {2}...", resolution, startUtc.ToString("yyyyMMdd HH:mm:ss"), endUtc.ToString("yyyyMMdd HH:mm:ss"));
+            Console.WriteLine("Downloading {0} data from {1} to {2}...", resolution, startUtc.toString("yyyyMMdd HH:mm:ss"), endUtc.toString("yyyyMMdd HH:mm:ss"));
 
             //Find best FXCM  paramrs
             IFXCMTimingInterval interval = ToFXCMInterval(resolution);
@@ -279,7 +279,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
             if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.Format("FxcmBrokerage.LoadInstruments(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+                throw new TimeoutException( String.format("FxcmBrokerage.LoadInstruments(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
         }
 
         #region IGenericMessageListener implementation
@@ -426,7 +426,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
             bar = bar.PadLeft(chars, progressCharacter);
             bar = bar.PadRight(Convert.ToInt32(barSize)-1);
             
-            Console.Write( String.Format("\r[{0}] {1}%", bar, (p * 100).ToString("N2")));           
+            Console.Write( String.format("\r[{0}] {1}%", bar, (p * 100).toString("N2")));           
         }
 
         #endregion

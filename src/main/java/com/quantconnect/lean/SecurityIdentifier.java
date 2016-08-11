@@ -19,6 +19,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -26,12 +28,13 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.google.common.primitives.UnsignedInteger;
-import com.google.common.primitives.UnsignedLong;
 import com.quantconnect.lean.Global.OptionRight;
 import com.quantconnect.lean.Global.OptionStyle;
 import com.quantconnect.lean.Global.SecurityType;
 import com.quantconnect.lean.configuration.Config;
+import com.quantconnect.lean.data.auxiliary.MapFile;
+import com.quantconnect.lean.data.auxiliary.MapFileResolver;
+import com.quantconnect.lean.interfaces.IMapFileProvider;
 import com.quantconnect.lean.util.SecurityIdentifierJsonConverter.SecurityIdentifierJsonDeserializer;
 import com.quantconnect.lean.util.SecurityIdentifierJsonConverter.SecurityIdentifierJsonSerializer;
 
@@ -51,10 +54,14 @@ import com.quantconnect.lean.util.SecurityIdentifierJsonConverter.SecurityIdenti
 @JsonDeserialize( using = SecurityIdentifierJsonDeserializer.class, as = SecurityIdentifier.class )
 public class SecurityIdentifier {
 
+    private static final BigInteger THIRTY_SIX = BigInteger.valueOf( 36 );
+
+    private static final BigDecimal ONE_MILLION = BigDecimal.valueOf( 1_000_000 );
+
     private static final String MapFileProviderTypeName = Config.get( "map-file-provider", "LocalDiskMapFileProvider" );
 
     /// Gets an instance of <see cref="SecurityIdentifier"/> that is empty, that is, one with no symbol specified
-    public static final SecurityIdentifier Empty = new SecurityIdentifier( null, UnsignedLong.ZERO );
+    public static final SecurityIdentifier EMPTY = new SecurityIdentifier( null, BigInteger.ZERO );
 
     /// Gets the date to be used when it does not apply.
     public static final LocalDate DefaultDate = LocalDate.MIN;
@@ -63,33 +70,33 @@ public class SecurityIdentifier {
     // the constant width fields are used via modulus, so the width is the number of zeros specified,
     // {put/call:1}{oa-date:5}{style:1}{strike:6}{strike-scale:2}{market:3}{security-type:2}
 
-    private static final UnsignedLong SecurityTypeWidth = UnsignedLong.valueOf( 100 );
-    private static final UnsignedLong SecurityTypeOffset = UnsignedLong.valueOf( 1 );
+    private static final BigInteger SecurityTypeWidth = BigInteger.valueOf( 100 );
+    private static final BigInteger SecurityTypeOffset = BigInteger.valueOf( 1 );
 
-    private static final UnsignedLong MarketWidth = UnsignedLong.valueOf( 1000 );
-    private static final UnsignedLong MarketOffset = SecurityTypeOffset.times( SecurityTypeWidth );
+    private static final BigInteger MarketWidth = BigInteger.valueOf( 1000 );
+    private static final BigInteger MarketOffset = SecurityTypeOffset.multiply( SecurityTypeWidth );
 
     private static final int StrikeDefaultScale = 4;
-    private static final UnsignedLong StrikeDefaultScaleExpanded = pow( UnsignedInteger.valueOf( 10 ), StrikeDefaultScale );
+    private static final BigDecimal StrikeDefaultScaleExpanded = BigDecimal.TEN.pow( StrikeDefaultScale );
 
-    private static final UnsignedLong StrikeScaleWidth = UnsignedLong.valueOf( 100 );
-    private static final UnsignedLong StrikeScaleOffset = MarketOffset.times( MarketWidth );
+    private static final BigInteger StrikeScaleWidth = BigInteger.valueOf( 100 );
+    private static final BigInteger StrikeScaleOffset = MarketOffset.multiply( MarketWidth );
 
-    private static final UnsignedLong StrikeWidth = UnsignedLong.valueOf( 1000000 );
-    private static final UnsignedLong StrikeOffset = StrikeScaleOffset.times( StrikeScaleWidth );
+    private static final BigInteger StrikeWidth = BigInteger.valueOf( 1000000 );
+    private static final BigInteger StrikeOffset = StrikeScaleOffset.multiply( StrikeScaleWidth );
 
-    private static final UnsignedLong OptionStyleWidth = UnsignedLong.valueOf( 10 );
-    private static final UnsignedLong OptionStyleOffset = StrikeOffset.times( StrikeWidth );
+    private static final BigInteger OptionStyleWidth = BigInteger.valueOf( 10 );
+    private static final BigInteger OptionStyleOffset = StrikeOffset.multiply( StrikeWidth );
 
-    private static final UnsignedLong DaysWidth = UnsignedLong.valueOf( 100000 );
-    private static final UnsignedLong DaysOffset = OptionStyleOffset.times( OptionStyleWidth );
+    private static final BigInteger DaysWidth = BigInteger.valueOf( 100000 );
+    private static final BigInteger DaysOffset = OptionStyleOffset.multiply( OptionStyleWidth );
 
-    private static final UnsignedLong PutCallOffset = DaysOffset.times( DaysWidth );
-    private static final UnsignedLong PutCallWidth = UnsignedLong.valueOf( 10 );
+    private static final BigInteger PutCallOffset = DaysOffset.multiply( DaysWidth );
+    private static final BigInteger PutCallWidth = BigInteger.valueOf( 10 );
 
 
-    private final String _symbol;
-    private final UnsignedLong _properties;
+    private final String symbol;
+    private final BigInteger properties;
 
     /// Gets the date component of this identifier. For equities this
     /// is the first date the security traded. Technically speaking,
@@ -102,7 +109,7 @@ public class SecurityIdentifier {
             case Equity:
             case Option:
             case Future:
-                final UnsignedLong oadate = ExtractFromProperties( DaysOffset, DaysWidth );
+                final BigInteger oadate = extractFromProperties( DaysOffset, DaysWidth );
                 return LocalDate.ofEpochDay( oadate.longValue() );
             default:
                 throw new IllegalArgumentException( "Date is only defined for SecurityType.Equity, SecurityType.Option and SecurityType.Future" );
@@ -113,14 +120,14 @@ public class SecurityIdentifier {
     /// For equities, by convention this is the first ticker symbol for which
     /// the security traded
     public String getSymbol() {
-        return _symbol;
+        return symbol;
     }
 
     /// Gets the market component of this security identifier. If located in the
     /// internal mappings, the full String is returned. If the value is unknown,
     /// the integer value is returned as a string.
     public String getMarket() {
-        final UnsignedLong marketCode = ExtractFromProperties( MarketOffset, MarketWidth );
+        final BigInteger marketCode = extractFromProperties( MarketOffset, MarketWidth );
         final String market = Market.decode( marketCode.intValue() );
 
         // if we couldn't find it, send back the numeric representation
@@ -129,7 +136,7 @@ public class SecurityIdentifier {
 
     /// Gets the security type component of this security identifier.
     public SecurityType getSecurityType() {
-        return SecurityType.fromOrdinal( ExtractFromProperties( SecurityTypeOffset, SecurityTypeWidth ).intValue() );
+        return SecurityType.fromOrdinal( extractFromProperties( SecurityTypeOffset, SecurityTypeWidth ).intValue() );
     }
 
     /// Gets the option strike price. This only applies to SecurityType.Option
@@ -138,10 +145,10 @@ public class SecurityIdentifier {
         if( getSecurityType() != SecurityType.Option )
                 throw new IllegalArgumentException( "OptionType is only defined for SecurityType.Option" );
 
-        final UnsignedLong scale = ExtractFromProperties( StrikeScaleOffset, StrikeScaleWidth );
-        final UnsignedLong unscaled = ExtractFromProperties( StrikeOffset, StrikeWidth );
+        final BigInteger scale = extractFromProperties( StrikeScaleOffset, StrikeScaleWidth );
+        final BigInteger unscaled = extractFromProperties( StrikeOffset, StrikeWidth );
         final BigDecimal pow = BigDecimal.valueOf( 10 ).pow( scale.intValue() - StrikeDefaultScale );
-        return pow.multiply( new BigDecimal( unscaled.bigIntegerValue() ) );
+        return pow.multiply( new BigDecimal( unscaled ) );
     }
 
     /// Gets the option type component of this security identifier. This
@@ -151,7 +158,7 @@ public class SecurityIdentifier {
         if( getSecurityType() != SecurityType.Option )
                 throw new IllegalArgumentException( "OptionRight is only defined for SecurityType.Option" );
 
-        return OptionRight.fromOrdinal( ExtractFromProperties( PutCallOffset, PutCallWidth ).intValue() );
+        return OptionRight.fromOrdinal( extractFromProperties( PutCallOffset, PutCallWidth ).intValue() );
     }
 
     /// Gets the option style component of this security identifier. This
@@ -161,19 +168,19 @@ public class SecurityIdentifier {
         if( getSecurityType() != SecurityType.Option )
             throw new IllegalArgumentException("OptionStyle is only defined for SecurityType.Option");
             
-        return OptionStyle.fromOrdinal( ExtractFromProperties( OptionStyleOffset, OptionStyleWidth ).intValue() );
+        return OptionStyle.fromOrdinal( extractFromProperties( OptionStyleOffset, OptionStyleWidth ).intValue() );
     }
 
     /// Initializes a new instance of the <see cref="SecurityIdentifier"/> class
     /// <param name="symbol">The base36 String encoded as a long using alpha [0-9A-Z]</param>
     /// <param name="properties">Other data defining properties of the symbol including market,
     /// security type, listing or expiry date, strike/call/put/style for options, ect...</param>
-    public SecurityIdentifier( String symbol, UnsignedLong properties) {
+    public SecurityIdentifier( String symbol, BigInteger properties) {
         if (symbol == null)
             throw new IllegalArgumentException( "SecurityIdentifier requires a non-null String 'symbol'" );
 
-        _symbol = symbol;
-        _properties = properties;
+        this.symbol = symbol;
+        this.properties = properties;
     }
 
     /// Generates a new <see cref="SecurityIdentifier"/> for an option
@@ -184,7 +191,7 @@ public class SecurityIdentifier {
     /// <param name="optionRight">The option type, call or put</param>
     /// <param name="optionStyle">The option style, American or European</param>
     /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified option security</returns>
-    public static SecurityIdentifier GenerateOption( LocalDate expiry, String underlying, String market,
+    public static SecurityIdentifier generateOption( LocalDate expiry, String underlying, String market,
         BigDecimal strike, OptionRight optionRight, OptionStyle optionStyle ) {
         return generate( expiry, underlying, SecurityType.Option, market, strike, optionRight, optionStyle );
     }
@@ -195,59 +202,53 @@ public class SecurityIdentifier {
     /// <param name="market">The market</param>
     /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified symbol today</returns>
     public static SecurityIdentifier generateEquity( String symbol, String market ) {
-        provider = Composer.Instance.GetExportedValueByTypeName<IMapFileProvider>(MapFileProviderTypeName);
-        resolver = provider.Get(market);
-        mapFile = resolver.ResolveMapFile(symbol, DateTime.Today);
-        firstDate = mapFile.FirstDate;
-        if (mapFile.Any())
-        {
-            symbol = mapFile.OrderBy(x => x.Date).First().MappedSymbol;
+        IMapFileProvider provider;
+        try {
+            provider = (IMapFileProvider)Class.forName( MapFileProviderTypeName ).newInstance();
         }
-        return GenerateEquity(firstDate, symbol, market);
+        catch( Exception e ) {
+            throw new RuntimeException( e );
+        }
+        
+        final MapFileResolver resolver = provider.get( market );
+        final MapFile mapFile = resolver.resolveMapFile( symbol, LocalDate.now() );
+        final LocalDate firstDate = mapFile.getFirstDate();
+        if( !mapFile.isEmpty() )
+            symbol = mapFile.getFirst().getMappedSymbol();
+
+        return generateEquity( firstDate, symbol, market );
     }
 
-    /// <summary>
     /// Generates a new <see cref="SecurityIdentifier"/> for an equity
-    /// </summary>
     /// <param name="date">The first date this security traded (in LEAN this is the first date in the map_file</param>
     /// <param name="symbol">The ticker symbol this security traded under on the <paramref name="date"/></param>
     /// <param name="market">The security's market</param>
     /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified equity security</returns>
-    public static SecurityIdentifier GenerateEquity(DateTime date, String symbol, String market)
-    {
-        return Generate(date, symbol, SecurityType.Equity, market);
+    public static SecurityIdentifier generateEquity( LocalDate date, String symbol, String market ) {
+        return generate( date, symbol, SecurityType.Equity, market );
     }
 
-    /// <summary>
     /// Generates a new <see cref="SecurityIdentifier"/> for a custom security
-    /// </summary>
     /// <param name="symbol">The ticker symbol of this security</param>
     /// <param name="market">The security's market</param>
     /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified base security</returns>
-    public static SecurityIdentifier GenerateBase( String symbol, String market)
-    {
-        return Generate(DefaultDate, symbol, SecurityType.Base, market);
+    public static SecurityIdentifier generateBase( String symbol, String market ) {
+        return generate( DefaultDate, symbol, SecurityType.Base, market );
     }
 
-    /// <summary>
     /// Generates a new <see cref="SecurityIdentifier"/> for a forex pair
-    /// </summary>
     /// <param name="symbol">The currency pair in the format similar to: 'EURUSD'</param>
     /// <param name="market">The security's market</param>
     /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified forex pair</returns>
-    public static SecurityIdentifier GenerateForex( String symbol, String market)
-    {
-        return Generate(DefaultDate, symbol, SecurityType.Forex, market);
+    public static SecurityIdentifier generateForex( String symbol, String market ) {
+        return generate( DefaultDate, symbol, SecurityType.Forex, market );
     }
 
-    /// <summary>
     /// Generates a new <see cref="SecurityIdentifier"/> for a CFD security
-    /// </summary>
     /// <param name="symbol">The CFD contract symbol</param>
     /// <param name="market">The security's market</param>
     /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified CFD security</returns>
-    public static SecurityIdentifier GenerateCfd( String symbol, String market)
-    {
+    public static SecurityIdentifier generateCfd( String symbol, String market ) {
         return generate( DefaultDate, symbol, SecurityType.Cfd, market );
     }
 
@@ -260,114 +261,100 @@ public class SecurityIdentifier {
     
     private static SecurityIdentifier generate( LocalDate date, String symbol, SecurityType securityType,
         String market, BigDecimal strike, OptionRight optionRight, OptionStyle optionStyle ) {
-        if ((UnsignedLong)securityType >= SecurityTypeWidth || securityType < 0)
-            throw new IllegalArgumentException("securityType", "securityType must be between 0 and 99");
+        if( securityType == null || securityType.ordinal() >= SecurityTypeWidth.intValue() )
+            throw new IllegalArgumentException( "SecurityType must be between 0 and 99" );
 
         if( optionRight == null )
-            throw new IllegalArgumentException("optionRight", "optionType must be either 0 or 1");
+            throw new IllegalArgumentException( "OptionType must be non-null" );
 
         // normalize input strings
         market = market.toLowerCase();
         symbol = symbol.toUpperCase();
 
-        marketIdentifier = QuantConnect.Market.Encode(market);
-        if (!marketIdentifier.HasValue)
-        {
-            throw new ArgumentOutOfRangeException("market", string.Format("The specified market wasn't found in the markets lookup. Requested: {0}. " +
-                "You can add markets by calling QuantConnect.Market.AddMarket( String,ushort)", market));
+        final Integer marketIdentifier = Market.encode( market );
+        if( marketIdentifier == null ) {
+            throw new IllegalArgumentException( String.format( "The specified market wasn't found in the markets lookup. Requested: %s. " +
+                "You can add markets by calling Market.addMarket( String,ushort)", market ) );
         }
 
-        days = ((UnsignedLong)date.ToOADate()) * DaysOffset;
-        marketCode = (UnsignedLong)marketIdentifier * MarketOffset;
+        final BigInteger days = BigInteger.valueOf( date.toEpochDay() ).multiply( DaysOffset );
+        final BigInteger marketCode = MarketOffset.multiply( BigInteger.valueOf( marketIdentifier ) );
 
-        UnsignedLong strikeScale;
-        strk = NormalizeStrike(strike, out strikeScale) * StrikeOffset;
-        strikeScale *= StrikeScaleOffset;
-        style = ((UnsignedLong)optionStyle) * OptionStyleOffset;
-        putcall = (UnsignedLong)(optionRight) * PutCallOffset;
+        final Pair<BigInteger,BigInteger> strikeScalePair = normalizeStrike( strike );
+        final BigInteger strk = strikeScalePair.getKey().multiply( StrikeOffset );
+        final BigInteger strikeScale = strikeScalePair.getRight().multiply( StrikeScaleOffset );
+        final BigInteger style = BigInteger.valueOf( optionStyle.ordinal() ).multiply( OptionStyleOffset );
+        final BigInteger putcall = BigInteger.valueOf( optionRight.ordinal() ).multiply( PutCallOffset );
 
-        otherData = putcall + days + style + strk + strikeScale + marketCode + (UnsignedLong)securityType;
+        final BigInteger otherData = putcall.add( days ).add( style ).add( strk ).add( strikeScale )
+                .add( marketCode ).add( BigInteger.valueOf( securityType.ordinal() ) );
 
-        return new SecurityIdentifier(symbol, otherData);
+        return new SecurityIdentifier( symbol, otherData );
     }
 
-    /// <summary>
     /// Converts an upper case alpha numeric String into a long
-    /// </summary>
-    private static UnsignedLong DecodeBase36( String symbol)
-    {
+    private static BigInteger decodeBase36( String symbol ) {
         int pos = 0;
-        UnsignedLong result = 0;
-        for (int i = symbol.Length - 1; i > -1; i--)
-        {
-            c = symbol[i];
+        BigInteger result = BigInteger.ZERO;
+        
+        for( int i = symbol.length() - 1; i > -1; i-- ) {
+            char c = symbol.charAt( i );
 
             // assumes alpha numeric upper case only strings
-            value = (uint)(c <= 57
+            BigInteger value = BigInteger.valueOf( c <= 57
                 ? c - '0'
-                : c - 'A' + 10);
+                : c - 'A' + 10 );
 
-            result += value * Pow(36, pos++);
+            result = result.add( value.multiply( pow( THIRTY_SIX, pos++ ) ) );
         }
+        
         return result;
     }
 
-    /// <summary>
     /// Converts a long to an uppercase alpha numeric string
-    /// </summary>
-    private static String EncodeBase36(UnsignedLong data)
-    {
-        stack = new Stack<char>();
-        while (data != 0)
-        {
-            value = data % 36;
-            c = value < 10
+    private static String encodeBase36( BigInteger data ) {
+        final StringBuilder stack = new StringBuilder();
+        
+        while( data.compareTo( BigInteger.ZERO ) != 0 ) {
+            int value = data.mod( THIRTY_SIX ).intValue();
+            char c = value < 10
                 ? (char)(value + '0')
                 : (char)(value - 10 + 'A');
 
-            stack.Push(c);
-            data /= 36;
+            stack.append( c );
+            data = data.divide( THIRTY_SIX );
         }
-        return new string(stack.ToArray());
+        
+        return stack.reverse().toString();
     }
 
-    /// <summary>
     /// The strike is normalized into deci-cents and then a scale factor
     /// is also saved to bring it back to un-normalized
-    /// </summary>
-    private static UnsignedLong NormalizeStrike(decimal strike, out UnsignedLong scale)
-    {
-        str = strike;
+    private static Pair<BigInteger,BigInteger> normalizeStrike( BigDecimal strike )  {
+        int scale = 0;
 
-        if (strike == 0)
-        {
-            scale = 0;
-            return 0;
-        }
+        if( strike.signum() == 0 )
+            return Pair.of( BigInteger.ZERO, BigInteger.valueOf( scale ) );
 
         // convert strike to default scaling, this keeps the scale always positive
-        strike *= StrikeDefaultScaleExpanded;
+        strike = strike.multiply( StrikeDefaultScaleExpanded );
 
-        scale = 0;
-        while (strike % 10 == 0)
-        {
-            strike /= 10;
+        while( strike.remainder( BigDecimal.TEN ).signum() == 0 ) {
+            strike = strike.divide( BigDecimal.TEN );
             scale++;
         }
 
-        if (strike >= 1000000)
-        {
-            throw new ArgumentException("The specified strike price's precision is too high: " + str);
-        }
+        if( strike.compareTo( ONE_MILLION ) >= 0 )
+            throw new IllegalArgumentException( "The specified strike price's precision is too high: " + strike );
 
-        return (UnsignedLong)strike;
+        return Pair.of( strike.toBigIntegerExact(), BigInteger.valueOf( scale ) );
     }
 
     /// Accurately performs the integer exponentiation
-    private static UnsignedLong pow( UnsignedInteger x, int pow ) {
+    private static BigInteger pow( BigInteger x, int pow ) {
         // don't use Math.Pow(double, double) due to precision issues
-        return UnsignedLong.valueOf( x.bigIntegerValue().pow( pow ).longValueExact() );
-//        return (UnsignedLong)BigInteger.Pow( x, pow );
+        return x.pow( pow );
+//        return (BigInteger)BigInteger.Pow( x, pow );
     }
 
     /// Parses the specified String into a <see cref="SecurityIdentifier"/>
@@ -380,9 +367,13 @@ public class SecurityIdentifier {
     /// <returns>A new <see cref="SecurityIdentifier"/> instance if the <paramref name="value"/> is able to be parsed.</returns>
     /// <exception cref="FormatException">This exception is thrown if the string's length is not exactly 40 characters, or
     /// if the components are unable to be parsed as 64 bit unsigned integers</exception>
-    public static SecurityIdentifier parse( String value ) {
-        SecurityIdentifier identifier = tryParse( value )
-        return identifier;
+    public static Optional<SecurityIdentifier> parse( String value ) {
+        try {
+            return Optional.of( tryParse( value ) );
+        }
+        catch( Exception e ) {
+            return Optional.empty();
+        }
     }
 
     /// Attempts to parse the specified <see paramref="value"/> as a <see cref="SecurityIdentifier"/>.
@@ -393,38 +384,32 @@ public class SecurityIdentifier {
     /// <returns>True on success, otherwise false</returns>
     /// Helper method impl to be used by parse and tryparse
     private static SecurityIdentifier tryParse( String value ) {
-        final Pair<UnsignedLong,String> parsed = tryParseProperties( value );
-        UnsignedLong props = parsed;
-        String symbol;
-        return new SecurityIdentifier( symbol, props );
+        final Pair<BigInteger,String> parsed = tryParseProperties( value );
+        return new SecurityIdentifier( parsed.getRight(), parsed.getLeft() );
     }
 
-    /// Parses the String into its component UnsignedLong pieces
-    private static Pair<UnsignedLong,String> tryParseProperties( String value ) {
-        UnsignedLong props = UnsignedLong.MaxValue;
-        String symbol = null;
-
+    /// Parses the String into its component BigInteger pieces
+    private static Pair<BigInteger,String> tryParseProperties( String value ) {
         if( value == null )
             throw new IllegalArgumentException( "Value is null" );
 
         if( StringUtils.isBlank( value ) )
-            return Pair.of( UnsignedLong.ZERO, symbol );
+            return Pair.of( BigInteger.ZERO, null );
 
-        parts = Arrays.stream( value.split( ' ' ).filter( StringUtils::isNotBlank ).collect( Collectors.toList() ); 
+        final List<String> parts = Arrays.stream( value.split( " " ) ).filter( StringUtils::isNotBlank ).collect( Collectors.toList() ); 
         if( parts.size() != 2 )
             throw new IllegalArgumentException( "The String must be splittable on space into two parts." );
 
-        symbol = parts.get( 0 );
-        otherData = parts.get( 1 );
-
-        props = Long.parseLong( otherData, 36 ); //DecodeBase36( otherData );
+        final String symbol = parts.get( 0 );
+        final String otherData = parts.get( 1 );
+        final BigInteger props = decodeBase36( otherData );
         
         return Pair.of( props, symbol );
     }
 
     /// Extracts the embedded value from _otherData
-    private UnsignedLong ExtractFromProperties( UnsignedLong offset, UnsignedLong width ) {
-        return _properties.dividedBy( offset ).mod( width );
+    private BigInteger extractFromProperties( BigInteger offset, BigInteger width ) {
+        return properties.divide( offset ).mod( width );
     }
 
     /// Indicates whether the current object is equal to another object of the same type.
@@ -432,8 +417,8 @@ public class SecurityIdentifier {
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
     /// </returns>
     /// <param name="other">An object to compare with this object.</param>
-    public boolean Equals(SecurityIdentifier other) {
-        return _properties == other._properties && _symbol == other._symbol;
+    public boolean equals( SecurityIdentifier other ) {
+        return properties.compareTo( other.properties ) == 0 && symbol.equals( other.symbol );
     }
 
     /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
@@ -443,19 +428,17 @@ public class SecurityIdentifier {
     /// <param name="obj">The object to compare with the current object. </param><filterpriority>2</filterpriority>
     public boolean equals( Object obj ) {
         if( obj == null ) return false;
-        if (obj.GetType() != GetType()) return false;
-        return Equals((SecurityIdentifier)obj);
+        if( !(obj instanceof SecurityIdentifier) ) return false;
+        return equals( (SecurityIdentifier)obj );
     }
 
-    /// <summary>
     /// Serves as a hash function for a particular type. 
-    /// </summary>
     /// <returns>
     /// A hash code for the current <see cref="T:System.Object"/>.
     /// </returns>
     /// <filterpriority>2</filterpriority>
     public int hashCode() {
-        unchecked { return (_symbol.GetHashCode()*397) ^ _properties.GetHashCode(); }
+        return (symbol.hashCode()*397) ^ properties.hashCode();
     }
 
 //    /// Override equals operator
@@ -476,7 +459,6 @@ public class SecurityIdentifier {
     /// </returns>
     /// <filterpriority>2</filterpriority>
     public String toString() {
-        return _symbol + ' ' + Long.toString( _properties, 36 ); //EncodeBase36(_properties);
+        return symbol + ' ' + encodeBase36( properties );
     }
-
 }

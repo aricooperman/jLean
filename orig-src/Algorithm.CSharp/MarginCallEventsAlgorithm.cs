@@ -85,7 +85,7 @@ package com.quantconnect.lean.Algorithm.Examples
             // prevent margin calls by responding to the warning and increasing margin remaining
             spyHoldings = Securities["SPY"].Holdings.Quantity;
             shares = (int)(-spyHoldings * .005m);
-            Error( String.Format("{0} - OnMarginCallWarning(): Liquidating {1} shares of SPY to avoid margin call.", Time, shares));
+            Error( String.format("{0} - OnMarginCallWarning(): Liquidating {1} shares of SPY to avoid margin call.", Time, shares));
             MarketOrder("SPY", shares);
         }
     }

@@ -37,7 +37,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
                 new Tick {Time = currentTime.AddSeconds(1)}
             };
 
-            offsetProvider = new TimeZoneOffsetProvider(DateTimeZone.Utc, new DateTime(2015, 1, 1), new DateTime(2016, 1, 1));
+            offsetProvider = new TimeZoneOffsetProvider(ZoneId.Utc, new DateTime(2015, 1, 1), new DateTime(2016, 1, 1));
             frontierAware = new FrontierAwareEnumerator(underlying.GetEnumerator(), timeProvider, offsetProvider);
 
             Assert.IsTrue(frontierAware.MoveNext());
@@ -54,7 +54,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
                 new Tick {Time = currentTime.AddSeconds(1)}
             };
 
-            offsetProvider = new TimeZoneOffsetProvider(DateTimeZone.Utc, new DateTime(2015, 1, 1), new DateTime(2016, 1, 1));
+            offsetProvider = new TimeZoneOffsetProvider(ZoneId.Utc, new DateTime(2015, 1, 1), new DateTime(2016, 1, 1));
             frontierAware = new FrontierAwareEnumerator(underlying.GetEnumerator(), timeProvider, offsetProvider);
 
             timeProvider.AdvanceSeconds(1);
@@ -74,7 +74,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
                 new Tick {Time = currentTime.AddSeconds(10)}
             };
 
-            offsetProvider = new TimeZoneOffsetProvider(DateTimeZone.Utc, new DateTime(2015, 1, 1), new DateTime(2016, 1, 1));
+            offsetProvider = new TimeZoneOffsetProvider(ZoneId.Utc, new DateTime(2015, 1, 1), new DateTime(2016, 1, 1));
             frontierAware = new FrontierAwareEnumerator(underlying.GetEnumerator(), timeProvider, offsetProvider);
 
             for (int i = 0; i < 10; i++)

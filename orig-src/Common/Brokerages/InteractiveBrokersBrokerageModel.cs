@@ -149,7 +149,7 @@ package com.quantconnect.lean.Brokerages
             if (!orderIsWithinForexSizeLimits)
             {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "OrderSizeLimit",
-                    string.Format("The maximum allowable order size is {0}{1}.", max, baseCurrency)
+                    String.format("The maximum allowable order size is {0}{1}.", max, baseCurrency)
                     );
             }
             return orderIsWithinForexSizeLimits;

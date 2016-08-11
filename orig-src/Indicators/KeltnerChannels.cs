@@ -66,7 +66,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="k">The number of multiplies specifying the distance between the middle band and upper or lower bands</param>
         /// <param name="movingAverageType">The type of moving average to be used</param>
         public KeltnerChannels(int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple)
-            : this( String.Format("KC({0},{1})", period, k), period, k, movingAverageType)
+            : this( String.format("KC({0},{1})", period, k), period, k, movingAverageType)
         {
         }
 

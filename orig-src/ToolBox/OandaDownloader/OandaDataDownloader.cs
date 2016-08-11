@@ -97,7 +97,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
             // loop until last date
             while (startDateTime <= endUtc.AddDays(1))
             {
-                String start = startDateTime.ToString("yyyy-MM-ddTHH:mm:ssZ");
+                String start = startDateTime.toString("yyyy-MM-ddTHH:mm:ssZ");
 
                 // request blocks of 5-second bars with a starting date/time
                 oandaSymbol = _symbolMapper.GetBrokerageSymbol(symbol);

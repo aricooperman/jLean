@@ -80,7 +80,7 @@ package com.quantconnect.lean.Algorithm.Examples
             {
                 SetHoldings(data.Symbol, 1.0);
             }
-            Console.WriteLine("CLOSE - {0} - {1} {2}", data.Time.ToString("o"), data.Open, data.Close);
+            Console.WriteLine("CLOSE - {0} - {1} {2}", data.Time.toString("o"), data.Open, data.Close);
         }
 
         /// <summary>
@@ -89,7 +89,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <param name="data">The new renko bar produced by the consolidator</param>
         public void HandleRenko7Bar(RenkoBar data)
         {
-            Console.WriteLine("7BAR  - {0} - {1} {2}", data.Time.ToString("o"), data.Open, data.Close);
+            Console.WriteLine("7BAR  - {0} - {1} {2}", data.Time.toString("o"), data.Open, data.Close);
         }
     }
 }

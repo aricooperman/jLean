@@ -440,12 +440,12 @@ package com.quantconnect.lean.Algorithm.CSharp
 
             if (LiveMode)
             {
-                Debug(msg.ToString());
-                Log(msg.ToString());
+                Debug(msg.toString());
+                Log(msg.toString());
             }
             else
             {
-                Log(msg.ToString());
+                Log(msg.toString());
             }
         }
 
@@ -510,7 +510,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// Determines whether or not we should enable the psar trailing stop
         /// </summary>
         /// <param name="stopPrice">current stop price of our stop loss tick</param>
-        private boolean ShouldEnablePsarTrailingStop(decimal stopPrice)
+        private boolean ShouldEnablePsarTrailingStop( BigDecimal stopPrice)
         {
             // no need to enable if it's already enabled
             return !EnablePsarTrailingStop
@@ -537,7 +537,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Determines whether or not the PSAR stop price is better than the specified stop price
         /// </summary>
-        private boolean IsPsarMoreProfitableThanStop(decimal stopPrice)
+        private boolean IsPsarMoreProfitableThanStop( BigDecimal stopPrice)
         {
             return (Security.Holdings.IsLong && PSARMin > stopPrice) 
                 || (Security.Holdings.IsShort && PSARMin < stopPrice);

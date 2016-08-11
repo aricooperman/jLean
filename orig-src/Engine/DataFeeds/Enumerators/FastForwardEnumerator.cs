@@ -29,7 +29,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
     {
         private BaseData _current;
 
-        private readonly DateTimeZone _timeZone;
+        private readonly ZoneId _timeZone;
         private readonly TimeSpan _maximumDataAge;
         private readonly ITimeProvider _timeProvider;
         private readonly IEnumerator<BaseData> _enumerator;
@@ -41,7 +41,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="timeProvider">A time provider used to determine age of data</param>
         /// <param name="timeZone">The data's time zone</param>
         /// <param name="maximumDataAge">The maximum age of data allowed</param>
-        public FastForwardEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, DateTimeZone timeZone, TimeSpan maximumDataAge)
+        public FastForwardEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, ZoneId timeZone, TimeSpan maximumDataAge)
         {
             _enumerator = enumerator;
             _timeProvider = timeProvider;

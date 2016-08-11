@@ -151,7 +151,7 @@ package com.quantconnect.lean.Tests.Brokerages
                 // we need to keep this maintained properly
                 if (args.Status == OrderStatus.Filled || args.Status == OrderStatus.PartiallyFilled)
                 {
-                    Log.Trace("FILL EVENT: " + args.FillQuantity + " units of " + args.Symbol.ToString());
+                    Log.Trace("FILL EVENT: " + args.FillQuantity + " units of " + args.Symbol.toString());
 
                     Security security;
                     if (_securityProvider.TryGetValue(args.Symbol, out security))

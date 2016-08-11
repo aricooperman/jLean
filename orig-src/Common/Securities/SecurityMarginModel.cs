@@ -33,7 +33,7 @@ package com.quantconnect.lean.Securities
         /// that must be held in free cash in order to place the order</param>
         /// <param name="maintenanceMarginRequirement">The percentage of the holding's absolute
         /// cost that must be held in free cash in order to avoid a margin call</param>
-        public SecurityMarginModel(decimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
+        public SecurityMarginModel( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
         {
             if (initialMarginRequirement < 0 || initialMarginRequirement > 1)
             {
@@ -53,7 +53,7 @@ package com.quantconnect.lean.Securities
         /// Initializes a new instance of the <see cref="SecurityMarginModel"/>
         /// </summary>
         /// <param name="leverage">The leverage</param>
-        public SecurityMarginModel(decimal leverage)
+        public SecurityMarginModel( BigDecimal leverage)
         {
             if (leverage < 1)
             {

@@ -291,7 +291,7 @@ package com.quantconnect.lean.Brokerages.Oanda
             requestParams = new Map<String,String>
             {
                 { "instrument", _symbolMapper.GetBrokerageSymbol(order.Symbol) },
-                { "units", Convert.ToInt32(order.AbsoluteQuantity).ToString() }
+                { "units", Convert.ToInt32(order.AbsoluteQuantity).toString() }
             };
 
             PopulateOrderRequestParameters(order, requestParams);
@@ -316,7 +316,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                 }
                 else
                 {
-                    order.BrokerId.Add(postOrderResponse.tradeOpened.id.ToString());
+                    order.BrokerId.Add(postOrderResponse.tradeOpened.id.toString());
                 }
             }
 
@@ -328,7 +328,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                 }
                 else
                 {
-                    order.BrokerId.Add(postOrderResponse.tradeReduced.id.ToString());
+                    order.BrokerId.Add(postOrderResponse.tradeReduced.id.toString());
                 }
             }
 
@@ -336,7 +336,7 @@ package com.quantconnect.lean.Brokerages.Oanda
             {
                 if (order.Type != OrderType.Market)
                 {
-                    order.BrokerId.Add(postOrderResponse.orderOpened.id.ToString());
+                    order.BrokerId.Add(postOrderResponse.orderOpened.id.toString());
                 }
             }
 
@@ -386,7 +386,7 @@ package com.quantconnect.lean.Brokerages.Oanda
             requestParams = new Map<String,String>
             {
                 { "instrument", _symbolMapper.GetBrokerageSymbol(order.Symbol) },
-                { "units", Convert.ToInt32(order.AbsoluteQuantity).ToString() },
+                { "units", Convert.ToInt32(order.AbsoluteQuantity).toString() },
             };
 
             // we need the brokerage order id in order to perform an update

@@ -59,7 +59,7 @@ package com.quantconnect.lean.Orders
             if (tag == "")
             {
                 //Default tag values to display stop price in GUI.
-                Tag = "Stop Price: " + stopPrice.ToString("C");
+                Tag = "Stop Price: " + stopPrice.toString("C");
             }
         }
 
@@ -104,9 +104,9 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("{0} at stop {1}", base.ToString(), StopPrice.SmartRounding());
+            return String.format("{0} at stop {1}", base.toString(), StopPrice.SmartRounding());
         }
 
         /// <summary>

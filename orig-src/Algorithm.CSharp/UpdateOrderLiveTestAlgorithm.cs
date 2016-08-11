@@ -107,7 +107,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 {
                     limitPrice = !isLong ? (1 + LimitPercentage) * Security.High : (1 - LimitPercentage) * Security.Low;
                 }
-                request = new SubmitOrderRequest(orderType, SecType, Symbol, Quantity, stopPrice, limitPrice, Time, orderType.ToString());
+                request = new SubmitOrderRequest(orderType, SecType, Symbol, Quantity, stopPrice, limitPrice, Time, orderType.toString());
                 ticket = Transactions.AddOrder(request);
                 _tickets.Add(ticket);
                 if ((decimal)Random.NextDouble() < ImmediateCancelPercentage)
@@ -123,7 +123,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 {
                     if (ticket.UpdateRequests.Count == 0 && ticket.Status.IsOpen())
                     {
-                        Log(ticket.ToString());
+                        Log(ticket.toString());
                         ticket.Update(new UpdateOrderFields
                         {
                             Quantity = ticket.Quantity + Math.Sign(Quantity) * DeltaQuantity,
@@ -136,7 +136,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 {
                     if (ticket.UpdateRequests.Count == 1 && ticket.Status.IsOpen())
                     {
-                        Log(ticket.ToString());
+                        Log(ticket.toString());
                         ticket.Update(new UpdateOrderFields
                         {
                             LimitPrice = Security.Price * (1 - Math.Sign(ticket.Quantity) * LimitPercentageDelta),
@@ -150,7 +150,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 {
                     if (ticket.UpdateRequests.Count == 2 && ticket.Status.IsOpen())
                     {
-                        Log(ticket.ToString());
+                        Log(ticket.toString());
                         ticket.Cancel(Time + " and is still open!");
                         Log("CANCELLED:: " + ticket.CancelRequest);
                     }
@@ -172,7 +172,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
             else
             {
-                Log(orderEvent.ToString());
+                Log(orderEvent.toString());
             }
         }
 

@@ -67,7 +67,7 @@ package com.quantconnect.lean.Tests.Indicators
                 BigDecimal LSMAValue = Math.Round(LSMA.Current.Value, 4);
                 actual[i] = LSMAValue;
 
-                //Console.WriteLine( String.Format("Bar : {0} | {1}, Is ready? {2}", i, LSMA.ToString(), LSMA.IsReady));
+                //Console.WriteLine( String.format("Bar : {0} | {1}, Is ready? {2}", i, LSMA.toString(), LSMA.IsReady));
                 time = time.AddMinutes(1);
             }
             Assert.AreEqual(expected, actual);

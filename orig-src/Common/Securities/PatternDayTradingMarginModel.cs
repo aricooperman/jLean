@@ -36,7 +36,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="closedMarketLeverage">Leverage used outside regular market hours</param>
         /// <param name="openMarketLeverage">Leverage used during regular market hours</param>
-        public PatternDayTradingMarginModel(decimal closedMarketLeverage, BigDecimal openMarketLeverage)
+        public PatternDayTradingMarginModel( BigDecimal closedMarketLeverage, BigDecimal openMarketLeverage)
             : base(openMarketLeverage)
         {
             _closedMarginCorrectionFactor = openMarketLeverage/closedMarketLeverage;

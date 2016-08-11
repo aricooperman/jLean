@@ -52,7 +52,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="signalPeriod">The signal period</param>
         /// <param name="type">The type of moving averages to use</param>
         public MovingAverageConvergenceDivergence(int fastPeriod, int slowPeriod, int signalPeriod, MovingAverageType type = MovingAverageType.Simple)
-            : this( String.Format("MACD({0},{1})", fastPeriod, slowPeriod), fastPeriod, slowPeriod, signalPeriod, type)
+            : this( String.format("MACD({0},{1})", fastPeriod, slowPeriod), fastPeriod, slowPeriod, signalPeriod, type)
         {
         }
 

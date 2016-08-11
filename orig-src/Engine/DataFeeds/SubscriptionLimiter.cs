@@ -155,15 +155,15 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         private String GetCountLimitReason(Resolution resolution)
         {
             limit = GetResolutionLimit(resolution);
-            return string.Format("We currently only support {0} {1} at a time due to physical memory limitations", limit, resolution.ToString().toLowerCase());
+            return String.format("We currently only support {0} {1} at a time due to physical memory limitations", limit, resolution.toString().toLowerCase());
         }
 
         /// <summary>
         /// Gets reason String for having a larger estimated ram usage than the limits
         /// </summary>
-        private String GetMaxRamReason(decimal currentEstimatedRam)
+        private String GetMaxRamReason( BigDecimal currentEstimatedRam)
         {
-            return string.Format("We estimate you will run out of memory ({0}mb of {1}mb physically available). " +
+            return String.format("We estimate you will run out of memory ({0}mb of {1}mb physically available). " +
                 "Please reduce the number of symbols you're analysing or if in live trading upgrade your server to allow more memory.",
                 currentEstimatedRam, _maxRamEstimate
                 );

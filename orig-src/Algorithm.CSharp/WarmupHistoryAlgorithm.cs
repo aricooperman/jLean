@@ -48,8 +48,8 @@ package com.quantconnect.lean.Algorithm.CSharp
                 slow.Update(bar.EndTime, bar.Close);
             }
 
-            Log( String.Format("FAST IS {0} READY. Samples: {1}", fast.IsReady ? "" : "NOT", fast.Samples));
-            Log( String.Format("SLOW IS {0} READY. Samples: {1}", slow.IsReady ? "" : "NOT", slow.Samples));
+            Log( String.format("FAST IS {0} READY. Samples: {1}", fast.IsReady ? "" : "NOT", fast.Samples));
+            Log( String.format("SLOW IS {0} READY. Samples: {1}", slow.IsReady ? "" : "NOT", slow.Samples));
         }
 
         /// <summary>

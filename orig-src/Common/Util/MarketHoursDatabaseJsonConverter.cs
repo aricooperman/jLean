@@ -55,7 +55,7 @@ package com.quantconnect.lean.Util
         public class MarketHoursDatabaseJson
         {
             /// <summary>
-            /// The entries in the market hours database, keyed by <see cref="MarketHoursDatabase.Key.ToString"/>
+            /// The entries in the market hours database, keyed by <see cref="MarketHoursDatabase.Key.toString"/>
             /// </summary>
             [JsonProperty("entries")]
             public Map<String, MarketHoursDatabaseEntryJson> Entries;
@@ -72,7 +72,7 @@ package com.quantconnect.lean.Util
                 {
                     key = kvp.Key;
                     entry = kvp.Value;
-                    Entries[key.ToString()] = new MarketHoursDatabaseEntryJson(entry);
+                    Entries[key.toString()] = new MarketHoursDatabaseEntryJson(entry);
                 }
             }
 
@@ -173,7 +173,7 @@ package com.quantconnect.lean.Util
                 SetSegmentsForDay(hours, DayOfWeek.Thursday, out Thursday);
                 SetSegmentsForDay(hours, DayOfWeek.Friday, out Friday);
                 SetSegmentsForDay(hours, DayOfWeek.Saturday, out Saturday);
-                Holidays = hours.Holidays.Select(x => x.ToString("M/d/yyyy", CultureInfo.InvariantCulture)).ToList();
+                Holidays = hours.Holidays.Select(x => x.toString("M/d/yyyy", CultureInfo.InvariantCulture)).ToList();
             }
 
             /// <summary>
@@ -193,8 +193,8 @@ package com.quantconnect.lean.Util
                     { DayOfWeek.Saturday, new LocalMarketHours(DayOfWeek.Saturday, Saturday) }
                 };
                 holidayDates = Holidays.Select(x => DateTime.ParseExact(x, "M/d/yyyy", CultureInfo.InvariantCulture)).ToHashSet();
-                exchangeHours = new SecurityExchangeHours(DateTimeZoneProviders.Tzdb[ExchangeTimeZone], holidayDates, hours);
-                return new MarketHoursDatabase.Entry(DateTimeZoneProviders.Tzdb[DataTimeZone], exchangeHours);
+                exchangeHours = new SecurityExchangeHours(ZoneIdProviders.Tzdb[ExchangeTimeZone], holidayDates, hours);
+                return new MarketHoursDatabase.Entry(ZoneIdProviders.Tzdb[DataTimeZone], exchangeHours);
             }
 
             private void SetSegmentsForDay(SecurityExchangeHours hours, DayOfWeek day, out List<MarketHoursSegment> segments)

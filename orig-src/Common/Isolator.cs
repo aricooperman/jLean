@@ -102,7 +102,7 @@ package com.quantconnect.lean
                         memoryUsed = GC.GetTotalMemory(true);
                         Log.Error("Execution Security Error: Memory usage over 80% capacity.");
                     }
-                    Log.Trace(DateTime.Now.ToString("u") + " Isolator.ExecuteWithTimeLimit(): Used: " + Math.Round(Convert.ToDouble(memoryUsed / (1024 * 1024))));
+                    Log.Trace(DateTime.Now.toString("u") + " Isolator.ExecuteWithTimeLimit(): Used: " + Math.Round(Convert.ToDouble(memoryUsed / (1024 * 1024))));
                     memoryLogger = DateTime.Now.AddMinutes(1);
                 }
 

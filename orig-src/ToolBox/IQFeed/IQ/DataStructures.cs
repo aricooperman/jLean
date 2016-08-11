@@ -43,7 +43,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
         {
             get
             {
-                return string.Format("{0}{1}{2}", _hour.ToString("00"), _minute.ToString("00"), _second.ToString("00"));
+                return String.format("{0}{1}{2}", _hour.toString("00"), _minute.toString("00"), _second.toString("00"));
             }
         }
         #region private
@@ -73,7 +73,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
                     case PeriodType.Minute: return _periods * 60;
                     case PeriodType.Hour: return _periods * 3600;
                 }
-                throw new Exception("May not get seconds for " + _periodType.ToString());
+                throw new Exception("May not get seconds for " + _periodType.toString());
             }
         }
         #region private

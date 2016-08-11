@@ -28,7 +28,7 @@ package com.quantconnect.lean.Tests.Common.Securities
     [TestFixture]
     public class CashTests
     {
-        private static readonly DateTimeZone TimeZone = TimeZones.NewYork;
+        private static readonly ZoneId TimeZone = TimeZones.NewYork;
         private static readonly SecurityExchangeHours SecurityExchangeHours = SecurityExchangeHours.AlwaysOpen(TimeZone);
         private static readonly IReadOnlyMap<SecurityType,String> MarketMap = DefaultBrokerageModel.DefaultMarketMap;
 

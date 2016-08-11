@@ -44,7 +44,7 @@ package com.quantconnect.lean.Brokerages
         public BrokerageMessageEvent(BrokerageMessageType type, int code, String message)
         {
             Type = type;
-            Code = code.ToString();
+            Code = code.toString();
             Message = message;
         }
 
@@ -88,9 +88,9 @@ package com.quantconnect.lean.Brokerages
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("{0} - Code: {1} - {2}", Type, Code, Message);
+            return String.format("{0} - Code: {1} - {2}", Type, Code, Message);
         }
     }
 }

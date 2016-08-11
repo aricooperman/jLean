@@ -52,7 +52,7 @@ package com.quantconnect.lean
             if (!Portfolio.HoldStock)
             {
                 SetHoldings(_crude, 1);
-                Debug(Time.ToString("u") + " Purchased Crude Oil: " + _crude);
+                Debug(Time.toString("u") + " Purchased Crude Oil: " + _crude);
             }
         }
     }

@@ -136,7 +136,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         public String GetBrokerageSymbol(Symbol symbol)
         {
             if (symbol == null || symbol == Symbol.Empty || string.IsNullOrWhiteSpace(symbol.Value))
-                throw new ArgumentException("Invalid symbol: " + (symbol == null ? "null" : symbol.ToString()));
+                throw new ArgumentException("Invalid symbol: " + (symbol == null ? "null" : symbol.toString()));
 
             if (symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
                 throw new ArgumentException("Invalid security type: " + symbol.ID.SecurityType);

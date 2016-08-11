@@ -116,7 +116,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             }
             DisconnectFromSocket(flushSeconds);
         }
-        public void SetClientStats(bool flag = true)
+        public void SetClientStats( boolean flag = true)
         {
             if (flag) { Send("S,CLIENTSTATS ON\r\n"); }
             else { Send("S,CLIENTSTATS OFF\r\n"); }
@@ -141,7 +141,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
         {
             Send("S,SET PASSWORD," + password + "\r\n");
         }
-        public void SetSaveCredentials(bool save = true)
+        public void SetSaveCredentials( boolean save = true)
         {
             if (save)
             {
@@ -152,7 +152,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 Send("S,SET SAVE LOGIN INFO,Off\r\n");
             }
         }
-        public void SetAutoconnect(bool auto = true)
+        public void SetAutoconnect( boolean auto = true)
         {
             if (auto)
             {

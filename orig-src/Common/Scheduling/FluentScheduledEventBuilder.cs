@@ -261,17 +261,17 @@ package com.quantconnect.lean.Scheduling
             return SetTimeRule(_schedule.TimeRules.At(hour, minute, second));
         }
 
-        IFluentSchedulingRunnable IFluentSchedulingTimeSpecifier.At(int hour, int minute, DateTimeZone timeZone)
+        IFluentSchedulingRunnable IFluentSchedulingTimeSpecifier.At(int hour, int minute, ZoneId timeZone)
         {
             return SetTimeRule(_schedule.TimeRules.At(hour, minute, 0, timeZone));
         }
 
-        IFluentSchedulingRunnable IFluentSchedulingTimeSpecifier.At(int hour, int minute, int second, DateTimeZone timeZone)
+        IFluentSchedulingRunnable IFluentSchedulingTimeSpecifier.At(int hour, int minute, int second, ZoneId timeZone)
         {
             return SetTimeRule(_schedule.TimeRules.At(hour, minute, second, timeZone));
         }
 
-        IFluentSchedulingRunnable IFluentSchedulingTimeSpecifier.At(TimeSpan timeOfDay, DateTimeZone timeZone)
+        IFluentSchedulingRunnable IFluentSchedulingTimeSpecifier.At(TimeSpan timeOfDay, ZoneId timeZone)
         {
             return SetTimeRule(_schedule.TimeRules.At(timeOfDay, timeZone));
         }
@@ -281,7 +281,7 @@ package com.quantconnect.lean.Scheduling
             Security security;
             if (!_securities.TryGetValue(symbol, out security))
             {
-                throw new Exception(symbol.ToString() + " not found in portfolio. Request this data when initializing the algorithm.");
+                throw new Exception(symbol.toString() + " not found in portfolio. Request this data when initializing the algorithm.");
             }
             return security;
         }
@@ -344,15 +344,15 @@ package com.quantconnect.lean.Scheduling
         /// <summary>
         /// Creates events that fire at the specified time of day in the specified time zone
         /// </summary>
-        IFluentSchedulingRunnable At(int hour, int minute, DateTimeZone timeZone);
+        IFluentSchedulingRunnable At(int hour, int minute, ZoneId timeZone);
         /// <summary>
         /// Creates events that fire at the specified time of day in the specified time zone
         /// </summary>
-        IFluentSchedulingRunnable At(int hour, int minute, int second, DateTimeZone timeZone);
+        IFluentSchedulingRunnable At(int hour, int minute, int second, ZoneId timeZone);
         /// <summary>
         /// Creates events that fire at the specified time of day in the specified time zone
         /// </summary>
-        IFluentSchedulingRunnable At(TimeSpan timeOfDay, DateTimeZone timeZone);
+        IFluentSchedulingRunnable At(TimeSpan timeOfDay, ZoneId timeZone);
         /// <summary>
         /// Creates events that fire at the specific time of day in the algorithm's time zone
         /// </summary>

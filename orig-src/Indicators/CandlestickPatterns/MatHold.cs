@@ -64,7 +64,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Initializes a new instance of the <see cref="MatHold"/> class.
         /// </summary>
         /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
-        public MatHold(decimal penetration = 0.5m)
+        public MatHold( BigDecimal penetration = 0.5m)
             : this("MATHOLD", penetration)
         {
         }

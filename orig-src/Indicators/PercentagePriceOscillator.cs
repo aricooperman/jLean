@@ -41,7 +41,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="slowPeriod">The slow moving average period</param>
         /// <param name="movingAverageType">The type of moving average to use</param>
         public PercentagePriceOscillator(int fastPeriod, int slowPeriod, MovingAverageType movingAverageType = MovingAverageType.Simple)
-            : this( String.Format("PPO({0},{1})", fastPeriod, slowPeriod), fastPeriod, slowPeriod, movingAverageType)
+            : this( String.format("PPO({0},{1})", fastPeriod, slowPeriod), fastPeriod, slowPeriod, movingAverageType)
         {
         }
 

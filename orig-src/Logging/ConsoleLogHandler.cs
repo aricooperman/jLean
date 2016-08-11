@@ -45,7 +45,7 @@ package com.quantconnect.lean.Logging
         public void Error( String text)
         {
             Console.ForegroundColor = ConsoleColor.Red;
-            _error.WriteLine(DateTime.Now.ToString(DateFormat) + " ERROR:: " + text);
+            _error.WriteLine(DateTime.Now.toString(DateFormat) + " ERROR:: " + text);
             Console.ResetColor();
         }
 
@@ -55,7 +55,7 @@ package com.quantconnect.lean.Logging
         /// <param name="text">The debug text to log</param>
         public void Debug( String text)
         {
-            _trace.WriteLine(DateTime.Now.ToString(DateFormat) + " DEBUG:: " + text);
+            _trace.WriteLine(DateTime.Now.toString(DateFormat) + " DEBUG:: " + text);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ package com.quantconnect.lean.Logging
         /// <param name="text">The trace text to log</param>
         public void Trace( String text)
         {
-            _trace.WriteLine(DateTime.Now.ToString(DateFormat) + " Trace:: " + text);
+            _trace.WriteLine(DateTime.Now.toString(DateFormat) + " Trace:: " + text);
         }
 
         /// <summary>

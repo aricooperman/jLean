@@ -118,7 +118,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
                     SetPendingOrder(order);
                 }
 
-                orderId = order.Id.ToString();
+                orderId = order.Id.toString();
                 if (!order.BrokerId.Contains(orderId)) order.BrokerId.Add(orderId);
 
                 // fire off the event that says this order has been submitted
@@ -153,7 +153,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
                     SetPendingOrder(order);
                 }
 
-                orderId = order.Id.ToString();
+                orderId = order.Id.toString();
                 if (!order.BrokerId.Contains(orderId)) order.BrokerId.Add(orderId);
 
                 // fire off the event that says this order has been updated
@@ -179,8 +179,8 @@ package com.quantconnect.lean.Brokerages.Backtesting
                 return false;
             }
 
-            orderId = order.Id.ToString();
-            if (!order.BrokerId.Contains(orderId)) order.BrokerId.Add(order.Id.ToString());
+            orderId = order.Id.toString();
+            if (!order.BrokerId.Contains(orderId)) order.BrokerId.Add(order.Id.toString());
 
             // fire off the event that says this order has been canceled
             static final int orderFee = 0;
@@ -257,7 +257,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
                         OnOrderEvent(new OrderEvent(order, Algorithm.UtcTime, 0, "Error in GetSufficientCapitalForOrder"));
 
                         Log.Error(err);
-                        Algorithm.Error( String.Format("Order Error: id: {0}, Error executing margin models: {1}", order.Id, err.Message));
+                        Algorithm.Error( String.format("Order Error: id: {0}, Error executing margin models: {1}", order.Id, err.Message));
                         continue;
                     }
 
@@ -300,7 +300,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
                         catch (Exception err)
                         {
                             Log.Error(err);
-                            Algorithm.Error( String.Format("Order Error: id: {0}, Transaction model failed to fill for order type: {1} with error: {2}",
+                            Algorithm.Error( String.format("Order Error: id: {0}, Transaction model failed to fill for order type: {1} with error: {2}",
                                 order.Id, order.Type, err.Message));
                         }
                     }
@@ -308,7 +308,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
                     {
                         //Flag order as invalid and push off queue:
                         order.Status = OrderStatus.Invalid;
-                        Algorithm.Error( String.Format("Order Error: id: {0}, Insufficient buying power to complete order (Value:{1}).", order.Id,
+                        Algorithm.Error( String.format("Order Error: id: {0}, Insufficient buying power to complete order (Value:{1}).", order.Id,
                             order.GetValue(security).SmartRounding()));
                     }
 

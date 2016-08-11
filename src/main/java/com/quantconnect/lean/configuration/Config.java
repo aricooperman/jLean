@@ -213,7 +213,7 @@ public class Config {
 //        token = GetToken(Settings.Value, key);
 //        if (token == null)
 //        {
-//            Log.Trace( String.Format("Config.GetValue(): {0} - Using default value: {1}", key, defaultValue));
+//            Log.Trace( String.format("Config.GetValue(): {0} - Using default value: {1}", key, defaultValue));
 //            return defaultValue;
 //        }
 //
@@ -225,7 +225,7 @@ public class Config {
 //        }
 //        catch (Exception err)
 //        {
-//            value = token.ToString();
+//            value = token.toString();
 //        }
 //
 //        if (type.IsEnum)
@@ -360,7 +360,7 @@ public class Config {
 //                    jProperty = clone.Property(path);
 //                    if (jProperty != null) jProperty.Remove();
 //
-//                    value = (token is JProperty ? ((JProperty) token).Value : token).ToString();
+//                    value = (token is JProperty ? ((JProperty) token).Value : token).toString();
 //                    clone.Add(path, value);
 //                }
 //            }
@@ -485,10 +485,10 @@ package com.quantconnect.lean.Configuration
             token = GetToken(Settings.Value, key);
             if (token == null)
             {
-                Log.Trace( String.Format("Config.Get(): Configuration key not found. Key: {0} - Using default value: {1}", key, defaultValue));
+                Log.Trace( String.format("Config.Get(): Configuration key not found. Key: {0} - Using default value: {1}", key, defaultValue));
                 return defaultValue;
             }
-            return token.ToString();
+            return token.toString();
         }
 
         /// <summary>
@@ -571,7 +571,7 @@ package com.quantconnect.lean.Configuration
             token = GetToken(Settings.Value, key);
             if (token == null)
             {
-                Log.Trace( String.Format("Config.GetValue(): {0} - Using default value: {1}", key, defaultValue));
+                Log.Trace( String.format("Config.GetValue(): {0} - Using default value: {1}", key, defaultValue));
                 return defaultValue;
             }
 
@@ -583,7 +583,7 @@ package com.quantconnect.lean.Configuration
             }
             catch (Exception err)
             {
-                value = token.ToString();
+                value = token.toString();
             }
 
             if (type.IsEnum)
@@ -722,7 +722,7 @@ package com.quantconnect.lean.Configuration
                         jProperty = clone.Property(path);
                         if (jProperty != null) jProperty.Remove();
 
-                        value = (token is JProperty ? ((JProperty) token).Value : token).ToString();
+                        value = (token is JProperty ? ((JProperty) token).Value : token).toString();
                         clone.Add(path, value);
                     }
                 }

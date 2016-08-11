@@ -314,7 +314,7 @@ package com.quantconnect.lean.Securities
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
             if (IsClosedAllDay)
             {

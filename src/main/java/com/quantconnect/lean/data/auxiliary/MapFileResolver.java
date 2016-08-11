@@ -16,9 +16,16 @@
 
 package com.quantconnect.lean.data.auxiliary;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 //using System.Linq;
 //using QuantConnect.Logging;
@@ -28,184 +35,100 @@ import java.util.Map;
 /// containing that share class's mapping information
 public class MapFileResolver implements Iterable<MapFile> {
     
-    private final Map<String, MapFile> _mapFilesByPermtick;
-    private final Map<String, SortedMap<LocalDateTime,MapFileRowEntry>> _bySymbol;
+    private static final Comparator<String> IGNORE_CASE_COMP = String::compareToIgnoreCase;
+    
+    private final Map<String,MapFile> mapFilesByPermtick;
+    private final Map<String,SortedMap<LocalDate,MapFileRowEntry>> bySymbol;
 
-    /// <summary>
     /// Gets an empty <see cref="MapFileResolver"/>, that is an instance that contains
     /// zero mappings
-    /// </summary>
-    public static final MapFileResolver Empty = new MapFileResolver( Enumerable.Empty<MapFile>()) ;
+//    public static final MapFileResolver Empty = new MapFileResolver( Collections.emptyList() ) ;
 
-    /// <summary>
     /// Initializes a new instance of the <see cref="MapFileResolver"/> by reading
     /// in all files in the specified directory.
-    /// </summary>
     /// <param name="mapFiles">The data used to initialize this resolver.</param>
     public MapFileResolver( Iterable<MapFile> mapFiles ) {
-        final Comparator<String> ignoreCaseComparator = String::compareToIgnoreCase;
-        _mapFilesByPermtick = new Map<String, MapFile>( ignoreCaseComparator );
-        _bySymbol = new TreeMap<String,SortedMap<LocalDateTime,MapFileRowEntry>>( ignoreCaseComparator );
+        mapFilesByPermtick = new TreeMap<String,MapFile>( IGNORE_CASE_COMP );
+        bySymbol = new TreeMap<String,SortedMap<LocalDate,MapFileRowEntry>>( IGNORE_CASE_COMP );
 
-        for( mapFile : mapFiles) {
+        for( MapFile mapFile : mapFiles ) {
             // add to our by path map
-            _mapFilesByPermtick.Add(mapFile.Permtick, mapFile);
+            mapFilesByPermtick.put( mapFile.getPermtick(), mapFile );
 
-            foreach (row in mapFile)
-            {
-                SortedList<DateTime, MapFileRowEntry> entries;
-                mapFileRowEntry = new MapFileRowEntry(mapFile.Permtick, row);
-
-                if (!_bySymbol.TryGetValue(row.MappedSymbol, out entries))
-                {
-                    entries = new SortedList<DateTime, MapFileRowEntry>();
-                    _bySymbol[row.MappedSymbol] = entries;
+            for( MapFileRow row : mapFile ) {
+                
+                final MapFileRowEntry mapFileRowEntry = new MapFileRowEntry( mapFile.getPermtick(), row );
+                SortedMap<LocalDate,MapFileRowEntry> entries = bySymbol.get( row.getMappedSymbol() );
+                
+                if( entries == null ) {
+                    entries = new TreeMap<LocalDate,MapFileRowEntry>();
+                    bySymbol.put( row.getMappedSymbol(), entries );
                 }
 
-                if (entries.ContainsKey(mapFileRowEntry.MapFileRow.Date))
-                {
+                if( entries.containsKey( mapFileRowEntry.mapFileRow.getDate() ) ) {
                     // check to verify it' the same data
-                    if (!entries[mapFileRowEntry.MapFileRow.Date].Equals(mapFileRowEntry))
-                    {
-                        throw new Exception("Attempted to assign different history for symbol.");
-                    }
+                    if( !entries.get( mapFileRowEntry.mapFileRow.getDate() ).equals( mapFileRowEntry ) )
+                        throw new RuntimeException( "Attempted to assign different history for symbol." );
                 }
                 else
-                {
-                    entries.Add(mapFileRowEntry.MapFileRow.Date, mapFileRowEntry);
-                }
+                    entries.put( mapFileRowEntry.mapFileRow.getDate(), mapFileRowEntry );
             }
         }
     }
 
-    /// <summary>
     /// Creates a new instance of the <see cref="MapFileResolver"/> class by reading all map files
     /// for the specified market into memory
-    /// </summary>
     /// <param name="dataDirectory">The root data directory</param>
     /// <param name="market">The equity market to produce a map file collection for</param>
     /// <returns>The collection of map files capable of mapping equity symbols within the specified market</returns>
-    public static MapFileResolver Create( String dataDirectory, String market)
-    {
-        return Create(Path.Combine(dataDirectory, "equity", market.toLowerCase(), "map_files"));
+    public static MapFileResolver create( String dataDirectory, String market ) throws IOException {
+        return create( Paths.get( dataDirectory, "equity", market.toLowerCase(), "map_files" ) );
     }
 
-    /// <summary>
     /// Creates a new instance of the <see cref="MapFileResolver"/> class by reading all map files
     /// for the specified market into memory
-    /// </summary>
     /// <param name="mapFileDirectory">The directory containing the map files</param>
     /// <returns>The collection of map files capable of mapping equity symbols within the specified market</returns>
-    public static MapFileResolver Create( String mapFileDirectory)
-    {
-        return new MapFileResolver(MapFile.GetMapFiles(mapFileDirectory));
+    public static MapFileResolver create( Path mapFileDirectory ) throws IOException {
+        return new MapFileResolver( MapFile.getMapFiles( mapFileDirectory ) );
     }
 
-    /// <summary>
     /// Gets the map file matching the specified permtick
-    /// </summary>
     /// <param name="permtick">The permtick to match on</param>
     /// <returns>The map file matching the permtick, or null if not found</returns>
-    public MapFile GetByPermtick( String permtick)
-    {
-        MapFile mapFile;
-        _mapFilesByPermtick.TryGetValue(permtick.toUpperCase(), out mapFile);
-        return mapFile;
+    public MapFile getByPermtick( String permtick ) {
+        return mapFilesByPermtick.get( permtick.toUpperCase() );
     }
 
-    /// <summary>
     /// Resolves the map file path containing the mapping information for the symbol defined at <paramref name="date"/>
-    /// </summary>
     /// <param name="symbol">The symbol as of <paramref name="date"/> to be mapped</param>
     /// <param name="date">The date associated with the <paramref name="symbol"/></param>
     /// <returns>The map file responsible for mapping the symbol, if no map file is found, null is returned</returns>
-    public MapFile ResolveMapFile( String symbol, DateTime date)
-    {
+    public MapFile resolveMapFile( String symbol, LocalDate date ) {
         // lookup the symbol's history
-        SortedList<DateTime, MapFileRowEntry> entries;
-        if (_bySymbol.TryGetValue(symbol, out entries))
-        {
-            if (entries.Count == 0)
-            {
-                return new MapFile(symbol, new List<MapFileRow>());
-            }
+        final SortedMap<LocalDate,MapFileRowEntry> entries = bySymbol.get( symbol );
+        if( entries != null ) {
+            if( entries.isEmpty() )
+                return new MapFile( symbol, Collections.<MapFileRow>emptyList().stream() );
 
-            indexOf = entries.Keys.BinarySearch(date);
-            if (indexOf >= 0)
-            {
-                symbol = entries.Values[indexOf].EntitySymbol;
-            }
-            else
-            {
-                // if negative, it's the bitwise complement of where it should be
-                indexOf = ~indexOf;
-                if (indexOf < 0 || indexOf > entries.Values.Count - 1)
-                {
-                    return new MapFile(symbol, new List<MapFileRow>());
-                }
-                symbol = entries.Values[indexOf].EntitySymbol;
+            MapFileRowEntry mapFileRowEntry = entries.get( date );
+            if( mapFileRowEntry != null )
+                symbol = mapFileRowEntry.entitySymbol;
+            else {
+                if( date.isBefore( entries.firstKey() ) || date.isAfter( entries.lastKey() ) )
+                    return new MapFile( symbol, Collections.<MapFileRow>emptyList().stream() );
+
+                final SortedMap<LocalDate,MapFileRowEntry> headMap = entries.headMap( date );
+                symbol = headMap.get( headMap.lastKey() ).entitySymbol;
             }
         }
+        
         // secondary search for exact mapping, find path than ends with symbol.csv
-        MapFile mapFile;
-        if (!_mapFilesByPermtick.TryGetValue(symbol, out mapFile))
-        {
-            return new MapFile(symbol, new List<MapFileRow>());
-        }
+        MapFile mapFile = mapFilesByPermtick.get( symbol );
+        if( mapFile == null )
+            return new MapFile( symbol, Collections.<MapFileRow>emptyList().stream() );
+
         return mapFile;
-    }
-
-    /// <summary>
-    /// Combines the map file row with the map file path that produced the row
-    /// </summary>
-    class MapFileRowEntry : IEquatable<MapFileRowEntry>
-    {
-        /// <summary>
-        /// Gets the map file row
-        /// </summary>
-        public MapFileRow MapFileRow { get; private set; }
-
-        /// <summary>
-        /// Gets the full path to the map file that produced this row
-        /// </summary>
-        public String EntitySymbol { get; private set; }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="MapFileRowEntry"/> class
-        /// </summary>
-        /// <param name="entitySymbol">The map file that produced this row</param>
-        /// <param name="mapFileRow">The map file row data</param>
-        public MapFileRowEntry( String entitySymbol, MapFileRow mapFileRow)
-        {
-            MapFileRow = mapFileRow;
-            EntitySymbol = entitySymbol;
-        }
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
-        public boolean Equals(MapFileRowEntry other)
-        {
-            if (other == null) return false;
-            return other.MapFileRow.Date == MapFileRow.Date
-                && other.MapFileRow.MappedSymbol == MapFileRow.MappedSymbol;
-        }
-
-        /// <summary>
-        /// Returns a String that represents the current object.
-        /// </summary>
-        /// <returns>
-        /// A String that represents the current object.
-        /// </returns>
-        /// <filterpriority>2</filterpriority>
-        public override String ToString()
-        {
-            return MapFileRow.Date + ": " + MapFileRow.MappedSymbol + ": " + EntitySymbol;
-        }
     }
 
     /// Returns an enumerator that iterates through the collection.
@@ -215,6 +138,46 @@ public class MapFileResolver implements Iterable<MapFile> {
     /// <filterpriority>1</filterpriority>
     @Override
     public Iterator<MapFile> iterator() {
-        return _mapFilesByPermtick.Values.GetEnumerator();
+        return mapFilesByPermtick.values().iterator();
+    }
+
+    
+    /// Combines the map file row with the map file path that produced the row
+    class MapFileRowEntry {
+        /// Gets the map file row
+        private MapFileRow mapFileRow;
+//        { get; private set; }
+
+        /// Gets the full path to the map file that produced this row
+        public String entitySymbol;
+//        { get; private set; }
+
+        /// Initializes a new instance of the <see cref="MapFileRowEntry"/> class
+        /// <param name="entitySymbol">The map file that produced this row</param>
+        /// <param name="mapFileRow">The map file row data</param>
+        public MapFileRowEntry( String entitySymbol, MapFileRow mapFileRow ) {
+            this.mapFileRow = mapFileRow;
+            this.entitySymbol = entitySymbol;
+        }
+
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+        /// </returns>
+        /// <param name="other">An object to compare with this object.</param>
+        public boolean equals( MapFileRowEntry other ) {
+            if( other == null ) return false;
+            return other.mapFileRow.getDate().equals( mapFileRow.getDate() )
+                && other.mapFileRow.getMappedSymbol().equals( mapFileRow.getMappedSymbol() );
+        }
+
+        /// Returns a String that represents the current object.
+        /// <returns>
+        /// A String that represents the current object.
+        /// </returns>
+        /// <filterpriority>2</filterpriority>
+        public String toString() {
+            return mapFileRow.getDate() + ": " + mapFileRow.getMappedSymbol() + ": " + entitySymbol;
+        }
     }
 }

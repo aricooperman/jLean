@@ -188,9 +188,9 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             Assert.AreEqual(1, count);
         }
 
-        private static TimeRules GetTimeRules(DateTimeZone dateTimeZone)
+        private static TimeRules GetTimeRules(ZoneId dateTimeZone)
         {
-            timeKeeper = new TimeKeeper(DateTime.Today, new List<DateTimeZone>());
+            timeKeeper = new TimeKeeper(DateTime.Today, new List<ZoneId>());
             manager = new SecurityManager(timeKeeper);
             marketHourDbEntry = MarketHoursDatabase.FromDataFolder().GetEntry(Market.USA, null, SecurityType.Equity);
             securityExchangeHours = marketHourDbEntry.ExchangeHours;

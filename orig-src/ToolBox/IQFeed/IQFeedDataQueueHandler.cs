@@ -92,7 +92,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
                     {
                         lock (_sync)
                         {
-                            Log.Trace("IQFeed.Subscribe(): Subscribe Request: " + symbol.ToString());
+                            Log.Trace("IQFeed.Subscribe(): Subscribe Request: " + symbol.toString());
 
                             type = symbol.ID.SecurityType;
                             if (_symbols.Add(symbol))
@@ -101,7 +101,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
                                 if (type == SecurityType.Forex) ticker += ".FXCM";
                                 _level1Port.Subscribe(ticker);
 
-                                Log.Trace("IQFeed.Subscribe(): Subscribe Processed: " + symbol.ToString());
+                                Log.Trace("IQFeed.Subscribe(): Subscribe Processed: " + symbol.toString());
                             }
                         }
                     }
@@ -126,7 +126,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 {
                     lock (_sync)
                     {
-                        Log.Trace("IQFeed.Unsubscribe(): " + symbol.ToString());
+                        Log.Trace("IQFeed.Unsubscribe(): " + symbol.toString());
                         type = symbol.ID.SecurityType;
                         _symbols.Remove(symbol);
                         ticker = symbol.Value;
@@ -163,7 +163,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
         /// <param name="requests">The historical data requests</param>
         /// <param name="sliceTimeZone">The time zone used when time stamping the slice instances</param>
         /// <returns>An enumerable of the slices of data covering the span specified in each request</returns>
-        public IEnumerable<Slice> GetHistory(IEnumerable<HistoryRequest> requests, DateTimeZone sliceTimeZone)
+        public IEnumerable<Slice> GetHistory(IEnumerable<HistoryRequest> requests, ZoneId sliceTimeZone)
         {
             foreach (request in requests)
             {
@@ -331,10 +331,10 @@ package com.quantconnect.lean.ToolBox.IQFeed
                     ticksPerSecond = count/(DateTime.Now - start).TotalSeconds;
                     if (ticksPerSecond > 1000 || _dataQueue.Count > 31)
                     {
-                        Log.Trace( String.Format("IQFeed.OnSecond(): Ticks/sec: {0} Engine.Ticks.Count: {1} CPU%: {2}",
-                            ticksPerSecond.ToString("0000.00"),
+                        Log.Trace( String.format("IQFeed.OnSecond(): Ticks/sec: {0} Engine.Ticks.Count: {1} CPU%: {2}",
+                            ticksPerSecond.toString("0000.00"),
                             _dataQueue.Count,
-                            OS.CpuUsage.NextValue().ToString("0.0") + "%"
+                            OS.CpuUsage.NextValue().toString("0.0") + "%"
                             ));
                     }
 
@@ -501,7 +501,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
                     end = null;
                 }
 
-                Log.Trace( String.Format("HistoryPort.ProcessHistoryJob(): Submitting request: {0}-{1}: {2} {3}->{4}", request.SecurityType, symbol, request.Resolution, start, end ?? DateTime.UtcNow.AddMinutes(-1)));
+                Log.Trace( String.format("HistoryPort.ProcessHistoryJob(): Submitting request: {0}-{1}: {2} {3}->{4}", request.SecurityType, symbol, request.Resolution, start, end ?? DateTime.UtcNow.AddMinutes(-1)));
 
                 int id;
                 reqid = string.Empty;
@@ -553,7 +553,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             /// <returns></returns>
             private static String CreateRequestID(LookupType lookupType, int id)
             {
-                return lookupType + id.ToString("0000000");
+                return lookupType + id.toString("0000000");
             }
 
             /// <summary>

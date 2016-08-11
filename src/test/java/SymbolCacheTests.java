@@ -71,7 +71,7 @@ package com.quantconnect.lean.Tests.Common
         [Test]
         public void TryGetSymbolFromSidString()
         {
-            sid = Symbols.EURUSD.ID.ToString();
+            sid = Symbols.EURUSD.ID.toString();
             symbol = SymbolCache.GetSymbol(sid);
             Assert.AreEqual(Symbols.EURUSD, symbol);
         }
@@ -81,7 +81,7 @@ package com.quantconnect.lean.Tests.Common
         {
             symbol = Symbol.Create("My Ticker", SecurityType.Equity, Market.USA);
             ticker = SymbolCache.GetTicker(symbol);
-            Assert.AreEqual(symbol.ID.ToString(), ticker);
+            Assert.AreEqual(symbol.ID.toString(), ticker);
         }
 
         [Test]

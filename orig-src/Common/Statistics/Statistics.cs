@@ -317,30 +317,30 @@ package com.quantconnect.lean.Statistics
                 }
 
                 profitLossRatio = ProfitLossRatio(averageWin, averageLoss);
-                profitLossRatioHuman = profitLossRatio.ToString(CultureInfo.InvariantCulture);
+                profitLossRatioHuman = profitLossRatio.toString(CultureInfo.InvariantCulture);
                 if (profitLossRatio == -1) profitLossRatioHuman = "0";
 
                 //Add the over all results first, break down by year later:
                 statistics = new Map<String,String> { 
-                    { "Total Trades", Math.Round(totalTrades, 0).ToString(CultureInfo.InvariantCulture) },
+                    { "Total Trades", Math.Round(totalTrades, 0).toString(CultureInfo.InvariantCulture) },
                     { "Average Win", Math.Round(averageWin * 100, 2) + "%"  },
                     { "Average Loss", Math.Round(averageLoss * 100, 2) + "%" },
                     { "Compounding Annual Return", Math.Round(algoCompoundingPerformance * 100, 3) + "%" },
                     { "Drawdown", (DrawdownPercent(equity, 3) * 100) + "%" },
-                    { "Expectancy", Math.Round((winRate * averageWinRatio) - (lossRate), 3).ToString(CultureInfo.InvariantCulture) },
+                    { "Expectancy", Math.Round((winRate * averageWinRatio) - (lossRate), 3).toString(CultureInfo.InvariantCulture) },
                     { "Net Profit", Math.Round(totalNetProfit * 100, 3) + "%"},
-                    { "Sharpe Ratio", Math.Round(SharpeRatio(listPerformance, riskFreeRate), 3).ToString(CultureInfo.InvariantCulture) },
+                    { "Sharpe Ratio", Math.Round(SharpeRatio(listPerformance, riskFreeRate), 3).toString(CultureInfo.InvariantCulture) },
                     { "Loss Rate", Math.Round(lossRate * 100) + "%" },
                     { "Win Rate", Math.Round(winRate * 100) + "%" }, 
                     { "Profit-Loss Ratio", profitLossRatioHuman },
-                    { "Alpha", Math.Round(Alpha(listPerformance, listBenchmark, riskFreeRate), 3).ToString(CultureInfo.InvariantCulture) },
-                    { "Beta", Math.Round(Beta(listPerformance, listBenchmark), 3).ToString(CultureInfo.InvariantCulture) },
-                    { "Annual Standard Deviation", Math.Round(AnnualStandardDeviation(listPerformance, tradingDaysPerYear), 3).ToString(CultureInfo.InvariantCulture) },
-                    { "Annual Variance", Math.Round(AnnualVariance(listPerformance, tradingDaysPerYear), 3).ToString(CultureInfo.InvariantCulture) },
-                    { "Information Ratio", Math.Round(InformationRatio(listPerformance, listBenchmark), 3).ToString(CultureInfo.InvariantCulture) },
-                    { "Tracking Error", Math.Round(TrackingError(listPerformance, listBenchmark), 3).ToString(CultureInfo.InvariantCulture) },
-                    { "Treynor Ratio", Math.Round(TreynorRatio(listPerformance, listBenchmark, riskFreeRate), 3).ToString(CultureInfo.InvariantCulture) },
-                    { "Total Fees", "$" + totalFees.ToString("0.00") }
+                    { "Alpha", Math.Round(Alpha(listPerformance, listBenchmark, riskFreeRate), 3).toString(CultureInfo.InvariantCulture) },
+                    { "Beta", Math.Round(Beta(listPerformance, listBenchmark), 3).toString(CultureInfo.InvariantCulture) },
+                    { "Annual Standard Deviation", Math.Round(AnnualStandardDeviation(listPerformance, tradingDaysPerYear), 3).toString(CultureInfo.InvariantCulture) },
+                    { "Annual Variance", Math.Round(AnnualVariance(listPerformance, tradingDaysPerYear), 3).toString(CultureInfo.InvariantCulture) },
+                    { "Information Ratio", Math.Round(InformationRatio(listPerformance, listBenchmark), 3).toString(CultureInfo.InvariantCulture) },
+                    { "Tracking Error", Math.Round(TrackingError(listPerformance, listBenchmark), 3).toString(CultureInfo.InvariantCulture) },
+                    { "Treynor Ratio", Math.Round(TreynorRatio(listPerformance, listBenchmark, riskFreeRate), 3).toString(CultureInfo.InvariantCulture) },
+                    { "Total Fees", "$" + totalFees.toString("0.00") }
                 };
             }
             catch (Exception err)
@@ -356,7 +356,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="averageWin"></param>
         /// <param name="averageLoss"></param>
         /// <returns></returns>
-        public static BigDecimal ProfitLossRatio(decimal averageWin, BigDecimal averageLoss)
+        public static BigDecimal ProfitLossRatio( BigDecimal averageWin, BigDecimal averageLoss)
         {
             if (averageLoss == 0) return -1;
             return Math.Round(averageWin / Math.Abs(averageLoss), 2);
@@ -439,7 +439,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="finalCapital">Algorithm final capital</param>
         /// <param name="years">Years trading</param>
         /// <returns>Decimal fraction for annual compounding performance</returns>
-        public static BigDecimal CompoundingAnnualPerformance(decimal startingCapital, BigDecimal finalCapital, BigDecimal years)
+        public static BigDecimal CompoundingAnnualPerformance( BigDecimal startingCapital, BigDecimal finalCapital, BigDecimal years)
         {
             return (Math.Pow((double)finalCapital / (double)startingCapital, (1 / (double)years)) - 1).SafeDecimalCast();
         }

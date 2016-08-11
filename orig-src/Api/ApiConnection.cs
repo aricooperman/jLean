@@ -45,7 +45,7 @@ package com.quantconnect.lean.Api
         public ApiConnection(int userId, String token)
         {
             _token = token;
-            _userId = userId.ToString();
+            _userId = userId.toString();
             Client = new RestClient("https://www.quantconnect.com/api/v2/");
         }
 
@@ -83,7 +83,7 @@ package com.quantconnect.lean.Api
                 // Timestamps older than 1800 seconds will not work.
                 timestamp = (int)Time.TimeStamp();
                 hash = CreateSecureHash(timestamp);
-                request.AddHeader("Timestamp", timestamp.ToString());
+                request.AddHeader("Timestamp", timestamp.toString());
                 Client.Authenticator = new HttpBasicAuthenticator(_userId, hash);
                 
                 // Execute the authenticated REST API Call
@@ -114,7 +114,7 @@ package com.quantconnect.lean.Api
         {
             // Create a new hash using current UTC timestamp.
             // Hash must be generated fresh each time.
-            data = string.Format("{0}:{1}", _token, timestamp);
+            data = String.format("{0}:{1}", _token, timestamp);
             return SHA256(data);
         }
 
@@ -130,9 +130,9 @@ package com.quantconnect.lean.Api
             crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(data), 0, Encoding.UTF8.GetByteCount(data));
             foreach (theByte in crypto)
             {
-                hash.Append(theByte.ToString("x2"));
+                hash.Append(theByte.toString("x2"));
             }
-            return hash.ToString();
+            return hash.toString();
         }
     }
 }

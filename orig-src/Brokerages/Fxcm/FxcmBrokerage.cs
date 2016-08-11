@@ -258,7 +258,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <returns>The open orders returned from FXCM</returns>
         public override List<Order> GetOpenOrders()
         {
-            Log.Trace( String.Format("FxcmBrokerage.GetOpenOrders(): Located {0} orders", _openOrders.Count));
+            Log.Trace( String.format("FxcmBrokerage.GetOpenOrders(): Located {0} orders", _openOrders.Count));
             orders = _openOrders.Values.ToList()
                 .Where(x => OrderIsOpen(x.getFXCMOrdStatus().getCode()))
                 .Select(ConvertOrder)
@@ -410,7 +410,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
             if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.Format("FxcmBrokerage.PlaceOrder(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+                throw new TimeoutException( String.format("FxcmBrokerage.PlaceOrder(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
 
             return !_isOrderSubmitRejected;
         }
@@ -434,7 +434,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 return false;
             }
 
-            fxcmOrderId = order.BrokerId[0].ToString();
+            fxcmOrderId = order.BrokerId[0].toString();
 
             ExecutionReport fxcmOrder;
             if (!_openOrders.TryGetValue(fxcmOrderId, out fxcmOrder))
@@ -468,7 +468,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
             if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.Format("FxcmBrokerage.UpdateOrder(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+                throw new TimeoutException( String.format("FxcmBrokerage.UpdateOrder(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
 
             return !_isOrderUpdateOrCancelRejected;
         }
@@ -492,7 +492,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 return false;
             }
 
-            fxcmOrderId = order.BrokerId[0].ToString();
+            fxcmOrderId = order.BrokerId[0].toString();
 
             ExecutionReport fxcmOrder;
             if (!_openOrders.TryGetValue(fxcmOrderId, out fxcmOrder))
@@ -508,7 +508,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
             if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.Format("FxcmBrokerage.CancelOrder(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+                throw new TimeoutException( String.format("FxcmBrokerage.CancelOrder(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
 
             return !_isOrderUpdateOrCancelRejected;
         }

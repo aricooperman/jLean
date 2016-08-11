@@ -365,7 +365,7 @@ package com.quantconnect.lean.Data.Market
         /// <param name="volume">Volume of this trade</param>
         /// <param name="bidSize">The size of the current bid, if available</param>
         /// <param name="askSize">The size of the current ask, if available</param>
-        public override void Update(decimal lastTrade, BigDecimal bidPrice, BigDecimal askPrice, BigDecimal volume, BigDecimal bidSize, BigDecimal askSize)
+        public override void Update( BigDecimal lastTrade, BigDecimal bidPrice, BigDecimal askPrice, BigDecimal volume, BigDecimal bidSize, BigDecimal askSize)
         {
             Value = lastTrade;
             BidPrice = bidPrice;

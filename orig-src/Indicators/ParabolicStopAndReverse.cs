@@ -56,8 +56,8 @@ package com.quantconnect.lean.Indicators
         /// <param name="afStart">Acceleration factor start value</param>
         /// <param name="afIncrement">Acceleration factor increment value</param>
         /// <param name="afMax">Acceleration factor max value</param>
-        public ParabolicStopAndReverse(decimal afStart = 0.02m, BigDecimal afIncrement = 0.02m, BigDecimal afMax = 0.2m)
-            : this( String.Format("PSAR({0},{1},{2})", afStart, afIncrement, afMax), afStart, afIncrement, afMax)
+        public ParabolicStopAndReverse( BigDecimal afStart = 0.02m, BigDecimal afIncrement = 0.02m, BigDecimal afMax = 0.2m)
+            : this( String.format("PSAR({0},{1},{2})", afStart, afIncrement, afMax), afStart, afIncrement, afMax)
         {
         }
 

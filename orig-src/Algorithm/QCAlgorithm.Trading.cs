@@ -330,7 +330,7 @@ package com.quantconnect.lean.Algorithm
             Security security;
             if (!Securities.TryGetValue(request.Symbol, out security))
             {
-                return OrderResponse.Error(request, OrderResponseErrorCode.MissingSecurity, "You haven't requested " + request.Symbol.ToString() + " data. Add this with AddSecurity() in the Initialize() Method.");
+                return OrderResponse.Error(request, OrderResponseErrorCode.MissingSecurity, "You haven't requested " + request.Symbol.toString() + " data. Add this with AddSecurity() in the Initialize() Method.");
             }
 
             //Ordering 0 is useless.
@@ -341,7 +341,7 @@ package com.quantconnect.lean.Algorithm
 
             if (!security.IsTradable)
             {
-                return OrderResponse.Error(request, OrderResponseErrorCode.NonTradableSecurity, "The security with symbol '" + request.Symbol.ToString() + "' is marked as non-tradable.");
+                return OrderResponse.Error(request, OrderResponseErrorCode.NonTradableSecurity, "The security with symbol '" + request.Symbol.toString() + "' is marked as non-tradable.");
             }
 
             price = security.Price;
@@ -354,7 +354,7 @@ package com.quantconnect.lean.Algorithm
             
             if (price == 0)
             {
-                return OrderResponse.Error(request, OrderResponseErrorCode.SecurityPriceZero, request.Symbol.ToString() + ": asset price is $0. If using custom data make sure you've set the 'Value' property.");
+                return OrderResponse.Error(request, OrderResponseErrorCode.SecurityPriceZero, request.Symbol.toString() + ": asset price is $0. If using custom data make sure you've set the 'Value' property.");
             }
 
             // check quote currency existence/conversion rate on all orders
@@ -394,7 +394,7 @@ package com.quantconnect.lean.Algorithm
             if (Transactions.OrdersCount > _maxOrders)
             {
                 Status = AlgorithmStatus.Stopped;
-                return OrderResponse.Error(request, OrderResponseErrorCode.ExceededMaximumOrders, string.Format("You have exceeded maximum number of orders ({0}), for unlimited orders upgrade your account.", _maxOrders));
+                return OrderResponse.Error(request, OrderResponseErrorCode.ExceededMaximumOrders, String.format("You have exceeded maximum number of orders ({0}), for unlimited orders upgrade your account.", _maxOrders));
             }
             
             if (request.OrderType == OrderType.MarketOnClose)
@@ -543,7 +543,7 @@ package com.quantconnect.lean.Algorithm
             Security security;
             if (!Securities.TryGetValue(symbol, out security))
             {
-                Error(symbol.ToString() + " not found in portfolio. Request this data when initializing the algorithm.");
+                Error(symbol.toString() + " not found in portfolio. Request this data when initializing the algorithm.");
                 return;
             }
 

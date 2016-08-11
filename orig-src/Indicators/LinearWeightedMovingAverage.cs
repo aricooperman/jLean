@@ -87,7 +87,7 @@ package com.quantconnect.lean.Indicators
                 BigDecimal x = (index-- * window[(int)i]);
                 numerator += x;
             }
-            //System.Diagnostics.Debug.WriteLine( String.Format("LWMA = {0}", (smooth/denominator)));
+            //System.Diagnostics.Debug.WriteLine( String.format("LWMA = {0}", (smooth/denominator)));
             return numerator / denominator;
         }
 

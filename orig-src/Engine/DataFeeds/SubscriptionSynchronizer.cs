@@ -55,7 +55,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="nextFrontier">The next frontier time as determined by the first piece of data in the future ahead of the frontier.
         /// This value will equal DateTime.MaxValue when the subscriptions are all finished</param>
         /// <returns>A time slice for the specified frontier time</returns>
-        public TimeSlice Sync(DateTime frontier, IEnumerable<Subscription> subscriptions, DateTimeZone sliceTimeZone, CashBook cashBook, out DateTime nextFrontier)
+        public TimeSlice Sync(DateTime frontier, IEnumerable<Subscription> subscriptions, ZoneId sliceTimeZone, CashBook cashBook, out DateTime nextFrontier)
         {
             changes = SecurityChanges.None;
             nextFrontier = DateTime.MaxValue;

@@ -96,7 +96,7 @@ package com.quantconnect.lean.Securities
         /// <param name="sourceCurrency">The source currency symbol</param>
         /// <param name="destinationCurrency">The destination currency symbol</param>
         /// <returns>The converted value</returns>
-        public BigDecimal Convert(decimal sourceQuantity, String sourceCurrency, String destinationCurrency)
+        public BigDecimal Convert( BigDecimal sourceQuantity, String sourceCurrency, String destinationCurrency)
         {
             source = this[sourceCurrency];
             destination = this[destinationCurrency];
@@ -110,7 +110,7 @@ package com.quantconnect.lean.Securities
         /// <param name="sourceQuantity">The quantity of source currency to be converted</param>
         /// <param name="sourceCurrency">The source currency symbol</param>
         /// <returns>The converted value</returns>
-        public BigDecimal ConvertToAccountCurrency(decimal sourceQuantity, String sourceCurrency)
+        public BigDecimal ConvertToAccountCurrency( BigDecimal sourceQuantity, String sourceCurrency)
         {
             return Convert(sourceQuantity, sourceCurrency, AccountCurrency);
         }
@@ -122,21 +122,21 @@ package com.quantconnect.lean.Securities
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
             sb = new StringBuilder();
-            sb.AppendLine( String.Format("{0} {1,13}    {2,10} = {3}", "Symbol", "Quantity", "Conversion", "Value in " + AccountCurrency));
+            sb.AppendLine( String.format("{0} {1,13}    {2,10} = {3}", "Symbol", "Quantity", "Conversion", "Value in " + AccountCurrency));
             foreach (value in Values)
             {
-                sb.AppendLine(value.ToString());
+                sb.AppendLine(value.toString());
             }
             sb.AppendLine("-------------------------------------------------");
-            sb.AppendLine( String.Format("CashBook Total Value:                {0}{1}", 
+            sb.AppendLine( String.format("CashBook Total Value:                {0}{1}", 
                 Currencies.CurrencySymbols[AccountCurrency], 
                 Math.Round(TotalValueInAccountCurrency, 2))
                 );
 
-            return sb.ToString();
+            return sb.toString();
         }
 
         #region IDictionary Implementation

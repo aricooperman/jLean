@@ -68,7 +68,7 @@ package com.quantconnect.lean.Brokerages.Oanda
             if (order.Type == OrderType.Limit)
             {
                 requestParams.Add("type", "limit");
-                requestParams.Add("price", ((LimitOrder)order).LimitPrice.ToString(CultureInfo.InvariantCulture));
+                requestParams.Add("price", ((LimitOrder)order).LimitPrice.toString(CultureInfo.InvariantCulture));
                 switch (order.Direction)
                 {
                     case OrderDirection.Buy:
@@ -85,35 +85,35 @@ package com.quantconnect.lean.Brokerages.Oanda
                 }
 
                 //3 months is the max expiry for Oanda, and OrderDuration.GTC is only currently available
-                requestParams.Add("expiry", XmlConvert.ToString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
+                requestParams.Add("expiry", XmlConvert.toString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
             }
 
             //this type should contain a stop and a limit to that stop.
             if (order.Type == OrderType.StopLimit)
             {
                 requestParams.Add("type", "stop");
-                requestParams.Add("price", ((StopLimitOrder)order).StopPrice.ToString(CultureInfo.InvariantCulture));
+                requestParams.Add("price", ((StopLimitOrder)order).StopPrice.toString(CultureInfo.InvariantCulture));
                 switch (order.Direction)
                 {
                     case OrderDirection.Buy:
-                        requestParams.Add("upperBound", ((StopLimitOrder)order).LimitPrice.ToString(CultureInfo.InvariantCulture));
+                        requestParams.Add("upperBound", ((StopLimitOrder)order).LimitPrice.toString(CultureInfo.InvariantCulture));
                         break;
                     case OrderDirection.Sell:
-                        requestParams.Add("lowerBound", ((StopLimitOrder)order).LimitPrice.ToString(CultureInfo.InvariantCulture));
+                        requestParams.Add("lowerBound", ((StopLimitOrder)order).LimitPrice.toString(CultureInfo.InvariantCulture));
                         break;
                 }
 
                 //3 months is the max expiry for Oanda, and OrderDuration.GTC is only currently available
-                requestParams.Add("expiry", XmlConvert.ToString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
+                requestParams.Add("expiry", XmlConvert.toString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
             }
 
             if (order.Type == OrderType.StopMarket)
             {
                 requestParams.Add("type", "marketIfTouched");
-                requestParams.Add("price", ((StopMarketOrder)order).StopPrice.ToString(CultureInfo.InvariantCulture));
+                requestParams.Add("price", ((StopMarketOrder)order).StopPrice.toString(CultureInfo.InvariantCulture));
 
                 //3 months is the max expiry for Oanda, and OrderDuration.GTC is only currently available
-                requestParams.Add("expiry", XmlConvert.ToString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
+                requestParams.Add("expiry", XmlConvert.toString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
             }
         }
 
@@ -178,7 +178,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                 OnOrderEvent(new OrderEvent(ConvertOrder(order), DateTime.UtcNow, 0)
                 {
                     Status = OrderStatus.Invalid,
-                    Message = string.Format("Order currently does not exist with order id: {0}.", orderId)
+                    Message = String.format("Order currently does not exist with order id: {0}.", orderId)
                 });
             }
         }
@@ -192,7 +192,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         {
             requestBuilder = new StringBuilder(EndpointResolver.ResolveEndpoint(_environment, Server.Rates) + "prices?instruments=");
             requestBuilder.Append( String.Join(",", instruments));
-            requestString = requestBuilder.ToString().Replace(",", "%2C");
+            requestString = requestBuilder.toString().Replace(",", "%2C");
 
             return MakeRequest<PricesResponse>(requestString).prices;
         }
@@ -454,7 +454,7 @@ package com.quantconnect.lean.Brokerages.Oanda
             qcOrder.Symbol = _symbolMapper.GetLeanSymbol(order.instrument, securityType, Market.Oanda);
             qcOrder.Quantity = ConvertQuantity(order);
             qcOrder.Status = OrderStatus.None;
-            qcOrder.BrokerId.Add(order.id.ToString());
+            qcOrder.BrokerId.Add(order.id.toString());
             orderByBrokerageId = _orderProvider.GetOrderByBrokerageId(order.id);
             if (orderByBrokerageId != null)
             {

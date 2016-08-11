@@ -48,9 +48,9 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String ToString()
+        public override String toString()
         {
-            return string.Format("{0} UTC: Cancel Order: ({1}) - {2}", Time, OrderId, Tag) + " Status: " + Status;
+            return String.format("{0} UTC: Cancel Order: ({1}) - {2}", Time, OrderId, Tag) + " Status: " + Status;
         }
     }
 }

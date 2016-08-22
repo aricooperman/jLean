@@ -24,35 +24,32 @@ package com.quantconnect.lean.ToolBox.QuandlBitfinexDownloader
         /// <summary>
         /// Quandl Bitfinex Toolbox Project For LEAN Algorithmic Trading Engine.
         /// </summary>
-        static void Main( String[] args)
-        {
-            if (args.Length != 2)
-            {
-                Console.WriteLine("Usage: Downloader FROMDATE APIKEY");
-                Console.WriteLine("FROMDATE = yyyymmdd");
+        static void Main( String[] args) {
+            if( args.Length != 2) {
+                Console.WriteLine( "Usage: Downloader FROMDATE APIKEY");
+                Console.WriteLine( "FROMDATE = yyyymmdd");
                 Environment.Exit(1);
             }
 
             try
             {
                 // Load settings from config.json
-                dataDirectory = Config.Get("data-directory", "../../../Data");
-                scaleFactor = Config.GetInt("bitfinex-scale-factor", 100);
+                dataDirectory = Config.Get( "data-directory", "../../../Data");
+                scaleFactor = Config.GetInt( "bitfinex-scale-factor", 100);
 
                 // Create an instance of the downloader
                 static final String market = Market.Bitfinex;
                 downloader = new QuandlBitfinexDownloader(args[1], scaleFactor);
 
                 // Download the data
-                symbol = Symbol.Create("BTCUSD", SecurityType.Forex, market);
+                symbol = Symbol.Create( "BTCUSD", SecurityType.Forex, market);
                 data = downloader.Get(symbol, Resolution.Daily, DateTime.ParseExact(args[0], "yyyyMMdd", CultureInfo.CurrentCulture), DateTime.UtcNow);
 
                 // Save the data
                 writer = new LeanDataWriter(Resolution.Daily, symbol, dataDirectory, TickType.Quote);
                 writer.Write(data);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }

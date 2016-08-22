@@ -30,9 +30,8 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
     {
         private static final int LogInterval = 1000000;
 
-        static AlgoSeekOptionsParser()
-        {
-            Log.Error("WARNING:: TEST MODE:: AWAITING FINAL FILE NAMING CONVENTION");
+        static AlgoSeekOptionsParser() {
+            Log.Error( "WARNING:: TEST MODE:: AWAITING FINAL FILE NAMING CONVENTION");
         }
 
         /// <summary>
@@ -41,24 +40,20 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
         /// <param name="source">The source of the stream</param>
         /// <param name="stream">The input stream to be parsed</param>
         /// <returns>An enumerable of base data</returns>
-        public IEnumerable<BaseData> Parse( String source, Stream stream)
-        {
+        public IEnumerable<BaseData> Parse( String source, Stream stream) {
             count = 0L;
-            referenceDate = DateTime.ParseExact(new FileInfo(source).Directory.Name, DateFormat.EightCharacter, null);
+            referenceDate = DateTime.ParseExact(new FileInfo(source).Directory.Name, DateFormat.EightCharacter, null );
             
-            using (reader = new StreamReader(stream))
-            {
+            using (reader = new StreamReader(stream)) {
                 // skip the header row
                 reader.ReadLine();
 
                 String line;
-                while ((line = reader.ReadLine()) != null)
-                {
+                while ((line = reader.ReadLine()) != null ) {
                     count++;
 
-                    if (count%LogInterval == 0)
-                    {
-                        Log.Trace("AlgoSeekOptionsParser.Parse({0}): Parsed {1,3}M lines.", source, count/LogInterval);
+                    if( count%LogInterval == 0) {
+                        Log.Trace( "AlgoSeekOptionsParser.Parse(%1$s): Parsed {1,3}M lines.", source, count/LogInterval);
                     }
 
                     Tick tick;
@@ -66,14 +61,12 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
                     {
                         // filter out bad lines as fast as possible
                         EventType eventType;
-                        switch (line[13])
-                        {
+                        switch (line[13]) {
                             case 'T':
                                 eventType = EventType.Trade;
                                 break;
                             case 'F':
-                                switch (line[15])
-                                {
+                                switch (line[15]) {
                                     case 'B':
                                         eventType = EventType.Bid;
                                         break;
@@ -90,37 +83,37 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
                         
                         // parse csv check column count
                         static final int columns = 11;
-                        csv = line.ToCsv(columns);
-                        if (csv.Count < columns) continue;
+                        csv = line Extensions.toCsv( columns);
+                        if( csv.Count < columns) continue;
 
                         // ignoring time zones completely -- this is all in the 'data-time-zone'
                         timeString = csv[0];
-                        hours = timeString.Substring(0, 2).ToInt32();
-                        minutes = timeString.Substring(3, 2).ToInt32();
-                        seconds = timeString.Substring(6, 2).ToInt32();
-                        millis = timeString.Substring(9, 3).ToInt32();
+                        hours = timeString.Substring(0, 2) Integer.parseInt(  );
+                        minutes = timeString.Substring(3, 2) Integer.parseInt(  );
+                        seconds = timeString.Substring(6, 2) Integer.parseInt(  );
+                        millis = timeString.Substring(9, 3) Integer.parseInt(  );
                         time = referenceDate.Add(new TimeSpan(0, hours, minutes, seconds, millis));
 
                         // detail: PUT at 30.0000 on 2014-01-18
                         underlying = csv[4];
 
                         //FOR WINDOWS TESTING
-                        //if (underlying.Equals("AUX", StringComparison.OrdinalIgnoreCase)
-                         //|| underlying.Equals("CON", StringComparison.OrdinalIgnoreCase)
-                         //|| underlying.Equals("PRN", StringComparison.OrdinalIgnoreCase))
+                        //if( underlying.Equals( "AUX", StringComparison.OrdinalIgnoreCase)
+                         //|| underlying.Equals( "CON", StringComparison.OrdinalIgnoreCase)
+                         //|| underlying.Equals( "PRN", StringComparison.OrdinalIgnoreCase))
                         //{
                             //continue;
                         //}
 
                         optionRight = csv[5][0] == 'P' ? OptionRight.Put : OptionRight.Call;
-                        expiry = DateTime.ParseExact(csv[6], "yyyyMMdd", null);
-                        strike = csv[7].ToDecimal()/10000m;
+                        expiry = DateTime.ParseExact(csv[6], "yyyyMMdd", null );
+                        strike = csv[7] new BigDecimal(  )/10000m;
                         optionStyle = OptionStyle.American; // couldn't see this specified in the file, maybe need a reference file
                         sid = SecurityIdentifier.GenerateOption(expiry, underlying, Market.USA, strike, optionRight, optionStyle);
                         symbol = new Symbol(sid, underlying);
                         
-                        price = csv[9].ToDecimal() / 10000m;
-                        quantity = csv[8].ToInt32();
+                        price = csv[9] new BigDecimal(  ) / 10000m;
+                        quantity = csv[8] Integer.parseInt(  );
 
                         tick = new Tick
                         {
@@ -130,10 +123,8 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
                             Exchange = csv[10],
                             Value = price
                         };
-                        if (eventType.TickType == TickType.Quote)
-                        {
-                            if (eventType.IsAsk)
-                            {
+                        if( eventType.TickType == TickType.Quote) {
+                            if( eventType.IsAsk) {
                                 tick.AskPrice = price;
                                 tick.AskSize = quantity;
                             }
@@ -148,8 +139,7 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
                             tick.Quantity = quantity;
                         }
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         Log.Error(err);
                         continue;
                     }
@@ -162,8 +152,7 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
         }
 
         /// <summary>
@@ -176,8 +165,7 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
             public static readonly EventType Ask = new EventType(true, TickType.Quote);
             public readonly boolean IsAsk;
             public readonly TickType TickType;
-            private EventType( boolean isAsk, TickType tickType)
-            {
+            private EventType( boolean isAsk, TickType tickType) {
                 IsAsk = isAsk;
                 TickType = tickType;
             }

@@ -39,24 +39,20 @@ package com.quantconnect.lean.Statistics
             {
                 benchmark = new SortedMap<DateTime, decimal>();
                 url = "http://real-chart.finance.yahoo.com/table.csv?s=SPY&a=11&b=31&c=1997&d=" + (DateTime.Now.Month - 1) + "&e=" + DateTime.Now.Day + "&f=" + DateTime.Now.Year + "&g=d&ignore=.csv";
-                using (net = new WebClient())
-                {
+                using (net = new WebClient()) {
                     net.Proxy = WebRequest.GetSystemWebProxy();
                     data = net.DownloadString(url);
                     first = true;
-                    using (sr = new StreamReader(data.ToStream()))
-                    {
-                        while (sr.Peek() >= 0)
-                        {
+                    using (sr = new StreamReader(data.ToStream())) {
+                        while (sr.Peek() >= 0) {
                             line = sr.ReadLine();
-                            if (first)
-                            {
+                            if( first) {
                                 first = false;
                                 continue;
                             }
-                            if (line == null) continue;
-                            csv = line.Split(',');
-                            benchmark.Add(DateTime.Parse(csv[0]), Convert.ToDecimal(csv[6], CultureInfo.InvariantCulture));
+                            if( line == null ) continue;
+                            csv = line.split(',');
+                            benchmark.Add(DateTime.Parse(csv[0]), new BigDecimal( csv[6], CultureInfo.InvariantCulture));
                         }
                     }
                 }
@@ -70,16 +66,13 @@ package com.quantconnect.lean.Statistics
         /// <remarks>This is required to convert the equity plot into a usable form for the statistics calculation</remarks>
         /// <param name="points">ChartPoints Array</param>
         /// <returns>SortedDictionary of the equity BigDecimal values ordered in time</returns>
-        private static SortedMap<DateTime, decimal> ChartPointToDictionary(IEnumerable<ChartPoint> points)
-        {
+        private static SortedMap<DateTime, decimal> ChartPointToDictionary(IEnumerable<ChartPoint> points) {
             dictionary = new SortedMap<DateTime, decimal>();
             try
             {
-                foreach (point in points)
-                {
+                foreach (point in points) {
                     x = Time.UnixTimeStampToDateTime(point.x);
-                    if (!dictionary.ContainsKey(x))
-                    {
+                    if( !dictionary.ContainsKey(x)) {
                         dictionary.Add(x, point.y);
                     }
                     else
@@ -88,8 +81,7 @@ package com.quantconnect.lean.Statistics
                     }
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
             return dictionary;
@@ -116,8 +108,7 @@ package com.quantconnect.lean.Statistics
             BigDecimal totalFees, 
             BigDecimal totalTrades, 
             double tradingDaysPerYear = 252
-            )
-        {
+            ) {
             //Initialise the response:
             double riskFreeRate = 0;
             BigDecimal totalClosedTrades = 0;
@@ -165,11 +156,9 @@ package com.quantconnect.lean.Statistics
                 //Get benchmark performance array for same period:
                 benchmark.Keys.ToList().ForEach(dt =>
                 {
-                    if (dt >= equity.Keys.FirstOrDefault().AddDays(-1) && dt < equity.Keys.LastOrDefault())
-                    {
+                    if( dt >= equity.Keys.FirstOrDefault().AddDays(-1) && dt < equity.Keys.LastOrDefault()) {
                         BigDecimal previous;
-                        if (benchmark.TryGetValue(dtPrevious, out previous) && previous != 0)
-                        {
+                        if( benchmark.TryGetValue(dtPrevious, out previous) && previous != 0) {
                             deltaBenchmark = (benchmark[dt] - previous)/previous;
                             listBenchmark.Add((double)(deltaBenchmark));
                         }
@@ -184,19 +173,16 @@ package com.quantconnect.lean.Statistics
                 // TODO : if these lists are required to be the same length then we should create structure to pair the values, this way, by contract it will be enforced.
 
                 //THIS SHOULD NEVER HAPPEN --> But if it does, log it and fail silently.
-                while (listPerformance.Count < listBenchmark.Count)
-                {
+                while (listPerformance.Count < listBenchmark.Count) {
                     listPerformance.Add(0);
-                    Log.Error("Statistics.Generate(): Padded Performance");
+                    Log.Error( "Statistics.Generate(): Padded Performance");
                 }
-                while (listPerformance.Count > listBenchmark.Count)
-                {
+                while (listPerformance.Count > listBenchmark.Count) {
                     listBenchmark.Add(0);
-                    Log.Error("Statistics.Generate(): Padded Benchmark");
+                    Log.Error( "Statistics.Generate(): Padded Benchmark");
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err, "Dic-Array Convert:");
             }
 
@@ -205,36 +191,31 @@ package com.quantconnect.lean.Statistics
                 //Number of years in this dataset:
                 fractionOfYears = (equity.Keys.LastOrDefault() - equity.Keys.FirstOrDefault()).TotalDays / 365;
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err, "Fraction of Years:");
             }
 
             try
             {
-                if (benchmark != null)
-                {
+                if( benchmark != null ) {
                     algoCompoundingPerformance = CompoundingAnnualPerformance(startingCash, equity.Values.LastOrDefault(), (decimal) fractionOfYears);
                     finalBenchmarkCash = ((benchmark.Values.Last() - benchmark.Values.First())/benchmark.Values.First())*startingCash;
                     benchCompoundingPerformance = CompoundingAnnualPerformance(startingCash, finalBenchmarkCash, (decimal) fractionOfYears);
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err, "Compounding:");
             }
 
             try
             {
                 //Run over each equity day:
-                foreach (closedTrade in profitLoss.Keys)
-                {
+                foreach (closedTrade in profitLoss.Keys) {
                     profitLossValue = profitLoss[closedTrade];
 
                     //Check if this date is in the "years" array:
                     year = closedTrade.Year;
-                    if (!years.Contains(year))
-                    {
+                    if( !years.Contains(year)) {
                         //Initialise a new year holder:
                         years.Add(year);
                         annualTrades.Add(year, 0);
@@ -248,8 +229,7 @@ package com.quantconnect.lean.Statistics
                     annualTrades[year]++;
 
                     //Profit loss tracking:
-                    if (profitLossValue > 0)
-                    {
+                    if( profitLossValue > 0) {
                         annualWins[year]++;
                         annualWinTotal[year] += profitLossValue / runningCash;
                     }
@@ -264,32 +244,28 @@ package com.quantconnect.lean.Statistics
                 }
 
                 //Get the annual percentage of profit and loss:
-                foreach (year in years)
-                {
+                foreach (year in years) {
                     annualNetProfit[year] = (annualWinTotal[year] + annualLossTotal[year]);
                 }
 
                 //Sum the totals:
                 try
                 {
-                    if (profitLoss.Keys.Count > 0)
-                    {
+                    if( profitLoss.Keys.Count > 0) {
                         totalClosedTrades = annualTrades.Values.Sum();
                         totalWins = annualWins.Values.Sum();
                         totalLosses = annualLosses.Values.Sum();
                         totalNetProfit = (equity.Values.LastOrDefault() / startingCash) - 1;
 
                         //-> Handle Div/0 Errors
-                        if (totalWins == 0)
-                        {
+                        if( totalWins == 0) {
                             averageWin = 0;
                         }
                         else
                         {
                             averageWin = annualWinTotal.Values.Sum() / totalWins;
                         }
-                        if (totalLosses == 0)
-                        {
+                        if( totalLosses == 0) {
                             averageLoss = 0;
                             averageWinRatio = 0;
                         }
@@ -298,8 +274,7 @@ package com.quantconnect.lean.Statistics
                             averageLoss = annualLossTotal.Values.Sum() / totalLosses;
                             averageWinRatio = Math.Abs(averageWin / averageLoss);
                         }
-                        if (totalTrades == 0)
-                        {
+                        if( totalTrades == 0) {
                             winRate = 0;
                             lossRate = 0;
                         }
@@ -311,14 +286,13 @@ package com.quantconnect.lean.Statistics
                     }
 
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     Log.Error(err, "Second Half:");
                 }
 
                 profitLossRatio = ProfitLossRatio(averageWin, averageLoss);
                 profitLossRatioHuman = profitLossRatio.toString(CultureInfo.InvariantCulture);
-                if (profitLossRatio == -1) profitLossRatioHuman = "0";
+                if( profitLossRatio == -1) profitLossRatioHuman = "0";
 
                 //Add the over all results first, break down by year later:
                 statistics = new Map<String,String> { 
@@ -340,11 +314,10 @@ package com.quantconnect.lean.Statistics
                     { "Information Ratio", Math.Round(InformationRatio(listPerformance, listBenchmark), 3).toString(CultureInfo.InvariantCulture) },
                     { "Tracking Error", Math.Round(TrackingError(listPerformance, listBenchmark), 3).toString(CultureInfo.InvariantCulture) },
                     { "Treynor Ratio", Math.Round(TreynorRatio(listPerformance, listBenchmark, riskFreeRate), 3).toString(CultureInfo.InvariantCulture) },
-                    { "Total Fees", "$" + totalFees.toString("0.00") }
+                    { "Total Fees", "$" + totalFees.toString( "0.00") }
                 };
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
             return statistics;
@@ -356,9 +329,8 @@ package com.quantconnect.lean.Statistics
         /// <param name="averageWin"></param>
         /// <param name="averageLoss"></param>
         /// <returns></returns>
-        public static BigDecimal ProfitLossRatio( BigDecimal averageWin, BigDecimal averageLoss)
-        {
-            if (averageLoss == 0) return -1;
+        public static BigDecimal ProfitLossRatio( BigDecimal averageWin, BigDecimal averageLoss) {
+            if( averageLoss == 0) return -1;
             return Math.Round(averageWin / Math.Abs(averageLoss), 2);
         }
 
@@ -368,23 +340,20 @@ package com.quantconnect.lean.Statistics
         /// <param name="equityOverTime"></param>
         /// <param name="rounding"></param>
         /// <returns></returns>
-        public static BigDecimal DrawdownPercent(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2)
-        {
+        public static BigDecimal DrawdownPercent(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2) {
             dd = 0m;
             try
             {
                 lPrices = equityOverTime.Values.ToList();
                 lDrawdowns = new List<decimal>();
                 high = lPrices[0];
-                foreach (price in lPrices)
-                {
-                    if (price >= high) high = price;
+                foreach (price in lPrices) {
+                    if( price >= high) high = price;
                     lDrawdowns.Add((price/high) - 1);
                 }
                 dd = Math.Round(Math.Abs(lDrawdowns.Min()), rounding);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
             return dd;
@@ -396,8 +365,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="equityOverTime">Array of portfolio value over time.</param>
         /// <param name="rounding">Round the drawdown statistics.</param>
         /// <returns>Draw down percentage over period.</returns>
-        public static BigDecimal DrawdownValue(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2)
-        {
+        public static BigDecimal DrawdownValue(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2) {
             //Initialise:
             priceMaximum = 0;
             previousMinimum = 0;
@@ -407,16 +375,13 @@ package com.quantconnect.lean.Statistics
             {
                 lPrices = equityOverTime.Values.ToList();
 
-                for (id = 0; id < lPrices.Count; id++)
-                {
-                    if (lPrices[id] >= lPrices[priceMaximum])
-                    {
+                for (id = 0; id < lPrices.Count; id++) {
+                    if( lPrices[id] >= lPrices[priceMaximum]) {
                         priceMaximum = id;
                     }
                     else
                     {
-                        if ((lPrices[priceMaximum] - lPrices[id]) > (lPrices[previousMaximum] - lPrices[previousMinimum]))
-                        {
+                        if( (lPrices[priceMaximum] - lPrices[id]) > (lPrices[previousMaximum] - lPrices[previousMinimum])) {
                             previousMaximum = priceMaximum;
                             previousMinimum = id;
                         }
@@ -424,8 +389,7 @@ package com.quantconnect.lean.Statistics
                 }
                 return Math.Round((lPrices[previousMaximum] - lPrices[previousMinimum]), rounding);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
             return 0;
@@ -439,8 +403,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="finalCapital">Algorithm final capital</param>
         /// <param name="years">Years trading</param>
         /// <returns>Decimal fraction for annual compounding performance</returns>
-        public static BigDecimal CompoundingAnnualPerformance( BigDecimal startingCapital, BigDecimal finalCapital, BigDecimal years)
-        {
+        public static BigDecimal CompoundingAnnualPerformance( BigDecimal startingCapital, BigDecimal finalCapital, BigDecimal years) {
             return (Math.Pow((double)finalCapital / (double)startingCapital, (1 / (double)years)) - 1).SafeDecimalCast();
         }
 
@@ -451,8 +414,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="tradingDaysPerYear">Trading days per year for the assets in portfolio</param>
         /// <remarks>May be unaccurate for forex algorithms with more trading days in a year</remarks>
         /// <returns>Double annual performance percentage</returns>
-        public static double AnnualPerformance(List<double> performance, double tradingDaysPerYear = 252)
-        {
+        public static double AnnualPerformance(List<double> performance, double tradingDaysPerYear = 252) {
             return performance.Average() * tradingDaysPerYear;
         }
 
@@ -463,8 +425,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="tradingDaysPerYear"></param>
         /// <remarks>Invokes the variance extension in the MathNet Statistics class</remarks>
         /// <returns>Annual variance value</returns>
-        public static double AnnualVariance(List<double> performance, double tradingDaysPerYear = 252)
-        {
+        public static double AnnualVariance(List<double> performance, double tradingDaysPerYear = 252) {
             return (performance.Variance())*tradingDaysPerYear;
         }
 
@@ -478,8 +439,7 @@ package com.quantconnect.lean.Statistics
         ///     Feasibly the trading days per year can be fetched from the dictionary of performance which includes the date-times to get the range; if is more than 1 year data.
         /// </remarks>
         /// <returns>Value for annual standard deviation</returns>
-        public static double AnnualStandardDeviation(List<double> performance, double tradingDaysPerYear = 252)
-        {
+        public static double AnnualStandardDeviation(List<double> performance, double tradingDaysPerYear = 252) {
             return Math.Sqrt(performance.Variance() * tradingDaysPerYear);
         }
         
@@ -490,8 +450,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="benchmarkPerformance">Collection of double benchmark daily performance values.</param>
         /// <remarks>Invokes the variance and covariance extensions in the MathNet Statistics class</remarks>
         /// <returns>Value for beta</returns>
-        public static double Beta(List<double> algoPerformance, List<double> benchmarkPerformance)
-        {
+        public static double Beta(List<double> algoPerformance, List<double> benchmarkPerformance) {
             return algoPerformance.Covariance(benchmarkPerformance) / benchmarkPerformance.Variance();
         }
 
@@ -502,8 +461,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="benchmarkPerformance">Collection of double benchmark daily performance values.</param>
         /// <param name="riskFreeRate">Risk free rate of return for the T-Bonds.</param>
         /// <returns>Value for alpha</returns>
-        public static double Alpha(List<double> algoPerformance, List<double> benchmarkPerformance, double riskFreeRate)
-        {
+        public static double Alpha(List<double> algoPerformance, List<double> benchmarkPerformance, double riskFreeRate) {
             return AnnualPerformance(algoPerformance) - (riskFreeRate + Beta(algoPerformance, benchmarkPerformance) * (AnnualPerformance(benchmarkPerformance) - riskFreeRate));
         }
 
@@ -514,8 +472,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="algoPerformance">Double collection of algorithm daily performance values</param>
         /// <param name="benchmarkPerformance">Double collection of benchmark daily performance values</param>
         /// <returns>Value for tracking error</returns>
-        public static double TrackingError(List<double> algoPerformance, List<double> benchmarkPerformance)
-        {
+        public static double TrackingError(List<double> algoPerformance, List<double> benchmarkPerformance) {
             return Math.Sqrt(AnnualVariance(algoPerformance) - 2 * Correlation.Pearson(algoPerformance, benchmarkPerformance) * AnnualStandardDeviation(algoPerformance) * AnnualStandardDeviation(benchmarkPerformance) + AnnualVariance(benchmarkPerformance));
         }
 
@@ -528,8 +485,7 @@ package com.quantconnect.lean.Statistics
         /// <remarks>(risk = tracking error volatility, a volatility measures that considers the volatility of both algo and benchmark)</remarks>
         /// <seealso cref="TrackingError"/>
         /// <returns>Value for information ratio</returns>
-        public static double InformationRatio(List<double> algoPerformance, List<double> benchmarkPerformance)
-        {
+        public static double InformationRatio(List<double> algoPerformance, List<double> benchmarkPerformance) {
             return (AnnualPerformance(algoPerformance) - AnnualPerformance(benchmarkPerformance)) / (TrackingError(algoPerformance, benchmarkPerformance));
         }
 
@@ -540,8 +496,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="algoPerformance">Collection of double values for the algorithm daily performance</param>
         /// <param name="riskFreeRate"></param>
         /// <returns>Value for sharpe ratio</returns>
-        public static double SharpeRatio(List<double> algoPerformance, double riskFreeRate)
-        {
+        public static double SharpeRatio(List<double> algoPerformance, double riskFreeRate) {
             return (AnnualPerformance(algoPerformance) - riskFreeRate) / (AnnualStandardDeviation(algoPerformance));
         }
 
@@ -552,8 +507,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="benchmarkPerformance">Collection of double benchmark daily performance values</param>
         /// <param name="riskFreeRate">Risk free rate of return</param>
         /// <returns>double Treynor ratio</returns>
-        public static double TreynorRatio(List<double> algoPerformance, List<double> benchmarkPerformance, double riskFreeRate)
-        {
+        public static double TreynorRatio(List<double> algoPerformance, List<double> benchmarkPerformance, double riskFreeRate) {
             return (AnnualPerformance(algoPerformance) - riskFreeRate) / (Beta(algoPerformance, benchmarkPerformance));
         }
 

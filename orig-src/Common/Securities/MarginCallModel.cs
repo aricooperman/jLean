@@ -38,8 +38,7 @@ package com.quantconnect.lean.Securities
         /// Initializes a new instance of the <see cref="MarginCallModel"/> class
         /// </summary>
         /// <param name="portfolio">The portfolio object to receive margin calls</param>
-        public MarginCallModel(SecurityPortfolioManager portfolio)
-        {
+        public MarginCallModel(SecurityPortfolioManager portfolio) {
             Portfolio = portfolio;
         }
 
@@ -49,11 +48,9 @@ package com.quantconnect.lean.Securities
         /// <param name="generatedMarginCallOrders">These are the margin call orders that were generated
         /// by individual security margin models.</param>
         /// <returns>The list of orders that were actually executed</returns>
-        public virtual List<OrderTicket> ExecuteMarginCall(IEnumerable<SubmitOrderRequest> generatedMarginCallOrders)
-        {
+        public virtual List<OrderTicket> ExecuteMarginCall(IEnumerable<SubmitOrderRequest> generatedMarginCallOrders) {
             // if our margin used is back under the portfolio value then we can stop liquidating
-            if (Portfolio.MarginRemaining >= 0)
-            {
+            if( Portfolio.MarginRemaining >= 0) {
                 return new List<OrderTicket>();
             }
 
@@ -61,15 +58,13 @@ package com.quantconnect.lean.Securities
             executedOrders = new List<OrderTicket>();
             ordersWithSecurities = generatedMarginCallOrders.ToDictionary(x => x, x => Portfolio[x.Symbol]);
             orderedByLosers = ordersWithSecurities.OrderBy(x => x.Value.UnrealizedProfit).Select(x => x.Key);
-            foreach (request in orderedByLosers)
-            {
+            foreach (request in orderedByLosers) {
                 ticket = Portfolio.Transactions.AddOrder(request);
                 Portfolio.Transactions.WaitForOrder(request.OrderId);
                 executedOrders.Add(ticket);
 
                 // if our margin used is back under the portfolio value then we can stop liquidating
-                if (Portfolio.MarginRemaining >= 0)
-                {
+                if( Portfolio.MarginRemaining >= 0) {
                     break;
                 }
             }

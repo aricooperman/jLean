@@ -32,8 +32,7 @@ package com.quantconnect.lean.Util
         /// Initializes a new instance of the <see cref="FixedSizeHashQueue{T}"/> class
         /// </summary>
         /// <param name="size">The maximum number of items to hold</param>
-        public FixedSizeHashQueue(int size)
-        {
+        public FixedSizeHashQueue(int size) {
             _size = size;
             _queue = new Queue<T>(size);
             _hash = new HashSet<T>();
@@ -42,13 +41,10 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Returns true if the item was added and didn't already exists
         /// </summary>
-        public boolean Add(T item)
-        {
-            if (_hash.Add(item))
-            {
+        public boolean Add(T item) {
+            if( _hash.Add(item)) {
                 _queue.Enqueue(item);
-                if (_queue.Count > _size)
-                {
+                if( _queue.Count > _size) {
                     // remove the item from both
                     _hash.Remove(_queue.Dequeue());
                 }
@@ -60,10 +56,8 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Tries to inspect the first item in the queue
         /// </summary>
-        public boolean TryPeek(out T item)
-        {
-            if (_queue.Count > 0)
-            {
+        public boolean TryPeek(out T item) {
+            if( _queue.Count > 0) {
                 item = _queue.Peek();
                 return true;
             }
@@ -74,8 +68,7 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Dequeues and returns the next item in the queue
         /// </summary>
-        public T Dequeue()
-        {
+        public T Dequeue() {
             item = _queue.Dequeue();
             _hash.Remove(item);
             return item;
@@ -84,8 +77,7 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Returns true if the specified item exists in the collection
         /// </summary>
-        public boolean Contains(T item)
-        {
+        public boolean Contains(T item) {
             return _hash.Contains(item);
         }
 
@@ -96,8 +88,7 @@ package com.quantconnect.lean.Util
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public IEnumerator<T> GetEnumerator()
-        {
+        public IEnumerator<T> GetEnumerator() {
             return _queue.GetEnumerator();
         }
 
@@ -108,8 +99,7 @@ package com.quantconnect.lean.Util
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+        IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
     }

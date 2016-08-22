@@ -44,8 +44,7 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="getter">A function delegate to get the current value</param>
         /// <param name="setter">A function delegate to set the current value</param>
-        public Ref(Func<T> getter, Action<T> setter)
-        {
+        public Ref(Func<T> getter, Action<T> setter) {
             _getter = getter;
             _setter = setter;
         }
@@ -63,11 +62,10 @@ package com.quantconnect.lean.Util
         /// Returns a read-only version of this instance
         /// </summary>
         /// <returns>A new instance with read-only semantics/gaurantees</returns>
-        public IReadOnlyRef<T> AsReadOnly()
-        {
+        public IReadOnlyRef<T> AsReadOnly() {
             return new Ref<T>(_getter, value =>
             {
-                throw new InvalidOperationException("This instance is read-only.");
+                throw new InvalidOperationException( "This instance is read-only.");
             });
         }
     }
@@ -80,16 +78,14 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Creates a new <see cref="Ref{T}"/> instance
         /// </summary>
-        public static Ref<T> Create<T>(Func<T> getter, Action<T> setter)
-        {
+        public static Ref<T> Create<T>(Func<T> getter, Action<T> setter) {
             return new Ref<T>(getter, setter);
         }
         /// <summary>
         /// Creates a new <see cref="IReadOnlyRef{T}"/> instance
         /// </summary>
-        public static IReadOnlyRef<T> CreateReadOnly<T>(Func<T> getter)
-        {
-            return new Ref<T>(getter, null).AsReadOnly();
+        public static IReadOnlyRef<T> CreateReadOnly<T>(Func<T> getter) {
+            return new Ref<T>(getter, null ).AsReadOnly();
         }
         /// <summary>
         /// Creates a new <see cref="Ref{T}"/> instance by closing over
@@ -98,8 +94,7 @@ package com.quantconnect.lean.Util
         /// but rather a copy of the variable. This reference will use it's
         /// own storage.
         /// </summary>
-        public static Ref<T> Create<T>(T initialValue)
-        {
+        public static Ref<T> Create<T>(T initialValue) {
             return new Ref<T>(() => initialValue, value => { initialValue = value; });
         }
     }

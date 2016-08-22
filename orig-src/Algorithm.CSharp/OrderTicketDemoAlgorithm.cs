@@ -36,8 +36,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2013, 10, 7);  //Set Start Date
             SetEndDate(2013, 10, 11);    //Set End Date
             SetCash(100000);             //Set Strategy Cash
@@ -49,8 +48,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">Slice object keyed by symbol containing the stock data</param>
-        public override void OnData(Slice data)
-        {
+        public @Override void OnData(Slice data) {
             // MARKET ORDERS
 
             MarketOrders();
@@ -81,18 +79,15 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// they'll fill by the next line of code. This behavior equally applies to live mode. 
         /// You can opt out of this behavior by specifying the 'asynchronous' parameter as true.
         /// </summary>
-        private void MarketOrders()
-        {
-            if (TimeIs(7, 9, 31))
-            {
-                Log("Submitting MarketOrder");
+        private void MarketOrders() {
+            if( TimeIs(7, 9, 31)) {
+                Log( "Submitting MarketOrder");
 
                 // submit a market order to buy 10 shares, this function returns an OrderTicket object
                 // we submit the order with asynchronous:false, so it block until it is filled
                 newTicket = MarketOrder(Symbol, 10, asynchronous: false);
-                if (newTicket.Status != OrderStatus.Filled)
-                {
-                    Log("Synchronous market order was not filled synchronously!");
+                if( newTicket.Status != OrderStatus.Filled) {
+                    Log( "Synchronous market order was not filled synchronously!");
                     Quit();
                 }
 
@@ -101,14 +96,13 @@ package com.quantconnect.lean.Algorithm.CSharp
                 // asynchronously and try to cancel it, sometimes it will, sometimes it will be filled
                 // first.
                 newTicket = MarketOrder(Symbol, 10, asynchronous: true);
-                response = newTicket.Cancel("Attempt to cancel async order");
-                if (response.IsSuccess)
-                {
-                    Log("Successfully canceled async market order: " + newTicket.OrderId);
+                response = newTicket.Cancel( "Attempt to cancel async order");
+                if( response.IsSuccess) {
+                    Log( "Successfully canceled async market order: " + newTicket.OrderId);
                 }
                 else
                 {
-                    Log("Unable to cancel async market order: " + response.ErrorCode);
+                    Log( "Unable to cancel async market order: " + response.ErrorCode);
                 }
             }
         }
@@ -127,11 +121,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// currentLimitPrice = orderTicket.Get(OrderField.LimitPrice);
         /// </code>
         /// </summary>
-        private void LimitOrders()
-        {
-            if (TimeIs(7, 12, 0))
-            {
-                Log("Submitting LimitOrder");
+        private void LimitOrders() {
+            if( TimeIs(7, 12, 0)) {
+                Log( "Submitting LimitOrder");
 
                 // submit a limit order to buy 10 shares at .1% below the bar's close
                 close = Securities[Symbol].Close;
@@ -145,15 +137,13 @@ package com.quantconnect.lean.Algorithm.CSharp
 
             // when we submitted new limit orders we placed them into this list,
             // so while there's two entries they're still open and need processing
-            if (_openLimitOrders.Count == 2)
-            {
+            if( _openLimitOrders.Count == 2) {
                 openOrders = _openLimitOrders;
 
                 // check if either is filled and cancel the other
                 longOrder = openOrders[0];
                 shortOrder = openOrders[1];
-                if (CheckPairOrdersForFills(longOrder, shortOrder))
-                {
+                if( CheckPairOrdersForFills(longOrder, shortOrder)) {
                     _openLimitOrders.Clear();
                     return;
                 }
@@ -162,7 +152,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
                 newLongLimit = longOrder.Get(OrderField.LimitPrice) + 0.01m;
                 newShortLimit = shortOrder.Get(OrderField.LimitPrice) - 0.01m;
-                Log("Updating limits - Long: " + newLongLimit.toString("0.00") + " Short: " + newShortLimit.toString("0.00"));
+                Log( "Updating limits - Long: " + newLongLimit.toString( "0.00") + " Short: " + newShortLimit.toString( "0.00"));
 
                 longOrder.Update(new UpdateOrderFields
                 {
@@ -192,11 +182,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// currentStopPrice = orderTicket.Get(OrderField.StopPrice);
         /// </code>
         /// </summary>
-        private void StopMarketOrders()
-        {
-            if (TimeIs(7, 12 + 4, 0))
-            {
-                Log("Submitting StopMarketOrder");
+        private void StopMarketOrders() {
+            if( TimeIs(7, 12 + 4, 0)) {
+                Log( "Submitting StopMarketOrder");
 
                 // a long stop is triggered when the price rises above the value
                 // so we'll set a long stop .25% above the current bar's close
@@ -216,13 +204,11 @@ package com.quantconnect.lean.Algorithm.CSharp
 
             // when we submitted new stop market orders we placed them into this list,
             // so while there's two entries they're still open and need processing
-            if (_openStopMarketOrders.Count == 2)
-            {
+            if( _openStopMarketOrders.Count == 2) {
                 // check if either is filled and cancel the other
                 longOrder = _openStopMarketOrders[0];
                 shortOrder = _openStopMarketOrders[1];
-                if (CheckPairOrdersForFills(longOrder, shortOrder))
-                {
+                if( CheckPairOrdersForFills(longOrder, shortOrder)) {
                     _openStopMarketOrders.Clear();
                     return;
                 }
@@ -231,7 +217,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
                 newLongStop = longOrder.Get(OrderField.StopPrice) - 0.01m;
                 newShortStop = shortOrder.Get(OrderField.StopPrice) + 0.01m;
-                Log("Updating stops - Long: " + newLongStop.toString("0.00") + " Short: " + newShortStop.toString("0.00"));
+                Log( "Updating stops - Long: " + newLongStop.toString( "0.00") + " Short: " + newShortStop.toString( "0.00"));
 
                 longOrder.Update(new UpdateOrderFields
                 {
@@ -264,11 +250,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// currentLimitPrice = orderTicket.Get(OrderField.LimitPrice);
         /// </code>
         /// </summary>
-        private void StopLimitOrders()
-        {
-            if (TimeIs(8, 12, 1))
-            {
-                Log("Submitting StopLimitOrder");
+        private void StopLimitOrders() {
+            if( TimeIs(8, 12, 1)) {
+                Log( "Submitting StopLimitOrder");
 
                 // a long stop is triggered when the price rises above the value
                 // so we'll set a long stop .25% above the current bar's close
@@ -296,13 +280,11 @@ package com.quantconnect.lean.Algorithm.CSharp
 
             // when we submitted new stop limit orders we placed them into this list,
             // so while there's two entries they're still open and need processing
-            if (_openStopLimitOrders.Count == 2)
-            {
+            if( _openStopLimitOrders.Count == 2) {
                 // check if either is filled and cancel the other
                 longOrder = _openStopLimitOrders[0];
                 shortOrder = _openStopLimitOrders[1];
-                if (CheckPairOrdersForFills(longOrder, shortOrder))
-                {
+                if( CheckPairOrdersForFills(longOrder, shortOrder)) {
                     _openStopLimitOrders.Clear();
                     return;
                 }
@@ -313,8 +295,8 @@ package com.quantconnect.lean.Algorithm.CSharp
                 newLongLimit = longOrder.Get(OrderField.LimitPrice) + 0.01m;
                 newShortStop = shortOrder.Get(OrderField.StopPrice) + 0.01m;
                 newShortLimit = shortOrder.Get(OrderField.LimitPrice) - 0.01m;
-                Log("Updating stops  - Long: " + newLongStop.toString("0.00") + " Short: " + newShortStop.toString("0.00"));
-                Log("Updating limits - Long: " + newLongLimit.toString("0.00") + " Short: " + newShortLimit.toString("0.00"));
+                Log( "Updating stops  - Long: " + newLongStop.toString( "0.00") + " Short: " + newShortStop.toString( "0.00"));
+                Log( "Updating limits - Long: " + newLongLimit.toString( "0.00") + " Short: " + newShortLimit.toString( "0.00"));
 
                 longOrder.Update(new UpdateOrderFields
                 {
@@ -338,11 +320,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// price. The only properties that can be updated are the quantity and
         /// order tag properties.
         /// </summary>
-        private void MarketOnCloseOrders()
-        {
-            if (TimeIs(9, 12, 0))
-            {
-                Log("Submitting MarketOnCloseOrder");
+        private void MarketOnCloseOrders() {
+            if( TimeIs(9, 12, 0)) {
+                Log( "Submitting MarketOnCloseOrder");
 
                 // open a new position or triple our existing position
                 qty = Portfolio[Symbol].Quantity;
@@ -352,18 +332,16 @@ package com.quantconnect.lean.Algorithm.CSharp
                 _openMarketOnCloseOrders.Add(newTicket);
             }
 
-            if (_openMarketOnCloseOrders.Count == 1 && Time.Minute == 59)
-            {
+            if( _openMarketOnCloseOrders.Count == 1 && Time.Minute == 59) {
                 ticket = _openMarketOnCloseOrders[0];
                 // check for fills
-                if (ticket.Status == OrderStatus.Filled)
-                {
+                if( ticket.Status == OrderStatus.Filled) {
                     _openMarketOnCloseOrders.Clear();
                     return;
                 }
 
                 quantity = ticket.Quantity + 1;
-                Log("Updating quantity  - New Quantity: " + quantity);
+                Log( "Updating quantity  - New Quantity: " + quantity);
 
                 // we can update the quantity and tag
                 ticket.Update(new UpdateOrderFields
@@ -373,9 +351,8 @@ package com.quantconnect.lean.Algorithm.CSharp
                 });
             }
 
-            if (TimeIs(EndDate.Day, 12 + 3, 45))
-            {
-                Log("Submitting MarketOnCloseOrder to liquidate end of algorithm");
+            if( TimeIs(EndDate.Day, 12 + 3, 45)) {
+                Log( "Submitting MarketOnCloseOrder to liquidate end of algorithm");
 
                 MarketOnCloseOrder(Symbol, -Portfolio[Symbol].Quantity, "Liquidate end of algorithm");
             }
@@ -386,30 +363,26 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// price. The only properties that can be updated are the quantity and
         /// order tag properties.
         /// </summary>
-        private void MarketOnOpenOrders()
-        {
-            if (TimeIs(8, 12 + 2, 0))
-            {
-                Log("Submitting MarketOnOpenOrder");
+        private void MarketOnOpenOrders() {
+            if( TimeIs(8, 12 + 2, 0)) {
+                Log( "Submitting MarketOnOpenOrder");
 
                 // its EOD, let's submit a market on open order to short even more!
                 newTicket = MarketOnOpenOrder(Symbol, 50);
                 _openMarketOnOpenOrders.Add(newTicket);
             }
 
-            if (_openMarketOnOpenOrders.Count == 1 && Time.Minute == 59)
-            {
+            if( _openMarketOnOpenOrders.Count == 1 && Time.Minute == 59) {
                 ticket = _openMarketOnOpenOrders[0];
 
                 // check for fills
-                if (ticket.Status == OrderStatus.Filled)
-                {
+                if( ticket.Status == OrderStatus.Filled) {
                     _openMarketOnOpenOrders.Clear();
                     return;
                 }
                 
                 quantity = ticket.Quantity + 1;
-                Log("Updating quantity  - New Quantity: " + quantity);
+                Log( "Updating quantity  - New Quantity: " + quantity);
 
                 // we can update the quantity and tag
                 ticket.Update(new UpdateOrderFields
@@ -421,31 +394,26 @@ package com.quantconnect.lean.Algorithm.CSharp
             
         }
 
-        public override void OnOrderEvent(OrderEvent orderEvent)
-        {
+        public @Override void OnOrderEvent(OrderEvent orderEvent) {
             order = Transactions.GetOrderById(orderEvent.OrderId);
-            Console.WriteLine("{0}: {1}: {2}", Time, order.Type, orderEvent);
+            Console.WriteLine( "%1$s: %2$s: %3$s", Time, order.Type, orderEvent);
         }
 
-        private boolean CheckPairOrdersForFills(OrderTicket longOrder, OrderTicket shortOrder)
-        {
-            if (longOrder.Status == OrderStatus.Filled)
-            {
+        private boolean CheckPairOrdersForFills(OrderTicket longOrder, OrderTicket shortOrder) {
+            if( longOrder.Status == OrderStatus.Filled) {
                 Log(shortOrder.OrderType + ": Cancelling short order, long order is filled.");
-                shortOrder.Cancel("Long filled.");
+                shortOrder.Cancel( "Long filled.");
                 return true;
             }
-            if (shortOrder.Status == OrderStatus.Filled)
-            {
+            if( shortOrder.Status == OrderStatus.Filled) {
                 Log(longOrder.OrderType + ": Cancelling long order, short order is filled.");
-                longOrder.Cancel("Short filled");
+                longOrder.Cancel( "Short filled");
                 return true;
             }
             return false;
         }
 
-        private boolean TimeIs(int day, int hour, int minute)
-        {
+        private boolean TimeIs(int day, int hour, int minute) {
             return Time.Day == day && Time.Hour == hour && Time.Minute == minute;
         }
     }

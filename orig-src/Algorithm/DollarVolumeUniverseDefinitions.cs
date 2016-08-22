@@ -33,8 +33,7 @@ package com.quantconnect.lean.Algorithm
         /// Initializes a new instance of the <see cref="DollarVolumeUniverseDefinitions"/> class
         /// </summary>
         /// <param name="algorithm">The algorithm instance, used for obtaining the default <see cref="UniverseSettings"/></param>
-        public DollarVolumeUniverseDefinitions(QCAlgorithm algorithm)
-        {
+        public DollarVolumeUniverseDefinitions(QCAlgorithm algorithm) {
             _algorithm = algorithm;
         }
 
@@ -46,8 +45,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="universeSettings">The settings for stocks added by this universe.
         /// Defaults to <see cref="QCAlgorithm.UniverseSettings"/></param>
         /// <returns>A new coarse universe for the top count of stocks by dollar volume</returns>
-        public Universe Top(int count, UniverseSettings universeSettings = null)
-        {
+        public Universe Top(int count, UniverseSettings universeSettings = null ) {
             universeSettings = universeSettings ?? _algorithm.UniverseSettings;
             symbol = CoarseFundamental.CreateUniverseSymbol(Market.USA);
             config = new SubscriptionDataConfig(typeof(CoarseFundamental), symbol, Resolution.Daily, TimeZones.NewYork, TimeZones.NewYork, false, false, true);
@@ -66,8 +64,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="universeSettings">The settings for stocks added by this universe.
         /// Defaults to <see cref="QCAlgorithm.UniverseSettings"/></param>
         /// <returns>A new coarse universe for the bottom count of stocks by dollar volume</returns>
-        public Universe Bottom(int count, UniverseSettings universeSettings = null)
-        {
+        public Universe Bottom(int count, UniverseSettings universeSettings = null ) {
             universeSettings = universeSettings ?? _algorithm.UniverseSettings;
             symbol = CoarseFundamental.CreateUniverseSymbol(Market.USA);
             config = new SubscriptionDataConfig(typeof(CoarseFundamental), symbol, Resolution.Daily, TimeZones.NewYork, TimeZones.NewYork, false, false, true);
@@ -86,8 +83,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="universeSettings">The settings for stocks added by this universe.
         /// Defaults to <see cref="QCAlgorithm.UniverseSettings"/></param>
         /// <returns>A new coarse universe for the bottom count of stocks by dollar volume</returns>
-        public Universe Percentile(double percentile, UniverseSettings universeSettings = null)
-        {
+        public Universe Percentile(double percentile, UniverseSettings universeSettings = null ) {
             universeSettings = universeSettings ?? _algorithm.UniverseSettings;
             symbol = CoarseFundamental.CreateUniverseSymbol(Market.USA);
             config = new SubscriptionDataConfig(typeof(CoarseFundamental), symbol, Resolution.Daily, TimeZones.NewYork, TimeZones.NewYork, false, false, true);
@@ -115,8 +111,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="universeSettings">The settings for stocks added by this universe.
         /// Defaults to <see cref="QCAlgorithm.UniverseSettings"/></param>
         /// <returns>A new coarse universe for the bottom count of stocks by dollar volume</returns>
-        public Universe Percentile(double lowerPercentile, double upperPercentile, UniverseSettings universeSettings = null)
-        {
+        public Universe Percentile(double lowerPercentile, double upperPercentile, UniverseSettings universeSettings = null ) {
             universeSettings = universeSettings ?? _algorithm.UniverseSettings;
             symbol = CoarseFundamental.CreateUniverseSymbol(Market.USA);
             config = new SubscriptionDataConfig(typeof(CoarseFundamental), symbol, Resolution.Daily, TimeZones.NewYork, TimeZones.NewYork, false, false, true);

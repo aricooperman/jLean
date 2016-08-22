@@ -33,8 +33,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the indicator</param>
         public TriangularMovingAverage( String name, int period)
-            : base(name)
-        {
+            : base(name) {
             _period = period;
 
             periodSma1 = period % 2 == 0 ? period / 2 : (period + 1) / 2;
@@ -49,14 +48,13 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="period">The period of the indicator</param>
         public TriangularMovingAverage(int period)
-            : this("TRIMA" + period, period)
-        {
+            : this( "TRIMA" + period, period) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
@@ -66,8 +64,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _sma1.Update(input);
             _sma2.Update(_sma1.Current);
 
@@ -77,8 +74,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _sma1.Reset();
             _sma2.Reset();
             base.Reset();

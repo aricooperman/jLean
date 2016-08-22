@@ -26,8 +26,7 @@ package com.quantconnect.lean.ToolBox
         /// </summary>
         /// <param name="source">The source file to be opened</param>
         /// <returns>The stream representing the specified source</returns>
-        public IEnumerable<Stream> Open( String source)
-        {
+        public IEnumerable<Stream> Open( String source) {
             yield return new BZip2InputStream(File.OpenRead(source));
         }
 
@@ -35,15 +34,13 @@ package com.quantconnect.lean.ToolBox
         /// Closes the specified source file stream
         /// </summary>
         /// <param name="source">The source file to be closed</param>
-        public void Close( String source)
-        {
+        public void Close( String source) {
         }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
         }
     }
 }

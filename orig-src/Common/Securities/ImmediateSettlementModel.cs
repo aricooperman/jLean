@@ -31,8 +31,7 @@ package com.quantconnect.lean.Securities
         /// <param name="applicationTimeUtc">The fill time (in UTC)</param>
         /// <param name="currency">The currency symbol</param>
         /// <param name="amount">The amount of cash to apply</param>
-        public void ApplyFunds(SecurityPortfolioManager portfolio, Security security, DateTime applicationTimeUtc, String currency, BigDecimal amount)
-        {
+        public void ApplyFunds(SecurityPortfolioManager portfolio, Security security, DateTime applicationTimeUtc, String currency, BigDecimal amount) {
             portfolio.CashBook[currency].AddAmount(amount);
         }
     }

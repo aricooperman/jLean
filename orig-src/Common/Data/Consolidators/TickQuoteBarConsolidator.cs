@@ -29,8 +29,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         public TickQuoteBarConsolidator(TimeSpan period)
-            : base(period)
-        {
+            : base(period) {
         }
 
         /// <summary>
@@ -38,8 +37,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         public TickQuoteBarConsolidator(int maxCount)
-            : base(maxCount)
-        {
+            : base(maxCount) {
         }
 
         /// <summary>
@@ -48,8 +46,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         public TickQuoteBarConsolidator(int maxCount, TimeSpan period)
-            : base(maxCount, period)
-        {
+            : base(maxCount, period) {
         }
         
         /// <summary>
@@ -57,8 +54,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="data">The data to check</param>
         /// <returns>True if the consolidator should process this data, false otherwise</returns>
-        protected override boolean ShouldProcess(Tick data)
-        {
+        protected @Override boolean ShouldProcess(Tick data) {
             return data.TickType == TickType.Quote;
         }
 
@@ -68,10 +64,8 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="workingBar">The bar we're building, null if the event was just fired and we're starting a new consolidated bar</param>
         /// <param name="data">The new data</param>
-        protected override void AggregateBar(ref QuoteBar workingBar, Tick data)
-        {
-            if (workingBar == null)
-            {
+        protected @Override void AggregateBar(ref QuoteBar workingBar, Tick data) {
+            if( workingBar == null ) {
                 workingBar = new QuoteBar
                 {
                     Symbol = data.Symbol,

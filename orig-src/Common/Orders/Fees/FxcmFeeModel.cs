@@ -26,13 +26,13 @@ package com.quantconnect.lean.Orders.Fees
     {
         private readonly HashSet<Symbol> _groupCommissionSchedule1 = new HashSet<Symbol>
         {
-            Symbol.Create("EURUSD", SecurityType.Forex, Market.FXCM),
-            Symbol.Create("GBPUSD", SecurityType.Forex, Market.FXCM),
-            Symbol.Create("USDJPY", SecurityType.Forex, Market.FXCM),
-            Symbol.Create("USDCHF", SecurityType.Forex, Market.FXCM),
-            Symbol.Create("AUDUSD", SecurityType.Forex, Market.FXCM),
-            Symbol.Create("EURJPY", SecurityType.Forex, Market.FXCM),
-            Symbol.Create("GBPJPY", SecurityType.Forex, Market.FXCM),
+            Symbol.Create( "EURUSD", SecurityType.Forex, Market.FXCM),
+            Symbol.Create( "GBPUSD", SecurityType.Forex, Market.FXCM),
+            Symbol.Create( "USDJPY", SecurityType.Forex, Market.FXCM),
+            Symbol.Create( "USDCHF", SecurityType.Forex, Market.FXCM),
+            Symbol.Create( "AUDUSD", SecurityType.Forex, Market.FXCM),
+            Symbol.Create( "EURJPY", SecurityType.Forex, Market.FXCM),
+            Symbol.Create( "GBPJPY", SecurityType.Forex, Market.FXCM),
         };
 
         /// <summary>
@@ -41,8 +41,7 @@ package com.quantconnect.lean.Orders.Fees
         /// <param name="security">The security matching the order</param>
         /// <param name="order">The order to compute fees for</param>
         /// <returns>The cost of the order in units of the account currency</returns>
-        public BigDecimal GetOrderFee(Security security, Order order)
-        {
+        public BigDecimal GetOrderFee(Security security, Order order) {
             // From http://www.fxcm.com/forex/forex-pricing/ (on Oct 6th, 2015)
             // Forex: $0.04 per side per 1k lot for EURUSD, GBPUSD, USDJPY, USDCHF, AUDUSD, EURJPY, GBPJPY
             //        $0.06 per side per 1k lot for other instruments
@@ -50,7 +49,7 @@ package com.quantconnect.lean.Orders.Fees
             // From https://www.fxcm.com/uk/markets/cfds/frequently-asked-questions/
             // CFD: no commissions
 
-            if (security.Type != SecurityType.Forex)
+            if( security.Type != SecurityType.Forex)
                 return 0m;
 
             commissionRate = _groupCommissionSchedule1.Contains(security.Symbol) ? 0.04m : 0.06m;

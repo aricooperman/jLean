@@ -81,8 +81,7 @@ package com.quantconnect.lean.Packets
         /// Default constructor for JSON of the Live Task Packet
         /// </summary>
         public LiveNodePacket() 
-            : base(PacketType.LiveNode)
-        {
+            : base(PacketType.LiveNode) {
             Controls = new Controls
             {
                 MinuteLimit = 50,

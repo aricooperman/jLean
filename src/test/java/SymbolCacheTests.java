@@ -23,8 +23,7 @@ package com.quantconnect.lean.Tests.Common
     public class SymbolCacheTests
     {
         [Test]
-        public void HandlesRoundTripAccessSymbolToTicker()
-        {
+        public void HandlesRoundTripAccessSymbolToTicker() {
             ticker = "ticker";
             SymbolCache.Set(ticker, Symbols.EURUSD);
             actual = SymbolCache.GetSymbol(ticker);
@@ -32,8 +31,7 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void HandlesRoundTripAccessTickerToSymbol()
-        {
+        public void HandlesRoundTripAccessTickerToSymbol() {
             expected = "ticker";
             expected = Symbols.EURUSD.Value;
             SymbolCache.Set(expected, Symbols.EURUSD);
@@ -42,67 +40,61 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void TryGetSymbol()
-        {
-            SymbolCache.Set("EURUSD", Symbols.EURUSD);
+        public void TryGetSymbol() {
+            SymbolCache.Set( "EURUSD", Symbols.EURUSD);
 
             Symbol actual;
-            Assert.IsTrue(SymbolCache.TryGetSymbol("EURUSD", out actual));
+            Assert.IsTrue(SymbolCache.TryGetSymbol( "EURUSD", out actual));
             Assert.AreEqual(Symbols.EURUSD, actual);
 
-            Assert.IsFalse(SymbolCache.TryGetSymbol("EURUSD1", out actual));
+            Assert.IsFalse(SymbolCache.TryGetSymbol( "EURUSD1", out actual));
             Assert.AreEqual(default(Symbol), actual);
         }
 
         [Test]
-        public void TryGetTicker()
-        {
-            SymbolCache.Set("EURUSD", Symbols.EURUSD);
+        public void TryGetTicker() {
+            SymbolCache.Set( "EURUSD", Symbols.EURUSD);
 
             String ticker;
             Assert.IsTrue(SymbolCache.TryGetTicker(Symbols.EURUSD, out ticker));
             Assert.AreEqual(Symbols.EURUSD.Value, ticker);
 
-            symbol = new Symbol(SecurityIdentifier.GenerateForex("NOT A FOREX PAIR", Market.FXCM), "EURGBP");
+            symbol = new Symbol(SecurityIdentifier.GenerateForex( "NOT A FOREX PAIR", Market.FXCM), "EURGBP");
             Assert.IsFalse(SymbolCache.TryGetTicker(symbol, out ticker));
             Assert.AreEqual(default( String), ticker);
         }
 
         [Test]
-        public void TryGetSymbolFromSidString()
-        {
+        public void TryGetSymbolFromSidString() {
             sid = Symbols.EURUSD.ID.toString();
             symbol = SymbolCache.GetSymbol(sid);
             Assert.AreEqual(Symbols.EURUSD, symbol);
         }
 
         [Test]
-        public void TryGetTickerFromUncachedSymbol()
-        {
-            symbol = Symbol.Create("My Ticker", SecurityType.Equity, Market.USA);
+        public void TryGetTickerFromUncachedSymbol() {
+            symbol = Symbol.Create( "My Ticker", SecurityType.Equity, Market.USA);
             ticker = SymbolCache.GetTicker(symbol);
             Assert.AreEqual(symbol.ID.toString(), ticker);
         }
 
         [Test]
-        public void TryRemoveSymbolRemovesSymbolMappings()
-        {
+        public void TryRemoveSymbolRemovesSymbolMappings() {
             String ticker;
             Symbol symbol;
-            SymbolCache.Set("SPY", Symbols.SPY);
+            SymbolCache.Set( "SPY", Symbols.SPY);
             Assert.IsTrue(SymbolCache.TryRemove(Symbols.SPY));
-            Assert.IsFalse(SymbolCache.TryGetSymbol("SPY", out symbol));
+            Assert.IsFalse(SymbolCache.TryGetSymbol( "SPY", out symbol));
             Assert.IsFalse(SymbolCache.TryGetTicker(Symbols.SPY, out ticker));
         }
 
         [Test]
-        public void TryRemoveTickerRemovesSymbolMappings()
-        {
+        public void TryRemoveTickerRemovesSymbolMappings() {
             String ticker;
             Symbol symbol;
-            SymbolCache.Set("SPY", Symbols.SPY);
-            Assert.IsTrue(SymbolCache.TryRemove("SPY"));
-            Assert.IsFalse(SymbolCache.TryGetSymbol("SPY", out symbol));
+            SymbolCache.Set( "SPY", Symbols.SPY);
+            Assert.IsTrue(SymbolCache.TryRemove( "SPY"));
+            Assert.IsFalse(SymbolCache.TryGetSymbol( "SPY", out symbol));
             Assert.IsFalse(SymbolCache.TryGetTicker(Symbols.SPY, out ticker));
         }
     }

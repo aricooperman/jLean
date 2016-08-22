@@ -26,16 +26,14 @@ package com.quantconnect.lean.Tests.Indicators
     public class VolumeWeightedAveragePriceIndicatorTests
     {
         [Test]
-        public void VWAPComputesCorrectly()
-        {
+        public void VWAPComputesCorrectly() {
             static final int period = 4;
             static final int volume = 100;
             ind = new VolumeWeightedAveragePriceIndicator(period);
             data = new[] {1m, 10m, 100m, 1000m, 10000m, 1234m, 56789m};
 
             seen = new List<decimal>();
-            for (int i = 0; i < data.Length; i++)
-            {
+            for (int i = 0; i < data.Length; i++) {
                 datum = data[i];
                 seen.Add(datum);
                 ind.Update(new TradeBar(DateTime.Now.AddSeconds(i), "SPY", datum, datum, datum, datum, volume));
@@ -45,8 +43,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void IsReadyAfterPeriodUpdates()
-        {
+        public void IsReadyAfterPeriodUpdates() {
             ind = new VolumeWeightedAveragePriceIndicator(3);
 
             ind.Update(new TradeBar(DateTime.UtcNow, "SPY", 1m, 1m, 1m, 1m, 1));
@@ -57,12 +54,10 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             ind = new VolumeWeightedAveragePriceIndicator(50);
 
-            foreach (data in TestHelper.GetTradeBarStream("spy_with_vwap.txt"))
-            {
+            foreach (data in TestHelper.GetTradeBarStream( "spy_with_vwap.txt")) {
                 ind.Update(data);
             }
             Assert.IsTrue(ind.IsReady);
@@ -75,8 +70,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void CompareAgainstExternalData()
-        {
+        public void CompareAgainstExternalData() {
             ind = new VolumeWeightedAveragePriceIndicator(50);
             TestHelper.TestIndicator(ind, "spy_with_vwap.txt", "Moving VWAP 50",
                 (x, expected) => Assert.AreEqual(expected, (double)((VolumeWeightedAveragePriceIndicator)x).Current.Value, 1e-3));

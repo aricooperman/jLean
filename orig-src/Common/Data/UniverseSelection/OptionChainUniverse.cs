@@ -42,9 +42,8 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="option">The canonical option chain security</param>
         /// <param name="universeSettings">The universe settings to be used for new subscriptions</param>
         /// <param name="securityInitializer">The security initializer to use on newly created securities</param>
-        public OptionChainUniverse(Option option, UniverseSettings universeSettings, ISecurityInitializer securityInitializer = null)
-            : base(option.SubscriptionDataConfig, securityInitializer)
-        {
+        public OptionChainUniverse(Option option, UniverseSettings universeSettings, ISecurityInitializer securityInitializer = null )
+            : base(option.SubscriptionDataConfig, securityInitializer) {
             _option = option;
             _universeSettings = universeSettings;
         }
@@ -52,7 +51,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <summary>
         /// Gets the settings used for subscriptons added for this universe
         /// </summary>
-        public override UniverseSettings UniverseSettings
+        public @Override UniverseSettings UniverseSettings
         {
             get { return _universeSettings; }
         }
@@ -63,19 +62,16 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="utcTime">The current utc time</param>
         /// <param name="data">The symbols to remain in the universe</param>
         /// <returns>The data that passes the filter</returns>
-        public override IEnumerable<Symbol> SelectSymbols(DateTime utcTime, BaseDataCollection data)
-        {
+        public @Override IEnumerable<Symbol> SelectSymbols(DateTime utcTime, BaseDataCollection data) {
             optionsUniverseDataCollection = data as OptionChainUniverseDataCollection;
-            if (optionsUniverseDataCollection == null)
-            {
-                throw new ArgumentException( String.format("Expected data of type '{0}'", typeof (OptionChainUniverseDataCollection).Name));
+            if( optionsUniverseDataCollection == null ) {
+                throw new ArgumentException( String.format( "Expected data of type '%1$s'", typeof (OptionChainUniverseDataCollection).Name));
             }
 
             _underlying = optionsUniverseDataCollection.Underlying ?? _underlying;
             optionsUniverseDataCollection.Underlying = _underlying;
 
-            if (_underlying == null || data.Data.Count == 0)
-            {
+            if( _underlying == null || data.Data.Count == 0) {
                 return Unchanged;
             }
 
@@ -97,17 +93,15 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <remarks>
         /// In most cases the default implementaon of returning the security's configuration is
         /// sufficient. It's when we want multiple subscriptions (trade/quote data) that we'll need
-        /// to override this
+        /// to @Override this
         /// </remarks>
         /// <param name="security">The security to get subscriptions for</param>
         /// <returns>All subscriptions required by this security</returns>
-        public override IEnumerable<SubscriptionDataConfig> GetSubscriptions(Security security)
-        {
+        public @Override IEnumerable<SubscriptionDataConfig> GetSubscriptions(Security security) {
             config = security.SubscriptionDataConfig;
 
             // canonical also needs underlying price data
-            if (security.Symbol == _option.Symbol)
-            {
+            if( security.Symbol == _option.Symbol) {
                 underlying = Symbol.Create(config.Symbol.ID.Symbol, SecurityType.Equity, config.Market);
                 resolution = config.Resolution == Resolution.Tick ? Resolution.Second : config.Resolution;
                 return new[]
@@ -135,8 +129,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="marketHoursDatabase">The market hours database</param>
         /// <param name="symbolPropertiesDatabase">The symbol properties database</param>
         /// <returns>The newly initialized security object</returns>
-        public override Security CreateSecurity(Symbol symbol, IAlgorithm algorithm, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase)
-        {
+        public @Override Security CreateSecurity(Symbol symbol, IAlgorithm algorithm, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase) {
             // set the underlying security and pricing model from the canonical security
             option = (Option)base.CreateSecurity(symbol, algorithm, marketHoursDatabase, symbolPropertiesDatabase);
             option.Underlying = _option.Underlying;
@@ -153,12 +146,10 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="utcTime">The current utc time</param>
         /// <param name="security">The security to check if its ok to remove</param>
         /// <returns>True if we can remove the security, false otherwise</returns>
-        public override boolean CanRemoveMember(DateTime utcTime, Security security)
-        {
+        public @Override boolean CanRemoveMember(DateTime utcTime, Security security) {
             // if we haven't begun receiving data for this security then it's safe to remove
             lastData = security.Cache.GetData();
-            if (lastData == null)
-            {
+            if( lastData == null ) {
                 return true;
             }
 
@@ -166,8 +157,7 @@ package com.quantconnect.lean.Data.UniverseSelection
             // fast forward contracts continuously as price moves and out filtered
             // contracts change thoughout the day
             localTime = utcTime.ConvertFromUtc(security.Exchange.TimeZone);
-            if (localTime.Date != lastData.Time.Date)
-            {
+            if( localTime.Date != lastData.Time.Date) {
                 return true;
             }
             return false;
@@ -176,10 +166,9 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <summary>
         /// Gets the data type required for the specified combination of resolution and tick type
         /// </summary>
-        private static Type GetDataType(Resolution resolution, TickType tickType)
-        {
-            if (resolution == Resolution.Tick) return typeof(Tick);
-            if (tickType == TickType.Quote) return typeof(QuoteBar);
+        private static Type GetDataType(Resolution resolution, TickType tickType) {
+            if( resolution == Resolution.Tick) return typeof(Tick);
+            if( tickType == TickType.Quote) return typeof(QuoteBar);
             return typeof(TradeBar);
         }
     }

@@ -28,8 +28,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
     public class RateLimitEnumeratorTests
     {
         [Test]
-        public void LimitsBasedOnTimeBetweenCalls()
-        {
+        public void LimitsBasedOnTimeBetweenCalls() {
             currentTime = new DateTime(2015, 10, 10, 13, 6, 0);
             timeProvider = new ManualTimeProvider(currentTime, TimeZones.Utc);
             data = Enumerable.Range(0, 100).Select(x => new Tick {Symbol = CreateSymbol(x)}).GetEnumerator();
@@ -37,8 +36,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
 
             Assert.IsTrue(rateLimit.MoveNext());
 
-            while (rateLimit.MoveNext() && rateLimit.Current == null)
-            {
+            while (rateLimit.MoveNext() && rateLimit.Current == null ) {
                 timeProvider.AdvanceSeconds(0.1);
             }
 
@@ -46,11 +44,10 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
 
             Assert.AreEqual(1, delta);
 
-            Assert.AreEqual("1", data.Current.Symbol.Value);
+            Assert.AreEqual( "1", data.Current.Symbol.Value);
         }
 
-        private static Symbol CreateSymbol(int x)
-        {
+        private static Symbol CreateSymbol(int x) {
             return new Symbol(SecurityIdentifier.GenerateBase(x.toString(), Market.USA), x.toString());
         }
     }

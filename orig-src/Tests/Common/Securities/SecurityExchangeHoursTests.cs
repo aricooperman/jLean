@@ -25,8 +25,7 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class SecurityExchangeHoursTests
     {
         [Test]
-        public void StartIsOpen()
-        {
+        public void StartIsOpen() {
             exchangeHours = CreateForexSecurityExchangeHours();
 
             date = new DateTime(2015, 6, 21);
@@ -35,13 +34,12 @@ package com.quantconnect.lean.Tests.Common.Securities
             time = (date + marketOpen.Value).AddTicks(-1);
             Assert.IsFalse(exchangeHours.IsOpen(time, false));
 
-            time = time + TimeSpan.FromTicks(1);
+            time = time + Duration.ofTicks(1);
             Assert.IsTrue(exchangeHours.IsOpen(time, false));
         }
 
         [Test]
-        public void EndIsClosed()
-        {
+        public void EndIsClosed() {
             exchangeHours = CreateForexSecurityExchangeHours();
 
             date = new DateTime(2015, 6, 19);
@@ -51,13 +49,12 @@ package com.quantconnect.lean.Tests.Common.Securities
             time = (date + marketClose.Value).AddTicks(-1);
             Assert.IsTrue(exchangeHours.IsOpen(time, false));
 
-            time = time + TimeSpan.FromTicks(1);
+            time = time + Duration.ofTicks(1);
             Assert.IsFalse(exchangeHours.IsOpen(time, false));
         }
 
         [Test]
-        public void IntervalOverlappingStartIsOpen()
-        {
+        public void IntervalOverlappingStartIsOpen() {
             exchangeHours = CreateForexSecurityExchangeHours();
 
             date = new DateTime(2015, 6, 21);
@@ -68,13 +65,12 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.IsFalse(exchangeHours.IsOpen(startTime, startTime.AddMinutes(1), false));
 
             // now the end is 1 tick after open, should return true
-            startTime = startTime + TimeSpan.FromTicks(1);
+            startTime = startTime + Duration.ofTicks(1);
             Assert.IsTrue(exchangeHours.IsOpen(startTime, startTime.AddMinutes(1), false));
         }
 
         [Test]
-        public void IntervalOverlappingEndIsOpen()
-        {
+        public void IntervalOverlappingEndIsOpen() {
             exchangeHours = CreateForexSecurityExchangeHours();
 
             date = new DateTime(2015, 6, 19);
@@ -90,8 +86,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void MultiDayInterval()
-        {
+        public void MultiDayInterval() {
             exchangeHours = CreateForexSecurityExchangeHours();
 
             date = new DateTime(2015, 6, 19);
@@ -109,8 +104,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void GetNextMarketOpenIsNonInclusiveOfStartTime()
-        {
+        public void GetNextMarketOpenIsNonInclusiveOfStartTime() {
             exhangeHours = CreateUsEquitySecurityExchangeHours();
 
             startTime = new DateTime(2015, 6, 30, 9, 30, 0);
@@ -119,8 +113,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void GetNextMarketOpenWorksOverWeekends()
-        {
+        public void GetNextMarketOpenWorksOverWeekends() {
             exhangeHours = CreateUsEquitySecurityExchangeHours();
 
             startTime = new DateTime(2015, 6, 26, 9, 30, 1);
@@ -129,8 +122,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void GetNextMarketCloseIsNonInclusiveOfStartTime()
-        {
+        public void GetNextMarketCloseIsNonInclusiveOfStartTime() {
             exhangeHours = CreateUsEquitySecurityExchangeHours();
 
             startTime = new DateTime(2015, 6, 30, 16, 0, 0);
@@ -139,8 +131,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void GetNextMarketCloseWorksOverWeekends()
-        {
+        public void GetNextMarketCloseWorksOverWeekends() {
             exhangeHours = CreateUsEquitySecurityExchangeHours();
 
             startTime = new DateTime(2015, 6, 26, 16, 0, 1);
@@ -149,8 +140,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void Benchmark()
-        {
+        public void Benchmark() {
             forex = CreateForexSecurityExchangeHours();
 
             reference = new DateTime(1991, 06, 20);
@@ -160,18 +150,16 @@ package com.quantconnect.lean.Tests.Common.Securities
             static final int length = 1000*1000*1;
 
             stopwatch = Stopwatch.StartNew();
-            for (int i = 0; i < length; i++)
-            {
+            for (int i = 0; i < length; i++) {
                 forex.IsOpen(reference.AddMinutes(1), false);
             }
             stopwatch.Stop();
 
-            Console.WriteLine("forex1: " + stopwatch.Elapsed);
+            Console.WriteLine( "forex1: " + stopwatch.Elapsed);
         }
 
-        public static SecurityExchangeHours CreateForexSecurityExchangeHours()
-        {
-            sunday = new LocalMarketHours(DayOfWeek.Sunday, new TimeSpan(17, 0, 0), TimeSpan.FromTicks(Time.OneDay.Ticks - 1));
+        public static SecurityExchangeHours CreateForexSecurityExchangeHours() {
+            sunday = new LocalMarketHours(DayOfWeek.Sunday, new TimeSpan(17, 0, 0), Duration.ofTicks(Time.OneDay.Ticks - 1));
             monday = LocalMarketHours.OpenAllDay(DayOfWeek.Monday);
             tuesday = LocalMarketHours.OpenAllDay(DayOfWeek.Tuesday);
             wednesday = LocalMarketHours.OpenAllDay(DayOfWeek.Wednesday);
@@ -186,8 +174,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             return exchangeHours;
         }
 
-        public static SecurityExchangeHours CreateUsEquitySecurityExchangeHours()
-        {
+        public static SecurityExchangeHours CreateUsEquitySecurityExchangeHours() {
             sunday = LocalMarketHours.ClosedAllDay(DayOfWeek.Sunday);
             monday = new LocalMarketHours(DayOfWeek.Monday, new TimeSpan(9, 30, 0), new TimeSpan(16, 0, 0));
             tuesday = new LocalMarketHours(DayOfWeek.Tuesday, new TimeSpan(9, 30, 0), new TimeSpan(16, 0, 0));

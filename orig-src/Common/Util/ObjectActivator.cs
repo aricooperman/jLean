@@ -33,8 +33,7 @@ package com.quantconnect.lean.Util
         private static readonly Map<Type, MethodInvoker> _cloneMethodsByType = new Map<Type, MethodInvoker>();
         private static readonly Map<Type, Func<object[], object>> _activatorsByType = new Map<Type, Func<object[], object>>();
 
-        static ObjectActivator()
-        {
+        static ObjectActivator() {
             // we can reuse the symbol instance in the clone since it's immutable
             ((HashSet<Type>) CloneFactory.KnownImmutableTypes).Add(typeof (Symbol));
             ((HashSet<Type>) CloneFactory.KnownImmutableTypes).Add(typeof (SecurityIdentifier));
@@ -47,21 +46,18 @@ package com.quantconnect.lean.Util
         /// <remarks>This assumes that the type has a parameterless, default constructor</remarks>
         /// <param name="dataType">Type of the object we wish to create</param>
         /// <returns>Method to return an instance of object</returns>
-        public static Func<object[], object> GetActivator(Type dataType)
-        {
-            lock (_lock)
-            {
+        public static Func<object[], object> GetActivator(Type dataType) {
+            lock (_lock) {
                 // if we already have it, just use it
                 Func<object[], object> factory;
-                if (_activatorsByType.TryGetValue(dataType, out factory))
-                {
+                if( _activatorsByType.TryGetValue(dataType, out factory)) {
                     return factory;
                 }
 
                 ctor = dataType.GetConstructor(new Type[] {});
 
                 //User has forgotten to include a parameterless constructor:
-                if (ctor == null) return null;
+                if( ctor == null ) return null;
 
                 paramsInfo = ctor.GetParameters();
 
@@ -69,8 +65,7 @@ package com.quantconnect.lean.Util
                 param = Expression.Parameter(typeof (object[]), "args");
                 argsExp = new Expression[paramsInfo.Length];
 
-                for (i = 0; i < paramsInfo.Length; i++)
-                {
+                for (i = 0; i < paramsInfo.Length; i++) {
                     index = Expression.Constant(i);
                     paramType = paramsInfo[i].ParameterType;
                     paramAccessorExp = Expression.ArrayIndex(param, index);
@@ -94,12 +89,10 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="instanceToClone">The instance to be cloned</param>
         /// <returns>A field/property wise, non-recursive clone of the instance</returns>
-        public static object Clone(object instanceToClone)
-        {
+        public static object Clone(object instanceToClone) {
             type = instanceToClone.GetType();
             MethodInvoker func;
-            if (_cloneMethodsByType.TryGetValue(type, out func))
-            {
+            if( _cloneMethodsByType.TryGetValue(type, out func)) {
                 return func(null, instanceToClone);
             }
 
@@ -117,9 +110,8 @@ package com.quantconnect.lean.Util
         public static T Clone<T>(T instanceToClone) where T : class
         {
             clone = Clone((object)instanceToClone) as T;
-            if (clone == null)
-            {
-                throw new Exception("Unable to clone instance of type " + instanceToClone.GetType().Name + " to " + typeof(T).Name);
+            if( clone == null ) {
+                throw new Exception( "Unable to clone instance of type " + instanceToClone.GetType().Name + " to " + typeof(T).Name);
             }
             return clone;
         }

@@ -39,15 +39,13 @@ package com.quantconnect.lean.Packets
         /// Default constructor for JSON
         /// </summary>
         public LogPacket()
-            : base (PacketType.Log)
-        { }
+            : base (PacketType.Log) { }
 
         /// <summary>
         /// Create a new instance of the notify Log packet:
         /// </summary>
         public LogPacket( String algorithmId, String message)
-            : base(PacketType.Log)
-        {
+            : base(PacketType.Log) {
             Message = message;
             AlgorithmId = algorithmId;
         }

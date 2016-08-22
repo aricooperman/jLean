@@ -53,8 +53,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// <summary>
         /// Initializes a new instance of the <see cref="FxcmDataDownloader"/> class
         /// </summary>
-        public FxcmDataDownloader( String server, String terminal, String userName, String password)
-        {
+        public FxcmDataDownloader( String server, String terminal, String userName, String password) {
             _server = server;
             _terminal = terminal;
             _userName = userName;
@@ -66,10 +65,9 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// </summary>
         /// <param name="javaDate">The Java date</param>
         /// <returns>A UTC DateTime value</returns>
-        private static DateTime FromJavaDateUtc(Date javaDate)
-        {
+        private static DateTime FromJavaDateUtc(Date javaDate) {
             cal = Calendar.getInstance();
-            cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+            cal.setTimeZone(TimeZone.getTimeZone( "UTC"));
             cal.setTime(javaDate);
 
             // note that the Month component of java.util.Date  
@@ -88,10 +86,9 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// </summary>
         /// <param name="utcDateTime">The UTC DateTime value</param>
         /// <returns>A UTC Java Date value</returns>
-        private static Date ToJavaDateUtc(DateTime utcDateTime)
-        {
+        private static Date ToJavaDateUtc(DateTime utcDateTime) {
             cal = Calendar.getInstance();
-            cal.setTimeZone(TimeZone.getTimeZone("UTC"));
+            cal.setTimeZone(TimeZone.getTimeZone( "UTC"));
 
             cal.set(Calendar.YEAR, utcDateTime.Year);
             cal.set(Calendar.MONTH, utcDateTime.Month - 1);
@@ -109,8 +106,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// </summary>
         /// <param name="symbol">The Lean symbol</param>
         /// <returns>Returns true if the symbol is available</returns>
-        public boolean HasSymbol( String symbol)
-        {
+        public boolean HasSymbol( String symbol) {
             return _symbolMapper.IsKnownLeanSymbol(Symbol.Create(symbol, GetSecurityType(symbol), Market.FXCM));
         }
 
@@ -119,8 +115,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// </summary>
         /// <param name="symbol">The Lean symbol</param>
         /// <returns>The security type</returns>
-        public SecurityType GetSecurityType( String symbol)
-        {
+        public SecurityType GetSecurityType( String symbol) {
             return _symbolMapper.GetLeanSecurityType(symbol);
         }
 
@@ -132,18 +127,17 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// <param name="startUtc">Start time of the data in UTC</param>
         /// <param name="endUtc">End time of the data in UTC</param>
         /// <returns>Enumerable of base data for this symbol</returns>
-        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc)
-        {
-            if (!_symbolMapper.IsKnownLeanSymbol(symbol))
-                throw new ArgumentException("Invalid symbol requested: " + symbol.Value);
+        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
+            if( !_symbolMapper.IsKnownLeanSymbol(symbol))
+                throw new ArgumentException( "Invalid symbol requested: " + symbol.Value);
 
-            if (symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
-                throw new NotSupportedException("SecurityType not available: " + symbol.ID.SecurityType);
+            if( symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
+                throw new NotSupportedException( "SecurityType not available: " + symbol.ID.SecurityType);
 
-            if (endUtc <= startUtc)
-                throw new ArgumentException("The end date must be greater than the start date.");
+            if( endUtc <= startUtc)
+                throw new ArgumentException( "The end date must be greater than the start date.");
 
-            Console.WriteLine("Logging in...");
+            Console.WriteLine( "Logging in...");
 
             // create the gateway
             _gateway = GatewayFactory.createGateway();
@@ -161,7 +155,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
             // initialize session
             RequestTradingSessionStatus();
 
-            Console.WriteLine("Downloading {0} data from {1} to {2}...", resolution, startUtc.toString("yyyyMMdd HH:mm:ss"), endUtc.toString("yyyyMMdd HH:mm:ss"));
+            Console.WriteLine( "Downloading %1$s data from %2$s to %3$s...", resolution, startUtc.toString( "yyyyMMdd HH:mm:ss"), endUtc.toString( "yyyyMMdd HH:mm:ss"));
 
             //Find best FXCM  paramrs
             IFXCMTimingInterval interval = ToFXCMInterval(resolution);
@@ -193,14 +187,12 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
 
 
                 AutoResetEvent autoResetEvent;
-                lock (_locker)
-                {
+                lock (_locker) {
                     _currentRequest = _gateway.sendMessage(mdr);
                     autoResetEvent = new AutoResetEvent(false);
                     _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
                 }
-                if (!autoResetEvent.WaitOne(1000 * 5))
-                {
+                if( !autoResetEvent.WaitOne(1000 * 5)) {
                     // no response, exit
                     break;
                 }
@@ -208,8 +200,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
                 // Add data
                 totalBaseData.InsertRange(0, _currentBaseData.Where(x => x.Time.Date >= startUtc.Date));
                 
-                if (end != _currentBaseData[0].Time)
-                {
+                if( end != _currentBaseData[0].Time) {
                     // new end date = first datapoint date.
                     end = _currentBaseData[0].Time;
                 }
@@ -223,7 +214,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
             } while (end > startUtc);
 
 
-            Console.WriteLine("\nLogging out...");
+            Console.WriteLine( "\nLogging out...");
 
             // log out
             _gateway.logout();
@@ -236,12 +227,10 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
 
         }
 
-        private IFXCMTimingInterval ToFXCMInterval(Resolution resolution)
-        {
+        private IFXCMTimingInterval ToFXCMInterval(Resolution resolution) {
             IFXCMTimingInterval interval = null;
             
-            switch (resolution)
-            {
+            switch (resolution) {
                 case Resolution.Tick:
                     interval = FXCMTimingIntervalFactory.TICK;
                  
@@ -267,19 +256,17 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
             return interval;
         }
 
-        private void RequestTradingSessionStatus()
-        {
+        private void RequestTradingSessionStatus() {
             // Note: requestTradingSessionStatus() MUST be called just after login
 
             AutoResetEvent autoResetEvent;
-            lock (_locker)
-            {
+            lock (_locker) {
                 _currentRequest = _gateway.requestTradingSessionStatus();
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
-            if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.format("FxcmBrokerage.LoadInstruments(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+            if( !autoResetEvent.WaitOne(ResponseTimeout))
+                throw new TimeoutException( String.format( "FxcmBrokerage.LoadInstruments(): Operation took longer than %1$s seconds.", (decimal)ResponseTimeout / 1000));
         }
 
         #region IGenericMessageListener implementation
@@ -288,15 +275,13 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// Receives generic messages from the FXCM API
         /// </summary>
         /// <param name="message">Generic message received</param>
-        public void messageArrived(ITransportable message)
-        {
+        public void messageArrived(ITransportable message) {
             // Dispatch message to specific handler
-            lock (_locker)
-            {
-                if (message is TradingSessionStatus)
+            lock (_locker) {
+                if( message is TradingSessionStatus)
                     OnTradingSessionStatus((TradingSessionStatus)message);
 
-                else if (message is MarketDataSnapshot)
+                else if( message is MarketDataSnapshot)
                     OnMarketDataSnapshot((MarketDataSnapshot)message);
             }
         }
@@ -304,14 +289,11 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// <summary>
         /// TradingSessionStatus message handler
         /// </summary>
-        private void OnTradingSessionStatus(TradingSessionStatus message)
-        {
-            if (message.getRequestID() == _currentRequest)
-            {
+        private void OnTradingSessionStatus(TradingSessionStatus message) {
+            if( message.getRequestID() == _currentRequest) {
                 // load instrument list into a dictionary
                 securities = message.getSecurities();
-                while (securities.hasMoreElements())
-                {
+                while (securities.hasMoreElements()) {
                     security = (TradingSecurity)securities.nextElement();
                     _fxcmInstruments[security.getSymbol()] = security;
                 }
@@ -324,19 +306,16 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// <summary>
         /// MarketDataSnapshot message handler
         /// </summary>
-        private void OnMarketDataSnapshot(MarketDataSnapshot message)
-        {
-            if (message.getRequestID() == _currentRequest)
-            {
+        private void OnMarketDataSnapshot(MarketDataSnapshot message) {
+            if( message.getRequestID() == _currentRequest) {
                 securityType = _symbolMapper.GetBrokerageSecurityType(message.getInstrument().getSymbol());
                 symbol = _symbolMapper.GetLeanSymbol(message.getInstrument().getSymbol(), securityType, Market.FXCM);
                 time = FromJavaDateUtc(message.getDate().toDate());
 
 
-                if (message.getFXCMTimingInterval() == FXCMTimingIntervalFactory.TICK)
-                {
-                    bid = Convert.ToDecimal(message.getBidClose());
-                    ask = Convert.ToDecimal(message.getAskClose());
+                if( message.getFXCMTimingInterval() == FXCMTimingIntervalFactory.TICK) {
+                    bid = new BigDecimal( message.getBidClose());
+                    ask = new BigDecimal( message.getAskClose());
 
                     tick = new Tick(time, symbol, bid, ask);
 
@@ -346,10 +325,10 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
                 }
                 else // it bars
                 {
-                    open = Convert.ToDecimal((message.getBidOpen() + message.getAskOpen()) / 2);
-                    high = Convert.ToDecimal((message.getBidHigh() + message.getAskHigh()) / 2);
-                    low = Convert.ToDecimal((message.getBidLow() + message.getAskLow()) / 2);
-                    close = Convert.ToDecimal((message.getBidClose() + message.getAskClose()) / 2);
+                    open = new BigDecimal( (message.getBidOpen() + message.getAskOpen()) / 2);
+                    high = new BigDecimal( (message.getBidHigh() + message.getAskHigh()) / 2);
+                    low = new BigDecimal( (message.getBidLow() + message.getAskLow()) / 2);
+                    close = new BigDecimal( (message.getBidClose() + message.getAskClose()) / 2);
 
                     bar = new TradeBar(time, symbol, open, high, low, close, 0);
 
@@ -357,8 +336,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
                     _currentBaseData.Add(bar);
                 }
 
-                if (message.getFXCMContinuousFlag() == IFixValueDefs.__Fields.FXCMCONTINUOUS_END)
-                {
+                if( message.getFXCMContinuousFlag() == IFixValueDefs.__Fields.FXCMCONTINUOUS_END) {
                     _mapRequestsToAutoResetEvents[_currentRequest].Set();
                     _mapRequestsToAutoResetEvents.Remove(_currentRequest);
                 }
@@ -374,8 +352,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// Receives status messages from the FXCM API
         /// </summary>
         /// <param name="message">Status message received</param>
-        public void messageArrived(ISessionStatus message)
-        {
+        public void messageArrived(ISessionStatus message) {
         }
 
         #endregion
@@ -390,8 +367,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// <param name="ticks"></param>
         /// <param name="resolution"></param>
         /// <returns></returns>
-        internal static IEnumerable<TradeBar> AggregateTicks(Symbol symbol, IEnumerable<Tick> ticks, TimeSpan resolution)
-        {
+        internal static IEnumerable<TradeBar> AggregateTicks(Symbol symbol, IEnumerable<Tick> ticks, TimeSpan resolution) {
             return
                 (from t in ticks
                  group t by t.Time.RoundDown(resolution)
@@ -417,16 +393,15 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// <param name="maxVal"></param>
         /// <param name="barSize"></param>
         /// <param name="progressCharacter"></param>
-        private static void progressBar(long complete, long maxVal, long barSize, char progressCharacter)
-        {
+        private static void progressBar(long complete, long maxVal, long barSize, char progressCharacter) {
           
             BigDecimal p   = (decimal)complete / (decimal)maxVal;
             int chars   = (int)Math.Floor(p / ((decimal)1 / (decimal)barSize));
             String bar = string.Empty;
             bar = bar.PadLeft(chars, progressCharacter);
-            bar = bar.PadRight(Convert.ToInt32(barSize)-1);
+            bar = bar.PadRight( Integer.parseInt( barSize)-1);
             
-            Console.Write( String.format("\r[{0}] {1}%", bar, (p * 100).toString("N2")));           
+            Console.Write( String.format( "\r[%1$s] %2$s%", bar, (p * 100).toString( "N2")));           
         }
 
         #endregion

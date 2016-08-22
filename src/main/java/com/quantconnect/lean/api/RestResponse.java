@@ -50,8 +50,7 @@ package com.quantconnect.lean.Api
         /// <summary>
         /// JSON Constructor
         /// </summary>
-        public RestResponse()
-        {
+        public RestResponse() {
             Success = false;
             Errors = new List<String>();
         }

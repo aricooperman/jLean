@@ -33,8 +33,7 @@ package com.quantconnect.lean.Brokerages
         /// Initializes a new instance of the <see cref="OandaTransactionModel"/> class
         /// </summary>
         public OandaTransactionModel()
-            : base(new ImmediateFillModel(), new ConstantFeeModel(0), new SpreadSlippageModel())
-        {
+            : base(new ImmediateFillModel(), new ConstantFeeModel(0), new SpreadSlippageModel()) {
         }
     }
 }

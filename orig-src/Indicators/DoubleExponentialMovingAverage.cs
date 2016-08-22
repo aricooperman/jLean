@@ -37,8 +37,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period of the DEMA</param>
         /// <param name="volumeFactor">The volume factor of the DEMA (value must be in the [0,1] range, set to 1 for standard DEMA)</param>
         public DoubleExponentialMovingAverage( String name, int period, BigDecimal volumeFactor = 1m)
-            : base(name)
-        {
+            : base(name) {
             _period = period;
             _volumeFactor = volumeFactor;
             _ema1 = new ExponentialMovingAverage(name + "_1", period);
@@ -51,14 +50,13 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period of the DEMA</param>
         /// <param name="volumeFactor">The volume factor of the DEMA (value must be in the [0,1] range, set to 1 for standard DEMA)</param>
         public DoubleExponentialMovingAverage(int period, BigDecimal volumeFactor = 1m)
-            : this("DEMA" + period, period, volumeFactor)
-        {
+            : this( "DEMA" + period, period, volumeFactor) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples > 2 * (_period - 1); }
         }
@@ -68,11 +66,10 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _ema1.Update(input);
 
-            if (!_ema1.IsReady)
+            if( !_ema1.IsReady)
                 return _ema1;
 
             _ema2.Update(_ema1.Current);
@@ -83,8 +80,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _ema1.Reset();
             _ema2.Reset();
             base.Reset();

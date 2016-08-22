@@ -44,8 +44,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <summary>
         /// Called at the start of your algorithm to setup your requirements:
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             //Set the date range you want to run your algorithm:
             SetStartDate(startDate);
             SetEndDate(endDate);
@@ -58,24 +57,24 @@ package com.quantconnect.lean.Algorithm.Examples
             AddSecurity(SecurityType.Equity, "SPY", resolution: Resolution.Minute);
 
             //Chart - Master Container for the Chart:
-            Chart stockPlot = new Chart("Trade Plot");
+            Chart stockPlot = new Chart( "Trade Plot");
             //On the Trade Plotter Chart we want 3 series: trades and price:
-            Series buyOrders = new Series("Buy", SeriesType.Scatter, 0);
-            Series sellOrders = new Series("Sell", SeriesType.Scatter, 0);
-            Series assetPrice = new Series("Price", SeriesType.Line, 0);
+            Series buyOrders = new Series( "Buy", SeriesType.Scatter, 0);
+            Series sellOrders = new Series( "Sell", SeriesType.Scatter, 0);
+            Series assetPrice = new Series( "Price", SeriesType.Line, 0);
             stockPlot.AddSeries(buyOrders);
             stockPlot.AddSeries(sellOrders);
             stockPlot.AddSeries(assetPrice);
             AddChart(stockPlot);
 
-            Chart avgCross = new Chart("Strategy Equity");
-            Series fastMA = new Series("FastMA", SeriesType.Line, 1);
-            Series slowMA = new Series("SlowMA", SeriesType.Line, 1);
+            Chart avgCross = new Chart( "Strategy Equity");
+            Series fastMA = new Series( "FastMA", SeriesType.Line, 1);
+            Series slowMA = new Series( "SlowMA", SeriesType.Line, 1);
             avgCross.AddSeries(fastMA);
             avgCross.AddSeries(slowMA);
             AddChart(avgCross);
 
-            resamplePeriod = TimeSpan.FromMinutes((endDate - startDate).TotalMinutes / 2000);
+            resamplePeriod = Duration.ofMinutes((endDate - startDate).TotalMinutes / 2000);
         }
 
 
@@ -83,10 +82,9 @@ package com.quantconnect.lean.Algorithm.Examples
         /// OnEndOfDay Event Handler - At the end of each trading day we fire this code.
         /// To avoid flooding, we recommend running your plotting at the end of each day.
         /// </summary>
-        public override void OnEndOfDay()
-        {
+        public @Override void OnEndOfDay() {
             //Log the end of day prices:
-            Plot("Trade Plot", "Price", lastPrice);
+            Plot( "Trade Plot", "Price", lastPrice);
         }
 
 
@@ -95,33 +93,29 @@ package com.quantconnect.lean.Algorithm.Examples
         /// "public void OnData( CustomType name ) {...s"
         /// </summary>
         /// <param name="data">TradeBars data type synchronized and pushed into this function. The tradebars are grouped in a dictionary.</param>
-        public void OnData(TradeBars data)
-        {
+        public void OnData(TradeBars data) {
             lastPrice = data["SPY"].Close;
 
-            if (fastMA == 0) fastMA = lastPrice;
-            if (slowMA == 0) slowMA = lastPrice;
+            if( fastMA == 0) fastMA = lastPrice;
+            if( slowMA == 0) slowMA = lastPrice;
 
             fastMA = (0.01m * lastPrice) + (0.99m * fastMA);
             slowMA = (0.001m * lastPrice) + (0.999m * slowMA);
 
-            if (Time > resample)
-            {
+            if( Time > resample) {
                 resample = Time.Add(resamplePeriod);
-                Plot("Strategy Equity", "FastMA", fastMA);
-                Plot("Strategy Equity", "SlowMA", slowMA);
+                Plot( "Strategy Equity", "FastMA", fastMA);
+                Plot( "Strategy Equity", "SlowMA", slowMA);
             }
 
 
             //On the 5th days when not invested buy:
-            if (!Portfolio.Invested && Time.Day % 13 == 0)
-            {
-                Order("SPY", (int)(Portfolio.Cash / data["SPY"].Close));
-                Plot("Trade Plot", "Buy", lastPrice);
+            if( !Portfolio.Invested && Time.Day % 13 == 0) {
+                Order( "SPY", (int)(Portfolio.Cash / data["SPY"].Close));
+                Plot( "Trade Plot", "Buy", lastPrice);
             }
-            else if (Time.Day % 21 == 0 && Portfolio.Invested)
-            {
-                Plot("Trade Plot", "Sell", lastPrice);
+            else if( Time.Day % 21 == 0 && Portfolio.Invested) {
+                Plot( "Trade Plot", "Sell", lastPrice);
                 Liquidate();
             }
         }

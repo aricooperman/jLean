@@ -28,55 +28,51 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
     public partial class OandaBrokerageTests
     {
         [Test]
-        public void GetsTickData()
-        {
+        public void GetsTickData() {
             brokerage = (OandaBrokerage)Brokerage;
 
             brokerage.Subscribe(null, new List<Symbol>
             {
-                Symbol.Create("EURJPY", SecurityType.Forex, Market.Oanda),
-                Symbol.Create("AUDUSD", SecurityType.Forex, Market.Oanda),
+                Symbol.Create( "EURJPY", SecurityType.Forex, Market.Oanda),
+                Symbol.Create( "AUDUSD", SecurityType.Forex, Market.Oanda),
             });
 
             brokerage.Subscribe(null, new List<Symbol>
             {
-                Symbol.Create("EURUSD", SecurityType.Forex, Market.Oanda),
-                Symbol.Create("GBPUSD", SecurityType.Forex, Market.Oanda),
+                Symbol.Create( "EURUSD", SecurityType.Forex, Market.Oanda),
+                Symbol.Create( "GBPUSD", SecurityType.Forex, Market.Oanda),
             });
 
             brokerage.Subscribe(null, new List<Symbol>
             {
-                Symbol.Create("XAUXAG", SecurityType.Cfd, Market.Oanda),
+                Symbol.Create( "XAUXAG", SecurityType.Cfd, Market.Oanda),
             });
 
             Thread.Sleep(20000);
 
-            foreach (tick in brokerage.GetNextTicks())
-            {
-                Log.Trace("{0}: {1} - {2} / {3}", tick.Time, tick.Symbol.Value, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
+            foreach (tick in brokerage.GetNextTicks()) {
+                Log.Trace( "%1$s: %2$s - %3$s / {3}", tick.Time, tick.Symbol.Value, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
             }
 
             brokerage.Unsubscribe(null, new List<Symbol>
             {
-                Symbol.Create("EURJPY", SecurityType.Forex, Market.Oanda),
-                Symbol.Create("AUDUSD", SecurityType.Forex, Market.Oanda),
-                Symbol.Create("GBPUSD", SecurityType.Forex, Market.Oanda),
-                Symbol.Create("XAUXAG", SecurityType.Cfd, Market.Oanda),
+                Symbol.Create( "EURJPY", SecurityType.Forex, Market.Oanda),
+                Symbol.Create( "AUDUSD", SecurityType.Forex, Market.Oanda),
+                Symbol.Create( "GBPUSD", SecurityType.Forex, Market.Oanda),
+                Symbol.Create( "XAUXAG", SecurityType.Cfd, Market.Oanda),
             });
 
             Thread.Sleep(20000);
 
-            foreach (tick in brokerage.GetNextTicks())
-            {
-                Log.Trace("{0}: {1} - {2} / {3}", tick.Time, tick.Symbol.Value, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
+            foreach (tick in brokerage.GetNextTicks()) {
+                Log.Trace( "%1$s: %2$s - %3$s / {3}", tick.Time, tick.Symbol.Value, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
             }
 
             Thread.Sleep(5000);
         }
 
         [Test]
-        public void GroupsMultipleSubscriptions()
-        {
+        public void GroupsMultipleSubscriptions() {
             symbols = new List<String>
             {
                 "AUDJPY", "AUDUSD", "EURCHF", "EURGBP", "EURJPY", "EURUSD", "GBPAUD", 
@@ -86,8 +82,7 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
             brokerage = (OandaBrokerage)Brokerage;
 
             stopwatch = Stopwatch.StartNew();
-            foreach (symbol in symbols)
-            {
+            foreach (symbol in symbols) {
                 brokerage.Subscribe(null, new List<Symbol>
                 {
                     Symbol.Create(symbol, SecurityType.Forex, Market.Oanda),
@@ -95,19 +90,18 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
                 //Thread.Sleep(50);
             }
             stopwatch.Stop();
-            Console.WriteLine("Subscribe: Elapsed time: " + stopwatch.Elapsed);
+            Console.WriteLine( "Subscribe: Elapsed time: " + stopwatch.Elapsed);
 
             Thread.Sleep(10000);
 
             stopwatch.Restart();
-            foreach (symbol in symbols)
-            {
+            foreach (symbol in symbols) {
                 brokerage.Unsubscribe(null, new List<Symbol>
                 {
                     Symbol.Create(symbol, SecurityType.Forex, Market.Oanda),
                 });
             }
-            Console.WriteLine("Unsubscribe: Elapsed time: " + stopwatch.Elapsed);
+            Console.WriteLine( "Unsubscribe: Elapsed time: " + stopwatch.Elapsed);
 
             Thread.Sleep(5000);
         }

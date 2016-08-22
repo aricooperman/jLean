@@ -15,8 +15,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <summary>
         /// Initialize the tick filtering example algorithm
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetCash(25000);
             SetStartDate(2013, 10, 07);
             SetEndDate(2013, 10, 11);
@@ -30,20 +29,17 @@ package com.quantconnect.lean.Algorithm.Examples
         /// Data arriving here will now be filtered.
         /// </summary>
         /// <param name="data">Ticks data array</param>
-        public void OnData(Ticks data)
-        {
-            if (!data.ContainsKey("SPY")) return;
+        public void OnData(Ticks data) {
+            if( !data.ContainsKey( "SPY")) return;
             spyTickList = data["SPY"];
 
             //Ticks return a list of ticks this second
-            foreach (tick in spyTickList)
-            {
+            foreach (tick in spyTickList) {
                 Log(tick.Exchange);
             }
 
-            if (!Portfolio.Invested)
-            {
-                SetHoldings("SPY", 1);
+            if( !Portfolio.Invested) {
+                SetHoldings( "SPY", 1);
             }
         }
     }
@@ -58,8 +54,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// Save instance of the algorithm namespace
         /// </summary>
         /// <param name="algo"></param>
-        public ExchangeDataFilter(IAlgorithm algo)
-        {
+        public ExchangeDataFilter(IAlgorithm algo) {
             _algo = algo;
         }
 
@@ -70,8 +65,7 @@ package com.quantconnect.lean.Algorithm.Examples
         public static class MarketCodesFilter
         {
             /// US Market Codes
-            public static Map<String,String> US = new Map<String,String>() 
-            {
+            public static Map<String,String> US = new Map<String,String>() {
                 {"A", "American Stock Exchange"},
                 {"B", "Boston Stock Exchange"},
                 {"C", "National Stock Exchange"},
@@ -93,8 +87,7 @@ package com.quantconnect.lean.Algorithm.Examples
             };
 
             /// Canada Market Short Codes:
-            public static Map<String,String> Canada = new Map<String,String>() 
-            {
+            public static Map<String,String> Canada = new Map<String,String>() {
                 {"T", "Toronto"},
                 {"V", "Venture"}
             };
@@ -114,17 +107,14 @@ package com.quantconnect.lean.Algorithm.Examples
         /// </summary>
         /// <param name="data">New data packet:</param>
         /// <param name="asset">Vehicle of this filter.</param>
-        public boolean Filter(Security asset, BaseData data)
-        {
+        public boolean Filter(Security asset, BaseData data) {
             // TRUE -->  Accept Tick
             // FALSE --> Reject Tick
             tick = data as Tick;
 
             // This is a tick bar
-            if (tick != null)
-            {
-                if (tick.Exchange == "P") //MarketCodesFilter.AllowedExchanges.Contains()
-                {
+            if( tick != null ) {
+                if( tick.Exchange == "P") //MarketCodesFilter.AllowedExchanges.Contains() {
                     return true;
                 }
             }

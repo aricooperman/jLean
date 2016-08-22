@@ -29,8 +29,7 @@ package com.quantconnect.lean
         /// Creates a new SeriesSampler to sample Series data on the specified resolution
         /// </summary>
         /// <param name="resolution">The desired sampling resolution</param>
-        public SeriesSampler(TimeSpan resolution)
-        {
+        public SeriesSampler(TimeSpan resolution) {
             _seconds = resolution.TotalSeconds;
         }
 
@@ -41,8 +40,7 @@ package com.quantconnect.lean
         /// <param name="start">The date to start sampling, if before start of data then start of data will be used</param>
         /// <param name="stop">The date to stop sampling, if after stop of data, then stop of data will be used</param>
         /// <returns>The sampled series</returns>
-        public Series Sample(Series series, DateTime start, DateTime stop)
-        {
+        public Series Sample(Series series, DateTime start, DateTime stop) {
             sampled = new Series(series.Name, series.SeriesType, series.Index, series.Unit);
 
             // chart point times are always in universal, so force it here as well
@@ -51,13 +49,10 @@ package com.quantconnect.lean
 
             // we can't sample a single point and it doesn't make sense to sample scatter plots
             // in this case just copy the raw data
-            if (series.Values.Count < 2 || series.SeriesType == SeriesType.Scatter)
-            {
+            if( series.Values.Count < 2 || series.SeriesType == SeriesType.Scatter) {
                 // we can minimally verify we're within the start/stop interval
-                foreach (point in series.Values)
-                {
-                    if (point.x >= nextSample && point.x <= unixStopDate)
-                    {
+                foreach (point in series.Values) {
+                    if( point.x >= nextSample && point.x <= unixStopDate) {
                         sampled.Values.Add(point);
                     }
                 }
@@ -73,14 +68,12 @@ package com.quantconnect.lean
             ChartPoint current = enumerator.Current;
 
             // make sure we don't start sampling before the data begins
-            if (nextSample < previous.x)
-            {
+            if( nextSample < previous.x) {
                 nextSample = previous.x;
             }
 
             // make sure to advance into the requestd time frame before sampling
-            while (current.x < nextSample && enumerator.MoveNext())
-            {
+            while (current.x < nextSample && enumerator.MoveNext()) {
                 previous = current;
                 current = enumerator.Current;
             }
@@ -88,10 +81,8 @@ package com.quantconnect.lean
             do
             {
                 // advance our current/previous
-                if (nextSample > current.x)
-                {
-                    if (enumerator.MoveNext())
-                    {
+                if( nextSample > current.x) {
+                    if( enumerator.MoveNext()) {
                         previous = current;
                         current = enumerator.Current;
                     }
@@ -102,16 +93,14 @@ package com.quantconnect.lean
                 }
 
                 // iterate until we pass where we want our next point
-                while (nextSample <= current.x && nextSample <= unixStopDate)
-                {
+                while (nextSample <= current.x && nextSample <= unixStopDate) {
                     value = Interpolate(previous, current, (long) nextSample);
                     sampled.Values.Add(new ChartPoint {x = (long) nextSample, y = value});
                     nextSample += _seconds;
                 }
 
                 // if we've passed our stop then we're finished sampling
-                if (nextSample > unixStopDate)
-                {
+                if( nextSample > unixStopDate) {
                     break;
                 }
             }
@@ -127,15 +116,12 @@ package com.quantconnect.lean
         /// <param name="start">The date to start sampling</param>
         /// <param name="stop">The date to stop sampling</param>
         /// <returns>The sampled charts</returns>
-        public Map<String, Chart> SampleCharts(Map<String, Chart> charts, DateTime start, DateTime stop)
-        {
+        public Map<String, Chart> SampleCharts(Map<String, Chart> charts, DateTime start, DateTime stop) {
             sampledCharts = new Map<String, Chart>();
-            foreach (chart in charts.Values)
-            {
+            foreach (chart in charts.Values) {
                 sampledChart = new Chart(chart.Name);
                 sampledCharts.Add(sampledChart.Name, sampledChart);
-                foreach (series in chart.Series.Values)
-                {
+                foreach (series in chart.Series.Values) {
                     sampledSeries = Sample(series, start, stop);
                     sampledChart.AddSeries(sampledSeries);
                 }
@@ -146,13 +132,11 @@ package com.quantconnect.lean
         /// <summary>
         /// Linear interpolation used for sampling
         /// </summary>
-        private static BigDecimal Interpolate(ChartPoint previous, ChartPoint current, long target)
-        {
+        private static BigDecimal Interpolate(ChartPoint previous, ChartPoint current, long target) {
             deltaTicks = current.x - previous.x;
 
             // if they're at the same time return the current value
-            if (deltaTicks == 0)
-            {
+            if( deltaTicks == 0) {
                 return current.y;
             }
 

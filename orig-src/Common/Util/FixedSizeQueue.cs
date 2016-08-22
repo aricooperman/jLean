@@ -39,18 +39,15 @@ package com.quantconnect.lean.Util
         /// Create a new fixed length queue:
         /// </summary>
         public FixedSizeQueue(int limit)
-            : base(limit)
-        {
+            : base(limit) {
             Limit = limit;
         }
 
         /// <summary>
         /// Enqueue a new item int the generic fixed length queue:
         /// </summary>
-        public new void Enqueue(T item)
-        {
-            while (Count >= Limit)
-            {
+        public new void Enqueue(T item) {
+            while (Count >= Limit) {
                 Dequeue();
             }
             base.Enqueue(item);

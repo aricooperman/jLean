@@ -47,7 +47,7 @@ public class BacktestNodePacket extends AlgorithmNodePacket {
 
     /// Series or parallel runmode for the backtest
     /// <obsolete>The RunMode property is now obsolete and will always default to Series mode.</obsolete>
-//    [Obsolete("This property is no longer in use and will always default to series mode.")]
+//    [Obsolete( "This property is no longer in use and will always default to series mode.")]
 //    @JsonProperty( "eRunMode")]
 //    public RunMode RunMode = RunMode.Series;
 
@@ -121,7 +121,7 @@ package com.quantconnect.lean.Packets
         /// Series or parallel runmode for the backtest
         /// </summary>
         /// <obsolete>The RunMode property is now obsolete and will always default to Series mode.</obsolete>
-        [Obsolete("This property is no longer in use and will always default to series mode.")]
+        [Obsolete( "This property is no longer in use and will always default to series mode.")]
         @JsonProperty( "eRunMode")]
         public RunMode RunMode = RunMode.Series;
 
@@ -129,8 +129,7 @@ package com.quantconnect.lean.Packets
         /// Default constructor for JSON
         /// </summary>
         public BacktestNodePacket() 
-            : base(PacketType.BacktestNode)
-        {
+            : base(PacketType.BacktestNode) {
             Controls = new Controls
             {
                 MinuteLimit = 500,
@@ -143,8 +142,7 @@ package com.quantconnect.lean.Packets
         /// Initialize the backtest task packet.
         /// </summary>
         public BacktestNodePacket(int userId, int projectId, String sessionId, byte[] algorithmData, BigDecimal startingCapital, String name, UserPlan userPlan = UserPlan.Free) 
-            : base (PacketType.BacktestNode)
-        {
+            : base (PacketType.BacktestNode) {
             UserId = userId;
             Algorithm = algorithmData;
             SessionId = sessionId;

@@ -32,8 +32,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierOrders Orders;
 
         /// Constructor: Orders parent:
-        public TradierOrdersContainer()
-        { }
+        public TradierOrdersContainer() { }
     }
 
     /// <summary>
@@ -47,8 +46,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierOrder> Orders = new List<TradierOrder>();
 
         /// Null Constructor:
-        public TradierOrders() 
-        { }
+        public TradierOrders() { }
     }
 
     /// <summary>
@@ -129,8 +127,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierOrderLeg> Legs;
 
         /// Closed position trade summary
-        public TradierOrder() 
-        { }
+        public TradierOrder() { }
     }
 
     /// <summary>
@@ -275,8 +272,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public DateTime TransacionDate;
 
         /// Constructor
-        public TradierOrderLeg()
-        { }
+        public TradierOrderLeg() { }
     }
 
 }

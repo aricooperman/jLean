@@ -31,8 +31,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
     public class TimeSliceTests
     {
         [Test]
-        public void HandlesTicks_ExpectInOrderWithNoDuplicates()
-        {
+        public void HandlesTicks_ExpectInOrderWithNoDuplicates() {
             subscriptionDataConfig = new SubscriptionDataConfig(
                 typeof(Tick), 
                 Symbols.EURUSD, 
@@ -66,14 +65,12 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             Tick[] timeSliceTicks = timeSlices.SelectMany(ts => ts.Slice.Ticks.Values.SelectMany(x => x)).ToArray();
 
             Assert.AreEqual(rawTicks.Length, timeSliceTicks.Length);
-            for (int i = 0; i < rawTicks.Length; i++)
-            {
+            for (int i = 0; i < rawTicks.Length; i++) {
                 Assert.IsTrue(Compare(rawTicks[i], timeSliceTicks[i]));
             }
         }
 
-        private boolean Compare(Tick expected, Tick actual)
-        {
+        private boolean Compare(Tick expected, Tick actual) {
             return expected.Time == actual.Time
                    && expected.BidPrice == actual.BidPrice
                    && expected.AskPrice == actual.AskPrice
@@ -81,10 +78,9 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void HandlesMultipleCustomDataOfSameTypeWithDifferentSymbols()
-        {
-            symbol1 = Symbol.Create("SCF/CBOE_VX1_EW", SecurityType.Base, Market.USA);
-            symbol2 = Symbol.Create("SCF/CBOE_VX2_EW", SecurityType.Base, Market.USA);
+        public void HandlesMultipleCustomDataOfSameTypeWithDifferentSymbols() {
+            symbol1 = Symbol.Create( "SCF/CBOE_VX1_EW", SecurityType.Base, Market.USA);
+            symbol2 = Symbol.Create( "SCF/CBOE_VX2_EW", SecurityType.Base, Market.USA);
 
             subscriptionDataConfig1 = new SubscriptionDataConfig(
                 typeof(QuandlFuture), symbol1, Resolution.Daily, TimeZones.Utc, TimeZones.Utc, true, true, false, isCustom: true);
@@ -125,9 +121,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void HandlesMultipleCustomDataOfSameTypeSameSymbol()
-        {
-            symbol = Symbol.Create("DFX", SecurityType.Base, Market.USA);
+        public void HandlesMultipleCustomDataOfSameTypeSameSymbol() {
+            symbol = Symbol.Create( "DFX", SecurityType.Base, Market.USA);
 
             subscriptionDataConfig = new SubscriptionDataConfig(
                 typeof(DailyFx), symbol, Resolution.Daily, TimeZones.Utc, TimeZones.Utc, true, true, false, isCustom: true);
@@ -160,8 +155,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             Assert.IsInstanceOf(typeof(DailyFx), data2);
             Assert.AreEqual(symbol, data1.Symbol);
             Assert.AreEqual(symbol, data2.Symbol);
-            Assert.AreEqual("Item 1", ((DailyFx)data1).Title);
-            Assert.AreEqual("Item 2", ((DailyFx)data2).Title);
+            Assert.AreEqual( "Item 1", ((DailyFx)data1).Title);
+            Assert.AreEqual( "Item 2", ((DailyFx)data2).Title);
         }
 
     }

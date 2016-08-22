@@ -44,8 +44,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="subscriptionEndTime">The end time of the subscrition, once passing this date the enumerator will stop</param>
         /// <param name="dataResolution">The source enumerator's data resolution</param>
         public LiveFillForwardEnumerator(ITimeProvider timeProvider, IEnumerator<BaseData> enumerator, SecurityExchange exchange, IReadOnlyRef<TimeSpan> fillForwardResolution, boolean isExtendedMarketHours, DateTime subscriptionEndTime, TimeSpan dataResolution)
-            : base(enumerator, exchange, fillForwardResolution, isExtendedMarketHours, subscriptionEndTime, dataResolution)
-        {
+            : base(enumerator, exchange, fillForwardResolution, isExtendedMarketHours, subscriptionEndTime, dataResolution) {
             _timeProvider = timeProvider;
         }
 
@@ -57,15 +56,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="next">The next piece of data on the source enumerator, this may be null</param>
         /// <param name="fillForward">When this function returns true, this will have a non-null value, null when the function returns false</param>
         /// <returns>True when a new fill forward piece of data was produced and should be emitted by this enumerator</returns>
-        protected override boolean RequiresFillForwardData(TimeSpan fillForwardResolution, BaseData previous, BaseData next, out BaseData fillForward)
-        {
+        protected @Override boolean RequiresFillForwardData(TimeSpan fillForwardResolution, BaseData previous, BaseData next, out BaseData fillForward) {
             fillForward = null;
             nextExpectedDataPointTime = (previous.EndTime + fillForwardResolution);
-            if (next != null)
-            {
+            if( next != null ) {
                 // if not future data, just return the 'next'
-                if (next.EndTime <= nextExpectedDataPointTime)
-                {
+                if( next.EndTime <= nextExpectedDataPointTime) {
                     return false;
                 }
                 // next is future data, fill forward in between
@@ -77,8 +73,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 
             // the underlying enumerator returned null, check to see if time has passed for fill fowarding
             currentLocalTime = _timeProvider.GetUtcNow().ConvertFromUtc(Exchange.TimeZone);
-            if (nextExpectedDataPointTime <= currentLocalTime)
-            {
+            if( nextExpectedDataPointTime <= currentLocalTime) {
                 clone = previous.Clone(true);
                 clone.Time = previous.Time + fillForwardResolution;
                 fillForward = clone;

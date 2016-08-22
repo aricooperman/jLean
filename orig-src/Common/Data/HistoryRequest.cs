@@ -78,8 +78,7 @@ package com.quantconnect.lean.Data
         /// <summary>
         /// Initializes a new default instance of the <see cref="HistoryRequest"/> class
         /// </summary>
-        public HistoryRequest()
-        {
+        public HistoryRequest() {
             StartTimeUtc = EndTimeUtc = DateTime.UtcNow;
             Symbol = Symbol.Empty;
             ExchangeHours = SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork);
@@ -118,8 +117,7 @@ package com.quantconnect.lean.Data
             Resolution? fillForwardResolution,
             boolean includeExtendedMarketHours,
             boolean isCustomData
-            )
-        {
+            ) {
             StartTimeUtc = startTimeUtc;
             EndTimeUtc = endTimeUtc;
             Symbol = symbol;
@@ -141,8 +139,7 @@ package com.quantconnect.lean.Data
         /// <param name="hours">The exchange hours used for fill forward processing</param>
         /// <param name="startTimeUtc">The start time for this request,</param>
         /// <param name="endTimeUtc">The start time for this request</param>
-        public HistoryRequest(SubscriptionDataConfig config, SecurityExchangeHours hours, DateTime startTimeUtc, DateTime endTimeUtc)
-        {
+        public HistoryRequest(SubscriptionDataConfig config, SecurityExchangeHours hours, DateTime startTimeUtc, DateTime endTimeUtc) {
             StartTimeUtc = startTimeUtc;
             EndTimeUtc = endTimeUtc;
             Symbol = config.Symbol;

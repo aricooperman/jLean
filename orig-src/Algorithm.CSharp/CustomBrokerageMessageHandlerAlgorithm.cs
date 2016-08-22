@@ -31,8 +31,7 @@ package com.quantconnect.lean.Algorithm.CSharp
     */
     public class CustomBrokerageErrorHandlerAlgorithm : QCAlgorithm
     {
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2013, 1, 1);
             SetEndDate(DateTime.Now.Date.AddDays(-1));
             SetCash(25000);
@@ -42,11 +41,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             SetBrokerageMessageHandler(new CustomBrokerageMessageHandler(this));
         }
 
-        public void OnData(TradeBars data)
-        {
-            if (Portfolio.HoldStock) return;
-            Order("SPY", 100);
-            Debug("Purchased SPY on " + Time.ToShortDateString());
+        public void OnData(TradeBars data) {
+            if( Portfolio.HoldStock) return;
+            Order( "SPY", 100);
+            Debug( "Purchased SPY on " + Time.ToShortDateString());
         }
     }
 
@@ -62,9 +60,8 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// Process the brokerage message event. Trigger any actions in the algorithm or notifications system required.
         /// </summary>
         /// <param name="message">Message object</param>
-        public void Handle(BrokerageMessageEvent message)
-        {
-            toLog = _algo.Time.toString("o") + " Event: " + message.Message;
+        public void Handle(BrokerageMessageEvent message) {
+            toLog = _algo.Time.toString( "o") + " Event: " + message.Message;
             _algo.Debug(toLog);
             _algo.Log(toLog);
         }

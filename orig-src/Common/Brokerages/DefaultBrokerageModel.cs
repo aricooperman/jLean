@@ -67,8 +67,7 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="accountType">The type of account to be modelled, defaults to 
         /// <see cref="QuantConnect.AccountType.Margin"/></param>
-        public DefaultBrokerageModel(AccountType accountType = AccountType.Margin)
-        {
+        public DefaultBrokerageModel(AccountType accountType = AccountType.Margin) {
             AccountType = accountType;
         }
 
@@ -83,8 +82,7 @@ package com.quantconnect.lean.Brokerages
         /// <param name="order">The order to be processed</param>
         /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be submitted</param>
         /// <returns>True if the brokerage could process the order, false otherwise</returns>
-        public virtual boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message)
-        {
+        public virtual boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
             message = null;
             return true;
         }
@@ -97,8 +95,7 @@ package com.quantconnect.lean.Brokerages
         /// <param name="request">The requested update to be made to the order</param>
         /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be updated</param>
         /// <returns>True if the brokerage would allow updating the order, false otherwise</returns>
-        public virtual boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message)
-        {
+        public virtual boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message) {
             message = null;
             return true;
         }
@@ -113,8 +110,7 @@ package com.quantconnect.lean.Brokerages
         /// <param name="security">The security being traded</param>
         /// <param name="order">The order to test for execution</param>
         /// <returns>True if the brokerage would be able to perform the execution, false otherwise</returns>
-        public virtual boolean CanExecuteOrder(Security security, Order order)
-        {
+        public virtual boolean CanExecuteOrder(Security security, Order order) {
             return true;
         }
 
@@ -126,10 +122,9 @@ package com.quantconnect.lean.Brokerages
         /// </remarks>
         /// <param name="tickets">The open tickets matching the split event</param>
         /// <param name="split">The split event data</param>
-        public virtual void ApplySplit(List<OrderTicket> tickets, Split split)
-        {
+        public virtual void ApplySplit(List<OrderTicket> tickets, Split split) {
             // by default we'll just update the orders to have the same notional value
-            splitFactor = split.SplitFactor;
+            splitFactor = split.splitFactor;
             tickets.ForEach(ticket => ticket.Update(new UpdateOrderFields
             {
                 Quantity = (int?) (ticket.Quantity/splitFactor),
@@ -143,10 +138,8 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="security">The security's whose leverage we seek</param>
         /// <returns>The leverage for the specified security</returns>
-        public BigDecimal GetLeverage(Security security)
-        {
-            switch (security.Type)
-            {
+        public BigDecimal GetLeverage(Security security) {
+            switch (security.Type) {
                 case SecurityType.Equity:
                     return 2m;
 
@@ -168,8 +161,7 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="security">The security to get fill model for</param>
         /// <returns>The new fill model for this brokerage</returns>
-        public virtual IFillModel GetFillModel(Security security)
-        {
+        public virtual IFillModel GetFillModel(Security security) {
             return new ImmediateFillModel();
         }
 
@@ -178,10 +170,8 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="security">The security to get a fee model for</param>
         /// <returns>The new fee model for this brokerage</returns>
-        public virtual IFeeModel GetFeeModel(Security security)
-        {
-            switch (security.Type)
-            {
+        public virtual IFeeModel GetFeeModel(Security security) {
+            switch (security.Type) {
                 case SecurityType.Base:
                     return new ConstantFeeModel(0m);
 
@@ -203,10 +193,8 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="security">The security to get a slippage model for</param>
         /// <returns>The new slippage model for this brokerage</returns>
-        public virtual ISlippageModel GetSlippageModel(Security security)
-        {
-            switch (security.Type)
-            {
+        public virtual ISlippageModel GetSlippageModel(Security security) {
+            switch (security.Type) {
                 case SecurityType.Base:
                 case SecurityType.Equity:
                     return new ConstantSlippageModel(0);
@@ -229,12 +217,9 @@ package com.quantconnect.lean.Brokerages
         /// <param name="security">The security to get a settlement model for</param>
         /// <param name="accountType">The account type</param>
         /// <returns>The settlement model for this brokerage</returns>
-        public virtual ISettlementModel GetSettlementModel(Security security, AccountType accountType)
-        {
-            if (accountType == AccountType.Cash)
-            {
-                switch (security.Type)
-                {
+        public virtual ISettlementModel GetSettlementModel(Security security, AccountType accountType) {
+            if( accountType == AccountType.Cash) {
+                switch (security.Type) {
                     case SecurityType.Equity:
                         return new DelayedSettlementModel(Equity.DefaultSettlementDays, Equity.DefaultSettlementTime);
 

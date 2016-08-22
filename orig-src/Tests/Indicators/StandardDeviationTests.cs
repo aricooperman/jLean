@@ -23,8 +23,7 @@ package com.quantconnect.lean.Tests.Indicators
     public class StandardDeviationTests : CommonIndicatorTests<IndicatorDataPoint>
     {
         [Test]
-        public void ComputesCorrectly()
-        {
+        public void ComputesCorrectly() {
             // Indicator output was compared against the following function in Julia
             // stdpop(v) = sqrt(sum((v - mean(v)).^2) / length(v))
             std = new StandardDeviation(3);
@@ -47,8 +46,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly2()
-        {
+        public void ResetsProperly2() {
             std = new StandardDeviation(3);
             std.Update(DateTime.Today, 1m);
             std.Update(DateTime.Today.AddSeconds(1), 5m);
@@ -59,22 +57,21 @@ package com.quantconnect.lean.Tests.Indicators
             TestHelper.AssertIndicatorIsInDefaultState(std);
         }
 
-        protected override IndicatorBase<IndicatorDataPoint> CreateIndicator()
-        {
+        protected @Override IndicatorBase<IndicatorDataPoint> CreateIndicator() {
             return new StandardDeviation(10);
         }
 
-        protected override String TestFileName
+        protected @Override String TestFileName
         {
             get { return "spy_var.txt"; }
         }
 
-        protected override String TestColumnName
+        protected @Override String TestColumnName
         {
             get { return "Var"; }
         }
 
-        protected override Action<IndicatorBase<IndicatorDataPoint>, double> Assertion
+        protected @Override Action<IndicatorBase<IndicatorDataPoint>, double> Assertion
         {
             get { return (indicator, expected) => Assert.AreEqual(Math.Sqrt(expected), (double)indicator.Current.Value, 1e-6); }
         }

@@ -41,7 +41,7 @@ package com.quantconnect.lean.Orders
         /// <summary>
         /// StopLimit Order Type
         /// </summary>
-        public override OrderType Type
+        public @Override OrderType Type
         {
             get { return OrderType.StopLimit; }
         }
@@ -49,8 +49,7 @@ package com.quantconnect.lean.Orders
         /// <summary>
         /// Default constructor for JSON Deserialization:
         /// </summary>
-        public StopLimitOrder()
-        {
+        public StopLimitOrder() {
         }
 
         /// <summary>
@@ -63,15 +62,13 @@ package com.quantconnect.lean.Orders
         /// <param name="stopPrice">Price the order should be filled at if a limit order</param>
         /// <param name="tag">User defined data tag for this order</param>
         public StopLimitOrder(Symbol symbol, int quantity, BigDecimal stopPrice, BigDecimal limitPrice, DateTime time, String tag = "")
-            : base(symbol, quantity, time, tag)
-        {
+            : base(symbol, quantity, time, tag) {
             StopPrice = stopPrice;
             LimitPrice = limitPrice;
 
-            if (tag == "")
-            {
+            if( tag == "") {
                 //Default tag values to display stop price in GUI.
-                Tag = "Stop Price: " + stopPrice.toString("C") + " Limit Price: " + limitPrice.toString("C");
+                Tag = "Stop Price: " + stopPrice.toString( "C") + " Limit Price: " + limitPrice.toString( "C");
             }
         }
 
@@ -79,17 +76,14 @@ package com.quantconnect.lean.Orders
         /// Gets the order value in units of the security's quote currency
         /// </summary>
         /// <param name="security">The security matching this order's symbol</param>
-        protected override BigDecimal GetValueImpl(Security security)
-        {
+        protected @Override BigDecimal GetValueImpl(Security security) {
             // selling, so higher price will be used
-            if (Quantity < 0)
-            {
+            if( Quantity < 0) {
                 return Quantity*Math.Max(LimitPrice, security.Price);
             }
 
             // buying, so lower price will be used
-            if (Quantity > 0)
-            {
+            if( Quantity > 0) {
                 return Quantity*Math.Min(LimitPrice, security.Price);
             }
 
@@ -100,15 +94,12 @@ package com.quantconnect.lean.Orders
         /// Modifies the state of this order to match the update request
         /// </summary>
         /// <param name="request">The request to update this order object</param>
-        public override void ApplyUpdateOrderRequest(UpdateOrderRequest request)
-        {
+        public @Override void ApplyUpdateOrderRequest(UpdateOrderRequest request) {
             base.ApplyUpdateOrderRequest(request);
-            if (request.StopPrice.HasValue)
-            {
+            if( request.StopPrice.HasValue) {
                 StopPrice = request.StopPrice.Value;
             }
-            if (request.LimitPrice.HasValue)
-            {
+            if( request.LimitPrice.HasValue) {
                 LimitPrice = request.LimitPrice.Value;
             }
         }
@@ -120,17 +111,15 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
-            return String.format("{0} at stop {1} limit {2}", base.toString(), StopPrice.SmartRounding(), LimitPrice.SmartRounding());
+        public @Override String toString() {
+            return String.format( "%1$s at stop %2$s limit %3$s", base.toString(), StopPrice.SmartRounding(), LimitPrice.SmartRounding());
         }
 
         /// <summary>
         /// Creates a deep-copy clone of this order
         /// </summary>
         /// <returns>A copy of this order</returns>
-        public override Order Clone()
-        {
+        public @Override Order Clone() {
             order = new StopLimitOrder {StopPrice = StopPrice, LimitPrice = LimitPrice};
             CopyTo(order);
             return order;

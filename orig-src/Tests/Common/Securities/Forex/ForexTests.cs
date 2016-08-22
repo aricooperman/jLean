@@ -26,8 +26,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
     {
         [Test]
         [ExpectedException(typeof(ArgumentException), MatchType = MessageMatch.Contains, ExpectedMessage = "Currency pairs must be exactly 6 characters")]
-        public void DecomposeThrowsOnSymbolTooShort()
-        {
+        public void DecomposeThrowsOnSymbolTooShort() {
             String symbol = "12345";
             Assert.AreEqual(5, symbol.Length);
             String basec, quotec;
@@ -36,8 +35,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
 
         [Test]
         [ExpectedException(typeof(ArgumentException), MatchType = MessageMatch.Contains, ExpectedMessage = "Currency pairs must be exactly 6 characters")]
-        public void DecomposeThrowsOnSymbolTooLong()
-        {
+        public void DecomposeThrowsOnSymbolTooLong() {
             String symbol = "1234567";
             Assert.AreEqual(7, symbol.Length);
             String basec, quotec;
@@ -46,20 +44,18 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
 
         [Test]
         [ExpectedException(typeof(ArgumentException), MatchType = MessageMatch.Contains, ExpectedMessage = "Currency pairs must be exactly 6 characters")]
-        public void DecomposeThrowsOnNullSymbol()
-        {
+        public void DecomposeThrowsOnNullSymbol() {
             String symbol = null;
             String basec, quotec;
             QuantConnect.Securities.Forex.Forex.DecomposeCurrencyPair(symbol, out basec, out quotec);
         }
 
         [Test]
-        public void ConstructorDecomposesBaseAndQuoteCurrencies()
-        {
+        public void ConstructorDecomposesBaseAndQuoteCurrencies() {
             config = new SubscriptionDataConfig(typeof(TradeBar), Symbols.EURUSD, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, true);
-            forex = new QuantConnect.Securities.Forex.Forex(SecurityExchangeHours.AlwaysOpen(config.DataTimeZone), new Cash("usd", 0, 0), config, SymbolProperties.GetDefault("usd"));
-            Assert.AreEqual("EUR", forex.BaseCurrencySymbol);
-            Assert.AreEqual("USD", forex.QuoteCurrency.Symbol);
+            forex = new QuantConnect.Securities.Forex.Forex(SecurityExchangeHours.AlwaysOpen(config.DataTimeZone), new Cash( "usd", 0, 0), config, SymbolProperties.GetDefault( "usd"));
+            Assert.AreEqual( "EUR", forex.BaseCurrencySymbol);
+            Assert.AreEqual( "USD", forex.QuoteCurrency.Symbol);
         }
     }
 }

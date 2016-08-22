@@ -27,8 +27,7 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Initializes a new instance of the <see cref="Ticks"/> dictionary
         /// </summary>
-        public Ticks()
-        {
+        public Ticks() {
         }
 
         /// <summary>
@@ -36,8 +35,7 @@ package com.quantconnect.lean.Data.Market
         /// </summary>
         /// <param name="frontier">The time associated with the data in this Map</param>
         public Ticks(DateTime frontier)
-            : base(frontier)
-        {
+            : base(frontier) {
         }
     }
 }

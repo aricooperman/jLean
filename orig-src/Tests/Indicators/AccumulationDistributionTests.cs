@@ -22,17 +22,16 @@ package com.quantconnect.lean.Tests.Indicators
     [TestFixture]
     public class AccumulationDistributionTests : CommonIndicatorTests<TradeBar>
     {
-        protected override IndicatorBase<TradeBar> CreateIndicator()
-        {
-            return new AccumulationDistribution("AD");
+        protected @Override IndicatorBase<TradeBar> CreateIndicator() {
+            return new AccumulationDistribution( "AD");
         }
 
-        protected override String TestFileName
+        protected @Override String TestFileName
         {
             get { return "spy_ad.txt"; }
         }
 
-        protected override String TestColumnName
+        protected @Override String TestColumnName
         {
             get { return "AD"; }
         }

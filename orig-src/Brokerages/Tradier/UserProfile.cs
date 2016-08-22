@@ -31,8 +31,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierUser Profile;
 
         /// Constructor: Create user from tradier data.
-        public TradierUserContainer()
-        { }
+        public TradierUserContainer() { }
     }
 
     /// <summary>
@@ -54,8 +53,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierUserAccount> Accounts { get; set; }
 
         /// Empty Constructor
-        public TradierUser() 
-        {
+        public TradierUser() {
             Id = "";
             Name = "";
             Accounts = new List<TradierUserAccount>();
@@ -98,8 +96,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         /// <summary>
         /// Create a new account:
         /// </summary>
-        public TradierUserAccount() 
-        {
+        public TradierUserAccount() {
             AccountNumber = 0;
             DayTrader = false;
             OptionLevel = 1;

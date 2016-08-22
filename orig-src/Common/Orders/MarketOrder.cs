@@ -26,14 +26,13 @@ package com.quantconnect.lean.Orders
         /// <summary>
         /// Added a default constructor for JSON Deserialization:
         /// </summary>
-        public MarketOrder()
-        {
+        public MarketOrder() {
         }
 
         /// <summary>
         /// Market Order Type
         /// </summary>
-        public override OrderType Type
+        public @Override OrderType Type
         {
             get { return OrderType.Market; }
         }
@@ -46,16 +45,14 @@ package com.quantconnect.lean.Orders
         /// <param name="time">Time the order was placed</param>
         /// <param name="tag">User defined data tag for this order</param>
         public MarketOrder(Symbol symbol, int quantity, DateTime time, String tag = "")
-            : base(symbol, quantity, time, tag)
-        {
+            : base(symbol, quantity, time, tag) {
         }
 
         /// <summary>
         /// Gets the order value in units of the security's quote currency
         /// </summary>
         /// <param name="security">The security matching this order's symbol</param>
-        protected override BigDecimal GetValueImpl(Security security)
-        {
+        protected @Override BigDecimal GetValueImpl(Security security) {
             return Quantity*security.Price;
         }
 
@@ -63,8 +60,7 @@ package com.quantconnect.lean.Orders
         /// Creates a deep-copy clone of this order
         /// </summary>
         /// <returns>A copy of this order</returns>
-        public override Order Clone()
-        {
+        public @Override Order Clone() {
             order = new MarketOrder();
             CopyTo(order);
             return order;

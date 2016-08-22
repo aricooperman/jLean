@@ -43,8 +43,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="enumerator">The underlying enumerator to make frontier aware</param>
         /// <param name="timeProvider">The time provider used for resolving the current frontier time</param>
         /// <param name="offsetProvider">An offset provider used for converting the frontier UTC time into the data's native time zone</param>
-        public FrontierAwareEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, TimeZoneOffsetProvider offsetProvider)
-        {
+        public FrontierAwareEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, TimeZoneOffsetProvider offsetProvider) {
             _enumerator = enumerator;
             _timeProvider = timeProvider;
             _offsetProvider = offsetProvider;
@@ -57,17 +56,14 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
         /// </returns>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public boolean MoveNext()
-        {
+        public boolean MoveNext() {
             underlyingCurrent = _enumerator.Current;
             frontier = _timeProvider.GetUtcNow();
             localFrontier = new DateTime(frontier.Ticks + _offsetProvider.GetOffsetTicks(frontier));
 
             // if we moved next, but didn't emit, check to see if it's time to emit yet
-            if (!_needsMoveNext && underlyingCurrent != null)
-            {
-                if (underlyingCurrent.EndTime <= localFrontier)
-                {
+            if( !_needsMoveNext && underlyingCurrent != null ) {
+                if( underlyingCurrent.EndTime <= localFrontier) {
                     // we can now emit the underlyingCurrent as part of this time slice
                     _current = underlyingCurrent;
                     _needsMoveNext = true;
@@ -83,8 +79,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             }
 
             // we've exhausted the underlying enumerator, iteration completed
-            if (_needsMoveNext && !_enumerator.MoveNext())
-            {
+            if( _needsMoveNext && !_enumerator.MoveNext()) {
                 _needsMoveNext = true;
                 _current = null;
                 return false;
@@ -92,14 +87,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 
             underlyingCurrent = _enumerator.Current;
 
-            if (underlyingCurrent != null && underlyingCurrent.EndTime <= localFrontier)
-            {
+            if( underlyingCurrent != null && underlyingCurrent.EndTime <= localFrontier) {
                 // only emit if new data available (skip custom data if same time/value)
-                if (_lastEmittedValue != null && 
+                if( _lastEmittedValue != null && 
                     _lastEmittedValue.DataType == MarketDataType.Base && 
                     _lastEmittedValue.EndTime == underlyingCurrent.EndTime &&
-                    _lastEmittedValue.Value == underlyingCurrent.Value)
-                {
+                    _lastEmittedValue.Value == underlyingCurrent.Value) {
                     _current = null;
                 }
                 else
@@ -124,8 +117,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public void Reset()
-        {
+        public void Reset() {
             _enumerator.Reset();
         }
 
@@ -156,8 +148,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             _enumerator.Dispose();
         }
     }

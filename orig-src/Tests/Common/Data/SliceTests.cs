@@ -27,8 +27,7 @@ package com.quantconnect.lean.Tests.Common.Data
     public class SliceTests
     {
         [Test]
-        public void AccessesBaseBySymbol()
-        {
+        public void AccessesBaseBySymbol() {
             IndicatorDataPoint tick = new IndicatorDataPoint(Symbols.SPY, DateTime.Now, 1);
             Slice slice = new Slice(DateTime.Now, new[] { tick });
 
@@ -38,8 +37,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AccessesTradeBarBySymbol()
-        {
+        public void AccessesTradeBarBySymbol() {
             TradeBar tradeBar = new TradeBar {Symbol = Symbols.SPY, Time = DateTime.Now};
             Slice slice = new Slice(DateTime.Now, new[] { tradeBar });
 
@@ -49,8 +47,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AccessesTradeBarCollection()
-        {
+        public void AccessesTradeBarCollection() {
             TradeBar tradeBar1 = new TradeBar { Symbol = Symbols.SPY, Time = DateTime.Now };
             TradeBar tradeBar2 = new TradeBar { Symbol = Symbols.AAPL, Time = DateTime.Now };
             Slice slice = new Slice(DateTime.Now, new[] { tradeBar1, tradeBar2 });
@@ -60,8 +57,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AccessesTicksBySymbol()
-        {
+        public void AccessesTicksBySymbol() {
             Tick tick1 = new Tick(DateTime.Now, Symbols.SPY, 1, 2);
             Tick tick2 = new Tick(DateTime.Now, Symbols.SPY, 1.1m, 2.1m);
             Slice slice = new Slice(DateTime.Now, new[] { tick1, tick2 });
@@ -72,8 +68,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AccessesTicksCollection()
-        {
+        public void AccessesTicksCollection() {
             Tick tick1 = new Tick(DateTime.Now, Symbols.SPY, 1, 2);
             Tick tick2 = new Tick(DateTime.Now, Symbols.SPY, 1.1m, 2.1m);
             Tick tick3 = new Tick(DateTime.Now, Symbols.AAPL, 1, 2);
@@ -87,8 +82,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AccessesCustomGenericallyByType()
-        {
+        public void AccessesCustomGenericallyByType() {
             Quandl quandlSpy = new Quandl { Symbol = Symbols.SPY, Time = DateTime.Now };
             Quandl quandlAapl = new Quandl { Symbol = Symbols.AAPL, Time = DateTime.Now };
             Slice slice = new Slice(DateTime.Now, new[] { quandlSpy, quandlAapl });
@@ -98,8 +92,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AccessesTickGenericallyByType()
-        {
+        public void AccessesTickGenericallyByType() {
             Tick TickSpy = new Tick { Symbol = Symbols.SPY, Time = DateTime.Now };
             Tick TickAapl = new Tick { Symbol = Symbols.AAPL, Time = DateTime.Now };
             Slice slice = new Slice(DateTime.Now, new[] { TickSpy, TickAapl });
@@ -110,8 +103,7 @@ package com.quantconnect.lean.Tests.Common.Data
 
 
         [Test]
-        public void AccessesTradeBarGenericallyByType()
-        {
+        public void AccessesTradeBarGenericallyByType() {
             TradeBar TradeBarSpy = new TradeBar { Symbol = Symbols.SPY, Time = DateTime.Now };
             TradeBar TradeBarAapl = new TradeBar { Symbol = Symbols.AAPL, Time = DateTime.Now };
             Slice slice = new Slice(DateTime.Now, new[] { TradeBarSpy, TradeBarAapl });
@@ -121,8 +113,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AccessesGenericallyByTypeAndSymbol()
-        {
+        public void AccessesGenericallyByTypeAndSymbol() {
             Quandl quandlSpy = new Quandl { Symbol = Symbols.SPY, Time = DateTime.Now };
             Quandl quandlAapl = new Quandl { Symbol = Symbols.AAPL, Time = DateTime.Now };
             Slice slice = new Slice(DateTime.Now, new[] { quandlSpy, quandlAapl });

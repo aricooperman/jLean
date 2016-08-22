@@ -26,23 +26,20 @@ package com.quantconnect.lean.ToolBox.IQFeed
     public class Level1ServerDisconnectedArgs : Level1TextLineEventArgs
     {
         public Level1ServerDisconnectedArgs( String line)
-            : base(line)
-        {
+            : base(line) {
         }
     }
     public class Level1ServerReconnectFailedArgs : Level1TextLineEventArgs
     {
         public Level1ServerReconnectFailedArgs( String line)
-            : base(line)
-        {
+            : base(line) {
         }
     }
 
     public class Level1TextLineEventArgs : EventArgs
     {
         public readonly String TextLine;
-        public Level1TextLineEventArgs( String line)
-        {
+        public Level1TextLineEventArgs( String line) {
             TextLine = line;
         }
     }
@@ -50,34 +47,31 @@ package com.quantconnect.lean.ToolBox.IQFeed
     public class Level1SummaryUpdateEventArgs : EventArgs
     {
         public enum UpdateType { Trade, ExtendedTrade, Bid, Ask, Other }
-        public Level1SummaryUpdateEventArgs( String line)
-        {
+        public Level1SummaryUpdateEventArgs( String line) {
             try
             {                
-                fields = line.Split(',');
+                fields = line.split(',');
                 _summary = fields[0] == "P";
                 _symbol = fields[1];
-                _notFound = line.Contains("Not Found");
+                _notFound = line.Contains( "Not Found");
 
-                if (_notFound) return;
-                if (!double.TryParse(fields[3], out _last)) _last = 0;
-                if (!double.TryParse(fields[4], out _change)) _change = 0;
-                if (!double.TryParse(fields[5], out _change)) _percentChange = 0;
-                if (!int.TryParse(fields[6], out _totalVolume)) _totalVolume = 0;
-                if (!int.TryParse(fields[7], out _incrementalVolume)) _incrementalVolume = 0;
-                if (!double.TryParse(fields[8], out _high)) _high = 0;
-                if (!double.TryParse(fields[9], out _low)) _low = 0;
-                if (!double.TryParse(fields[10], out _bid)) _bid = 0;
-                if (!double.TryParse(fields[11], out _ask)) _ask = 0;
-                if (!int.TryParse(fields[12], out _bidSize)) _bidSize = 0;
-                if (!int.TryParse(fields[13], out _askSize)) _askSize = 0;
-                if (!int.TryParse(fields[14], out _tick)) _tick = 0;
-                if (!int.TryParse(fields[15], out _bidTick)) _bidTick = 0;
-                if (!double.TryParse(fields[16], out _range)) _range = 0;
-                if (!string.IsNullOrEmpty(fields[17]))
-                {
-                    switch (fields[17].Substring(fields[17].Length - 1, 1))
-                    {
+                if( _notFound) return;
+                if( !double.TryParse(fields[3], out _last)) _last = 0;
+                if( !double.TryParse(fields[4], out _change)) _change = 0;
+                if( !double.TryParse(fields[5], out _change)) _percentChange = 0;
+                if( !int.TryParse(fields[6], out _totalVolume)) _totalVolume = 0;
+                if( !int.TryParse(fields[7], out _incrementalVolume)) _incrementalVolume = 0;
+                if( !double.TryParse(fields[8], out _high)) _high = 0;
+                if( !double.TryParse(fields[9], out _low)) _low = 0;
+                if( !double.TryParse(fields[10], out _bid)) _bid = 0;
+                if( !double.TryParse(fields[11], out _ask)) _ask = 0;
+                if( !int.TryParse(fields[12], out _bidSize)) _bidSize = 0;
+                if( !int.TryParse(fields[13], out _askSize)) _askSize = 0;
+                if( !int.TryParse(fields[14], out _tick)) _tick = 0;
+                if( !int.TryParse(fields[15], out _bidTick)) _bidTick = 0;
+                if( !double.TryParse(fields[16], out _range)) _range = 0;
+                if( !string.IsNullOrEmpty(fields[17])) {
+                    switch (fields[17].Substring(fields[17].Length - 1, 1)) {
                         case "t":
                             _updateType = UpdateType.Trade;
                             break;
@@ -99,56 +93,55 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 {
                     return;
                 }
-                if (!int.TryParse(fields[18], out _openInterest)) _openInterest = 0;
-                if (!double.TryParse(fields[19], out _open)) _open = 0;
-                if (!double.TryParse(fields[20], out _close)) _close = 0;
-                if (!double.TryParse(fields[21], out _spread)) _spread = 0;
-                if (!double.TryParse(fields[23], out _settle)) _settle = 0;
-                if (!int.TryParse(fields[24], out _delay)) _delay = 0;
+                if( !int.TryParse(fields[18], out _openInterest)) _openInterest = 0;
+                if( !double.TryParse(fields[19], out _open)) _open = 0;
+                if( !double.TryParse(fields[20], out _close)) _close = 0;
+                if( !double.TryParse(fields[21], out _spread)) _spread = 0;
+                if( !double.TryParse(fields[23], out _settle)) _settle = 0;
+                if( !int.TryParse(fields[24], out _delay)) _delay = 0;
                 _shortRestricted = false;
-                if (fields[26] == "R") _shortRestricted = true;
-                if (!double.TryParse(fields[27], out _netAssetValue)) _netAssetValue = 0;
-                if (!double.TryParse(fields[28], out _averageMaturity)) _averageMaturity = 0;
-                if (!double.TryParse(fields[29], out _7DayYield)) _7DayYield = 0;
-                if (!DateTime.TryParseExact(fields[30], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _lastTradeDate)) _lastTradeDate = DateTime.MinValue;
-                if (!double.TryParse(fields[32], out _extendedTradingLast)) _extendedTradingLast = 0;
-                if (!int.TryParse(fields[34], out _regionalVolume)) _regionalVolume = 0;
-                if (!double.TryParse(fields[35], out _netAssetValue2)) _netAssetValue2 = 0;
-                if (!double.TryParse(fields[36], out _extendedTradingChange)) _extendedTradingChange = 0;
-                if (!double.TryParse(fields[37], out _extendedTradingDifference)) _extendedTradingDifference = 0;
-                if (!double.TryParse(fields[38], out _priceEarningsRatio)) _priceEarningsRatio = 0;
-                if (!double.TryParse(fields[39], out _percentOffAverageVolume)) _percentOffAverageVolume = 0;
-                if (!double.TryParse(fields[40], out _bidChange)) _bidChange = 0;
-                if (!double.TryParse(fields[41], out _askChange)) _askChange = 0;
-                if (!double.TryParse(fields[42], out _changeFromOpen)) _changeFromOpen = 0;
+                if( fields[26] == "R") _shortRestricted = true;
+                if( !double.TryParse(fields[27], out _netAssetValue)) _netAssetValue = 0;
+                if( !double.TryParse(fields[28], out _averageMaturity)) _averageMaturity = 0;
+                if( !double.TryParse(fields[29], out _7DayYield)) _7DayYield = 0;
+                if( !DateTime.TryParseExact(fields[30], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _lastTradeDate)) _lastTradeDate = DateTime.MinValue;
+                if( !double.TryParse(fields[32], out _extendedTradingLast)) _extendedTradingLast = 0;
+                if( !int.TryParse(fields[34], out _regionalVolume)) _regionalVolume = 0;
+                if( !double.TryParse(fields[35], out _netAssetValue2)) _netAssetValue2 = 0;
+                if( !double.TryParse(fields[36], out _extendedTradingChange)) _extendedTradingChange = 0;
+                if( !double.TryParse(fields[37], out _extendedTradingDifference)) _extendedTradingDifference = 0;
+                if( !double.TryParse(fields[38], out _priceEarningsRatio)) _priceEarningsRatio = 0;
+                if( !double.TryParse(fields[39], out _percentOffAverageVolume)) _percentOffAverageVolume = 0;
+                if( !double.TryParse(fields[40], out _bidChange)) _bidChange = 0;
+                if( !double.TryParse(fields[41], out _askChange)) _askChange = 0;
+                if( !double.TryParse(fields[42], out _changeFromOpen)) _changeFromOpen = 0;
                 _marketOpen = false;
-                if (fields[43] == "1") _marketOpen = true;
-                if (!double.TryParse(fields[44], out _volatility)) _volatility = 0;
-                if (!double.TryParse(fields[45], out _marketCapitalization)) _marketCapitalization = 0;
+                if( fields[43] == "1") _marketOpen = true;
+                if( !double.TryParse(fields[44], out _volatility)) _volatility = 0;
+                if( !double.TryParse(fields[45], out _marketCapitalization)) _marketCapitalization = 0;
                 _fractionDisplayCode = fields[46];
                 _decimalPrecision = fields[47];
                 _daysToExpiration = fields[48];
-                if (!int.TryParse(fields[49], out _previousDayVolume)) _previousDayVolume = 0;
-                if (!double.TryParse(fields[51], out _openRange1)) _openRange1 = 0;
-                if (!double.TryParse(fields[52], out _closeRange1)) _closeRange1 = 0;
-                if (!double.TryParse(fields[53], out _openRange2)) _openRange2 = 0;
-                if (!double.TryParse(fields[54], out _closeRange2)) _closeRange2 = 0;
-                if (!int.TryParse(fields[55], out _numberOfTradesToday)) _numberOfTradesToday = 0;
+                if( !int.TryParse(fields[49], out _previousDayVolume)) _previousDayVolume = 0;
+                if( !double.TryParse(fields[51], out _openRange1)) _openRange1 = 0;
+                if( !double.TryParse(fields[52], out _closeRange1)) _closeRange1 = 0;
+                if( !double.TryParse(fields[53], out _openRange2)) _openRange2 = 0;
+                if( !double.TryParse(fields[54], out _closeRange2)) _closeRange2 = 0;
+                if( !int.TryParse(fields[55], out _numberOfTradesToday)) _numberOfTradesToday = 0;
                 _bidTime = new Time(fields[56]);
                 _askTime = new Time(fields[57]);
-                if (!double.TryParse(fields[58], out _vwap)) _vwap = 0;
-                if (!int.TryParse(fields[59], out _tickId)) _tickId = 0;
+                if( !double.TryParse(fields[58], out _vwap)) _vwap = 0;
+                if( !int.TryParse(fields[59], out _tickId)) _tickId = 0;
                 _financialStatusIndicator = fields[60];
-                if (!DateTime.TryParseExact(fields[61], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _settlementDate)) _settlementDate = DateTime.MinValue;
-                if (!int.TryParse(fields[62], out _tradeMarketCenter)) _tradeMarketCenter = 0;
-                if (!int.TryParse(fields[63], out _bidMarketCenter)) _bidMarketCenter = 0;
-                if (!int.TryParse(fields[64], out _askMarketCenter)) _askMarketCenter = 0;
+                if( !DateTime.TryParseExact(fields[61], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _settlementDate)) _settlementDate = DateTime.MinValue;
+                if( !int.TryParse(fields[62], out _tradeMarketCenter)) _tradeMarketCenter = 0;
+                if( !int.TryParse(fields[63], out _bidMarketCenter)) _bidMarketCenter = 0;
+                if( !int.TryParse(fields[64], out _askMarketCenter)) _askMarketCenter = 0;
                 _tradeTime = new Time(fields[65]);
                 _availableRegions = fields[66];
             }
-            catch (Exception err)
-            {
-                Logging.Log.Debug("IQLevel1Client.Init(): " + err.Message);
+            catch (Exception err) {
+                Logging.Log.Debug( "IQLevel1Client.Init(): " + err.Message);
             }
         }
 
@@ -278,76 +271,74 @@ package com.quantconnect.lean.ToolBox.IQFeed
         private int _askMarketCenter;
         private Time _tradeTime;
         private String _availableRegions;
-        private CultureInfo _enUS = new CultureInfo("en-US");
+        private CultureInfo _enUS = new CultureInfo( "en-US");
         #endregion
     }
     public class Level1FundamentalEventArgs : EventArgs
     {
-        private static readonly StreamWriter _logger = new StreamWriter("fundamental.log");
+        private static readonly StreamWriter _logger = new StreamWriter( "fundamental.log");
         private static readonly Timer _timer = new Timer(1.0);
 
-        static Level1FundamentalEventArgs()
-        {
+        static Level1FundamentalEventArgs() {
             _timer.Enabled = true;
             _timer.AutoReset = true;
             _timer.Elapsed += (sender, args) => _logger.Flush();
         }
 
-        public Level1FundamentalEventArgs( String line)
-        {
-            fields = line.Split(',');
+        public Level1FundamentalEventArgs( String line) {
+            fields = line.split(',');
 
             now = DateTime.Now;
             _logger.WriteLine(now + ":" + now.Second + "," + line);
 
             _symbol = fields[1];
-            if (!double.TryParse(fields[3], out _pe)) _pe = 0;
-            if (!int.TryParse(fields[4], out _averageVolume)) _averageVolume = 0;
-            if (!double.TryParse(fields[5], out _high52Week)) _high52Week = 0;
-            if (!double.TryParse(fields[6], out _low52Week)) _low52Week = 0;
-            if (!double.TryParse(fields[7], out _calendarYearHigh)) _calendarYearHigh = 0;
-            if (!double.TryParse(fields[8], out _calendarYearLow)) _calendarYearLow = 0;
-            if (!double.TryParse(fields[9], out _dividendYield)) _dividendYield = 0;
-            if (!double.TryParse(fields[10], out _dividendAmount)) _dividendAmount = 0;
-            if (!double.TryParse(fields[11], out _dividendRate)) _dividendRate = 0;
-            if (!DateTime.TryParseExact(fields[12], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _payDate)) _payDate = DateTime.MinValue;
-            if (!DateTime.TryParseExact(fields[13], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _exDividendDate)) _exDividendDate = DateTime.MinValue;
-            if (!int.TryParse(fields[17], out _shortInterest)) _shortInterest = 0;
-            if (!double.TryParse(fields[19], out _currentYearEarningsPerShare)) _currentYearEarningsPerShare = 0;
-            if (!double.TryParse(fields[20], out _nextYearEarningsPerShare)) _nextYearEarningsPerShare = 0;
-            if (!double.TryParse(fields[21], out _fiveYearGrowthPercentage)) _fiveYearGrowthPercentage = 0;
-            if (!int.TryParse(fields[22], out _fiscalYearEnd)) _fiscalYearEnd = 0;
+            if( !double.TryParse(fields[3], out _pe)) _pe = 0;
+            if( !int.TryParse(fields[4], out _averageVolume)) _averageVolume = 0;
+            if( !double.TryParse(fields[5], out _high52Week)) _high52Week = 0;
+            if( !double.TryParse(fields[6], out _low52Week)) _low52Week = 0;
+            if( !double.TryParse(fields[7], out _calendarYearHigh)) _calendarYearHigh = 0;
+            if( !double.TryParse(fields[8], out _calendarYearLow)) _calendarYearLow = 0;
+            if( !double.TryParse(fields[9], out _dividendYield)) _dividendYield = 0;
+            if( !double.TryParse(fields[10], out _dividendAmount)) _dividendAmount = 0;
+            if( !double.TryParse(fields[11], out _dividendRate)) _dividendRate = 0;
+            if( !DateTime.TryParseExact(fields[12], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _payDate)) _payDate = DateTime.MinValue;
+            if( !DateTime.TryParseExact(fields[13], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _exDividendDate)) _exDividendDate = DateTime.MinValue;
+            if( !int.TryParse(fields[17], out _shortInterest)) _shortInterest = 0;
+            if( !double.TryParse(fields[19], out _currentYearEarningsPerShare)) _currentYearEarningsPerShare = 0;
+            if( !double.TryParse(fields[20], out _nextYearEarningsPerShare)) _nextYearEarningsPerShare = 0;
+            if( !double.TryParse(fields[21], out _fiveYearGrowthPercentage)) _fiveYearGrowthPercentage = 0;
+            if( !int.TryParse(fields[22], out _fiscalYearEnd)) _fiscalYearEnd = 0;
             _companyName = fields[24];
             _rootOptionSymbol = fields[25];
-            if (!double.TryParse(fields[26], out _percentHeldByInstitutions)) _percentHeldByInstitutions = 0;
-            if (!double.TryParse(fields[27], out _beta)) _beta = 0;
+            if( !double.TryParse(fields[26], out _percentHeldByInstitutions)) _percentHeldByInstitutions = 0;
+            if( !double.TryParse(fields[27], out _beta)) _beta = 0;
             _leaps = fields[28];
-            if (!double.TryParse(fields[29], out _currentAssets)) _currentAssets = 0;
-            if (!double.TryParse(fields[30], out _currentLiabilities)) _currentLiabilities = 0;
-            if (!DateTime.TryParseExact(fields[31], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _balanceSheetDate)) _balanceSheetDate = DateTime.MinValue;
-            if (!double.TryParse(fields[32], out _longTermDebt)) _longTermDebt = 0;
-            if (!double.TryParse(fields[33], out _commonSharesOutstanding)) _commonSharesOutstanding = 0;
-            splits = fields[35].Split(' ');
-            if (!double.TryParse(splits[0], out _splitFactor1)) _splitFactor1 = 0;
-            if (!DateTime.TryParseExact(splits[1], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _splitDate1)) _splitDate1 = DateTime.MinValue;
-            splits = fields[36].Split(' ');
-            if (!double.TryParse(splits[0], out _splitFactor2)) _splitFactor2 = 0;
-            if (!DateTime.TryParseExact(splits[1], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _splitDate2)) _splitDate2 = DateTime.MinValue;
+            if( !double.TryParse(fields[29], out _currentAssets)) _currentAssets = 0;
+            if( !double.TryParse(fields[30], out _currentLiabilities)) _currentLiabilities = 0;
+            if( !DateTime.TryParseExact(fields[31], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _balanceSheetDate)) _balanceSheetDate = DateTime.MinValue;
+            if( !double.TryParse(fields[32], out _longTermDebt)) _longTermDebt = 0;
+            if( !double.TryParse(fields[33], out _commonSharesOutstanding)) _commonSharesOutstanding = 0;
+            splits = fields[35].split(' ');
+            if( !double.TryParse(splits[0], out _splitFactor1)) _splitFactor1 = 0;
+            if( !DateTime.TryParseExact(splits[1], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _splitDate1)) _splitDate1 = DateTime.MinValue;
+            splits = fields[36].split(' ');
+            if( !double.TryParse(splits[0], out _splitFactor2)) _splitFactor2 = 0;
+            if( !DateTime.TryParseExact(splits[1], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _splitDate2)) _splitDate2 = DateTime.MinValue;
             _formatCode = fields[39];
-            if (!int.TryParse(fields[40], out _precision)) _precision = 0;
+            if( !int.TryParse(fields[40], out _precision)) _precision = 0;
             _sic = fields[41];
-            if (!double.TryParse(fields[42], out _historicalVolatility)) _historicalVolatility = 0;
+            if( !double.TryParse(fields[42], out _historicalVolatility)) _historicalVolatility = 0;
             _securityType = fields[43];
             _listedMarket = fields[44];
-            if (!DateTime.TryParseExact(fields[45], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _date52WeekHigh)) _date52WeekHigh = DateTime.MinValue;
-            if (!DateTime.TryParseExact(fields[46], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _date52WeekLow)) _date52WeekLow = DateTime.MinValue;
-            if (!DateTime.TryParseExact(fields[47], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _dateCalendarYearHigh)) _dateCalendarYearHigh = DateTime.MinValue;
-            if (!DateTime.TryParseExact(fields[48], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _dateCalendarYearLow)) _dateCalendarYearLow = DateTime.MinValue;
-            if (!double.TryParse(fields[49], out _yearEndClose)) _yearEndClose = 0;
-            if (!DateTime.TryParseExact(fields[50], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _maturityDate)) _maturityDate = DateTime.MinValue;
-            if (!double.TryParse(fields[51], out _couponRate)) _couponRate = 0;
-            if (!DateTime.TryParseExact(fields[52], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _expirationDate)) _expirationDate = DateTime.MinValue;
-            if (!double.TryParse(fields[53], out _strikePrice)) _strikePrice = 0;
+            if( !DateTime.TryParseExact(fields[45], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _date52WeekHigh)) _date52WeekHigh = DateTime.MinValue;
+            if( !DateTime.TryParseExact(fields[46], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _date52WeekLow)) _date52WeekLow = DateTime.MinValue;
+            if( !DateTime.TryParseExact(fields[47], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _dateCalendarYearHigh)) _dateCalendarYearHigh = DateTime.MinValue;
+            if( !DateTime.TryParseExact(fields[48], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _dateCalendarYearLow)) _dateCalendarYearLow = DateTime.MinValue;
+            if( !double.TryParse(fields[49], out _yearEndClose)) _yearEndClose = 0;
+            if( !DateTime.TryParseExact(fields[50], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _maturityDate)) _maturityDate = DateTime.MinValue;
+            if( !double.TryParse(fields[51], out _couponRate)) _couponRate = 0;
+            if( !DateTime.TryParseExact(fields[52], "MM/dd/yyyy", _enUS, DateTimeStyles.None, out _expirationDate)) _expirationDate = DateTime.MinValue;
+            if( !double.TryParse(fields[53], out _strikePrice)) _strikePrice = 0;
             _naics = fields[54];
             _exchangeRoot = fields[55];
  
@@ -451,33 +442,31 @@ package com.quantconnect.lean.ToolBox.IQFeed
         private double _strikePrice;
         private String _naics;
         private String _exchangeRoot;
-        private CultureInfo _enUS = new CultureInfo("en-US");
+        private CultureInfo _enUS = new CultureInfo( "en-US");
         #endregion
     }
     public class Level1TimerEventArgs : System.EventArgs
     {
-        public Level1TimerEventArgs( String line)
-        {
-            fields = line.Split(',');
-            if (!DateTime.TryParseExact(fields[1], "yyyyMMdd HH:mm:ss", _enUS, DateTimeStyles.None, out _dateTimeStamp)) _dateTimeStamp = DateTime.MinValue;
+        public Level1TimerEventArgs( String line) {
+            fields = line.split(',');
+            if( !DateTime.TryParseExact(fields[1], "yyyyMMdd HH:mm:ss", _enUS, DateTimeStyles.None, out _dateTimeStamp)) _dateTimeStamp = DateTime.MinValue;
 
         }
         public DateTime DateTimeStamp { get { return _dateTimeStamp; } }
         #region private
         private DateTime _dateTimeStamp;
-        private CultureInfo _enUS = new CultureInfo("en-US");
+        private CultureInfo _enUS = new CultureInfo( "en-US");
         #endregion
     }
 
     public class Level1NewsEventArgs : System.EventArgs
     {
-        public Level1NewsEventArgs( String line)
-        {
-            fields = line.Split(',');
+        public Level1NewsEventArgs( String line) {
+            fields = line.split(',');
             _distributorType = fields[1];
             _storyId = fields[2];
-            _symbol = fields[3].Split(':');
-            if (!DateTime.TryParseExact(fields[4], "yyyyMMdd HHmmss", _enUS, DateTimeStyles.None, out _newsDateTime)) _newsDateTime = DateTime.MinValue;
+            _symbol = fields[3].split(':');
+            if( !DateTime.TryParseExact(fields[4], "yyyyMMdd HHmmss", _enUS, DateTimeStyles.None, out _newsDateTime)) _newsDateTime = DateTime.MinValue;
             _headline = fields[5];
         }
         public String DistributorType { get { return _distributorType; } }
@@ -491,22 +480,21 @@ package com.quantconnect.lean.ToolBox.IQFeed
         private string[] _symbol;
         private DateTime _newsDateTime;
         private String _headline;
-        private CultureInfo _enUS = new CultureInfo("en-US");
+        private CultureInfo _enUS = new CultureInfo( "en-US");
         #endregion
     }
 
 
     public class Level1RegionalEventArgs : System.EventArgs
     {
-        public Level1RegionalEventArgs( String line)
-        {
-            fields = line.Split(',');
+        public Level1RegionalEventArgs( String line) {
+            fields = line.split(',');
             _symbol = fields[1];
-            if (!double.TryParse(fields[3], out _regionalBid)) _regionalBid = 0;
-            if (!int.TryParse(fields[4], out _regionalBidSize)) _regionalBidSize = 0;
+            if( !double.TryParse(fields[3], out _regionalBid)) _regionalBid = 0;
+            if( !int.TryParse(fields[4], out _regionalBidSize)) _regionalBidSize = 0;
             _regionalBidTime = new Time(fields[5]);
-            if (!double.TryParse(fields[6], out _regionalAsk)) _regionalAsk = 0;
-            if (!int.TryParse(fields[7], out _regionalAskSize)) _regionalAskSize = 0;
+            if( !double.TryParse(fields[6], out _regionalAsk)) _regionalAsk = 0;
+            if( !int.TryParse(fields[7], out _regionalAskSize)) _regionalAskSize = 0;
             _regionalAskTime = new Time(fields[8]);
             _fractionDisplayCode = fields[9];
             _decimalPrecision = fields[10];
@@ -539,8 +527,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
 
     public class IQLevel1WatchItem
     {
-        public IQLevel1WatchItem( String symbol, boolean active, boolean regionOn = false)
-        {
+        public IQLevel1WatchItem( String symbol, boolean active, boolean regionOn = false) {
             _symbol = symbol;
             _active = active;
             _regionOn = regionOn;
@@ -549,61 +536,52 @@ package com.quantconnect.lean.ToolBox.IQFeed
         public boolean isActive { get { return _active; } }
         public boolean isRegionalOn { get { return _regionOn; } } 
 
-        public void Activate()
-        {
-            if (_socket == null) { throw new Exception("Watch Item not connected"); }
-            if (_active) { return; }
-            _socket.Send("w" + _symbol + "\r\n");
+        public void Activate() {
+            if( _socket == null ) { throw new Exception( "Watch Item not connected"); }
+            if( _active) { return; }
+            _socket.Send( "w" + _symbol + "\r\n");
             _active = true;
         }
-        public void DeActivate()
-        {
-            if (_socket == null) { throw new Exception("Watch Item not connected"); }
-            if (!_active) { return; }
-            _socket.Send("r" + _symbol + "\r\n");
+        public void DeActivate() {
+            if( _socket == null ) { throw new Exception( "Watch Item not connected"); }
+            if( !_active) { return; }
+            _socket.Send( "r" + _symbol + "\r\n");
             _active = false;
             _regionOn = false;
         }
-        public void SetRegionalOn()
-        {
-            if (_socket == null) { throw new Exception("Watch Item not connected"); }
-            if (!_active) { throw new Exception("Cannot set Regional Quotes On, Activate first"); }
-            if (_regionOn) { return; }
-            _socket.Send("S,REGON," + _symbol + "\r\n");
+        public void SetRegionalOn() {
+            if( _socket == null ) { throw new Exception( "Watch Item not connected"); }
+            if( !_active) { throw new Exception( "Cannot set Regional Quotes On, Activate first"); }
+            if( _regionOn) { return; }
+            _socket.Send( "S,REGON," + _symbol + "\r\n");
             _regionOn = true;
         }
-        public void SetRegionalOff()
-        {
-            if (_socket == null) { throw new Exception("Watch Item not connected"); }
-            if (!_regionOn) { return; }
-            _socket.Send("S,REGOFF," + _symbol + "\r\n");
+        public void SetRegionalOff() {
+            if( _socket == null ) { throw new Exception( "Watch Item not connected"); }
+            if( !_regionOn) { return; }
+            _socket.Send( "S,REGOFF," + _symbol + "\r\n");
             _regionOn = false;
         }
-        public void RequestFundamental()
-        {
-            if (_socket == null) { throw new Exception("Watch Item not connected"); }
-            if (!_active) { throw new Exception("Cannot request Fundamental data, Activate first"); }
-            _socket.Send("f" + _symbol + "\r\n");
+        public void RequestFundamental() {
+            if( _socket == null ) { throw new Exception( "Watch Item not connected"); }
+            if( !_active) { throw new Exception( "Cannot request Fundamental data, Activate first"); }
+            _socket.Send( "f" + _symbol + "\r\n");
         }
 
-        internal void Connect(SocketClient socket)
-        {
+        internal void Connect(SocketClient socket) {
             _socket = socket;
             tempActive = _active;
             _active = false;
             tempRegionOn = _regionOn;
             _regionOn = false;
-            if (tempActive)
-            {
+            if( tempActive) {
                 Activate();
             }
-            if (tempRegionOn)
-            {
+            if( tempRegionOn) {
                 SetRegionalOn();
             }
         }
-        internal void Disconnect()
-        {
+        internal void Disconnect() {
             DeActivate();
             _socket = null;
         }
@@ -629,38 +607,31 @@ package com.quantconnect.lean.ToolBox.IQFeed
         public event EventHandler<Level1TextLineEventArgs> Level1UnknownEvent;
 
         public IQLevel1Client(int bufferSize)
-            : base(IQSocket.GetEndPoint(PortType.Level1), bufferSize)
-        {
+            : base(IQSocket.GetEndPoint(PortType.Level1), bufferSize) {
             _key = new Map<String,IQLevel1WatchItem>();
             IsNewsOn = false;
         }
 
-        public void Connect()
-        {
+        public void Connect() {
             ConnectToSocketAndBeginReceive(IQSocket.GetSocket());
-            Send("S,CONNECT\r\n");
+            Send( "S,CONNECT\r\n");
         }
-        public void Disconnect(int flushSeconds = 2)
-        {
-            Send("S,DISCONNECT\r\n");
+        public void Disconnect(int flushSeconds = 2) {
+            Send( "S,DISCONNECT\r\n");
             DisconnectFromSocket(flushSeconds);
         }
-        public void SetClientName( String name)
-        {
-            Send("S,SET CLIENT NAME," + name + "\r\n");
+        public void SetClientName( String name) {
+            Send( "S,SET CLIENT NAME," + name + "\r\n");
         }
-        public void ForceTimeStamp()
-        {
-            Send("T\r\n");
+        public void ForceTimeStamp() {
+            Send( "T\r\n");
         }
-        public void SetNewsOn()
-        {
-            Send("S,NEWSON\r\n");
+        public void SetNewsOn() {
+            Send( "S,NEWSON\r\n");
             IsNewsOn = true;
         }
-        public void SetNewsOff()
-        {
-            Send("S,NEWSOFF\r\n");
+        public void SetNewsOff() {
+            Send( "S,NEWSOFF\r\n");
             IsNewsOn = false;
         }
         public boolean IsNewsOn { get; private set; }
@@ -668,17 +639,14 @@ package com.quantconnect.lean.ToolBox.IQFeed
         /// <summary>
         /// Add this symbol to our subscription list.
         /// </summary>
-        public void Subscribe( String symbol, boolean requestFundamental = true, boolean active = true, boolean regionOn = false)
-        {
+        public void Subscribe( String symbol, boolean requestFundamental = true, boolean active = true, boolean regionOn = false) {
             item = new IQLevel1WatchItem(symbol, active, regionOn);
-            if (_key.ContainsKey(item.Symbol))
-            {
-                throw new Exception("Symbol (" + item.Symbol + ") already exists");
+            if( _key.ContainsKey(item.Symbol)) {
+                throw new Exception( "Symbol ( " + item.Symbol + ") already exists");
             }
             _key.Add(item.Symbol, item);
             item.Connect(this);
-            if (requestFundamental)
-            {
+            if( requestFundamental) {
                 item.RequestFundamental();
             }
         }
@@ -686,11 +654,9 @@ package com.quantconnect.lean.ToolBox.IQFeed
         /// <summary>
         /// Remove this symbol from our subscriptions.
         /// </summary>
-        public void Unsubscribe( String symbol)
-        {
-            if (!_key.ContainsKey(symbol))
-            {
-                throw new Exception("Symbol (" + symbol + ") does not exist");
+        public void Unsubscribe( String symbol) {
+            if( !_key.ContainsKey(symbol)) {
+                throw new Exception( "Symbol ( " + symbol + ") does not exist");
             }
             _key[symbol].DeActivate();
             _key.Remove(symbol);
@@ -699,19 +665,16 @@ package com.quantconnect.lean.ToolBox.IQFeed
         /// <summary>
         /// Check if the storage contains this symbol
         /// </summary>
-        public boolean Contains( String symbol)
-        {
+        public boolean Contains( String symbol) {
             return _key.Keys.Contains(symbol);
         }
 
         /// <summary>
         /// Unsubscribe from all symbols and clear the internal storage.
         /// </summary>
-        public void Clear()
-        {
-            Send("S,UNWATCH ALL\r\n");
-            foreach (wi in _key.Values)
-            {
+        public void Clear() {
+            Send( "S,UNWATCH ALL\r\n");
+            foreach (wi in _key.Values) {
                 wi.Disconnect();
             }
             _key.Clear();
@@ -725,66 +688,54 @@ package com.quantconnect.lean.ToolBox.IQFeed
             get { return _key.Count; }
         }
 
-        protected override void OnTextLineEvent(TextLineEventArgs e)
-        {
-            if (e.textLine.StartsWith("Q,") || e.textLine.StartsWith("P,"))
-            {
+        protected @Override void OnTextLineEvent(TextLineEventArgs e) {
+            if( e.textLine.StartsWith( "Q,") || e.textLine.StartsWith( "P,")) {
                 OnLevel1SummaryUpdateEvent(new Level1SummaryUpdateEventArgs(e.textLine));
                 return;
             }
-            if (e.textLine.StartsWith("F,"))
-            {
+            if( e.textLine.StartsWith( "F,")) {
                 OnLevel1FundamentalEvent(new Level1FundamentalEventArgs(e.textLine));
                 return;
             }
-            if (e.textLine.StartsWith("R,"))
-            {
+            if( e.textLine.StartsWith( "R,")) {
                 OnLevel1RegionalEvent(new Level1RegionalEventArgs(e.textLine));
                 return;
             }
-            if (e.textLine.StartsWith("T,"))
-            {
+            if( e.textLine.StartsWith( "T,")) {
                 OnLevel1TimerEvent(new Level1TimerEventArgs(e.textLine));
                 return;
             }
-            if (e.textLine.StartsWith("N,"))
-            {
+            if( e.textLine.StartsWith( "N,")) {
                 OnLevel1NewsEvent(new Level1NewsEventArgs(e.textLine));
                 return;
             }
 
-            if (e.textLine.StartsWith("S,KEY,"))
-            {
+            if( e.textLine.StartsWith( "S,KEY,")) {
                 // Todo: Process
                 return;
             }
 
-            if (e.textLine.StartsWith("S,SERVER CONNECTED"))
-            {
+            if( e.textLine.StartsWith( "S,SERVER CONNECTED")) {
                 // Todo: Process
                 return;
             }
 
-            if (e.textLine.StartsWith("S,SERVER DISCONNECTED"))
-            {
+            if( e.textLine.StartsWith( "S,SERVER DISCONNECTED")) {
                 OnLevel1ServerDisconnected(new Level1ServerDisconnectedArgs(e.textLine));
                 return;
             }
 
-            if (e.textLine.StartsWith("S,SERVER RECONNECT FAILED"))
-            {
+            if( e.textLine.StartsWith( "S,SERVER RECONNECT FAILED")) {
                 OnLevel1ServerReconnectFailed(new Level1ServerReconnectFailedArgs(e.textLine));
                 return;
             }
 
-            if (e.textLine.StartsWith("S,IP,"))
-            {
+            if( e.textLine.StartsWith( "S,IP,")) {
                 // Todo: Process
                 return;
             }
 
-            if (e.textLine.StartsWith("S,CUST,"))
-            {
+            if( e.textLine.StartsWith( "S,CUST,")) {
                 // Todo: Process
                 return;
             }
@@ -792,40 +743,32 @@ package com.quantconnect.lean.ToolBox.IQFeed
             OnLevel1UnknownEvent(new Level1TextLineEventArgs(e.textLine));    
         }
 
-        protected virtual void OnLevel1UnknownEvent(Level1TextLineEventArgs e)
-        {
-            if (Level1UnknownEvent != null) Level1UnknownEvent(this, e); 
+        protected virtual void OnLevel1UnknownEvent(Level1TextLineEventArgs e) {
+            if( Level1UnknownEvent != null ) Level1UnknownEvent(this, e); 
         }
 
-        protected virtual void OnLevel1ServerReconnectFailed(Level1ServerReconnectFailedArgs e)
-        {
-            if (Level1ServerReconnectFailed != null) Level1ServerReconnectFailed(this, e); 
+        protected virtual void OnLevel1ServerReconnectFailed(Level1ServerReconnectFailedArgs e) {
+            if( Level1ServerReconnectFailed != null ) Level1ServerReconnectFailed(this, e); 
         }
 
-        protected virtual void OnLevel1ServerDisconnected(Level1ServerDisconnectedArgs e)
-        {
-            if (Level1ServerDisconnectedEvent != null) Level1ServerDisconnectedEvent(this, e); 
+        protected virtual void OnLevel1ServerDisconnected(Level1ServerDisconnectedArgs e) {
+            if( Level1ServerDisconnectedEvent != null ) Level1ServerDisconnectedEvent(this, e); 
         }
 
-        protected virtual void OnLevel1SummaryUpdateEvent(Level1SummaryUpdateEventArgs e)
-        {
-            if (Level1SummaryUpdateEvent != null) Level1SummaryUpdateEvent(this, e);
+        protected virtual void OnLevel1SummaryUpdateEvent(Level1SummaryUpdateEventArgs e) {
+            if( Level1SummaryUpdateEvent != null ) Level1SummaryUpdateEvent(this, e);
         }
-        protected virtual void OnLevel1FundamentalEvent(Level1FundamentalEventArgs e)
-        {
-            if (Level1FundamentalEvent != null) Level1FundamentalEvent(this, e);
+        protected virtual void OnLevel1FundamentalEvent(Level1FundamentalEventArgs e) {
+            if( Level1FundamentalEvent != null ) Level1FundamentalEvent(this, e);
         }
-        protected virtual void OnLevel1TimerEvent(Level1TimerEventArgs e)
-        {
-            if (Level1TimerEvent != null) Level1TimerEvent(this, e);
+        protected virtual void OnLevel1TimerEvent(Level1TimerEventArgs e) {
+            if( Level1TimerEvent != null ) Level1TimerEvent(this, e);
         }
-        protected virtual void OnLevel1RegionalEvent(Level1RegionalEventArgs e)
-        {
-            if (Level1RegionalEvent != null) Level1RegionalEvent(this, e);
+        protected virtual void OnLevel1RegionalEvent(Level1RegionalEventArgs e) {
+            if( Level1RegionalEvent != null ) Level1RegionalEvent(this, e);
         }
-        protected virtual void OnLevel1NewsEvent(Level1NewsEventArgs e)
-        {
-            if (Level1NewsEvent != null) Level1NewsEvent(this, e);
+        protected virtual void OnLevel1NewsEvent(Level1NewsEventArgs e) {
+            if( Level1NewsEvent != null ) Level1NewsEvent(this, e);
         }
 
         #region private

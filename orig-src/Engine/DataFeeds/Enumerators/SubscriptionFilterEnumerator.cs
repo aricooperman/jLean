@@ -34,13 +34,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="endTime">The end time of the subscription</param>
         /// <returns>A new instance of the <see cref="SubscriptionFilterEnumerator"/> class that has had it's <see cref="DataFilterError"/>
         /// event subscribed to to send errors to the result handler</returns>
-        public static SubscriptionFilterEnumerator WrapForDataFeed(IResultHandler resultHandler, IEnumerator<BaseData> enumerator, Security security, DateTime endTime)
-        {
+        public static SubscriptionFilterEnumerator WrapForDataFeed(IResultHandler resultHandler, IEnumerator<BaseData> enumerator, Security security, DateTime endTime) {
             filter = new SubscriptionFilterEnumerator(enumerator, security, endTime);
             filter.DataFilterError += (sender, exception) =>
             {
                 Log.Error(exception, "WrapForDataFeed");
-                resultHandler.RuntimeError("Runtime error applying data filter. Assuming filter pass: " + exception.Message, exception.StackTrace);
+                resultHandler.RuntimeError( "Runtime error applying data filter. Assuming filter pass: " + exception.Message, exception.StackTrace);
             };
             return filter;
         }
@@ -51,8 +50,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="enumerator">The source enumerator to be wrapped</param>
         /// <param name="security">The security containing an exchange and data filter</param>
         /// <param name="endTime">The end time of the subscription</param>
-        public SubscriptionFilterEnumerator(IEnumerator<BaseData> enumerator, Security security, DateTime endTime)
-        {
+        public SubscriptionFilterEnumerator(IEnumerator<BaseData> enumerator, Security security, DateTime endTime) {
             _enumerator = enumerator;
             _security = security;
             _endTime = endTime;
@@ -91,36 +89,29 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
         /// </returns>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public boolean MoveNext()
-        {
-            while (_enumerator.MoveNext())
-            {
+        public boolean MoveNext() {
+            while (_enumerator.MoveNext()) {
                 current = _enumerator.Current;
-                if (current != null)
-                {
+                if( current != null ) {
                     try
                     {
                         // execute user data filters
-                        if (current.DataType != MarketDataType.Auxiliary && !_dataFilter.Filter(_security, current))
-                        {
+                        if( current.DataType != MarketDataType.Auxiliary && !_dataFilter.Filter(_security, current)) {
                             continue;
                         }
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         OnDataFilterError(err);
                         continue;
                     }
 
                     // verify that the bar is within the exchange's market hours
-                    if (current.DataType != MarketDataType.Auxiliary && !_exchange.IsOpenDuringBar(current.Time, current.EndTime, _security.IsExtendedMarketHours))
-                    {
+                    if( current.DataType != MarketDataType.Auxiliary && !_exchange.IsOpenDuringBar(current.Time, current.EndTime, _security.IsExtendedMarketHours)) {
                         continue;
                     }
 
                     // make sure we haven't passed the end
-                    if (current.Time > _endTime)
-                    {
+                    if( current.Time > _endTime) {
                         return false;
                     }
                 }
@@ -136,8 +127,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             _enumerator.Dispose();
         }
 
@@ -145,8 +135,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public void Reset()
-        {
+        public void Reset() {
             _enumerator.Reset();
         }
 
@@ -154,10 +143,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Event invocated for the <see cref="DataFilterError"/> event
         /// </summary>
         /// <param name="exception">The exception that was thrown when trying to perform data filtering</param>
-        private void OnDataFilterError(Exception exception)
-        {
+        private void OnDataFilterError(Exception exception) {
             handler = DataFilterError;
-            if (handler != null) handler(this, exception);
+            if( handler != null ) handler(this, exception);
         }
     }
 }

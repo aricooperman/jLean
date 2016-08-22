@@ -46,8 +46,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="name">The name of this indicator</param>
         public SeparatingLines( String name) 
             : base(name, Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod),
-                CandleSettings.Get(CandleSettingType.Equal).AveragePeriod) + 1 + 1)
-        {
+                CandleSettings.Get(CandleSettingType.Equal).AveragePeriod) + 1 + 1) {
             _shadowVeryShortAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod;
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
             _equalAveragePeriod = CandleSettings.Get(CandleSettingType.Equal).AveragePeriod;
@@ -57,14 +56,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Initializes a new instance of the <see cref="SeparatingLines"/> class.
         /// </summary>
         public SeparatingLines()
-            : this("SEPARATINGLINES")
-        {
+            : this( "SEPARATINGLINES") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -75,22 +73,17 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
-                if (Samples >= Period - _shadowVeryShortAveragePeriod)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
+                if( Samples >= Period - _shadowVeryShortAveragePeriod) {
                     _shadowVeryShortPeriodTotal += GetCandleRange(CandleSettingType.ShadowVeryShort, input);
                 }
 
-                if (Samples >= Period - _bodyLongAveragePeriod)
-                {
+                if( Samples >= Period - _bodyLongAveragePeriod) {
                     _bodyLongPeriodTotal += GetCandleRange(CandleSettingType.BodyLong, input);
                 }
 
-                if (Samples >= Period - _equalAveragePeriod)
-                {
+                if( Samples >= Period - _equalAveragePeriod) {
                     _equalPeriodTotal += GetCandleRange(CandleSettingType.Equal, window[1]);
                 }
 
@@ -98,7 +91,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             }
 
             BigDecimal value;
-            if (
+            if( 
                 // opposite candles
                 (int)GetCandleColor(window[1]) == -(int)GetCandleColor(input) &&
                 // same open
@@ -140,8 +133,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _shadowVeryShortPeriodTotal = 0m;
             _bodyLongPeriodTotal = 0m;
             _equalPeriodTotal = 0m;

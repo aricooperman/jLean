@@ -41,8 +41,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="enumerator">The underlying enumerator to place rate limits on</param>
         /// <param name="timeProvider">Time provider used for determing the time between calls</param>
         /// <param name="minimumTimeBetweenCalls">The minimum time allowed between calls to the underlying enumerator</param>
-        public RateLimitEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, TimeSpan minimumTimeBetweenCalls)
-        {
+        public RateLimitEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, TimeSpan minimumTimeBetweenCalls) {
             _enumerator = enumerator;
             _timeProvider = timeProvider;
             _minimumTimeBetweenCalls = minimumTimeBetweenCalls;
@@ -55,18 +54,15 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
         /// </returns>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public boolean MoveNext()
-        {
+        public boolean MoveNext() {
             // determine time since last successful call, do this on units of the minimum time
             // this will give us nice round emit times
             currentTime = _timeProvider.GetUtcNow().RoundDown(_minimumTimeBetweenCalls);
             timeBetweenCalls = currentTime - _lastCallTime;
 
             // if within limits, patch it through to move next
-            if (timeBetweenCalls >= _minimumTimeBetweenCalls)
-            {
-                if (!_enumerator.MoveNext())
-                {
+            if( timeBetweenCalls >= _minimumTimeBetweenCalls) {
+                if( !_enumerator.MoveNext()) {
                     // our underlying is finished
                     _current = null;
                     return false;
@@ -89,8 +85,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public void Reset()
-        {
+        public void Reset() {
             _enumerator.Reset();
         }
 
@@ -121,8 +116,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             _enumerator.Dispose();
         }
     }

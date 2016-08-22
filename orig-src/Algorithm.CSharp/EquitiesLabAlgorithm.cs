@@ -31,13 +31,12 @@ package com.quantconnect.lean.Algorithm.CSharp
     {
         public static final String EquitiesLabKey = @"ENTER YOUR EQUITIES LAB KEY HERE";
         public static final String EquitiesLabScreener = @"ENTRY YOUR EQUITIES LAB SCREEN KEY HERE";
-        public static final String EquitiesLabUrlFormat = @"https://www.equitieslab.com/play/prod/RestControl/get?key={0}&screener={1}&date={2}&metadata=false";
+        public static final String EquitiesLabUrlFormat = @"https://www.equitieslab.com/play/prod/RestControl/get?key=%1$s&screener=%2$s&date=%3$s&metadata=false";
 
         private DateTime tradedToday;
         private EquitiesLabResponse _todaysResponse;
 
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             UniverseSettings.Resolution = Resolution.Hour;
 
             SetStartDate(2015, 01, 05);
@@ -46,12 +45,11 @@ package com.quantconnect.lean.Algorithm.CSharp
             SetCash(1000*1000);
 
 
-            AddUniverse("equities-lab-universe", date =>
+            AddUniverse( "equities-lab-universe", date =>
             {
-                using (client = new WebClient())
-                {
+                using (client = new WebClient()) {
                     //2014-12-30
-                    file = client.DownloadString(String.format(EquitiesLabUrlFormat, EquitiesLabKey, EquitiesLabScreener, date.toString("yyyy-MM-dd")));
+                    file = client.DownloadString(String.format(EquitiesLabUrlFormat, EquitiesLabKey, EquitiesLabScreener, date.toString( "yyyy-MM-dd")));
                     response = JsonConvert.DeserializeObject<EquitiesLabResponse>(file);
                     _todaysResponse = new EquitiesLabResponse();
                     _todaysResponse.Securities = response.Securities.Where(x => ValidSymbols.Contains(x.Ticker)).ToList();
@@ -60,24 +58,20 @@ package com.quantconnect.lean.Algorithm.CSharp
             });
 
             // cancell all orders at EOD
-            Schedule.Event("Cancel Open Orders").EveryDay().At(TimeSpan.FromHours(16)).Run(() =>
+            Schedule.Event( "Cancel Open Orders").EveryDay().At(Duration.ofHours(16)).Run(() =>
             {
-                foreach (ticket in Transactions.GetOrderTickets(x => x.Status.IsOpen()))
-                {
+                foreach (ticket in Transactions.GetOrderTickets(x => x.Status.IsOpen())) {
                     ticket.Cancel();
                 }
             });
         }
 
-        public void OnData(TradeBars slice)
-        {
-            if (tradedToday.Date != Time.Date)
-            {
+        public void OnData(TradeBars slice) {
+            if( tradedToday.Date != Time.Date) {
                 // leave a small buffer of cash
                 targetPercentage = 1m/(_todaysResponse.Securities.Count + 1);
 
-                foreach (target in _todaysResponse.Securities.Where(x => ValidSymbols.Contains(x.Ticker)))
-                {
+                foreach (target in _todaysResponse.Securities.Where(x => ValidSymbols.Contains(x.Ticker))) {
                     // rebalance portfolio to equal weights
                     SetHoldings(target.Ticker, targetPercentage);
                 }
@@ -86,24 +80,20 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
             else
             {
-                foreach (target in _todaysResponse.Securities.Where(x => ValidSymbols.Contains(x.Ticker)))
-                {
+                foreach (target in _todaysResponse.Securities.Where(x => ValidSymbols.Contains(x.Ticker))) {
                     // set stop loss / profit orders
                     security = Securities[target.Ticker];
-                    if (!security.Invested) continue;
+                    if( !security.Invested) continue;
 
-                    if (security.Close < target.StopLoss || security.Close > target.StopGain)
-                    {
+                    if( security.Close < target.StopLoss || security.Close > target.StopGain) {
                         MarketOrder(target.Ticker, -security.Holdings.Quantity, true);
                     }
                 }
             }
         }
 
-        public override void OnOrderEvent(OrderEvent orderEvent)
-        {
-            if (orderEvent.Status.IsFill())
-            {
+        public @Override void OnOrderEvent(OrderEvent orderEvent) {
+            if( orderEvent.Status.IsFill()) {
                 // if we receive a fill cancel the other outstanding order
                 Transactions.CancelOpenOrders(orderEvent.Symbol);
             }

@@ -22,15 +22,13 @@ package com.quantconnect.lean.Tests.Indicators
     public class ParabolicStopAndReverseTests
     {
         [Test]
-        public void ComparesWithExternalData()
-        {
+        public void ComparesWithExternalData() {
             psar = new ParabolicStopAndReverse();
             TestHelper.TestIndicator(psar, "spy_parabolic_SAR.txt", "Parabolic SAR 0.02 0.20");
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             psar = new ParabolicStopAndReverse();
 
             TestHelper.TestIndicatorReset(psar, "spy_parabolic_SAR.txt");

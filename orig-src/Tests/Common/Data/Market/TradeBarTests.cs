@@ -22,8 +22,7 @@ package com.quantconnect.lean.Tests.Common.Data.Market
     public class TradeBarTests
     {
         [Test]
-        public void UpdatesProperly()
-        {
+        public void UpdatesProperly() {
             bar = new TradeBar();
             bar.UpdateTrade(10, 10);
             Assert.AreEqual(10, bar.Open);
@@ -55,8 +54,7 @@ package com.quantconnect.lean.Tests.Common.Data.Market
         }
 
         [Test]
-        public void HandlesAssetWithValidZeroPrice()
-        {
+        public void HandlesAssetWithValidZeroPrice() {
             bar = new TradeBar();
             bar.UpdateTrade(10, 10);
             Assert.AreEqual(10, bar.Open);

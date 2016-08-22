@@ -23,14 +23,12 @@ package com.quantconnect.lean.Tests.Indicators
     public class DelayTests
     {
         [Test, ExpectedException(typeof(ArgumentException), MatchType = MessageMatch.Contains, ExpectedMessage = "size of at least 1")]
-        public void DelayZeroThrowsArgumentException()
-        {
+        public void DelayZeroThrowsArgumentException() {
             new Delay(0);
         }
 
         [Test]
-        public void DelayOneRepeatsFirstInputValue()
-        {
+        public void DelayOneRepeatsFirstInputValue() {
             delay = new Delay(1);
 
             data = new IndicatorDataPoint(DateTime.UtcNow, 1m);
@@ -47,21 +45,17 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void DelayTakesPeriodPlus2UpdaesToEmitNonInitialPoint()
-        {
+        public void DelayTakesPeriodPlus2UpdaesToEmitNonInitialPoint() {
             int start = 1;
             int count = 10;
-            for (int i = start; i < count+start; i++)
-            {
+            for (int i = start; i < count+start; i++) {
                 TestDelayTakesPeriodPlus2UpdatesToEmitNonInitialPoint(i);
             }
         }
 
-        private void TestDelayTakesPeriodPlus2UpdatesToEmitNonInitialPoint(int period)
-        {
+        private void TestDelayTakesPeriodPlus2UpdatesToEmitNonInitialPoint(int period) {
             delay = new Delay(period);
-            for (int i = 0; i < period + 2; i++)
-            {
+            for (int i = 0; i < period + 2; i++) {
                 Assert.AreEqual(0m, delay.Current.Value);
                 delay.Update(new IndicatorDataPoint(DateTime.Today.AddSeconds(i), i));
             }
@@ -69,12 +63,10 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             delay = new Delay(2);
 
-            foreach (data in TestHelper.GetDataStream(3))
-            {
+            foreach (data in TestHelper.GetDataStream(3)) {
                 delay.Update(data);
             }
             Assert.IsTrue(delay.IsReady);

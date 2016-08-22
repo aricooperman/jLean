@@ -32,8 +32,7 @@ package com.quantconnect.lean.Securities
         /// for the specified algorithm
         /// </summary>
         /// <param name="brokerageModel">The brokerage model used to initialize the security models</param>
-        public BrokerageModelSecurityInitializer(IBrokerageModel brokerageModel)
-        {
+        public BrokerageModelSecurityInitializer(IBrokerageModel brokerageModel) {
             _brokerageModel = brokerageModel;
         }
 
@@ -41,8 +40,7 @@ package com.quantconnect.lean.Securities
         /// Initializes the specified security by setting up the models
         /// </summary>
         /// <param name="security">The security to be initialized</param>
-        public virtual void Initialize(Security security)
-        {
+        public virtual void Initialize(Security security) {
             // set leverage and models
             security.SetLeverage(_brokerageModel.GetLeverage(security));
             security.FillModel = _brokerageModel.GetFillModel(security);

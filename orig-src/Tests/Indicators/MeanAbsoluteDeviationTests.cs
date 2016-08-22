@@ -23,8 +23,7 @@ package com.quantconnect.lean.Tests.Indicators
     public class MeanAbsoluteDeviationTests
     {
         [Test]
-        public void ComputesCorrectly()
-        {
+        public void ComputesCorrectly() {
             // Indicator output was compared against the octave code:
             // mad = @(v) mean(abs(v - mean(v)));
             std = new MeanAbsoluteDeviation(3);
@@ -47,8 +46,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             std = new MeanAbsoluteDeviation(3);
             std.Update(DateTime.Today, 1m);
             std.Update(DateTime.Today.AddSeconds(1), 2m);

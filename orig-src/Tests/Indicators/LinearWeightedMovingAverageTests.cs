@@ -23,48 +23,42 @@ package com.quantconnect.lean.Tests.Indicators
     public class LinearWeightedMovingAverageTests
     {
         [Test]
-        public void Lwma4ComputesCorrectly()
-        {
+        public void Lwma4ComputesCorrectly() {
             static final int period = 4;
             decimal[] values = { 1m, 2m, 3m, 4m };
 
             lwma = new LinearWeightedMovingAverage(period);
 
             BigDecimal current = 0m;
-            for (int i = 0; i < values.Length; i++)
-            {
+            for (int i = 0; i < values.Length; i++) {
                 lwma.Update(new IndicatorDataPoint(DateTime.UtcNow.AddSeconds(i), values[i]));
             }
             current = ((4 * .4m) + (3 * .3m) + (2 * .2m) + (1 * .1m));
             Assert.AreEqual(current, lwma.Current.Value);
         }
         [Test]
-        public void Lwma1ComputesCorrectly()
-        {
+        public void Lwma1ComputesCorrectly() {
             static final int period = 1;
             decimal[] values = { 1m };
 
             lwma = new LinearWeightedMovingAverage(period);
 
             BigDecimal current = 0m;
-            for (int i = 0; i < values.Length; i++)
-            {
+            for (int i = 0; i < values.Length; i++) {
                 lwma.Update(new IndicatorDataPoint(DateTime.UtcNow.AddSeconds(i), values[i]));
             }
             current = 1m;
             Assert.AreEqual(current, lwma.Current.Value);
         }
         [Test]
-        public void Lwma2ComputesCorrectly()
-        {
+        public void Lwma2ComputesCorrectly() {
             static final int period = 2;
             decimal[] values = { 1m, 2m };
 
             lwma = new LinearWeightedMovingAverage(period);
 
             BigDecimal current = 0m;
-            for (int i = 0; i < values.Length; i++)
-            {
+            for (int i = 0; i < values.Length; i++) {
                 lwma.Update(new IndicatorDataPoint(DateTime.UtcNow.AddSeconds(i), values[i]));
             }
             current = ((2 * 2m) + (1 * 1m)) / 3;
@@ -73,16 +67,14 @@ package com.quantconnect.lean.Tests.Indicators
         [Test]
         // See http://en.wikipedia.org/wiki/Moving_average
         // for the formula and the numbers in this test.
-        public void Lwma5ComputesCorrectly()
-        {
+        public void Lwma5ComputesCorrectly() {
             static final int period = 5;
             decimal[] values = { 77m, 79m, 79m, 81m, 83m };
 
             lwma = new LinearWeightedMovingAverage(period);
 
             BigDecimal current = 0m;
-            for (int i = 0; i < values.Length; i++)
-            {
+            for (int i = 0; i < values.Length; i++) {
                 lwma.Update(new IndicatorDataPoint(DateTime.UtcNow.AddSeconds(i), values[i]));
 
             }
@@ -91,16 +83,14 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             static final int period = 4;
             decimal[] values = { 1m, 2m, 3m, 4m, 5m };
 
             lwma = new LinearWeightedMovingAverage(period);
 
 
-            for (int i = 0; i < values.Length; i++)
-            {
+            for (int i = 0; i < values.Length; i++) {
                 lwma.Update(new IndicatorDataPoint(DateTime.UtcNow.AddSeconds(i), values[i]));
             }
             Assert.IsTrue(lwma.IsReady);

@@ -43,8 +43,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="value">The value output by the indicator</param>
         /// <param name="status">The status returned by the indicator</param>
-        public IndicatorResult( BigDecimal value, IndicatorStatus status = IndicatorStatus.Success)
-        {
+        public IndicatorResult( BigDecimal value, IndicatorStatus status = IndicatorStatus.Success) {
             Value = value;
             Status = status;
         }
@@ -56,8 +55,7 @@ package com.quantconnect.lean.Indicators
         /// This method is provided for backwards compatibility
         /// </remarks>
         /// <param name="value">The BigDecimal value to be converted into an <see cref="IndicatorResult"/></param>
-        public static implicit operator IndicatorResult( BigDecimal value)
-        {
+        public static implicit operator IndicatorResult( BigDecimal value) {
             return new IndicatorResult(value);
         }
     }

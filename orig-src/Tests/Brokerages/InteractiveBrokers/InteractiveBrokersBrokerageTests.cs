@@ -27,7 +27,7 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 {
     [TestFixture]
-    [Ignore("These tests require the IBController and IB TraderWorkstation to be installed.")]
+    [Ignore( "These tests require the IBController and IB TraderWorkstation to be installed.")]
     public class InteractiveBrokersBrokerageTests
     {
         private readonly List<Order> _orders = new List<Order>(); 
@@ -36,13 +36,12 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         private static final SecurityType Type = SecurityType.Forex;
 
         [SetUp]
-        public void InitializeBrokerage()
-        {
-            InteractiveBrokersGatewayRunner.Start(Config.Get("ib-controller-dir"), 
-                Config.Get("ib-tws-dir"), 
-                Config.Get("ib-user-name"), 
-                Config.Get("ib-password"), 
-                Config.GetBool("ib-use-tws")
+        public void InitializeBrokerage() {
+            InteractiveBrokersGatewayRunner.Start(Config.Get( "ib-controller-dir"), 
+                Config.Get( "ib-tws-dir"), 
+                Config.Get( "ib-user-name"), 
+                Config.Get( "ib-password"), 
+                Config.GetBool( "ib-use-tws")
                 );
 
             // grabs account info from configuration
@@ -51,46 +50,41 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [TearDown]
-        public void Teardown()
-        {
+        public void Teardown() {
             try
             { // give the tear down a header so we can easily find it in the logs
-                Log.Trace("-----");
-                Log.Trace("InteractiveBrokersBrokerageTests.Teardown(): Starting teardown...");
-                Log.Trace("-----");
+                Log.Trace( "-----");
+                Log.Trace( "InteractiveBrokersBrokerageTests.Teardown(): Starting teardown...");
+                Log.Trace( "-----");
 
                 canceledResetEvent = new ManualResetEvent(false);
                 filledResetEvent = new ManualResetEvent(false);
                 _interactiveBrokersBrokerage.OrderStatusChanged += (sender, orderEvent) =>
                 {
-                    if (orderEvent.Status == OrderStatus.Filled)
-                    {
+                    if( orderEvent.Status == OrderStatus.Filled) {
                         filledResetEvent.Set();
                     }
-                    if (orderEvent.Status == OrderStatus.Canceled)
-                    {
+                    if( orderEvent.Status == OrderStatus.Canceled) {
                         canceledResetEvent.Set();
                     }
                 };
 
                 // cancel all open orders
 
-                Log.Trace("InteractiveBrokersBrokerageTests.Teardown(): Canceling open orders...");
+                Log.Trace( "InteractiveBrokersBrokerageTests.Teardown(): Canceling open orders...");
 
                 orders = _interactiveBrokersBrokerage.GetOpenOrders();
-                foreach (order in orders)
-                {
+                foreach (order in orders) {
                     _interactiveBrokersBrokerage.CancelOrder(order);
                     canceledResetEvent.WaitOne(3000);
                     canceledResetEvent.Reset();
                 }
 
-                Log.Trace("InteractiveBrokersBrokerageTests.Teardown(): Liquidating open positions...");
+                Log.Trace( "InteractiveBrokersBrokerageTests.Teardown(): Liquidating open positions...");
 
                 // liquidate all positions
                 holdings = _interactiveBrokersBrokerage.GetAccountHoldings();
-                foreach (holding in holdings.Where(x => x.Quantity != 0))
-                {
+                foreach (holding in holdings.Where(x => x.Quantity != 0)) {
                     //liquidate = new MarketOrder(holding.Symbol, (int) -holding.Quantity, DateTime.UtcNow, type: holding.Type);
                     //_interactiveBrokersBrokerage.PlaceOrder(liquidate);
                     //filledResetEvent.WaitOne(3000);
@@ -98,11 +92,11 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
                 }
 
                 openOrdersText = _interactiveBrokersBrokerage.GetOpenOrders().Select(x => x.Symbol.toString() + " " + x.Quantity);
-                Log.Trace("InteractiveBrokersBrokerageTests.Teardown(): Open orders: " + string.Join(", ", openOrdersText));
+                Log.Trace( "InteractiveBrokersBrokerageTests.Teardown(): Open orders: " + String.join( ", ", openOrdersText));
                 //Assert.AreEqual(0, actualOpenOrderCount, "Failed to verify that there are zero open orders.");
 
                 holdingsText = _interactiveBrokersBrokerage.GetAccountHoldings().Where(x => x.Quantity != 0).Select(x => x.Symbol.toString() + " " + x.Quantity);
-                Log.Trace("InteractiveBrokersBrokerageTests.Teardown(): Account holdings: " + string.Join(", ", holdingsText));
+                Log.Trace( "InteractiveBrokersBrokerageTests.Teardown(): Account holdings: " + String.join( ", ", holdingsText));
                 //Assert.AreEqual(0, holdingsCount, "Failed to verify that there are zero account holdings.");
 
                 _interactiveBrokersBrokerage.Dispose();
@@ -115,15 +109,13 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void ClientConnects()
-        {
+        public void ClientConnects() {
             ib = _interactiveBrokersBrokerage;
             Assert.IsTrue(ib.IsConnected);
         }
 
         [Test]
-        public void PlacedOrderHasNewBrokerageOrderID()
-        {
+        public void PlacedOrderHasNewBrokerageOrderID() {
             ib = _interactiveBrokersBrokerage;
 
             order = new MarketOrder(Symbols.USDJPY, buyQuantity, DateTime.UtcNow);
@@ -141,16 +133,14 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void ClientPlacesMarketOrder()
-        {
+        public void ClientPlacesMarketOrder() {
             boolean orderFilled = false;
             manualResetEvent = new ManualResetEvent(false);
             ib = _interactiveBrokersBrokerage;
 
             ib.OrderStatusChanged += (sender, orderEvent) =>
             {
-                if (orderEvent.Status == OrderStatus.Filled)
-                {
+                if( orderEvent.Status == OrderStatus.Filled) {
                     orderFilled = true;
                     manualResetEvent.Set();
                 }
@@ -166,8 +156,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void ClientSellsMarketOrder()
-        {
+        public void ClientSellsMarketOrder() {
             boolean orderFilled = false;
             manualResetEvent = new ManualResetEvent(false);
 
@@ -175,8 +164,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 
             ib.OrderStatusChanged += (sender, orderEvent) =>
             {
-                if (orderEvent.Status == OrderStatus.Filled)
-                {
+                if( orderEvent.Status == OrderStatus.Filled) {
                     orderFilled = true;
                     manualResetEvent.Set();
                 }
@@ -194,8 +182,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void ClientPlacesLimitOrder()
-        {
+        public void ClientPlacesLimitOrder() {
             boolean orderFilled = false;
             manualResetEvent = new ManualResetEvent(false);
             ib = _interactiveBrokersBrokerage;
@@ -204,8 +191,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             BigDecimal delta = 85.0m; // if we can't get a price then make the delta huge
             ib.OrderStatusChanged += (sender, orderEvent) =>
             {
-                if (orderEvent.Status == OrderStatus.Filled)
-                {
+                if( orderEvent.Status == OrderStatus.Filled) {
                     orderFilled = true;
                     manualResetEvent.Set();
                 }
@@ -224,11 +210,11 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 
             // make a box around the current price +- a little
 
-            order = new LimitOrder(Symbols.USDJPY, buyQuantity, price - delta, DateTime.UtcNow, null) { Id = ++id };
+            order = new LimitOrder(Symbols.USDJPY, buyQuantity, price - delta, DateTime.UtcNow, null ) { Id = ++id };
             _orders.Add(order);
             ib.PlaceOrder(order);
 
-            order = new LimitOrder(Symbols.USDJPY, -buyQuantity, price + delta, DateTime.UtcNow, null) { Id = ++id };
+            order = new LimitOrder(Symbols.USDJPY, -buyQuantity, price + delta, DateTime.UtcNow, null ) { Id = ++id };
             _orders.Add(order);
             ib.PlaceOrder(order);
 
@@ -239,8 +225,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void ClientPlacesStopLimitOrder()
-        {
+        public void ClientPlacesStopLimitOrder() {
             boolean orderFilled = false;
             manualResetEvent = new ManualResetEvent(false);
             ib = _interactiveBrokersBrokerage;
@@ -284,16 +269,14 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void ClientUpdatesLimitOrder()
-        {
+        public void ClientUpdatesLimitOrder() {
             int id = 0;
             ib = _interactiveBrokersBrokerage;
 
             boolean filled = false;
             ib.OrderStatusChanged += (sender, args) =>
             {
-                if (args.Status == OrderStatus.Filled)
-                {
+                if( args.Status == OrderStatus.Filled) {
                     filled = true;
                 }
             };
@@ -304,8 +287,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             ib.PlaceOrder(order);
 
             stopwatch = Stopwatch.StartNew();
-            while (!filled && stopwatch.Elapsed.TotalSeconds < 10)
-            {
+            while (!filled && stopwatch.Elapsed.TotalSeconds < 10) {
                 //Thread.MemoryBarrier();
                 Thread.Sleep(1000);
                 order.LimitPrice = order.LimitPrice/2;
@@ -316,8 +298,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void ClientCancelsLimitOrder()
-        {
+        public void ClientCancelsLimitOrder() {
             orderedResetEvent = new ManualResetEvent(false);
             canceledResetEvent = new ManualResetEvent(false);
 
@@ -325,18 +306,16 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 
             ib.OrderStatusChanged += (sender, orderEvent) =>
             {
-                if (orderEvent.Status == OrderStatus.Submitted)
-                {
+                if( orderEvent.Status == OrderStatus.Submitted) {
                     orderedResetEvent.Set();
                 }
-                if (orderEvent.Status == OrderStatus.Canceled)
-                {
+                if( orderEvent.Status == OrderStatus.Canceled) {
                     canceledResetEvent.Set();
                 }
             };
 
             // try to sell a single share at a ridiculous price, we'll cancel this later
-            order = new LimitOrder(Symbols.USDJPY, -buyQuantity, 100000, DateTime.UtcNow, null);
+            order = new LimitOrder(Symbols.USDJPY, -buyQuantity, 100000, DateTime.UtcNow, null );
             _orders.Add(order);
             ib.PlaceOrder(order);
             orderedResetEvent.WaitOneAssertFail(2500, "Limit order failed to be submitted.");
@@ -353,8 +332,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void ClientFiresSingleOrderFilledEvent()
-        {
+        public void ClientFiresSingleOrderFilledEvent() {
             ib = _interactiveBrokersBrokerage;
 
             order = new MarketOrder(Symbols.USDJPY, buyQuantity, new DateTime()) {Id = 1};
@@ -364,8 +342,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             orderFilledResetEvent = new ManualResetEvent(false);
             ib.OrderStatusChanged += (sender, fill) =>
             {
-                if (fill.Status == OrderStatus.Filled)
-                {
+                if( fill.Status == OrderStatus.Filled) {
                     orderFilledEventCount++;
                     orderFilledResetEvent.Set();
                 }
@@ -385,20 +362,18 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void GetsAccountHoldings()
-        {
+        public void GetsAccountHoldings() {
             ib = _interactiveBrokersBrokerage;
 
             Thread.Sleep(500);
 
             previousHoldings = ib.GetAccountHoldings().ToDictionary(x => x.Symbol);
 
-            foreach (holding in previousHoldings)
-            {
+            foreach (holding in previousHoldings) {
                 Console.WriteLine(holding.Value);
             }
 
-            Log.Trace("Quantity: " + previousHoldings[Symbols.USDJPY].Quantity);
+            Log.Trace( "Quantity: " + previousHoldings[Symbols.USDJPY].Quantity);
 
             boolean hasSymbol = previousHoldings.ContainsKey(Symbols.USDJPY);
 
@@ -406,7 +381,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             orderResetEvent = new ManualResetEvent(false);
             ib.OrderStatusChanged += (sender, fill) =>
             {
-                if (fill.Status == OrderStatus.Filled) orderResetEvent.Set();
+                if( fill.Status == OrderStatus.Filled) orderResetEvent.Set();
             };
 
             // buy some currency
@@ -422,10 +397,9 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             Thread.Sleep(5000);
 
             newHoldings = ib.GetAccountHoldings().ToDictionary(x => x.Symbol);
-            Log.Trace("New Quantity: " + newHoldings[Symbols.USDJPY].Quantity);
+            Log.Trace( "New Quantity: " + newHoldings[Symbols.USDJPY].Quantity);
 
-            if (hasSymbol)
-            {
+            if( hasSymbol) {
                 Assert.AreEqual(previousHoldings[Symbols.USDJPY].Quantity, newHoldings[Symbols.USDJPY].Quantity - quantity);
             }
             else
@@ -436,31 +410,26 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void GetsCashBalanceAfterConnect()
-        {
+        public void GetsCashBalanceAfterConnect() {
             ib = _interactiveBrokersBrokerage;
             cashBalance = ib.GetCashBalance();
             Assert.IsTrue(cashBalance.Any(x => x.Symbol == "USD"));
-            foreach (cash in cashBalance)
-            {
+            foreach (cash in cashBalance) {
                 Console.WriteLine(cash);
-                if (cash.Symbol == "USD")
-                {
+                if( cash.Symbol == "USD") {
                     Assert.AreNotEqual(0m, cashBalance.Single(x => x.Symbol == "USD"));
                 }
             }
         }
 
         [Test]
-        public void FiresMultipleAccountBalanceEvents()
-        {
+        public void FiresMultipleAccountBalanceEvents() {
             ib = _interactiveBrokersBrokerage;
 
             orderEventFired = new ManualResetEvent(false);
             ib.OrderStatusChanged += (sender, args) =>
             {
-                if (args.Status == OrderStatus.Filled)
-                {
+                if( args.Status == OrderStatus.Filled) {
                     orderEventFired.Set();
                 }
             };
@@ -474,8 +443,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             };
 
             static final int orderCount = 3;
-            for (int i = 0; i < orderCount; i++)
-            {
+            for (int i = 0; i < orderCount; i++) {
                 order = new MarketOrder(Symbols.USDJPY, buyQuantity*(i + 1), new DateTime()) {Id = i + 1};
                 _orders.Add(order);
                 ib.PlaceOrder(order);
@@ -491,8 +459,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void GetsCashBalanceAfterTrade()
-        {
+        public void GetsCashBalanceAfterTrade() {
             ib = _interactiveBrokersBrokerage;
 
             BigDecimal balance = ib.GetCashBalance().Single(x => x.Symbol == "USD").Amount;
@@ -513,15 +480,13 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         [Test]
-        public void GetExecutions()
-        {
+        public void GetExecutions() {
             ib = _interactiveBrokersBrokerage;
 
             orderEventFired = new ManualResetEvent(false);
             ib.OrderStatusChanged += (sender, args) =>
             {
-                if (args.Status == OrderStatus.Filled)
-                {
+                if( args.Status == OrderStatus.Filled) {
                     orderEventFired.Set();
                 }
             };
@@ -531,21 +496,19 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             ib.PlaceOrder(order);
             orderEventFired.WaitOne(1500);
 
-            executions = ib.GetExecutions(null, null, null, DateTime.UtcNow.AddDays(-1), null);
+            executions = ib.GetExecutions(null, null, null, DateTime.UtcNow.AddDays(-1), null );
 
             Assert.IsTrue(executions.Any(x => order.BrokerId.Any(id => executions.Any(e => e.OrderId == int.Parse(id)))));
         }
 
         [Test]
-        public void GetOpenOrders()
-        {
+        public void GetOpenOrders() {
             ib = _interactiveBrokersBrokerage;
 
             orderEventFired = new ManualResetEvent(false);
             ib.OrderStatusChanged += (sender, args) =>
             {
-                if (args.Status == OrderStatus.Submitted)
-                {
+                if( args.Status == OrderStatus.Submitted) {
                     orderEventFired.Set();
                 }
             };
@@ -563,58 +526,51 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             Assert.AreNotEqual(0, openOrders.Count);
         }
 
-        [Test, Ignore("This test requires disconnecting the internet to test for connection resiliency")]
-        public void ClientReconnectsAfterInternetDisconnect()
-        {
+        [Test, Ignore( "This test requires disconnecting the internet to test for connection resiliency")]
+        public void ClientReconnectsAfterInternetDisconnect() {
             ib = _interactiveBrokersBrokerage;
             Assert.IsTrue(ib.IsConnected);
 
-            tenMinutes = TimeSpan.FromMinutes(10);
+            tenMinutes = Duration.ofMinutes(10);
             
-            Console.WriteLine("------");
-            Console.WriteLine("Waiting for internet disconnection ");
-            Console.WriteLine("------");
+            Console.WriteLine( "------");
+            Console.WriteLine( "Waiting for internet disconnection ");
+            Console.WriteLine( "------");
 
             // spin while we manually disconnect the internet
-            while (ib.IsConnected)
-            {
+            while (ib.IsConnected) {
                 Thread.Sleep(2500);
-                Console.Write(".");
+                Console.Write( ".");
             }
             
             stopwatch = Stopwatch.StartNew();
 
-            Console.WriteLine("------");
-            Console.WriteLine("Trying to reconnect ");
-            Console.WriteLine("------");
+            Console.WriteLine( "------");
+            Console.WriteLine( "Trying to reconnect ");
+            Console.WriteLine( "------");
 
             // spin until we're reconnected
-            while (!ib.IsConnected && stopwatch.Elapsed < tenMinutes)
-            {
+            while (!ib.IsConnected && stopwatch.Elapsed < tenMinutes) {
                 Thread.Sleep(2500);
-                Console.Write(".");
+                Console.Write( ".");
             }
 
             Assert.IsTrue(ib.IsConnected);
         }
 
-        private static Order AssertOrderOpened( boolean orderFilled, InteractiveBrokersBrokerage ib, Order order)
-        {
+        private static Order AssertOrderOpened( boolean orderFilled, InteractiveBrokersBrokerage ib, Order order) {
             // if the order didn't fill check for it as an open order
-            if (!orderFilled)
-            {
+            if( !orderFilled) {
                 // find the right order and return it
-                foreach (openOrder in ib.GetOpenOrders())
-                {
-                    if (openOrder.BrokerId.Any(id => order.BrokerId.Any(x => x == id)))
-                    {
+                foreach (openOrder in ib.GetOpenOrders()) {
+                    if( openOrder.BrokerId.Any(id => order.BrokerId.Any(x => x == id))) {
                         return openOrder;
                     }
                 }
-                Assert.Fail("The order was not filled and was unable to be located via GetOpenOrders()");
+                Assert.Fail( "The order was not filled and was unable to be located via GetOpenOrders()");
             }
 
-            Assert.Pass("The order was successfully filled!");
+            Assert.Pass( "The order was successfully filled!");
             return null;
         }
 

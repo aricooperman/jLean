@@ -42,8 +42,7 @@ package com.quantconnect.lean.Logging
         /// Create a default log message with the current time.
         /// </summary>
         /// <param name="message"></param>
-        public LogEntry( String message)
-        {
+        public LogEntry( String message) {
             Time = DateTime.UtcNow;
             Message = message;
             MessageType = LogType.Trace;
@@ -55,20 +54,18 @@ package com.quantconnect.lean.Logging
         /// <param name="message">Message for log</param>
         /// <param name="time">Time of the message</param>
         /// <param name="type">Type of the log entry</param>
-        public LogEntry( String message, DateTime time, LogType type = LogType.Trace)
-        {
+        public LogEntry( String message, DateTime time, LogType type = LogType.Trace) {
             Time = time.ToUniversalTime();
             Message = message;
             MessageType = type;
         }
 
         /// <summary>
-        /// Helper override on the log entry.
+        /// Helper @Override on the log entry.
         /// </summary>
         /// <returns></returns>
-        public override String toString()
-        {
-            return String.format("{0} {1} {2}", Time.toString("o"), MessageType, Message);
+        public @Override String toString() {
+            return String.format( "%1$s %2$s %3$s", Time.toString( "o"), MessageType, Message);
         }
     }
 }

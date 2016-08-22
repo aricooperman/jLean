@@ -75,8 +75,7 @@ package com.quantconnect.lean.Securities
         /// exchange hours to determine open/close times
         /// </summary>
         /// <param name="exchangeHours">Contains the weekly exchange schedule plus holidays</param>
-        public SecurityExchange(SecurityExchangeHours exchangeHours)
-        {
+        public SecurityExchange(SecurityExchangeHours exchangeHours) {
             _exchangeHours = exchangeHours;
         }
 
@@ -84,8 +83,7 @@ package com.quantconnect.lean.Securities
         /// Set the current datetime in terms of the exchange's local time zone
         /// </summary>
         /// <param name="newLocalTime">Most recent data tick</param>
-        public void SetLocalDateTimeFrontier(DateTime newLocalTime) 
-        {
+        public void SetLocalDateTimeFrontier(DateTime newLocalTime) {
             _localFrontier = newLocalTime;
         }
 
@@ -95,8 +93,7 @@ package com.quantconnect.lean.Securities
         /// <remarks>This is useful for first checking the date list, and then the market hours to save CPU cycles</remarks>
         /// <param name="dateToCheck">Date to check</param>
         /// <returns>Return true if the exchange is open for this date</returns>
-        public boolean DateIsOpen(DateTime dateToCheck)
-        {
+        public boolean DateIsOpen(DateTime dateToCheck) {
             return _exchangeHours.IsDateOpen(dateToCheck);
         }
 
@@ -105,16 +102,14 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="dateTime">DateTime to check</param>
         /// <returns>Boolean true if the market is open</returns>
-        public boolean DateTimeIsOpen(DateTime dateTime)
-        {
+        public boolean DateTimeIsOpen(DateTime dateTime) {
             return _exchangeHours.IsOpen(dateTime, false);
         }
 
         /// <summary>
         /// Determines if the exchange was open at any time between start and stop
         /// </summary>
-        public boolean IsOpenDuringBar(DateTime barStartTime, DateTime barEndTime, boolean isExtendedMarketHours)
-        {
+        public boolean IsOpenDuringBar(DateTime barStartTime, DateTime barEndTime, boolean isExtendedMarketHours) {
             return _exchangeHours.IsOpen(barStartTime, barEndTime, isExtendedMarketHours);
         }
 
@@ -124,14 +119,12 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="marketHoursSegments">Specifies each segment of the market hours, such as premarket/market/postmark</param>
         /// <param name="days">The days of the week to set these times for</param>
-        public void SetMarketHours(IEnumerable<MarketHoursSegment> marketHoursSegments, params DayOfWeek[] days)
-        {
-            if (days.IsNullOrEmpty()) days = Enum.GetValues(typeof(DayOfWeek)).OfType<DayOfWeek>().ToArray();
+        public void SetMarketHours(IEnumerable<MarketHoursSegment> marketHoursSegments, params DayOfWeek[] days) {
+            if( days.IsNullOrEmpty()) days = Enum.GetValues(typeof(DayOfWeek)).OfType<DayOfWeek>().ToArray();
             
             marketHours = _exchangeHours.MarketHours.ToDictionary();
             marketHoursSegments = marketHoursSegments as IList<MarketHoursSegment> ?? marketHoursSegments.ToList();
-            foreach (day in days)
-            {
+            foreach (day in days) {
                 marketHours[day] = new LocalMarketHours(day, marketHoursSegments);
             }
 

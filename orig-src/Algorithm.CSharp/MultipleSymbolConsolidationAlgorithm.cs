@@ -30,7 +30,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <summary>
         /// This is the period of bars we'll be creating
         /// </summary>
-        public readonly TimeSpan BarPeriod = TimeSpan.FromMinutes(10);
+        public readonly TimeSpan BarPeriod = Duration.ofMinutes(10);
         /// <summary>
         /// This is the period of our sma indicators
         /// </summary>
@@ -73,26 +73,22 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2014, 12, 01);
             SetEndDate(2015, 02, 01);
 
             // initialize our equity data
-            foreach (symbol in EquitySymbols)
-            {
+            foreach (symbol in EquitySymbols) {
                 Data.Add(symbol, new SymbolData(symbol, SecurityType.Equity, BarPeriod, RollingWindowSize));
             }
 
             // initialize our forex data
-            foreach (symbol in ForexSymbols)
-            {
+            foreach (symbol in ForexSymbols) {
                 Data.Add(symbol, new SymbolData(symbol, SecurityType.Forex, BarPeriod, RollingWindowSize));
             }
 
             // loop through all our symbols and request data subscriptions and initialize indicatora
-            foreach (kvp in Data)
-            {
+            foreach (kvp in Data) {
                 // this is required since we're using closures below, for more information
                 // see: http://stackoverflow.com/questions/14907987/access-to-foreach-variable-in-closure-warning
                 symbolData = kvp.Value;
@@ -122,16 +118,12 @@ package com.quantconnect.lean.Algorithm.Examples
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">TradeBars IDictionary object with your stock data</param>
-        public void OnData(TradeBars data)
-        {
+        public void OnData(TradeBars data) {
             // loop through each symbol in our structure
-            foreach (symbolData in Data.Values)
-            {
+            foreach (symbolData in Data.Values) {
                 // this check proves that this symbol was JUST updated prior to this OnData function being called
-                if (symbolData.IsReady && symbolData.WasJustUpdated(Time))
-                {
-                    if (!Portfolio[symbolData.Symbol].Invested)
-                    {
+                if( symbolData.IsReady && symbolData.WasJustUpdated(Time)) {
+                    if( !Portfolio[symbolData.Symbol].Invested) {
                         MarketOrder(symbolData.Symbol, 1);
                     }
                 }
@@ -142,14 +134,11 @@ package com.quantconnect.lean.Algorithm.Examples
         /// End of a trading day event handler. This method is called at the end of the algorithm day (or multiple times if trading multiple assets).
         /// </summary>
         /// <remarks>Method is called 10 minutes before closing to allow user to close out position.</remarks>
-        public override void OnEndOfDay()
-        {
+        public @Override void OnEndOfDay() {
             int i = 0;
-            foreach (kvp in Data.OrderBy(x => x.Value.Symbol))
-            {
+            foreach (kvp in Data.OrderBy(x => x.Value.Symbol)) {
                 // we have too many symbols to plot them all, so plot ever other
-                if (kvp.Value.IsReady && ++i%2 == 0)
-                {
+                if( kvp.Value.IsReady && ++i%2 == 0) {
                     Plot(kvp.Value.Symbol, kvp.Value.SMA);
                 }
             }
@@ -187,8 +176,7 @@ package com.quantconnect.lean.Algorithm.Examples
             /// <summary>
             /// Initializes a new instance of SymbolData
             /// </summary>
-            public SymbolData( String symbol, SecurityType securityType, TimeSpan barPeriod, int windowSize)
-            {
+            public SymbolData( String symbol, SecurityType securityType, TimeSpan barPeriod, int windowSize) {
                 Symbol = symbol;
                 SecurityType = securityType;
                 BarPeriod = barPeriod;
@@ -209,8 +197,7 @@ package com.quantconnect.lean.Algorithm.Examples
             /// </summary>
             /// <param name="current">The current algorithm time</param>
             /// <returns>True if this instance was just updated with new data, false otherwise</returns>
-            public boolean WasJustUpdated(DateTime current)
-            {
+            public boolean WasJustUpdated(DateTime current) {
                 return Bars.Count > 0 && Bars[0].Time == current - BarPeriod;
             }
         }

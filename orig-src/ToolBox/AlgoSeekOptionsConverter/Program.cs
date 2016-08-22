@@ -27,8 +27,7 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
     {
         private static final String LogFilePath = "AlgoSeekOptionsConverter.txt";
 
-        static void Main()
-        {
+        static void Main() {
             directory = "F:/Downloads/AlgoSeek/smaller";
             directory = "F:/AlgoSeek/20151224";
             dataDirectory = "./Data";
@@ -48,21 +47,20 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
             files = Directory.EnumerateFiles(directory).OrderByDescending(x => new FileInfo(x).Length);
             Parallel.ForEach(files, options, file =>
             {
-                Log.Trace("Begin tick/second/minute/hour/daily: " + file);
+                Log.Trace( "Begin tick/second/minute/hour/daily: " + file);
 
                 quotes = DataProcessor.Zip(dataDirectory, resolutions, TickType.Quote, true);
                 trades = DataProcessor.Zip(dataDirectory, resolutions, TickType.Trade, true);
 
                 streamProvider = StreamProvider.ForExtension(Path.GetExtension(file));
-                if (!RawFileProcessor.Run(file, new[] {file}, streamProvider, new AlgoSeekOptionsParser(), quotes, trades))
-                { 
+                if( !RawFileProcessor.Run(file, new[] {file}, streamProvider, new AlgoSeekOptionsParser(), quotes, trades)) { 
                     return;
                 }
 
-                Log.Trace("Completed tick/second/minute/hour/daily: " + file);
+                Log.Trace( "Completed tick/second/minute/hour/daily: " + file);
             });
             
-            Log.Trace("Begin compressing csv files");
+            Log.Trace( "Begin compressing csv files");
 
             root = Path.Combine(dataDirectory, "option", "usa");
             fine =
@@ -88,13 +86,12 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
                     Compression.ZipDirectory(dir, dir + ".zip", false);
                     Directory.Delete(dir, true);
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     Log.Error(err, "Zipping " + dir);
                 }
             });
             
-            Log.Trace("Finished processing directory: " + directory);
+            Log.Trace( "Finished processing directory: " + directory);
         }
     }
 }

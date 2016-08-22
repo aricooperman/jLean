@@ -23,8 +23,7 @@ package com.quantconnect.lean.Tests.Common
     public class SeriesTests
     {
         [Test]
-        public void RespectsMostRecentTimeOnDuplicatePoints()
-        {
+        public void RespectsMostRecentTimeOnDuplicatePoints() {
             series = new Series();
             series.AddPoint(DateTime.Today, 1m);
             series.AddPoint(DateTime.Today, 2m);

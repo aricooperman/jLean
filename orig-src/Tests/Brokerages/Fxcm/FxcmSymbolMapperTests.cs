@@ -24,43 +24,40 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
     public class FxcmSymbolMapperTests
     {
         [Test]
-        public void ReturnsCorrectLeanSymbol()
-        {
+        public void ReturnsCorrectLeanSymbol() {
             mapper = new FxcmSymbolMapper();
 
-            symbol = mapper.GetLeanSymbol("EUR/USD", SecurityType.Forex, Market.FXCM);
-            Assert.AreEqual("EURUSD", symbol.Value);
+            symbol = mapper.GetLeanSymbol( "EUR/USD", SecurityType.Forex, Market.FXCM);
+            Assert.AreEqual( "EURUSD", symbol.Value);
             Assert.AreEqual(SecurityType.Forex, symbol.ID.SecurityType);
             Assert.AreEqual(Market.FXCM, symbol.ID.Market);
 
-            symbol = mapper.GetLeanSymbol("GER30", SecurityType.Cfd, Market.FXCM);
-            Assert.AreEqual("DE30EUR", symbol.Value);
+            symbol = mapper.GetLeanSymbol( "GER30", SecurityType.Cfd, Market.FXCM);
+            Assert.AreEqual( "DE30EUR", symbol.Value);
             Assert.AreEqual(SecurityType.Cfd, symbol.ID.SecurityType);
             Assert.AreEqual(Market.FXCM, symbol.ID.Market);
         }
 
         [Test]
-        public void ReturnsCorrectBrokerageSymbol()
-        {
+        public void ReturnsCorrectBrokerageSymbol() {
             mapper = new FxcmSymbolMapper();
 
-            symbol = Symbol.Create("EURUSD", SecurityType.Forex, Market.FXCM);
+            symbol = Symbol.Create( "EURUSD", SecurityType.Forex, Market.FXCM);
             brokerageSymbol = mapper.GetBrokerageSymbol(symbol);
-            Assert.AreEqual("EUR/USD", brokerageSymbol);
+            Assert.AreEqual( "EUR/USD", brokerageSymbol);
 
-            symbol = Symbol.Create("DE30EUR", SecurityType.Cfd, Market.FXCM);
+            symbol = Symbol.Create( "DE30EUR", SecurityType.Cfd, Market.FXCM);
             brokerageSymbol = mapper.GetBrokerageSymbol(symbol);
-            Assert.AreEqual("GER30", brokerageSymbol);
+            Assert.AreEqual( "GER30", brokerageSymbol);
         }
 
         [Test]
-        public void ThrowsOnNullOrEmptySymbol()
-        {
+        public void ThrowsOnNullOrEmptySymbol() {
             mapper = new FxcmSymbolMapper();
 
             Assert.Throws<ArgumentException>(() => mapper.GetLeanSymbol(null, SecurityType.Forex, Market.FXCM));
 
-            Assert.Throws<ArgumentException>(() => mapper.GetLeanSymbol("", SecurityType.Forex, Market.FXCM));
+            Assert.Throws<ArgumentException>(() => mapper.GetLeanSymbol( "", SecurityType.Forex, Market.FXCM));
 
             symbol = Symbol.Empty;
             Assert.Throws<ArgumentException>(() => mapper.GetBrokerageSymbol(symbol));
@@ -68,51 +65,48 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
             symbol = null;
             Assert.Throws<ArgumentException>(() => mapper.GetBrokerageSymbol(symbol));
 
-            symbol = Symbol.Create("", SecurityType.Forex, Market.FXCM);
+            symbol = Symbol.Create( "", SecurityType.Forex, Market.FXCM);
             Assert.Throws<ArgumentException>(() => mapper.GetBrokerageSymbol(symbol));
         }
 
         [Test]
-        public void ThrowsOnUnknownSymbol()
-        {
+        public void ThrowsOnUnknownSymbol() {
             mapper = new FxcmSymbolMapper();
 
-            Assert.Throws<ArgumentException>(() => mapper.GetLeanSymbol("ABC/USD", SecurityType.Forex, Market.FXCM));
+            Assert.Throws<ArgumentException>(() => mapper.GetLeanSymbol( "ABC/USD", SecurityType.Forex, Market.FXCM));
 
-            symbol = Symbol.Create("ABCUSD", SecurityType.Forex, Market.FXCM);
+            symbol = Symbol.Create( "ABCUSD", SecurityType.Forex, Market.FXCM);
             Assert.Throws<ArgumentException>(() => mapper.GetBrokerageSymbol(symbol));
         }
 
         [Test]
-        public void ThrowsOnInvalidSecurityType()
-        {
+        public void ThrowsOnInvalidSecurityType() {
             mapper = new FxcmSymbolMapper();
 
-            Assert.Throws<ArgumentException>(() => mapper.GetLeanSymbol("AAPL", SecurityType.Equity, Market.FXCM));
+            Assert.Throws<ArgumentException>(() => mapper.GetLeanSymbol( "AAPL", SecurityType.Equity, Market.FXCM));
 
-            symbol = Symbol.Create("AAPL", SecurityType.Equity, Market.FXCM);
+            symbol = Symbol.Create( "AAPL", SecurityType.Equity, Market.FXCM);
             Assert.Throws<ArgumentException>(() => mapper.GetBrokerageSymbol(symbol));
         }
 
         [Test]
-        public void ChecksForKnownSymbols()
-        {
+        public void ChecksForKnownSymbols() {
 #pragma warning disable 0618 // This test requires implicit operators
             mapper = new FxcmSymbolMapper();
 
-            Assert.IsFalse(mapper.IsKnownBrokerageSymbol(null));
-            Assert.IsFalse(mapper.IsKnownBrokerageSymbol(""));
-            Assert.IsTrue(mapper.IsKnownBrokerageSymbol("EUR/USD"));
-            Assert.IsTrue(mapper.IsKnownBrokerageSymbol("GER30"));
-            Assert.IsFalse(mapper.IsKnownBrokerageSymbol("ABC/USD"));
+            Assert.IsFalse(mapper.IsKnownBrokerageSymbol(null ));
+            Assert.IsFalse(mapper.IsKnownBrokerageSymbol( ""));
+            Assert.IsTrue(mapper.IsKnownBrokerageSymbol( "EUR/USD"));
+            Assert.IsTrue(mapper.IsKnownBrokerageSymbol( "GER30"));
+            Assert.IsFalse(mapper.IsKnownBrokerageSymbol( "ABC/USD"));
 
-            Assert.IsFalse(mapper.IsKnownLeanSymbol(null));
-            Assert.IsFalse(mapper.IsKnownLeanSymbol(""));
+            Assert.IsFalse(mapper.IsKnownLeanSymbol(null ));
+            Assert.IsFalse(mapper.IsKnownLeanSymbol( ""));
             Assert.IsFalse(mapper.IsKnownLeanSymbol(Symbol.Empty));
-            Assert.IsTrue(mapper.IsKnownLeanSymbol(Symbol.Create("EURUSD", SecurityType.Forex, Market.FXCM)));
-            Assert.IsFalse(mapper.IsKnownLeanSymbol(Symbol.Create("ABCUSD", SecurityType.Forex, Market.FXCM)));
-            Assert.IsFalse(mapper.IsKnownLeanSymbol(Symbol.Create("EURUSD", SecurityType.Cfd, Market.FXCM)));
-            Assert.IsFalse(mapper.IsKnownLeanSymbol(Symbol.Create("DE30EUR", SecurityType.Forex, Market.FXCM)));
+            Assert.IsTrue(mapper.IsKnownLeanSymbol(Symbol.Create( "EURUSD", SecurityType.Forex, Market.FXCM)));
+            Assert.IsFalse(mapper.IsKnownLeanSymbol(Symbol.Create( "ABCUSD", SecurityType.Forex, Market.FXCM)));
+            Assert.IsFalse(mapper.IsKnownLeanSymbol(Symbol.Create( "EURUSD", SecurityType.Cfd, Market.FXCM)));
+            Assert.IsFalse(mapper.IsKnownLeanSymbol(Symbol.Create( "DE30EUR", SecurityType.Forex, Market.FXCM)));
 #pragma warning restore 0618
         }
 

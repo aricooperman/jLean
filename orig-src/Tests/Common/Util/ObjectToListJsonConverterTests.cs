@@ -50,8 +50,7 @@ package com.quantconnect.lean.Tests.Common.Util
         private readonly static String ObjectJson = JsonConvert.SerializeObject(PoorlyFormedInstance);
 
         [Test]
-        public void DeserializesList()
-        {
+        public void DeserializesList() {
             converted = JsonConvert.DeserializeObject(ListJson, typeof(WellFormedContainer));
             Assert.IsInstanceOf<WellFormedContainer>(converted);
             instance = (WellFormedContainer)converted;
@@ -61,8 +60,7 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void DeserializesSingleValue()
-        {
+        public void DeserializesSingleValue() {
             converted = JsonConvert.DeserializeObject(ObjectJson, typeof(WellFormedContainer));
             Assert.IsInstanceOf<WellFormedContainer>(converted);
             instance = (WellFormedContainer)converted;
@@ -72,8 +70,7 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void SerializesListWithOneValue()
-        {
+        public void SerializesListWithOneValue() {
             serialized = JsonConvert.SerializeObject(WellFormedInstance);
             Assert.AreEqual(ListJson, serialized);
         }

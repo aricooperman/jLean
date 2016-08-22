@@ -30,13 +30,11 @@ package com.quantconnect.lean.Tests.Common.Util
     public class ObjectActivatorTests
     {
         [Test]
-        public void IsFasterThanRawReflection()
-        {
+        public void IsFasterThanRawReflection() {
             int count = 100000;
             data = new TradeBar(DateTime.Now, Symbols.SPY, 1m, 2m, 3m, 4m, 5);
             stopwatch = Stopwatch.StartNew();
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 clone = Clone(data);
             }
             stopwatch.Stop();
@@ -45,8 +43,7 @@ package com.quantconnect.lean.Tests.Common.Util
 
             stopwatch.Reset();
             stopwatch.Start();
-            for (int i = 0; i < count; i++)
-            {
+            for (int i = 0; i < count; i++) {
                 clone = ObjectActivator.Clone(data);
             }
             stopwatch.Stop();
@@ -56,8 +53,7 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void ClonesBaseDataDerivedTypes()
-        {
+        public void ClonesBaseDataDerivedTypes() {
             BaseData data = new IndicatorDataPoint(Symbols.SPY, DateTime.Now, 1m);
             BaseData clone = ObjectActivator.Clone(data) as BaseData;
             Assert.IsNotNull(clone);
@@ -82,10 +78,8 @@ package com.quantconnect.lean.Tests.Common.Util
 
         #region this was an original implementation which we'll compare against
 
-        public static object Clone(object instanceToClone)
-        {
-            if (instanceToClone == null)
-            {
+        public static object Clone(object instanceToClone) {
+            if( instanceToClone == null ) {
                 return null;
             }
 
@@ -94,8 +88,7 @@ package com.quantconnect.lean.Tests.Common.Util
             fields = GetFieldInfosIncludingBaseClasses(type, BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic);
 
             instance = factory.Invoke(new object[0]);
-            foreach (field in fields)
-            {
+            foreach (field in fields) {
                 field.SetValue(instance, field.GetValue(instanceToClone));
             }
 
@@ -105,13 +98,11 @@ package com.quantconnect.lean.Tests.Common.Util
         /// <summary>
         /// Private fields in base classes aren't found in normal reflection, so we need to recurse on base types
         /// </summary>
-        private static IEnumerable<FieldInfo> GetFieldInfosIncludingBaseClasses(Type type, BindingFlags bindingFlags)
-        {
+        private static IEnumerable<FieldInfo> GetFieldInfosIncludingBaseClasses(Type type, BindingFlags bindingFlags) {
             FieldInfo[] fieldInfos = type.GetFields(bindingFlags);
 
             // If this class doesn't have a base, don't waste any time
-            if (type.BaseType == typeof (object))
-            {
+            if( type.BaseType == typeof (object)) {
                 return fieldInfos;
             }
 
@@ -119,8 +110,7 @@ package com.quantconnect.lean.Tests.Common.Util
             currentType = type;
             fieldComparer = new FieldInfoComparer();
             fieldInfoList = new HashSet<FieldInfo>(fieldInfos, fieldComparer);
-            while (currentType != typeof (object) && currentType != null)
-            {
+            while (currentType != typeof (object) && currentType != null ) {
                 fieldInfos = currentType.GetFields(bindingFlags);
                 fieldInfoList.UnionWith(fieldInfos);
                 currentType = currentType.BaseType;
@@ -130,13 +120,11 @@ package com.quantconnect.lean.Tests.Common.Util
 
         private class FieldInfoComparer : IEqualityComparer<FieldInfo>
         {
-            public boolean Equals(FieldInfo x, FieldInfo y)
-            {
+            public boolean Equals(FieldInfo x, FieldInfo y) {
                 return x.DeclaringType == y.DeclaringType && x.Name == y.Name;
             }
 
-            public int GetHashCode(FieldInfo obj)
-            {
+            public int GetHashCode(FieldInfo obj) {
                 return obj.Name.hashCode() ^ obj.DeclaringType.hashCode();
             }
         }

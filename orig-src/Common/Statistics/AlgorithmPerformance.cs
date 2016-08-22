@@ -53,8 +53,7 @@ package com.quantconnect.lean.Statistics
             SortedMap<DateTime, decimal> equity,
             List<double> listPerformance,
             List<double> listBenchmark, 
-            BigDecimal startingCapital)
-        {
+            BigDecimal startingCapital) {
             TradeStatistics = new TradeStatistics(trades);
             PortfolioStatistics = new PortfolioStatistics(profitLoss, equity, listPerformance, listBenchmark, startingCapital);
             ClosedTrades = trades;
@@ -63,8 +62,7 @@ package com.quantconnect.lean.Statistics
         /// <summary>
         /// Initializes a new instance of the <see cref="AlgorithmPerformance"/> class
         /// </summary>
-        public AlgorithmPerformance()
-        {
+        public AlgorithmPerformance() {
             TradeStatistics = new TradeStatistics();
             PortfolioStatistics = new PortfolioStatistics();
             ClosedTrades = new List<Trade>();

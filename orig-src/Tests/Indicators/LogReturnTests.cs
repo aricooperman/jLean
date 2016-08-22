@@ -24,21 +24,19 @@ package com.quantconnect.lean.Tests.Indicators
     public class LogReturnTests
     {
         [Test]
-        public void LOGRComputesCorrectly()
-        {
+        public void LOGRComputesCorrectly() {
             int period = 4;
             logr = new LogReturn(period);
             data = new[] { 1m, 10m, 100m, 1000m, 10000m, 1234m, 56789m };
 
             seen = new List<decimal>();
-            for (int i = 0; i < data.Length; i++)
-            {
+            for (int i = 0; i < data.Length; i++) {
                 datum = data[i];
                 value0 = 0m;
 
-                if (seen.Count >= 0 && seen.Count < period)
+                if( seen.Count >= 0 && seen.Count < period)
                     value0 = data[0];
-                else if (seen.Count >= period)
+                else if( seen.Count >= period)
                     value0 = data[i - period];
 
                 expected = (decimal)Math.Log((double)datum / (double)value0);
@@ -50,16 +48,14 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void CompareAgainstExternalData()
-        {
+        public void CompareAgainstExternalData() {
             logr = new LogReturn(14);
             double epsilon = 1e-3;
             TestHelper.TestIndicator(logr, "spy_logr14.txt", "LOGR14", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value, epsilon));
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             logr = new LogReturn(14);
 
             TestHelper.TestIndicatorReset(logr, "spy_logr14.txt");

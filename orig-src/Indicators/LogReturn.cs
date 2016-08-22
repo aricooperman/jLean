@@ -30,8 +30,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the LOGR</param>
         public LogReturn( String name, int period)
-            : base(name, period)
-        {
+            : base(name, period) {
         }
 
         /// <summary>
@@ -39,8 +38,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period of the SMA</param>
         public LogReturn(int period)
-            : base("LOGR" + period, period)
-        {
+            : base( "LOGR" + period, period) {
         }
 
         /// <summary>
@@ -50,8 +48,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input value to this indicator on this time step</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             BigDecimal valuef = input;
 
             BigDecimal value0 = !window.IsReady

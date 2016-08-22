@@ -26,8 +26,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
     public class SynchronizingEnumeratorTests
     {
         [Test]
-        public void SynchronizesData()
-        {
+        public void SynchronizesData() {
             time = new DateTime(2016, 03, 03, 12, 05, 00);
             stream1 = Enumerable.Range(0, 10).Select(x => new Tick {Time = time.AddSeconds(1)}).GetEnumerator();
             stream2 = Enumerable.Range(0, 5).Select(x => new Tick {Time = time.AddSeconds(2)}).GetEnumerator();
@@ -35,8 +34,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
 
             previous = DateTime.MinValue;
             synchronizer = new SynchronizingEnumerator(stream1, stream2, stream3);
-            while (synchronizer.MoveNext())
-            {
+            while (synchronizer.MoveNext()) {
                 Assert.That(synchronizer.Current.EndTime, Is.GreaterThanOrEqualTo(previous));
                 previous = synchronizer.Current.EndTime;
             }

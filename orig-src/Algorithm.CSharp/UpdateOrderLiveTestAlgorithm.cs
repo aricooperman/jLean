@@ -62,8 +62,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2013, 10, 07);  //Set Start Date
             SetEndDate(2013, 10, 07);    //Set End Date
             SetCash(100000);             //Set Strategy Cash
@@ -82,60 +81,50 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">Slice object keyed by symbol containing the stock data</param>
-        public override void OnData(Slice data)
-        {
-            if (!Security.HasData)
-            {
-                Log("::::: NO DATA :::::");
+        public @Override void OnData(Slice data) {
+            if( !Security.HasData) {
+                Log( "::::: NO DATA :::::");
                 return;
             }
 
             // each month make an action
-            if (Time.Minute != LastMinute && Time.Second == 0)
-            {
-                Log("");
-                Log("--------------Minute: " + Time.Minute);
-                Log("");
+            if( Time.Minute != LastMinute && Time.Second == 0) {
+                Log( "");
+                Log( "--------------Minute: " + Time.Minute);
+                Log( "");
                 LastMinute = Time.Minute;
                 // we'll submit the next type of order from the queue
                 orderType = _orderTypesQueue.Dequeue();
-                Log("ORDER TYPE:: " + orderType);
+                Log( "ORDER TYPE:: " + orderType);
                 isLong = Quantity > 0;
                 stopPrice = isLong ? (1 + StopPercentage) * Security.High : (1 - StopPercentage) * Security.Low;
                 limitPrice = isLong ? (1 - LimitPercentage) * stopPrice : (1 + LimitPercentage) * stopPrice;
-                if (orderType == OrderType.Limit)
-                {
+                if( orderType == OrderType.Limit) {
                     limitPrice = !isLong ? (1 + LimitPercentage) * Security.High : (1 - LimitPercentage) * Security.Low;
                 }
                 request = new SubmitOrderRequest(orderType, SecType, Symbol, Quantity, stopPrice, limitPrice, Time, orderType.toString());
                 ticket = Transactions.AddOrder(request);
                 _tickets.Add(ticket);
-                if ((decimal)Random.NextDouble() < ImmediateCancelPercentage)
-                {
-                    Log("Immediate cancellation requested!");
+                if( (decimal)Random.NextDouble() < ImmediateCancelPercentage) {
+                    Log( "Immediate cancellation requested!");
                     _immediateCancellations.Add(ticket.OrderId);
                 }
             }
-            else if (_tickets.Count > 0)
-            {
+            else if( _tickets.Count > 0) {
                 ticket = _tickets.Last();
-                if (Time.Second > 15 && Time.Second < 30)
-                {
-                    if (ticket.UpdateRequests.Count == 0 && ticket.Status.IsOpen())
-                    {
+                if( Time.Second > 15 && Time.Second < 30) {
+                    if( ticket.UpdateRequests.Count == 0 && ticket.Status.IsOpen()) {
                         Log(ticket.toString());
                         ticket.Update(new UpdateOrderFields
                         {
                             Quantity = ticket.Quantity + Math.Sign(Quantity) * DeltaQuantity,
                             Tag = "Change quantity: " + Time
                         });
-                        Log("UPDATE1:: " + ticket.UpdateRequests.Last());
+                        Log( "UPDATE1:: " + ticket.UpdateRequests.Last());
                     }
                 }
-                else if (Time.Second > 29 && Time.Second < 45)
-                {
-                    if (ticket.UpdateRequests.Count == 1 && ticket.Status.IsOpen())
-                    {
+                else if( Time.Second > 29 && Time.Second < 45) {
+                    if( ticket.UpdateRequests.Count == 1 && ticket.Status.IsOpen()) {
                         Log(ticket.toString());
                         ticket.Update(new UpdateOrderFields
                         {
@@ -143,32 +132,28 @@ package com.quantconnect.lean.Algorithm.CSharp
                             StopPrice = Security.Price * (1 + Math.Sign(ticket.Quantity) * StopPercentageDelta),
                             Tag = "Change prices: " + Time
                         });
-                        Log("UPDATE2:: " + ticket.UpdateRequests.Last());
+                        Log( "UPDATE2:: " + ticket.UpdateRequests.Last());
                     }
                 }
                 else
                 {
-                    if (ticket.UpdateRequests.Count == 2 && ticket.Status.IsOpen())
-                    {
+                    if( ticket.UpdateRequests.Count == 2 && ticket.Status.IsOpen()) {
                         Log(ticket.toString());
                         ticket.Cancel(Time + " and is still open!");
-                        Log("CANCELLED:: " + ticket.CancelRequest);
+                        Log( "CANCELLED:: " + ticket.CancelRequest);
                     }
                 }
             }
         }
 
-        public override void OnOrderEvent(OrderEvent orderEvent)
-        {
-            if (_immediateCancellations.Contains(orderEvent.OrderId))
-            {
+        public @Override void OnOrderEvent(OrderEvent orderEvent) {
+            if( _immediateCancellations.Contains(orderEvent.OrderId)) {
                 _immediateCancellations.Remove(orderEvent.OrderId);
                 Transactions.CancelOrder(orderEvent.OrderId);
             }
 
-            if (orderEvent.Status == OrderStatus.Filled)
-            {
-                Log("FILLED:: " + Transactions.GetOrderById(orderEvent.OrderId) + " FILL PRICE:: " + orderEvent.FillPrice.SmartRounding());
+            if( orderEvent.Status == OrderStatus.Filled) {
+                Log( "FILLED:: " + Transactions.GetOrderById(orderEvent.OrderId) + " FILL PRICE:: " + orderEvent.FillPrice.SmartRounding());
             }
             else
             {
@@ -176,11 +161,9 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        private void Log( String msg)
-        {
+        private void Log( String msg) {
             // redirect live logs to debug window
-            if (LiveMode)
-            {
+            if( LiveMode) {
                 Debug(msg);
             }
             else

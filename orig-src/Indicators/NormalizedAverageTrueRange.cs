@@ -35,8 +35,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the NATR</param>
         public NormalizedAverageTrueRange( String name, int period) : 
-            base(name)
-        {
+            base(name) {
             _period = period;
             _tr = new TrueRange(name + "_TR");
             _atr = new AverageTrueRange(name + "_ATR", period, MovingAverageType.Simple);
@@ -47,14 +46,13 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="period">The period of the NATR</param>
         public NormalizedAverageTrueRange(int period)
-            : this("NATR" + period, period)
-        {
+            : this( "NATR" + period, period) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples > _period; }
         }
@@ -64,18 +62,15 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _tr.Update(input);
 
-            if (!IsReady)
-            {
+            if( !IsReady) {
                 _atr.Update(input);
                 return input.Close != 0 ? _atr / input.Close * 100 : 0m;
             }
 
-            if (Samples == _period + 1)
-            {
+            if( Samples == _period + 1) {
                 // first output value is SMA of TrueRange
                 _atr.Update(input);
                 _lastAtrValue = _atr;
@@ -92,8 +87,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _tr.Reset();
             _atr.Reset();
             base.Reset();

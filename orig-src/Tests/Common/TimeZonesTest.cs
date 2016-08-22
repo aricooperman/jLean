@@ -23,12 +23,10 @@ package com.quantconnect.lean.Tests.Common
     public class TimeZonesTest
     {
         [Test]
-        public void TimeZonesLoadFromTzdb()
-        {
+        public void TimeZonesLoadFromTzdb() {
             // verifies each of the fields in the TimeZones class can be retrieved.
-            foreach (field in typeof(TimeZones).GetFields())
-            {
-                value = field.GetValue(null);
+            foreach (field in typeof(TimeZones).GetFields()) {
+                value = field.GetValue(null );
                 Assert.IsNotNull(value);
                 Assert.IsInstanceOf(typeof (ZoneId), value);
                 Console.WriteLine(((ZoneId)value).Id);

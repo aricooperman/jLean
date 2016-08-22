@@ -57,8 +57,7 @@ package com.quantconnect.lean.Packets
         /// <summary>
         /// Default constructor (required for JSON serialization)
         /// </summary>
-        public MarketToday()
-        { }
+        public MarketToday() { }
     }
 
     /// <summary>
@@ -84,12 +83,10 @@ package com.quantconnect.lean.Packets
         /// <param name="referenceDate">Reference date used for as base date from the specified hour offsets</param>
         /// <param name="defaultStart">Time in hours since midnight to start this open period.</param>
         /// <param name="defaultEnd">Time in hours since midnight to end this open period.</param>
-        public MarketHours(DateTime referenceDate, double defaultStart, double defaultEnd)
-        {
+        public MarketHours(DateTime referenceDate, double defaultStart, double defaultEnd) {
             Start = referenceDate.Date.AddHours(defaultStart);
             End = referenceDate.Date.AddHours(defaultEnd);
-            if (defaultEnd == 24)
-            {
+            if( defaultEnd == 24) {
                 // when we mark it as the end of the day other code that relies on .TimeOfDay has issues
                 End = End.AddTicks(-1);
             }

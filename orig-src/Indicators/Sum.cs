@@ -25,14 +25,14 @@ package com.quantconnect.lean.Indicators {
         /// <summary>
         ///     Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady {
+        public @Override boolean IsReady {
             get { return Samples >= Period; }
         }
 
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset() {
+        public @Override void Reset() {
             _sum = 0.0m;
             base.Reset();
         }
@@ -43,8 +43,7 @@ package com.quantconnect.lean.Indicators {
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the SMA</param>
         public Sum( String name, int period)
-            : base(name, period)
-        {
+            : base(name, period) {
         }
 
         /// <summary>
@@ -52,8 +51,7 @@ package com.quantconnect.lean.Indicators {
         /// </summary>
         /// <param name="period">The period of the SMA</param>
         public Sum(int period)
-            : this("SUM" + period, period)
-        {
+            : this( "SUM" + period, period) {
         }
 
         /// <summary>
@@ -62,9 +60,9 @@ package com.quantconnect.lean.Indicators {
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input value to this indicator on this time step</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             _sum += input.Value;
-            if (window.IsReady) {
+            if( window.IsReady) {
                 _sum -= window.MostRecentlyRemoved.Value;
             }
             return _sum;

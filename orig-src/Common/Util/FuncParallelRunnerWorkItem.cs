@@ -39,8 +39,7 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="isReady">The IsReady function implementation</param>
         /// <param name="execute">The Execute function implementation</param>
-        public FuncParallelRunnerWorkItem(Func<bool> isReady, Action execute)
-        {
+        public FuncParallelRunnerWorkItem(Func<bool> isReady, Action execute) {
             _isReady = isReady;
             _execute = execute;
         }
@@ -49,8 +48,7 @@ package com.quantconnect.lean.Util
         /// Executes this work item
         /// </summary>
         /// <returns>The result of execution</returns>
-        public void Execute()
-        {
+        public void Execute() {
             _execute();
         }
     }

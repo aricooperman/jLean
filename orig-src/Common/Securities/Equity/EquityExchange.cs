@@ -24,7 +24,7 @@ package com.quantconnect.lean.Securities.Equity
         /// <summary>
         /// Number of trading days in an equity calendar year - 252
         /// </summary>
-        public override int TradingDaysPerYear
+        public @Override int TradingDaysPerYear
         {
             get { return 252; }
         }
@@ -34,8 +34,7 @@ package com.quantconnect.lean.Securities.Equity
         /// derived from the market-hours-database for the USA Equity market
         /// </summary>
         public EquityExchange()
-            : base(MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.USA, null, SecurityType.Equity, TimeZones.NewYork))
-        {
+            : base(MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.USA, null, SecurityType.Equity, TimeZones.NewYork)) {
         }
 
         /// <summary>
@@ -44,8 +43,7 @@ package com.quantconnect.lean.Securities.Equity
         /// </summary>
         /// <param name="exchangeHours">Contains the weekly exchange schedule plus holidays</param>
         public EquityExchange(SecurityExchangeHours exchangeHours)
-            : base(exchangeHours)
-        {
+            : base(exchangeHours) {
         }
     }
 }

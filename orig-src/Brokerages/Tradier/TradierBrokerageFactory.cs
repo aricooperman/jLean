@@ -41,7 +41,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             /// </summary>
             public static int QuantConnectUserID
             {
-                get { return Config.GetInt("qc-user-id"); }
+                get { return Config.GetInt( "qc-user-id"); }
             }
 
             /// <summary>
@@ -49,7 +49,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             /// </summary>
             public static long AccountID
             {
-                get { return Config.GetInt("tradier-account-id"); }
+                get { return Config.GetInt( "tradier-account-id"); }
             }
 
             /// <summary>
@@ -57,7 +57,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             /// </summary>
             public static String AccessToken
             {
-                get { return Config.Get("tradier-access-token"); }
+                get { return Config.Get( "tradier-access-token"); }
             }
 
             /// <summary>
@@ -65,7 +65,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             /// </summary>
             public static String RefreshToken
             {
-                get { return Config.Get("tradier-refresh-token"); }
+                get { return Config.Get( "tradier-refresh-token"); }
             }
 
             /// <summary>
@@ -73,7 +73,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             /// </summary>
             public static DateTime TokensIssuedAt
             {
-                get { return Config.GetValue<DateTime>("tradier-issued-at"); }
+                get { return Config.GetValue<DateTime>( "tradier-issued-at"); }
             }
 
             /// <summary>
@@ -81,7 +81,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             /// </summary>
             public static TimeSpan LifeSpan
             {
-                get { return TimeSpan.FromSeconds(Config.GetInt("tradier-lifespan")); }
+                get { return Duration.ofSeconds(Config.GetInt( "tradier-lifespan")); }
             }
         }
 
@@ -94,8 +94,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         /// Initializes a new instance of he TradierBrokerageFactory class
         /// </summary>
         public TradierBrokerageFactory()
-            : base(typeof(TradierBrokerage))
-        {
+            : base(typeof(TradierBrokerage)) {
         }
 
         /// <summary>
@@ -105,7 +104,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
         /// </remarks>
-        public override Map<String,String> BrokerageData
+        public @Override Map<String,String> BrokerageData
         {
             get
             {
@@ -114,8 +113,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                 // always need to grab account ID from configuration
                 accountID = Configuration.AccountID.toString();
                 data = new Map<String,String>();
-                if (File.Exists(TokensFile))
-                {
+                if( File.Exists(TokensFile)) {
                     tokens = JsonConvert.DeserializeObject<TokenResponse>(File.ReadAllText(TokensFile));
                     accessToken = tokens.AccessToken;
                     refreshToken = tokens.RefreshToken;
@@ -129,11 +127,11 @@ package com.quantconnect.lean.Brokerages.Tradier
                     issuedAt = Configuration.TokensIssuedAt.toString(CultureInfo.InvariantCulture);
                     lifeSpan = Configuration.LifeSpan.TotalSeconds.toString(CultureInfo.InvariantCulture);
                 }
-                data.Add("tradier-account-id", accountID);
-                data.Add("tradier-access-token", accessToken);
-                data.Add("tradier-refresh-token", refreshToken);
-                data.Add("tradier-issued-at", issuedAt);
-                data.Add("tradier-lifespan", lifeSpan);
+                data.Add( "tradier-account-id", accountID);
+                data.Add( "tradier-access-token", accessToken);
+                data.Add( "tradier-refresh-token", refreshToken);
+                data.Add( "tradier-issued-at", issuedAt);
+                data.Add( "tradier-lifespan", lifeSpan);
                 return data;
             }
         }
@@ -141,7 +139,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         /// <summary>
         /// Gets a new instance of the <see cref="TradierBrokerageModel"/>
         /// </summary>
-        public override IBrokerageModel BrokerageModel
+        public @Override IBrokerageModel BrokerageModel
         {
             get { return new TradierBrokerageModel(); }
         }
@@ -152,20 +150,18 @@ package com.quantconnect.lean.Brokerages.Tradier
         /// <param name="job">The job packet to create the brokerage for</param>
         /// <param name="algorithm">The algorithm instance</param>
         /// <returns>A new brokerage instance</returns>
-        public override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm)
-        {
+        public @Override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm) {
             errors = new List<String>();
             accountID = Read<long>(job.BrokerageData, "tradier-account-id", errors);
             accessToken = Read<String>(job.BrokerageData, "tradier-access-token", errors);
             refreshToken = Read<String>(job.BrokerageData, "tradier-refresh-token", errors);
             issuedAt = Read<DateTime>(job.BrokerageData, "tradier-issued-at", errors);
-            lifeSpan = TimeSpan.FromSeconds(Read<double>(job.BrokerageData, "tradier-lifespan", errors));
+            lifeSpan = Duration.ofSeconds(Read<double>(job.BrokerageData, "tradier-lifespan", errors));
 
             brokerage = new TradierBrokerage(algorithm.Transactions, algorithm.Portfolio, accountID);
 
             // if we're running live locally we'll want to save any new tokens generated so that they can easily be retrieved
-            if (Config.GetBool("tradier-save-tokens"))
-            {
+            if( Config.GetBool( "tradier-save-tokens")) {
                 brokerage.SessionRefreshed += (sender, args) =>
                 {
                     File.WriteAllText(TokensFile, JsonConvert.SerializeObject(args, Formatting.Indented));
@@ -181,29 +177,26 @@ package com.quantconnect.lean.Brokerages.Tradier
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public override void Dispose()
-        {
+        public @Override void Dispose() {
         }
 
 
         /// <summary>
         /// Reads the tradier tokens from the <see cref="TokensFile"/> or from configuration
         /// </summary>
-        public static TokenResponse GetTokens()
-        {
+        public static TokenResponse GetTokens() {
             // pick a source for our tokens
-            if (File.Exists(TokensFile))
-            {
-                Log.Trace("Reading tradier tokens from " + TokensFile);
+            if( File.Exists(TokensFile)) {
+                Log.Trace( "Reading tradier tokens from " + TokensFile);
                 return JsonConvert.DeserializeObject<TokenResponse>(File.ReadAllText(TokensFile));
             }
             
             return new TokenResponse
             {
-                AccessToken = Config.Get("tradier-access-token"),
-                RefreshToken = Config.Get("tradier-refresh-token"),
-                IssuedAt = Config.GetValue<DateTime>("tradier-tokens-issued-at"),
-                ExpiresIn = Config.GetInt("tradier-lifespan")
+                AccessToken = Config.Get( "tradier-access-token"),
+                RefreshToken = Config.Get( "tradier-refresh-token"),
+                IssuedAt = Config.GetValue<DateTime>( "tradier-tokens-issued-at"),
+                ExpiresIn = Config.GetInt( "tradier-lifespan")
             };
         }
     }

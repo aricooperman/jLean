@@ -60,13 +60,12 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// <param name="accessToken">The Oanda access token (can be the user's personal access token or the access token obtained with OAuth by QC on behalf of the user)</param>
         /// <param name="accountId">The account identifier.</param>
         public OandaBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider, Environment environment, String accessToken, int accountId)
-            : base("Oanda Brokerage")
-        {
+            : base( "Oanda Brokerage") {
             _orderProvider = orderProvider;
             _securityProvider = securityProvider;
 
-            if (environment != Environment.Trade && environment != Environment.Practice)
-                throw new NotSupportedException("Oanda Environment not supported: " + environment);
+            if( environment != Environment.Trade && environment != Environment.Practice)
+                throw new NotSupportedException( "Oanda Environment not supported: " + environment);
 
             _environment = environment;
             _accessToken = accessToken;
@@ -78,7 +77,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// <summary>
         /// Returns true if we're currently connected to the broker
         /// </summary>
-        public override boolean IsConnected
+        public @Override boolean IsConnected
         {
             get { return _isConnected && !_connectionLost; }
         }
@@ -86,9 +85,8 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// <summary>
         /// Connects the client to the broker's remote servers
         /// </summary>
-        public override void Connect()
-        {
-            if (IsConnected) return;
+        public @Override void Connect() {
+            if( IsConnected) return;
 
             // Load the list of instruments
             _oandaInstruments = GetInstruments().ToDictionary(x => x.instrument);
@@ -107,52 +105,44 @@ package com.quantconnect.lean.Brokerages.Oanda
                 nextReconnectionAttemptUtcTime = DateTime.UtcNow;
                 double nextReconnectionAttemptSeconds = 1;
 
-                lock (_lockerConnectionMonitor)
-                {
+                lock (_lockerConnectionMonitor) {
                     _lastHeartbeatUtcTime = DateTime.UtcNow;
                 }
 
                 try
                 {
-                    while (!_cancellationTokenSource.IsCancellationRequested)
-                    {
+                    while (!_cancellationTokenSource.IsCancellationRequested) {
                         TimeSpan elapsed;
-                        lock (_lockerConnectionMonitor)
-                        {
+                        lock (_lockerConnectionMonitor) {
                             elapsed = DateTime.UtcNow - _lastHeartbeatUtcTime;
                         }
 
-                        if (!_connectionLost && elapsed > TimeSpan.FromSeconds(20))
-                        {
+                        if( !_connectionLost && elapsed > Duration.ofSeconds(20)) {
                             _connectionLost = true;
                             nextReconnectionAttemptUtcTime = DateTime.UtcNow.AddSeconds(nextReconnectionAttemptSeconds);
 
-                            OnMessage(BrokerageMessageEvent.Disconnected("Connection with Oanda server lost. " +
+                            OnMessage(BrokerageMessageEvent.Disconnected( "Connection with Oanda server lost. " +
                                                                          "This could be because of internet connectivity issues. "));
                         }
-                        else if (_connectionLost)
-                        {
+                        else if( _connectionLost) {
                             try
                             {
-                                if (elapsed <= TimeSpan.FromSeconds(20))
-                                {
+                                if( elapsed <= Duration.ofSeconds(20)) {
                                     _connectionLost = false;
                                     nextReconnectionAttemptSeconds = 1;
 
-                                    OnMessage(BrokerageMessageEvent.Reconnected("Connection with Oanda server restored."));
+                                    OnMessage(BrokerageMessageEvent.Reconnected( "Connection with Oanda server restored."));
                                 }
                                 else
                                 {
-                                    if (DateTime.UtcNow > nextReconnectionAttemptUtcTime)
-                                    {
+                                    if( DateTime.UtcNow > nextReconnectionAttemptUtcTime) {
                                         try
                                         {
                                             // check if we have a connection
                                             GetInstruments();
 
                                             // restore events session
-                                            if (_eventsSession != null)
-                                            {
+                                            if( _eventsSession != null ) {
                                                 _eventsSession.DataReceived -= OnEventReceived;
                                                 _eventsSession.StopSession();
                                             }
@@ -162,14 +152,12 @@ package com.quantconnect.lean.Brokerages.Oanda
 
                                             // restore rates session
                                             List<Symbol> symbolsToSubscribe;
-                                            lock (_lockerSubscriptions)
-                                            {
+                                            lock (_lockerSubscriptions) {
                                                 symbolsToSubscribe = _subscribedSymbols.ToList();
                                             }
                                             SubscribeSymbols(symbolsToSubscribe);
                                         }
-                                        catch (Exception)
-                                        {
+                                        catch (Exception) {
                                             // double the interval between attempts (capped to 1 minute)
                                             nextReconnectionAttemptSeconds = Math.Min(nextReconnectionAttemptSeconds * 2, 60);
                                             nextReconnectionAttemptUtcTime = DateTime.UtcNow.AddSeconds(nextReconnectionAttemptSeconds);
@@ -177,8 +165,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                                     }
                                 }
                             }
-                            catch (Exception exception)
-                            {
+                            catch (Exception exception) {
                                 Log.Error(exception);
                             }
                         }
@@ -186,14 +173,12 @@ package com.quantconnect.lean.Brokerages.Oanda
                         Thread.Sleep(1000);
                     }
                 }
-                catch (Exception exception)
-                {
+                catch (Exception exception) {
                     Log.Error(exception);
                 }
             });
             _connectionMonitorThread.Start();
-            while (!_connectionMonitorThread.IsAlive)
-            {
+            while (!_connectionMonitorThread.IsAlive) {
                 Thread.Sleep(1);
             }
         }
@@ -201,16 +186,13 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// <summary>
         /// Disconnects the client from the broker's remote servers
         /// </summary>
-        public override void Disconnect()
-        {
-            if (_eventsSession != null)
-            {
+        public @Override void Disconnect() {
+            if( _eventsSession != null ) {
                 _eventsSession.DataReceived -= OnEventReceived;
                 _eventsSession.StopSession();
             }
 
-            if (_ratesSession != null)
-            {
+            if( _ratesSession != null ) {
                 _ratesSession.DataReceived -= OnDataReceived;
                 _ratesSession.StopSession();
             }
@@ -227,8 +209,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// NOTE: The order objects returned do not have QC order IDs.
         /// </summary>
         /// <returns>The open orders returned from Oanda</returns>
-        public override List<Order> GetOpenOrders()
-        {
+        public @Override List<Order> GetOpenOrders() {
             oandaOrders = GetOrderList();
 
             orderList = oandaOrders.Select(ConvertOrder).ToList();
@@ -239,8 +220,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// Gets all holdings for the account
         /// </summary>
         /// <returns>The current holdings from the account</returns>
-        public override List<Holding> GetAccountHoldings()
-        {
+        public @Override List<Holding> GetAccountHoldings() {
             holdings = GetPositions(_accountId).Select(ConvertHolding).Where(x => x.Quantity != 0).ToList();
 
             // Set MarketPrice in each Holding
@@ -248,16 +228,13 @@ package com.quantconnect.lean.Brokerages.Oanda
                 .Select(x => _symbolMapper.GetBrokerageSymbol(x.Symbol))
                 .ToList();
 
-            if (oandaSymbols.Count > 0)
-            {
+            if( oandaSymbols.Count > 0) {
                 quotes = GetRates(oandaSymbols).ToDictionary(x => x.instrument);
-                foreach (holding in holdings)
-                {
+                foreach (holding in holdings) {
                     oandaSymbol = _symbolMapper.GetBrokerageSymbol(holding.Symbol);
                     Price quote;
-                    if (quotes.TryGetValue(oandaSymbol, out quote))
-                    {
-                        holding.MarketPrice = Convert.ToDecimal((quote.bid + quote.ask) / 2);
+                    if( quotes.TryGetValue(oandaSymbol, out quote)) {
+                        holding.MarketPrice = new BigDecimal( (quote.bid + quote.ask) / 2);
                     }
                 }
             }
@@ -269,14 +246,13 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// Gets the current cash balance for each currency held in the brokerage account
         /// </summary>
         /// <returns>The current cash balance for each currency available for trading</returns>
-        public override List<Cash> GetCashBalance()
-        {
+        public @Override List<Cash> GetCashBalance() {
             getAccountRequestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId;
             accountResponse = MakeRequest<Account>(getAccountRequestString);
 
             return new List<Cash>
             {
-                new Cash(accountResponse.accountCurrency, accountResponse.balance.ToDecimal(),
+                new Cash(accountResponse.accountCurrency, accountResponse.balance new BigDecimal(  ),
                     GetUsdConversion(accountResponse.accountCurrency))
             };
         }
@@ -286,32 +262,28 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// </summary>
         /// <param name="order">The order to be placed</param>
         /// <returns>True if the request for a new order has been placed, false otherwise</returns>
-        public override boolean PlaceOrder(Order order)
-        {
+        public @Override boolean PlaceOrder(Order order) {
             requestParams = new Map<String,String>
             {
                 { "instrument", _symbolMapper.GetBrokerageSymbol(order.Symbol) },
-                { "units", Convert.ToInt32(order.AbsoluteQuantity).toString() }
+                { "units",  Integer.parseInt( order.AbsoluteQuantity).toString() }
             };
 
             PopulateOrderRequestParameters(order, requestParams);
 
             postOrderResponse = PostOrderAsync(requestParams);
-            if (postOrderResponse == null) 
+            if( postOrderResponse == null ) 
                 return false;
 
             // if market order, find fill quantity and price
             marketOrderFillPrice = 0m;
-            if (order.Type == OrderType.Market)
-            {
-                marketOrderFillPrice = Convert.ToDecimal(postOrderResponse.price);
+            if( order.Type == OrderType.Market) {
+                marketOrderFillPrice = new BigDecimal( postOrderResponse.price);
             }
 
             marketOrderFillQuantity = 0;
-            if (postOrderResponse.tradeOpened != null && postOrderResponse.tradeOpened.id > 0)
-            {
-                if (order.Type == OrderType.Market)
-                {
+            if( postOrderResponse.tradeOpened != null && postOrderResponse.tradeOpened.id > 0) {
+                if( order.Type == OrderType.Market) {
                     marketOrderFillQuantity = postOrderResponse.tradeOpened.units;
                 }
                 else
@@ -320,10 +292,8 @@ package com.quantconnect.lean.Brokerages.Oanda
                 }
             }
 
-            if (postOrderResponse.tradeReduced != null && postOrderResponse.tradeReduced.id > 0)
-            {
-                if (order.Type == OrderType.Market)
-                {
+            if( postOrderResponse.tradeReduced != null && postOrderResponse.tradeReduced.id > 0) {
+                if( order.Type == OrderType.Market) {
                     marketOrderFillQuantity = postOrderResponse.tradeReduced.units;
                 }
                 else
@@ -332,16 +302,13 @@ package com.quantconnect.lean.Brokerages.Oanda
                 }
             }
 
-            if (postOrderResponse.orderOpened != null && postOrderResponse.orderOpened.id > 0)
-            {
-                if (order.Type != OrderType.Market)
-                {
+            if( postOrderResponse.orderOpened != null && postOrderResponse.orderOpened.id > 0) {
+                if( order.Type != OrderType.Market) {
                     order.BrokerId.Add(postOrderResponse.orderOpened.id.toString());
                 }
             }
 
-            if (postOrderResponse.tradesClosed != null && postOrderResponse.tradesClosed.Count > 0)
-            {
+            if( postOrderResponse.tradesClosed != null && postOrderResponse.tradesClosed.Count > 0) {
                 marketOrderFillQuantity += postOrderResponse.tradesClosed
                     .Where(trade => order.Type == OrderType.Market)
                     .Sum(trade => trade.units);
@@ -352,11 +319,9 @@ package com.quantconnect.lean.Brokerages.Oanda
             order.PriceCurrency = _securityProvider.GetSecurity(order.Symbol).SymbolProperties.QuoteCurrency;
             OnOrderEvent(new OrderEvent(order, DateTime.UtcNow, orderFee) { Status = OrderStatus.Submitted });
 
-            if (order.Type == OrderType.Market)
-            {
+            if( order.Type == OrderType.Market) {
                 // if market order, also send Filled order event
-                OnOrderEvent(new OrderEvent(order, DateTime.UtcNow, orderFee)
-                {
+                OnOrderEvent(new OrderEvent(order, DateTime.UtcNow, orderFee) {
                     Status = OrderStatus.Filled,
                     FillPrice = marketOrderFillPrice,
                     FillQuantity = marketOrderFillQuantity * Math.Sign(order.Quantity)
@@ -372,21 +337,19 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// </summary>
         /// <param name="order">The new order information</param>
         /// <returns>True if the request was made for the order to be updated, false otherwise</returns>
-        public override boolean UpdateOrder(Order order)
-        {
-            Log.Trace("OandaBrokerage.UpdateOrder(): " + order);
+        public @Override boolean UpdateOrder(Order order) {
+            Log.Trace( "OandaBrokerage.UpdateOrder(): " + order);
             
-            if (!order.BrokerId.Any())
-            {
+            if( !order.BrokerId.Any()) {
                 // we need the brokerage order id in order to perform an update
-                Log.Trace("OandaBrokerage.UpdateOrder(): Unable to update order without BrokerId.");
+                Log.Trace( "OandaBrokerage.UpdateOrder(): Unable to update order without BrokerId.");
                 return false;
             }
             
             requestParams = new Map<String,String>
             {
                 { "instrument", _symbolMapper.GetBrokerageSymbol(order.Symbol) },
-                { "units", Convert.ToInt32(order.AbsoluteQuantity).toString() },
+                { "units",  Integer.parseInt( order.AbsoluteQuantity).toString() },
             };
 
             // we need the brokerage order id in order to perform an update
@@ -402,18 +365,15 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// </summary>
         /// <param name="order">The order to cancel</param>
         /// <returns>True if the request was made for the order to be canceled, false otherwise</returns>
-        public override boolean CancelOrder(Order order)
-        {
-            Log.Trace("OandaBrokerage.CancelOrder(): " + order);
+        public @Override boolean CancelOrder(Order order) {
+            Log.Trace( "OandaBrokerage.CancelOrder(): " + order);
             
-            if (!order.BrokerId.Any())
-            {
-                Log.Trace("OandaBrokerage.CancelOrder(): Unable to cancel order without BrokerId.");
+            if( !order.BrokerId.Any()) {
+                Log.Trace( "OandaBrokerage.CancelOrder(): Unable to cancel order without BrokerId.");
                 return false;
             }
 
-            foreach (orderId in order.BrokerId)
-            {
+            foreach (orderId in order.BrokerId) {
                 CancelOrder(long.Parse(orderId));
                 OnOrderEvent(new OrderEvent(order, DateTime.UtcNow, 0, "Oanda Cancel Order Event") { Status = OrderStatus.Canceled });
             }

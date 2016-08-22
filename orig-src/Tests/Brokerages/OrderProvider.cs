@@ -30,18 +30,15 @@ package com.quantconnect.lean.Tests.Brokerages
         private static int _orderID;
         private readonly IList<Order> _orders;
 
-        public OrderProvider(IList<Order> orders)
-        {
+        public OrderProvider(IList<Order> orders) {
             _orders = orders;
         }
 
-        public OrderProvider()
-        {
+        public OrderProvider() {
             _orders = new List<Order>();
         }
 
-        public void Add(Order order)
-        {
+        public void Add(Order order) {
             order.Id = Interlocked.Increment(ref _orderID);
             _orders.Add(order);
         }
@@ -51,28 +48,23 @@ package com.quantconnect.lean.Tests.Brokerages
             get { return _orders.Count; }
         }
 
-        public Order GetOrderById(int orderId)
-        {
+        public Order GetOrderById(int orderId) {
             return _orders.FirstOrDefault(x => x.Id == orderId);
         }
 
-        public Order GetOrderByBrokerageId( String brokerageId)
-        {
+        public Order GetOrderByBrokerageId( String brokerageId) {
             return _orders.FirstOrDefault(x => x.BrokerId.Contains(brokerageId));
         }
 
-        public IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null)
-        {
-            throw new NotImplementedException("This method has not been implemented");
+        public IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null ) {
+            throw new NotImplementedException( "This method has not been implemented");
         }
 
-        public OrderTicket GetOrderTicket(int orderId)
-        {
-            throw new NotImplementedException("This method has not been implemented");
+        public OrderTicket GetOrderTicket(int orderId) {
+            throw new NotImplementedException( "This method has not been implemented");
         }
 
-        public IEnumerable<Order> GetOrders(Func<Order, bool> filter)
-        {
+        public IEnumerable<Order> GetOrders(Func<Order, bool> filter) {
             return _orders.Where(filter);
         }
     }

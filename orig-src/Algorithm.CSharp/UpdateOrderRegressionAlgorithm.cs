@@ -48,8 +48,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2013, 01, 01);  //Set Start Date
             SetEndDate(2015, 01, 01);    //Set End Date
             SetCash(100000);             //Set Strategy Cash
@@ -68,89 +67,77 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">Slice object keyed by symbol containing the stock data</param>
-        public override void OnData(Slice data)
-        {
-            if (!data.Bars.ContainsKey(Symbol)) return;
+        public @Override void OnData(Slice data) {
+            if( !data.Bars.ContainsKey(Symbol)) return;
 
             // each month make an action
-            if (Time.Month != LastMonth)
-            {
+            if( Time.Month != LastMonth) {
                 // we'll submit the next type of order from the queue
                 orderType = _orderTypesQueue.Dequeue();
-                //Log("");
-                Log("\r\n--------------MONTH: " + Time.toString("MMMM") + ":: " + orderType + "\r\n");
-                //Log("");
+                //Log( "");
+                Log( "\r\n--------------MONTH: " + Time.toString( "MMMM") + ":: " + orderType + "\r\n");
+                //Log( "");
                 LastMonth = Time.Month;
-                Log("ORDER TYPE:: " + orderType);
+                Log( "ORDER TYPE:: " + orderType);
                 isLong = Quantity > 0;
                 stopPrice = isLong ? (1 + StopPercentage)*data.Bars[Symbol].High : (1 - StopPercentage)*data.Bars[Symbol].Low;
                 limitPrice = isLong ? (1 - LimitPercentage)*stopPrice : (1 + LimitPercentage)*stopPrice;
-                if (orderType == OrderType.Limit)
-                {
+                if( orderType == OrderType.Limit) {
                     limitPrice = !isLong ? (1 + LimitPercentage) * data.Bars[Symbol].High : (1 - LimitPercentage) * data.Bars[Symbol].Low;
                 }
                 request = new SubmitOrderRequest(orderType, SecType, Symbol, Quantity, stopPrice, limitPrice, Time, orderType.toString());
                 ticket = Transactions.AddOrder(request);
                 _tickets.Add(ticket);
             }
-            else if (_tickets.Count > 0)
-            {
+            else if( _tickets.Count > 0) {
                 ticket = _tickets.Last();
-                if (Time.Day > 8 && Time.Day < 14)
-                {
-                    if (ticket.UpdateRequests.Count == 0 && ticket.Status.IsOpen())
-                    {
-                        Log("TICKET:: " + ticket);
+                if( Time.Day > 8 && Time.Day < 14) {
+                    if( ticket.UpdateRequests.Count == 0 && ticket.Status.IsOpen()) {
+                        Log( "TICKET:: " + ticket);
                         ticket.Update(new UpdateOrderFields
                         {
                             Quantity = ticket.Quantity + Math.Sign(Quantity)*DeltaQuantity,
                             Tag = "Change quantity: " + Time
                         });
-                        Log("UPDATE1:: " + ticket.UpdateRequests.Last());
+                        Log( "UPDATE1:: " + ticket.UpdateRequests.Last());
                     }
                 }
-                else if (Time.Day > 13 && Time.Day < 20)
-                {
-                    if (ticket.UpdateRequests.Count == 1 && ticket.Status.IsOpen())
-                    {
-                        Log("TICKET:: " + ticket);
+                else if( Time.Day > 13 && Time.Day < 20) {
+                    if( ticket.UpdateRequests.Count == 1 && ticket.Status.IsOpen()) {
+                        Log( "TICKET:: " + ticket);
                         ticket.Update(new UpdateOrderFields
                         {
                             LimitPrice = Security.Price*(1 - Math.Sign(ticket.Quantity)*LimitPercentageDelta),
                             StopPrice = Security.Price*(1 + Math.Sign(ticket.Quantity)*StopPercentageDelta),
                             Tag = "Change prices: " + Time
                         });
-                        Log("UPDATE2:: " + ticket.UpdateRequests.Last());
+                        Log( "UPDATE2:: " + ticket.UpdateRequests.Last());
                     }
                 }
                 else
                 {
-                    if (ticket.UpdateRequests.Count == 2 && ticket.Status.IsOpen())
-                    {
-                        Log("TICKET:: " + ticket);
+                    if( ticket.UpdateRequests.Count == 2 && ticket.Status.IsOpen()) {
+                        Log( "TICKET:: " + ticket);
                         ticket.Cancel(Time + " and is still open!");
-                        Log("CANCELLED:: " + ticket.CancelRequest);
+                        Log( "CANCELLED:: " + ticket.CancelRequest);
                     }
                 }
             }
         }
 
-        public override void OnOrderEvent(OrderEvent orderEvent)
-        {
-            if (orderEvent.Status == OrderStatus.Filled)
-            {
-                Log("FILLED:: " + Transactions.GetOrderById(orderEvent.OrderId) + " FILL PRICE:: " + orderEvent.FillPrice.SmartRounding());
+        public @Override void OnOrderEvent(OrderEvent orderEvent) {
+            if( orderEvent.Status == OrderStatus.Filled) {
+                Log( "FILLED:: " + Transactions.GetOrderById(orderEvent.OrderId) + " FILL PRICE:: " + orderEvent.FillPrice.SmartRounding());
             }
             else
             {
                 Log(orderEvent.toString());
-                Log("TICKET:: " + _tickets.Last());
+                Log( "TICKET:: " + _tickets.Last());
             }
         }
 
-        private new void Log( String msg)
-        {
-            if (LiveMode) Debug(msg);
+        private new void Log( String msg) {
+            if( LiveMode) Debug(msg);
             else base.Log(msg);
         }
     }

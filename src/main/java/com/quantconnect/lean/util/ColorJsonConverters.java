@@ -41,12 +41,12 @@ public class ColorJsonConverters {
 //        /// Converts a Color to a hexadecimal as a string
 //        /// <param name="value">The input value to be converted before serialization</param>
 //        /// <returns>Hexadecimal number as a string. If Color is null, returns default #000000</returns>
-//        protected override String Convert( Color value ) {
+//        protected @Override String Convert( Color value ) {
 //        }
         @Override
         public void serialize( Color value, JsonGenerator gen, SerializerProvider serializers )
                 throws IOException, JsonProcessingException {
-//            return value.IsEmpty ? string.Empty : String.format("#{0:X2}{1:X2}{2:X2}", value.getRed(), value.G, value.B);
+//            return value.IsEmpty ? string.Empty : String.format( "#{0:X2}{1:X2}{2:X2}", value.getRed(), value.G, value.B);
             
             gen.writeStartObject();
             if( value == null )

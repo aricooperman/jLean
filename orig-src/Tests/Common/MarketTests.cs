@@ -21,12 +21,10 @@ package com.quantconnect.lean.Tests.Common
     public class MarketTests
     {
         [Test]
-        public void MapsAllMarketsInMarketClass()
-        {
+        public void MapsAllMarketsInMarketClass() {
             markets = typeof(Market).GetFields();
-            foreach (field in markets)
-            {
-                market = ( String)field.GetValue(null);
+            foreach (field in markets) {
+                market = ( String)field.GetValue(null );
                 code = Market.Encode(market);
                 Assert.IsTrue(code.HasValue);
 

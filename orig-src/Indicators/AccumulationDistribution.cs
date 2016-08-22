@@ -29,14 +29,13 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="name">The name of this indicator</param>
         public AccumulationDistribution( String name)
-            : base(name)
-        {
+            : base(name) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples > 0; }
         }
@@ -46,8 +45,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             range = input.High - input.Low;
             return Current.Value + (range > 0 ? ((input.Close - input.Low) - (input.High - input.Close)) / range * input.Volume : 0m);
         }

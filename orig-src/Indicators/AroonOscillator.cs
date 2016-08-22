@@ -38,7 +38,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return AroonUp.IsReady && AroonDown.IsReady; }
         }
@@ -49,8 +49,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="upPeriod">The lookback period to determine the highest high for the AroonDown</param>
         /// <param name="downPeriod">The lookback period to determine the lowest low for the AroonUp</param>
         public AroonOscillator(int upPeriod, int downPeriod)
-            : this( String.format("AROON({0},{1})", upPeriod, downPeriod), upPeriod, downPeriod)
-        {
+            : this( String.format( "AROON(%1$s,%2$s)", upPeriod, downPeriod), upPeriod, downPeriod) {
         }
 
         /// <summary>
@@ -60,8 +59,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="upPeriod">The lookback period to determine the highest high for the AroonDown</param>
         /// <param name="downPeriod">The lookback period to determine the lowest low for the AroonUp</param>
         public AroonOscillator( String name, int upPeriod, int downPeriod)
-            : base(name)
-        {
+            : base(name) {
             max = new Maximum(name + "_Max", upPeriod + 1);
             AroonUp = new FunctionalIndicator<IndicatorDataPoint>(name + "_AroonUp",
                 input => ComputeAroonUp(upPeriod, max, input),
@@ -82,8 +80,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             AroonUp.Update(input.Time, input.High);
             AroonDown.Update(input.Time, input.Low);
 
@@ -97,8 +94,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="max">A Maximum indicator used to compute periods since max</param>
         /// <param name="input">The next input data</param>
         /// <returns>The AroonUp value</returns>
-        private static BigDecimal ComputeAroonUp(int upPeriod, Maximum max, IndicatorDataPoint input)
-        {
+        private static BigDecimal ComputeAroonUp(int upPeriod, Maximum max, IndicatorDataPoint input) {
             max.Update(input);
             return 100m * (upPeriod - max.PeriodsSinceMaximum) / upPeriod;
         }
@@ -110,8 +106,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="min">A Minimum indicator used to compute periods since min</param>
         /// <param name="input">The next input data</param>
         /// <returns>The AroonDown value</returns>
-        private static BigDecimal ComputeAroonDown(int downPeriod, Minimum min, IndicatorDataPoint input)
-        {
+        private static BigDecimal ComputeAroonDown(int downPeriod, Minimum min, IndicatorDataPoint input) {
             min.Update(input);
             return 100m * (downPeriod - min.PeriodsSinceMinimum) / downPeriod;
         }
@@ -119,8 +114,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator and both sub-indicators (AroonUp and AroonDown)
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             AroonUp.Reset();
             AroonDown.Reset();
             base.Reset();

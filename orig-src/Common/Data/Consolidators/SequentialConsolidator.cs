@@ -80,8 +80,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// Updates this consolidator with the specified data
         /// </summary>
         /// <param name="data">The new data for the consolidator</param>
-        public void Update(BaseData data)
-        {
+        public void Update(BaseData data) {
             First.Update(data);
         }
 
@@ -89,8 +88,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// Scans this consolidator to see if it should emit a bar due to time passing
         /// </summary>
         /// <param name="currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)</param>
-        public void Scan(DateTime currentLocalTime)
-        {
+        public void Scan(DateTime currentLocalTime) {
             First.Scan(currentLocalTime);
         }
 
@@ -105,11 +103,9 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="first">The first consolidator to receive data</param>
         /// <param name="second">The consolidator to receive first's output</param>
-        public SequentialConsolidator(IDataConsolidator first, IDataConsolidator second)
-        {
-            if (!second.InputType.IsAssignableFrom(first.OutputType))
-            {
-                throw new ArgumentException("first.OutputType must equal second.OutputType!");
+        public SequentialConsolidator(IDataConsolidator first, IDataConsolidator second) {
+            if( !second.InputType.IsAssignableFrom(first.OutputType)) {
+                throw new ArgumentException( "first.OutputType must equal second.OutputType!");
             }
             First = first;
             Second = second;
@@ -127,10 +123,9 @@ package com.quantconnect.lean.Data.Consolidators
         /// by derived classes when they have consolidated a new piece of data.
         /// </summary>
         /// <param name="consolidated">The newly consolidated data</param>
-        protected virtual void OnDataConsolidated(BaseData consolidated)
-        {
+        protected virtual void OnDataConsolidated(BaseData consolidated) {
             handler = DataConsolidated;
-            if (handler != null) handler(this, consolidated);
+            if( handler != null ) handler(this, consolidated);
         }
     }
 }

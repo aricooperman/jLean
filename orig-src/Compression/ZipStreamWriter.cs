@@ -39,7 +39,7 @@ package com.quantconnect.lean
         /// The character encoding in which the output is written.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public override Encoding Encoding
+        public @Override Encoding Encoding
         {
             get { return Encoding.Default; }
         }
@@ -49,14 +49,12 @@ package com.quantconnect.lean
         /// </summary>
         /// <param name="filename">The output zip file name</param>
         /// <param name="zipEntry">The file name in the zip file</param>
-        public ZipStreamWriter( String filename, String zipEntry)
-        {
+        public ZipStreamWriter( String filename, String zipEntry) {
             _filename = filename;
             _zipEntry = zipEntry;
             _tempFilename = _filename + ".tmp";
             File.Delete(_tempFilename);
-            if (!File.Exists(filename))
-            {
+            if( !File.Exists(filename)) {
                 _archive = ZipFile.Open(_tempFilename, ZipArchiveMode.Create);
                 _writer = new StreamWriter(_archive.CreateEntry(zipEntry).Open());
             }
@@ -77,8 +75,7 @@ package com.quantconnect.lean
         /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <filterpriority>1</filterpriority>
-        public override void Write(char value)
-        {
+        public @Override void Write(char value) {
             _writer.Write(value);
         }
 
@@ -89,16 +86,14 @@ package com.quantconnect.lean
         /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <filterpriority>1</filterpriority>
-        public override void WriteLine( String value)
-        {
+        public @Override void WriteLine( String value) {
             _writer.WriteLine(value);
         }
 
         /// <summary>
         /// Clears all buffers for the current writer and causes any buffered data to be written to the underlying device.
         /// </summary>
-        public override void Flush()
-        {
+        public @Override void Flush() {
             _writer.Flush();
             _writer.Dispose();
             _archive.Dispose();
@@ -115,9 +110,8 @@ package com.quantconnect.lean
         /// Releases the unmanaged resources used by the <see cref="T:System.IO.TextWriter"/> and optionally releases the managed resources.
         /// </summary>
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
-        protected override void Dispose( boolean disposing)
-        {
-            if (_writer == null || !disposing)
+        protected @Override void Dispose( boolean disposing) {
+            if( _writer == null || !disposing)
                 return;
             _writer.Flush();
             _writer.Close();
@@ -125,15 +119,13 @@ package com.quantconnect.lean
             _archive.Dispose();
 
             CopyTempFile(50, throwOnFailure: true);
-            if (File.Exists(_tempFilename))
-            {
+            if( File.Exists(_tempFilename)) {
                 File.Delete(_tempFilename);
             }
         }
 
-        private void CopyTempFile(int attempts, boolean throwOnFailure)
-        {
-            if (!File.Exists(_tempFilename)) return;
+        private void CopyTempFile(int attempts, boolean throwOnFailure) {
+            if( !File.Exists(_tempFilename)) return;
 
             do
             {
@@ -142,16 +134,14 @@ package com.quantconnect.lean
                     File.Copy(_tempFilename, _filename, true);
                     return;
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     Log.Error(err);
                 }
             }
             while (--attempts > 0);
 
-            if (throwOnFailure)
-            {
-                throw new Exception( String.format("Unable to save file: {0} after {1} attempts.", _filename, attempts));
+            if( throwOnFailure) {
+                throw new Exception( String.format( "Unable to save file: %1$s after %2$s attempts.", _filename, attempts));
             }
         }
     }

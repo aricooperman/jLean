@@ -29,7 +29,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// - third candle: black real body that moves well within the first candle's real body
     /// The meaning of "doji" and "long" is specified with SetCandleSettings
     /// The meaning of "moves well within" is specified with penetration and "moves" should mean the real body should
-    /// not be short ("short" is specified with SetCandleSettings) - Greg Morris wants it to be long, someone else want
+    /// not be short ( "short" is specified with SetCandleSettings) - Greg Morris wants it to be long, someone else want
     /// it to be relatively long
     /// The returned value is negative(-1): evening star is always bearish;
     /// The user should consider that an evening star is significant when it appears in an uptrend,
@@ -54,8 +54,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
         public EveningDojiStar( String name, BigDecimal penetration = 0.3m) 
             : base(name, Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod),
-                  CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod) + 2 + 1)
-        {
+                  CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod) + 2 + 1) {
             _penetration = penetration;
 
             _bodyDojiAveragePeriod = CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod;
@@ -68,14 +67,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// </summary>
         /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
         public EveningDojiStar( BigDecimal penetration = 0.3m)
-            : this("EVENINGDOJISTAR", penetration)
-        {
+            : this( "EVENINGDOJISTAR", penetration) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -86,22 +84,17 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
-                if (Samples >= Period - _bodyLongAveragePeriod - 2 && Samples < Period - 2)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
+                if( Samples >= Period - _bodyLongAveragePeriod - 2 && Samples < Period - 2) {
                     _bodyLongPeriodTotal += GetCandleRange(CandleSettingType.BodyLong, input);
                 }
 
-                if (Samples >= Period - _bodyDojiAveragePeriod - 1 && Samples < Period - 1)
-                {
+                if( Samples >= Period - _bodyDojiAveragePeriod - 1 && Samples < Period - 1) {
                     _bodyDojiPeriodTotal += GetCandleRange(CandleSettingType.BodyDoji, input);
                 }
 
-                if (Samples >= Period - _bodyShortAveragePeriod)
-                {
+                if( Samples >= Period - _bodyShortAveragePeriod) {
                     _bodyShortPeriodTotal += GetCandleRange(CandleSettingType.BodyShort, input);
                 }
 
@@ -109,7 +102,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             }
 
             BigDecimal value;
-            if (
+            if( 
                 // 1st: long
                 GetRealBody(window[2]) > GetCandleAverage(CandleSettingType.BodyLong, _bodyLongPeriodTotal, window[2]) &&
                 //      white
@@ -147,8 +140,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _bodyLongPeriodTotal = 0;
             _bodyDojiPeriodTotal = 0;
             _bodyShortPeriodTotal = 0;

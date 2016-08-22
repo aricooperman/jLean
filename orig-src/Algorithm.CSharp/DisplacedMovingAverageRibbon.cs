@@ -39,8 +39,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2009, 01, 01);
             SetEndDate(2015, 01, 01);
 
@@ -74,13 +73,12 @@ package com.quantconnect.lean.Algorithm.Examples
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">TradeBars IDictionary object with your stock data</param>
-        public void OnData(TradeBars data)
-        {
+        public void OnData(TradeBars data) {
             // wait for our entire ribbon to be ready
-            if (!_ribbon.All(x => x.IsReady)) return;
+            if( !_ribbon.All(x => x.IsReady)) return;
 
             // only once per day
-            if (_previous.Date == Time.Date) return;
+            if( _previous.Date == Time.Date) return;
 
             Plot(Symbol, "Price", data[Symbol].Price);
             Plot(Symbol, _ribbon);
@@ -90,12 +88,10 @@ package com.quantconnect.lean.Algorithm.Examples
             values = _ribbon.Select(x => x.Current.Value).ToArray();
 
             holding = Portfolio[Symbol];
-            if (holding.Quantity <= 0 && IsAscending(values))
-            {
+            if( holding.Quantity <= 0 && IsAscending(values)) {
                 SetHoldings(Symbol, 1.0);
             }
-            else if (holding.Quantity > 0 && IsDescending(values))
-            {
+            else if( holding.Quantity > 0 && IsDescending(values)) {
                 Liquidate(Symbol);
             }
 
@@ -105,19 +101,15 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <summary>
         /// Returns true if the specified values are in ascending order
         /// </summary>
-        private boolean IsAscending(IEnumerable<decimal> values)
-        {
+        private boolean IsAscending(IEnumerable<decimal> values) {
             decimal? last = null;
-            foreach (val in values)
-            {
-                if (last == null)
-                {
+            foreach (val in values) {
+                if( last == null ) {
                     last = val;
                     continue;
                 }
 
-                if (last.Value < val)
-                {
+                if( last.Value < val) {
                     return false;
                 }
                 last = val;
@@ -128,19 +120,15 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <summary>
         /// Returns true if the specified values are in descending order
         /// </summary>
-        private boolean IsDescending(IEnumerable<decimal> values)
-        {
+        private boolean IsDescending(IEnumerable<decimal> values) {
             decimal? last = null;
-            foreach (val in values)
-            {
-                if (last == null)
-                {
+            foreach (val in values) {
+                if( last == null ) {
                     last = val;
                     continue;
                 }
 
-                if (last.Value > val)
-                {
+                if( last.Value > val) {
                     return false;
                 }
                 last = val;

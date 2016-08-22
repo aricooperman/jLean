@@ -40,8 +40,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="universeSelection">The universe selection instance used to handle universe
         /// selection subscription output</param>
-        public SubscriptionSynchronizer(UniverseSelection universeSelection)
-        {
+        public SubscriptionSynchronizer(UniverseSelection universeSelection) {
             _universeSelection = universeSelection;
         }
 
@@ -55,8 +54,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="nextFrontier">The next frontier time as determined by the first piece of data in the future ahead of the frontier.
         /// This value will equal DateTime.MaxValue when the subscriptions are all finished</param>
         /// <returns>A time slice for the specified frontier time</returns>
-        public TimeSlice Sync(DateTime frontier, IEnumerable<Subscription> subscriptions, ZoneId sliceTimeZone, CashBook cashBook, out DateTime nextFrontier)
-        {
+        public TimeSlice Sync(DateTime frontier, IEnumerable<Subscription> subscriptions, ZoneId sliceTimeZone, CashBook cashBook, out DateTime nextFrontier) {
             changes = SecurityChanges.None;
             nextFrontier = DateTime.MaxValue;
             earlyBirdTicks = nextFrontier.Ticks;
@@ -66,19 +64,15 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             do
             {
                 newChanges = SecurityChanges.None;
-                foreach (subscription in subscriptions)
-                {
-                    if (subscription.EndOfStream)
-                    {
+                foreach (subscription in subscriptions) {
+                    if( subscription.EndOfStream) {
                         OnSubscriptionFinished(subscription);
                         continue;
                     }
 
                     // prime if needed
-                    if (subscription.Current == null)
-                    {
-                        if (!subscription.MoveNext())
-                        {
+                    if( subscription.Current == null ) {
+                        if( !subscription.MoveNext()) {
                             OnSubscriptionFinished(subscription);
                             continue;
                         }
@@ -90,31 +84,27 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     configuration = subscription.Configuration;
                     offsetProvider = subscription.OffsetProvider;
                     currentOffsetTicks = offsetProvider.GetOffsetTicks(frontier);
-                    while (subscription.Current.EndTime.Ticks - currentOffsetTicks <= frontier.Ticks)
-                    {
+                    while (subscription.Current.EndTime.Ticks - currentOffsetTicks <= frontier.Ticks) {
                         // we want bars rounded using their subscription times, we make a clone
                         // so we don't interfere with the enumerator's internal logic
                         clone = subscription.Current.Clone(subscription.Current.IsFillForward);
                         clone.Time = clone.Time.ExchangeRoundDown(configuration.Increment, subscription.Security.Exchange.Hours, configuration.ExtendedMarketHours);
                         packet.Add(clone);
-                        if (!subscription.MoveNext())
-                        {
+                        if( !subscription.MoveNext()) {
                             OnSubscriptionFinished(subscription);
                             break;
                         }
                     }
 
                     // we have new universe data to select based on
-                    if (subscription.IsUniverseSelectionSubscription && packet.Count > 0)
-                    {
+                    if( subscription.IsUniverseSelectionSubscription && packet.Count > 0) {
                         // assume that if the first item is a base data collection then the enumerator handled the aggregation,
                         // otherwise, load all the the data into a new collection instance
                         collection = packet.Data[0] as BaseDataCollection ?? new BaseDataCollection(frontier, subscription.Configuration.Symbol, packet.Data);
                         newChanges += _universeSelection.ApplyUniverseSelection(subscription.Universe, frontier, collection);
                     }
 
-                    if (subscription.Current != null)
-                    {
+                    if( subscription.Current != null ) {
                         // take the earliest between the next piece of data or the next tz discontinuity
                         earlyBirdTicks = Math.Min(earlyBirdTicks, Math.Min(subscription.Current.EndTime.Ticks - currentOffsetTicks, offsetProvider.GetNextDiscontinuity()));
                     }
@@ -132,10 +122,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <summary>
         /// Event invocator for the <see cref="SubscriptionFinished"/> event
         /// </summary>
-        protected virtual void OnSubscriptionFinished(Subscription subscription)
-        {
+        protected virtual void OnSubscriptionFinished(Subscription subscription) {
             handler = SubscriptionFinished;
-            if (handler != null) handler(this, subscription);
+            if( handler != null ) handler(this, subscription);
         }
     }
 }

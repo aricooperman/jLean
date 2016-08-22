@@ -28,19 +28,16 @@ package com.quantconnect.lean.Logging
         /// Initializes a new instance of the <see cref="CompositeLogHandler"/> that pipes log messages to the console and log.txt
         /// </summary>
         public CompositeLogHandler()
-            : this(new ILogHandler[] {new ConsoleLogHandler(), new FileLogHandler()})
-        {
+            : this(new ILogHandler[] {new ConsoleLogHandler(), new FileLogHandler()}) {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeLogHandler"/> class from the specified handlers
         /// </summary>
         /// <param name="handlers">The implementations to compose</param>
-        public CompositeLogHandler(ILogHandler[] handlers)
-        {
-            if (handlers == null || handlers.Length == 0)
-            {
-                throw new ArgumentNullException("handlers");
+        public CompositeLogHandler(ILogHandler[] handlers) {
+            if( handlers == null || handlers.Length == 0) {
+                throw new ArgumentNullException( "handlers");
             }
 
             _handlers = handlers;
@@ -50,10 +47,8 @@ package com.quantconnect.lean.Logging
         /// Write error message to log
         /// </summary>
         /// <param name="text"></param>
-        public void Error( String text)
-        {
-            foreach (handler in _handlers)
-            {
+        public void Error( String text) {
+            foreach (handler in _handlers) {
                 handler.Error(text);
             }
         }
@@ -62,10 +57,8 @@ package com.quantconnect.lean.Logging
         /// Write debug message to log
         /// </summary>
         /// <param name="text"></param>
-        public void Debug( String text)
-        {
-            foreach (handler in _handlers)
-            {
+        public void Debug( String text) {
+            foreach (handler in _handlers) {
                 handler.Debug(text);
             }
         }
@@ -74,10 +67,8 @@ package com.quantconnect.lean.Logging
         /// Write debug message to log
         /// </summary>
         /// <param name="text"></param>
-        public void Trace( String text)
-        {
-            foreach (handler in _handlers)
-            {
+        public void Trace( String text) {
+            foreach (handler in _handlers) {
                 handler.Trace(text);
             }
         }
@@ -86,10 +77,8 @@ package com.quantconnect.lean.Logging
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            foreach (handler in _handlers)
-            {
+        public void Dispose() {
+            foreach (handler in _handlers) {
                 handler.Dispose();
             }
         }

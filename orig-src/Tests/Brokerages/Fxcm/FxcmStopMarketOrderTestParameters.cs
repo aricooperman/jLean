@@ -26,12 +26,10 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
     public class FxcmStopMarketOrderTestParameters : StopMarketOrderTestParameters
     {
         public FxcmStopMarketOrderTestParameters(Symbol symbol, BigDecimal highLimit, BigDecimal lowLimit)
-            : base(symbol, highLimit, lowLimit)
-        {
+            : base(symbol, highLimit, lowLimit) {
         }
 
-        public override boolean ModifyOrderToFill(IBrokerage brokerage, Order order, BigDecimal lastMarketPrice)
-        {
+        public @Override boolean ModifyOrderToFill(IBrokerage brokerage, Order order, BigDecimal lastMarketPrice) {
             // FXCM Buy StopMarket orders will be rejected if the stop price is below the market price
             // FXCM Sell StopMarket orders will be rejected if the stop price is above the market price
 
@@ -41,20 +39,19 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
             fxcmBrokerage = (FxcmBrokerage)brokerage;
             quotes = fxcmBrokerage.GetBidAndAsk(new List<String> { new FxcmSymbolMapper().GetBrokerageSymbol(order.Symbol) });
             
-            if (order.Quantity > 0)
-            {
+            if( order.Quantity > 0) {
                 // for stop buys we need to decrease the stop price
                 // buy stop price must be strictly above ask price
-                askPrice = Convert.ToDecimal(quotes.Single().AskPrice);
-                Log.Trace("FxcmStopMarketOrderTestParameters.ModifyOrderToFill(): Ask: " + askPrice);
+                askPrice = new BigDecimal( quotes.Single().AskPrice);
+                Log.Trace( "FxcmStopMarketOrderTestParameters.ModifyOrderToFill(): Ask: " + askPrice);
                 stop.StopPrice = Math.Min(previousStop, Math.Max(askPrice, stop.StopPrice / 2) + 0.00001m);
             }
             else
             {
                 // for stop sells we need to increase the stop price
                 // sell stop price must be strictly below bid price
-                bidPrice = Convert.ToDecimal(quotes.Single().BidPrice);
-                Log.Trace("FxcmStopMarketOrderTestParameters.ModifyOrderToFill(): Bid: " + bidPrice);
+                bidPrice = new BigDecimal( quotes.Single().BidPrice);
+                Log.Trace( "FxcmStopMarketOrderTestParameters.ModifyOrderToFill(): Bid: " + bidPrice);
                 stop.StopPrice = Math.Max(previousStop, Math.Min(bidPrice, stop.StopPrice * 2) - 0.00001m);
             }
 

@@ -99,8 +99,7 @@ package com.quantconnect.lean.Orders
         /// <param name="fillQuantity">Fill quantity</param>
         /// <param name="orderFee">The order fee</param>
         /// <param name="message">Message from the exchange</param>
-        public OrderEvent(int orderId, Symbol symbol, DateTime utcTime, OrderStatus status, OrderDirection direction, BigDecimal fillPrice, int fillQuantity, BigDecimal orderFee, String message = "")
-        {
+        public OrderEvent(int orderId, Symbol symbol, DateTime utcTime, OrderStatus status, OrderDirection direction, BigDecimal fillPrice, int fillQuantity, BigDecimal orderFee, String message = "") {
             OrderId = orderId;
             Symbol = symbol;
             UtcTime = utcTime;
@@ -120,8 +119,7 @@ package com.quantconnect.lean.Orders
         /// <param name="utcTime">Date/time of this event</param>
         /// <param name="orderFee">The order fee</param>
         /// <param name="message">Message from exchange or QC.</param>
-        public OrderEvent(Order order, DateTime utcTime, BigDecimal orderFee, String message = "") 
-        {
+        public OrderEvent(Order order, DateTime utcTime, BigDecimal orderFee, String message = "") {
             OrderId = order.Id;
             Symbol = order.Symbol;
             Status = order.Status;
@@ -144,14 +142,13 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
+        public @Override String toString() {
             message = FillQuantity == 0 
-                ? String.format("Time: {0} OrderID: {1} Symbol: {2} Status: {3}", UtcTime, OrderId, Symbol, Status) 
-                : String.format("Time: {0} OrderID: {1} Symbol: {2} Status: {3} Quantity: {4} FillPrice: {5} {6}", UtcTime, OrderId, Symbol, Status, FillQuantity, FillPrice, FillPriceCurrency);
+                ? String.format( "Time: %1$s OrderID: %2$s Symbol: %3$s Status: {3}", UtcTime, OrderId, Symbol, Status) 
+                : String.format( "Time: %1$s OrderID: %2$s Symbol: %3$s Status: {3} Quantity: {4} FillPrice: {5} {6}", UtcTime, OrderId, Symbol, Status, FillQuantity, FillPrice, FillPriceCurrency);
 
             // attach the order fee so it ends up in logs properly
-            if (OrderFee != 0m) message += String.format(" OrderFee: {0} {1}", OrderFee, CashBook.AccountCurrency);
+            if( OrderFee != 0m) message += String.format( " OrderFee: %1$s %2$s", OrderFee, CashBook.AccountCurrency);
             
             return message;
         }
@@ -160,8 +157,7 @@ package com.quantconnect.lean.Orders
         /// Returns a clone of the current object.
         /// </summary>
         /// <returns>The new clone object</returns>
-        public OrderEvent Clone()
-        {
+        public OrderEvent Clone() {
             return (OrderEvent)MemberwiseClone();
         }
     }

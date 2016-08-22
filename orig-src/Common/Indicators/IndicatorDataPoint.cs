@@ -27,8 +27,7 @@ package com.quantconnect.lean.Indicators
         /// Initializes a new default instance of IndicatorDataPoint with a time of
         /// DateTime.MinValue and a Value of 0m.
         /// </summary>
-        public IndicatorDataPoint()
-        {
+        public IndicatorDataPoint() {
             Value = 0m;
             Time = DateTime.MinValue;
         }
@@ -38,8 +37,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="time">The time this data was produced</param>
         /// <param name="value">The data</param>
-        public IndicatorDataPoint(DateTime time, BigDecimal value)
-        {
+        public IndicatorDataPoint(DateTime time, BigDecimal value) {
             Time = time;
             Value = value;
         }
@@ -50,8 +48,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="symbol">The symbol associated with this data</param>
         /// <param name="time">The time this data was produced</param>
         /// <param name="value">The data</param>
-        public IndicatorDataPoint(Symbol symbol, DateTime time, BigDecimal value)
-        {
+        public IndicatorDataPoint(Symbol symbol, DateTime time, BigDecimal value) {
             Symbol = symbol;
             Time = time;
             Value = value;
@@ -64,10 +61,8 @@ package com.quantconnect.lean.Indicators
         /// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public boolean Equals(IndicatorDataPoint other)
-        {
-            if (other == null)
-            {
+        public boolean Equals(IndicatorDataPoint other) {
+            if( other == null ) {
                 return false;
             }
             return other.Time == Time && other.Value == Value;
@@ -80,10 +75,8 @@ package com.quantconnect.lean.Indicators
         /// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>. 
         /// </returns>
         /// <param name="other">An object to compare with this object.</param>
-        public int CompareTo(IndicatorDataPoint other)
-        {
-            if (ReferenceEquals(other, null))
-            {
+        public int CompareTo(IndicatorDataPoint other) {
+            if( ReferenceEquals(other, null )) {
                 // everything is greater than null via MSDN
                 return 1;
             }
@@ -97,12 +90,10 @@ package com.quantconnect.lean.Indicators
         /// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the sort order as <paramref name="obj"/>. Greater than zero This instance follows <paramref name="obj"/> in the sort order. 
         /// </returns>
         /// <param name="obj">An object to compare with this instance. </param><exception cref="T:System.ArgumentException"><paramref name="obj"/> is not the same type as this instance. </exception><filterpriority>2</filterpriority>
-        public int CompareTo(object obj)
-        {
+        public int CompareTo(object obj) {
             other = obj as IndicatorDataPoint;
-            if (other == null)
-            {
-                throw new ArgumentException("Object must be of type " + GetType().GetBetterTypeName());
+            if( other == null ) {
+                throw new ArgumentException( "Object must be of type " + GetType().GetBetterTypeName());
             }
             return CompareTo(other);
         }
@@ -114,9 +105,8 @@ package com.quantconnect.lean.Indicators
         /// A <see cref="T:System.String" /> containing a fully qualified type name.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
-            return String.format("{0} - {1}", Time.toString("s"), Value);
+        public @Override String toString() {
+            return String.format( "%1$s - %2$s", Time.toString( "s"), Value);
         }
 
         /// <summary>
@@ -127,8 +117,7 @@ package com.quantconnect.lean.Indicators
         /// </returns>
         /// <param name="obj">Another object to compare to. </param>
         /// <filterpriority>2</filterpriority>
-        public override boolean Equals(object obj)
-        {
+        public @Override boolean Equals(object obj) {
             if( null == obj ) return false;
             return obj is IndicatorDataPoint && Equals((IndicatorDataPoint) obj);
         }
@@ -140,8 +129,7 @@ package com.quantconnect.lean.Indicators
         /// A 32-bit signed integer that is the hash code for this instance.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override int hashCode()
-        {
+        public @Override int hashCode() {
             unchecked
             {
                 return (Value.hashCode()*397) ^ Time.hashCode();
@@ -153,25 +141,22 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="instance">The DataPoint instance</param>
         /// <returns>The data held within the instance</returns>
-        public static implicit operator decimal(IndicatorDataPoint instance)
-        {
+        public static implicit operator decimal(IndicatorDataPoint instance) {
             return instance.Value;
         }
 
         /// <summary>
         /// This function is purposefully not implemented.
         /// </summary>
-        public override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode)
-        {
-            throw new NotImplementedException("IndicatorDataPoint does not support the Reader function. This function should never be called on this type.");
+        public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
+            throw new NotImplementedException( "IndicatorDataPoint does not support the Reader function. This function should never be called on this type.");
         }
 
         /// <summary>
         /// This function is purposefully not implemented.
         /// </summary>
-        public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-        {
-            throw new NotImplementedException("IndicatorDataPoint does not support the GetSource function. This function should never be called on this type.");
+        public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
+            throw new NotImplementedException( "IndicatorDataPoint does not support the GetSource function. This function should never be called on this type.");
         }
     }
 }

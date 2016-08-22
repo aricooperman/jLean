@@ -29,7 +29,7 @@ package com.quantconnect.lean.Algorithm.Examples
     {
         // we'll use this to tell us when the month has ended
         DateTime LastRotationTime = DateTime.MinValue;
-        TimeSpan RotationInterval = TimeSpan.FromDays(30);
+        TimeSpan RotationInterval = Duration.ofDays(30);
         private boolean first = true;
 
         // these are the growth symbols we'll rotate through
@@ -55,13 +55,11 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetCash(25000);
             SetStartDate(2007, 1, 1);
 
-            foreach (symbol in GrowthSymbols.Union(SafetySymbols))
-            {
+            foreach (symbol in GrowthSymbols.Union(SafetySymbols)) {
                 // ideally we would use daily data
                 AddSecurity(SecurityType.Equity, symbol, Resolution.Minute);
                 oneMonthPerformance = MOM(symbol, 30, Resolution.Daily);
@@ -81,54 +79,47 @@ package com.quantconnect.lean.Algorithm.Examples
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">TradeBars IDictionary object with your stock data</param>
-        public void OnData(TradeBars data)
-        {
+        public void OnData(TradeBars data) {
             try
             {
                 // the first time we come through here we'll need to do some things such as allocation
                 // and initializing our symbol data
-                if (first)
-                {
+                if( first) {
                     first = false;
                     LastRotationTime = Time;
                     return;
                 }
 
                 delta = Time.Subtract(LastRotationTime);
-                if (delta > RotationInterval)
-                {
+                if( delta > RotationInterval) {
                     LastRotationTime = Time;
 
                     // pick which one is best from growth and safety symbols
                     orderedObjScores = SymbolData.OrderByDescending(x => x.ObjectiveScore).ToList();
-                    foreach (orderedObjScore in orderedObjScores)
-                    {
-                        Log(">>SCORE>>" + orderedObjScore.Symbol + ">>" + orderedObjScore.ObjectiveScore);
+                    foreach (orderedObjScore in orderedObjScores) {
+                        Log( ">>SCORE>>" + orderedObjScore.Symbol + ">>" + orderedObjScore.ObjectiveScore);
                     }
                     bestGrowth = orderedObjScores.First();
 
-                    if (bestGrowth.ObjectiveScore > 0)
-                    {
-                        if (Portfolio[bestGrowth.Symbol].Quantity == 0)
-                        {
-                            Log("PREBUY>>LIQUIDATE>>");
+                    if( bestGrowth.ObjectiveScore > 0) {
+                        if( Portfolio[bestGrowth.Symbol].Quantity == 0) {
+                            Log( "PREBUY>>LIQUIDATE>>");
                             Liquidate();
                         }
-                        Log(">>BUY>>" + bestGrowth.Symbol + "@" + (100 * bestGrowth.OneMonthPerformance).toString("00.00"));
+                        Log( ">>BUY>>" + bestGrowth.Symbol + "@" + (100 * bestGrowth.OneMonthPerformance).toString( "00.00"));
                         BigDecimal qty = Portfolio.Cash / Securities[bestGrowth.Symbol].Close;
                         MarketOrder(bestGrowth.Symbol, (int) qty);
                     }
                     else
                     {
                         // if no one has a good objective score then let's hold cash this month to be safe
-                        Log(">>LIQUIDATE>>CASH");
+                        Log( ">>LIQUIDATE>>CASH");
                         Liquidate();
                     }
                 }
             }
-            catch (Exception ex)
-            {
-                Error("OnTradeBar: " + ex.Message + "\r\n\r\n" + ex.StackTrace);
+            catch (Exception ex) {
+                Error( "OnTradeBar: " + ex.Message + "\r\n\r\n" + ex.StackTrace);
             }
         }
     }

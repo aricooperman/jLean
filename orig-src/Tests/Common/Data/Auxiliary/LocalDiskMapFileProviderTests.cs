@@ -23,16 +23,14 @@ package com.quantconnect.lean.Tests.Common.Data.Auxiliary
     public class LocalDiskMapFileProviderTests
     {
         [Test]
-        public void RetrievesFromDisk()
-        {
+        public void RetrievesFromDisk() {
             provider = new LocalDiskMapFileProvider();
             mapFiles = provider.Get(QuantConnect.Market.USA);
             Assert.IsNotEmpty(mapFiles);
         }
 
         [Test]
-        public void CachesValueAndReturnsSameReference()
-        {
+        public void CachesValueAndReturnsSameReference() {
             provider = new LocalDiskMapFileProvider();
             mapFiles1 = provider.Get(QuantConnect.Market.USA);
             mapFiles2 = provider.Get(QuantConnect.Market.USA);

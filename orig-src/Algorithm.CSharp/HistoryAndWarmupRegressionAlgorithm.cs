@@ -17,8 +17,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
         private readonly Map<Symbol, SymbolData> _sd = new Map<Symbol, SymbolData>();
 
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2013, 10, 08);
             SetEndDate(2013, 10, 11);
 
@@ -31,8 +30,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             AddSecurity(SecurityType.Equity, GOOG, Resolution.Daily);
             AddSecurity(SecurityType.Equity, GOOGL, Resolution.Daily);
 
-            foreach (security in Securities)
-            {
+            foreach (security in Securities) {
                 _sd.Add(security.Key, new SymbolData(security.Key, this));
             }
 
@@ -40,27 +38,22 @@ package com.quantconnect.lean.Algorithm.CSharp
             SetWarmup(SymbolData.RequiredBarsWarmup);
         }
 
-        public override void OnData(Slice data)
-        {
+        public @Override void OnData(Slice data) {
             // we are only using warmup for indicator spooling, so wait for us to be warm then continue
-            if (IsWarmingUp) return;
+            if( IsWarmingUp) return;
 
-            foreach (sd in _sd.Values)
-            {
+            foreach (sd in _sd.Values) {
                 lastPriceTime = sd.Close.Current.Time;
                 // only make decisions when we have data on our requested resolution
-                if (lastPriceTime.RoundDown(sd.Security.Resolution.ToTimeSpan()) == lastPriceTime)
-                {
+                if( lastPriceTime.RoundDown(sd.Security.Resolution.ToTimeSpan()) == lastPriceTime) {
                     sd.Update();
                 }
             }
         }
 
-        public override void OnOrderEvent(OrderEvent fill)
-        {
+        public @Override void OnOrderEvent(OrderEvent fill) {
             SymbolData sd;
-            if (_sd.TryGetValue(fill.Symbol, out sd))
-            {
+            if( _sd.TryGetValue(fill.Symbol, out sd)) {
                 sd.OnOrderEvent(fill);
             }
         }
@@ -89,8 +82,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
             private OrderTicket _currentStopLoss;
 
-            public SymbolData(Symbol symbol, QCAlgorithm algorithm)
-            {
+            public SymbolData(Symbol symbol, QCAlgorithm algorithm) {
                 Symbol = symbol;
                 Security = algorithm.Securities[symbol];
 
@@ -131,16 +123,13 @@ package com.quantconnect.lean.Algorithm.CSharp
                 }
             }
 
-            public void OnOrderEvent(OrderEvent fill)
-            {
-                if (fill.Status != OrderStatus.Filled)
-                {
+            public void OnOrderEvent(OrderEvent fill) {
+                if( fill.Status != OrderStatus.Filled) {
                     return;
                 }
 
                 // if we just finished entering, place a stop loss as well
-                if (Security.Invested)
-                {
+                if( Security.Invested) {
                     stop = Security.Holdings.IsLong 
                         ? fill.FillPrice*(1 - PercentGlobalStopLoss) 
                         : fill.FillPrice*(1 + PercentGlobalStopLoss);
@@ -150,73 +139,61 @@ package com.quantconnect.lean.Algorithm.CSharp
                 // check for an exit, cancel the stop loss
                 else
                 {
-                    if (_currentStopLoss != null && _currentStopLoss.Status.IsOpen())
-                    {
+                    if( _currentStopLoss != null && _currentStopLoss.Status.IsOpen()) {
                         // cancel our current stop loss
-                        _currentStopLoss.Cancel("Exited position");
+                        _currentStopLoss.Cancel( "Exited position");
                         _currentStopLoss = null;
                     }
                 }
             }
 
-            public void Update()
-            {
+            public void Update() {
                 OrderTicket ticket;
                 TryEnter(out ticket);
                 TryExit(out ticket);
             }
 
-            public boolean TryEnter(out OrderTicket ticket)
-            {
+            public boolean TryEnter(out OrderTicket ticket) {
                 ticket = null;
-                if (Security.Invested)
-                {
+                if( Security.Invested) {
                     // can't enter if we're already in
                     return false;
                 }
 
                 int qty = 0;
                 BigDecimal limit = 0m;
-                if (IsUptrend)
-                {
+                if( IsUptrend) {
                     // 100 order lots
                     qty = LotSize;
                     limit = Security.Low;
                 }
-                else if (IsDowntrend)
-                {
+                else if( IsDowntrend) {
                     limit = Security.High;
                     qty = -LotSize;
                 }
-                if (qty != 0)
-                {
+                if( qty != 0) {
                     ticket = _algorithm.LimitOrder(Symbol, qty, limit, "TryEnter at: " + limit);
                 }
                 return qty != 0;
             }
 
-            public boolean TryExit(out OrderTicket ticket)
-            {
+            public boolean TryExit(out OrderTicket ticket) {
                 static final BigDecimal exitTolerance = 1 + 2 * PercentTolerance;
 
                 ticket = null;
-                if (!Security.Invested)
-                {
+                if( !Security.Invested) {
                     // can't exit if we haven't entered
                     return false;
                 }
 
                 BigDecimal limit = 0m;
-                if (Security.Holdings.IsLong && Close*exitTolerance < EMA)
-                {
+                if( Security.Holdings.IsLong && Close*exitTolerance < EMA) {
                     limit = Security.High;
                 }
-                else if (Security.Holdings.IsShort && Close > EMA*exitTolerance)
-                {
+                else if( Security.Holdings.IsShort && Close > EMA*exitTolerance) {
                     limit = Security.Low;
                 }
-                if (limit != 0)
-                {
+                if( limit != 0) {
                     ticket = _algorithm.LimitOrder(Symbol, -Quantity, limit, "TryExit at: " + limit);
                 }
                 return -Quantity != 0;

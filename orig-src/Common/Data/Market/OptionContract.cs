@@ -154,8 +154,7 @@ package com.quantconnect.lean.Data.Market
         /// </summary>
         /// <param name="symbol">The option contract symbol</param>
         /// <param name="underlyingSymbol">The symbol of the underlying security</param>
-        public OptionContract(Symbol symbol, Symbol underlyingSymbol)
-        {
+        public OptionContract(Symbol symbol, Symbol underlyingSymbol) {
             Symbol = symbol;
             UnderlyingSymbol = underlyingSymbol;
         }
@@ -164,8 +163,7 @@ package com.quantconnect.lean.Data.Market
         /// Sets the option price model evaluator function to be used for this contract
         /// </summary>
         /// <param name="optionPriceModelEvaluator">Function delegate used to evaluate the option price model</param>
-        internal void SetOptionPriceModel(Func<OptionPriceModelResult> optionPriceModelEvaluator)
-        {
+        internal void SetOptionPriceModel(Func<OptionPriceModelResult> optionPriceModelEvaluator) {
             _optionPriceModelResult = new Lazy<OptionPriceModelResult>(optionPriceModelEvaluator);
         }
 
@@ -175,9 +173,8 @@ package com.quantconnect.lean.Data.Market
         /// <returns>
         /// A String that represents the current object.
         /// </returns>
-        public override String toString()
-        {
-            return String.format("{0}{1}{2}{3:00000000}", Symbol.ID.Symbol, Expiry.toString(DateFormat.EightCharacter), Right.toString()[0], Strike*1000m);
+        public @Override String toString() {
+            return String.format( "%1$s%2$s%3$s{3:00000000}", Symbol.ID.Symbol, Expiry.toString(DateFormat.EightCharacter), Right.toString()[0], Strike*1000m);
         }
     }
 }

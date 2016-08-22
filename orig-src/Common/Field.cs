@@ -104,13 +104,11 @@ package com.quantconnect.lean
             get { return TradeBarPropertyOrValue(x => x.Volume, x => 0m); }
         }
 
-        private static Func<BaseData, decimal> TradeBarPropertyOrValue(Func<TradeBar, decimal> selector, Func<BaseData, decimal> defaultSelector = null)
-        {
+        private static Func<BaseData, decimal> TradeBarPropertyOrValue(Func<TradeBar, decimal> selector, Func<BaseData, decimal> defaultSelector = null ) {
             return x =>
             {
                 bar = x as TradeBar;
-                if (bar != null)
-                {
+                if( bar != null ) {
                     return selector(bar);
                 }
                 defaultSelector = defaultSelector ?? (data => data.Value);

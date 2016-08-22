@@ -45,8 +45,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// </summary>
         /// <param name="name">The name of this indicator</param>
         public RiseFallThreeMethods( String name)
-            : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 4 + 1)
-        {
+            : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 4 + 1) {
             _bodyShortAveragePeriod = CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod;
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
         }
@@ -55,14 +54,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Initializes a new instance of the <see cref="RiseFallThreeMethods"/> class.
         /// </summary>
         public RiseFallThreeMethods()
-            : this("RISEFALLTHREEMETHODS")
-        {
+            : this( "RISEFALLTHREEMETHODS") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples > Period; }
         }
@@ -73,19 +71,15 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
-                if (Samples > Period - _bodyShortAveragePeriod)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
+                if( Samples > Period - _bodyShortAveragePeriod) {
                     _bodyPeriodTotal[3] += GetCandleRange(CandleSettingType.BodyShort, window[3]);
                     _bodyPeriodTotal[2] += GetCandleRange(CandleSettingType.BodyShort, window[2]);
                     _bodyPeriodTotal[1] += GetCandleRange(CandleSettingType.BodyShort, window[1]);
                 }
 
-                if (Samples > Period - _bodyLongAveragePeriod)
-                {
+                if( Samples > Period - _bodyLongAveragePeriod) {
                     _bodyPeriodTotal[4] += GetCandleRange(CandleSettingType.BodyLong, window[4]);
                     _bodyPeriodTotal[0] += GetCandleRange(CandleSettingType.BodyLong, input);
                 }
@@ -94,7 +88,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             }
 
             BigDecimal value;
-            if ( 
+            if(  
                 // 1st long, then 3 small, 5th long
                 GetRealBody(window[4]) > GetCandleAverage(CandleSettingType.BodyLong, _bodyPeriodTotal[4], window[4]) &&
                 GetRealBody(window[3]) < GetCandleAverage(CandleSettingType.BodyShort, _bodyPeriodTotal[3], window[3]) &&
@@ -128,8 +122,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             _bodyPeriodTotal[4] += GetCandleRange(CandleSettingType.BodyLong, window[4]) -
                                    GetCandleRange(CandleSettingType.BodyLong, window[_bodyLongAveragePeriod + 4]);
 
-            for (i = 3; i >= 1; i--)
-            {
+            for (i = 3; i >= 1; i--) {
                 _bodyPeriodTotal[i] += GetCandleRange(CandleSettingType.BodyShort, window[i]) -
                                        GetCandleRange(CandleSettingType.BodyShort, window[i + _bodyShortAveragePeriod]);
             }
@@ -143,8 +136,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _bodyPeriodTotal = new decimal[5];
             base.Reset();
         }

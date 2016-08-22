@@ -55,8 +55,7 @@ package com.quantconnect.lean.Commands
         /// Runs this command against the specified algorithm instance
         /// </summary>
         /// <param name="algorithm">The algorithm to run this command against</param>
-        public CommandResultPacket Run(IAlgorithm algorithm)
-        {
+        public CommandResultPacket Run(IAlgorithm algorithm) {
             ticket = algorithm.Transactions.UpdateOrder(new UpdateOrderRequest(algorithm.UtcTime, OrderId, new UpdateOrderFields
             {
                 Quantity = Quantity,

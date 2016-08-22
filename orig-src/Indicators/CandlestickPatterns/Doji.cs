@@ -38,8 +38,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// </summary>
         /// <param name="name">The name of this indicator</param>
         public Doji( String name) 
-            : base(name, CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod + 1)
-        {
+            : base(name, CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod + 1) {
             _bodyDojiAveragePeriod = CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod;
         }
 
@@ -47,14 +46,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Initializes a new instance of the <see cref="Doji"/> class.
         /// </summary>
         public Doji()
-            : this("DOJI")
-        {
+            : this( "DOJI") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -65,12 +63,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
-                if (Samples >= Period - _bodyDojiAveragePeriod)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
+                if( Samples >= Period - _bodyDojiAveragePeriod) {
                     _bodyDojiPeriodTotal += GetCandleRange(CandleSettingType.BodyDoji, input);
                 }
 
@@ -91,8 +86,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _bodyDojiPeriodTotal = 0m;
             base.Reset();
         }

@@ -22,9 +22,8 @@ package com.quantconnect.lean.Tests.Indicators
     class IchimokuKinkoHyoTests
     {
         [Test]
-        public void ComparesWithExternalDataTenkanMaximum()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataTenkanMaximum() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -34,9 +33,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComparesWithExternalDataTenkanMinimum()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataTenkanMinimum() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -46,9 +44,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComparesWithExternalDataTenkan()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataTenkan() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -57,9 +54,8 @@ package com.quantconnect.lean.Tests.Indicators
                 );
         }
         [Test]
-        public void ComparesWithExternalDataKijunMaximum()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataKijunMaximum() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -68,9 +64,8 @@ package com.quantconnect.lean.Tests.Indicators
                 );
         }
         [Test]
-        public void ComparesWithExternalDataKijunMinimum()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataKijunMinimum() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -79,9 +74,8 @@ package com.quantconnect.lean.Tests.Indicators
                 );
         }
         [Test]
-        public void ComparesWithExternalDataKijun()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataKijun() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             ichimoku.Current.Time.toString();
             TestHelper.TestIndicator(
                 ichimoku,
@@ -91,9 +85,8 @@ package com.quantconnect.lean.Tests.Indicators
                 );
         }
         [Test]
-        public void ComparesWithExternalDataDelayedTenkanSenkouA()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataDelayedTenkanSenkouA() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -104,9 +97,8 @@ package com.quantconnect.lean.Tests.Indicators
 
 
         [Test]
-        public void ComparesWithExternalDataDelayedKijunSenkouA()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataDelayedKijunSenkouA() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -116,9 +108,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComparesWithExternalDataSenkouA()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataSenkouA() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -127,9 +118,8 @@ package com.quantconnect.lean.Tests.Indicators
                 );
         }
         [Test]
-        public void ComparesWithExternalDataSenkouBMaximum()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataSenkouBMaximum() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -139,9 +129,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComparesWithExternalDataSenkouBMinimum()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataSenkouBMinimum() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -151,9 +140,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComparesWithExternalDataDelayedMaximumSenkouB()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataDelayedMaximumSenkouB() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -163,9 +151,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComparesWithExternalDataDelayedMinimumSenkouB()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ComparesWithExternalDataDelayedMinimumSenkouB() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
             TestHelper.TestIndicator(
                 ichimoku,
                 "spy_with_ichimoku.csv",
@@ -175,9 +162,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
-            ichimoku = new IchimokuKinkoHyo("Ichimoku", 9, 26, 26, 52, 26, 26);
+        public void ResetsProperly() {
+            ichimoku = new IchimokuKinkoHyo( "Ichimoku", 9, 26, 26, 52, 26, 26);
 
             TestHelper.TestIndicatorReset(ichimoku, "spy_with_ichimoku.csv");
         }

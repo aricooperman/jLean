@@ -24,18 +24,15 @@ package com.quantconnect.lean.Tests.Indicators
     public class MoneyFlowIndexTests
     {
         [Test]
-        public void ComparesAgainstExternalData()
-        {
+        public void ComparesAgainstExternalData() {
             mfi = new MoneyFlowIndex(20);
             TestHelper.TestIndicator(mfi, "spy_mfi.txt", "Money Flow Index 20");
         }
 
         [Test]
-        public void TestTradeBarsWithNoVolume()
-        {
+        public void TestTradeBarsWithNoVolume() {
             mfi = new MoneyFlowIndex(3);
-            foreach (data in TestHelper.GetDataStream(4))
-            {
+            foreach (data in TestHelper.GetDataStream(4)) {
                 tradeBar = new TradeBar
                 {
                     Open = data.Value,
@@ -51,11 +48,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             mfi = new MoneyFlowIndex(3);
-            foreach (data in TestHelper.GetDataStream(4))
-            {
+            foreach (data in TestHelper.GetDataStream(4)) {
                 tradeBar = new TradeBar
                 {
                     Open = data.Value,

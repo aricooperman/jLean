@@ -23,16 +23,14 @@ package com.quantconnect.lean.Tests.Common.Data.Auxiliary
     public class LocalDiskFactorFileProviderTests
     {
         [Test]
-        public void RetrievesFromDisk()
-        {
+        public void RetrievesFromDisk() {
             provider = new LocalDiskFactorFileProvider();
             factorFile = provider.Get(Symbols.SPY);
             Assert.IsNotNull(factorFile);
         }
 
         [Test]
-        public void CachesValueAndReturnsSameReference()
-        {
+        public void CachesValueAndReturnsSameReference() {
             provider = new LocalDiskFactorFileProvider();
             factorFile1 = provider.Get(Symbols.SPY);
             factorFile2 = provider.Get(Symbols.SPY);
@@ -40,10 +38,9 @@ package com.quantconnect.lean.Tests.Common.Data.Auxiliary
         }
 
         [Test]
-        public void ReturnsNullForNotFound()
-        {
+        public void ReturnsNullForNotFound() {
             provider = new LocalDiskFactorFileProvider();
-            factorFile = provider.Get(Symbol.Create("not - a - ticker", SecurityType.Equity, QuantConnect.Market.USA));
+            factorFile = provider.Get(Symbol.Create( "not - a - ticker", SecurityType.Equity, QuantConnect.Market.USA));
             Assert.IsNull(factorFile);
         }
     }

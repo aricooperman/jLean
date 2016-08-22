@@ -28,8 +28,7 @@ package com.quantconnect.lean.Tests.Common.Parameters
     public class ParameterAttributeTests
     {
         [Test]
-        public void SetsParameterValues()
-        {
+        public void SetsParameterValues() {
             instance = new Instance();
             parameters = new Map<String,String>
             {
@@ -47,31 +46,25 @@ package com.quantconnect.lean.Tests.Common.Parameters
         }
 
         [Test]
-        public void FindsParameters()
-        {
+        public void FindsParameters() {
             assembly = Assembly.GetExecutingAssembly();
             parameters = ParameterAttribute.GetParametersFromAssembly(assembly);
-            foreach (field in typeof(Instance).GetFields(ParameterAttribute.BindingFlags).Where(x => !x.Name.Contains(">k__")))
-            {
+            foreach (field in typeof(Instance).GetFields(ParameterAttribute.BindingFlags).Where(x => !x.Name.Contains( ">k__"))) {
                 Assert.IsTrue(parameters.ContainsKey(field.Name), "Failed on Field: " + field.Name);
             }
-            foreach (property in typeof(Instance).GetProperties(ParameterAttribute.BindingFlags))
-            {
+            foreach (property in typeof(Instance).GetProperties(ParameterAttribute.BindingFlags)) {
                 Assert.IsTrue(parameters.ContainsKey(property.Name), "Failed on Property: " + property.Name);
             }
         }
 
         [Test]
-        public void FindsParametersUsingReflection()
-        {
+        public void FindsParametersUsingReflection() {
             assembly = Assembly.GetExecutingAssembly();
             parameters = ParameterAttribute.GetParametersFromAssembly(assembly);
-            foreach (field in typeof(Instance).GetFields(ParameterAttribute.BindingFlags).Where(x => !x.Name.Contains(">k__")))
-            {
+            foreach (field in typeof(Instance).GetFields(ParameterAttribute.BindingFlags).Where(x => !x.Name.Contains( ">k__"))) {
                 Assert.IsTrue(parameters.ContainsKey(field.Name), "Failed on Field: " + field.Name);
             }
-            foreach (property in typeof(Instance).GetProperties(ParameterAttribute.BindingFlags))
-            {
+            foreach (property in typeof(Instance).GetProperties(ParameterAttribute.BindingFlags)) {
                 Assert.IsTrue(parameters.ContainsKey(property.Name), "Failed on Property: " + property.Name);
             }
         }
@@ -95,8 +88,7 @@ package com.quantconnect.lean.Tests.Common.Parameters
             [Parameter]
             private int PrivateProperty { get; set; }
 
-            public void AssertValues(int expected)
-            {
+            public void AssertValues(int expected) {
 
                 Assert.AreEqual(expected, PublicField);
                 Assert.AreEqual(expected, PublicProperty);

@@ -24,47 +24,42 @@ package com.quantconnect.lean.Tests.Common.Scheduling
     public class ScheduledEventTests
     {
         [Test]
-        public void FiresEventOnTime()
-        {
+        public void FiresEventOnTime() {
             fired = false;
             time = new DateTime(2015, 08, 11, 10, 30, 0);
-            sevent = new ScheduledEvent("test", time, (n, t) => fired = true);
+            sevent = new ScheduledEvent( "test", time, (n, t) => fired = true);
             sevent.Scan(time);
             Assert.IsTrue(fired);
         }
 
         [Test]
-        public void NextEventTimeIsMaxValueWhenNoEvents()
-        {
-            sevent = new ScheduledEvent("test", new DateTime[0], (n, t) => { });
+        public void NextEventTimeIsMaxValueWhenNoEvents() {
+            sevent = new ScheduledEvent( "test", new DateTime[0], (n, t) => { });
             Assert.AreEqual(DateTime.MaxValue, sevent.NextEventUtcTime);
         }
 
         [Test]
-        public void NextEventTimeIsMaxValueWhenNoMoreEvents()
-        {
+        public void NextEventTimeIsMaxValueWhenNoMoreEvents() {
             time = new DateTime(2015, 08, 11, 10, 30, 0);
-            sevent = new ScheduledEvent("test", time, (n, t) => { });
+            sevent = new ScheduledEvent( "test", time, (n, t) => { });
             sevent.Scan(time);
             Assert.AreEqual(DateTime.MaxValue, sevent.NextEventUtcTime);
         }
 
         [Test]
-        public void FiresSkippedEventsInSameCallToScan()
-        {
+        public void FiresSkippedEventsInSameCallToScan() {
             int count = 0;
             time = new DateTime(2015, 08, 11, 10, 30, 0);
-            sevent = new ScheduledEvent("test", new[] { time.AddSeconds(-2), time.AddSeconds(-1), time}, (n, t) => count++);
+            sevent = new ScheduledEvent( "test", new[] { time.AddSeconds(-2), time.AddSeconds(-1), time}, (n, t) => count++);
             sevent.Scan(time);
             Assert.AreEqual(3, count);
         }
 
         [Test]
-        public void SkipsEventsUntilTime()
-        {
+        public void SkipsEventsUntilTime() {
             int count = 0;
             time = new DateTime(2015, 08, 11, 10, 30, 0);
-            sevent = new ScheduledEvent("test", new[] { time.AddSeconds(-2), time.AddSeconds(-1), time }, (n, t) => count++);
+            sevent = new ScheduledEvent( "test", new[] { time.AddSeconds(-2), time.AddSeconds(-1), time }, (n, t) => count++);
             // skips all preceding events, not including the specified time
             sevent.SkipEventsUntil(time);
             Assert.AreEqual(time, sevent.NextEventUtcTime);

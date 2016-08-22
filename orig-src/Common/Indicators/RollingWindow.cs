@@ -43,11 +43,9 @@ package com.quantconnect.lean.Indicators
         ///     Initializes a new instance of the RollwingWindow class with the specified window size.
         /// </summary>
         /// <param name="size">The number of items to hold in the window</param>
-        public RollingWindow(int size)
-        {
-            if (size < 1)
-            {
-                throw new ArgumentException("RollingWindow must have size of at least 1.", "size");
+        public RollingWindow(int size) {
+            if( size < 1) {
+                throw new ArgumentException( "RollingWindow must have size of at least 1.", "size");
             }
             _list = new List<T>(size);
         }
@@ -122,9 +120,8 @@ package com.quantconnect.lean.Indicators
                 {
                     _listLock.EnterReadLock();
 
-                    if (!IsReady)
-                    {
-                        throw new InvalidOperationException("No items have been removed yet!");
+                    if( !IsReady) {
+                        throw new InvalidOperationException( "No items have been removed yet!");
                     }
                     return _mostRecentlyRemoved;
                 }
@@ -150,9 +147,8 @@ package com.quantconnect.lean.Indicators
                 {
                     _listLock.EnterReadLock();
 
-                    if (i >= Count)
-                    {
-                        throw new ArgumentOutOfRangeException("i", i, String.format("Must be between 0 and Count {0}", Count));
+                    if( i >= Count) {
+                        throw new ArgumentOutOfRangeException( "i", i, String.format( "Must be between 0 and Count %1$s", Count));
                     }
                     return _list[(Count + _tail - i - 1) % Count];
                 }
@@ -167,9 +163,8 @@ package com.quantconnect.lean.Indicators
                 {
                     _listLock.EnterWriteLock();
 
-                    if (i >= Count)
-                    {
-                        throw new ArgumentOutOfRangeException("i", i, String.format("Must be between 0 and Count {0}", Count));
+                    if( i >= Count) {
+                        throw new ArgumentOutOfRangeException( "i", i, String.format( "Must be between 0 and Count %1$s", Count));
                     }
                     _list[(Count + _tail - i - 1) % Count] = value;
                 }
@@ -207,8 +202,7 @@ package com.quantconnect.lean.Indicators
         ///     A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public IEnumerator<T> GetEnumerator()
-        {
+        public IEnumerator<T> GetEnumerator() {
             // we make a copy on purpose so the enumerator isn't tied 
             // to a mutable object, well it is still mutable but out of scope
             temp = new List<T>(Count);
@@ -216,8 +210,7 @@ package com.quantconnect.lean.Indicators
             {
                 _listLock.EnterReadLock();
 
-                for (int i = 0; i < Count; i++)
-                {
+                for (int i = 0; i < Count; i++) {
                     temp.Add(this[i]);
                 }
                 return temp.GetEnumerator();
@@ -236,8 +229,7 @@ package com.quantconnect.lean.Indicators
         ///     An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+        IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
@@ -245,15 +237,13 @@ package com.quantconnect.lean.Indicators
         ///     Adds an item to this window and shifts all other elements
         /// </summary>
         /// <param name="item">The item to be added</param>
-        public void Add(T item)
-        {
+        public void Add(T item) {
             try
             {
                 _listLock.EnterWriteLock();
 
                 _samples++;
-                if (Size == Count)
-                {
+                if( Size == Count) {
                     // keep track of what's the last element
                     // so we can reindex on this[ int ]
                     _mostRecentlyRemoved = _list[_tail];
@@ -274,8 +264,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         ///     Clears this window of all data
         /// </summary>
-        public void Reset()
-        {
+        public void Reset() {
             try
             {
                 _listLock.EnterWriteLock();

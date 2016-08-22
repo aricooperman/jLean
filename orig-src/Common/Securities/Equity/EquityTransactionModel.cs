@@ -31,8 +31,7 @@ package com.quantconnect.lean.Securities.Equity
         /// Initializes a new instance of the <see cref="EquityTransactionModel"/>
         /// </summary>
         public EquityTransactionModel()
-            : base(new ImmediateFillModel(), new InteractiveBrokersFeeModel(), new ConstantSlippageModel(0))
-        {
+            : base(new ImmediateFillModel(), new InteractiveBrokersFeeModel(), new ConstantSlippageModel(0)) {
         }
     }
 }

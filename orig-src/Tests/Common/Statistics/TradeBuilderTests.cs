@@ -33,8 +33,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void AllInAllOutLong(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void AllInAllOutLong(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Buy 1k, Sell 1k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -76,8 +75,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void AllInAllOutShort(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void AllInAllOutShort(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Sell 1k, Buy 1k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -119,8 +117,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void ScaleInAllOutLong(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void ScaleInAllOutLong(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Buy 1k, Buy 1k, Sell 2k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -146,8 +143,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
 
             Assert.IsFalse(builder.HasOpenPosition(Symbols.EURUSD));
 
-            if (groupingMethod == FillGroupingMethod.FillToFill)
-            {
+            if( groupingMethod == FillGroupingMethod.FillToFill) {
                 Assert.AreEqual(2, builder.ClosedTrades.Count);
 
                 trade1 = builder.ClosedTrades[matchingMethod == FillMatchingMethod.FIFO ? 0 : 1];
@@ -204,8 +200,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void ScaleInAllOutShort(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void ScaleInAllOutShort(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Sell 1k, Sell 1k, Buy 2k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -231,8 +226,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
 
             Assert.IsFalse(builder.HasOpenPosition(Symbols.EURUSD));
 
-            if (groupingMethod == FillGroupingMethod.FillToFill)
-            {
+            if( groupingMethod == FillGroupingMethod.FillToFill) {
                 Assert.AreEqual(2, builder.ClosedTrades.Count);
 
                 trade1 = builder.ClosedTrades[matchingMethod == FillMatchingMethod.FIFO ? 0 : 1];
@@ -289,8 +283,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void AllInScaleOutLong(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void AllInScaleOutLong(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Buy 2k, Sell 1k, Sell 1k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -316,8 +309,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
 
             Assert.IsFalse(builder.HasOpenPosition(Symbols.EURUSD));
 
-            if (groupingMethod == FillGroupingMethod.FlatToFlat)
-            {
+            if( groupingMethod == FillGroupingMethod.FlatToFlat) {
                 Assert.AreEqual(1, builder.ClosedTrades.Count);
 
                 trade = builder.ClosedTrades[0];
@@ -374,8 +366,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void AllInScaleOutShort(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void AllInScaleOutShort(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Sell 2k, Buy 1k, Buy 1k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -401,8 +392,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
 
             Assert.IsFalse(builder.HasOpenPosition(Symbols.EURUSD));
 
-            if (groupingMethod == FillGroupingMethod.FlatToFlat)
-            {
+            if( groupingMethod == FillGroupingMethod.FlatToFlat) {
                 Assert.AreEqual(1, builder.ClosedTrades.Count);
 
                 trade = builder.ClosedTrades[0];
@@ -459,8 +449,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void ReversalLongToShort(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void ReversalLongToShort(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Buy 1k, Sell 2k, Buy 1k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -523,8 +512,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void ReversalShortToLong(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void ReversalShortToLong(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Sell 1k, Buy 2k, Sell 1k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -587,8 +575,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void ScaleInScaleOut1Long(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void ScaleInScaleOut1Long(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Buy 1k, Buy 1k, Sell 1k, Buy 1k, Sell 2k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -624,8 +611,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
 
             Assert.IsFalse(builder.HasOpenPosition(Symbols.EURUSD));
 
-            switch (groupingMethod)
-            {
+            switch (groupingMethod) {
                 case FillGroupingMethod.FillToFill:
                     {
                         Assert.AreEqual(3, builder.ClosedTrades.Count);
@@ -736,8 +722,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void ScaleInScaleOut1Short(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void ScaleInScaleOut1Short(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Sell 1k, Sell 1k, Buy 1k, Sell 1k, Buy 2k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -773,8 +758,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
 
             Assert.IsFalse(builder.HasOpenPosition(Symbols.EURUSD));
 
-            switch (groupingMethod)
-            {
+            switch (groupingMethod) {
                 case FillGroupingMethod.FillToFill:
                     {
                         Assert.AreEqual(3, builder.ClosedTrades.Count);
@@ -885,8 +869,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void ScaleInScaleOut2Long(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void ScaleInScaleOut2Long(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Buy 1k, Buy 2k, Sell 1k, Buy 1k, Sell 3k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -922,12 +905,10 @@ package com.quantconnect.lean.Tests.Common.Statistics
 
             Assert.IsFalse(builder.HasOpenPosition(Symbols.EURUSD));
 
-            switch (groupingMethod)
-            {
+            switch (groupingMethod) {
                 case FillGroupingMethod.FillToFill:
                     {
-                        if (matchingMethod == FillMatchingMethod.FIFO)
-                        {
+                        if( matchingMethod == FillMatchingMethod.FIFO) {
                             Assert.AreEqual(3, builder.ClosedTrades.Count);
 
                             trade1 = builder.ClosedTrades[0];
@@ -1097,8 +1078,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void ScaleInScaleOut2Short(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void ScaleInScaleOut2Short(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Sell 1k, Sell 2k, Buy 1k, Sell 1k, Buy 3k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -1134,12 +1114,10 @@ package com.quantconnect.lean.Tests.Common.Statistics
 
             Assert.IsFalse(builder.HasOpenPosition(Symbols.EURUSD));
 
-            switch (groupingMethod)
-            {
+            switch (groupingMethod) {
                 case FillGroupingMethod.FillToFill:
                     {
-                        if (matchingMethod == FillMatchingMethod.FIFO)
-                        {
+                        if( matchingMethod == FillMatchingMethod.FIFO) {
                             Assert.AreEqual(3, builder.ClosedTrades.Count);
 
                             trade1 = builder.ClosedTrades[0];
@@ -1309,8 +1287,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void ScaleInScaleOut3Long(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void ScaleInScaleOut3Long(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Buy 1k, Buy 1k, Buy 1k, Sell 2k, Buy 1k, Sell 2k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -1351,8 +1328,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
 
             Assert.IsFalse(builder.HasOpenPosition(Symbols.EURUSD));
 
-            switch (groupingMethod)
-            {
+            switch (groupingMethod) {
                 case FillGroupingMethod.FillToFill:
                     {
                         Assert.AreEqual(4, builder.ClosedTrades.Count);
@@ -1477,8 +1453,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         [TestCase(FillGroupingMethod.FlatToFlat, FillMatchingMethod.LIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FlatToReduced, FillMatchingMethod.LIFO)]
-        public void ScaleInScaleOut3Short(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public void ScaleInScaleOut3Short(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             // Sell 1k, Sell 1k, Sell 1k, Buy 2k, Sell 1k, Buy 2k
 
             builder = new TradeBuilder(groupingMethod, matchingMethod);
@@ -1519,8 +1494,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
 
             Assert.IsFalse(builder.HasOpenPosition(Symbols.EURUSD));
 
-            switch (groupingMethod)
-            {
+            switch (groupingMethod) {
                 case FillGroupingMethod.FillToFill:
                     {
                         Assert.AreEqual(4, builder.ClosedTrades.Count);

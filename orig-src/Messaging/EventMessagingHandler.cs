@@ -44,15 +44,13 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Initialize the Messaging System Plugin. 
         /// </summary>
-        public void Initialize()
-        {
+        public void Initialize() {
             _queue = new Queue<Packet>();
 
             ConsumerReadyEvent += () => { _loaded = true; };
         }
 
-        public void LoadingComplete()
-        {
+        public void LoadingComplete() {
             _loaded = true;
         }
 
@@ -60,8 +58,7 @@ package com.quantconnect.lean.Messaging
         /// Set the user communication channel
         /// </summary>
         /// <param name="job"></param>
-        public void SetAuthentication(AlgorithmNodePacket job)
-        {
+        public void SetAuthentication(AlgorithmNodePacket job) {
             _job = job;
         }
 
@@ -86,18 +83,15 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Send any message with a base type of Packet.
         /// </summary>
-        public void Send(Packet packet)
-        {
+        public void Send(Packet packet) {
             //Until we're loaded queue it up
-            if (!_loaded)
-            {
+            if( !_loaded) {
                 _queue.Enqueue(packet);
                 return;
             }
 
             //Catch up if this is the first time
-            while (_queue.Count > 0)
-            {
+            while (_queue.Count > 0) {
                 ProcessPacket(_queue.Dequeue());
             }
 
@@ -109,12 +103,10 @@ package com.quantconnect.lean.Messaging
         /// Send any notification with a base type of Notification.
         /// </summary>
         /// <param name="notification">The notification to be sent.</param>
-        public void SendNotification(Notification notification)
-        {
+        public void SendNotification(Notification notification) {
             type = notification.GetType();
-            if (type == typeof (NotificationEmail) || type == typeof (NotificationWeb) || type == typeof (NotificationSms))
-            {
-                Log.Error("Messaging.SendNotification(): Send not implemented for notification of type: " + type.Name);
+            if( type == typeof (NotificationEmail) || type == typeof (NotificationWeb) || type == typeof (NotificationSms)) {
+                Log.Error( "Messaging.SendNotification(): Send not implemented for notification of type: " + type.Name);
                 return;
             }
             notification.Send();
@@ -123,11 +115,9 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Packet processing implementation
         /// </summary>
-        private void ProcessPacket(Packet packet)
-        {
+        private void ProcessPacket(Packet packet) {
             //Packets we handled in the UX.
-            switch (packet.Type)
-            {
+            switch (packet.Type) {
                 case PacketType.Debug:
                     debug = (DebugPacket)packet;
                     OnDebugEvent(debug);
@@ -154,8 +144,7 @@ package com.quantconnect.lean.Messaging
                     break;
             }
 
-            if (StreamingApi.IsEnabled)
-            {
+            if( StreamingApi.IsEnabled) {
                 StreamingApi.Transmit(_job.UserId, _job.Channel, packet);
             }
         }
@@ -163,12 +152,10 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Raise a debug event safely
         /// </summary>
-        protected virtual void OnDebugEvent(DebugPacket packet)
-        {
+        protected virtual void OnDebugEvent(DebugPacket packet) {
             handler = DebugEvent;
 
-            if (handler != null)
-            {
+            if( handler != null ) {
                 handler(packet);
             }
         }
@@ -176,11 +163,9 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Handler for consumer ready code.
         /// </summary>
-        public virtual void OnConsumerReadyEvent()
-        {
+        public virtual void OnConsumerReadyEvent() {
             handler = ConsumerReadyEvent;
-            if (handler != null)
-            {
+            if( handler != null ) {
                 handler();
             }
         }
@@ -188,11 +173,9 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Raise a log event safely
         /// </summary>
-        protected virtual void OnLogEvent(LogPacket packet)
-        {
+        protected virtual void OnLogEvent(LogPacket packet) {
             handler = LogEvent;
-            if (handler != null)
-            {
+            if( handler != null ) {
                 handler(packet);
             }
         }
@@ -200,11 +183,9 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Raise a handled error event safely
         /// </summary>
-        protected virtual void OnHandledErrorEvent(HandledErrorPacket packet)
-        {
+        protected virtual void OnHandledErrorEvent(HandledErrorPacket packet) {
             handler = HandledErrorEvent;
-            if (handler != null)
-            {
+            if( handler != null ) {
                 handler(packet);
             }
         }
@@ -212,11 +193,9 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Raise runtime error safely
         /// </summary>
-        protected virtual void OnRuntimeErrorEvent(RuntimeErrorPacket packet)
-        {
+        protected virtual void OnRuntimeErrorEvent(RuntimeErrorPacket packet) {
             handler = RuntimeErrorEvent;
-            if (handler != null)
-            {
+            if( handler != null ) {
                 handler(packet);
             }
         }
@@ -224,11 +203,9 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Raise a backtest result event safely.
         /// </summary>
-        protected virtual void OnBacktestResultEvent(BacktestResultPacket packet)
-        {
+        protected virtual void OnBacktestResultEvent(BacktestResultPacket packet) {
             handler = BacktestResultEvent;
-            if (handler != null)
-            {
+            if( handler != null ) {
                 handler(packet);
             }
         }

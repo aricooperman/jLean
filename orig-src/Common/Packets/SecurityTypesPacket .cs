@@ -38,8 +38,7 @@ package com.quantconnect.lean.Packets
             get
             {
                 result = "";
-                foreach (type in Types)
-                {
+                foreach (type in Types) {
                     result += type + ",";
                 }
                 result = result.TrimEnd(',');
@@ -51,8 +50,7 @@ package com.quantconnect.lean.Packets
         /// Default constructor for JSON
         /// </summary>
         public SecurityTypesPacket()
-            : base (PacketType.SecurityTypes)
-        { }
+            : base (PacketType.SecurityTypes) { }
     
     } // End Work Packet:
 

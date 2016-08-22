@@ -26,8 +26,7 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Initializes a new instance of the <see cref="Splits"/> dictionary
         /// </summary>
-        public Splits()
-        {
+        public Splits() {
         }
 
         /// <summary>
@@ -35,8 +34,7 @@ package com.quantconnect.lean.Data.Market
         /// </summary>
         /// <param name="frontier">The time associated with the data in this Map</param>
         public Splits(DateTime frontier)
-            : base(frontier)
-        {
+            : base(frontier) {
         }
     }
 }

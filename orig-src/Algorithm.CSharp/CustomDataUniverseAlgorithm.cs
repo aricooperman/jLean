@@ -31,8 +31,7 @@ package com.quantconnect.lean.Algorithm.CSharp
     {
         private SecurityChanges _changes;
 
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             UniverseSettings.Resolution = Resolution.Daily;
 
             SetStartDate(2015, 01, 05);
@@ -41,10 +40,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             SetCash(100000);
 
             AddSecurity(SecurityType.Equity, "SPY", Resolution.Daily);
-            SetBenchmark("SPY");
+            SetBenchmark( "SPY");
 
             // add a custom universe data source (defaults to usa-equity)
-            AddUniverse<NyseTopGainers>("universe-nyse-top-gainers", Resolution.Daily, data =>
+            AddUniverse<NyseTopGainers>( "universe-nyse-top-gainers", Resolution.Daily, data =>
             {
                 // define our selection criteria
                 return from d in data
@@ -54,32 +53,26 @@ package com.quantconnect.lean.Algorithm.CSharp
             });
         }
 
-        public override void OnData(Slice slice)
-        {
+        public @Override void OnData(Slice slice) {
         }
 
-        public override void OnSecuritiesChanged(SecurityChanges changes)
-        {
+        public @Override void OnSecuritiesChanged(SecurityChanges changes) {
             _changes = changes;
 
-            foreach (security in changes.RemovedSecurities)
-            {
+            foreach (security in changes.RemovedSecurities) {
                 // liquidate securities that have been removed
-                if (security.Invested)
-                {
+                if( security.Invested) {
                     Liquidate(security.Symbol);
-                    Log("Exit " + security.Symbol + " at " + security.Close);
+                    Log( "Exit " + security.Symbol + " at " + security.Close);
                 }
             }
 
-            foreach (security in changes.AddedSecurities)
-            {
+            foreach (security in changes.AddedSecurities) {
                 // enter short positions on new securities
-                if (!security.Invested && security.Close != 0)
-                {
+                if( !security.Invested && security.Close != 0) {
                     qty = CalculateOrderQuantity(security.Symbol, -0.25m);
                     MarketOnOpenOrder(security.Symbol, qty);
-                    Log("Enter  " + security.Symbol + " at " + security.Close);
+                    Log( "Enter  " + security.Symbol + " at " + security.Close);
                 }
             }
         }
@@ -93,7 +86,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         {
             public int TopGainersRank;
 
-            public override DateTime EndTime
+            public @Override DateTime EndTime
             {
                 // define end time as exactly 1 day after Time
                 get { return Time + QuantConnect.Time.OneDay; }
@@ -102,10 +95,8 @@ package com.quantconnect.lean.Algorithm.CSharp
 
             private int count;
             private DateTime lastDate;
-            public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-            {
-                if (isLiveMode)
-                {
+            public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
+                if( isLiveMode) {
                     // this is actually an html file, we'll handle the parsing accordingly
                     return new SubscriptionDataSource(@"http://www.wsj.com/mdc/public/page/2_3021-gainnyse-gainer.html", SubscriptionTransportMedium.RemoteFile);
                 }
@@ -114,22 +105,19 @@ package com.quantconnect.lean.Algorithm.CSharp
                 return new SubscriptionDataSource(@"https://www.dropbox.com/s/vrn3p38qberw3df/nyse-gainers.csv?dl=1", SubscriptionTransportMedium.RemoteFile);
             }
 
-            public override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode)
-            {
-                if (!isLiveMode)
-                {
+            public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
+                if( !isLiveMode) {
                     // backtest gets data from csv file in dropbox
-                    csv = line.Split(',');
+                    csv = line.split(',');
                     return new NyseTopGainers
                     {
-                        Time = DateTime.ParseExact(csv[0], "yyyyMMdd", null),
+                        Time = DateTime.ParseExact(csv[0], "yyyyMMdd", null ),
                         Symbol = Symbol.Create(csv[1], SecurityType.Equity, Market.USA),
                         TopGainersRank = int.Parse(csv[2])
                     };
                 }
 
-                if (lastDate != date)
-                {
+                if( lastDate != date) {
                     // reset our counter for the new day
                     lastDate = date;
                     count = 0;
@@ -137,16 +125,14 @@ package com.quantconnect.lean.Algorithm.CSharp
 
                 // parse the html into a symbol
 
-                if (!line.StartsWith(@"<a href=""/public/quotes/main.html?symbol="))
-                {
+                if( !line.StartsWith(@"<a href=""/public/quotes/main.html?symbol=")) {
                     // we're only looking for lines that contain the symbols
                     return null;
                 }
 
-                lastCloseParen = line.LastIndexOf(")", StringComparison.Ordinal);
-                lastOpenParen = line.LastIndexOf("(", StringComparison.Ordinal);
-                if (lastOpenParen == -1 || lastCloseParen == -1)
-                {
+                lastCloseParen = line.LastIndexOf( ")", StringComparison.Ordinal);
+                lastOpenParen = line.LastIndexOf( "( ", StringComparison.Ordinal);
+                if( lastOpenParen == -1 || lastCloseParen == -1) {
                     return null;
                 }
 

@@ -34,14 +34,13 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="name">The name of this indicator</param>
         public TrueRange( String name)
-            : base(name)
-        {
+            : base(name) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples > 1; }
         }
@@ -51,10 +50,8 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
-            if (!IsReady)
-            {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
+            if( !IsReady) {
                 _previousInput = input;
                 return 0m;
             }
@@ -62,11 +59,11 @@ package com.quantconnect.lean.Indicators
             greatest = input.High - input.Low;
             
             value2 = Math.Abs(_previousInput.Close - input.High);
-            if (value2 > greatest)
+            if( value2 > greatest)
                 greatest = value2;
 
             value3 = Math.Abs(_previousInput.Close - input.Low);
-            if (value3 > greatest)
+            if( value3 > greatest)
                 greatest = value3;
 
             _previousInput = input;

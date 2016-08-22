@@ -21,17 +21,16 @@ package com.quantconnect.lean.Tests.Indicators
     [TestFixture]
     public class PercentagePriceOscillatorTests : CommonIndicatorTests<IndicatorDataPoint>
     {
-        protected override IndicatorBase<IndicatorDataPoint> CreateIndicator()
-        {
+        protected @Override IndicatorBase<IndicatorDataPoint> CreateIndicator() {
             return new PercentagePriceOscillator(5, 10);
         }
 
-        protected override String TestFileName
+        protected @Override String TestFileName
         {
             get { return "spy_ppo.txt"; }
         }
 
-        protected override String TestColumnName
+        protected @Override String TestColumnName
         {
             get { return "PPO_5_10"; }
         }

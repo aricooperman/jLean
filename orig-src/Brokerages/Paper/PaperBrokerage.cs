@@ -36,8 +36,7 @@ package com.quantconnect.lean.Brokerages.Paper
         /// <param name="algorithm">The algorithm under analysis</param>
         /// <param name="job">The job packet</param>
         public PaperBrokerage(IAlgorithm algorithm, LiveNodePacket job) 
-            : base(algorithm, "Paper Brokerage")
-        {
+            : base(algorithm, "Paper Brokerage") {
             _job = job;
         }
 
@@ -45,14 +44,12 @@ package com.quantconnect.lean.Brokerages.Paper
         /// Gets the current cash balance for each currency held in the brokerage account
         /// </summary>
         /// <returns>The current cash balance for each currency available for trading</returns>
-        public override List<Cash> GetCashBalance()
-        {
+        public @Override List<Cash> GetCashBalance() {
             String value;
-            if (_job.BrokerageData.TryGetValue("project-paper-equity", out value))
-            {
+            if( _job.BrokerageData.TryGetValue( "project-paper-equity", out value)) {
                 // remove the key, we really only want to return the cached value on the first request
-                _job.BrokerageData.Remove("project-paper-equity");
-                return new List<Cash>{new Cash("USD", decimal.Parse(value), 1)};
+                _job.BrokerageData.Remove( "project-paper-equity");
+                return new List<Cash>{new Cash( "USD", decimal.Parse(value), 1)};
             }
 
             // if we've already begun running, just return the current state

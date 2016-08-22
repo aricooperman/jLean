@@ -134,10 +134,8 @@ package com.quantconnect.lean.Brokerages
         /// <param name="brokerage">The name of the brokerage</param>
         /// <param name="accountType">The account type</param>
         /// <returns>The model for the specified brokerage</returns>
-        public static IBrokerageModel Create(BrokerageName brokerage, AccountType accountType)
-        {
-            switch (brokerage)
-            {
+        public static IBrokerageModel Create(BrokerageName brokerage, AccountType accountType) {
+            switch (brokerage) {
                 case BrokerageName.Default:
                     return new DefaultBrokerageModel(accountType);
 
@@ -154,7 +152,7 @@ package com.quantconnect.lean.Brokerages
                     return new FxcmBrokerageModel(accountType);
                     
                 default:
-                    throw new ArgumentOutOfRangeException("brokerage", brokerage, null);
+                    throw new ArgumentOutOfRangeException( "brokerage", brokerage, null );
             }
         }
     }

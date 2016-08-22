@@ -36,39 +36,35 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// Converts an FXCM order to a QuantConnect order.
         /// </summary>
         /// <param name="fxcmOrder">The FXCM order</param>
-        private Order ConvertOrder(ExecutionReport fxcmOrder)
-        {
+        private Order ConvertOrder(ExecutionReport fxcmOrder) {
             Order order;
 
-            if (fxcmOrder.getOrdType() == OrdTypeFactory.LIMIT)
-            {
+            if( fxcmOrder.getOrdType() == OrdTypeFactory.LIMIT) {
                 order = new LimitOrder
                 {
-                    LimitPrice = Convert.ToDecimal(fxcmOrder.getPrice())
+                    LimitPrice = new BigDecimal( fxcmOrder.getPrice())
                 };
             }
 
-            else if (fxcmOrder.getOrdType() == OrdTypeFactory.MARKET)
-            {
+            else if( fxcmOrder.getOrdType() == OrdTypeFactory.MARKET) {
                 order = new MarketOrder();
             }
 
-            else if (fxcmOrder.getOrdType() == OrdTypeFactory.STOP)
-            {
+            else if( fxcmOrder.getOrdType() == OrdTypeFactory.STOP) {
                 order = new StopMarketOrder
                 {
-                    StopPrice = Convert.ToDecimal(fxcmOrder.getPrice())
+                    StopPrice = new BigDecimal( fxcmOrder.getPrice())
                 };
             }
 
             else
             {
-                throw new NotSupportedException("FxcmBrokerage.ConvertOrder(): The FXCM order type " + fxcmOrder.getOrdType() + " is not supported.");
+                throw new NotSupportedException( "FxcmBrokerage.ConvertOrder(): The FXCM order type " + fxcmOrder.getOrdType() + " is not supported.");
             }
 
             securityType = _symbolMapper.GetBrokerageSecurityType(fxcmOrder.getInstrument().getSymbol());
             order.Symbol = _symbolMapper.GetLeanSymbol(fxcmOrder.getInstrument().getSymbol(), securityType, Market.FXCM);
-            order.Quantity = Convert.ToInt32(fxcmOrder.getOrderQty() * (fxcmOrder.getSide() == SideFactory.BUY ? +1 : -1));
+            order.Quantity =  Integer.parseInt( fxcmOrder.getOrderQty() * (fxcmOrder.getSide() == SideFactory.BUY ? +1 : -1));
             order.Status = ConvertOrderStatus(fxcmOrder.getFXCMOrdStatus());
             order.BrokerId.Add(fxcmOrder.getOrderID());
             order.Duration = ConvertDuration(fxcmOrder.getTimeInForce());
@@ -80,12 +76,11 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// Converts an FXCM order duration to QuantConnect order duration
         /// </summary>
-        private static OrderDuration ConvertDuration(ITimeInForce timeInForce)
-        {
-            if (timeInForce == TimeInForceFactory.GOOD_TILL_CANCEL)
+        private static OrderDuration ConvertDuration(ITimeInForce timeInForce) {
+            if( timeInForce == TimeInForceFactory.GOOD_TILL_CANCEL)
                 return OrderDuration.GTC;
             
-            if (timeInForce == TimeInForceFactory.DAY)
+            if( timeInForce == TimeInForceFactory.DAY)
                 return (OrderDuration)1; //.Day;
 
             throw new ArgumentOutOfRangeException();
@@ -95,18 +90,17 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// Converts an FXCM position to a QuantConnect holding.
         /// </summary>
         /// <param name="fxcmPosition">The FXCM position</param>
-        private Holding ConvertHolding(PositionReport fxcmPosition)
-        {
+        private Holding ConvertHolding(PositionReport fxcmPosition) {
             securityType = _symbolMapper.GetBrokerageSecurityType(fxcmPosition.getInstrument().getSymbol());
 
             return new Holding
             {
                 Symbol = _symbolMapper.GetLeanSymbol(fxcmPosition.getInstrument().getSymbol(), securityType, Market.FXCM),
                 Type = securityType,
-                AveragePrice = Convert.ToDecimal(fxcmPosition.getSettlPrice()),
+                AveragePrice = new BigDecimal( fxcmPosition.getSettlPrice()),
                 ConversionRate = 1.0m,
                 CurrencySymbol = "$",
-                Quantity = Convert.ToDecimal(fxcmPosition.getPositionQty().getLongQty() > 0 
+                Quantity = new BigDecimal( fxcmPosition.getPositionQty().getLongQty() > 0 
                     ? fxcmPosition.getPositionQty().getLongQty() 
                     : -fxcmPosition.getPositionQty().getShortQty())
             };        
@@ -117,12 +111,10 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// </summary>
         /// <param name="status"></param>
         /// <returns></returns>
-        private static OrderStatus ConvertOrderStatus(ICode status)
-        {
+        private static OrderStatus ConvertOrderStatus(ICode status) {
             result = OrderStatus.None;
 
-            switch (status.getCode())
-            {
+            switch (status.getCode()) {
                 case IFixValueDefs.__Fields.FXCMORDSTATUS_INPROCESS:
                 case IFixValueDefs.__Fields.FXCMORDSTATUS_WAITING:
                 case IFixValueDefs.__Fields.FXCMORDSTATUS_EXECUTING:
@@ -149,16 +141,14 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// Returns true if the specified order is considered open, otherwise false
         /// </summary>
-        private static boolean OrderIsOpen( String orderStatus)
-        {
+        private static boolean OrderIsOpen( String orderStatus) {
             return orderStatus == IFixValueDefs.__Fields.FXCMORDSTATUS_WAITING;
         }
 
         /// <summary>
         /// Returns true if the specified order is considered close, otherwise false
         /// </summary>
-        protected static boolean OrderIsClosed( String orderStatus)
-        {
+        protected static boolean OrderIsClosed( String orderStatus) {
             return orderStatus == IFixValueDefs.__Fields.FXCMORDSTATUS_EXECUTED
                 || orderStatus == IFixValueDefs.__Fields.FXCMORDSTATUS_CANCELLED
                 || orderStatus == IFixValueDefs.__Fields.FXCMORDSTATUS_EXPIRED
@@ -168,8 +158,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// Returns true if the specified order is being processed, otherwise false
         /// </summary>
-        private static boolean OrderIsBeingProcessed( String orderStatus)
-        {
+        private static boolean OrderIsBeingProcessed( String orderStatus) {
             return !OrderIsOpen(orderStatus) && !OrderIsClosed(orderStatus);
         }
 
@@ -178,12 +167,10 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// </summary>
         /// <param name="javaDate">The Java date</param>
         /// <returns></returns>
-        private static DateTime FromJavaDate(java.util.Date javaDate)
-        {
-            if (_configTimeZone == null)
-            {
+        private static DateTime FromJavaDate(java.util.Date javaDate) {
+            if( _configTimeZone == null ) {
                 // Read time zone from market-hours-config
-                _configTimeZone = MarketHoursDatabase.FromDataFolder().GetDataTimeZone("fxcm", "*", SecurityType.Forex);
+                _configTimeZone = MarketHoursDatabase.FromDataFolder().GetDataTimeZone( "fxcm", "*", SecurityType.Forex);
             }
 
             // Convert javaDate to UTC Instant (Epoch)
@@ -202,8 +189,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         // Without this, consuming projects would need to hard refernce the IKVM dlls,
         // which is less than perfect. This seems to be the better of two evils
         //
-        private static void ManageIKVMDependency()
-        {
+        private static void ManageIKVMDependency() {
             rowset = new CachedRowSetImpl();
         }
     }

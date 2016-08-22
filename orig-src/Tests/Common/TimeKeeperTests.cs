@@ -22,16 +22,14 @@ package com.quantconnect.lean.Tests.Common
     public class TimeKeeperTests
     {
         [Test]
-        public void ConstructsLocalTimeKeepers()
-        {
+        public void ConstructsLocalTimeKeepers() {
             reference = new DateTime(2000, 01, 01);
             timeKeeper = new TimeKeeper(reference, new[] { TimeZones.NewYork });
             Assert.IsNotNull(timeKeeper.GetLocalTimeKeeper(TimeZones.NewYork));
         }
 
         [Test]
-        public void TimeKeeperReportsUpdatedLocalTimes()
-        {
+        public void TimeKeeperReportsUpdatedLocalTimes() {
             reference = new DateTime(2000, 01, 01);
             timeKeeper = new TimeKeeper(reference, new[] { TimeZones.NewYork });
             localTime = timeKeeper.GetTimeIn(TimeZones.NewYork);
@@ -46,8 +44,7 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void LocalTimeKeepersGetTimeUpdates()
-        {
+        public void LocalTimeKeepersGetTimeUpdates() {
             reference = new DateTime(2000, 01, 01);
             timeKeeper = new TimeKeeper(reference, new[] { TimeZones.NewYork });
             localTimeKeeper = timeKeeper.GetLocalTimeKeeper(TimeZones.NewYork);
@@ -63,8 +60,7 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void AddingDuplicateTimeZoneDoesntAdd()
-        {
+        public void AddingDuplicateTimeZoneDoesntAdd() {
             reference = new DateTime(2000, 01, 01);
             timeKeeper = new TimeKeeper(reference, new[] { TimeZones.NewYork });
             localTimeKeeper = timeKeeper.GetLocalTimeKeeper(TimeZones.NewYork);

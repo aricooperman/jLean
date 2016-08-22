@@ -43,7 +43,7 @@ package com.quantconnect.lean.Brokerages
         /// <summary>
         /// Gets a map of the default markets to be used for each security type
         /// </summary>
-        public override IReadOnlyMap<SecurityType,String> DefaultMarkets
+        public @Override IReadOnlyMap<SecurityType,String> DefaultMarkets
         {
             get { return DefaultMarketMap; }
         }
@@ -54,8 +54,7 @@ package com.quantconnect.lean.Brokerages
         /// <param name="accountType">The type of account to be modelled, defaults to 
         /// <see cref="QuantConnect.AccountType.Margin"/></param>
         public FxcmBrokerageModel(AccountType accountType = AccountType.Margin)
-            : base(accountType)
-        {
+            : base(accountType) {
         }
 
         /// <summary>
@@ -69,13 +68,11 @@ package com.quantconnect.lean.Brokerages
         /// <param name="order">The order to be processed</param>
         /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be submitted</param>
         /// <returns>True if the brokerage could process the order, false otherwise</returns>
-        public override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message)
-        {
+        public @Override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
             message = null;
 
             // validate security type
-            if (security.Type != SecurityType.Forex && security.Type != SecurityType.Cfd)
-            {
+            if( security.Type != SecurityType.Forex && security.Type != SecurityType.Cfd) {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
                     "This model does not support " + security.Type + " security type."
                     );
@@ -84,8 +81,7 @@ package com.quantconnect.lean.Brokerages
             }
 
             // validate order type
-            if (order.Type != OrderType.Limit && order.Type != OrderType.Market && order.Type != OrderType.StopMarket)
-            {
+            if( order.Type != OrderType.Limit && order.Type != OrderType.Market && order.Type != OrderType.StopMarket) {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
                     "This model does not support " + order.Type + " order type."
                     );
@@ -94,8 +90,7 @@ package com.quantconnect.lean.Brokerages
             }
 
             // validate order quantity
-            if (order.Quantity % 1000 != 0)
-            {
+            if( order.Quantity % 1000 != 0) {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
                     "The order quantity must be a multiple of 1000."
                     );
@@ -105,20 +100,17 @@ package com.quantconnect.lean.Brokerages
 
             // validate stop/limit orders= prices
             limit = order as LimitOrder;
-            if (limit != null)
-            {
+            if( limit != null ) {
                 return IsValidOrderPrices(security, OrderType.Limit, limit.Direction, security.Price, limit.LimitPrice, ref message);
             }
 
             stopMarket = order as StopMarketOrder;
-            if (stopMarket != null)
-            {
+            if( stopMarket != null ) {
                 return IsValidOrderPrices(security, OrderType.StopMarket, stopMarket.Direction, stopMarket.StopPrice, security.Price, ref message);
             }
 
             stopLimit = order as StopLimitOrder;
-            if (stopLimit != null)
-            {
+            if( stopLimit != null ) {
                 return IsValidOrderPrices(security, OrderType.StopLimit, stopLimit.Direction, stopLimit.StopPrice, stopLimit.LimitPrice, ref message);
             }
 
@@ -133,13 +125,11 @@ package com.quantconnect.lean.Brokerages
         /// <param name="request">The requested update to be made to the order</param>
         /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be updated</param>
         /// <returns>True if the brokerage would allow updating the order, false otherwise</returns>
-        public override boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message)
-        {
+        public @Override boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message) {
             message = null;
 
             // validate order quantity
-            if (request.Quantity != null && request.Quantity % 1000 != 0)
-            {
+            if( request.Quantity != null && request.Quantity % 1000 != 0) {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
                     "The order quantity must be a multiple of 1000."
                     );
@@ -163,8 +153,7 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="security">The security to get fill model for</param>
         /// <returns>The new fill model for this brokerage</returns>
-        public override IFillModel GetFillModel(Security security)
-        {
+        public @Override IFillModel GetFillModel(Security security) {
             return new ImmediateFillModel();
         }
 
@@ -173,8 +162,7 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="security">The security to get a fee model for</param>
         /// <returns>The new fee model for this brokerage</returns>
-        public override IFeeModel GetFeeModel(Security security)
-        {
+        public @Override IFeeModel GetFeeModel(Security security) {
             return new FxcmFeeModel();
         }
 
@@ -183,24 +171,21 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="security">The security to get a slippage model for</param>
         /// <returns>The new slippage model for this brokerage</returns>
-        public override ISlippageModel GetSlippageModel(Security security)
-        {
+        public @Override ISlippageModel GetSlippageModel(Security security) {
             return new SpreadSlippageModel();
         }
 
         /// <summary>
         /// Validates limit/stopmarket order prices, pass security.Price for limit/stop if n/a
         /// </summary>
-        private static boolean IsValidOrderPrices(Security security, OrderType orderType, OrderDirection orderDirection, BigDecimal stopPrice, BigDecimal limitPrice, ref BrokerageMessageEvent message)
-        {
+        private static boolean IsValidOrderPrices(Security security, OrderType orderType, OrderDirection orderDirection, BigDecimal stopPrice, BigDecimal limitPrice, ref BrokerageMessageEvent message) {
             // validate order price
             invalidPrice = orderType == OrderType.Limit && orderDirection == OrderDirection.Buy && limitPrice > security.Price ||
                 orderType == OrderType.Limit && orderDirection == OrderDirection.Sell && limitPrice < security.Price ||
                 orderType == OrderType.StopMarket && orderDirection == OrderDirection.Buy && stopPrice < security.Price ||
                 orderType == OrderType.StopMarket && orderDirection == OrderDirection.Sell && stopPrice > security.Price;
 
-            if (invalidPrice)
-            {
+            if( invalidPrice) {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
                     "Limit Buy orders and Stop Sell orders must be below market, Limit Sell orders and Stop Buy orders must be above market."
                     );

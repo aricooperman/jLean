@@ -35,8 +35,7 @@ package com.quantconnect.lean.Data.Auxiliary
         /// to resolve an instance of <see cref="IMapFileProvider"/> from the <see cref="Composer.Instance"/>
         /// </summary>
         public LocalDiskFactorFileProvider()
-            : this(Composer.Instance.GetExportedValueByTypeName<IMapFileProvider>(Config.Get("map-file-provider", "LocalDiskMapFileProvider")))
-        {
+            : this(Composer.Instance.GetExportedValueByTypeName<IMapFileProvider>(Config.Get( "map-file-provider", "LocalDiskMapFileProvider"))) {
         }
 
         /// <summary>
@@ -44,8 +43,7 @@ package com.quantconnect.lean.Data.Auxiliary
         /// map file provider
         /// </summary>
         /// <param name="mapFileProvider">The map file provider used to resolve permticks of securities</param>
-        public LocalDiskFactorFileProvider(IMapFileProvider mapFileProvider)
-        {
+        public LocalDiskFactorFileProvider(IMapFileProvider mapFileProvider) {
             _mapFileProvider = mapFileProvider;
             _cache = new ConcurrentMap<Symbol, FactorFile>();
         }
@@ -55,11 +53,9 @@ package com.quantconnect.lean.Data.Auxiliary
         /// </summary>
         /// <param name="symbol">The security's symbol whose factor file we seek</param>
         /// <returns>The resolved factor file, or null if not found</returns>
-        public FactorFile Get(Symbol symbol)
-        {
+        public FactorFile Get(Symbol symbol) {
             FactorFile factorFile;
-            if (_cache.TryGetValue(symbol, out factorFile))
-            {
+            if( _cache.TryGetValue(symbol, out factorFile)) {
                 return factorFile;
             }
 
@@ -67,14 +63,12 @@ package com.quantconnect.lean.Data.Auxiliary
 
             // we first need to resolve the map file to get a permtick, that's how the factor files are stored
             mapFileResolver = _mapFileProvider.Get(market);
-            if (mapFileResolver == null)
-            {
+            if( mapFileResolver == null ) {
                 return GetFactorFile(symbol, symbol.Value, market);
             }
 
             mapFile = mapFileResolver.ResolveMapFile(symbol.ID.Symbol, symbol.ID.Date);
-            if (mapFile.IsNullOrEmpty())
-            {
+            if( mapFile.IsNullOrEmpty()) {
                 return GetFactorFile(symbol, symbol.Value, market);
             }
 
@@ -84,10 +78,8 @@ package com.quantconnect.lean.Data.Auxiliary
         /// <summary>
         /// Checks that the factor file exists on disk, and if it does, loads it into memory
         /// </summary>
-        private FactorFile GetFactorFile(Symbol symbol, String permtick, String market)
-        {
-            if (FactorFile.HasScalingFactors(permtick, market))
-            {
+        private FactorFile GetFactorFile(Symbol symbol, String permtick, String market) {
+            if( FactorFile.HasScalingFactors(permtick, market)) {
                 factorFile = FactorFile.Read(permtick, market);
                 _cache.AddOrUpdate(symbol, factorFile, (s, c) => factorFile);
                 return factorFile;

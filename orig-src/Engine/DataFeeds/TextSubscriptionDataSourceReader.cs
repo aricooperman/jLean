@@ -59,8 +59,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="config">The subscription's configuration</param>
         /// <param name="date">The date this factory was produced to read data for</param>
         /// <param name="isLiveMode">True if we're in live mode, false for backtesting</param>
-        public TextSubscriptionDataSourceReader(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-        {
+        public TextSubscriptionDataSourceReader(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             _date = date;
             _config = config;
             _isLiveMode = isLiveMode;
@@ -72,20 +71,16 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="source">The source to be read</param>
         /// <returns>An <see cref="IEnumerable{BaseData}"/> that contains the data in the source</returns>
-        public IEnumerable<BaseData> Read(SubscriptionDataSource source)
-        {
-            using (reader = CreateStreamReader(source))
-            {
+        public IEnumerable<BaseData> Read(SubscriptionDataSource source) {
+            using (reader = CreateStreamReader(source)) {
                 // if the reader doesn't have data then we're done with this subscription
-                if (reader == null || reader.EndOfStream)
-                {
+                if( reader == null || reader.EndOfStream) {
                     OnCreateStreamReaderError(_date, source);
                     yield break;
                 }
 
                 // while the reader has data
-                while (!reader.EndOfStream)
-                {
+                while (!reader.EndOfStream) {
                     // read a line and pass it to the base data factory
                     line = reader.ReadLine();
                     BaseData instance = null;
@@ -93,13 +88,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     {
                         instance  = _factory.Reader(_config, line, _date, _isLiveMode);
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         OnReaderError(line, err);
                     }
 
-                    if (instance != null)
-                    {
+                    if( instance != null ) {
                         yield return instance;
                     }
                 }
@@ -111,11 +104,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="subscriptionDataSource">The source to produce an <see cref="IStreamReader"/> for</param>
         /// <returns>A new instance of <see cref="IStreamReader"/> to read the source, or null if there was an error</returns>
-        private IStreamReader CreateStreamReader(SubscriptionDataSource subscriptionDataSource)
-        {
+        private IStreamReader CreateStreamReader(SubscriptionDataSource subscriptionDataSource) {
             IStreamReader reader;
-            switch (subscriptionDataSource.TransportMedium)
-            {
+            switch (subscriptionDataSource.TransportMedium) {
                 case SubscriptionTransportMedium.LocalFile:
                     reader = HandleLocalFileSource(subscriptionDataSource);
                     break;
@@ -129,7 +120,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     break;
 
                 default:
-                    throw new InvalidEnumArgumentException("Unexpected SubscriptionTransportMedium specified: " + subscriptionDataSource.TransportMedium);
+                    throw new InvalidEnumArgumentException( "Unexpected SubscriptionTransportMedium specified: " + subscriptionDataSource.TransportMedium);
             }
             return reader;
         }
@@ -139,10 +130,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="source">The <see cref="SubscriptionDataSource"/> that was invalid</param>
         /// <param name="exception">The exception if one was raised, otherwise null</param>
-        private void OnInvalidSource(SubscriptionDataSource source, Exception exception)
-        {
+        private void OnInvalidSource(SubscriptionDataSource source, Exception exception) {
             handler = InvalidSource;
-            if (handler != null) handler(this, new InvalidSourceEventArgs(source, exception));
+            if( handler != null ) handler(this, new InvalidSourceEventArgs(source, exception));
         }
 
         /// <summary>
@@ -150,10 +140,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="line">The line that caused the exception</param>
         /// <param name="exception">The exception that was caught</param>
-        private void OnReaderError( String line, Exception exception)
-        {
+        private void OnReaderError( String line, Exception exception) {
             handler = ReaderError;
-            if (handler != null) handler(this, new ReaderErrorEventArgs(line, exception));
+            if( handler != null ) handler(this, new ReaderErrorEventArgs(line, exception));
         }
 
         /// <summary>
@@ -161,29 +150,25 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="date">The date of the source</param>
         /// <param name="source">The source that caused the error</param>
-        private void OnCreateStreamReaderError(DateTime date, SubscriptionDataSource source)
-        {
+        private void OnCreateStreamReaderError(DateTime date, SubscriptionDataSource source) {
             handler = CreateStreamReaderError;
-            if (handler != null) handler(this, new CreateStreamReaderErrorEventArgs(date, source));
+            if( handler != null ) handler(this, new CreateStreamReaderErrorEventArgs(date, source));
         }
 
         /// <summary>
         /// Opens up an IStreamReader for a local file source
         /// </summary>
-        private IStreamReader HandleLocalFileSource(SubscriptionDataSource source)
-        {
+        private IStreamReader HandleLocalFileSource(SubscriptionDataSource source) {
             String entryName = null; // default to all entries
             file = source.Source;
-            hashIndex = source.Source.LastIndexOf("#", StringComparison.Ordinal);
-            if (hashIndex != -1)
-            {
+            hashIndex = source.Source.LastIndexOf( "#", StringComparison.Ordinal);
+            if( hashIndex != -1) {
                 entryName = source.Source.Substring(hashIndex + 1);
                 file = source.Source.Substring(0, hashIndex);
             }
 
-            if (!File.Exists(file))
-            {
-                OnInvalidSource(source, new FileNotFoundException("The specified file was not found", file));
+            if( !File.Exists(file)) {
+                OnInvalidSource(source, new FileNotFoundException( "The specified file was not found", file));
                 return null;
             }
 
@@ -194,13 +179,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <summary>
         /// Opens up an IStreamReader for a remote file source
         /// </summary>
-        private IStreamReader HandleRemoteSourceFile(SubscriptionDataSource source)
-        {
+        private IStreamReader HandleRemoteSourceFile(SubscriptionDataSource source) {
             // clean old files out of the cache
-            if (!Directory.Exists(Globals.Cache)) Directory.CreateDirectory(Globals.Cache);
-            foreach (file in Directory.EnumerateFiles(Globals.Cache))
-            {
-                if (File.GetCreationTime(file) < DateTime.Now.AddHours(-24)) File.Delete(file);
+            if( !Directory.Exists(Globals.Cache)) Directory.CreateDirectory(Globals.Cache);
+            foreach (file in Directory.EnumerateFiles(Globals.Cache)) {
+                if( File.GetCreationTime(file) < DateTime.Now.AddHours(-24)) File.Delete(file);
             }
 
             try
@@ -208,8 +191,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 // this will fire up a web client in order to download the 'source' file to the cache
                 return new RemoteFileSubscriptionStreamReader(source.Source, Globals.Cache);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 OnInvalidSource(source, err);
                 return null;
             }

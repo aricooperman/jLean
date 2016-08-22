@@ -28,8 +28,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         public QuoteBarConsolidator(TimeSpan period)
-            : base(period)
-        {
+            : base(period) {
         }
 
         /// <summary>
@@ -37,8 +36,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         public QuoteBarConsolidator(int maxCount)
-            : base(maxCount)
-        {
+            : base(maxCount) {
         }
 
         /// <summary>
@@ -47,8 +45,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         public QuoteBarConsolidator(int maxCount, TimeSpan period)
-            : base(maxCount, period)
-        {
+            : base(maxCount, period) {
         }
 
         /// <summary>
@@ -57,13 +54,11 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="workingBar">The bar we're building, null if the event was just fired and we're starting a new consolidated bar</param>
         /// <param name="data">The new data</param>
-        protected override void AggregateBar(ref QuoteBar workingBar, QuoteBar data)
-        {
+        protected @Override void AggregateBar(ref QuoteBar workingBar, QuoteBar data) {
             bid = data.Bid;
             ask = data.Ask;
 
-            if (workingBar == null)
-            {
+            if( workingBar == null ) {
                 workingBar = new QuoteBar
                 {
                     Symbol = data.Symbol,
@@ -74,32 +69,28 @@ package com.quantconnect.lean.Data.Consolidators
             }
 
             // update the bid and ask
-            if (bid != null)
-            {
+            if( bid != null ) {
                 workingBar.LastBidSize = data.LastBidSize;
-                if (workingBar.Bid == null)
-                {
+                if( workingBar.Bid == null ) {
                     workingBar.Bid = new Bar(bid.Open, bid.High, bid.Low, bid.Close);
                 }
                 else
                 {
                     workingBar.Bid.Close = bid.Close;
-                    if (workingBar.Bid.High < bid.High) workingBar.Bid.High = bid.High;
-                    if (workingBar.Bid.Low > bid.Low) workingBar.Bid.Low = bid.Low;
+                    if( workingBar.Bid.High < bid.High) workingBar.Bid.High = bid.High;
+                    if( workingBar.Bid.Low > bid.Low) workingBar.Bid.Low = bid.Low;
                 }
             }
-            if (ask != null)
-            {
+            if( ask != null ) {
                 workingBar.LastAskSize = data.LastAskSize;
-                if (workingBar.Ask == null)
-                {
+                if( workingBar.Ask == null ) {
                     workingBar.Ask = new Bar(ask.Open, ask.High, ask.Low, ask.Close);
                 }
                 else
                 {
                     workingBar.Ask.Close = ask.Close;
-                    if (workingBar.Ask.High < ask.High) workingBar.Ask.High = ask.High;
-                    if (workingBar.Ask.Low > ask.Low) workingBar.Ask.Low = ask.Low;
+                    if( workingBar.Ask.High < ask.High) workingBar.Ask.High = ask.High;
+                    if( workingBar.Ask.Low > ask.Low) workingBar.Ask.Low = ask.Low;
                 }
             }
         }

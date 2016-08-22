@@ -55,8 +55,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period of the standard deviation and moving average (middle band)</param>
         /// <param name="movingAverageType">The type of moving average to be used</param>
         public CommodityChannelIndex(int period, MovingAverageType movingAverageType = MovingAverageType.Simple)
-            : this("CCI" + period, period, movingAverageType)
-        {
+            : this( "CCI" + period, period, movingAverageType) {
         }
 
         /// <summary>
@@ -66,8 +65,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period of the standard deviation and moving average (middle band)</param>
         /// <param name="movingAverageType">The type of moving average to be used</param>
         public CommodityChannelIndex( String name, int period, MovingAverageType movingAverageType = MovingAverageType.Simple)
-            : base(name)
-        {
+            : base(name) {
             MovingAverageType = movingAverageType;
             TypicalPriceAverage = movingAverageType.AsIndicator(name + "_TypicalPriceAvg", period);
             TypicalPriceMeanDeviation = new MeanAbsoluteDeviation(name + "_TypicalPriceMAD", period);
@@ -76,7 +74,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return TypicalPriceAverage.IsReady && TypicalPriceMeanDeviation.IsReady; }
         }
@@ -86,8 +84,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             BigDecimal typicalPrice = (input.High + input.Low + input.Close)/3.0m;
 
             TypicalPriceAverage.Update(input.Time, typicalPrice);
@@ -96,8 +93,7 @@ package com.quantconnect.lean.Indicators
             // compare this to zero, since if the mean deviation is very small we can get
             // precision errors due to non-floating point math
             weightedMeanDeviation = _k * TypicalPriceMeanDeviation.Current;
-            if (weightedMeanDeviation == 0.0m)
-            {
+            if( weightedMeanDeviation == 0.0m) {
                 return 0.0m;
             }
 
@@ -107,8 +103,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             TypicalPriceAverage.Reset();
             TypicalPriceMeanDeviation.Reset();
             base.Reset();

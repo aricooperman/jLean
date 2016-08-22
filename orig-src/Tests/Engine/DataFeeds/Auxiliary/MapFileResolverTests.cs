@@ -27,97 +27,91 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Auxiliary
         private readonly MapFileResolver _resolver = CreateMapFileResolver();
 
         [Test]
-        public void ResolvesStraightMapping()
-        {
-            spyMapFile = _resolver.ResolveMapFile("SPY", new DateTime(2015, 08, 23));
+        public void ResolvesStraightMapping() {
+            spyMapFile = _resolver.ResolveMapFile( "SPY", new DateTime(2015, 08, 23));
             Assert.IsNotNull(spyMapFile);
-            Assert.AreEqual("SPY", spyMapFile.GetMappedSymbol(new DateTime(2015, 08, 23)));
+            Assert.AreEqual( "SPY", spyMapFile.GetMappedSymbol(new DateTime(2015, 08, 23)));
         }
 
         [Test]
-        public void ResolvesMapFilesOnNonSpecifiedDates()
-        {
-            mapFile = _resolver.ResolveMapFile("GOOG", new DateTime(2014, 04, 01));
-            Assert.AreEqual("GOOGL", mapFile.Permtick);
+        public void ResolvesMapFilesOnNonSpecifiedDates() {
+            mapFile = _resolver.ResolveMapFile( "GOOG", new DateTime(2014, 04, 01));
+            Assert.AreEqual( "GOOGL", mapFile.Permtick);
 
-            mapFile = _resolver.ResolveMapFile("GOOG", new DateTime(2014, 04, 03));
-            Assert.AreEqual("GOOG", mapFile.Permtick);
+            mapFile = _resolver.ResolveMapFile( "GOOG", new DateTime(2014, 04, 03));
+            Assert.AreEqual( "GOOG", mapFile.Permtick);
         }
 
         [Test]
-        public void ResolvesOldSymbolRemapped()
-        {
+        public void ResolvesOldSymbolRemapped() {
             // on 2014.04.02 a symbol GOOG traded its last day, the following day it would trade under GOOGL
             april2 = new DateTime(2014, 04, 02);
-            googMapFile = _resolver.ResolveMapFile("GOOG", april2);
+            googMapFile = _resolver.ResolveMapFile( "GOOG", april2);
             Assert.IsNotNull(googMapFile);
-            Assert.AreEqual("GOOG", googMapFile.GetMappedSymbol(april2));
-            Assert.AreEqual("GOOGL", googMapFile.GetMappedSymbol(april2.AddDays(1)));
+            Assert.AreEqual( "GOOG", googMapFile.GetMappedSymbol(april2));
+            Assert.AreEqual( "GOOGL", googMapFile.GetMappedSymbol(april2.AddDays(1)));
         }
 
         [Test]
-        public void ResolvesExactMapping()
-        {
-            oih1 = _resolver.ResolveMapFile("OIH.1", new DateTime(2011, 12, 20));
+        public void ResolvesExactMapping() {
+            oih1 = _resolver.ResolveMapFile( "OIH.1", new DateTime(2011, 12, 20));
             Assert.IsNotNull(oih1);
-            Assert.AreEqual("OIH", oih1.GetMappedSymbol(new DateTime(2010, 02, 06)));
-            Assert.AreEqual("OIH", oih1.GetMappedSymbol(new DateTime(2010, 02, 07)));
-            Assert.AreEqual("OIH", oih1.GetMappedSymbol(new DateTime(2011, 12, 20)));
+            Assert.AreEqual( "OIH", oih1.GetMappedSymbol(new DateTime(2010, 02, 06)));
+            Assert.AreEqual( "OIH", oih1.GetMappedSymbol(new DateTime(2010, 02, 07)));
+            Assert.AreEqual( "OIH", oih1.GetMappedSymbol(new DateTime(2011, 12, 20)));
             Assert.AreEqual( String.Empty, oih1.GetMappedSymbol(new DateTime(2011, 12, 21)));
         }
 
         [Test]
-        public void ResolvesRemappedSymbolWithBothMapFiles()
-        {
+        public void ResolvesRemappedSymbolWithBothMapFiles() {
             date = new DateTime(2012, 06, 28);
-            mapFile = _resolver.ResolveMapFile("SPXL", date);
+            mapFile = _resolver.ResolveMapFile( "SPXL", date);
             Assert.IsNotNull(mapFile);
-            Assert.AreEqual("BGU", mapFile.GetMappedSymbol(date));
-            Assert.AreEqual("SPXL", mapFile.GetMappedSymbol(date.AddDays(1)));
+            Assert.AreEqual( "BGU", mapFile.GetMappedSymbol(date));
+            Assert.AreEqual( "SPXL", mapFile.GetMappedSymbol(date.AddDays(1)));
         }
 
-        private static MapFileResolver CreateMapFileResolver()
-        {
+        private static MapFileResolver CreateMapFileResolver() {
             return new MapFileResolver(new List<MapFile>
             {
                 // remapped
-                new MapFile("goog", new List<MapFileRow>
+                new MapFile( "goog", new List<MapFileRow>
                 {
                     new MapFileRow(new DateTime(2014, 03, 27), "goocv"),
                     new MapFileRow(new DateTime(2014, 04, 02), "goocv"),
                     new MapFileRow(new DateTime(2050, 12, 31), "goog")
                 }),
-                new MapFile("googl", new List<MapFileRow>
+                new MapFile( "googl", new List<MapFileRow>
                 {
                     new MapFileRow(new DateTime(2004, 08, 19), "goog"),
                     new MapFileRow(new DateTime(2014, 04, 02), "goog"),
                     new MapFileRow(new DateTime(2050, 12, 31), "googl")
                 }),
                 // remapped (with both map files)
-                new MapFile("bgu", new List<MapFileRow>
+                new MapFile( "bgu", new List<MapFileRow>
                 {
                     new MapFileRow(new DateTime(2008, 11, 05), "bgu"),
                     new MapFileRow(new DateTime(2012, 06, 28), "bgu")
                 }),
-                new MapFile("spxl", new List<MapFileRow>
+                new MapFile( "spxl", new List<MapFileRow>
                 {
                     new MapFileRow(new DateTime(2008, 11, 05), "bgu"),
                     new MapFileRow(new DateTime(2012, 06, 28), "bgu"),
                     new MapFileRow(new DateTime(2050, 12, 31), "spxl")
                 }),
                 // straight mapping
-                new MapFile("spy", new List<MapFileRow>
+                new MapFile( "spy", new List<MapFileRow>
                 {
                     new MapFileRow(new DateTime(1998, 01, 02), "spy"),
                     new MapFileRow(new DateTime(2050, 12, 31), "spy")
                 }),
                 // new share class overtakes old share class same symbol
-                new MapFile("oih.1", new List<MapFileRow>
+                new MapFile( "oih.1", new List<MapFileRow>
                 {
                     new MapFileRow(new DateTime(2010, 02, 07), "oih"),
                     new MapFileRow(new DateTime(2011, 12, 20), "oih")
                 }),
-                new MapFile("oih", new List<MapFileRow>
+                new MapFile( "oih", new List<MapFileRow>
                 {
                     new MapFileRow(new DateTime(2011, 12, 21), "oih"),
                     new MapFileRow(new DateTime(2050, 12, 31), "oih")

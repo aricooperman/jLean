@@ -30,8 +30,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
     public class LiveFillForwardEnumeratorTests
     {
         [Test]
-        public void FillsForwardOnNulls()
-        {
+        public void FillsForwardOnNulls() {
             reference = new DateTime(2015, 10, 08);
             period = Time.OneSecond;
             underlying = new List<BaseData>

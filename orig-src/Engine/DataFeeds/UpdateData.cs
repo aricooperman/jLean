@@ -47,8 +47,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="target">The end consumer/user of the dat</param>
         /// <param name="dataType">The type of data in the list</param>
         /// <param name="data">The update data</param>
-        public UpdateData(T target, Type dataType, IReadOnlyList<BaseData> data)
-        {
+        public UpdateData(T target, Type dataType, IReadOnlyList<BaseData> data) {
             Target = target;
             Data = data;
             DataType = dataType;

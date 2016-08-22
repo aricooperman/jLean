@@ -45,8 +45,7 @@ package com.quantconnect.lean.Securities
         /// into the consolidator system.
         /// </summary>
         /// <param name="indicator">The auto-updating indicator</param>
-        public IndicatorVolatilityModel(IIndicator<T> indicator)
-        {
+        public IndicatorVolatilityModel(IIndicator<T> indicator) {
             _indicator = indicator;
         }
 
@@ -58,8 +57,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="indicator">The auto-updating indicator</param>
         /// <param name="indicatorUpdate">Function delegate used to update the indicator on each call to <see cref="Update"/></param>
-        public IndicatorVolatilityModel(IIndicator<T> indicator, Action<Security, BaseData, IIndicator<T>> indicatorUpdate)
-        {
+        public IndicatorVolatilityModel(IIndicator<T> indicator, Action<Security, BaseData, IIndicator<T>> indicatorUpdate) {
             _indicator = indicator;
             _indicatorUpdate = indicatorUpdate;
         }
@@ -70,10 +68,8 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="security">The security to calculate volatility for</param>
         /// <param name="data">The new piece of data for the security</param>
-        public void Update(Security security, BaseData data)
-        {
-            if (_indicatorUpdate != null)
-            {
+        public void Update(Security security, BaseData data) {
+            if( _indicatorUpdate != null ) {
                 _indicatorUpdate(security, data, _indicator);
             }
         }

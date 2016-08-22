@@ -51,8 +51,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         /// <summary>
         ///  Default constructor:
         /// </summary>
-        public TokenResponse() 
-        { }
+        public TokenResponse() { }
     }
 
 }

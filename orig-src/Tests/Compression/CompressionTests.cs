@@ -25,8 +25,7 @@ package com.quantconnect.lean.Tests.Compression
     public class CompressionTests
     {
         [Test]
-        public void ReadLinesCountMatchesLineCount()
-        {
+        public void ReadLinesCountMatchesLineCount() {
             static final String file = "../../../Data/equity/usa/minute/spy/20131008_trade.zip";
 
             static final int expected = 827;
@@ -36,28 +35,25 @@ package com.quantconnect.lean.Tests.Compression
         }
 
         [Test]
-        public void ZipBytes()
-        {
+        public void ZipBytes() {
             static final String fileContents = "this is the contents of a file!";
             fileBytes = Encoding.ASCII.GetBytes(fileContents); // using asci because UnzipData uses 1byte=1char
             zippedBytes = QuantConnect.Compression.ZipBytes(fileBytes, "entry");
-            File.WriteAllBytes("entry.zip", zippedBytes);
-            unzipped = QuantConnect.Compression.Unzip("entry.zip").ToList();
+            File.WriteAllBytes( "entry.zip", zippedBytes);
+            unzipped = QuantConnect.Compression.Unzip( "entry.zip").ToList();
             Assert.AreEqual(1, unzipped.Count);
-            Assert.AreEqual("entry", unzipped[0].Key);
+            Assert.AreEqual( "entry", unzipped[0].Key);
             Assert.AreEqual(fileContents, unzipped[0].Value.Single());
         }
 
         [Test]
-        public void ExtractsZipEntryByName()
-        {
-            zip = Path.Combine("TestData", "multizip.zip");
+        public void ExtractsZipEntryByName() {
+            zip = Path.Combine( "TestData", "multizip.zip");
             ZipFile zipFile;
             using (entryStream = QuantConnect.Compression.Unzip(zip, "multizip/two.txt", out zipFile))
-            using (zipFile)
-            {
+            using (zipFile) {
                 text = entryStream.ReadToEnd();
-                Assert.AreEqual("2", text);
+                Assert.AreEqual( "2", text);
             }
         }
     }

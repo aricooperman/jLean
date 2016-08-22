@@ -42,11 +42,10 @@ package com.quantconnect.lean.Api
         /// </summary>
         /// <param name="userId">User Id number from QuantConnect.com account. Found at www.quantconnect.com/account </param>
         /// <param name="token">Access token for the QuantConnect account. Found at www.quantconnect.com/account </param>
-        public ApiConnection(int userId, String token)
-        {
+        public ApiConnection(int userId, String token) {
             _token = token;
             _userId = userId.toString();
-            Client = new RestClient("https://www.quantconnect.com/api/v2/");
+            Client = new RestClient( "https://www.quantconnect.com/api/v2/");
         }
 
         /// <summary>
@@ -56,10 +55,9 @@ package com.quantconnect.lean.Api
         {
             get
             {
-                request = new RestRequest("authenticate", Method.GET);
+                request = new RestRequest( "authenticate", Method.GET);
                 AuthenticationResponse response;
-                if (TryRequest(request, out response))
-                {
+                if( TryRequest(request, out response)) {
                     return response.Success;
                 }
                 return false;
@@ -83,7 +81,7 @@ package com.quantconnect.lean.Api
                 // Timestamps older than 1800 seconds will not work.
                 timestamp = (int)Time.TimeStamp();
                 hash = CreateSecureHash(timestamp);
-                request.AddHeader("Timestamp", timestamp.toString());
+                request.AddHeader( "Timestamp", timestamp.toString());
                 Client.Authenticator = new HttpBasicAuthenticator(_userId, hash);
                 
                 // Execute the authenticated REST API Call
@@ -91,14 +89,12 @@ package com.quantconnect.lean.Api
 
                 //Verify success
                 result = JsonConvert.DeserializeObject<T>(restsharpResponse.Content);
-                if (!result.Success)
-                {
+                if( !result.Success) {
                     //result;
                     return false;
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err, "Api.ApiConnection() Failed to make REST request.");
                 result = null;
                 return false;
@@ -110,11 +106,10 @@ package com.quantconnect.lean.Api
         /// Generate a secure hash for the authorization headers.
         /// </summary>
         /// <returns>Time based hash of user token and timestamp.</returns>
-        private String CreateSecureHash(int timestamp)
-        {
+        private String CreateSecureHash(int timestamp) {
             // Create a new hash using current UTC timestamp.
             // Hash must be generated fresh each time.
-            data = String.format("{0}:{1}", _token, timestamp);
+            data = String.format( "%1$s:%2$s", _token, timestamp);
             return SHA256(data);
         }
 
@@ -123,14 +118,12 @@ package com.quantconnect.lean.Api
         /// </summary>
         /// <param name="data">Data to be hashed by SHA256</param>
         /// <returns>Hashed string.</returns>
-        private String SHA256( String data)
-        {
+        private String SHA256( String data) {
             crypt = new SHA256Managed();
             hash = new StringBuilder();
             crypto = crypt.ComputeHash(Encoding.UTF8.GetBytes(data), 0, Encoding.UTF8.GetByteCount(data));
-            foreach (theByte in crypto)
-            {
-                hash.Append(theByte.toString("x2"));
+            foreach (theByte in crypto) {
+                hash.Append(theByte.toString( "x2"));
             }
             return hash.toString();
         }

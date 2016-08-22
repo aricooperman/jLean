@@ -53,10 +53,8 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
         /// Gets a basic title for the type of transaction
         /// </summary>
         /// <returns></returns>
-        public String GetTitle()
-        {
-            switch ( type )
-            {
+        public String GetTitle() {
+            switch ( type ) {
                 case "CloseOrder":
                     return "Order Closed";
                 case "SellLimit":
@@ -71,11 +69,9 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
         /// 
         /// </summary>
         /// <returns></returns>
-        public String GetReadableString()
-        {
+        public String GetReadableString() {
             String readable = units + " " + instrument + " at " + price;
-            if ( pl != 0 )
-            {
+            if(  pl != 0 ) {
                 readable += "\nP/L: " + pl;
             }
             return readable;

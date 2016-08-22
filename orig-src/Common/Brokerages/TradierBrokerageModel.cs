@@ -38,8 +38,7 @@ package com.quantconnect.lean.Brokerages
         /// <param name="accountType">The type of account to be modelled, defaults to 
         /// <see cref="QuantConnect.AccountType.Margin"/></param>
         public TradierBrokerageModel(AccountType accountType = AccountType.Margin)
-            : base(accountType)
-        {
+            : base(accountType) {
         }
 
         /// <summary>
@@ -53,13 +52,11 @@ package com.quantconnect.lean.Brokerages
         /// <param name="order">The order to be processed</param>
         /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be submitted</param>
         /// <returns>True if the brokerage could process the order, false otherwise</returns>
-        public override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message)
-        {
+        public @Override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
             message = null;
 
             securityType = order.SecurityType;
-            if (securityType != SecurityType.Equity)
-            {
+            if( securityType != SecurityType.Equity) {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "NotSupported",
                     "This model only supports equities."
                     );
@@ -67,8 +64,7 @@ package com.quantconnect.lean.Brokerages
                 return false;
             }
 
-            if (!CanExecuteOrder(security, order))
-            {
+            if( !CanExecuteOrder(security, order)) {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "ExtendedMarket",
                     "Tradier does not support extended market hours trading.  Your order will be processed at market open."
                     );
@@ -86,13 +82,11 @@ package com.quantconnect.lean.Brokerages
         /// <param name="request">The requested update to be made to the order</param>
         /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be updated</param>
         /// <returns>True if the brokerage would allow updating the order, false otherwise</returns>
-        public override boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message)
-        {
+        public @Override boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message) {
             message = null;
 
             // Tradier doesn't allow updating order quantities
-            if (request.Quantity != null && request.Quantity != order.Quantity)
-            {
+            if( request.Quantity != null && request.Quantity != order.Quantity) {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "UpdateRejected",
                     "Traider does not support updating order quantities."
                     );
@@ -113,19 +107,16 @@ package com.quantconnect.lean.Brokerages
         /// <param name="security">The security being ordered</param>
         /// <param name="order">The order to test for execution</param>
         /// <returns>True if the brokerage would be able to perform the execution, false otherwise</returns>
-        public override boolean CanExecuteOrder(Security security, Order order)
-        {
+        public @Override boolean CanExecuteOrder(Security security, Order order) {
             EquityExchange.SetLocalDateTimeFrontier(security.Exchange.LocalTime);
 
             cache = security.GetLastData();
-            if (cache == null)
-            {
+            if( cache == null ) {
                 return false;
             }
 
             // tradier doesn't support after hours trading
-            if (!EquityExchange.IsOpenDuringBar(cache.Time, cache.EndTime, false))
-            {
+            if( !EquityExchange.IsOpenDuringBar(cache.Time, cache.EndTime, false)) {
                 return false;
             }
             return true;
@@ -136,13 +127,11 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="tickets">The open tickets matching the split event</param>
         /// <param name="split">The split event data</param>
-        public override void ApplySplit(List<OrderTicket> tickets, Split split)
-        {
+        public @Override void ApplySplit(List<OrderTicket> tickets, Split split) {
             // tradier cancels reverse splits
-            splitFactor = split.SplitFactor;
-            if (splitFactor > 1.0m)
-            {
-                tickets.ForEach(ticket => ticket.Cancel("Tradier Brokerage cancels open orders on reverse split symbols"));
+            splitFactor = split.splitFactor;
+            if( splitFactor > 1.0m) {
+                tickets.ForEach(ticket => ticket.Cancel( "Tradier Brokerage cancels open orders on reverse split symbols"));
             }
             else
             {
@@ -155,8 +144,7 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="security">The security to get fill model for</param>
         /// <returns>The new fill model for this brokerage</returns>
-        public override IFillModel GetFillModel(Security security)
-        {
+        public @Override IFillModel GetFillModel(Security security) {
             return new ImmediateFillModel();
         }
 
@@ -165,8 +153,7 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="security">The security to get a fee model for</param>
         /// <returns>The new fee model for this brokerage</returns>
-        public override IFeeModel GetFeeModel(Security security)
-        {
+        public @Override IFeeModel GetFeeModel(Security security) {
             return new ConstantFeeModel(1m);
         }
 
@@ -175,8 +162,7 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="security">The security to get a slippage model for</param>
         /// <returns>The new slippage model for this brokerage</returns>
-        public override ISlippageModel GetSlippageModel(Security security)
-        {
+        public @Override ISlippageModel GetSlippageModel(Security security) {
             return new SpreadSlippageModel();
         }
 

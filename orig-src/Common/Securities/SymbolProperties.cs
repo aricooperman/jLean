@@ -68,8 +68,7 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Creates an instance of the <see cref="SymbolProperties"/> class
         /// </summary>
-        public SymbolProperties( String description, String quoteCurrency, BigDecimal contractMultiplier, BigDecimal pipSize, BigDecimal lotSize)
-        {
+        public SymbolProperties( String description, String quoteCurrency, BigDecimal contractMultiplier, BigDecimal pipSize, BigDecimal lotSize) {
             Description = description;
             QuoteCurrency = quoteCurrency;
             ContractMultiplier = contractMultiplier;
@@ -82,9 +81,8 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="quoteCurrency">The quote currency of the symbol</param>
         /// <returns>A default instance of the<see cref="SymbolProperties"/> class</returns>
-        public static SymbolProperties GetDefault( String quoteCurrency)
-        {
-            return new SymbolProperties("", quoteCurrency.toUpperCase(), 1, 0.01m, 1);
+        public static SymbolProperties GetDefault( String quoteCurrency) {
+            return new SymbolProperties( "", quoteCurrency.toUpperCase(), 1, 0.01m, 1);
         }
     }
 }

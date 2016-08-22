@@ -25,28 +25,23 @@ package com.quantconnect.lean.Tests.Brokerages
         private readonly BigDecimal _lowLimit;
 
         public StopMarketOrderTestParameters(Symbol symbol, BigDecimal highLimit, BigDecimal lowLimit)
-            : base(symbol)
-        {
+            : base(symbol) {
             _highLimit = highLimit;
             _lowLimit = lowLimit;
         }
 
-        public override Order CreateShortOrder(int quantity)
-        {
+        public @Override Order CreateShortOrder(int quantity) {
             return new StopMarketOrder(Symbol, -Math.Abs(quantity), _lowLimit, DateTime.Now);
         }
 
-        public override Order CreateLongOrder(int quantity)
-        {
+        public @Override Order CreateLongOrder(int quantity) {
             return new StopMarketOrder(Symbol, Math.Abs(quantity), _highLimit, DateTime.Now);
         }
 
-        public override boolean ModifyOrderToFill(IBrokerage brokerage, Order order, BigDecimal lastMarketPrice)
-        {
+        public @Override boolean ModifyOrderToFill(IBrokerage brokerage, Order order, BigDecimal lastMarketPrice) {
             stop = (StopMarketOrder)order;
             previousStop = stop.StopPrice;
-            if (order.Quantity > 0)
-            {
+            if( order.Quantity > 0) {
                 // for stop buys we need to decrease the stop price
                 stop.StopPrice = Math.Min(stop.StopPrice, Math.Max(stop.StopPrice / 2, lastMarketPrice));
             }
@@ -58,7 +53,7 @@ package com.quantconnect.lean.Tests.Brokerages
             return stop.StopPrice != previousStop;
         }
 
-        public override OrderStatus ExpectedStatus
+        public @Override OrderStatus ExpectedStatus
         {
             // default limit orders will only be submitted, not filled
             get { return OrderStatus.Submitted; }

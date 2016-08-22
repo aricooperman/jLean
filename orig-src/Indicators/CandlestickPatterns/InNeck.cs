@@ -43,8 +43,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// </summary>
         /// <param name="name">The name of this indicator</param>
         public InNeck( String name) 
-            : base(name, Math.Max(CandleSettings.Get(CandleSettingType.Equal).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 1 + 1)
-        {
+            : base(name, Math.Max(CandleSettings.Get(CandleSettingType.Equal).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 1 + 1) {
             _equalAveragePeriod = CandleSettings.Get(CandleSettingType.Equal).AveragePeriod;
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
         }
@@ -53,14 +52,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Initializes a new instance of the <see cref="InNeck"/> class.
         /// </summary>
         public InNeck()
-            : this("INNECK")
-        {
+            : this( "INNECK") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -71,17 +69,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
-                if (Samples >= Period - _equalAveragePeriod)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
+                if( Samples >= Period - _equalAveragePeriod) {
                     _equalPeriodTotal += GetCandleRange(CandleSettingType.Equal, window[1]);
                 }
 
-                if (Samples >= Period - _bodyLongAveragePeriod)
-                {
+                if( Samples >= Period - _bodyLongAveragePeriod) {
                     _bodyLongPeriodTotal += GetCandleRange(CandleSettingType.BodyLong, window[1]);
                 }
 
@@ -89,7 +83,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             }
 
             BigDecimal value;
-            if (
+            if( 
                 // 1st: black
                 GetCandleColor(window[1]) == CandleColor.Black &&
                 //      long
@@ -121,8 +115,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _equalPeriodTotal = 0m;
             _bodyLongPeriodTotal = 0m;
             base.Reset();

@@ -35,8 +35,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// </summary>
         /// <param name="enumeratorFactory">Enumerator factory used to regenerate the underlying
         /// enumerator when it ends</param>
-        public RefreshEnumerator(Func<IEnumerator<T>> enumeratorFactory)
-        {
+        public RefreshEnumerator(Func<IEnumerator<T>> enumeratorFactory) {
             _enumeratorFactory = enumeratorFactory;
         }
 
@@ -47,13 +46,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
         /// </returns>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public boolean MoveNext()
-        {
+        public boolean MoveNext() {
             _enumerator = _enumeratorFactory.Invoke();
 
             moveNext = _enumerator.MoveNext();
-            if (moveNext)
-            {
+            if( moveNext) {
                 _current = _enumerator.Current;
             }
             else
@@ -69,8 +66,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public void Reset()
-        {
+        public void Reset() {
             _enumerator.Reset();
         }
 
@@ -101,8 +97,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             _enumerator.Dispose();
         }
     }

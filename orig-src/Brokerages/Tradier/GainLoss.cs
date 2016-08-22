@@ -31,8 +31,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierGainLossClosed GainLossClosed;
 
         /// Null Constructor
-        public TradierGainLossContainer()
-        { }
+        public TradierGainLossContainer() { }
     }
 
     /// <summary>
@@ -90,8 +89,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         /// <summary>
         /// Closed position trade summary
         /// </summary>
-        public TradierGainLoss() 
-        { }
+        public TradierGainLoss() { }
     }
 
 }

@@ -26,7 +26,7 @@ package com.quantconnect.lean.Orders
         /// <summary>
         /// MarketOnOpen Order Type
         /// </summary>
-        public override OrderType Type
+        public @Override OrderType Type
         {
             get { return OrderType.MarketOnOpen; }
         }
@@ -34,8 +34,7 @@ package com.quantconnect.lean.Orders
         /// <summary>
         /// Intiializes a new instance of the <see cref="MarketOnOpenOrder"/> class.
         /// </summary>
-        public MarketOnOpenOrder()
-        {
+        public MarketOnOpenOrder() {
         }
 
         /// <summary>
@@ -46,16 +45,14 @@ package com.quantconnect.lean.Orders
         /// <param name="time">The current time</param>
         /// <param name="tag">A user defined tag for the order</param>
         public MarketOnOpenOrder(Symbol symbol, int quantity, DateTime time, String tag = "")
-            : base(symbol, quantity, time, tag)
-        {
+            : base(symbol, quantity, time, tag) {
         }
 
         /// <summary>
         /// Gets the order value in units of the security's quote currency
         /// </summary>
         /// <param name="security">The security matching this order's symbol</param>
-        protected override BigDecimal GetValueImpl(Security security)
-        {
+        protected @Override BigDecimal GetValueImpl(Security security) {
             return Quantity*security.Price;
         }
 
@@ -63,8 +60,7 @@ package com.quantconnect.lean.Orders
         /// Creates a deep-copy clone of this order
         /// </summary>
         /// <returns>A copy of this order</returns>
-        public override Order Clone()
-        {
+        public @Override Order Clone() {
             order = new MarketOnOpenOrder();
             CopyTo(order);
             return order;

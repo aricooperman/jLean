@@ -34,8 +34,7 @@ package com.quantconnect.lean.Tests.Engine.BrokerageTransactionHandlerTests
         private QCAlgorithm _algorithm;
 
         [SetUp]
-        public void Initialize()
-        {
+        public void Initialize() {
             _algorithm = new QCAlgorithm();
             _algorithm.SetBrokerageModel(BrokerageName.FxcmBrokerage);
             _algorithm.SetCash(100000);
@@ -44,8 +43,7 @@ package com.quantconnect.lean.Tests.Engine.BrokerageTransactionHandlerTests
         }
 
         [Test]
-        public void OrderQuantityIsFlooredToNearestMultipleOfLotSizeWhenLongOrderIsRounded()
-        {
+        public void OrderQuantityIsFlooredToNearestMultipleOfLotSizeWhenLongOrderIsRounded() {
 
             //Initializes the transaction handler
             transactionHandler = new BrokerageTransactionHandler();
@@ -74,8 +72,7 @@ package com.quantconnect.lean.Tests.Engine.BrokerageTransactionHandlerTests
         }
 
         [Test]
-        public void OrderQuantityIsCeiledToNearestMultipleOfLotSizeWhenShortOrderIsRounded()
-        {
+        public void OrderQuantityIsCeiledToNearestMultipleOfLotSizeWhenShortOrderIsRounded() {
             //Initializes the transaction handler
             transactionHandler = new BrokerageTransactionHandler();
             transactionHandler.Initialize(_algorithm, new BacktestingBrokerage(_algorithm), new BacktestingResultHandler());
@@ -103,8 +100,7 @@ package com.quantconnect.lean.Tests.Engine.BrokerageTransactionHandlerTests
         }
 
         [Test]
-        public void OrderIsNotPlacedWhenOrderIsLowerThanLotSize()
-        {
+        public void OrderIsNotPlacedWhenOrderIsLowerThanLotSize() {
             //Initializes the transaction handler
             transactionHandler = new BrokerageTransactionHandler();
             transactionHandler.Initialize(_algorithm, new BacktestingBrokerage(_algorithm), new BacktestingResultHandler());

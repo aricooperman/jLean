@@ -51,13 +51,11 @@ package com.quantconnect.lean.Indicators
         /// <param name="fullPeriod">The full period.</param>
         /// <exception cref="System.ArgumentException">The minimum period should be greater of 3.;minPeriod</exception>
         public MomersionIndicator( String name, int? minPeriod, int fullPeriod)
-            : base(name, 3)
-        {
+            : base(name, 3) {
             _fullPeriod = fullPeriod;
             _multipliedDiffWindow = new RollingWindow<decimal>(fullPeriod);
-            if (minPeriod < 4)
-            {
-                throw new ArgumentException("The minimum period should be greater of 3.", "minPeriod");
+            if( minPeriod < 4) {
+                throw new ArgumentException( "The minimum period should be greater of 3.", "minPeriod");
             }
             _minPeriod = minPeriod;
         }
@@ -68,8 +66,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="minPeriod">The minimum period.</param>
         /// <param name="fullPeriod">The full period.</param>
         public MomersionIndicator(int minPeriod, int fullPeriod)
-            : this("Momersion_" + fullPeriod, minPeriod, fullPeriod)
-        {
+            : this( "Momersion_" + fullPeriod, minPeriod, fullPeriod) {
         }
 
         /// <summary>
@@ -77,20 +74,18 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="fullPeriod">The full period.</param>
         public MomersionIndicator(int fullPeriod)
-            : this("Momersion_" + fullPeriod, null, fullPeriod)
-        {
+            : this( "Momersion_" + fullPeriod, null, fullPeriod) {
         }
         
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get
             {
-                if (_minPeriod.HasValue)
-                {
+                if( _minPeriod.HasValue) {
                     return _multipliedDiffWindow.Count >= _minPeriod;
                 }
                 else
@@ -103,8 +98,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             base.Reset();
             _multipliedDiffWindow.Reset();
         }
@@ -118,19 +112,17 @@ package com.quantconnect.lean.Indicators
         /// <returns>
         /// A new value for this indicator
         /// </returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             int Mc = 0;
             int MRc = 0;
             BigDecimal momersion = 50m;
 
-            if (window.Count >= 3) _multipliedDiffWindow.Add((window[0] - window[1]) * (window[1] - window[2]));
+            if( window.Count >= 3) _multipliedDiffWindow.Add((window[0] - window[1]) * (window[1] - window[2]));
 
             // Estimate the indicator if less than 50% of observation are zero. Avoid division by
             // zero and estimations with few real observations in case of forward filled data.
-            if (this.IsReady &&
-                _multipliedDiffWindow.Count(obs => obs == 0) < 0.5 * _multipliedDiffWindow.Count)
-            {
+            if( this.IsReady &&
+                _multipliedDiffWindow.Count(obs => obs == 0) < 0.5 * _multipliedDiffWindow.Count) {
                 Mc = _multipliedDiffWindow.Count(obs => obs > 0);
                 MRc = _multipliedDiffWindow.Count(obs => obs < 0);
                 momersion = 100m * Mc / (Mc + MRc);

@@ -23,17 +23,15 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 {
     [TestFixture]
-    [Ignore("These tests require the IBController and IB TraderWorkstation to be installed.")]
+    [Ignore( "These tests require the IBController and IB TraderWorkstation to be installed.")]
     public class InteractiveBrokersBrokerageFactoryTests
     {
         public static readonly IAlgorithm AlgorithmDependency = new InteractiveBrokersBrokerageFactoryAlgorithmDependency();
 
         [Test]
-        public void InitializesInstanceFromComposer()
-        {
+        public void InitializesInstanceFromComposer() {
             composer = Composer.Instance;
-            using (factory = composer.Single<IBrokerageFactory>(instance => instance.BrokerageType == typeof (InteractiveBrokersBrokerage)))
-            {
+            using (factory = composer.Single<IBrokerageFactory>(instance => instance.BrokerageType == typeof (InteractiveBrokersBrokerage))) {
                 Assert.IsNotNull(factory);
 
                 job = new LiveNodePacket {BrokerageData = factory.BrokerageData};

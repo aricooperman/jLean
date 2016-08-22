@@ -45,8 +45,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         /// Initializes a new instance of the <see cref="FuncDataQueueHandler"/> class
         /// </summary>
         /// <param name="getNextTicksFunction">The functional implementation for the <see cref="GetNextTicks"/> function</param>
-        public FuncDataQueueHandler(Func<FuncDataQueueHandler, IEnumerable<BaseData>> getNextTicksFunction)
-        {
+        public FuncDataQueueHandler(Func<FuncDataQueueHandler, IEnumerable<BaseData>> getNextTicksFunction) {
             _getNextTicksFunction = getNextTicksFunction;
         }
 
@@ -54,8 +53,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         /// Get the next ticks from the live trading data queue
         /// </summary>
         /// <returns>IEnumerable list of ticks since the last update.</returns>
-        public IEnumerable<BaseData> GetNextTicks()
-        {
+        public IEnumerable<BaseData> GetNextTicks() {
             return _getNextTicksFunction(this);
         }
 
@@ -64,10 +62,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         /// </summary>
         /// <param name="job">Job we're subscribing for:</param>
         /// <param name="symbols">The symbols to be added keyed by SecurityType</param>
-        public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols)
-        {
-            foreach (symbol in symbols)
-            {
+        public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
+            foreach (symbol in symbols) {
                 lock (_lock) _subscriptions.Add(symbol);
             }
         }
@@ -77,10 +73,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         /// </summary>
         /// <param name="job">Job we're processing.</param>
         /// <param name="symbols">The symbols to be removed keyed by SecurityType</param>
-        public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols)
-        {
-            foreach (symbol in symbols)
-            {
+        public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
+            foreach (symbol in symbols) {
                 lock (_lock) _subscriptions.Remove(symbol);
             }
         }

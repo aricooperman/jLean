@@ -39,11 +39,9 @@ package com.quantconnect.lean.Indicators
         /// <param name="n">The window period (must be even). Example value: 16</param>
         /// <param name="longPeriod">The average period. Example value: 198</param>
         public FractalAdaptiveMovingAverage( String name, int n, int longPeriod)
-            : base(name)
-        {
-            if (n % 2 > 0)
-            {
-                throw new ArgumentException("N must be even.");
+            : base(name) {
+            if( n % 2 > 0) {
+                throw new ArgumentException( "N must be even.");
             }
             _n = n;
             _w = CalculateW(longPeriod);
@@ -57,8 +55,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of the indicator instance</param>
         /// <param name="n">The window period (must be even). Example value: 16</param>
         public FractalAdaptiveMovingAverage(int n)
-            : this("FRAMA" + n, n, 198)
-        {
+            : this( "FRAMA" + n, n, 198) {
 
         }
 
@@ -67,15 +64,13 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The data for the calculation</param>
         /// <returns>The average value</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             price = (double)(input.High + input.Low) / 2;
             _high.Add((double)input.High);
             _low.Add((double)input.Low);
 
             // our first data point just return identity
-            if (!_high.IsReady)
-            {
+            if( !_high.IsReady) {
                 _filt = price;
             }
             double n1;
@@ -93,22 +88,20 @@ package com.quantconnect.lean.Indicators
 
             n1 = (hh - ll) / (_n / 2);
 
-            if (_high.IsReady)
-            {
+            if( _high.IsReady) {
                 hh = _high.Skip(_n / 2).Take(_n / 2).Max();
                 ll = _low.Skip(_n / 2).Take(_n / 2).Min();
             }
 
             n2 = (hh - ll) / (_n / 2);
 
-            if (n1 > 0 && n2 > 0 && n3 > 0)
-            {
+            if( n1 > 0 && n2 > 0 && n3 > 0) {
                 dimen = (Math.Log(n1 + n2) - Math.Log(n3)) / Math.Log(2);
             };
 
             alpha = Math.Exp(_w * (dimen - 1));
-            if (alpha < .01) { alpha = .01; }
-            if (alpha > 1) { alpha = 1; }
+            if( alpha < .01) { alpha = .01; }
+            if( alpha > 1) { alpha = 1; }
 
             _filt = alpha * price + (1 - alpha) * _filt;
 
@@ -116,8 +109,7 @@ package com.quantconnect.lean.Indicators
 
         }
 
-        private double CalculateW(int period)
-        {
+        private double CalculateW(int period) {
             return Math.Log(2d / (period + 1d));
         }
 
@@ -125,7 +117,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Returns whether the indicator will return valid results
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return _high.IsReady; }
         }
@@ -133,8 +125,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets the average to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _filt = 0;
             _high.Reset();
 			_low.Reset();

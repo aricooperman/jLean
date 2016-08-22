@@ -31,8 +31,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="numberOfDays">The number of days required for settlement</param>
         /// <param name="timeOfDay">The time of day used for settlement</param>
-        public DelayedSettlementModel(int numberOfDays, TimeSpan timeOfDay)
-        {
+        public DelayedSettlementModel(int numberOfDays, TimeSpan timeOfDay) {
             _numberOfDays = numberOfDays;
             _timeOfDay = timeOfDay;
         }
@@ -45,22 +44,19 @@ package com.quantconnect.lean.Securities
         /// <param name="applicationTimeUtc">The fill time (in UTC)</param>
         /// <param name="currency">The currency symbol</param>
         /// <param name="amount">The amount of cash to apply</param>
-        public void ApplyFunds(SecurityPortfolioManager portfolio, Security security, DateTime applicationTimeUtc, String currency, BigDecimal amount)
-        {
-            if (amount > 0)
-            {
+        public void ApplyFunds(SecurityPortfolioManager portfolio, Security security, DateTime applicationTimeUtc, String currency, BigDecimal amount) {
+            if( amount > 0) {
                 // positive amount: sell order filled
 
                 portfolio.UnsettledCashBook[currency].AddAmount(amount);
 
                 // find the correct settlement date (usually T+3 or T+1)
                 settlementDate = applicationTimeUtc.ConvertFromUtc(security.Exchange.TimeZone).Date;
-                for (i = 0; i < _numberOfDays; i++)
-                {
+                for (i = 0; i < _numberOfDays; i++) {
                     settlementDate = settlementDate.AddDays(1);
 
                     // only count days when market is open
-                    if (!security.Exchange.Hours.IsDateOpen(settlementDate))
+                    if( !security.Exchange.Hours.IsDateOpen(settlementDate))
                         i--;
                 }
 

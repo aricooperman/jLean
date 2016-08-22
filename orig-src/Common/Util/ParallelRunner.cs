@@ -52,8 +52,7 @@ package com.quantconnect.lean.Util
         /// Initializes a new instance of the <see cref="ParallelRunnerController"/> class
         /// </summary>
         /// <param name="threadCount">The number of dedicated threads to spin up</param>
-        public ParallelRunnerController(int threadCount)
-        {
+        public ParallelRunnerController(int threadCount) {
             _threadCount = threadCount;
             _waitHandle = new ManualResetEvent(false);
             _workers = new ParallelRunnerWorker[threadCount];
@@ -65,9 +64,8 @@ package com.quantconnect.lean.Util
         /// Schedules the specified work item to run
         /// </summary>
         /// <param name="workItem">The work item to schedule</param>
-        public void Schedule(IParallelRunnerWorkItem workItem)
-        {
-            if (workItem.IsReady) _processQueue.Add(workItem);
+        public void Schedule(IParallelRunnerWorkItem workItem) {
+            if( workItem.IsReady) _processQueue.Add(workItem);
             else _holdQueue.Add(workItem);
         }
 
@@ -76,14 +74,11 @@ package com.quantconnect.lean.Util
         /// This method is indempotent
         /// </summary>
         /// <param name="token">The cancellation token</param>
-        public void Start(CancellationToken token)
-        {
+        public void Start(CancellationToken token) {
             WaitHandle[] waitHandles;
-            lock (_sync)
-            {
-                if (_workers[0] != null) return;
-                for (int i = 0; i < _threadCount; i++)
-                {
+            lock (_sync) {
+                if( _workers[0] != null ) return;
+                for (int i = 0; i < _threadCount; i++) {
                     worker = new ParallelRunnerWorker(this, _processQueue);
                     worker.Start(token);
                     _workers[i] = worker;
@@ -97,8 +92,7 @@ package com.quantconnect.lean.Util
                 WaitHandle.WaitAll(waitHandles);
                 _waitHandle.Set();
 
-                foreach (worker in _workers)
-                {
+                foreach (worker in _workers) {
                     worker.Dispose();
                 }
 
@@ -113,14 +107,11 @@ package com.quantconnect.lean.Util
         /// items are ready to run
         /// </summary>
         /// <param name="token">The cancellation token</param>
-        private void ProcessHoldQueue(CancellationToken token)
-        {
+        private void ProcessHoldQueue(CancellationToken token) {
             try
             {
-                foreach (workItem in _holdQueue.GetConsumingEnumerable(token))
-                {
-                    if (workItem.IsReady)
-                    {
+                foreach (workItem in _holdQueue.GetConsumingEnumerable(token)) {
+                    if( workItem.IsReady) {
                         _processQueue.Add(workItem, token);
                     }
                     else
@@ -129,15 +120,12 @@ package com.quantconnect.lean.Util
                     }
                 }
             }
-            catch (OperationCanceledException err)
-            {
-                if (!token.IsCancellationRequested)
-                {
+            catch (OperationCanceledException err) {
+                if( !token.IsCancellationRequested) {
                     Log.Error(err);
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }
@@ -146,21 +134,17 @@ package com.quantconnect.lean.Util
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            lock (_sync)
-            {
-                if (_holdQueue != null) _holdQueue.Dispose();
-                if (_processQueue != null) _processQueue.Dispose();
-                if (_processQueueThread != null && _processQueueThread.IsAlive) _processQueueThread.Abort();
+        public void Dispose() {
+            lock (_sync) {
+                if( _holdQueue != null ) _holdQueue.Dispose();
+                if( _processQueue != null ) _processQueue.Dispose();
+                if( _processQueueThread != null && _processQueueThread.IsAlive) _processQueueThread.Abort();
 
-                foreach (worker in _workers)
-                {
+                foreach (worker in _workers) {
                     worker.Dispose();
                 }
 
-                if (_waitHandle != null)
-                {
+                if( _waitHandle != null ) {
                     _waitHandle.Set();
                     _waitHandle.Dispose();
                 }

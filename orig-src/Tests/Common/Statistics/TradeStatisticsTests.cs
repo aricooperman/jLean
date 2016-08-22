@@ -27,8 +27,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         private readonly DateTime _startTime = new DateTime(2015, 08, 06, 15, 30, 0);
         
         [Test]
-        public void NoTrades()
-        {
+        public void NoTrades() {
             statistics = new TradeStatistics(new List<Trade>());
 
             Assert.AreEqual(null, statistics.StartDateTime);
@@ -72,8 +71,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         }
 
         [Test]
-        public void ThreeWinners()
-        {
+        public void ThreeWinners() {
             statistics = new TradeStatistics(CreateThreeWinners());
 
             Assert.AreEqual(_startTime, statistics.StartDateTime);
@@ -89,8 +87,8 @@ package com.quantconnect.lean.Tests.Common.Statistics
             Assert.AreEqual(16.666666666666666666666666667m, statistics.AverageProfitLoss);
             Assert.AreEqual(16.666666666666666666666666667m, statistics.AverageProfit);
             Assert.AreEqual(0, statistics.AverageLoss);
-            Assert.AreEqual(TimeSpan.FromMinutes(20), statistics.AverageTradeDuration);
-            Assert.AreEqual(TimeSpan.FromMinutes(20), statistics.AverageWinningTradeDuration);
+            Assert.AreEqual(Duration.ofMinutes(20), statistics.AverageTradeDuration);
+            Assert.AreEqual(Duration.ofMinutes(20), statistics.AverageWinningTradeDuration);
             Assert.AreEqual(TimeSpan.Zero, statistics.AverageLosingTradeDuration);
             Assert.AreEqual(3, statistics.MaxConsecutiveWinningTrades);
             Assert.AreEqual(0, statistics.MaxConsecutiveLosingTrades);
@@ -116,8 +114,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
             Assert.AreEqual(6, statistics.TotalFees);
         }
 
-        private IEnumerable<Trade> CreateThreeWinners()
-        {
+        private IEnumerable<Trade> CreateThreeWinners() {
             time = _startTime;
 
             return new List<Trade>
@@ -168,8 +165,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         }
 
         [Test]
-        public void ThreeLosers()
-        {
+        public void ThreeLosers() {
             statistics = new TradeStatistics(CreateThreeLosers());
 
             Assert.AreEqual(_startTime, statistics.StartDateTime);
@@ -185,9 +181,9 @@ package com.quantconnect.lean.Tests.Common.Statistics
             Assert.AreEqual(-16.666666666666666666666666667m, statistics.AverageProfitLoss);
             Assert.AreEqual(0, statistics.AverageProfit);
             Assert.AreEqual(-16.666666666666666666666666667m, statistics.AverageLoss);
-            Assert.AreEqual(TimeSpan.FromMinutes(20), statistics.AverageTradeDuration);
+            Assert.AreEqual(Duration.ofMinutes(20), statistics.AverageTradeDuration);
             Assert.AreEqual(TimeSpan.Zero, statistics.AverageWinningTradeDuration);
-            Assert.AreEqual(TimeSpan.FromMinutes(20), statistics.AverageLosingTradeDuration);
+            Assert.AreEqual(Duration.ofMinutes(20), statistics.AverageLosingTradeDuration);
             Assert.AreEqual(0, statistics.MaxConsecutiveWinningTrades);
             Assert.AreEqual(3, statistics.MaxConsecutiveLosingTrades);
             Assert.AreEqual(0, statistics.ProfitLossRatio);
@@ -212,8 +208,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
             Assert.AreEqual(6, statistics.TotalFees);
         }
 
-        private IEnumerable<Trade> CreateThreeLosers()
-        {
+        private IEnumerable<Trade> CreateThreeLosers() {
             time = _startTime;
 
             return new List<Trade>
@@ -264,8 +259,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         }
 
         [Test]
-        public void TwoLosersOneWinner()
-        {
+        public void TwoLosersOneWinner() {
             statistics = new TradeStatistics(CreateTwoLosersOneWinner());
 
             Assert.AreEqual(_startTime, statistics.StartDateTime);
@@ -281,9 +275,9 @@ package com.quantconnect.lean.Tests.Common.Statistics
             Assert.AreEqual(-10, statistics.AverageProfitLoss);
             Assert.AreEqual(10, statistics.AverageProfit);
             Assert.AreEqual(-20, statistics.AverageLoss);
-            Assert.AreEqual(TimeSpan.FromSeconds(800), statistics.AverageTradeDuration);
-            Assert.AreEqual(TimeSpan.FromMinutes(10), statistics.AverageWinningTradeDuration);
-            Assert.AreEqual(TimeSpan.FromMinutes(15), statistics.AverageLosingTradeDuration);
+            Assert.AreEqual(Duration.ofSeconds(800), statistics.AverageTradeDuration);
+            Assert.AreEqual(Duration.ofMinutes(10), statistics.AverageWinningTradeDuration);
+            Assert.AreEqual(Duration.ofMinutes(15), statistics.AverageLosingTradeDuration);
             Assert.AreEqual(1, statistics.MaxConsecutiveWinningTrades);
             Assert.AreEqual(2, statistics.MaxConsecutiveLosingTrades);
             Assert.AreEqual(0.5m, statistics.ProfitLossRatio);
@@ -308,8 +302,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
             Assert.AreEqual(6, statistics.TotalFees);
         }
 
-        private IEnumerable<Trade> CreateTwoLosersOneWinner()
-        {
+        private IEnumerable<Trade> CreateTwoLosersOneWinner() {
             time = _startTime;
 
             return new List<Trade>
@@ -360,8 +353,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         }
 
         [Test]
-        public void OneWinnerTwoLosers()
-        {
+        public void OneWinnerTwoLosers() {
             statistics = new TradeStatistics(CreateOneWinnerTwoLosers());
 
             Assert.AreEqual(_startTime, statistics.StartDateTime);
@@ -377,9 +369,9 @@ package com.quantconnect.lean.Tests.Common.Statistics
             Assert.AreEqual(-10, statistics.AverageProfitLoss);
             Assert.AreEqual(10, statistics.AverageProfit);
             Assert.AreEqual(-20, statistics.AverageLoss);
-            Assert.AreEqual(TimeSpan.FromSeconds(800), statistics.AverageTradeDuration);
-            Assert.AreEqual(TimeSpan.FromMinutes(10), statistics.AverageWinningTradeDuration);
-            Assert.AreEqual(TimeSpan.FromMinutes(15), statistics.AverageLosingTradeDuration);
+            Assert.AreEqual(Duration.ofSeconds(800), statistics.AverageTradeDuration);
+            Assert.AreEqual(Duration.ofMinutes(10), statistics.AverageWinningTradeDuration);
+            Assert.AreEqual(Duration.ofMinutes(15), statistics.AverageLosingTradeDuration);
             Assert.AreEqual(1, statistics.MaxConsecutiveWinningTrades);
             Assert.AreEqual(2, statistics.MaxConsecutiveLosingTrades);
             Assert.AreEqual(0.5m, statistics.ProfitLossRatio);
@@ -404,8 +396,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
             Assert.AreEqual(6, statistics.TotalFees);
         }
 
-        private IEnumerable<Trade> CreateOneWinnerTwoLosers()
-        {
+        private IEnumerable<Trade> CreateOneWinnerTwoLosers() {
             time = _startTime;
 
             return new List<Trade>
@@ -456,8 +447,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
         }
 
         [Test]
-        public void OneLoserTwoWinners()
-        {
+        public void OneLoserTwoWinners() {
             statistics = new TradeStatistics(CreateOneLoserTwoWinners());
 
             Assert.AreEqual(_startTime, statistics.StartDateTime);
@@ -473,9 +463,9 @@ package com.quantconnect.lean.Tests.Common.Statistics
             Assert.AreEqual(3.3333333333333333333333333333m, statistics.AverageProfitLoss);
             Assert.AreEqual(15, statistics.AverageProfit);
             Assert.AreEqual(-20, statistics.AverageLoss);
-            Assert.AreEqual(TimeSpan.FromSeconds(800), statistics.AverageTradeDuration);
-            Assert.AreEqual(TimeSpan.FromMinutes(10), statistics.AverageWinningTradeDuration);
-            Assert.AreEqual(TimeSpan.FromMinutes(20), statistics.AverageLosingTradeDuration);
+            Assert.AreEqual(Duration.ofSeconds(800), statistics.AverageTradeDuration);
+            Assert.AreEqual(Duration.ofMinutes(10), statistics.AverageWinningTradeDuration);
+            Assert.AreEqual(Duration.ofMinutes(20), statistics.AverageLosingTradeDuration);
             Assert.AreEqual(2, statistics.MaxConsecutiveWinningTrades);
             Assert.AreEqual(1, statistics.MaxConsecutiveLosingTrades);
             Assert.AreEqual(0.75m, statistics.ProfitLossRatio);
@@ -496,12 +486,11 @@ package com.quantconnect.lean.Tests.Common.Statistics
             Assert.AreEqual(0.5m, statistics.ProfitToMaxDrawdownRatio);
             Assert.AreEqual(-25, statistics.MaximumEndTradeDrawdown);
             Assert.AreEqual(-18.333333333333333333333333334m, statistics.AverageEndTradeDrawdown);
-            Assert.AreEqual(TimeSpan.FromMinutes(40), statistics.MaximumDrawdownDuration);
+            Assert.AreEqual(Duration.ofMinutes(40), statistics.MaximumDrawdownDuration);
             Assert.AreEqual(6, statistics.TotalFees);
         }
 
-        private IEnumerable<Trade> CreateOneLoserTwoWinners()
-        {
+        private IEnumerable<Trade> CreateOneLoserTwoWinners() {
             time = _startTime;
 
             return new List<Trade>

@@ -29,8 +29,7 @@ package com.quantconnect.lean.Indicators
     /// </remarks>
     /// <typeparam name="T">The type of data input into this indicator</typeparam>
     public class CompositeIndicator<T> : IndicatorBase<T>
-        where T : BaseData, new()
-    {
+        where T : BaseData, new() {
         /// <summary>
         /// Delegate type used to compose the output of two indicators into a new value.
         /// </summary>
@@ -59,7 +58,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Left.IsReady && Right.IsReady; }
         }
@@ -67,7 +66,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset() {
+        public @Override void Reset() {
             Left.Reset();
             Right.Reset();
             base.Reset();
@@ -82,8 +81,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="right">The right indidcator for the 'composoer'</param>
         /// <param name="composer">Function used to compose the left and right indicators</param>
         public CompositeIndicator( String name, IndicatorBase<T> left, IndicatorBase<T> right, IndicatorComposer composer)
-            : base(name)
-        {
+            : base(name) {
             _composer = composer;
             Left = left;
             Right = right;
@@ -98,8 +96,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="right">The right indidcator for the 'composoer'</param>
         /// <param name="composer">Function used to compose the left and right indicators</param>
         public CompositeIndicator(IndicatorBase<T> left, IndicatorBase<T> right, IndicatorComposer composer)
-            : base( String.format("COMPOSE({0},{1})", left.Name, right.Name))
-        {
+            : base( String.format( "COMPOSE(%1$s,%2$s)", left.Name, right.Name)) {
             _composer = composer;
             Left = left;
             Right = right;
@@ -112,8 +109,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>An IndicatorResult object including the status of the indicator</returns>
-        protected override IndicatorResult ValidateAndComputeNextValue(T input)
-        {
+        protected @Override IndicatorResult ValidateAndComputeNextValue(T input) {
             return _composer.Invoke(Left, Right);
         }
 
@@ -121,12 +117,11 @@ package com.quantconnect.lean.Indicators
         /// Computes the next value of this indicator from the given state
         /// </summary>
         /// <remarks>
-        /// Since this class overrides <see cref="ValidateAndComputeNextValue"/>, this method is a no-op
+        /// Since this class @Overrides <see cref="ValidateAndComputeNextValue"/>, this method is a no-op
         /// </remarks>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(T input)
-        {
+        protected @Override BigDecimal ComputeNextValue(T input) {
             // this should never actually be invoked
             return _composer.Invoke(Left, Right).Value;
         }
@@ -135,8 +130,7 @@ package com.quantconnect.lean.Indicators
         /// Configures the event handlers for Left.Updated and Right.Updated to update this instance when
         /// they both have new data.
         /// </summary>
-        private void ConfigureEventHandlers()
-        {
+        private void ConfigureEventHandlers() {
             // if either of these are constants then there's no reason
             boolean leftIsConstant = Left.GetType().IsSubclassOfGeneric(typeof (ConstantIndicator<>));
             boolean rightIsConstant = Right.GetType().IsSubclassOfGeneric(typeof (ConstantIndicator<>));
@@ -153,8 +147,7 @@ package com.quantconnect.lean.Indicators
                 newLeftData = updated;
 
                 // if we have left and right data (or if right is a constant) then we need to update
-                if (newRightData != null || rightIsConstant)
-                {
+                if( newRightData != null || rightIsConstant) {
                     Update(new T {Time = MaxTime(updated)});
                     // reset these to null after each update
                     newLeftData = null;
@@ -167,8 +160,7 @@ package com.quantconnect.lean.Indicators
                 newRightData = updated;
 
                 // if we have left and right data (or if left is a constant) then we need to update
-                if (newLeftData != null || leftIsConstant)
-                {
+                if( newLeftData != null || leftIsConstant) {
                     Update(new T {Time = MaxTime(updated)});
                     // reset these to null after each update
                     newLeftData = null;
@@ -177,8 +169,7 @@ package com.quantconnect.lean.Indicators
             };
         }
 
-        private DateTime MaxTime(IndicatorDataPoint updated)
-        {
+        private DateTime MaxTime(IndicatorDataPoint updated) {
             return new DateTime(Math.Max(updated.Time.Ticks, Math.Max(Right.Current.Time.Ticks, Left.Current.Time.Ticks)));
         }
     }

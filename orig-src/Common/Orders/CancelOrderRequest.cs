@@ -25,7 +25,7 @@ package com.quantconnect.lean.Orders
         /// <summary>
         /// Gets <see cref="Orders.OrderRequestType.Cancel"/>
         /// </summary>
-        public override OrderRequestType OrderRequestType
+        public @Override OrderRequestType OrderRequestType
         {
             get { return OrderRequestType.Cancel; }
         }
@@ -37,8 +37,7 @@ package com.quantconnect.lean.Orders
         /// <param name="orderId">The order id to be canceled</param>
         /// <param name="tag">A new tag for the order</param>
         public CancelOrderRequest(DateTime time, int orderId, String tag)
-            : base(time, orderId, tag)
-        {
+            : base(time, orderId, tag) {
         }
 
         /// <summary>
@@ -48,9 +47,8 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
-            return String.format("{0} UTC: Cancel Order: ({1}) - {2}", Time, OrderId, Tag) + " Status: " + Status;
+        public @Override String toString() {
+            return String.format( "%1$s UTC: Cancel Order: (%2$s) - %3$s", Time, OrderId, Tag) + " Status: " + Status;
         }
     }
 }

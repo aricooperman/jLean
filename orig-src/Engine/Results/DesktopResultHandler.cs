@@ -121,16 +121,15 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <summary>
         /// Desktop default constructor
         /// </summary>
-        public DesktopResultHandler() 
-        {
+        public DesktopResultHandler() {
             FinalStatistics = new Map<String,String>();
             Messages = new ConcurrentQueue<Packet>();
             Charts = new ConcurrentMap<String, Chart>();
 
             _chartLock = new Object();
             _isActive = true;
-            _resamplePeriod = TimeSpan.FromSeconds(2);
-            _notificationPeriod = TimeSpan.FromSeconds(2);
+            _resamplePeriod = Duration.ofSeconds(2);
+            _notificationPeriod = Duration.ofSeconds(2);
         }
 
         /// <summary>
@@ -142,8 +141,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="dataFeed"></param>
         /// <param name="setupHandler"></param>
         /// <param name="transactionHandler"></param>
-        public void Initialize(AlgorithmNodePacket job, IMessagingHandler messagingHandler, IApi api, IDataFeed dataFeed, ISetupHandler setupHandler, ITransactionHandler transactionHandler)
-        {
+        public void Initialize(AlgorithmNodePacket job, IMessagingHandler messagingHandler, IApi api, IDataFeed dataFeed, ISetupHandler setupHandler, ITransactionHandler transactionHandler) {
             //Redirect the log messages here:
             _job = job;
             desktopLogging = new FunctionalLogHandler(DebugMessage, DebugMessage, ErrorMessage);
@@ -153,13 +151,11 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <summary>
         /// Entry point for console result handler thread.
         /// </summary>
-        public void Run()
-        {
-            while ( !_exitTriggered || Messages.Count > 0 ) 
-            {
+        public void Run() {
+            while ( !_exitTriggered || Messages.Count > 0 ) {
                 Thread.Sleep(100);
             }
-            DebugMessage("DesktopResultHandler: Ending Thread...");
+            DebugMessage( "DesktopResultHandler: Ending Thread...");
             _isActive = false;
         }
 
@@ -167,8 +163,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// Send a debug message back to the browser console.
         /// </summary>
         /// <param name="message">Message we'd like shown in console.</param>
-        public void DebugMessage( String message)
-        {
+        public void DebugMessage( String message) {
             Messages.Enqueue(new DebugPacket(0, "", "", message));
         }
 
@@ -176,9 +171,8 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// Send a logging message to the log list for storage.
         /// </summary>
         /// <param name="message">Message we'd in the log.</param>
-        public void LogMessage( String message)
-        {
-            Messages.Enqueue(new LogPacket("", message));
+        public void LogMessage( String message) {
+            Messages.Enqueue(new LogPacket( "", message));
         }
 
         /// <summary>
@@ -186,18 +180,16 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="message">Error message.</param>
         /// <param name="stacktrace">Stacktrace information string</param>
-        public void RuntimeError( String message, String stacktrace = "")
-        {
-            Messages.Enqueue(new RuntimeErrorPacket("", message, stacktrace));
+        public void RuntimeError( String message, String stacktrace = "") {
+            Messages.Enqueue(new RuntimeErrorPacket( "", message, stacktrace));
         }
 
         /// <summary>
         /// Send an error message back to the console highlighted in red with a stacktrace.
         /// </summary>
         /// <param name="message">Error message we'd like shown in console.</param>
-        public void ErrorMessage( String message)
-        {
-            Messages.Enqueue(new HandledErrorPacket("", message, ""));
+        public void ErrorMessage( String message) {
+            Messages.Enqueue(new HandledErrorPacket( "", message, ""));
         }
 
         /// <summary>
@@ -205,9 +197,8 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="message">Error message we'd like shown in console.</param>
         /// <param name="stacktrace">Stacktrace information string</param>
-        public void ErrorMessage( String message, String stacktrace = "")
-        {
-            Messages.Enqueue(new HandledErrorPacket("", message, stacktrace));
+        public void ErrorMessage( String message, String stacktrace = "") {
+            Messages.Enqueue(new HandledErrorPacket( "", message, stacktrace));
         }
 
         /// <summary>
@@ -221,19 +212,15 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="value">Value for the chart sample.</param>
         /// <param name="unit">Unit for the sample axis</param>
         /// <remarks>Sample can be used to create new charts or sample equity - daily performance.</remarks>
-        public void Sample( String chartName, String seriesName, int seriesIndex, SeriesType seriesType, DateTime time, BigDecimal value, String unit = "$")
-        {
-            lock (_chartLock)
-            {
+        public void Sample( String chartName, String seriesName, int seriesIndex, SeriesType seriesType, DateTime time, BigDecimal value, String unit = "$") {
+            lock (_chartLock) {
                 //Add a copy locally:
-                if (!Charts.ContainsKey(chartName))
-                {
+                if( !Charts.ContainsKey(chartName)) {
                     Charts.AddOrUpdate<String, Chart>(chartName, new Chart(chartName));
                 }
 
                 //Add the sample to our chart:
-                if (!Charts[chartName].Series.ContainsKey(seriesName))
-                {
+                if( !Charts[chartName].Series.ContainsKey(seriesName)) {
                     Charts[chartName].Series.Add(seriesName, new Series(seriesName, seriesType, seriesIndex, unit));
                 }
 
@@ -247,9 +234,8 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="time">Current time</param>
         /// <param name="value">Current equity value</param>
-        public void SampleEquity(DateTime time, BigDecimal value)
-        {
-            Sample("Strategy Equity", "Equity", 0, SeriesType.Candle, time, value, "$");
+        public void SampleEquity(DateTime time, BigDecimal value) {
+            Sample( "Strategy Equity", "Equity", 0, SeriesType.Candle, time, value, "$");
         }
 
         /// <summary>
@@ -257,9 +243,8 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="time">Current time.</param>
         /// <param name="value">Value of the daily performance.</param>
-        public void SamplePerformance(DateTime time, BigDecimal value)
-        {
-            Sample("Strategy Equity", "Daily Performance", 0, SeriesType.Line, time, value, "%");
+        public void SamplePerformance(DateTime time, BigDecimal value) {
+            Sample( "Strategy Equity", "Daily Performance", 0, SeriesType.Line, time, value, "%");
         }
 
         /// <summary>
@@ -268,17 +253,15 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="time">Current backtest date.</param>
         /// <param name="value">Current benchmark value.</param>
         /// <seealso cref="IResultHandler.Sample"/>
-        public void SampleBenchmark(DateTime time, BigDecimal value)
-        {
-            Sample("Benchmark", "Benchmark", 0, SeriesType.Line, time, value);
+        public void SampleBenchmark(DateTime time, BigDecimal value) {
+            Sample( "Benchmark", "Benchmark", 0, SeriesType.Line, time, value);
         }
 
         /// <summary>
         /// Analyse the algorithm and determine its security types.
         /// </summary>
         /// <param name="types">List of security types in the algorithm</param>
-        public void SecurityType(List<SecurityType> types)
-        {
+        public void SecurityType(List<SecurityType> types) {
             //NOP
         }
 
@@ -288,9 +271,8 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="status">Status enum value.</param>
         /// <param name="message">Additional optional status message.</param>
         /// <remarks>In backtesting we do not send the algorithm status updates.</remarks>
-        public void SendStatusUpdate(AlgorithmStatus status, String message = "")
-        {
-            DebugMessage("DesktopResultHandler.SendStatusUpdate(): Algorithm Status: " + status + " : " + message);
+        public void SendStatusUpdate(AlgorithmStatus status, String message = "") {
+            DebugMessage( "DesktopResultHandler.SendStatusUpdate(): Algorithm Status: " + status + " : " + message);
         }
 
 
@@ -300,8 +282,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="symbol">Symbol we're sampling.</param>
         /// <param name="time">Time of sample</param>
         /// <param name="value">Value of the asset price</param>
-        public void SampleAssetPrices(Symbol symbol, DateTime time, BigDecimal value)
-        { 
+        public void SampleAssetPrices(Symbol symbol, DateTime time, BigDecimal value) { 
             //NOP. Don't sample asset prices in console.
         }
 
@@ -310,24 +291,18 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// Add a range of samples to the store.
         /// </summary>
         /// <param name="updates">Charting updates since the last sample request.</param>
-        public void SampleRange(List<Chart> updates)
-        {
-            lock (_chartLock)
-            {
-                foreach (update in updates)
-                {
+        public void SampleRange(List<Chart> updates) {
+            lock (_chartLock) {
+                foreach (update in updates) {
                     //Create the chart if it doesn't exist already:
-                    if (!Charts.ContainsKey(update.Name))
-                    {
+                    if( !Charts.ContainsKey(update.Name)) {
                         Charts.AddOrUpdate(update.Name, new Chart(update.Name, update.ChartType));
                     }
 
                     //Add these samples to this chart.
-                    foreach (series in update.Series.Values)
-                    {
+                    foreach (series in update.Series.Values) {
                         //If we don't already have this record, its the first packet
-                        if (!Charts[update.Name].Series.ContainsKey(series.Name))
-                        {
+                        if( !Charts[update.Name].Series.ContainsKey(series.Name)) {
                             Charts[update.Name].Series.Add(series.Name, new Series(series.Name, series.SeriesType));
                         }
 
@@ -348,15 +323,13 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="holdings">Current holdings state for the algorithm</param>
         /// <param name="statisticsResults">Statistics information for the algorithm (empty if not finished)</param>
         /// <param name="banner">Runtime statistics banner information</param>
-        public void SendFinalResult(AlgorithmNodePacket job, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, StatisticsResults statisticsResults, Map<String,String> banner)
-        {
+        public void SendFinalResult(AlgorithmNodePacket job, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, StatisticsResults statisticsResults, Map<String,String> banner) {
             // uncomment these code traces to help write regression tests
-            //Log.Trace("statistics = new Map<String,String>();");
+            //Log.Trace( "statistics = new Map<String,String>();");
             
             // Bleh. Nicely format statistical analysis on your algorithm results. Save to file etc.
-            foreach (pair in statisticsResults.Summary) 
-            {
-                DebugMessage("STATISTICS:: " + pair.Key + " " + pair.Value);
+            foreach (pair in statisticsResults.Summary) {
+                DebugMessage( "STATISTICS:: " + pair.Key + " " + pair.Value);
             }
 
             FinalStatistics = statisticsResults.Summary;
@@ -367,16 +340,14 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="algorithm">Algorithm we're working on.</param>
         /// <remarks>While setting the algorithm the backtest result handler.</remarks>
-        public void SetAlgorithm(IAlgorithm algorithm) 
-        {
+        public void SetAlgorithm(IAlgorithm algorithm) {
             _algorithm = algorithm;
         }
 
         /// <summary>
         /// Terminate the result thread and apply any required exit proceedures.
         /// </summary>
-        public void Exit()
-        {
+        public void Exit() {
             _exitTriggered = true;
         }
 
@@ -385,9 +356,8 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <remarks>In backtesting the order events are not sent because it would generate a high load of messaging.</remarks>
         /// <param name="newEvent">New order event details</param>
-        public void OrderEvent(OrderEvent newEvent)
-        {
-            DebugMessage("DesktopResultHandler.OrderEvent(): id:" + newEvent.OrderId + " >> Status:" + newEvent.Status + " >> Fill Price: " + newEvent.FillPrice.toString("C") + " >> Fill Quantity: " + newEvent.FillQuantity);
+        public void OrderEvent(OrderEvent newEvent) {
+            DebugMessage( "DesktopResultHandler.OrderEvent(): id:" + newEvent.OrderId + " >> Status:" + newEvent.Status + " >> Fill Price: " + newEvent.FillPrice.toString( "C") + " >> Fill Quantity: " + newEvent.FillQuantity);
         }
 
 
@@ -396,17 +366,15 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="key">Runtime headline statistic name</param>
         /// <param name="value">Runtime headline statistic value</param>
-        public void RuntimeStatistic( String key, String value)
-        {
-            DebugMessage("DesktopResultHandler.RuntimeStatistic(): " + key + " : " + value);
+        public void RuntimeStatistic( String key, String value) {
+            DebugMessage( "DesktopResultHandler.RuntimeStatistic(): " + key + " : " + value);
         }
 
 
         /// <summary>
         /// Clear the outstanding message queue to exit the thread.
         /// </summary>
-        public void PurgeQueue() 
-        {
+        public void PurgeQueue() {
             Messages.Clear();
         }
 
@@ -416,16 +384,14 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="packet">Packet of data to store.</param>
         /// <param name="async">Store the packet asyncronously to speed up the thread.</param>
         /// <remarks>Async creates crashes in Mono 3.10 if the thread disappears before the upload is complete so it is disabled for now.</remarks>
-        public void StoreResult(Packet packet, boolean async = false)
-        {
+        public void StoreResult(Packet packet, boolean async = false) {
             // Do nothing.
         }
 
         /// <summary>
         /// Not used
         /// </summary>
-        public void SetChartSubscription( String symbol)
-        {
+        public void SetChartSubscription( String symbol) {
             //
         }
 
@@ -434,12 +400,10 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// This method is triggered from the algorithm manager thread.
         /// </summary>
         /// <remarks>Prime candidate for putting into a base class. Is identical across all result handlers.</remarks>
-        public void ProcessSynchronousEvents( boolean forceProcess = false)
-        {
+        public void ProcessSynchronousEvents( boolean forceProcess = false) {
             time = _algorithm.Time;
 
-            if (time > _nextSample || forceProcess)
-            {
+            if( time > _nextSample || forceProcess) {
                 //Set next sample time: 4000 samples per backtest
                 _nextSample = time.Add(ResamplePeriod);
 
@@ -450,8 +414,7 @@ package com.quantconnect.lean.Lean.Engine.Results
                 SampleRange(_algorithm.GetChartUpdates());
 
                 //Sample the asset pricing:
-                foreach (security in _algorithm.Securities.Values) 
-                {
+                foreach (security in _algorithm.Securities.Values) {
                     SampleAssetPrices(security.Symbol, time, security.Price);
                 }
             }
@@ -469,8 +432,7 @@ package com.quantconnect.lean.Lean.Engine.Results
             _algorithm.LogMessages.Clear();
 
             //Set the running statistics:
-            foreach (pair in _algorithm.RuntimeStatistics)
-            {
+            foreach (pair in _algorithm.RuntimeStatistics) {
                 RuntimeStatistic(pair.Key, pair.Value);
             }
         }

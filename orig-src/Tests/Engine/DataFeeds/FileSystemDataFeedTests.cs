@@ -29,12 +29,11 @@ using Equity = QuantConnect.Algorithm.CSharp.Benchmarks.Symbols.Equity;
 
 package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
-    [TestFixture, Category("TravisExclude")]
+    [TestFixture, Category( "TravisExclude")]
     public class FileSystemDataFeedTests
     {
         [Test]
-        public void TestsFileSystemDataFeedSpeed()
-        {
+        public void TestsFileSystemDataFeedSpeed() {
             job = new BacktestNodePacket();
             resultHandler = new BacktestingResultHandler();
             mapFileProvider = new LocalDiskMapFileProvider();
@@ -57,25 +56,22 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             stopwatch = Stopwatch.StartNew();
             lastMonth = -1;
             count = 0;
-            foreach (timeSlice in feed)
-            {
-                if (timeSlice.Time.Month != lastMonth)
-                {
+            foreach (timeSlice in feed) {
+                if( timeSlice.Time.Month != lastMonth) {
                     Console.WriteLine(DateTime.Now + " - Time: " + timeSlice.Time);
                     lastMonth = timeSlice.Time.Month;
                 }
                 count++;
             }
-            Console.WriteLine("Count: " + count);
+            Console.WriteLine( "Count: " + count);
 
             stopwatch.Stop();
-            Console.WriteLine("Elapsed time: " + stopwatch.Elapsed);
+            Console.WriteLine( "Elapsed time: " + stopwatch.Elapsed);
         }
 
         public class BenchmarkTest : QCAlgorithm
         {
-            public override void Initialize()
-            {
+            public @Override void Initialize() {
                 SetStartDate(1998, 1, 1);
                 SetEndDate(2016, 3, 31);
                 SetCash(100000);
@@ -90,8 +86,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 //}
 
                 // Use only two symbols with or without FillForward
-                AddEquity("SPY", Resolution.Daily, "usa", true);
-                AddEquity("IBM", Resolution.Minute, "usa", false);
+                AddEquity( "SPY", Resolution.Daily, "usa", true);
+                AddEquity( "IBM", Resolution.Minute, "usa", false);
             }
         }
     }

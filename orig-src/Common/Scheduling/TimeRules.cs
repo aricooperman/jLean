@@ -36,8 +36,7 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         /// <param name="securities">The security manager</param>
         /// <param name="timeZone">The algorithm's default time zone</param>
-        public TimeRules(SecurityManager securities, ZoneId timeZone)
-        {
+        public TimeRules(SecurityManager securities, ZoneId timeZone) {
             _securities = securities;
             _timeZone = timeZone;
         }
@@ -46,8 +45,7 @@ package com.quantconnect.lean.Scheduling
         /// Sets the default time zone
         /// </summary>
         /// <param name="timeZone">The time zone to use for helper methods that can't resolve a time zone</param>
-        public void SetDefaultTimeZone(ZoneId timeZone)
-        {
+        public void SetDefaultTimeZone(ZoneId timeZone) {
             _timeZone = timeZone;
         }
 
@@ -56,8 +54,7 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         /// <param name="timeOfDay">The time of day in the algorithm's time zone the event should fire</param>
         /// <returns>A time rule that fires at the specified time in the algorithm's time zone</returns>
-        public ITimeRule At(TimeSpan timeOfDay)
-        {
+        public ITimeRule At(TimeSpan timeOfDay) {
             return At(timeOfDay, _timeZone);
         }
 
@@ -68,8 +65,7 @@ package com.quantconnect.lean.Scheduling
         /// <param name="minute">The minute</param>
         /// <param name="second">The second</param>
         /// <returns>A time rule that fires at the specified time in the algorithm's time zone</returns>
-        public ITimeRule At(int hour, int minute, int second = 0)
-        {
+        public ITimeRule At(int hour, int minute, int second = 0) {
             return At(new TimeSpan(hour, minute, second), _timeZone);
         }
 
@@ -80,8 +76,7 @@ package com.quantconnect.lean.Scheduling
         /// <param name="minute">The minute</param>
         /// <param name="timeZone">The time zone the event time is represented in</param>
         /// <returns>A time rule that fires at the specified time in the algorithm's time zone</returns>
-        public ITimeRule At(int hour, int minute, ZoneId timeZone)
-        {
+        public ITimeRule At(int hour, int minute, ZoneId timeZone) {
             return At(new TimeSpan(hour, minute, 0), timeZone);
         }
 
@@ -93,8 +88,7 @@ package com.quantconnect.lean.Scheduling
         /// <param name="second">The second</param>
         /// <param name="timeZone">The time zone the event time is represented in</param>
         /// <returns>A time rule that fires at the specified time in the algorithm's time zone</returns>
-        public ITimeRule At(int hour, int minute, int second, ZoneId timeZone)
-        {
+        public ITimeRule At(int hour, int minute, int second, ZoneId timeZone) {
             return At(new TimeSpan(hour, minute, second), timeZone);
         }
 
@@ -104,9 +98,8 @@ package com.quantconnect.lean.Scheduling
         /// <param name="timeOfDay">The time of day in the algorithm's time zone the event should fire</param>
         /// <param name="timeZone">The time zone the date time is expressed in</param>
         /// <returns>A time rule that fires at the specified time in the algorithm's time zone</returns>
-        public ITimeRule At(TimeSpan timeOfDay, ZoneId timeZone)
-        {
-            name = string.Join(",", timeOfDay.TotalHours.toString("0.##"));
+        public ITimeRule At(TimeSpan timeOfDay, ZoneId timeZone) {
+            name = String.join( ",", timeOfDay.TotalHours.toString( "0.##"));
             Func<IEnumerable<DateTime>, IEnumerable<DateTime>> applicator = dates =>
                 from date in dates
                 let localEventTime = date + timeOfDay
@@ -121,9 +114,8 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         /// <param name="interval">The frequency with which the event should fire</param>
         /// <returns>A time rule that fires after each interval passes</returns>
-        public ITimeRule Every(TimeSpan interval)
-        {
-            name = "Every " + interval.TotalMinutes.toString("0.##") + " min";
+        public ITimeRule Every(TimeSpan interval) {
+            name = "Every " + interval.TotalMinutes.toString( "0.##") + " min";
             Func<IEnumerable<DateTime>, IEnumerable<DateTime>> applicator = dates => EveryIntervalIterator(dates, interval);
             return new FuncTimeRule(name, applicator);
         }
@@ -135,14 +127,13 @@ package com.quantconnect.lean.Scheduling
         /// <param name="minutesAfterOpen">The time after market open that the event should fire</param>
         /// <param name="extendedMarketOpen">True to use extended market open, false to use regular market open</param>
         /// <returns>A time rule that fires the specified number of minutes after the symbol's market open</returns>
-        public ITimeRule AfterMarketOpen(Symbol symbol, double minutesAfterOpen = 0, boolean extendedMarketOpen = false)
-        {
+        public ITimeRule AfterMarketOpen(Symbol symbol, double minutesAfterOpen = 0, boolean extendedMarketOpen = false) {
             security = GetSecurity(symbol);
 
             type = extendedMarketOpen ? "ExtendedMarketOpen" : "MarketOpen";
-            name = String.format("{0}: {1} min after {2}", symbol, minutesAfterOpen.toString("0.##"), type);
+            name = String.format( "%1$s: %2$s min after %3$s", symbol, minutesAfterOpen.toString( "0.##"), type);
 
-            timeAfterOpen = TimeSpan.FromMinutes(minutesAfterOpen);
+            timeAfterOpen = Duration.ofMinutes(minutesAfterOpen);
             Func<IEnumerable<DateTime>, IEnumerable<DateTime>> applicator = dates =>
                 from date in dates
                 where security.Exchange.DateIsOpen(date)
@@ -161,14 +152,13 @@ package com.quantconnect.lean.Scheduling
         /// <param name="minutesBeforeClose">The time before market close that the event should fire</param>
         /// <param name="extendedMarketClose">True to use extended market close, false to use regular market close</param>
         /// <returns>A time rule that fires the specified number of minutes before the symbol's market close</returns>
-        public ITimeRule BeforeMarketClose(Symbol symbol, double minutesBeforeClose = 0, boolean extendedMarketClose = false)
-        {
+        public ITimeRule BeforeMarketClose(Symbol symbol, double minutesBeforeClose = 0, boolean extendedMarketClose = false) {
             security = GetSecurity(symbol);
 
             type = extendedMarketClose ? "ExtendedMarketClose" : "MarketClose";
-            name = String.format("{0}: {1} min before {2}", security.Symbol, minutesBeforeClose.toString("0.##"), type);
+            name = String.format( "%1$s: %2$s min before %3$s", security.Symbol, minutesBeforeClose.toString( "0.##"), type);
 
-            timeBeforeClose = TimeSpan.FromMinutes(minutesBeforeClose);
+            timeBeforeClose = Duration.ofMinutes(minutesBeforeClose);
             Func<IEnumerable<DateTime>, IEnumerable<DateTime>> applicator = dates =>
                 from date in dates
                 where security.Exchange.DateIsOpen(date)
@@ -180,22 +170,17 @@ package com.quantconnect.lean.Scheduling
             return new FuncTimeRule(name, applicator);
         }
 
-        private Security GetSecurity(Symbol symbol)
-        {
+        private Security GetSecurity(Symbol symbol) {
             Security security;
-            if (!_securities.TryGetValue(symbol, out security))
-            {
+            if( !_securities.TryGetValue(symbol, out security)) {
                 throw new Exception(symbol.toString() + " not found in portfolio. Request this data when initializing the algorithm.");
             }
             return security;
         }
 
-        private static IEnumerable<DateTime> EveryIntervalIterator(IEnumerable<DateTime> dates, TimeSpan interval)
-        {
-            foreach (date in dates)
-            {
-                for (time = TimeSpan.Zero; time < Time.OneDay; time += interval)
-                {
+        private static IEnumerable<DateTime> EveryIntervalIterator(IEnumerable<DateTime> dates, TimeSpan interval) {
+            foreach (date in dates) {
+                for (time = TimeSpan.Zero; time < Time.OneDay; time += interval) {
                     yield return date + time;
                 }
             }

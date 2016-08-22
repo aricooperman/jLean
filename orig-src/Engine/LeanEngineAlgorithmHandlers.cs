@@ -134,43 +134,33 @@ package com.quantconnect.lean.Lean.Engine
             ICommandQueueHandler commandQueue,
             IMapFileProvider mapFileProvider,
             IFactorFileProvider factorFileProvider
-            )
-        {
-            if (results == null)
-            {
-                throw new ArgumentNullException("results");
+            ) {
+            if( results == null ) {
+                throw new ArgumentNullException( "results");
             }
-            if (setup == null)
-            {
-                throw new ArgumentNullException("setup");
+            if( setup == null ) {
+                throw new ArgumentNullException( "setup");
             }
-            if (dataFeed == null)
-            {
-                throw new ArgumentNullException("dataFeed");
+            if( dataFeed == null ) {
+                throw new ArgumentNullException( "dataFeed");
             }
-            if (transactions == null)
-            {
-                throw new ArgumentNullException("transactions");
+            if( transactions == null ) {
+                throw new ArgumentNullException( "transactions");
             }
-            if (realTime == null)
-            {
-                throw new ArgumentNullException("realTime");
+            if( realTime == null ) {
+                throw new ArgumentNullException( "realTime");
             }
-            if (historyProvider == null)
-            {
-                throw new ArgumentNullException("realTime");
+            if( historyProvider == null ) {
+                throw new ArgumentNullException( "realTime");
             }
-            if (commandQueue == null)
-            {
-                throw new ArgumentNullException("commandQueue");
+            if( commandQueue == null ) {
+                throw new ArgumentNullException( "commandQueue");
             }
-            if (mapFileProvider == null)
-            {
-                throw new ArgumentNullException("mapFileProvider");
+            if( mapFileProvider == null ) {
+                throw new ArgumentNullException( "mapFileProvider");
             }
-            if (factorFileProvider == null)
-            {
-                throw new ArgumentNullException("factorFileProvider");
+            if( factorFileProvider == null ) {
+                throw new ArgumentNullException( "factorFileProvider");
             }
             _results = results;
             _setup = setup;
@@ -189,17 +179,16 @@ package com.quantconnect.lean.Lean.Engine
         /// <param name="composer">The composer instance to obtain implementations from</param>
         /// <returns>A fully hydrates <see cref="LeanEngineSystemHandlers"/> instance.</returns>
         /// <exception cref="CompositionException">Throws a CompositionException during failure to load</exception>
-        public static LeanEngineAlgorithmHandlers FromConfiguration(Composer composer)
-        {
-            setupHandlerTypeName = Config.Get("setup-handler", "ConsoleSetupHandler");
-            transactionHandlerTypeName = Config.Get("transaction-handler", "BacktestingTransactionHandler");
-            realTimeHandlerTypeName = Config.Get("real-time-handler", "BacktestingRealTimeHandler");
-            dataFeedHandlerTypeName = Config.Get("data-feed-handler", "FileSystemDataFeed");
-            resultHandlerTypeName = Config.Get("result-handler", "BacktestingResultHandler");
-            historyProviderTypeName = Config.Get("history-provider", "SubscriptionDataReaderHistoryProvider");
-            commandQueueHandlerTypeName = Config.Get("command-queue-handler", "EmptyCommandQueueHandler");
-            mapFileProviderTypeName = Config.Get("map-file-provider", "LocalDiskMapFileProvider");
-            factorFileProviderTypeName = Config.Get("factor-file-provider", "LocalDiskFactorFileProvider");
+        public static LeanEngineAlgorithmHandlers FromConfiguration(Composer composer) {
+            setupHandlerTypeName = Config.Get( "setup-handler", "ConsoleSetupHandler");
+            transactionHandlerTypeName = Config.Get( "transaction-handler", "BacktestingTransactionHandler");
+            realTimeHandlerTypeName = Config.Get( "real-time-handler", "BacktestingRealTimeHandler");
+            dataFeedHandlerTypeName = Config.Get( "data-feed-handler", "FileSystemDataFeed");
+            resultHandlerTypeName = Config.Get( "result-handler", "BacktestingResultHandler");
+            historyProviderTypeName = Config.Get( "history-provider", "SubscriptionDataReaderHistoryProvider");
+            commandQueueHandlerTypeName = Config.Get( "command-queue-handler", "EmptyCommandQueueHandler");
+            mapFileProviderTypeName = Config.Get( "map-file-provider", "LocalDiskMapFileProvider");
+            factorFileProviderTypeName = Config.Get( "factor-file-provider", "LocalDiskFactorFileProvider");
 
             return new LeanEngineAlgorithmHandlers(
                 composer.GetExportedValueByTypeName<IResultHandler>(resultHandlerTypeName),
@@ -218,8 +207,7 @@ package com.quantconnect.lean.Lean.Engine
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             Setup.Dispose();
             CommandQueue.Dispose();
         }

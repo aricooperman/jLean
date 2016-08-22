@@ -11,7 +11,7 @@ package com.quantconnect.lean.Orders
         /// <summary>
         /// Gets <see cref="Orders.OrderRequestType.Update"/>
         /// </summary>
-        public override OrderRequestType OrderRequestType
+        public @Override OrderRequestType OrderRequestType
         {
             get { return OrderRequestType.Update; }
         }
@@ -38,8 +38,7 @@ package com.quantconnect.lean.Orders
         /// <param name="orderId">The order id to be updated</param>
         /// <param name="fields">The fields defining what should be updated</param>
         public UpdateOrderRequest(DateTime time, int orderId, UpdateOrderFields fields)
-            : base(time, orderId, fields.Tag)
-        {
+            : base(time, orderId, fields.Tag) {
             Quantity = fields.Quantity;
             LimitPrice = fields.LimitPrice;
             StopPrice = fields.StopPrice;
@@ -52,22 +51,18 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
+        public @Override String toString() {
             updates = new List<String>();
-            if (Quantity.HasValue)
-            {
-                updates.Add("Quantity: " + Quantity.Value);
+            if( Quantity.HasValue) {
+                updates.Add( "Quantity: " + Quantity.Value);
             }
-            if (LimitPrice.HasValue)
-            {
-                updates.Add("LimitPrice: " + LimitPrice.Value.SmartRounding());
+            if( LimitPrice.HasValue) {
+                updates.Add( "LimitPrice: " + LimitPrice.Value.SmartRounding());
             }
-            if (StopPrice.HasValue)
-            {
-                updates.Add("StopPrice: " + StopPrice.Value.SmartRounding());
+            if( StopPrice.HasValue) {
+                updates.Add( "StopPrice: " + StopPrice.Value.SmartRounding());
             }
-            return String.format("{0} UTC: Update Order: ({1}) - {2} {3} Status: {4}", Time, OrderId, string.Join(", ", updates), Tag, Status);
+            return String.format( "%1$s UTC: Update Order: (%2$s) - %3$s {3} Status: {4}", Time, OrderId, String.join( ", ", updates), Tag, Status);
         }
     }
 }

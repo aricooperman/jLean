@@ -38,13 +38,12 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Starts the interactive brokers gateway using values from configuration
         /// </summary>
-        public static void StartFromConfiguration()
-        {
-            Start(Config.Get("ib-controller-dir"),
-                Config.Get("ib-tws-dir"),
-                Config.Get("ib-user-name"),
-                Config.Get("ib-password"),
-                Config.GetBool("ib-use-tws")
+        public static void StartFromConfiguration() {
+            Start(Config.Get( "ib-controller-dir"),
+                Config.Get( "ib-tws-dir"),
+                Config.Get( "ib-user-name"),
+                Config.Get( "ib-password"),
+                Config.GetBool( "ib-use-tws")
                 );
         }
 
@@ -56,28 +55,26 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <param name="userID">The log in user id</param>
         /// <param name="password">The log in password</param>
         /// <param name="useTws">True to use Trader Work Station, false to just launch the API gateway</param>
-        public static void Start( String ibControllerDirectory, String twsDirectory, String userID, String password, boolean useTws = false)
-        {
+        public static void Start( String ibControllerDirectory, String twsDirectory, String userID, String password, boolean useTws = false) {
             useTwsSwitch = useTws ? "TWS" : "GATEWAY";
-            batchFilename = Path.Combine("InteractiveBrokers", "run-ib-controller.bat");
-            bashFilename = Path.Combine("InteractiveBrokers", "run-ib-controller.sh");
+            batchFilename = Path.Combine( "InteractiveBrokers", "run-ib-controller.bat");
+            bashFilename = Path.Combine( "InteractiveBrokers", "run-ib-controller.sh");
 
             try
             {
                 file = OS.IsWindows ? batchFilename : bashFilename;
-                arguments = String.format("{0} {1} {2} {3} {4} {5}", file, ibControllerDirectory, twsDirectory, userID, password, useTwsSwitch);
+                arguments = String.format( "%1$s %2$s %3$s {3} {4} {5}", file, ibControllerDirectory, twsDirectory, userID, password, useTwsSwitch);
 
-                Log.Trace("InteractiveBrokersGatewayRunner.Start(): Launching IBController for account " + userID + "...");
+                Log.Trace( "InteractiveBrokersGatewayRunner.Start(): Launching IBController for account " + userID + "...");
 
-                processStartInfo = OS.IsWindows ? new ProcessStartInfo("cmd.exe", "/C " + arguments) : new ProcessStartInfo("bash", arguments);
+                processStartInfo = OS.IsWindows ? new ProcessStartInfo( "cmd.exe", "/C " + arguments) : new ProcessStartInfo( "bash", arguments);
 
                 processStartInfo.UseShellExecute = false;
                 processStartInfo.RedirectStandardOutput = false;
                 process = Process.Start(processStartInfo);
                 ScriptProcessID = process.Id;
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }
@@ -85,43 +82,37 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Stops the IB Gateway
         /// </summary>
-        public static void Stop()
-        {
-            if (ScriptProcessID == 0)
-            {
+        public static void Stop() {
+            if( ScriptProcessID == 0) {
                 return;
             }
 
             try
             {
-                Log.Trace("InteractiveBrokersGatewayRunner.Stop(): Stopping IBController...");
+                Log.Trace( "InteractiveBrokersGatewayRunner.Stop(): Stopping IBController...");
 
                 // we need to materialize this ienumerable since if we start killing some of them
                 // we may leave some daemon processes hanging
-                foreach (process in GetSpawnedProcesses(ScriptProcessID).ToList())
-                {
+                foreach (process in GetSpawnedProcesses(ScriptProcessID).ToList()) {
                     // kill all spawned processes
                     process.Kill();
                 }
 
                 ScriptProcessID = 0;
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }
 
-        private static IEnumerable<Process> GetSpawnedProcesses(int id)
-        {
+        private static IEnumerable<Process> GetSpawnedProcesses(int id) {
             // loop over all the processes and return those that were spawned by the specified processed ID
             return Process.GetProcesses().Where(x =>
             {
                 try
                 {
                     parent = ProcessExtensions.Parent(x);
-                    if (parent != null)
-                    {
+                    if( parent != null ) {
                         return parent.Id == id;
                     }
                 }
@@ -136,18 +127,15 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         //http://stackoverflow.com/questions/394816/how-to-get-parent-process-in-net-in-managed-way
         private static class ProcessExtensions
         {
-            private static String FindIndexedProcessName(int pid)
-            {
+            private static String FindIndexedProcessName(int pid) {
                 processName = Process.GetProcessById(pid).ProcessName;
                 processesByName = Process.GetProcessesByName(processName);
                 String processIndexdName = null;
 
-                for (index = 0; index < processesByName.Length; index++)
-                {
+                for (index = 0; index < processesByName.Length; index++) {
                     processIndexdName = index == 0 ? processName : processName + "#" + index;
-                    processId = new PerformanceCounter("Process", "ID Process", processIndexdName);
-                    if ((int)processId.NextValue() == pid)
-                    {
+                    processId = new PerformanceCounter( "Process", "ID Process", processIndexdName);
+                    if( (int)processId.NextValue() == pid) {
                         return processIndexdName;
                     }
                 }
@@ -155,14 +143,12 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                 return processIndexdName;
             }
 
-            private static Process FindPidFromIndexedProcessName( String indexedProcessName)
-            {
-                parentId = new PerformanceCounter("Process", "Creating Process ID", indexedProcessName);
+            private static Process FindPidFromIndexedProcessName( String indexedProcessName) {
+                parentId = new PerformanceCounter( "Process", "Creating Process ID", indexedProcessName);
                 return Process.GetProcessById((int)parentId.NextValue());
             }
 
-            public static Process Parent(Process process)
-            {
+            public static Process Parent(Process process) {
                 return FindPidFromIndexedProcessName(FindIndexedProcessName(process.Id));
             }
         }

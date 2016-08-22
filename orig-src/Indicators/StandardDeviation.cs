@@ -30,8 +30,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The sample size of the standard deviation</param>
         public StandardDeviation(int period)
-            : this("STD" + period, period)
-        {
+            : this( "STD" + period, period) {
         }
 
         /// <summary>
@@ -43,14 +42,13 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The sample size of the standard deviation</param>
         public StandardDeviation( String name, int period)
-            : base(name, period)
-        {
+            : base(name, period) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -61,8 +59,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="input">The input given to the indicator</param>
         /// <param name="window">The window for the input history</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             return (decimal)Math.Sqrt((double)base.ComputeNextValue(window, input));
         }
     }

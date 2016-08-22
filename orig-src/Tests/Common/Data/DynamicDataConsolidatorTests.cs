@@ -25,8 +25,7 @@ package com.quantconnect.lean.Tests.Common.Data
     public class DynamicDataConsolidatorTests
     {
         [Test]
-        public void AggregatesTimeValuePairsWithOutVolumeProperly()
-        {
+        public void AggregatesTimeValuePairsWithOutVolumeProperly() {
             TradeBar newTradeBar = null;
             consolidator = new DynamicDataConsolidator(4);
             consolidator.DataConsolidated += (sender, tradeBar) =>
@@ -79,8 +78,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AggregatesTimeValuePairsWithVolumeProperly()
-        {
+        public void AggregatesTimeValuePairsWithVolumeProperly() {
             TradeBar newTradeBar = null;
             consolidator = new DynamicDataConsolidator(4);
             consolidator.DataConsolidated += (sender, tradeBar) =>
@@ -141,8 +139,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AggregatesTradeBarsWithVolumeProperly()
-        {
+        public void AggregatesTradeBarsWithVolumeProperly() {
             TradeBar consolidated = null;
             consolidator = new DynamicDataConsolidator(3);
             consolidator.DataConsolidated += (sender, bar) =>
@@ -196,8 +193,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AggregatesTradeBarsWithOutVolumeProperly()
-        {
+        public void AggregatesTradeBarsWithOutVolumeProperly() {
             TradeBar consolidated = null;
             consolidator = new DynamicDataConsolidator(3);
             consolidator.DataConsolidated += (sender, bar) =>
@@ -249,13 +245,11 @@ package com.quantconnect.lean.Tests.Common.Data
 
         private class CustomData : DynamicData
         {
-            public override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode)
-            {
+            public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
                 throw new NotImplementedException();
             }
 
-            public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-            {
+            public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
                 throw new NotImplementedException();
             }
         }

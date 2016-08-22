@@ -43,8 +43,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name.</param>
         /// <param name="period">The period for both the upper and lower channels.</param>
         public DonchianChannel( String name, int period)
-            : this(name, period, period)
-        {
+            : this(name, period, period) {
         }
 
         /// <summary>
@@ -54,8 +53,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="upperPeriod">The period for the upper channel.</param>
         /// <param name="lowerPeriod">The period for the lower channel</param>
         public DonchianChannel( String name, int upperPeriod, int lowerPeriod)
-            : base(name)
-        {
+            : base(name) {
             UpperBand = new Maximum(name + "_UpperBand", upperPeriod);
             LowerBand = new Minimum(name + "_LowerBand", lowerPeriod);
         }
@@ -63,7 +61,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return UpperBand.IsReady && LowerBand.IsReady; }
         }
@@ -73,10 +71,8 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator, which by convention is the mean value of the upper band and lower band.</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
-            if (_previousInput != null)
-            {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
+            if( _previousInput != null ) {
                 UpperBand.Update(new IndicatorDataPoint(_previousInput.Time, _previousInput.High));
                 LowerBand.Update(new IndicatorDataPoint(_previousInput.Time, _previousInput.Low));
             }
@@ -88,8 +84,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             base.Reset();
             UpperBand.Reset();
             LowerBand.Reset();

@@ -25,18 +25,16 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class MarketHoursDatabaseTests
     {
         [Test]
-        public void InitializesFromFile()
-        {
-            String file = Path.Combine("TestData", "SampleMarketHoursDatabase.json");
+        public void InitializesFromFile() {
+            String file = Path.Combine( "TestData", "SampleMarketHoursDatabase.json");
             exchangeHours = GetMarketHoursDatabase(file);
 
             Assert.AreEqual(2, exchangeHours.ExchangeHoursListing.Count);
         }
 
         [Test]
-        public void RetrievesExchangeHoursWithAndWithoutSymbol()
-        {
-            String file = Path.Combine("TestData", "SampleMarketHoursDatabase.json");
+        public void RetrievesExchangeHoursWithAndWithoutSymbol() {
+            String file = Path.Combine( "TestData", "SampleMarketHoursDatabase.json");
             exchangeHours = GetMarketHoursDatabase(file);
 
             hours = exchangeHours.GetExchangeHours(Market.USA, Symbols.SPY, SecurityType.Equity);
@@ -46,9 +44,8 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void CorrectlyReadsClosedAllDayHours()
-        {
-            String file = Path.Combine("TestData", "SampleMarketHoursDatabase.json");
+        public void CorrectlyReadsClosedAllDayHours() {
+            String file = Path.Combine( "TestData", "SampleMarketHoursDatabase.json");
             exchangeHours = GetMarketHoursDatabase(file);
 
             hours = exchangeHours.GetExchangeHours(Market.USA, null, SecurityType.Equity);
@@ -58,9 +55,8 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void CorrectlyReadsOpenAllDayHours()
-        {
-            String file = Path.Combine("TestData", "SampleMarketHoursDatabase.json");
+        public void CorrectlyReadsOpenAllDayHours() {
+            String file = Path.Combine( "TestData", "SampleMarketHoursDatabase.json");
             exchangeHours = GetMarketHoursDatabase(file);
 
             hours = exchangeHours.GetExchangeHours(Market.FXCM, null, SecurityType.Forex);
@@ -70,24 +66,20 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void InitializesFromDataFolder()
-        {
+        public void InitializesFromDataFolder() {
             provider = MarketHoursDatabase.FromDataFolder();
             Assert.AreNotEqual(0, provider.ExchangeHoursListing.Count);
         }
 
         [Test]
-        public void CorrectlyReadsUsEquityMarketHours()
-        {
-            String file = Path.Combine("TestData", "SampleMarketHoursDatabase.json");
+        public void CorrectlyReadsUsEquityMarketHours() {
+            String file = Path.Combine( "TestData", "SampleMarketHoursDatabase.json");
             exchangeHours = GetMarketHoursDatabase(file);
 
             equityHours = exchangeHours.GetExchangeHours(Market.USA, null, SecurityType.Equity);
-            foreach (day in equityHours.MarketHours.Keys)
-            {
+            foreach (day in equityHours.MarketHours.Keys) {
                 marketHours = equityHours.MarketHours[day];
-                if (day == DayOfWeek.Saturday || day == DayOfWeek.Sunday)
-                {
+                if( day == DayOfWeek.Saturday || day == DayOfWeek.Sunday) {
                     Assert.IsTrue(marketHours.IsClosedAllDay);
                     continue;
                 }
@@ -99,25 +91,20 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void CorrectlyReadFxcmForexMarketHours()
-        {
-            String file = Path.Combine("TestData", "SampleMarketHoursDatabase.json");
+        public void CorrectlyReadFxcmForexMarketHours() {
+            String file = Path.Combine( "TestData", "SampleMarketHoursDatabase.json");
             exchangeHours = GetMarketHoursDatabase(file);
 
             equityHours = exchangeHours.GetExchangeHours(Market.FXCM, null, SecurityType.Forex);
-            foreach (day in equityHours.MarketHours.Keys)
-            {
+            foreach (day in equityHours.MarketHours.Keys) {
                 marketHours = equityHours.MarketHours[day];
-                if (day == DayOfWeek.Saturday)
-                {
+                if( day == DayOfWeek.Saturday) {
                     Assert.IsTrue(marketHours.IsClosedAllDay);
                 }
-                else if (day != DayOfWeek.Sunday && day != DayOfWeek.Friday)
-                {
+                else if( day != DayOfWeek.Sunday && day != DayOfWeek.Friday) {
                     Assert.IsTrue(marketHours.IsOpenAllDay);
                 }
-                else if (day == DayOfWeek.Sunday)
-                {
+                else if( day == DayOfWeek.Sunday) {
                     Assert.AreEqual(new TimeSpan(17, 0, 0), marketHours.GetMarketOpen(TimeSpan.Zero, true));
                     Assert.AreEqual(new TimeSpan(17, 0, 0), marketHours.GetMarketOpen(TimeSpan.Zero, false));
                     Assert.AreEqual(new TimeSpan(24, 0, 0), marketHours.GetMarketClose(TimeSpan.Zero, false));
@@ -134,25 +121,22 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void ReadsUsEquityDataTimeZone()
-        {
-            String file = Path.Combine("TestData", "SampleMarketHoursDatabase.json");
+        public void ReadsUsEquityDataTimeZone() {
+            String file = Path.Combine( "TestData", "SampleMarketHoursDatabase.json");
             marketHoursDatabase = GetMarketHoursDatabase(file);
 
             Assert.AreEqual(TimeZones.NewYork, marketHoursDatabase.GetDataTimeZone(Market.USA, null, SecurityType.Equity));
         }
 
         [Test]
-        public void ReadsFxcmForexDataTimeZone()
-        {
-            String file = Path.Combine("TestData", "SampleMarketHoursDatabase.json");
+        public void ReadsFxcmForexDataTimeZone() {
+            String file = Path.Combine( "TestData", "SampleMarketHoursDatabase.json");
             marketHoursDatabase = GetMarketHoursDatabase(file);
 
             Assert.AreEqual(TimeZones.EasternStandard, marketHoursDatabase.GetDataTimeZone(Market.FXCM, null, SecurityType.Forex));
         }
 
-        private static MarketHoursDatabase GetMarketHoursDatabase( String file)
-        {
+        private static MarketHoursDatabase GetMarketHoursDatabase( String file) {
             return MarketHoursDatabase.FromFile(file);
         }
     }

@@ -26,8 +26,7 @@ package com.quantconnect.lean.Securities.Equity
         /// </summary>
         /// <param name="security">The security being held</param>
         public EquityHolding(Security security)
-            : base(security)
-        {
+            : base(security) {
         }
     }
 }

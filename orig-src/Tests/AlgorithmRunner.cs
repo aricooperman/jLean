@@ -30,14 +30,12 @@ package com.quantconnect.lean.Tests
     /// </summary>
     public static class AlgorithmRunner
     {
-        static AlgorithmRunner()
-        {
+        static AlgorithmRunner() {
             // delete the regression.log file, since we turned debug output on it can grow pretty quickly
-            try { System.IO.File.Delete("regression.log"); } catch { /*NOP*/ }
+            try { System.IO.File.Delete( "regression.log"); } catch { /*NOP*/ }
         }
 
-        public static void RunLocalBacktest( String algorithm, Map<String,String> expectedStatistics, Language language)
-        {
+        public static void RunLocalBacktest( String algorithm, Map<String,String> expectedStatistics, Language language) {
             statistics = new Map<String,String>();
 
             Composer.Instance.Reset();
@@ -45,28 +43,27 @@ package com.quantconnect.lean.Tests
             try
             {
                 // set the configuration up
-                Config.Set("algorithm-type-name", algorithm);
-                Config.Set("live-mode", "false");
-                Config.Set("environment", "");
-                Config.Set("messaging-handler", "QuantConnect.Messaging.Messaging");
-                Config.Set("job-queue-handler", "QuantConnect.Queues.JobQueue");
-                Config.Set("api-handler", "QuantConnect.Api.Api");
-                Config.Set("result-handler", "QuantConnect.Lean.Engine.Results.BacktestingResultHandler");
-                Config.Set("algorithm-language", language.toString());
-                Config.Set("algorithm-location", "QuantConnect.Algorithm." + language + ".dll");
+                Config.Set( "algorithm-type-name", algorithm);
+                Config.Set( "live-mode", "false");
+                Config.Set( "environment", "");
+                Config.Set( "messaging-handler", "QuantConnect.Messaging.Messaging");
+                Config.Set( "job-queue-handler", "QuantConnect.Queues.JobQueue");
+                Config.Set( "api-handler", "QuantConnect.Api.Api");
+                Config.Set( "result-handler", "QuantConnect.Lean.Engine.Results.BacktestingResultHandler");
+                Config.Set( "algorithm-language", language.toString());
+                Config.Set( "algorithm-location", "QuantConnect.Algorithm." + language + ".dll");
 
                 debugEnabled = Log.DebuggingEnabled;
 
-                logHandlers = new ILogHandler[] {new ConsoleLogHandler(), new FileLogHandler("regression.log", false)};
+                logHandlers = new ILogHandler[] {new ConsoleLogHandler(), new FileLogHandler( "regression.log", false)};
                 using (Log.LogHandler = new CompositeLogHandler(logHandlers))
                 using (algorithmHandlers = LeanEngineAlgorithmHandlers.FromConfiguration(Composer.Instance))
-                using (systemHandlers = LeanEngineSystemHandlers.FromConfiguration(Composer.Instance))
-                {
+                using (systemHandlers = LeanEngineSystemHandlers.FromConfiguration(Composer.Instance)) {
                     Log.DebuggingEnabled = true;
 
-                    Log.LogHandler.Trace("");
-                    Log.LogHandler.Trace("{0}: Running " + algorithm + "...", DateTime.UtcNow);
-                    Log.LogHandler.Trace("");
+                    Log.LogHandler.Trace( "");
+                    Log.LogHandler.Trace( "%1$s: Running " + algorithm + "...", DateTime.UtcNow);
+                    Log.LogHandler.Trace( "");
 
                     // run the algorithm in its own thread
 
@@ -84,13 +81,11 @@ package com.quantconnect.lean.Tests
                     Log.DebuggingEnabled = debugEnabled;
                 }
             }
-            catch (Exception ex)
-            {
-                Log.LogHandler.Error("{0} {1}", ex.Message, ex.StackTrace);
+            catch (Exception ex) {
+                Log.LogHandler.Error( "%1$s %2$s", ex.Message, ex.StackTrace);
             }
 
-            foreach (stat in expectedStatistics)
-            {
+            foreach (stat in expectedStatistics) {
                 Assert.AreEqual(true, statistics.ContainsKey(stat.Key), "Missing key: " + stat.Key);
                 Assert.AreEqual(stat.Value, statistics[stat.Key], "Failed on " + stat.Key);
             }

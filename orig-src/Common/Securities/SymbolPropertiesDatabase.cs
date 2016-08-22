@@ -31,8 +31,7 @@ package com.quantconnect.lean.Securities
 
         private readonly IReadOnlyMap<SecurityDatabaseKey, SymbolProperties> _entries;
 
-        private SymbolPropertiesDatabase(IReadOnlyMap<SecurityDatabaseKey, SymbolProperties> entries)
-        {
+        private SymbolPropertiesDatabase(IReadOnlyMap<SecurityDatabaseKey, SymbolProperties> entries) {
             _entries = entries.ToDictionary();
         }
 
@@ -44,16 +43,13 @@ package com.quantconnect.lean.Securities
         /// <param name="securityType">The security type of the symbol</param>
         /// <param name="defaultQuoteCurrency">Specifies the quote currency to be used when returning a default instance of an entry is not found in the database</param>
         /// <returns>The symbol properties matching the specified market/symbol/security-type or null if not found</returns>
-        public SymbolProperties GetSymbolProperties( String market, String symbol, SecurityType securityType, String defaultQuoteCurrency)
-        {
+        public SymbolProperties GetSymbolProperties( String market, String symbol, SecurityType securityType, String defaultQuoteCurrency) {
             SymbolProperties symbolProperties;
             key = new SecurityDatabaseKey(market, symbol, securityType);
 
-            if (!_entries.TryGetValue(key, out symbolProperties))
-            {
+            if( !_entries.TryGetValue(key, out symbolProperties)) {
                 // now check with null symbol key
-                if (!_entries.TryGetValue(new SecurityDatabaseKey(market, null, securityType), out symbolProperties))
-                {
+                if( !_entries.TryGetValue(new SecurityDatabaseKey(market, null, securityType), out symbolProperties)) {
                     // no properties found, return object with default property values
                     return SymbolProperties.GetDefault(defaultQuoteCurrency);
                 }
@@ -67,12 +63,9 @@ package com.quantconnect.lean.Securities
         /// data found in /Data/symbol-properties/
         /// </summary>
         /// <returns>A <see cref="SymbolPropertiesDatabase"/> class that represents the data in the symbol-properties folder</returns>
-        public static SymbolPropertiesDatabase FromDataFolder()
-        {
-            lock (DataFolderSymbolPropertiesDatabaseLock)
-            {
-                if (_dataFolderSymbolPropertiesDatabase == null)
-                {
+        public static SymbolPropertiesDatabase FromDataFolder() {
+            lock (DataFolderSymbolPropertiesDatabaseLock) {
+                if( _dataFolderSymbolPropertiesDatabase == null ) {
                     directory = Path.Combine(Globals.DataFolder, "symbol-properties");
                     _dataFolderSymbolPropertiesDatabase = FromCsvFile(Path.Combine(directory, "symbol-properties-database.csv"));
                 }
@@ -85,23 +78,19 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="file">The csv file to be read</param>
         /// <returns>A new instance of the <see cref="SymbolPropertiesDatabase"/> class representing the data in the specified file</returns>
-        private static SymbolPropertiesDatabase FromCsvFile( String file)
-        {
+        private static SymbolPropertiesDatabase FromCsvFile( String file) {
             entries = new Map<SecurityDatabaseKey, SymbolProperties>();
 
-            if (!File.Exists(file))
-            {
-                throw new FileNotFoundException("Unable to locate symbol properties file: " + file);
+            if( !File.Exists(file)) {
+                throw new FileNotFoundException( "Unable to locate symbol properties file: " + file);
             }
 
             // skip the first header line, also skip #'s as these are comment lines
-            foreach (line in File.ReadLines(file).Where(x => !x.StartsWith("#") && !string.IsNullOrWhiteSpace(x)).Skip(1))
-            {
+            foreach (line in File.ReadLines(file).Where(x => !x.StartsWith( "#") && !string.IsNullOrWhiteSpace(x)).Skip(1)) {
                 SecurityDatabaseKey key;
                 entry = FromCsvLine(line, out key);
-                if (entries.ContainsKey(key))
-                {
-                    throw new Exception("Encountered duplicate key while processing file: " + file + ". Key: " + key);
+                if( entries.ContainsKey(key)) {
+                    throw new Exception( "Encountered duplicate key while processing file: " + file + ". Key: " + key);
                 }
 
                 entries[key] = entry;
@@ -116,9 +105,8 @@ package com.quantconnect.lean.Securities
         /// <param name="line">The csv line to be parsed</param>
         /// <param name="key">The key used to uniquely identify this security</param>
         /// <returns>A new <see cref="SymbolProperties"/> for the specified csv line</returns>
-        private static SymbolProperties FromCsvLine( String line, out SecurityDatabaseKey key)
-        {
-            csv = line.Split(',');
+        private static SymbolProperties FromCsvLine( String line, out SecurityDatabaseKey key) {
+            csv = line.split(',');
 
             key = new SecurityDatabaseKey(
                 market: csv[0], 
@@ -128,9 +116,9 @@ package com.quantconnect.lean.Securities
             return new SymbolProperties(
                 description: csv[3], 
                 quoteCurrency: csv[4],
-                contractMultiplier: csv[5].ToDecimal(), 
-                pipSize: csv[6].ToDecimal(),
-                lotSize: csv[7].ToDecimal());
+                contractMultiplier: csv[5] new BigDecimal(  ), 
+                pipSize: csv[6] new BigDecimal(  ),
+                lotSize: csv[7] new BigDecimal(  ));
         }
 
 

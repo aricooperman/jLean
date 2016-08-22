@@ -31,14 +31,12 @@ package com.quantconnect.lean.Brokerages.Oanda.Session
         private readonly List<Instrument> _instruments;
 
         public RatesSession(OandaBrokerage brokerage, int accountId, List<Instrument> instruments)
-            : base(accountId)
-        {
+            : base(accountId) {
             _brokerage = brokerage;
             _instruments = instruments;
         }
 
-        protected override WebResponse GetSession()
-        {
+        protected @Override WebResponse GetSession() {
             return _brokerage.StartRatesSession(_instruments, _accountId);
         }
     }

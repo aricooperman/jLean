@@ -468,7 +468,7 @@ package com.quantconnect.lean.Interfaces
         /// </summary>
         /// <param name="symbolToLiquidate">Specific asset to liquidate, defaults to all.</param>
         /// <returns>list of order ids</returns>
-        List<Integer> Liquidate(Symbol symbolToLiquidate = null);
+        List<Integer> Liquidate(Symbol symbolToLiquidate = null );
 
         /// <summary>
         /// Set live mode state of the algorithm run: Public setter for the algorithm property LiveMode.

@@ -50,8 +50,7 @@ package com.quantconnect.lean.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="QueueLogHandler"/> class.
         /// </summary>
-        public QueueLogHandler()
-        {
+        public QueueLogHandler() {
             _logs = new ConcurrentQueue<LogEntry>();
             _trace = Console.Out;
             _error = Console.Error;
@@ -61,8 +60,7 @@ package com.quantconnect.lean.Logging
         /// Write error message to log
         /// </summary>
         /// <param name="text">The error text to log</param>
-        public void Error( String text)
-        {
+        public void Error( String text) {
             log = new LogEntry(text, DateTime.Now, LogType.Error);
             _logs.Enqueue(log);
             OnLogEvent(log);
@@ -76,8 +74,7 @@ package com.quantconnect.lean.Logging
         /// Write debug message to log
         /// </summary>
         /// <param name="text">The debug text to log</param>
-        public void Debug( String text)
-        {
+        public void Debug( String text) {
             log = new LogEntry(text, DateTime.Now, LogType.Debug);
             _logs.Enqueue(log);
             OnLogEvent(log);
@@ -89,8 +86,7 @@ package com.quantconnect.lean.Logging
         /// Write debug message to log
         /// </summary>
         /// <param name="text">The trace text to log</param>
-        public void Trace( String text)
-        {
+        public void Trace( String text) {
             log = new LogEntry(text, DateTime.Now, LogType.Trace);
             _logs.Enqueue(log);
             OnLogEvent(log);
@@ -102,19 +98,16 @@ package com.quantconnect.lean.Logging
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
         }
 
         /// <summary>
         /// Raise a log event safely
         /// </summary>
-        protected virtual void OnLogEvent(LogEntry log)
-        {
+        protected virtual void OnLogEvent(LogEntry log) {
             handler = LogEvent;
 
-            if (handler != null)
-            {
+            if( handler != null ) {
                 handler(log);
             }
         }

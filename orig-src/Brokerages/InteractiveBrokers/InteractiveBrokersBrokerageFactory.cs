@@ -33,8 +33,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// Initializes a new instance of the InteractiveBrokersBrokerageFactory class
         /// </summary>
         public InteractiveBrokersBrokerageFactory()
-            : base(typeof(InteractiveBrokersBrokerage))
-        {
+            : base(typeof(InteractiveBrokersBrokerage)) {
         }
 
         /// <summary>
@@ -44,15 +43,15 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
         /// </remarks>
-        public override Map<String,String> BrokerageData
+        public @Override Map<String,String> BrokerageData
         {
             get
             {
                 data = new Map<String,String>();
-                data.Add("ib-account", Config.Get("ib-account"));
-                data.Add("ib-user-name", Config.Get("ib-user-name"));
-                data.Add("ib-password", Config.Get("ib-password"));
-                data.Add("ib-agent-description", Config.Get("ib-agent-description"));
+                data.Add( "ib-account", Config.Get( "ib-account"));
+                data.Add( "ib-user-name", Config.Get( "ib-user-name"));
+                data.Add( "ib-password", Config.Get( "ib-password"));
+                data.Add( "ib-agent-description", Config.Get( "ib-agent-description"));
                 return data;
             }
         }
@@ -60,7 +59,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Gets a new instance of the <see cref="InteractiveBrokersBrokerageModel"/>
         /// </summary>
-        public override IBrokerageModel BrokerageModel
+        public @Override IBrokerageModel BrokerageModel
         {
             get { return new InteractiveBrokersBrokerageModel(); }
         }
@@ -71,24 +70,22 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <param name="job">The job packet to create the brokerage for</param>
         /// <param name="algorithm">The algorithm instance</param>
         /// <returns>A new brokerage instance</returns>
-        public override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm)
-        {
+        public @Override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm) {
             errors = new List<String>();
 
             // read values from the brokerage datas
-            useTws = Config.GetBool("ib-use-tws");
-            port = Config.GetInt("ib-port", 4001);
-            host = Config.Get("ib-host", "127.0.0.1");
-            twsDirectory = Config.Get("ib-tws-dir", "C:\\Jts");
-            ibControllerDirectory = Config.Get("ib-controller-dir", "C:\\IBController");
+            useTws = Config.GetBool( "ib-use-tws");
+            port = Config.GetInt( "ib-port", 4001);
+            host = Config.Get( "ib-host", "127.0.0.1");
+            twsDirectory = Config.Get( "ib-tws-dir", "C:\\Jts");
+            ibControllerDirectory = Config.Get( "ib-controller-dir", "C:\\IBController");
 
             account = Read<String>(job.BrokerageData, "ib-account", errors);
             userID = Read<String>(job.BrokerageData, "ib-user-name", errors);
             password = Read<String>(job.BrokerageData, "ib-password", errors);
             agentDescription = Read<AgentDescription>(job.BrokerageData, "ib-agent-description", errors);
 
-            if (errors.Count != 0)
-            {
+            if( errors.Count != 0) {
                 // if we had errors then we can't create the instance
                 throw new Exception( String.Join(Environment.NewLine, errors));
             }
@@ -106,8 +103,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// Stops the InteractiveBrokersGatewayRunner
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public override void Dispose()
-        {
+        public @Override void Dispose() {
             InteractiveBrokersGatewayRunner.Stop();
         }
     }

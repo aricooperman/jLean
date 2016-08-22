@@ -24,8 +24,7 @@ package com.quantconnect.lean.Tests.Common.Util
     public class ComposerTests
     {
         [Test]
-        public void ComposesTypes()
-        {
+        public void ComposesTypes() {
             instances = Composer.Instance.GetExportedValues<IExport>().ToList();
             Assert.AreEqual(4, instances.Count);
             Assert.AreEqual(1, instances.Count(x => x.GetType() == typeof (Export1)));
@@ -35,16 +34,14 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void GetsInstanceUsingPredicate()
-        {
+        public void GetsInstanceUsingPredicate() {
             instance = Composer.Instance.Single<IExport>(x => x.Id == 3);
             Assert.IsNotNull(instance);
             Assert.IsInstanceOf(typeof (Export3), instance);
         }
 
         [Test]
-        public void ResetsAndCreatesNewInstances()
-        {
+        public void ResetsAndCreatesNewInstances() {
             composer = Composer.Instance;
             export1 = composer.Single<IExport>(x => x.Id == 3);
             Assert.IsNotNull(export1);

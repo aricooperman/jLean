@@ -24,68 +24,60 @@ package com.quantconnect.lean.ToolBox.IQFeed
 
     public class IQConnect
     {
-        public IQConnect( String product = "", String version = "")
-        {
+        public IQConnect( String product = "", String version = "") {
             _product = product;
             _version = version;
         }
         public String Product { get { return _product; } }
         public String Version { get { return _version; } }
         
-        public IQCredentials getCredentials()
-        {
+        public IQCredentials getCredentials() {
             return new IQCredentials(
-                Config.Get("iqfeed-username"),
-                Config.Get("iqfeed-password"),
+                Config.Get( "iqfeed-username"),
+                Config.Get( "iqfeed-password"),
                 true
                 );
         }
 
-        public String getPath()
-        {
-            key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\DTN\\IQFeed");
-            if (key == null)
-            {
+        public String getPath() {
+            key = Registry.LocalMachine.OpenSubKey( "SOFTWARE\\DTN\\IQFeed");
+            if( key == null ) {
                 // if it isn't in that location, it is possible the user is running and x64 OS.  Check the windows virtualized registry location
-                key = Registry.LocalMachine.OpenSubKey("SOFTWARE\\Wow6432Node\\DTN\\IQFeed");
+                key = Registry.LocalMachine.OpenSubKey( "SOFTWARE\\Wow6432Node\\DTN\\IQFeed");
             }
             String sLocation = null;
-            if (key != null)
-            {
-                sLocation = key.GetValue("EXEDIR", "").toString();
+            if( key != null ) {
+                sLocation = key.GetValue( "EXEDIR", "").toString();
                 // close the key since we don't need it anymore
                 key.Close();
                 // verify there is a \ on the end before we append the exe name
-                if (!(sLocation.EndsWith("\\") || sLocation.EndsWith("/")))
-                {
+                if( !(sLocation.EndsWith( "\\") || sLocation.EndsWith( "/"))) {
                     sLocation += "\\";
                 }
                 sLocation += "IQConnect.exe";
             }
             return sLocation;
         }
-        public String getArguments(IQCredentials iqc)
-        {
+        public String getArguments(IQCredentials iqc) {
             arguments = "";
 
-            if (Product != "") { arguments += "-product " + Product + " "; }
-            if (Version != "") { arguments += "-version " + Version + " "; }
-            if (iqc.LoginId != "") { arguments += "-login " + iqc.LoginId + " "; }
-            if (iqc.Password != "") { arguments += "-password " + iqc.Password + " "; }
-            if (iqc.SaveCredentials) { arguments += "-savelogininfo "; }
-            if (iqc.AutoConnect) { arguments += "-autoconnect"; }
+            if( Product != "") { arguments += "-product " + Product + " "; }
+            if( Version != "") { arguments += "-version " + Version + " "; }
+            if( iqc.LoginId != "") { arguments += "-login " + iqc.LoginId + " "; }
+            if( iqc.Password != "") { arguments += "-password " + iqc.Password + " "; }
+            if( iqc.SaveCredentials) { arguments += "-savelogininfo "; }
+            if( iqc.AutoConnect) { arguments += "-autoconnect"; }
             arguments.TrimEnd(' ');
 
             return arguments;
         }
 
-        public boolean Launch(IQCredentials iqc = null, String arguments = null, int pauseMilliseconds = 6000)
-        {
-            if (iqc == null) { iqc = getCredentials(); }
-            if (iqc == null) { iqc = new IQCredentials(); }
-            if (arguments == null) { arguments = getArguments(iqc); }
+        public boolean Launch(IQCredentials iqc = null, String arguments = null, int pauseMilliseconds = 6000) {
+            if( iqc == null ) { iqc = getCredentials(); }
+            if( iqc == null ) { iqc = new IQCredentials(); }
+            if( arguments == null ) { arguments = getArguments(iqc); }
 
-            psi = new ProcessStartInfo("IQConnect.exe", arguments) { UseShellExecute = true };
+            psi = new ProcessStartInfo( "IQConnect.exe", arguments) { UseShellExecute = true };
             Process.Start(psi);
             Thread.Sleep(pauseMilliseconds);
             return true;

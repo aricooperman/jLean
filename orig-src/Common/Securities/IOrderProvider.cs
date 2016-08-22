@@ -48,7 +48,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="filter">The filter predicate used to find the required order tickets. If null is specified then all tickets are returned</param>
         /// <returns>An enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/></returns>
-        IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null);
+        IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null );
 
         /// <summary>
         /// Gets the order ticket for the specified order id. Returns null if not found
@@ -63,7 +63,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="filter">Delegate used to filter the orders</param>
         /// <returns>All open orders this order provider currently holds</returns>
-        IEnumerable<Order> GetOrders(Func<Order, bool> filter = null);
+        IEnumerable<Order> GetOrders(Func<Order, bool> filter = null );
     }
 
     /// <summary>
@@ -77,8 +77,7 @@ package com.quantconnect.lean.Securities
         /// <param name="orderProvider">The order provider to search</param>
         /// <param name="brokerageId">The brokerage id to fetch</param>
         /// <returns>The first order matching the brokerage id, or null if no match is found</returns>
-        public static Order GetOrderByBrokerageId(this IOrderProvider orderProvider, long brokerageId)
-        {
+        public static Order GetOrderByBrokerageId(this IOrderProvider orderProvider, long brokerageId) {
             return orderProvider.GetOrderByBrokerageId(brokerageId.toString());
         }
 
@@ -88,8 +87,7 @@ package com.quantconnect.lean.Securities
         /// <param name="orderProvider">The order provider to search</param>
         /// <param name="brokerageId">The brokerage id to fetch</param>
         /// <returns>The first order matching the brokerage id, or null if no match is found</returns>
-        public static Order GetOrderByBrokerageId(this IOrderProvider orderProvider, int brokerageId)
-        {
+        public static Order GetOrderByBrokerageId(this IOrderProvider orderProvider, int brokerageId) {
             return orderProvider.GetOrderByBrokerageId(brokerageId.toString());
         }
     }

@@ -27,8 +27,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
     public class FastForwardEnumeratorTests
     {
         [Test]
-        public void FastForwardsOldData()
-        {
+        public void FastForwardsOldData() {
             start = new DateTime(2015, 10, 10, 13, 0, 0);
             data = new List<Tick>
             {
@@ -39,14 +38,13 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
             };
 
             timeProvider = new ManualTimeProvider(start, TimeZones.Utc);
-            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, TimeZones.Utc, TimeSpan.FromSeconds(0.5));
+            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, TimeZones.Utc, Duration.ofSeconds(0.5));
 
             Assert.IsTrue(fastForward.MoveNext());
             Assert.AreEqual(start, fastForward.Current.Time);
         }
         [Test]
-        public void FastForwardsOldDataAllowsEquals()
-        {
+        public void FastForwardsOldDataAllowsEquals() {
             start = new DateTime(2015, 10, 10, 13, 0, 0);
             data = new List<Tick>
             {
@@ -57,14 +55,13 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
             };
 
             timeProvider = new ManualTimeProvider(start, TimeZones.Utc);
-            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, TimeZones.Utc, TimeSpan.FromSeconds(1));
+            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, TimeZones.Utc, Duration.ofSeconds(1));
 
             Assert.IsTrue(fastForward.MoveNext());
             Assert.AreEqual(start.AddSeconds(-1), fastForward.Current.Time);
         }
         [Test]
-        public void FiltersOutPastData()
-        {
+        public void FiltersOutPastData() {
             start = new DateTime(2015, 10, 10, 13, 0, 0);
             data = new List<Tick>
             {
@@ -76,7 +73,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
             };
 
             timeProvider = new ManualTimeProvider(start, TimeZones.Utc);
-            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, TimeZones.Utc, TimeSpan.FromSeconds(0.5));
+            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, TimeZones.Utc, Duration.ofSeconds(0.5));
 
             Assert.IsTrue(fastForward.MoveNext());
             Assert.AreEqual(start.AddSeconds(1), fastForward.Current.Time);

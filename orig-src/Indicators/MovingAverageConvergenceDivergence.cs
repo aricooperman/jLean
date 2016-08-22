@@ -39,7 +39,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Signal.IsReady; }
         }
@@ -52,8 +52,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="signalPeriod">The signal period</param>
         /// <param name="type">The type of moving averages to use</param>
         public MovingAverageConvergenceDivergence(int fastPeriod, int slowPeriod, int signalPeriod, MovingAverageType type = MovingAverageType.Simple)
-            : this( String.format("MACD({0},{1})", fastPeriod, slowPeriod), fastPeriod, slowPeriod, signalPeriod, type)
-        {
+            : this( String.format( "MACD(%1$s,%2$s)", fastPeriod, slowPeriod), fastPeriod, slowPeriod, signalPeriod, type) {
         }
 
         /// <summary>
@@ -65,8 +64,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="signalPeriod">The signal period</param>
         /// <param name="type">The type of moving averages to use</param>
         public MovingAverageConvergenceDivergence( String name, int fastPeriod, int slowPeriod, int signalPeriod, MovingAverageType type = MovingAverageType.Simple)
-            : base(name)
-        {
+            : base(name) {
             Fast = type.AsIndicator(name + "_Fast", fastPeriod);
             Slow = type.AsIndicator(name + "_Slow", slowPeriod);
             Signal = type.AsIndicator(name + "_Signal", signalPeriod);
@@ -77,14 +75,12 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             Fast.Update(input);
             Slow.Update(input);
 
             macd = Fast - Slow;
-            if (Fast.IsReady && Slow.IsReady)
-            {
+            if( Fast.IsReady && Slow.IsReady) {
                 Signal.Update(input.Time, macd);
             }
 
@@ -94,8 +90,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             Fast.Reset();
             Slow.Reset();
             Signal.Reset();

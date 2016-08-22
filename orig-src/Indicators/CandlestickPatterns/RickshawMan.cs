@@ -46,8 +46,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="name">The name of this indicator</param>
         public RickshawMan( String name)
             : base(name, Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod),
-                  CandleSettings.Get(CandleSettingType.Near).AveragePeriod) + 1)
-        {
+                  CandleSettings.Get(CandleSettingType.Near).AveragePeriod) + 1) {
             _bodyDojiAveragePeriod = CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod;
             _shadowLongAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod;
             _nearAveragePeriod = CandleSettings.Get(CandleSettingType.Near).AveragePeriod;
@@ -57,14 +56,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Initializes a new instance of the <see cref="RickshawMan"/> class.
         /// </summary>
         public RickshawMan()
-            : this("RICKSHAWMAN")
-        {
+            : this( "RICKSHAWMAN") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -75,22 +73,17 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
-                if (Samples >= Period - _bodyDojiAveragePeriod)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
+                if( Samples >= Period - _bodyDojiAveragePeriod) {
                     _bodyDojiPeriodTotal += GetCandleRange(CandleSettingType.BodyDoji, input);
                 }
 
-                if (Samples >= Period - _shadowLongAveragePeriod)
-                {
+                if( Samples >= Period - _shadowLongAveragePeriod) {
                     _shadowLongPeriodTotal += GetCandleRange(CandleSettingType.ShadowLong, input);
                 }
 
-                if (Samples >= Period - _nearAveragePeriod)
-                {
+                if( Samples >= Period - _nearAveragePeriod) {
                     _nearPeriodTotal += GetCandleRange(CandleSettingType.Near, input);
                 }
 
@@ -98,7 +91,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             }
 
             BigDecimal value;
-            if (
+            if( 
                 // doji
                 GetRealBody(input) <= GetCandleAverage(CandleSettingType.BodyDoji, _bodyDojiPeriodTotal, input) &&
                 // long shadow
@@ -136,8 +129,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _bodyDojiPeriodTotal = 0;
             _shadowLongPeriodTotal = 0;
             _nearPeriodTotal = 0;

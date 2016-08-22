@@ -42,8 +42,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period2">The second period</param>
         /// <param name="period3">The third period</param>
         public UltimateOscillator(int period1, int period2, int period3)
-            : this( String.format("ULTOSC({0},{1},{2})", period1, period2, period3), period1, period2, period3)
-        {
+            : this( String.format( "ULTOSC(%1$s,%2$s,%3$s)", period1, period2, period3), period1, period2, period3) {
         }
 
         /// <summary>
@@ -54,8 +53,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period2">The second period</param>
         /// <param name="period3">The third period</param>
         public UltimateOscillator( String name, int period1, int period2, int period3)
-            : base(name)
-        {
+            : base(name) {
             _period = Math.Max(Math.Max(period1, period2), period3);
             _trueRange = new TrueRange(name + "_TR");
             _sumBuyingPressure1 = new Sum(name + "_BP1", period1);
@@ -69,7 +67,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples > _period; }
         }
@@ -79,12 +77,10 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _trueRange.Update(input);
 
-            if (Samples == 1)
-            {
+            if( Samples == 1) {
                 _previousInput = input;
                 return 50m;
             }
@@ -101,7 +97,7 @@ package com.quantconnect.lean.Indicators
 
             _previousInput = input;
 
-            if (!IsReady)
+            if( !IsReady)
                 return 50m;
 
             average1 = _sumBuyingPressure1 / _sumTrueRange1;
@@ -114,8 +110,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _previousInput = null;
             _trueRange.Reset();
             _sumBuyingPressure1.Reset();

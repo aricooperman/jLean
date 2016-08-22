@@ -35,8 +35,7 @@ package com.quantconnect.lean
         /// <summary>
         /// Initialize the data and resolution you require for your strategy
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2000, 1, 1);
             SetEndDate(DateTime.Now.Date.AddDays(-1));
             SetCash(25000);
@@ -47,12 +46,10 @@ package com.quantconnect.lean
         /// Data Event Handler: New data arrives here. "TradeBars" type is a dictionary of strings so you can access it by symbol.
         /// </summary>
         /// <param name="data">Data.</param>
-        public void OnData(Quandl data)
-        {
-            if (!Portfolio.HoldStock)
-            {
+        public void OnData(Quandl data) {
+            if( !Portfolio.HoldStock) {
                 SetHoldings(_crude, 1);
-                Debug(Time.toString("u") + " Purchased Crude Oil: " + _crude);
+                Debug(Time.toString( "u") + " Purchased Crude Oil: " + _crude);
             }
         }
     }
@@ -66,8 +63,7 @@ package com.quantconnect.lean
         /// Initializes a new instance of the <see cref="QuantConnect.QuandlFuture"/> class.
         /// </summary>
         public QuandlFuture()
-            : base(valueColumnName: "Settle")
-        {
+            : base(valueColumnName: "Settle") {
         }
     }
 }

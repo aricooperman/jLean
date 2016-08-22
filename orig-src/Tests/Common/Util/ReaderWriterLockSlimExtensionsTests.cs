@@ -24,8 +24,7 @@ package com.quantconnect.lean.Tests.Common.Util
     public class ReaderWriterLockSlimExtensionsTests
     {
         [Test]
-        public void EntersReadLock()
-        {
+        public void EntersReadLock() {
             slim = new ReaderWriterLockSlim();
 
             token = slim.Read();
@@ -36,8 +35,7 @@ package com.quantconnect.lean.Tests.Common.Util
             slim.Dispose();
         }
         [Test]
-        public void ExitsReadLock()
-        {
+        public void ExitsReadLock() {
             slim = new ReaderWriterLockSlim();
 
             token = slim.Read();
@@ -48,8 +46,7 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void EntersWriteLock()
-        {
+        public void EntersWriteLock() {
             slim = new ReaderWriterLockSlim();
 
             token = slim.Write();
@@ -59,8 +56,7 @@ package com.quantconnect.lean.Tests.Common.Util
             slim.Dispose();
         }
         [Test]
-        public void ExitsWriteLock()
-        {
+        public void ExitsWriteLock() {
             slim = new ReaderWriterLockSlim();
 
             token = slim.Read();

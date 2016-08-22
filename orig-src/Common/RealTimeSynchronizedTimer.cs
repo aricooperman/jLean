@@ -36,9 +36,8 @@ package com.quantconnect.lean
         /// <summary>
         /// Constructor for Real Time Event Driver:
         /// </summary>
-        public RealTimeSynchronizedTimer()
-        {
-            _period = TimeSpan.FromSeconds(0);
+        public RealTimeSynchronizedTimer() {
+            _period = Duration.ofSeconds(0);
             _thread = new Thread(Scanner);
         }
 
@@ -48,8 +47,7 @@ package com.quantconnect.lean
         /// </summary>
         /// <param name="period">delay period between event callbacks</param>
         /// <param name="callback">Callback event passed the UTC time the event is intended to be triggered</param>
-        public RealTimeSynchronizedTimer(TimeSpan period, Action<DateTime> callback)
-        {
+        public RealTimeSynchronizedTimer(TimeSpan period, Action<DateTime> callback) {
             _period = period;
             _callback = callback;
             _timer = new Stopwatch();
@@ -61,8 +59,7 @@ package com.quantconnect.lean
         /// <summary>
         /// Start the synchronized real time timer - fire events at start of each second or minute 
         /// </summary>
-        public void Start()
-        { 
+        public void Start() { 
             _timer.Start();
             _thread.Start();
             _triggerTime = DateTime.UtcNow.RoundDown(_period).Add(_period);
@@ -71,12 +68,9 @@ package com.quantconnect.lean
         /// <summary>
         /// Scan the stopwatch for the desired millisecond delay:
         /// </summary>
-        public void Scanner()
-        {
-            while (!_stopped)
-            {
-                if (_callback != null && DateTime.UtcNow >= _triggerTime)
-                {
+        public void Scanner() {
+            while (!_stopped) {
+                if( _callback != null && DateTime.UtcNow >= _triggerTime) {
                     _timer.Restart();
                     triggeredAt = _triggerTime;
                     _triggerTime = DateTime.UtcNow.RoundDown(_period).Add(_period);
@@ -91,24 +85,21 @@ package com.quantconnect.lean
         /// <summary>
         /// Hang the real time event:
         /// </summary>
-        public void Pause()
-        {
+        public void Pause() {
             _paused = true;
         }
 
         /// <summary>
         /// Resume clock
         /// </summary>
-        public void Resume()
-        {
+        public void Resume() {
             _paused = false;
         }
 
         /// <summary>
         /// Stop the real time timer:
         /// </summary>
-        public void Stop()
-        {
+        public void Stop() {
             _stopped = true;
         }
 

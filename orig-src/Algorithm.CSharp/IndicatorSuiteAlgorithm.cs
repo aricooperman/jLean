@@ -44,8 +44,7 @@ package com.quantconnect.lean
         /// <summary>
         /// Initialize the data and resolution you require for your strategy
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             //Initialize
             SetStartDate(2013, 1, 1);
             SetEndDate(2014, 12, 31);
@@ -55,7 +54,7 @@ package com.quantconnect.lean
             AddSecurity(SecurityType.Equity, _symbol, Resolution.Minute);
 
             //Add the Custom Data:
-            AddData<Bitcoin>("BTC");
+            AddData<Bitcoin>( "BTC");
 
             //Set up default Indicators, these indicators are defined on the Value property of incoming data (except ATR and AROON which use the full TradeBar object)
             _indicators = new Indicators
@@ -113,67 +112,63 @@ package com.quantconnect.lean
             // this will create a new indicator whose value is BTC/SPY
             _ratio = btcClose.Over(spyClose);
             // we can also easily plot our indicators each time they update using th PlotIndicator function
-            PlotIndicator("Ratio", _ratio);
+            PlotIndicator( "Ratio", _ratio);
         }
 
         /// <summary>
         /// Custom data event handler:
         /// </summary>
         /// <param name="data">Bitcoin - dictionary of TradeBarlike Bars of Bitcoin Data</param>
-        public void OnData(Bitcoin data)
-        {
+        public void OnData(Bitcoin data) {
         }
 
         /// <summary>
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">TradeBars IDictionary object with your stock data</param>
-        public void OnData(TradeBars data)
-        {
-            if (!_indicators.BB.IsReady || !_indicators.RSI.IsReady) return;
+        public void OnData(TradeBars data) {
+            if( !_indicators.BB.IsReady || !_indicators.RSI.IsReady) return;
 
             _price = data["SPY"].Close;
 
-            if (!Portfolio.HoldStock)
-            {
+            if( !Portfolio.HoldStock) {
                 int quantity = (int)Math.Floor(Portfolio.Cash / data[_symbol].Close);
 
                 //Order function places trades: enter the String symbol and the quantity you want:
                 Order(_symbol, quantity);
 
                 //Debug sends messages to the user console: "Time" is the algorithm time keeper object 
-                Debug("Purchased SPY on " + Time.ToShortDateString());
+                Debug( "Purchased SPY on " + Time.ToShortDateString());
             }
         }
 
         /// <summary>
         /// Fire plotting events once per day.
         /// </summary>
-        public override void OnEndOfDay()
-        {
-            if (!_indicators.BB.IsReady) return;
+        public @Override void OnEndOfDay() {
+            if( !_indicators.BB.IsReady) return;
 
-            Plot("BB", "Price", _price);
-            Plot("BB", _indicators.BB.UpperBand, _indicators.BB.MiddleBand, _indicators.BB.LowerBand);
+            Plot( "BB", "Price", _price);
+            Plot( "BB", _indicators.BB.UpperBand, _indicators.BB.MiddleBand, _indicators.BB.LowerBand);
 
-            Plot("RSI", _indicators.RSI);
+            Plot( "RSI", _indicators.RSI);
 
             //Custom data indicator
-            Plot("RSI-BTC", _rsiCustom);
+            Plot( "RSI-BTC", _rsiCustom);
 
-            Plot("ATR", _indicators.ATR);
+            Plot( "ATR", _indicators.ATR);
 
-            Plot("STD", _indicators.STD);
+            Plot( "STD", _indicators.STD);
 
-            Plot("AROON", _indicators.AROON.AroonUp, _indicators.AROON.AroonDown);
+            Plot( "AROON", _indicators.AROON.AroonUp, _indicators.AROON.AroonDown);
 
-            Plot("MOM", _indicators.MOM);
-            Plot("MOMP", _indicators.MOMP);
+            Plot( "MOM", _indicators.MOM);
+            Plot( "MOMP", _indicators.MOMP);
 
-            Plot("MACD", "Price", _price);
-            Plot("MACD", _indicators.MACD.Fast, _indicators.MACD.Slow, _indicators.MACD.Signal);
+            Plot( "MACD", "Price", _price);
+            Plot( "MACD", _indicators.MACD.Fast, _indicators.MACD.Slow, _indicators.MACD.Signal);
 
-            Plot("Averages", _indicators.EMA, _indicators.SMA);
+            Plot( "Averages", _indicators.EMA, _indicators.SMA);
         }
 
         /// <summary>
@@ -198,8 +193,7 @@ package com.quantconnect.lean
         /// <summary>
         /// Function used to select a trade bar that has double the values of the input trade bar
         /// </summary>
-        private static TradeBar SelectorDoubleTradeBar(BaseData baseData)
-        {
+        private static TradeBar SelectorDoubleTradeBar(BaseData baseData) {
             bar = (TradeBar)baseData;
             return new TradeBar
             {

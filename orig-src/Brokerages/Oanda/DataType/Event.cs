@@ -26,9 +26,8 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 	{
 		public Heartbeat heartbeat { get; set; }
 		public Transaction transaction { get; set; }
-		public boolean IsHeartbeat()
-		{
-			return (heartbeat != null);
+		public boolean IsHeartbeat() {
+			return (heartbeat != null );
 		}
 	}
 #pragma warning restore 1591

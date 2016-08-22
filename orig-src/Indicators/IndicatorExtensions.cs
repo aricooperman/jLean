@@ -34,8 +34,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="time">The time associated with the value</param>
         /// <param name="value">The value to use to update this indicator</param>
         /// <returns>True if this indicator is ready, false otherwise</returns>
-        public static boolean Update(this IndicatorBase<IndicatorDataPoint> indicator, DateTime time, BigDecimal value)
-        {
+        public static boolean Update(this IndicatorBase<IndicatorDataPoint> indicator, DateTime time, BigDecimal value) {
             return indicator.Update(new IndicatorDataPoint(time, value));
         }
 
@@ -54,8 +53,7 @@ package com.quantconnect.lean.Indicators
             first.Updated += (sender, consolidated) =>
             {
                 // only send the data along if we're ready
-                if (!waitForFirstToReady || first.IsReady)
-                {
+                if( !waitForFirstToReady || first.IsReady) {
                     second.Update(consolidated);
                 }
             };
@@ -76,14 +74,13 @@ package com.quantconnect.lean.Indicators
         {
             x = new WindowIdentity(period);
             y = new WindowIdentity(period);
-            numerator = new Sum("Sum_xy", period);
-            denominator = new Sum("Sum_y", period);
+            numerator = new Sum( "Sum_xy", period);
+            denominator = new Sum( "Sum_y", period);
 
             value.Updated += (sender, consolidated) =>
             {
                 x.Update(consolidated);
-                if (x.Samples == y.Samples)
-                {
+                if( x.Samples == y.Samples) {
                     numerator.Update(consolidated.Time, consolidated.Value * y.Current.Value);
                 }  
             };
@@ -91,8 +88,7 @@ package com.quantconnect.lean.Indicators
             weight.Updated += (sender, consolidated) =>
             {
                 y.Update(consolidated);
-                if (x.Samples == y.Samples)
-                {
+                if( x.Samples == y.Samples) {
                     numerator.Update(consolidated.Time, consolidated.Value * x.Current.Value);
                 }
                 denominator.Update(consolidated);
@@ -110,8 +106,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="left">The left indicator</param>
         /// <param name="constant">The addend</param>
         /// <returns>The sum of the left and right indicators</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Plus(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Plus(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant) {
             constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.toString(CultureInfo.InvariantCulture), constant);
             return left.Plus(constantIndicator);
         }
@@ -125,8 +120,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="left">The left indicator</param>
         /// <param name="right">The right indicator</param>
         /// <returns>The sum of the left and right indicators</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Plus(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Plus(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right) {
             return new CompositeIndicator<IndicatorDataPoint>(left, right, (l, r) => l + r);
         }
 
@@ -140,8 +134,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="right">The right indicator</param>
         /// <param name="name">The name of this indicator</param>
         /// <returns>The sum of the left and right indicators</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Plus(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right, String name)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Plus(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right, String name) {
             return new CompositeIndicator<IndicatorDataPoint>(name, left, right, (l, r) => l + r);
         }
 
@@ -154,8 +147,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="left">The left indicator</param>
         /// <param name="constant">The subtrahend</param>
         /// <returns>The difference of the left and right indicators</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Minus(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Minus(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant) {
             constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.toString(CultureInfo.InvariantCulture), constant);
             return left.Minus(constantIndicator);
         }
@@ -169,8 +161,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="left">The left indicator</param>
         /// <param name="right">The right indicator</param>
         /// <returns>The difference of the left and right indicators</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Minus(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Minus(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right) {
             return new CompositeIndicator<IndicatorDataPoint>(left, right, (l, r) => l - r);
         }
 
@@ -184,8 +175,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="right">The right indicator</param>
         /// <param name="name">The name of this indicator</param>
         /// <returns>The difference of the left and right indicators</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Minus(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right, String name)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Minus(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right, String name) {
             return new CompositeIndicator<IndicatorDataPoint>(name, left, right, (l, r) => l - r);
         }
 
@@ -198,8 +188,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="left">The left indicator</param>
         /// <param name="constant">The constant value denominator</param>
         /// <returns>The ratio of the left to the right indicator</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Over(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Over(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant) {
             constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.toString(CultureInfo.InvariantCulture), constant);
             return left.Over(constantIndicator);
         }
@@ -213,8 +202,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="left">The left indicator</param>
         /// <param name="right">The right indicator</param>
         /// <returns>The ratio of the left to the right indicator</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Over(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Over(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right) {
             return new CompositeIndicator<IndicatorDataPoint>(left, right, (l, r) => r == 0m ? new IndicatorResult(0m, IndicatorStatus.MathError) : new IndicatorResult(l / r));
         }
 
@@ -228,8 +216,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="right">The right indicator</param>
         /// <param name="name">The name of this indicator</param>
         /// <returns>The ratio of the left to the right indicator</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Over(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right, String name)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Over(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right, String name) {
             return new CompositeIndicator<IndicatorDataPoint>(name, left, right, (l, r) => r == 0m ? new IndicatorResult(0m, IndicatorStatus.MathError) : new IndicatorResult(l / r));
         }
 
@@ -242,8 +229,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="left">The left indicator</param>
         /// <param name="constant">The constant value to multiple by</param>
         /// <returns>The product of the left to the right indicators</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Times(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Times(this IndicatorBase<IndicatorDataPoint> left, BigDecimal constant) {
             constantIndicator = new ConstantIndicator<IndicatorDataPoint>(constant.toString(CultureInfo.InvariantCulture), constant);
             return left.Times(constantIndicator);
         }
@@ -257,8 +243,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="left">The left indicator</param>
         /// <param name="right">The right indicator</param>
         /// <returns>The product of the left to the right indicators</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Times(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Times(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right) {
             return new CompositeIndicator<IndicatorDataPoint>(left, right, (l, r) => l * r);
         }
 
@@ -272,8 +257,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="right">The right indicator</param>
         /// <param name="name">The name of this indicator</param>
         /// <returns>The product of the left to the right indicators</returns>
-        public static CompositeIndicator<IndicatorDataPoint> Times(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right, String name)
-        {
+        public static CompositeIndicator<IndicatorDataPoint> Times(this IndicatorBase<IndicatorDataPoint> left, IndicatorBase<IndicatorDataPoint> right, String name) {
             return new CompositeIndicator<IndicatorDataPoint>(name, left, right, (l, r) => l * r);
         }
 
@@ -288,7 +272,7 @@ package com.quantconnect.lean.Indicators
             where T : BaseData
         {
             BigDecimal k = smoothingFactor.HasValue ? k = smoothingFactor.Value : ExponentialMovingAverage.SmoothingFactorDefault(period);
-            ExponentialMovingAverage emaOfLeft = new ExponentialMovingAverage( String.format("EMA{0}_Of_{1}", period, left.Name), period, k).Of(left, waitForFirstToReady);
+            ExponentialMovingAverage emaOfLeft = new ExponentialMovingAverage( String.format( "EMA%1$s_Of_%2$s", period, left.Name), period, k).Of(left, waitForFirstToReady);
             return emaOfLeft;
         }
 
@@ -301,7 +285,7 @@ package com.quantconnect.lean.Indicators
         public static Maximum MAX<T>(this IndicatorBase<T> left, int period, boolean waitForFirstToReady = true)
             where T : BaseData
         {
-            Maximum maxOfLeft = new Maximum( String.format("MAX{0}_Of_{1}", period, left.Name), period).Of(left, waitForFirstToReady);
+            Maximum maxOfLeft = new Maximum( String.format( "MAX%1$s_Of_%2$s", period, left.Name), period).Of(left, waitForFirstToReady);
             return maxOfLeft;
         }
 
@@ -314,7 +298,7 @@ package com.quantconnect.lean.Indicators
         public static Minimum MIN<T>(this IndicatorBase<T> left, int period, boolean waitForFirstToReady = true)
             where T : BaseData
         {
-            Minimum minOfLeft = new Minimum( String.format("MIN{0}_Of_{1}", period, left.Name), period).Of(left, waitForFirstToReady);
+            Minimum minOfLeft = new Minimum( String.format( "MIN%1$s_Of_%2$s", period, left.Name), period).Of(left, waitForFirstToReady);
             return minOfLeft;
         }
 
@@ -327,7 +311,7 @@ package com.quantconnect.lean.Indicators
         public static SimpleMovingAverage SMA<T>(this IndicatorBase<T> left, int period, boolean waitForFirstToReady = true)
             where T : BaseData
         {
-            SimpleMovingAverage smaOfLeft = new SimpleMovingAverage( String.format("SMA{0}_Of_{1}", period, left.Name), period).Of(left, waitForFirstToReady);
+            SimpleMovingAverage smaOfLeft = new SimpleMovingAverage( String.format( "SMA%1$s_Of_%2$s", period, left.Name), period).Of(left, waitForFirstToReady);
             return smaOfLeft;
         }
     }

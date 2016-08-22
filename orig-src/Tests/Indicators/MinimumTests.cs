@@ -22,24 +22,22 @@ package com.quantconnect.lean.Tests.Indicators
     [TestFixture]
     public class MinimumTests : CommonIndicatorTests<IndicatorDataPoint>
     {
-        protected override IndicatorBase<IndicatorDataPoint> CreateIndicator()
-        {
+        protected @Override IndicatorBase<IndicatorDataPoint> CreateIndicator() {
             return new Minimum(5);
         }
 
-        protected override String TestFileName
+        protected @Override String TestFileName
         {
             get { return "spy_min.txt"; }
         }
 
-        protected override String TestColumnName
+        protected @Override String TestColumnName
         {
             get { return "MIN_5"; }
         }
 
         [Test]
-        public void ComputesCorrectly()
-        {
+        public void ComputesCorrectly() {
             min = new Minimum(3);
 
             reference = DateTime.UtcNow;
@@ -74,8 +72,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             min = new Minimum(3);
             min.Update(DateTime.Today, 1m);
             min.Update(DateTime.Today.AddSeconds(1), 2m);

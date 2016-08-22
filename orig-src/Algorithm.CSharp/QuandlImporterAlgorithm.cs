@@ -33,8 +33,7 @@ package com.quantconnect.lean.Algorithm.Examples
         String _quandlCode = "YAHOO/INDEX_SPY";
 
         /// Initialize the data and resolution you require for your strategy:
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             //Start and End Date range for the backtest:
             SetStartDate(2013, 1, 1);
             SetEndDate(DateTime.Now.Date.AddDays(-1));
@@ -49,18 +48,16 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /// Data Event Handler: New data arrives here. "TradeBars" type is a dictionary of strings so you can access it by symbol
-        public void OnData(Quandl data)
-        {
-            if (!Portfolio.HoldStock)
-            {
+        public void OnData(Quandl data) {
+            if( !Portfolio.HoldStock) {
                 //Order function places trades: enter the String symbol and the quantity you want:
                 SetHoldings(_quandlCode, 1);
 
                 //Debug sends messages to the user console: "Time" is the algorithm time keeper object 
-                Debug("Purchased " + _quandlCode + " >> " + Time.ToShortDateString());
+                Debug( "Purchased " + _quandlCode + " >> " + Time.ToShortDateString());
             }
 
-            Plot("SPY", sma);
+            Plot( "SPY", sma);
         }
     }
 }

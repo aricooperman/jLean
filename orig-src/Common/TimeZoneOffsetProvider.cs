@@ -49,20 +49,18 @@ package com.quantconnect.lean
         /// <param name="timeZone">The time zone to provide offsets for</param>
         /// <param name="utcStartTime">The start of the range of offsets</param>
         /// <param name="utcEndTime">The en of the range of offsets</param>
-        public TimeZoneOffsetProvider(ZoneId timeZone, DateTime utcStartTime, DateTime utcEndTime)
-        {
+        public TimeZoneOffsetProvider(ZoneId timeZone, DateTime utcStartTime, DateTime utcEndTime) {
             _timeZone = timeZone;
 
             // pad the end so we get the correct zone interval
-            utcEndTime += TimeSpan.FromDays(2*365);
+            utcEndTime += Duration.ofDays(2*365);
 
             start = ZoneId.Utc.AtLeniently(LocalDateTime.FromDateTime(utcStartTime));
             end = ZoneId.Utc.AtLeniently(LocalDateTime.FromDateTime(utcEndTime));
             zoneIntervals = _timeZone.GetZoneIntervals(start.ToInstant(), end.ToInstant()).ToList();
             
             // short circuit time zones with no discontinuities
-            if (zoneIntervals.Count == 1 && zoneIntervals[0].Start == Instant.MinValue && zoneIntervals[0].End == Instant.MaxValue)
-            {
+            if( zoneIntervals.Count == 1 && zoneIntervals[0].Start == Instant.MinValue && zoneIntervals[0].End == Instant.MaxValue) {
                 // end of discontinuities
                 _discontinuities = new Queue<long>();
                 _nextDiscontinuity = DateTime.MaxValue.Ticks;
@@ -82,11 +80,9 @@ package com.quantconnect.lean
         /// </summary>
         /// <param name="utcTime">The time in UTC to get an offset to local</param>
         /// <returns>The offset in ticks between UTC and the local time zone</returns>
-        public long GetOffsetTicks(DateTime utcTime)
-        {
+        public long GetOffsetTicks(DateTime utcTime) {
             // keep advancing our discontinuity until the requested time, don't recompute if already at max value
-            while (utcTime.Ticks >= _nextDiscontinuity && _nextDiscontinuity != DateTimeMaxValueTicks)
-            {
+            while (utcTime.Ticks >= _nextDiscontinuity && _nextDiscontinuity != DateTimeMaxValueTicks) {
                 // grab the next discontinuity
                 _nextDiscontinuity = _discontinuities.Count == 0 
                     ? DateTime.MaxValue.Ticks
@@ -104,8 +100,7 @@ package com.quantconnect.lean
         /// Gets this offset provider's next discontinuity
         /// </summary>
         /// <returns>The next discontinuity in UTC ticks</returns>
-        public long GetNextDiscontinuity()
-        {
+        public long GetNextDiscontinuity() {
             return _nextDiscontinuity;
         }
 
@@ -115,21 +110,19 @@ package com.quantconnect.lean
         /// </summary>
         /// <param name="utcTime">The time to convert from utc</param>
         /// <returns>The same instant in time represented in the <see cref="TimeZone"/></returns>
-        public DateTime ConvertFromUtc(DateTime utcTime)
-        {
+        public DateTime ConvertFromUtc(DateTime utcTime) {
             return new DateTime(utcTime.Ticks + GetOffsetTicks(utcTime));
         }
 
         /// <summary>
         /// Gets the zone interval's start time in DateTimeKind.Utc ticks
         /// </summary>
-        private static long GetDateTimeUtcTicks(ZoneInterval zoneInterval)
-        {
+        private static long GetDateTimeUtcTicks(ZoneInterval zoneInterval) {
             // can't convert these values directly to date times, so just shortcut these here
             // we set the min value to one since the logic in the ctor will decrement this value to
             // determine the last instant BEFORE the discontinuity
-            if (zoneInterval.Start == Instant.MinValue) return 1;
-            if (zoneInterval.Start == Instant.MaxValue) return DateTime.MaxValue.Ticks;
+            if( zoneInterval.Start == Instant.MinValue) return 1;
+            if( zoneInterval.Start == Instant.MaxValue) return DateTime.MaxValue.Ticks;
 
             return zoneInterval.Start.ToDateTimeUtc().Ticks;
         }

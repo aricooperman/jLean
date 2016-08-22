@@ -39,8 +39,7 @@ package com.quantconnect.lean.Securities
         /// <param name="provider">The <see cref="ISecurityProvider"/></param>
         /// <param name="symbol">The symbol we want holdings quantity for</param>
         /// <returns>The quantity of holdings for the specified symbol</returns>
-        public static BigDecimal GetHoldingsQuantity(this ISecurityProvider provider, Symbol symbol)
-        {
+        public static BigDecimal GetHoldingsQuantity(this ISecurityProvider provider, Symbol symbol) {
             security = provider.GetSecurity(symbol);
             return security == null ? 0 : security.Holdings.Quantity;
         }

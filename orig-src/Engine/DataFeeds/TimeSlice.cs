@@ -86,8 +86,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             List<UpdateData<Security>> securitiesUpdateData,
             List<UpdateData<SubscriptionDataConfig>> consolidatorUpdateData,
             List<UpdateData<Security>> customData,
-            SecurityChanges securityChanges)
-        {
+            SecurityChanges securityChanges) {
             Time = time;
             Data = data;
             Slice = slice;
@@ -108,8 +107,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="data">The data in this <see cref="TimeSlice"/></param>
         /// <param name="changes">The new changes that are seen in this time slice as a result of universe selection</param>
         /// <returns>A new <see cref="TimeSlice"/> containing the specified data</returns>
-        public static TimeSlice Create(DateTime utcDateTime, ZoneId algorithmTimeZone, CashBook cashBook, List<DataFeedPacket> data, SecurityChanges changes)
-        {
+        public static TimeSlice Create(DateTime utcDateTime, ZoneId algorithmTimeZone, CashBook cashBook, List<DataFeedPacket> data, SecurityChanges changes) {
             int count = 0;
             security = new List<UpdateData<Security>>();
             custom = new List<UpdateData<Security>>();
@@ -118,8 +116,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             cash = new List<UpdateData<Cash>>(cashBook.Count);
 
             cashSecurities = new HashSet<Symbol>();
-            foreach (cashItem in cashBook.Values)
-            {
+            foreach (cashItem in cashBook.Values) {
                 cashSecurities.Add(cashItem.SecuritySymbol);
             }
 
@@ -144,19 +141,16 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             optionChains = new OptionChains(algorithmTime);
             symbolChanges = new SymbolChangedEvents(algorithmTime);
 
-            foreach (packet in data)
-            {
+            foreach (packet in data) {
                 list = packet.Data;
                 symbol = packet.Security.Symbol;
 
-                if (list.Count == 0) continue;
+                if( list.Count == 0) continue;
                 
                 // keep count of all data points
-                if (list.Count == 1 && list[0] is BaseDataCollection)
-                {
+                if( list.Count == 1 && list[0] is BaseDataCollection) {
                     baseDataCollectionCount = ((BaseDataCollection)list[0]).Data.Count;
-                    if (baseDataCollectionCount == 0)
-                    {
+                    if( baseDataCollectionCount == 0) {
                         continue;
                     }
                     count += baseDataCollectionCount;
@@ -166,38 +160,30 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     count += list.Count;
                 }
 
-                if (!packet.Configuration.IsInternalFeed && packet.Configuration.IsCustomData)
-                {
+                if( !packet.Configuration.IsInternalFeed && packet.Configuration.IsCustomData) {
                     // This is all the custom data
                     custom.Add(new UpdateData<Security>(packet.Security, packet.Configuration.Type, list));
                 }
 
                 securityUpdate = new List<BaseData>(list.Count);
                 consolidatorUpdate = new List<BaseData>(list.Count);
-                for (int i = 0; i < list.Count; i++)
-                {
+                for (int i = 0; i < list.Count; i++) {
                     baseData = list[i];
-                    if (!packet.Configuration.IsInternalFeed)
-                    {
+                    if( !packet.Configuration.IsInternalFeed) {
                         // this is all the data that goes into the algorithm
                         allDataForAlgorithm.Add(baseData);
                     }
                     // don't add internal feed data to ticks/bars objects
-                    if (baseData.DataType != MarketDataType.Auxiliary)
-                    {
-                        if (!packet.Configuration.IsInternalFeed)
-                        {
+                    if( baseData.DataType != MarketDataType.Auxiliary) {
+                        if( !packet.Configuration.IsInternalFeed) {
                             PopulateDataDictionaries(baseData, ticks, tradeBars, quoteBars, optionChains);
 
                             // special handling of options data to build the option chain
-                            if (packet.Security.Type == SecurityType.Option)
-                            {
-                                if (baseData.DataType == MarketDataType.OptionChain)
-                                {
+                            if( packet.Security.Type == SecurityType.Option) {
+                                if( baseData.DataType == MarketDataType.OptionChain) {
                                     optionChains[baseData.Symbol] = (OptionChain) baseData;
                                 }
-                                else if (!HandleOptionData(algorithmTime, baseData, optionChains, packet.Security, sliceFuture))
-                                {
+                                else if( !HandleOptionData(algorithmTime, baseData, optionChains, packet.Security, sliceFuture)) {
                                     continue;
                                 }
                             }
@@ -210,37 +196,29 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                         securityUpdate.Add(baseData);
                     }
                     // include checks for various aux types so we don't have to construct the dictionaries in Slice
-                    else if ((delisting = baseData as Delisting) != null)
-                    {
+                    else if( (delisting = baseData as Delisting) != null ) {
                         delistings[symbol] = delisting;
                     }
-                    else if ((dividend = baseData as Dividend) != null)
-                    {
+                    else if( (dividend = baseData as Dividend) != null ) {
                         dividends[symbol] = dividend;
                     }
-                    else if ((split = baseData as Split) != null)
-                    {
+                    else if( (split = baseData as Split) != null ) {
                         splits[symbol] = split;
                     }
-                    else if ((symbolChange = baseData as SymbolChangedEvent) != null)
-                    {
+                    else if( (symbolChange = baseData as SymbolChangedEvent) != null ) {
                         // symbol changes is keyed by the requested symbol
                         symbolChanges[packet.Configuration.Symbol] = symbolChange;
                     }
                 }
 
-                if (securityUpdate.Count > 0)
-                {
+                if( securityUpdate.Count > 0) {
                     // check for 'cash securities' if we found valid update data for this symbol
                     // and we need this data to update cash conversion rates, long term we should
                     // have Cash hold onto it's security, then he can update himself, or rather, just
                     // patch through calls to conversion rate to compue it on the fly using Security.Price
-                    if (cashSecurities.Contains(packet.Security.Symbol))
-                    {
-                        foreach (cashKvp in cashBook)
-                        {
-                            if (cashKvp.Value.SecuritySymbol == packet.Security.Symbol)
-                            {
+                    if( cashSecurities.Contains(packet.Security.Symbol)) {
+                        foreach (cashKvp in cashBook) {
+                            if( cashKvp.Value.SecuritySymbol == packet.Security.Symbol) {
                                 cashUpdates = new List<BaseData> {securityUpdate[securityUpdate.Count - 1]};
                                 cash.Add(new UpdateData<Cash>(cashKvp.Value, packet.Configuration.Type, cashUpdates));
                             }
@@ -249,8 +227,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
 
                     security.Add(new UpdateData<Security>(packet.Security, packet.Configuration.Type, securityUpdate));
                 }
-                if (consolidatorUpdate.Count > 0)
-                {
+                if( consolidatorUpdate.Count > 0) {
                     consolidator.Add(new UpdateData<SubscriptionDataConfig>(packet.Configuration, packet.Configuration.Type, consolidatorUpdate));
                 }
             }
@@ -263,13 +240,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <summary>
         /// Adds the specified <see cref="BaseData"/> instance to the appropriate <see cref="DataDictionary{T}"/>
         /// </summary>
-        private static void PopulateDataDictionaries(BaseData baseData, Ticks ticks, TradeBars tradeBars, QuoteBars quoteBars, OptionChains optionChains)
-        {
+        private static void PopulateDataDictionaries(BaseData baseData, Ticks ticks, TradeBars tradeBars, QuoteBars quoteBars, OptionChains optionChains) {
             symbol = baseData.Symbol;
 
             // populate data dictionaries
-            switch (baseData.DataType)
-            {
+            switch (baseData.DataType) {
                 case MarketDataType.Tick:
                     ticks.Add(symbol, (Tick)baseData);
                     break;
@@ -288,38 +263,31 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
         }
 
-        private static boolean HandleOptionData(DateTime algorithmTime, BaseData baseData, OptionChains optionChains, Security security, Lazy<Slice> sliceFuture)
-        {
+        private static boolean HandleOptionData(DateTime algorithmTime, BaseData baseData, OptionChains optionChains, Security security, Lazy<Slice> sliceFuture) {
             symbol = baseData.Symbol;
             
             OptionChain chain;
             canonical = Symbol.Create(symbol.ID.Symbol, SecurityType.Option, symbol.ID.Market);
-            if (!optionChains.TryGetValue(canonical, out chain))
-            {
+            if( !optionChains.TryGetValue(canonical, out chain)) {
                 chain = new OptionChain(canonical, algorithmTime);
                 optionChains[canonical] = chain;
             }
 
             universeData = baseData as OptionChainUniverseDataCollection;
-            if (universeData != null)
-            {
-                if (universeData.Underlying != null)
-                {
+            if( universeData != null ) {
+                if( universeData.Underlying != null ) {
                     chain.Underlying = universeData.Underlying;
                 }
-                foreach (contractSymbol in universeData.FilteredContracts)
-                {
+                foreach (contractSymbol in universeData.FilteredContracts) {
                     chain.FilteredContracts.Add(contractSymbol);
                 }
                 return false;
             }
 
             OptionContract contract;
-            if (!chain.Contracts.TryGetValue(baseData.Symbol, out contract))
-            {
+            if( !chain.Contracts.TryGetValue(baseData.Symbol, out contract)) {
                 underlyingSymbol = Symbol.Create(baseData.Symbol.ID.Symbol, SecurityType.Equity, baseData.Symbol.ID.Market);
-                contract = new OptionContract(baseData.Symbol, underlyingSymbol)
-                {
+                contract = new OptionContract(baseData.Symbol, underlyingSymbol) {
                     Time = baseData.EndTime,
                     LastPrice = security.Close,
                     BidPrice = security.BidPrice,
@@ -330,15 +298,13 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 };
                 chain.Contracts[baseData.Symbol] = contract;
                 option = security as Option;
-                if (option != null)
-                {
+                if( option != null ) {
                     contract.SetOptionPriceModel(() => option.PriceModel.Evaluate(option, sliceFuture.Value, contract));
                 }
             }
 
             // populate ticks and tradebars dictionaries with no aux data
-            switch (baseData.DataType)
-            {
+            switch (baseData.DataType) {
                 case MarketDataType.Tick:
                     tick = (Tick)baseData;
                     chain.Ticks.Add(tick.Symbol, tick);
@@ -364,35 +330,27 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return true;
         }
 
-        private static void UpdateContract(OptionContract contract, QuoteBar quote)
-        {
-            if (quote.Ask != null && quote.Ask.Close != 0m)
-            {
+        private static void UpdateContract(OptionContract contract, QuoteBar quote) {
+            if( quote.Ask != null && quote.Ask.Close != 0m) {
                 contract.AskPrice = quote.Ask.Close;
                 contract.AskSize = quote.LastAskSize;
             }
-            if (quote.Bid != null && quote.Bid.Close != 0m)
-            {
+            if( quote.Bid != null && quote.Bid.Close != 0m) {
                 contract.BidPrice = quote.Bid.Close;
                 contract.BidSize = quote.LastBidSize;
             }
         }
 
-        private static void UpdateContract(OptionContract contract, Tick tick)
-        {
-            if (tick.TickType == TickType.Trade)
-            {
+        private static void UpdateContract(OptionContract contract, Tick tick) {
+            if( tick.TickType == TickType.Trade) {
                 contract.LastPrice = tick.Price;
             }
-            else if (tick.TickType == TickType.Quote)
-            {
-                if (tick.AskPrice != 0m)
-                {
+            else if( tick.TickType == TickType.Quote) {
+                if( tick.AskPrice != 0m) {
                     contract.AskPrice = tick.AskPrice;
                     contract.AskSize = tick.AskSize;
                 }
-                if (tick.BidPrice != 0m)
-                {
+                if( tick.BidPrice != 0m) {
                     contract.BidPrice = tick.BidPrice;
                     contract.BidSize = tick.BidSize;
                 }

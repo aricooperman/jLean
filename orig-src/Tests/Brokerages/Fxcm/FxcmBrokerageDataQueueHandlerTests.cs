@@ -26,19 +26,16 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
     public partial class FxcmBrokerageTests
     {
         [Test]
-        public void GetsTickData()
-        {
+        public void GetsTickData() {
             brokerage = (FxcmBrokerage)Brokerage;
 
             brokerage.Subscribe(null, new List<Symbol> {Symbols.USDJPY, Symbols.EURGBP});
 
             Thread.Sleep(5000);
 
-            for (i = 0; i < 10; i++)
-            {
-                foreach (tick in brokerage.GetNextTicks())
-                {
-                    Log.Trace("{0}: {1} - {2} / {3}", tick.Time, tick.Symbol, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
+            for (i = 0; i < 10; i++) {
+                foreach (tick in brokerage.GetNextTicks()) {
+                    Log.Trace( "%1$s: %2$s - %3$s / {3}", tick.Time, tick.Symbol, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
                 }
             }
         }

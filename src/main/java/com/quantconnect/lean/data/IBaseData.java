@@ -16,9 +16,9 @@
 package com.quantconnect.lean.data;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.quantconnect.lean.Global.DataFeedEndpoint;
 import com.quantconnect.lean.Global.MarketDataType;
 import com.quantconnect.lean.Symbol;
 
@@ -69,7 +69,7 @@ public interface IBaseData extends Cloneable {
     /// until the end of the data stream or file. E.g. Read CSV file line by line and convert
     /// into data types.
     /// <returns>BaseData type set by Subscription Method.</returns>
-    BaseData reader( SubscriptionDataConfig config, String line, LocalDateTime date, DataFeedEndpoint datafeed );
+    BaseData reader( SubscriptionDataConfig config, String line, LocalDate date, boolean isLiveMode );
 
 
     /// Return the URL String source of the file. This will be converted to a stream 
@@ -77,7 +77,7 @@ public interface IBaseData extends Cloneable {
     /// <param name="config">Configuration object</param>
     /// <param name="date">Date of this source file</param>
     /// <returns>String URL of source file.</returns>
-    String getSource( SubscriptionDataConfig config, LocalDateTime date, DataFeedEndpoint datafeed );
+    SubscriptionDataSource getSource( SubscriptionDataConfig config, LocalDate date, boolean isLiveMode );
 
     /// Return a new instance clone of this object
     /// <returns></returns>

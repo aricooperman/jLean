@@ -25,8 +25,7 @@ package com.quantconnect.lean.Tests.Engine
     public class FactorFileTests
     {
         [Test]
-        public void CorrectlyDeterminesTimePriceFactors()
-        {
+        public void CorrectlyDeterminesTimePriceFactors() {
             reference = DateTime.Today;
 
             static final String symbol = "n/a";
@@ -47,8 +46,7 @@ package com.quantconnect.lean.Tests.Engine
         }
 
         [Test]
-        public void HasDividendEventOnNextTradingDay()
-        {
+        public void HasDividendEventOnNextTradingDay() {
             reference = DateTime.Today;
 
             static final String symbol = "n/a";
@@ -74,8 +72,7 @@ package com.quantconnect.lean.Tests.Engine
         }
 
         [Test]
-        public void HasSplitEventOnNextTradingDay()
-        {
+        public void HasSplitEventOnNextTradingDay() {
             reference = DateTime.Today;
 
             static final String symbol = "n/a";
@@ -100,8 +97,7 @@ package com.quantconnect.lean.Tests.Engine
             Assert.IsFalse(file.HasSplitEventOnNextTradingDay(reference.AddDays(-366), out splitFactor));
         }
 
-        private static FactorFile GetTestFactorFile( String symbol, DateTime reference)
-        {
+        private static FactorFile GetTestFactorFile( String symbol, DateTime reference) {
             file = new FactorFile(symbol, new List<FactorFileRow>
             {
                 new FactorFileRow(reference, 1, 1),

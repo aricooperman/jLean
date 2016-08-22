@@ -38,8 +38,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// </summary>
         /// <param name="symbol"></param>
         /// <returns>Returns true if the symbol is available</returns>
-        public boolean HasSymbol( String symbol)
-        {
+        public boolean HasSymbol( String symbol) {
             return _symbolMapper.IsKnownLeanSymbol(Symbol.Create(symbol, GetSecurityType(symbol), Market.Dukascopy));
         }
 
@@ -48,8 +47,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// </summary>
         /// <param name="symbol">The symbol</param>
         /// <returns>The security type</returns>
-        public SecurityType GetSecurityType( String symbol)
-        {
+        public SecurityType GetSecurityType( String symbol) {
             return _symbolMapper.GetLeanSecurityType(symbol);
         }
 
@@ -61,31 +59,27 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// <param name="startUtc">Start time of the data in UTC</param>
         /// <param name="endUtc">End time of the data in UTC</param>
         /// <returns>Enumerable of base data for this symbol</returns>
-        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc)
-        {
-            if (!_symbolMapper.IsKnownLeanSymbol(symbol))
-                throw new ArgumentException("Invalid symbol requested: " + symbol.Value);
+        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
+            if( !_symbolMapper.IsKnownLeanSymbol(symbol))
+                throw new ArgumentException( "Invalid symbol requested: " + symbol.Value);
 
-            if (symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
-                throw new NotSupportedException("SecurityType not available: " + symbol.ID.SecurityType);
+            if( symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
+                throw new NotSupportedException( "SecurityType not available: " + symbol.ID.SecurityType);
 
-            if (endUtc < startUtc)
-                throw new ArgumentException("The end date must be greater or equal to the start date.");
+            if( endUtc < startUtc)
+                throw new ArgumentException( "The end date must be greater or equal to the start date.");
 
             // set the starting date
             DateTime date = startUtc;
 
             // loop until last date
-            while (date <= endUtc)
-            {
+            while (date <= endUtc) {
                 // request all ticks for a specific date
                 ticks = DownloadTicks(symbol, date);
 
-                switch (resolution)
-                {
+                switch (resolution) {
                     case Resolution.Tick:
-                        foreach (tick in ticks)
-                        {
+                        foreach (tick in ticks) {
                             yield return new Tick(tick.Time, symbol, tick.BidPrice, tick.AskPrice);
                         }
                         break;
@@ -94,8 +88,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
                     case Resolution.Minute:
                     case Resolution.Hour:
                     case Resolution.Daily:
-                        foreach (bar in AggregateTicks(symbol, ticks, resolution.ToTimeSpan()))
-                        {
+                        foreach (bar in AggregateTicks(symbol, ticks, resolution.ToTimeSpan())) {
                             yield return bar;
                         }
                         break;
@@ -112,8 +105,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// <param name="ticks"></param>
         /// <param name="resolution"></param>
         /// <returns></returns>
-        internal static IEnumerable<TradeBar> AggregateTicks(Symbol symbol, IEnumerable<Tick> ticks, TimeSpan resolution)
-        {
+        internal static IEnumerable<TradeBar> AggregateTicks(Symbol symbol, IEnumerable<Tick> ticks, TimeSpan resolution) {
             return 
                 (from t in ticks
                  group t by t.Time.RoundDown(resolution)
@@ -135,35 +127,29 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// <param name="symbol">The requested symbol</param>
         /// <param name="date">The requested date</param>
         /// <returns>An enumerable of ticks</returns>
-        private IEnumerable<Tick> DownloadTicks(Symbol symbol, DateTime date)
-        {
+        private IEnumerable<Tick> DownloadTicks(Symbol symbol, DateTime date) {
             dukascopySymbol = _symbolMapper.GetBrokerageSymbol(symbol);
             pointValue = _symbolMapper.GetPointValue(symbol);
 
-            for (hour = 0; hour < 24; hour++)
-            {
+            for (hour = 0; hour < 24; hour++) {
                 timeOffset = hour * 3600000;
 
-                url = String.format(@"http://www.dukascopy.com/datafeed/{0}/{1:D4}/{2:D2}/{3:D2}/{4:D2}h_ticks.bi5",
+                url = String.format(@"http://www.dukascopy.com/datafeed/%1$s/{1:D4}/{2:D2}/{3:D2}/{4:D2}h_ticks.bi5",
                     dukascopySymbol, date.Year, date.Month - 1, date.Day, hour);
 
-                using (client = new WebClient())
-                {
+                using (client = new WebClient()) {
                     byte[] bytes;
                     try
                     {
                         bytes = client.DownloadData(url);
                     }
-                    catch (Exception exception)
-                    {
+                    catch (Exception exception) {
                         Log.Error(exception);
                         yield break;
                     }
-                    if (bytes != null && bytes.Length > 0)
-                    {
+                    if( bytes != null && bytes.Length > 0) {
                         ticks = AppendTicksToList(symbol, bytes, date, timeOffset, pointValue);
-                        foreach (tick in ticks)
-                        {
+                        foreach (tick in ticks) {
                             yield return tick;
                         }
                     }
@@ -179,15 +165,12 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// <param name="date">The date for the ticks</param>
         /// <param name="timeOffset">The time offset in milliseconds</param>
         /// <param name="pointValue">The price multiplier</param>
-        private static unsafe List<Tick> AppendTicksToList(Symbol symbol, byte[] bytesBi5, DateTime date, int timeOffset, double pointValue)
-        {
+        private static unsafe List<Tick> AppendTicksToList(Symbol symbol, byte[] bytesBi5, DateTime date, int timeOffset, double pointValue) {
             ticks = new List<Tick>();
 
-            using (inStream = new MemoryStream(bytesBi5))
-            {
-                using (outStream = new MemoryStream())
-                {
-                    SevenZipExtractor.DecompressStream(inStream, outStream, (int)inStream.Length, null);
+            using (inStream = new MemoryStream(bytesBi5)) {
+                using (outStream = new MemoryStream()) {
+                    SevenZipExtractor.DecompressStream(inStream, outStream, (int)inStream.Length, null );
 
                     byte[] bytes = outStream.GetBuffer();
                     int count = bytes.Length / DukascopyTickLength;
@@ -199,24 +182,21 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
                     // ff1 = AskVolume (not used)
                     // ff2 = BidVolume (not used)
 
-                    fixed (byte* pBuffer = &bytes[0])
-                    {
+                    fixed (byte* pBuffer = &bytes[0]) {
                         uint* p = (uint*)pBuffer;
 
-                        for (int i = 0; i < count; i++)
-                        {
+                        for (int i = 0; i < count; i++) {
                             ReverseBytes(p); UnsignedInt time = *p++;
                             ReverseBytes(p); UnsignedInt ask = *p++;
                             ReverseBytes(p); UnsignedInt bid = *p++;
                             p++; p++;
 
-                            if (bid > 0 && ask > 0)
-                            {
+                            if( bid > 0 && ask > 0) {
                                 ticks.Add(new Tick(
                                     date.AddMilliseconds(timeOffset + time), 
                                     symbol, 
-                                    Convert.ToDecimal(bid / pointValue), 
-                                    Convert.ToDecimal(ask / pointValue)));
+                                    new BigDecimal( bid / pointValue), 
+                                    new BigDecimal( ask / pointValue)));
                             }
                         }
                     }
@@ -230,8 +210,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// Converts a 32-bit unsigned integer from big-endian to little-endian (and vice-versa)
         /// </summary>
         /// <param name="p">Pointer to the integer value</param>
-        private static unsafe void ReverseBytes(uint* p)
-        {
+        private static unsafe void ReverseBytes(uint* p) {
             *p = (*p & 0x000000FF) << 24 | (*p & 0x0000FF00) << 8 | (*p & 0x00FF0000) >> 8 | (*p & 0xFF000000) >> 24;
         }
 

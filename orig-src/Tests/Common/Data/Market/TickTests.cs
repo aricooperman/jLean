@@ -23,8 +23,7 @@ package com.quantconnect.lean.Tests.Common.Data.Market
     public class TickTests
     {
         [Test]
-        public void ConstructsFromLine()
-        {
+        public void ConstructsFromLine() {
             static final String line = "15093000,1456300,100,P,T,0";
 
             baseDate = new DateTime(2013, 10, 08);
@@ -34,8 +33,8 @@ package com.quantconnect.lean.Tests.Common.Data.Market
             Assert.AreEqual(15093000, ms);
             Assert.AreEqual(1456300, tick.LastPrice * 10000m);
             Assert.AreEqual(100, tick.Quantity);
-            Assert.AreEqual("P", tick.Exchange);
-            Assert.AreEqual("T", tick.SaleCondition);
+            Assert.AreEqual( "P", tick.Exchange);
+            Assert.AreEqual( "T", tick.SaleCondition);
             Assert.AreEqual(false, tick.Suspicious);
         }
     }

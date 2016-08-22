@@ -38,11 +38,6 @@ import com.quantconnect.lean.interfaces.IMapFileProvider;
 import com.quantconnect.lean.util.SecurityIdentifierJsonConverter.SecurityIdentifierJsonDeserializer;
 import com.quantconnect.lean.util.SecurityIdentifierJsonConverter.SecurityIdentifierJsonSerializer;
 
-//using System.Linq;
-//using System.Numerics;
-//using QuantConnect.Configuration;
-//using QuantConnect.Interfaces;
-//using QuantConnect.Util;
 
 /* Defines a unique identifier for securities
  *  The SecurityIdentifier contains information about a specific security.
@@ -166,7 +161,7 @@ public class SecurityIdentifier {
     /// accessed otherwise.
     public OptionStyle getOptionStyle() {
         if( getSecurityType() != SecurityType.Option )
-            throw new IllegalArgumentException("OptionStyle is only defined for SecurityType.Option");
+            throw new IllegalArgumentException( "OptionStyle is only defined for SecurityType.Option");
             
         return OptionStyle.fromOrdinal( extractFromProperties( OptionStyleOffset, OptionStyleWidth ).intValue() );
     }
@@ -176,7 +171,7 @@ public class SecurityIdentifier {
     /// <param name="properties">Other data defining properties of the symbol including market,
     /// security type, listing or expiry date, strike/call/put/style for options, ect...</param>
     public SecurityIdentifier( String symbol, BigInteger properties) {
-        if (symbol == null)
+        if( symbol == null )
             throw new IllegalArgumentException( "SecurityIdentifier requires a non-null String 'symbol'" );
 
         this.symbol = symbol;
@@ -256,7 +251,7 @@ public class SecurityIdentifier {
     /// some parameters mean different things for different security types
     private static SecurityIdentifier generate( LocalDate date, String symbol, SecurityType securityType,
             String market ) {
-        return generate( date, symbol, securityType, market, BigDecimal.ZERO, OptionRight.Call, OptionStyle.American );
+        return generate( date, symbol, securityType, market, BigDecimal.ZERO, OptionRight.CALL, OptionStyle.AMERICAN );
     }
     
     private static SecurityIdentifier generate( LocalDate date, String symbol, SecurityType securityType,

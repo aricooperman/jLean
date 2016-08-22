@@ -82,7 +82,7 @@ public class Config {
     /// Gets the currently selected environment. If sub-environments are defined,
     /// they'll be returned as {env1}.{env2}
     /// <returns>The fully qualified currently selected environment</returns>
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked")
     public static String getEnvironment() {
         final List<String> environments = new ArrayList<String>();
 
@@ -136,7 +136,7 @@ public class Config {
     /// </summary>
     /// <param name="key">The key to be set</param>
     /// <param name="value">The new value</param>
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked")
     public static void set( String key, String value ) {
         Map<String,Object> environment = settings.get();
         while( key.contains( "." ) ) {
@@ -211,9 +211,9 @@ public class Config {
 //        if( key.equals( "environment" ) && typeof (T) == typeof ( String)) return (T) (object) GetEnvironment();
 //
 //        token = GetToken(Settings.Value, key);
-//        if (token == null)
+//        if( token == null )
 //        {
-//            Log.Trace( String.format("Config.GetValue(): {0} - Using default value: {1}", key, defaultValue));
+//            Log.Trace( String.format( "Config.GetValue(): %1$s - Using default value: %2$s", key, defaultValue));
 //            return defaultValue;
 //        }
 //
@@ -228,12 +228,12 @@ public class Config {
 //            value = token.toString();
 //        }
 //
-//        if (type.IsEnum)
+//        if( type.IsEnum)
 //        {
 //            return (T) Enum.Parse(type, value);
 //        }
 //
-//        if (typeof(IConvertible).IsAssignableFrom(type))
+//        if( typeof(IConvertible).IsAssignableFrom(type))
 //        {
 //            return (T) Convert.ChangeType(value, type);
 //        }
@@ -241,8 +241,8 @@ public class Config {
 //        // try and find a static parse method
 //        try
 //        {
-//            parse = type.GetMethod("Parse", new[]{typeof( String)});
-//            if (parse != null)
+//            parse = type.GetMethod( "Parse", new[]{typeof( String)});
+//            if( parse != null )
 //            {
 //                result = parse.Invoke(null, new object[] {value});
 //                return (T) result;
@@ -250,7 +250,7 @@ public class Config {
 //        }
 //        catch (Exception err)
 //        {
-//            Log.Trace("Config.GetValue<{0}>({1},{2}): Failed to parse: {3}. Using default value.", typeof (T).Name, key, defaultValue, value);
+//            Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to parse: {3}. Using default value.", typeof (T).Name, key, defaultValue, value);
 //            Log.Error(err);
 //            return defaultValue;
 //        }
@@ -261,7 +261,7 @@ public class Config {
 //        }
 //        catch (Exception err)
 //        {
-//            Log.Trace("Config.GetValue<{0}>({1},{2}): Failed to JSON deserialize: {3}. Using default value.", typeof(T).Name, key, defaultValue, value);
+//            Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to JSON deserialize: {3}. Using default value.", typeof(T).Name, key, defaultValue, value);
 //            Log.Error(err);
 //            return defaultValue;
 //        }
@@ -307,17 +307,17 @@ public class Config {
     public static void write() {
 //        if( !settings.get()..IsValueCreated ) return;
 //        serialized = JsonConvert.SerializeObject(Settings.Value, Formatting.Indented);
-//        File.WriteAllText("config.json", serialized);
+//        File.WriteAllText( "config.json", serialized);
     }
 
     /// <summary>
     /// Flattens the jobject with respect to the selected environment and then
     /// removes the 'environments' node
     /// </summary>
-    /// <param name="overrideEnvironment">The environment to use</param>
+    /// <param name="@OverrideEnvironment">The environment to use</param>
     /// <returns>The flattened JObject</returns>
-    public static Map<String,Object> flatten( String overrideEnvironment ) {
-        return flatten( settings.get(), overrideEnvironment );
+    public static Map<String,Object> flatten( String @OverrideEnvironment ) {
+        return flatten( settings.get(), @OverrideEnvironment );
     }
 
     /// <summary>
@@ -325,40 +325,40 @@ public class Config {
     /// removes the 'environments' node
     /// </summary>
     /// <param name="config">The configuration represented as a JObject</param>
-    /// <param name="overrideEnvironment">The environment to use</param>
+    /// <param name="@OverrideEnvironment">The environment to use</param>
     /// <returns>The flattened JObject</returns>
-    public static Map<String,Object> flatten( Map<String,Object> config, String overrideEnvironment ) {
+    public static Map<String,Object> flatten( Map<String,Object> config, String @OverrideEnvironment ) {
         Map<String,Object> clone = null;
 //        clone = (Map<String,Object>)config.DeepClone();
 //
 //        // remove the environment declaration
-//        environmentProperty = clone.Property("environment");
-//        if (environmentProperty != null) environmentProperty.Remove();
+//        environmentProperty = clone.Property( "environment");
+//        if( environmentProperty != null ) environmentProperty.Remove();
 //
-//        if (!string.IsNullOrEmpty(overrideEnvironment))
+//        if( !string.IsNullOrEmpty(@OverrideEnvironment))
 //        {
-//            environmentSections = overrideEnvironment.Split('.');
+//            environmentSections = @OverrideEnvironment.split('.');
 //
 //            for (int i = 0; i < environmentSections.Length; i++)
 //            {
-//                env = string.Join(".environments.", environmentSections.Where((x, j) => j <= i));
+//                env = String.join( ".environments.", environmentSections.Where((x, j) => j <= i));
 //
 //                environments = config["environments"];
-//                if (!(environments is JObject)) continue;
+//                if( !(environments is JObject)) continue;
 //
 //                settings = ((JObject) environments).SelectToken(env);
-//                if (settings == null) continue;
+//                if( settings == null ) continue;
 //
 //                // copy values for the selected environment to the root
 //                foreach (token in settings)
 //                {
 //                    path = Path.GetExtension(token.Path);
-//                    dot = path.IndexOf(".", StringComparison.InvariantCulture);
-//                    if (dot != -1) path = path.Substring(dot + 1);
+//                    dot = path.IndexOf( ".", StringComparison.InvariantCulture);
+//                    if( dot != -1) path = path.Substring(dot + 1);
 //
 //                    // remove if already exists on clone
 //                    jProperty = clone.Property(path);
-//                    if (jProperty != null) jProperty.Remove();
+//                    if( jProperty != null ) jProperty.Remove();
 //
 //                    value = (token is JProperty ? ((JProperty) token).Value : token).toString();
 //                    clone.Add(path, value);
@@ -367,18 +367,18 @@ public class Config {
 //        }
 //
 //        // remove all environments
-//        environmentsProperty = clone.Property("environments");
-//        if (environmentsProperty != null) environmentsProperty.Remove();
+//        environmentsProperty = clone.Property( "environments");
+//        if( environmentsProperty != null ) environmentsProperty.Remove();
 
         return clone ;
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked")
     private static Map<String,Object> getToken( Map<String,Object> settings, String key ) {
         return getToken( settings, key, (Map<String,Object>)settings.get( key ) );
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings( "unchecked")
     private static Map<String,Object> getToken( Map<String,Object> settings, String key, Map<String,Object> current ) {
         final String environmentSetting = (String)settings.get( ENVIRONMENT_CONFIG_NAME );
         if( StringUtils.isNotBlank( environmentSetting ) ) {
@@ -424,8 +424,7 @@ package com.quantconnect.lean.Configuration
         private static readonly Lazy<JObject> Settings = new Lazy<JObject>(() =>
         {
             // initialize settings inside a lazy for free thread-safe, one-time initialization
-            if (!File.Exists(ConfigurationFileName))
-            {
+            if( !File.Exists(ConfigurationFileName)) {
                 return new JObject
                 {
                     {"algorithm-type-name", "BasicTemplateAlgorithm"},
@@ -450,25 +449,22 @@ package com.quantconnect.lean.Configuration
         /// they'll be returned as {env1}.{env2}
         /// </summary>
         /// <returns>The fully qualified currently selected environment</returns>
-        public static String GetEnvironment()
-        {
+        public static String GetEnvironment() {
             environments = new List<String>();
             JToken currentEnvironment = Settings.Value;
             env = currentEnvironment["environment"];
-            while (currentEnvironment != null && env != null)
-            {
+            while (currentEnvironment != null && env != null ) {
                 currentEnv = env.Value<String>();
                 environments.Add(currentEnv);
                 moreEnvironments = currentEnvironment["environments"];
-                if (moreEnvironments == null)
-                {
+                if( moreEnvironments == null ) {
                     break;
                 }
 
                 currentEnvironment = moreEnvironments[currentEnv];
                 env = currentEnvironment["environment"];
             }
-            return string.Join(".", environments);
+            return String.join( ".", environments);
         }
         
         /// <summary>
@@ -477,15 +473,13 @@ package com.quantconnect.lean.Configuration
         /// <param name="key">String key value we're seaching for in the config file.</param>
         /// <param name="defaultValue"></param>
         /// <returns>String value of the configuration setting or empty String if nothing found.</returns>
-        public static String Get( String key, String defaultValue = "")
-        {
+        public static String Get( String key, String defaultValue = "") {
             // special case environment requests
-            if (key == "environment") return GetEnvironment();
+            if( key == "environment") return GetEnvironment();
 
             token = GetToken(Settings.Value, key);
-            if (token == null)
-            {
-                Log.Trace( String.format("Config.Get(): Configuration key not found. Key: {0} - Using default value: {1}", key, defaultValue));
+            if( token == null ) {
+                Log.Trace( String.format( "Config.Get(): Configuration key not found. Key: %1$s - Using default value: %2$s", key, defaultValue));
                 return defaultValue;
             }
             return token.toString();
@@ -494,8 +488,7 @@ package com.quantconnect.lean.Configuration
         /// <summary>
         /// Gets the underlying JToken for the specified key
         /// </summary>
-        public static JToken GetToken( String key)
-        {
+        public static JToken GetToken( String key) {
             return GetToken(Settings.Value, key);
         }
 
@@ -505,16 +498,13 @@ package com.quantconnect.lean.Configuration
         /// </summary>
         /// <param name="key">The key to be set</param>
         /// <param name="value">The new value</param>
-        public static void Set( String key, String value)
-        {
+        public static void Set( String key, String value) {
             JToken environment = Settings.Value;
-            while (key.Contains("."))
-            {
-                envName = key.Substring(0, key.IndexOf("."));
-                key = key.Substring(key.IndexOf(".") + 1);
+            while (key.Contains( ".")) {
+                envName = key.Substring(0, key.IndexOf( "."));
+                key = key.Substring(key.IndexOf( ".") + 1);
                 environments = environment["environments"];
-                if (environments == null)
-                {
+                if( environments == null ) {
                     environment["environments"] = environments = new JObject();
                 }
                 environment = environments[envName];
@@ -528,8 +518,7 @@ package com.quantconnect.lean.Configuration
         /// <param name="key">String value of the configuration key.</param>
         /// <param name="defaultValue">The default value to use if not found in configuration</param>
         /// <returns>Boolean value of the config setting.</returns>
-        public static boolean GetBool( String key, boolean defaultValue = false)
-        {
+        public static boolean GetBool( String key, boolean defaultValue = false) {
             return GetValue(key, defaultValue);
         }
 
@@ -539,8 +528,7 @@ package com.quantconnect.lean.Configuration
         /// <param name="key">Search key from the config file</param>
         /// <param name="defaultValue">The default value to use if not found in configuration</param>
         /// <returns>Int value of the config setting.</returns>
-        public static int GetInt( String key, int defaultValue = 0)
-        {
+        public static int GetInt( String key, int defaultValue = 0) {
             return GetValue(key, defaultValue);
         }
 
@@ -550,8 +538,7 @@ package com.quantconnect.lean.Configuration
         /// <param name="key">Search key from the config file</param>
         /// <param name="defaultValue">The default value to use if not found in configuration</param>
         /// <returns>Double value of the config setting.</returns>
-        public static double GetDouble( String key, double defaultValue = 0.0)
-        {
+        public static double GetDouble( String key, double defaultValue = 0.0) {
             return GetValue(key, defaultValue);
         }
 
@@ -563,15 +550,13 @@ package com.quantconnect.lean.Configuration
         /// <param name="key">Search key from the config file</param>
         /// <param name="defaultValue">The default value to use if not found in configuration</param>
         /// <returns>Converted value of the config setting.</returns>
-        public static T GetValue<T>( String key, T defaultValue = default(T))
-        {
+        public static T GetValue<T>( String key, T defaultValue = default(T)) {
             // special case environment requests
-            if (key == "environment" && typeof (T) == typeof ( String)) return (T) (object) GetEnvironment();
+            if( key == "environment" && typeof (T) == typeof ( String)) return (T) (object) GetEnvironment();
 
             token = GetToken(Settings.Value, key);
-            if (token == null)
-            {
-                Log.Trace( String.format("Config.GetValue(): {0} - Using default value: {1}", key, defaultValue));
+            if( token == null ) {
+                Log.Trace( String.format( "Config.GetValue(): %1$s - Using default value: %2$s", key, defaultValue));
                 return defaultValue;
             }
 
@@ -581,34 +566,29 @@ package com.quantconnect.lean.Configuration
             {
                 value = token.Value<String>();
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 value = token.toString();
             }
 
-            if (type.IsEnum)
-            {
+            if( type.IsEnum) {
                 return (T) Enum.Parse(type, value);
             }
 
-            if (typeof(IConvertible).IsAssignableFrom(type))
-            {
+            if( typeof(IConvertible).IsAssignableFrom(type)) {
                 return (T) Convert.ChangeType(value, type);
             }
 
             // try and find a static parse method
             try
             {
-                parse = type.GetMethod("Parse", new[]{typeof( String)});
-                if (parse != null)
-                {
+                parse = type.GetMethod( "Parse", new[]{typeof( String)});
+                if( parse != null ) {
                     result = parse.Invoke(null, new object[] {value});
                     return (T) result;
                 }
             }
-            catch (Exception err)
-            {
-                Log.Trace("Config.GetValue<{0}>({1},{2}): Failed to parse: {3}. Using default value.", typeof (T).Name, key, defaultValue, value);
+            catch (Exception err) {
+                Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to parse: {3}. Using default value.", typeof (T).Name, key, defaultValue, value);
                 Log.Error(err);
                 return defaultValue;
             }
@@ -617,9 +597,8 @@ package com.quantconnect.lean.Configuration
             {
                 return JsonConvert.DeserializeObject<T>(value);
             }
-            catch (Exception err)
-            {
-                Log.Trace("Config.GetValue<{0}>({1},{2}): Failed to JSON deserialize: {3}. Using default value.", typeof(T).Name, key, defaultValue, value);
+            catch (Exception err) {
+                Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to JSON deserialize: {3}. Using default value.", typeof(T).Name, key, defaultValue, value);
                 Log.Error(err);
                 return defaultValue;
             }
@@ -633,8 +612,7 @@ package com.quantconnect.lean.Configuration
         /// <param name="key">The configuration key</param>
         /// <param name="value">The output value</param>
         /// <returns>True on successful parse, false when output value is default(T)</returns>
-        public static boolean TryGetValue<T>( String key, out T value)
-        {
+        public static boolean TryGetValue<T>( String key, out T value) {
             return TryGetValue(key, default(T), out value);
         }
 
@@ -647,8 +625,7 @@ package com.quantconnect.lean.Configuration
         /// <param name="defaultValue">The default value to use on key not found or unsuccessful parse</param>
         /// <param name="value">The output value</param>
         /// <returns>True on successful parse, false when output value is defaultValue</returns>
-        public static boolean TryGetValue<T>( String key, T defaultValue, out T value)
-        {
+        public static boolean TryGetValue<T>( String key, T defaultValue, out T value) {
             try
             {
                 value = GetValue(key, defaultValue);
@@ -664,22 +641,20 @@ package com.quantconnect.lean.Configuration
         /// <summary>
         /// Write the contents of the serialized configuration back to the disk.
         /// </summary>
-        public static void Write()
-        {
-            if (!Settings.IsValueCreated) return;
+        public static void Write() {
+            if( !Settings.IsValueCreated) return;
             serialized = JsonConvert.SerializeObject(Settings.Value, Formatting.Indented);
-            File.WriteAllText("config.json", serialized);
+            File.WriteAllText( "config.json", serialized);
         }
 
         /// <summary>
         /// Flattens the jobject with respect to the selected environment and then
         /// removes the 'environments' node
         /// </summary>
-        /// <param name="overrideEnvironment">The environment to use</param>
+        /// <param name="@OverrideEnvironment">The environment to use</param>
         /// <returns>The flattened JObject</returns>
-        public static JObject Flatten( String overrideEnvironment)
-        {
-            return Flatten(Settings.Value, overrideEnvironment);
+        public static JObject Flatten( String @OverrideEnvironment) {
+            return Flatten(Settings.Value, @OverrideEnvironment);
         }
 
         /// <summary>
@@ -687,40 +662,36 @@ package com.quantconnect.lean.Configuration
         /// removes the 'environments' node
         /// </summary>
         /// <param name="config">The configuration represented as a JObject</param>
-        /// <param name="overrideEnvironment">The environment to use</param>
+        /// <param name="@OverrideEnvironment">The environment to use</param>
         /// <returns>The flattened JObject</returns>
-        public static JObject Flatten(JObject config, String overrideEnvironment)
-        {
+        public static JObject Flatten(JObject config, String @OverrideEnvironment) {
             clone = (JObject)config.DeepClone();
 
             // remove the environment declaration
-            environmentProperty = clone.Property("environment");
-            if (environmentProperty != null) environmentProperty.Remove();
+            environmentProperty = clone.Property( "environment");
+            if( environmentProperty != null ) environmentProperty.Remove();
 
-            if (!string.IsNullOrEmpty(overrideEnvironment))
-            {
-                environmentSections = overrideEnvironment.Split('.');
+            if( !string.IsNullOrEmpty(@OverrideEnvironment)) {
+                environmentSections = @OverrideEnvironment.split('.');
 
-                for (int i = 0; i < environmentSections.Length; i++)
-                {
-                    env = string.Join(".environments.", environmentSections.Where((x, j) => j <= i));
+                for (int i = 0; i < environmentSections.Length; i++) {
+                    env = String.join( ".environments.", environmentSections.Where((x, j) => j <= i));
 
                     environments = config["environments"];
-                    if (!(environments is JObject)) continue;
+                    if( !(environments is JObject)) continue;
 
                     settings = ((JObject) environments).SelectToken(env);
-                    if (settings == null) continue;
+                    if( settings == null ) continue;
 
                     // copy values for the selected environment to the root
-                    foreach (token in settings)
-                    {
+                    foreach (token in settings) {
                         path = Path.GetExtension(token.Path);
-                        dot = path.IndexOf(".", StringComparison.InvariantCulture);
-                        if (dot != -1) path = path.Substring(dot + 1);
+                        dot = path.IndexOf( ".", StringComparison.InvariantCulture);
+                        if( dot != -1) path = path.Substring(dot + 1);
 
                         // remove if already exists on clone
                         jProperty = clone.Property(path);
-                        if (jProperty != null) jProperty.Remove();
+                        if( jProperty != null ) jProperty.Remove();
 
                         value = (token is JProperty ? ((JProperty) token).Value : token).toString();
                         clone.Add(path, value);
@@ -729,31 +700,25 @@ package com.quantconnect.lean.Configuration
             }
 
             // remove all environments
-            environmentsProperty = clone.Property("environments");
-            if (environmentsProperty != null) environmentsProperty.Remove();
+            environmentsProperty = clone.Property( "environments");
+            if( environmentsProperty != null ) environmentsProperty.Remove();
 
             return clone;
         }
 
-        private static JToken GetToken(JToken settings, String key)
-        {
+        private static JToken GetToken(JToken settings, String key) {
             return GetToken(settings, key, settings.SelectToken(key));
         }
 
-        private static JToken GetToken(JToken settings, String key, JToken current)
-        {
-            environmentSetting = settings.SelectToken("environment");
-            if (environmentSetting != null)
-            {
+        private static JToken GetToken(JToken settings, String key, JToken current) {
+            environmentSetting = settings.SelectToken( "environment");
+            if( environmentSetting != null ) {
                 environmentSettingValue = environmentSetting.Value<String>();
-                if (!string.IsNullOrWhiteSpace(environmentSettingValue))
-                {
-                    environment = settings.SelectToken("environments." + environmentSettingValue);
-                    if (environment != null)
-                    {
+                if( !string.IsNullOrWhiteSpace(environmentSettingValue)) {
+                    environment = settings.SelectToken( "environments." + environmentSettingValue);
+                    if( environment != null ) {
                         setting = environment.SelectToken(key);
-                        if (setting != null)
-                        {
+                        if( setting != null ) {
                             current = setting;
                         }
                         // allows nesting of environments, live.tradier, live.interactive, ect...
@@ -761,8 +726,7 @@ package com.quantconnect.lean.Configuration
                     }
                 }
             }
-            if (current == null)
-            {
+            if( current == null ) {
                 return settings.SelectToken(key);
             }
             return current;

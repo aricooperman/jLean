@@ -25,8 +25,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
     public class BaseDataCollectionAggregatorEnumeratorTests
     {
         [Test]
-        public void AggregatesUntilNull()
-        {
+        public void AggregatesUntilNull() {
             time = new DateTime(2015, 10, 20);
             underlying = Enumerable.Range(0, 5).Select(x => new Tick { Time = time }).ToList();
             underlying.AddRange(new Tick[] { null, null, null });
@@ -38,8 +37,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
             Assert.AreEqual(5, aggregator.Current.Data.Count);
         }
         [Test]
-        public void AggregatesUntilTimeChange()
-        {
+        public void AggregatesUntilTimeChange() {
             time = new DateTime(2015, 10, 20);
             underlying = Enumerable.Range(0, 5).Select(x => new Tick { Time = time }).ToList();
             underlying.AddRange(Enumerable.Range(0, 5).Select(x => new Tick {Time = time.AddSeconds(1)}));

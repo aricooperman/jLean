@@ -24,15 +24,13 @@ package com.quantconnect.lean.Tests.Indicators
     public class AverageTrueRangeTests
     {
         [Test]
-        public void ComparesAgainstExternalData()
-        {
+        public void ComparesAgainstExternalData() {
             atr = new AverageTrueRange(14, MovingAverageType.Simple);
             TestHelper.TestIndicator(atr, "spy_atr.txt", "Average True Range 14");
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             atr = new AverageTrueRange(14, MovingAverageType.Simple);
             atr.Update(new TradeBar
             {
@@ -51,8 +49,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void TrueRangePropertyIsReadyAfterOneSample()
-        {
+        public void TrueRangePropertyIsReadyAfterOneSample() {
             atr = new AverageTrueRange(14, MovingAverageType.Simple);
             Assert.IsFalse(atr.TrueRange.IsReady);
 

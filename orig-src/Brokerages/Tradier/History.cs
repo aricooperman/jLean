@@ -31,8 +31,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierEvents TradierEvents;
 
         /// Default constructor for json serialization
-        public TradierEventContainer()
-        { }
+        public TradierEventContainer() { }
     }
 
     /// <summary>
@@ -46,8 +45,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierEvent> Events;
 
         /// Default Constructor for JSON
-        public TradierEvents()
-        { }
+        public TradierEvents() { }
     }
 
     /// <summary>
@@ -98,8 +96,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public BigDecimal Quantity;
         
         /// Empty Constructor
-        public TradierEventDetail()
-        {  }
+        public TradierEventDetail() {  }
     }
 
     /// <summary>
@@ -124,8 +121,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierTradeType TradeType;
 
         /// Empty constructor
-        public TradierTradeEvent()
-        { }
+        public TradierTradeEvent() { }
     }
 
     /// <summary>
@@ -134,8 +130,7 @@ package com.quantconnect.lean.Brokerages.Tradier
     public class TradierJournalEvent : TradierEventDetail
     {
         ///
-        public TradierJournalEvent() 
-        { }
+        public TradierJournalEvent() { }
     }
 
     /// <summary>
@@ -144,8 +139,7 @@ package com.quantconnect.lean.Brokerages.Tradier
     public class TradierDividendEvent : TradierEventDetail
     {
         ///
-        public TradierDividendEvent()
-        { }
+        public TradierDividendEvent() { }
     }
 
     /// <summary>
@@ -157,8 +151,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "option_type")]
         public TradierOptionStatus Type;
         ///
-        public TradierOptionEvent()
-        { }
+        public TradierOptionEvent() { }
     }
     
 }

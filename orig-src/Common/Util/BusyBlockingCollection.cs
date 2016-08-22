@@ -56,8 +56,7 @@ package com.quantconnect.lean.Util
         {
             get
             {
-                lock (_lock)
-                {
+                lock (_lock) {
                     return _collection.Count > 0 || !_processingCompletedEvent.IsSet;
                 }
             }
@@ -68,8 +67,7 @@ package com.quantconnect.lean.Util
         /// with a bounded capacity of <see cref="int.MaxValue"/>
         /// </summary>
         public BusyBlockingCollection()
-            : this(int.MaxValue)
-        {
+            : this(int.MaxValue) {
         }
 
         /// <summary>
@@ -77,8 +75,7 @@ package com.quantconnect.lean.Util
         /// with the specified <paramref name="boundedCapacity"/>
         /// </summary>
         /// <param name="boundedCapacity">The maximum number of items allowed in the collection</param>
-        public BusyBlockingCollection(int boundedCapacity)
-        {
+        public BusyBlockingCollection(int boundedCapacity) {
             _collection = new BlockingCollection<T>(boundedCapacity);
 
             // initialize as not busy
@@ -89,8 +86,7 @@ package com.quantconnect.lean.Util
         /// Adds the items to this collection
         /// </summary>
         /// <param name="item">The item to be added</param>
-        public void Add(T item)
-        {
+        public void Add(T item) {
             Add(item, CancellationToken.None);
         }
 
@@ -99,18 +95,15 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="item">The item to be added</param>
         /// <param name="cancellationToken">A cancellation token to observer</param>
-        public void Add(T item, CancellationToken cancellationToken)
-        {
+        public void Add(T item, CancellationToken cancellationToken) {
             boolean added;
-            lock (_lock)
-            {
+            lock (_lock) {
                 // we're adding work to be done, mark us as busy
                 _processingCompletedEvent.Reset();
                 added = _collection.TryAdd(item, 0, cancellationToken);
             }
 
-            if (!added)
-            {
+            if( !added) {
                 _collection.Add(item, cancellationToken);
             }
         }
@@ -118,8 +111,7 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Marks the <see cref="BusyBlockingCollection{T}"/> as not accepting any more additions
         /// </summary>
-        public void CompleteAdding()
-        {
+        public void CompleteAdding() {
             _collection.CompleteAdding();
         }
 
@@ -127,8 +119,7 @@ package com.quantconnect.lean.Util
         /// Provides a consuming enumerable for items in this collection.
         /// </summary>
         /// <returns>An enumerable that removes and returns items from the collection</returns>
-        public IEnumerable<T> GetConsumingEnumerable()
-        {
+        public IEnumerable<T> GetConsumingEnumerable() {
             return GetConsumingEnumerable(CancellationToken.None);
         }
 
@@ -137,10 +128,8 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="cancellationToken">A cancellation token to observer</param>
         /// <returns>An enumerable that removes and returns items from the collection</returns>
-        public IEnumerable<T> GetConsumingEnumerable(CancellationToken cancellationToken)
-        {
-            while (!_collection.IsCompleted)
-            {
+        public IEnumerable<T> GetConsumingEnumerable(CancellationToken cancellationToken) {
+            while (!_collection.IsCompleted) {
                 T item;
 
                 // check to see if something is immediately available
@@ -150,14 +139,12 @@ package com.quantconnect.lean.Util
                 {
                     tookItem = _collection.TryTake(out item, 0, cancellationToken);
                 }
-                catch (OperationCanceledException)
-                {
+                catch (OperationCanceledException) {
                     // if the operation was canceled, just bail on the enumeration
                     yield break;
                 }
 
-                if (tookItem)
-                {
+                if( tookItem) {
                     // something was immediately available, emit it
                     yield return item;
                     continue;
@@ -166,13 +153,11 @@ package com.quantconnect.lean.Util
 
                 // we need to lock this with the Add method since we need to model the act of
                 // taking/flipping the switch and adding/flipping the switch as one operation
-                lock (_lock)
-                {
+                lock (_lock) {
                     // double check that there's nothing in the collection within a lock, it's possible
                     // that between the TryTake above and this statement, the Add method was called, so we
                     // don't want to flip the switch if there's something in the collection
-                    if (_collection.Count == 0)
-                    {
+                    if( _collection.Count == 0) {
                         // nothing was immediately available, mark us as idle
                         _processingCompletedEvent.Set();
                     }
@@ -183,14 +168,12 @@ package com.quantconnect.lean.Util
                     // now block until something is available
                     tookItem = _collection.TryTake(out item, Timeout.Infinite, cancellationToken);
                 }
-                catch (OperationCanceledException)
-                {
+                catch (OperationCanceledException) {
                     // if the operation was canceled, just bail on the enumeration
                     yield break;
                 }
 
-                if (tookItem)
-                {
+                if( tookItem) {
                     // emit the item we found
                     yield return item;
                 }
@@ -204,8 +187,7 @@ package com.quantconnect.lean.Util
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             _collection.Dispose();
             _processingCompletedEvent.Dispose();
         }

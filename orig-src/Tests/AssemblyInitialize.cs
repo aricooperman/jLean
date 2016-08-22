@@ -21,8 +21,7 @@ using QuantConnect.Logging;
 public class AssemblyInitialize
 {
     [SetUp]
-    public void SetLogHandler()
-    {
+    public void SetLogHandler() {
         // save output to file as well
         Log.LogHandler = new ConsoleLogHandler();
     }

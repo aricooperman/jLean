@@ -21,17 +21,16 @@ package com.quantconnect.lean.Tests.Indicators
     [TestFixture]
     public class VarianceTests : CommonIndicatorTests<IndicatorDataPoint>
     {
-        protected override IndicatorBase<IndicatorDataPoint> CreateIndicator()
-        {
+        protected @Override IndicatorBase<IndicatorDataPoint> CreateIndicator() {
             return new Variance(10);
         }
 
-        protected override String TestFileName
+        protected @Override String TestFileName
         {
             get { return "spy_var.txt"; }
         }
 
-        protected override String TestColumnName
+        protected @Override String TestColumnName
         {
             get { return "Var"; }
         }

@@ -36,8 +36,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="fastPeriod">The fast moving average period</param>
         /// <param name="slowPeriod">The slow moving average period</param>
         public AccumulationDistributionOscillator(int fastPeriod, int slowPeriod)
-            : this( String.format("ADOSC({0},{1})", fastPeriod, slowPeriod), fastPeriod, slowPeriod)
-        {
+            : this( String.format( "ADOSC(%1$s,%2$s)", fastPeriod, slowPeriod), fastPeriod, slowPeriod) {
         }
 
         /// <summary>
@@ -47,8 +46,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="fastPeriod">The fast moving average period</param>
         /// <param name="slowPeriod">The slow moving average period</param>
         public AccumulationDistributionOscillator( String name, int fastPeriod, int slowPeriod)
-            : base(name)
-        {
+            : base(name) {
             _period = Math.Max(fastPeriod, slowPeriod);
             _ad = new AccumulationDistribution(name + "_AD");
             _emaFast = new ExponentialMovingAverage(name + "_Fast", fastPeriod);
@@ -58,7 +56,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
@@ -68,8 +66,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _ad.Update(input);
             _emaFast.Update(_ad.Current);
             _emaSlow.Update(_ad.Current);
@@ -80,8 +77,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _ad.Reset();
             _emaFast.Reset();
             _emaSlow.Reset();

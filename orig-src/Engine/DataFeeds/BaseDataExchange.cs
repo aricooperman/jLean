@@ -45,7 +45,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         public int SleepInterval
         {
             get { return _sleepInterval; }
-            set { if (value > -1) _sleepInterval = value; }
+            set { if( value > -1) _sleepInterval = value; }
         }
 
         /// <summary>
@@ -61,8 +61,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="name">A name for this exchange</param>
         /// <param name="enumerators">The enumerators to fanout</param>
-        public BaseDataExchange( String name)
-        {
+        public BaseDataExchange( String name) {
             _name = name;
             _isFatalError = x => false;
             _dataHandlers = new ConcurrentMap<Symbol, DataHandler>();
@@ -74,8 +73,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// then it will remain registered in the exchange only once
         /// </summary>
         /// <param name="handler">The handler to use when this symbol's data is encountered</param>
-        public void AddEnumerator(EnumeratorHandler handler)
-        {
+        public void AddEnumerator(EnumeratorHandler handler) {
             _enumerators[handler.Symbol] = handler;
         }
 
@@ -88,11 +86,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="shouldMoveNext">Function used to determine if move next should be called on this
         /// enumerator, defaults to always returning true</param>
         /// <param name="enumeratorFinished">Delegate called when the enumerator move next returns false</param>
-        public void AddEnumerator(Symbol symbol, IEnumerator<BaseData> enumerator, Func<bool> shouldMoveNext = null, Action<EnumeratorHandler> enumeratorFinished = null)
-        {
+        public void AddEnumerator(Symbol symbol, IEnumerator<BaseData> enumerator, Func<bool> shouldMoveNext = null, Action<EnumeratorHandler> enumeratorFinished = null ) {
             enumeratorHandler = new EnumeratorHandler(symbol, enumerator, shouldMoveNext);
-            if (enumeratorFinished != null)
-            {
+            if( enumeratorFinished != null ) {
                 enumeratorHandler.EnumeratorFinished += (sender, args) => enumeratorFinished(args);
             }
             AddEnumerator(enumeratorHandler);
@@ -107,8 +103,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// error is encountered during queue consumption. Returns true if queue
         /// consumption should be stopped, returns false if queue consumption should
         /// continue</param>
-        public void SetErrorHandler(Func<Exception, bool> isFatalError)
-        {
+        public void SetErrorHandler(Func<Exception, bool> isFatalError) {
             // default to false;
             _isFatalError = isFatalError ?? (x => false);
         }
@@ -118,8 +113,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="handler">The handler to use when this symbol's data is encountered</param>
         /// <returns>An identifier that can be used to remove this handler</returns>
-        public void SetDataHandler(DataHandler handler)
-        {
+        public void SetDataHandler(DataHandler handler) {
             _dataHandlers[handler.Symbol] = handler;
         }
 
@@ -129,8 +123,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="symbol">The symbol whose data is to be handled</param>
         /// <param name="handler">The handler to use when this symbol's data is encountered</param>
         /// <returns>An identifier that can be used to remove this handler</returns>
-        public void SetDataHandler(Symbol symbol, Action<BaseData> handler)
-        {
+        public void SetDataHandler(Symbol symbol, Action<BaseData> handler) {
             dataHandler = new DataHandler(symbol);
             dataHandler.DataEmitted += (sender, args) => handler(args);
             SetDataHandler(dataHandler);
@@ -140,8 +133,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// Removes the handler with the specified identifier
         /// </summary>
         /// <param name="symbol">The symbol to remove handlers for</param>
-        public boolean RemoveDataHandler(Symbol symbol)
-        {
+        public boolean RemoveDataHandler(Symbol symbol) {
             DataHandler handler;
             return _dataHandlers.TryRemove(symbol, out handler);
         }
@@ -150,11 +142,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// Removes and returns enumerator handler with the specified symbol.
         /// The removed handler is returned, null if not found
         /// </summary>
-        public EnumeratorHandler RemoveEnumerator(Symbol symbol)
-        {
+        public EnumeratorHandler RemoveEnumerator(Symbol symbol) {
             EnumeratorHandler handler;
-            if (_enumerators.TryRemove(symbol, out handler))
-            {
+            if( _enumerators.TryRemove(symbol, out handler)) {
                 handler.OnEnumeratorFinished();
                 handler.Enumerator.Dispose();
             }
@@ -166,9 +156,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// a separate thread
         /// </summary>
         /// <param name="token">A cancellation token used to signal to stop</param>
-        public void Start(CancellationToken? token = null)
-        {
-            Log.Trace("BaseDataExchange({0}) Starting...", Name);
+        public void Start(CancellationToken? token = null ) {
+            Log.Trace( "BaseDataExchange(%1$s) Starting...", Name);
             _isStopping = false;
             ConsumeEnumerators(token ?? CancellationToken.None);
         }
@@ -176,24 +165,20 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <summary>
         /// Ends consumption of the wrapped <see cref="IDataQueueHandler"/>
         /// </summary>
-        public void Stop()
-        {
-            Log.Trace("BaseDataExchange({0}) Stopping...", Name);
+        public void Stop() {
+            Log.Trace( "BaseDataExchange(%1$s) Stopping...", Name);
             _isStopping = true;
         }
 
         /// <summary> Entry point for queue consumption </summary>
         /// <param name="token">A cancellation token used to signal to stop</param>
         /// <remarks> This function only returns after <see cref="Stop"/> is called or the token is cancelled</remarks>
-        private void ConsumeEnumerators(CancellationToken token)
-        {
-            while (true)
-            {
-                if (_isStopping || token.IsCancellationRequested)
-                {
+        private void ConsumeEnumerators(CancellationToken token) {
+            while (true) {
+                if( _isStopping || token.IsCancellationRequested) {
                     _isStopping = true;
                     request = token.IsCancellationRequested ? "Cancellation requested" : "Stop requested";
-                    Log.Trace("BaseDataExchange({0}).ConsumeQueue(): {1}.  Exiting...", Name, request);
+                    Log.Trace( "BaseDataExchange(%1$s).ConsumeQueue(): %2$s.  Exiting...", Name, request);
                     return;
                 }
 
@@ -202,27 +187,24 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     // call move next each enumerator and invoke the appropriate handlers
 
                     handled = false;
-                    foreach (kvp in _enumerators)
-                    {
+                    foreach (kvp in _enumerators) {
                         enumeratorHandler = kvp.Value;
                         enumerator = enumeratorHandler.Enumerator;
 
                         // check to see if we should advance this enumerator
-                        if (!enumeratorHandler.ShouldMoveNext()) continue;
+                        if( !enumeratorHandler.ShouldMoveNext()) continue;
 
-                        if (!enumerator.MoveNext())
-                        {
+                        if( !enumerator.MoveNext()) {
                             enumeratorHandler.OnEnumeratorFinished();
                             enumeratorHandler.Enumerator.Dispose();
                             _enumerators.TryRemove(enumeratorHandler.Symbol, out enumeratorHandler);
                             continue;
                         }
 
-                        if (enumerator.Current == null) continue;
+                        if( enumerator.Current == null ) continue;
 
                         // if the enumerator is configured to handle it, then do it, don't pass to data handlers
-                        if (enumeratorHandler.HandlesData)
-                        {
+                        if( enumeratorHandler.HandlesData) {
                             handled = true;
                             enumeratorHandler.HandleData(enumerator.Current);
                             continue;
@@ -230,25 +212,21 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
 
                         // invoke the correct handler
                         DataHandler dataHandler;
-                        if (_dataHandlers.TryGetValue(enumerator.Current.Symbol, out dataHandler))
-                        {
+                        if( _dataHandlers.TryGetValue(enumerator.Current.Symbol, out dataHandler)) {
                             handled = true;
                             dataHandler.OnDataEmitted(enumerator.Current);
                         }
                     }
 
                     // if we didn't handle anything on this past iteration, take a nap
-                    if (!handled && _sleepInterval != 0)
-                    {
+                    if( !handled && _sleepInterval != 0) {
                         Thread.Sleep(_sleepInterval);
                     }
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     Log.Error(err);
-                    if (_isFatalError(err))
-                    {
-                        Log.Trace("BaseDataExchange({0}).ConsumeQueue(): Fatal error encountered. Exiting...", Name);
+                    if( _isFatalError(err)) {
+                        Log.Trace( "BaseDataExchange(%1$s).ConsumeQueue(): Fatal error encountered. Exiting...", Name);
                         return;
                     }
                 }
@@ -274,8 +252,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             /// Initializes a new instance of the <see cref="DataHandler"/> class
             /// </summary>
             /// <param name="symbol">The symbol whose data is to be handled</param>
-            public DataHandler(Symbol symbol)
-            {
+            public DataHandler(Symbol symbol) {
                 Symbol = symbol;
             }
 
@@ -283,10 +260,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             /// Event invocator for the <see cref="DataEmitted"/> event
             /// </summary>
             /// <param name="data">The data being emitted</param>
-            public void OnDataEmitted(BaseData data)
-            {
+            public void OnDataEmitted(BaseData data) {
                 handler = DataEmitted;
-                if (handler != null) handler(this, data);
+                if( handler != null ) handler(this, data);
             }
         }
 
@@ -328,8 +304,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             /// <param name="shouldMoveNext">Predicate function used to determine if we should call move next
             /// on the symbol's enumerator</param>
             /// <param name="handleData">Handler for data if HandlesData=true</param>
-            public EnumeratorHandler(Symbol symbol, IEnumerator<BaseData> enumerator, Func<bool> shouldMoveNext = null, Action<BaseData> handleData = null)
-            {
+            public EnumeratorHandler(Symbol symbol, IEnumerator<BaseData> enumerator, Func<bool> shouldMoveNext = null, Action<BaseData> handleData = null ) {
                 Symbol = symbol;
                 Enumerator = enumerator;
                 HandlesData = handleData != null;
@@ -344,8 +319,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             /// <param name="symbol">The symbol to identify this enumerator</param>
             /// <param name="enumerator">The enumeator this handler handles</param>
             /// <param name="handlesData">True if this handler will handle the data, false otherwise</param>
-            protected EnumeratorHandler(Symbol symbol, IEnumerator<BaseData> enumerator, boolean handlesData)
-            {
+            protected EnumeratorHandler(Symbol symbol, IEnumerator<BaseData> enumerator, boolean handlesData) {
                 Symbol = symbol;
                 HandlesData = handlesData;
                 Enumerator = enumerator;
@@ -357,17 +331,15 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             /// <summary>
             /// Event invocator for the <see cref="EnumeratorFinished"/> event
             /// </summary>
-            public virtual void OnEnumeratorFinished()
-            {
+            public virtual void OnEnumeratorFinished() {
                 handler = EnumeratorFinished;
-                if (handler != null) handler(this, this);
+                if( handler != null ) handler(this, this);
             }
 
             /// <summary>
             /// Returns true if this enumerator should move next
             /// </summary>
-            public virtual boolean ShouldMoveNext()
-            {
+            public virtual boolean ShouldMoveNext() {
                 return _shouldMoveNext();
             }
 
@@ -375,8 +347,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             /// Handles the specified data.
             /// </summary>
             /// <param name="data">The data to be handled</param>
-            public virtual void HandleData(BaseData data)
-            {
+            public virtual void HandleData(BaseData data) {
                 _handleData(data);
             }
         }

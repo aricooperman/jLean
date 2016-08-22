@@ -27,19 +27,19 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Gets the start time for this segment
         /// </summary>
-        [JsonProperty("start")]
+        [JsonProperty( "start")]
         public TimeSpan Start { get; private set; }
 
         /// <summary>
         /// Gets the end time for this segment
         /// </summary>
-        [JsonProperty("end")]
+        [JsonProperty( "end")]
         public TimeSpan End { get; private set; }
 
         /// <summary>
         /// Gets the market hours state for this segment
         /// </summary>
-        [JsonProperty("state")]
+        [JsonProperty( "state")]
         public MarketHoursState State { get; private set; }
 
         /// <summary>
@@ -48,8 +48,7 @@ package com.quantconnect.lean.Securities
         /// <param name="state">The state of the market during the specified times</param>
         /// <param name="start">The start time of the segment</param>
         /// <param name="end">The end time of the segment</param>
-        public MarketHoursSegment(MarketHoursState state, TimeSpan start, TimeSpan end)
-        {
+        public MarketHoursSegment(MarketHoursState state, TimeSpan start, TimeSpan end) {
             Start = start;
             End = end;
             State = state;
@@ -58,16 +57,14 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Gets a new market hours segment representing being open all day
         /// </summary>
-        public static MarketHoursSegment OpenAllDay()
-        {
+        public static MarketHoursSegment OpenAllDay() {
             return new MarketHoursSegment(MarketHoursState.Market, TimeSpan.Zero, Time.OneDay);
         }
 
         /// <summary>
         /// Gets a new market hours segment representing being open all day
         /// </summary>
-        public static MarketHoursSegment ClosedAllDay()
-        {
+        public static MarketHoursSegment ClosedAllDay() {
             return new MarketHoursSegment(MarketHoursState.Closed, TimeSpan.Zero, Time.OneDay);
         }
 
@@ -76,8 +73,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="time">The time to check</param>
         /// <returns>True if this segment contains the specified time, false otherwise</returns>
-        public boolean Contains(TimeSpan time)
-        {
+        public boolean Contains(TimeSpan time) {
             return time >= Start && time < End;
         }
 
@@ -87,8 +83,7 @@ package com.quantconnect.lean.Securities
         /// <param name="start">The start of the range</param>
         /// <param name="end">The end of the range</param>
         /// <returns>True if the specified range overlaps this time segment, false otherwise</returns>
-        public boolean Overlaps(TimeSpan start, TimeSpan end)
-        {
+        public boolean Overlaps(TimeSpan start, TimeSpan end) {
             return Start < end && End > start;
         }
 
@@ -98,9 +93,8 @@ package com.quantconnect.lean.Securities
         /// <returns>
         /// A String that represents the current object.
         /// </returns>
-        public override String toString()
-        {
-            return String.format("{0}: {1}-{2}", State, Start, End);
+        public @Override String toString() {
+            return String.format( "%1$s: %2$s-%3$s", State, Start, End);
         }
     }
 }

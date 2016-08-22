@@ -22,18 +22,15 @@ using QuantConnect.Indicators;
 package com.quantconnect.lean.Tests.Indicators
 {
     public abstract class CommonIndicatorTests<T> 
-        where T : BaseData, new()
-    {
+        where T : BaseData, new() {
         [Test]
-        public virtual void ComparesAgainstExternalData()
-        {
+        public virtual void ComparesAgainstExternalData() {
             indicator = CreateIndicator();
             RunTestIndicator(indicator);
         }
 
         [Test]
-        public virtual void ComparesAgainstExternalDataAfterReset()
-        {
+        public virtual void ComparesAgainstExternalDataAfterReset() {
             indicator = CreateIndicator();
             RunTestIndicator(indicator);
             indicator.Reset();
@@ -41,28 +38,26 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public virtual void ResetsProperly()
-        {
+        public virtual void ResetsProperly() {
             indicator = CreateIndicator();
-            if (indicator is IndicatorBase<IndicatorDataPoint>)
+            if( indicator is IndicatorBase<IndicatorDataPoint>)
                 TestHelper.TestIndicatorReset(indicator as IndicatorBase<IndicatorDataPoint>, TestFileName);
-            else if (indicator is IndicatorBase<TradeBar>)
+            else if( indicator is IndicatorBase<TradeBar>)
                 TestHelper.TestIndicatorReset(indicator as IndicatorBase<TradeBar>, TestFileName);
             else
-                throw new NotSupportedException("ResetsProperly: Unsupported indicator data type: " + typeof(T));
+                throw new NotSupportedException( "ResetsProperly: Unsupported indicator data type: " + typeof(T));
         }
 
         /// <summary>
         /// Executes a test of the specified indicator
         /// </summary>
-        protected virtual void RunTestIndicator(IndicatorBase<T> indicator)
-        {
-            if (indicator is IndicatorBase<IndicatorDataPoint>)
+        protected virtual void RunTestIndicator(IndicatorBase<T> indicator) {
+            if( indicator is IndicatorBase<IndicatorDataPoint>)
                 TestHelper.TestIndicator(indicator as IndicatorBase<IndicatorDataPoint>, TestFileName, TestColumnName, Assertion as Action<IndicatorBase<IndicatorDataPoint>, double>);
-            else if (indicator is IndicatorBase<TradeBar>)
+            else if( indicator is IndicatorBase<TradeBar>)
                 TestHelper.TestIndicator(indicator as IndicatorBase<TradeBar>, TestFileName, TestColumnName, Assertion as Action<IndicatorBase<TradeBar>, double>);
             else
-                throw new NotSupportedException("RunTestIndicator: Unsupported indicator data type: " + typeof(T));
+                throw new NotSupportedException( "RunTestIndicator: Unsupported indicator data type: " + typeof(T));
         }
 
         /// <summary>

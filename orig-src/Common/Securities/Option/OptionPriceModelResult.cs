@@ -43,8 +43,7 @@ package com.quantconnect.lean.Securities.Option
         /// </summary>
         /// <param name="theoreticalPrice">The theoretical price computed by the price model</param>
         /// <param name="greeks">The sensitivities (greeks) computed by the price model</param>
-        public OptionPriceModelResult( BigDecimal theoreticalPrice, FirstOrderGreeks greeks)
-        {
+        public OptionPriceModelResult( BigDecimal theoreticalPrice, FirstOrderGreeks greeks) {
             TheoreticalPrice = theoreticalPrice;
             Greeks = greeks;
         }

@@ -23,90 +23,80 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class SecurityDatabaseKeyTests
     {
         [Test]
-        public void ConstructorWithNoWildcards()
-        {
+        public void ConstructorWithNoWildcards() {
             key = new SecurityDatabaseKey(Market.USA, "SPY", SecurityType.Equity);
             Assert.AreEqual(SecurityType.Equity, key.SecurityType);
             Assert.AreEqual(Market.USA, key.Market);
-            Assert.AreEqual("SPY", key.Symbol);
+            Assert.AreEqual( "SPY", key.Symbol);
         }
 
         [Test]
-        public void ConstructorWithNullSymbolConvertsToWildcard()
-        {
+        public void ConstructorWithNullSymbolConvertsToWildcard() {
             key = new SecurityDatabaseKey(Market.USA, null, SecurityType.Equity);
             Assert.AreEqual(SecurityType.Equity, key.SecurityType);
             Assert.AreEqual(Market.USA, key.Market);
-            Assert.AreEqual("[*]", key.Symbol);
+            Assert.AreEqual( "[*]", key.Symbol);
         }
 
         [Test]
-        public void ConstructorWithEmptySymbolConvertsToWildcard()
-        {
+        public void ConstructorWithEmptySymbolConvertsToWildcard() {
             key = new SecurityDatabaseKey(Market.USA, string.Empty, SecurityType.Equity);
             Assert.AreEqual(SecurityType.Equity, key.SecurityType);
             Assert.AreEqual(Market.USA, key.Market);
-            Assert.AreEqual("[*]", key.Symbol);
+            Assert.AreEqual( "[*]", key.Symbol);
         }
 
         [Test]
-        public void ConstructorWithNullMarketConvertsToWildcard()
-        {
+        public void ConstructorWithNullMarketConvertsToWildcard() {
             key = new SecurityDatabaseKey(null, "SPY", SecurityType.Equity);
             Assert.AreEqual(SecurityType.Equity, key.SecurityType);
-            Assert.AreEqual("[*]", key.Market);
-            Assert.AreEqual("SPY", key.Symbol);
+            Assert.AreEqual( "[*]", key.Market);
+            Assert.AreEqual( "SPY", key.Symbol);
         }
 
         [Test]
-        public void ConstructorWithEmptyMarketConvertsToWildcard()
-        {
+        public void ConstructorWithEmptyMarketConvertsToWildcard() {
             key = new SecurityDatabaseKey( String.Empty, "SPY", SecurityType.Equity);
             Assert.AreEqual(SecurityType.Equity, key.SecurityType);
-            Assert.AreEqual("[*]", key.Market);
-            Assert.AreEqual("SPY", key.Symbol);
+            Assert.AreEqual( "[*]", key.Market);
+            Assert.AreEqual( "SPY", key.Symbol);
         }
 
         [Test]
-        public void ParsesKeyProperly()
-        {
+        public void ParsesKeyProperly() {
             static final String input = "Equity-usa-SPY";
             key = SecurityDatabaseKey.Parse(input);
             Assert.AreEqual(SecurityType.Equity, key.SecurityType);
             Assert.AreEqual(Market.USA, key.Market);
-            Assert.AreEqual("SPY", key.Symbol);
+            Assert.AreEqual( "SPY", key.Symbol);
         }
 
         [Test]
-        public void ParsesWildcardSymbol()
-        {
+        public void ParsesWildcardSymbol() {
             static final String input = "Equity-usa-[*]";
             key = SecurityDatabaseKey.Parse(input);
             Assert.AreEqual(SecurityType.Equity, key.SecurityType);
             Assert.AreEqual(Market.USA, key.Market);
-            Assert.AreEqual("[*]", key.Symbol);
+            Assert.AreEqual( "[*]", key.Symbol);
         }
 
         [Test]
-        public void ParsesWildcardMarket()
-        {
+        public void ParsesWildcardMarket() {
             static final String input = "Equity-[*]-SPY";
             key = SecurityDatabaseKey.Parse(input);
             Assert.AreEqual(SecurityType.Equity, key.SecurityType);
-            Assert.AreEqual("[*]", key.Market);
-            Assert.AreEqual("SPY", key.Symbol);
+            Assert.AreEqual( "[*]", key.Market);
+            Assert.AreEqual( "SPY", key.Symbol);
         }
 
         [Test, ExpectedException(typeof(ArgumentException), MatchType = MessageMatch.Contains, ExpectedMessage = "as a SecurityType")]
-        public void ThrowsOnWildcardSecurityType()
-        {
+        public void ThrowsOnWildcardSecurityType() {
             static final String input = "[*]-usa-SPY";
             SecurityDatabaseKey.Parse(input);
         }
 
         [Test, ExpectedException(typeof (FormatException), MatchType = MessageMatch.Contains, ExpectedMessage = "expected format")]
-        public void ThrowsOnInvalidFormat()
-        {
+        public void ThrowsOnInvalidFormat() {
             static final String input = "Equity-[*]";
             SecurityDatabaseKey.Parse(input);
         }

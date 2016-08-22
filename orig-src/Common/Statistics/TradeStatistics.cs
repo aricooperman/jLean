@@ -229,8 +229,7 @@ package com.quantconnect.lean.Statistics
         /// Initializes a new instance of the <see cref="TradeStatistics"/> class
         /// </summary>
         /// <param name="trades">The list of closed trades</param>
-        public TradeStatistics(IEnumerable<Trade> trades)
-        {
+        public TradeStatistics(IEnumerable<Trade> trades) {
             maxConsecutiveWinners = 0;
             maxConsecutiveLosers = 0;
             maxTotalProfitLoss = 0m;
@@ -240,26 +239,24 @@ package com.quantconnect.lean.Statistics
             lastPeakTime = DateTime.MinValue;
             isInDrawdown = false;
 
-            foreach (trade in trades)
-            {
-                if (lastPeakTime == DateTime.MinValue) lastPeakTime = trade.EntryTime;
+            foreach (trade in trades) {
+                if( lastPeakTime == DateTime.MinValue) lastPeakTime = trade.EntryTime;
 
-                if (StartDateTime == null || trade.EntryTime < StartDateTime)
+                if( StartDateTime == null || trade.EntryTime < StartDateTime)
                     StartDateTime = trade.EntryTime;
 
-                if (EndDateTime == null || trade.ExitTime > EndDateTime)
+                if( EndDateTime == null || trade.ExitTime > EndDateTime)
                     EndDateTime = trade.ExitTime;
 
                 TotalNumberOfTrades++;
 
-                if (TotalProfitLoss + trade.MFE > maxTotalProfitLossWithMfe)
+                if( TotalProfitLoss + trade.MFE > maxTotalProfitLossWithMfe)
                     maxTotalProfitLossWithMfe = TotalProfitLoss + trade.MFE;
 
-                if (TotalProfitLoss + trade.MAE - maxTotalProfitLossWithMfe < MaximumIntraTradeDrawdown)
+                if( TotalProfitLoss + trade.MAE - maxTotalProfitLossWithMfe < MaximumIntraTradeDrawdown)
                     MaximumIntraTradeDrawdown = TotalProfitLoss + trade.MAE - maxTotalProfitLossWithMfe;
 
-                if (trade.ProfitLoss > 0)
-                {
+                if( trade.ProfitLoss > 0) {
                     // winning trade
                     NumberOfWinningTrades++;
 
@@ -267,22 +264,21 @@ package com.quantconnect.lean.Statistics
                     TotalProfit += trade.ProfitLoss;
                     AverageProfit += (trade.ProfitLoss - AverageProfit) / NumberOfWinningTrades;
                     
-                    AverageWinningTradeDuration += TimeSpan.FromSeconds((trade.Duration.TotalSeconds - AverageWinningTradeDuration.TotalSeconds) / NumberOfWinningTrades);
+                    AverageWinningTradeDuration += Duration.ofSeconds((trade.Duration.TotalSeconds - AverageWinningTradeDuration.TotalSeconds) / NumberOfWinningTrades);
 
-                    if (trade.ProfitLoss > LargestProfit) 
+                    if( trade.ProfitLoss > LargestProfit) 
                         LargestProfit = trade.ProfitLoss;
 
                     maxConsecutiveWinners++;
                     maxConsecutiveLosers = 0;
-                    if (maxConsecutiveWinners > MaxConsecutiveWinningTrades)
+                    if( maxConsecutiveWinners > MaxConsecutiveWinningTrades)
                         MaxConsecutiveWinningTrades = maxConsecutiveWinners;
 
-                    if (TotalProfitLoss > maxTotalProfitLoss)
-                    {
+                    if( TotalProfitLoss > maxTotalProfitLoss) {
                         // new equity high
                         maxTotalProfitLoss = TotalProfitLoss;
 
-                        if (isInDrawdown && trade.ExitTime - lastPeakTime > MaximumDrawdownDuration)
+                        if( isInDrawdown && trade.ExitTime - lastPeakTime > MaximumDrawdownDuration)
                             MaximumDrawdownDuration = trade.ExitTime - lastPeakTime;
 
                         lastPeakTime = trade.ExitTime;
@@ -303,17 +299,17 @@ package com.quantconnect.lean.Statistics
                     downsideVariance = NumberOfLosingTrades > 1 ? sumForDownsideVariance / (NumberOfLosingTrades - 1) : 0;
                     ProfitLossDownsideDeviation = (decimal)Math.Sqrt((double)downsideVariance);
 
-                    AverageLosingTradeDuration += TimeSpan.FromSeconds((trade.Duration.TotalSeconds - AverageLosingTradeDuration.TotalSeconds) / NumberOfLosingTrades);
+                    AverageLosingTradeDuration += Duration.ofSeconds((trade.Duration.TotalSeconds - AverageLosingTradeDuration.TotalSeconds) / NumberOfLosingTrades);
 
-                    if (trade.ProfitLoss < LargestLoss)
+                    if( trade.ProfitLoss < LargestLoss)
                         LargestLoss = trade.ProfitLoss;
 
                     maxConsecutiveWinners = 0;
                     maxConsecutiveLosers++;
-                    if (maxConsecutiveLosers > MaxConsecutiveLosingTrades)
+                    if( maxConsecutiveLosers > MaxConsecutiveLosingTrades)
                         MaxConsecutiveLosingTrades = maxConsecutiveLosers;
 
-                    if (TotalProfitLoss - maxTotalProfitLoss < MaximumClosedTradeDrawdown)
+                    if( TotalProfitLoss - maxTotalProfitLoss < MaximumClosedTradeDrawdown)
                         MaximumClosedTradeDrawdown = TotalProfitLoss - maxTotalProfitLoss;
 
                     isInDrawdown = true;
@@ -326,17 +322,17 @@ package com.quantconnect.lean.Statistics
                 variance = TotalNumberOfTrades > 1 ? sumForVariance / (TotalNumberOfTrades - 1) : 0;
                 ProfitLossStandardDeviation = (decimal)Math.Sqrt((double)variance);
 
-                AverageTradeDuration += TimeSpan.FromSeconds((trade.Duration.TotalSeconds - AverageTradeDuration.TotalSeconds) / TotalNumberOfTrades);
+                AverageTradeDuration += Duration.ofSeconds((trade.Duration.TotalSeconds - AverageTradeDuration.TotalSeconds) / TotalNumberOfTrades);
                 AverageMAE += (trade.MAE - AverageMAE) / TotalNumberOfTrades;
                 AverageMFE += (trade.MFE - AverageMFE) / TotalNumberOfTrades;
 
-                if (trade.MAE < LargestMAE) 
+                if( trade.MAE < LargestMAE) 
                     LargestMAE = trade.MAE;
 
-                if (trade.MFE > LargestMFE) 
+                if( trade.MFE > LargestMFE) 
                     LargestMFE = trade.MFE;
 
-                if (trade.EndTradeDrawdown < MaximumEndTradeDrawdown)
+                if( trade.EndTradeDrawdown < MaximumEndTradeDrawdown)
                     MaximumEndTradeDrawdown = trade.EndTradeDrawdown;
 
                 TotalFees += trade.TotalFees;
@@ -357,8 +353,7 @@ package com.quantconnect.lean.Statistics
         /// <summary>
         /// Initializes a new instance of the <see cref="TradeStatistics"/> class
         /// </summary>
-        public TradeStatistics()
-        {
+        public TradeStatistics() {
         }
 
     }

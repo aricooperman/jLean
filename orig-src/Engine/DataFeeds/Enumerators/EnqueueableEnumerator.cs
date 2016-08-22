@@ -47,9 +47,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         {
             get
             {
-                lock (_lock)
-                {
-                    if (_end) return 0;
+                lock (_lock) {
+                    if( _end) return 0;
                     return _blockingCollection.Count;
                 }
             }
@@ -67,8 +66,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Initializes a new instance of the <see cref="EnqueueableEnumerator{T}"/> class
         /// </summary>
         /// <param name="blocking">Specifies whether or not to use the blocking behavior</param>
-        public EnqueueableEnumerator( boolean blocking = false)
-        {
+        public EnqueueableEnumerator( boolean blocking = false) {
             _blockingCollection = new BlockingCollection<T>();
             _timeout = blocking ? Timeout.Infinite : 0;
         }
@@ -77,11 +75,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Enqueues the new data into this enumerator
         /// </summary>
         /// <param name="data">The data to be enqueued</param>
-        public void Enqueue(T data)
-        {
-            lock (_lock)
-            {
-                if (_end) return;
+        public void Enqueue(T data) {
+            lock (_lock) {
+                if( _end) return;
                 _blockingCollection.Add(data);
                 _lastEnqueued = data;
             }
@@ -91,11 +87,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Signals the enumerator to stop enumerating when the items currently
         /// held inside are gone. No more items will be added to this enumerator.
         /// </summary>
-        public void Stop()
-        {
-            lock (_lock)
-            {
-                if (_end) return;
+        public void Stop() {
+            lock (_lock) {
+                if( _end) return;
                 // no more items can be added, so no need to wait anymore
                 _blockingCollection.CompleteAdding();
                 _end = true;
@@ -109,11 +103,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
         /// </returns>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public boolean MoveNext()
-        {
+        public boolean MoveNext() {
             T current;
-            if (!_blockingCollection.TryTake(out current, _timeout))
-            {
+            if( !_blockingCollection.TryTake(out current, _timeout)) {
                 _current = default(T);
                 return !_end;
             }
@@ -130,9 +122,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public void Reset()
-        {
-            throw new NotImplementedException("EnqueableEnumerator.Reset() has not been implemented yet.");
+        public void Reset() {
+            throw new NotImplementedException( "EnqueableEnumerator.Reset() has not been implemented yet.");
         }
 
         /// <summary>
@@ -162,13 +153,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            lock (_lock)
-            {
-                if (_disposed) return;
+        public void Dispose() {
+            lock (_lock) {
+                if( _disposed) return;
                 Stop();
-                if (_blockingCollection != null) _blockingCollection.Dispose();
+                if( _blockingCollection != null ) _blockingCollection.Dispose();
                 _disposed = true;
             }
         }

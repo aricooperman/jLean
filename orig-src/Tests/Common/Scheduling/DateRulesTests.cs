@@ -29,19 +29,16 @@ package com.quantconnect.lean.Tests.Common.Scheduling
     public class DateRulesTests
     {
         [Test]
-        public void EveryDayDateRuleEmitsEveryDay()
-        {
+        public void EveryDayDateRuleEmitsEveryDay() {
             rules = GetDateRules();
             rule = rules.EveryDay();
             dates = rule.GetDates(new DateTime(2000, 01, 01), new DateTime(2000, 12, 31));
 
             int count = 0;
             DateTime previous = DateTime.MinValue;
-            foreach (date in dates)
-            {
+            foreach (date in dates) {
                 count++;
-                if (previous != DateTime.MinValue)
-                {
+                if( previous != DateTime.MinValue) {
                     Assert.AreEqual(Time.OneDay, date - previous);
                 }
                 previous = date;
@@ -51,15 +48,13 @@ package com.quantconnect.lean.Tests.Common.Scheduling
         }
 
         [Test]
-        public void EverySymbolDayRuleEmitsOnTradeableDates()
-        {
+        public void EverySymbolDayRuleEmitsOnTradeableDates() {
             rules = GetDateRules();
             rule = rules.EveryDay(Symbols.SPY);
             dates = rule.GetDates(new DateTime(2000, 01, 01), new DateTime(2000, 12, 31));
 
             int count = 0;
-            foreach (date in dates)
-            {
+            foreach (date in dates) {
                 count++;
                 Assert.AreNotEqual(DayOfWeek.Saturday, date.DayOfWeek);
                 Assert.AreNotEqual(DayOfWeek.Sunday, date.DayOfWeek);
@@ -69,15 +64,13 @@ package com.quantconnect.lean.Tests.Common.Scheduling
         }
 
         [Test]
-        public void StartOfMonthNoSymbol()
-        {
+        public void StartOfMonthNoSymbol() {
             rules = GetDateRules();
             rule = rules.MonthStart();
             dates = rule.GetDates(new DateTime(2000, 01, 01), new DateTime(2000, 12, 31));
 
             int count = 0;
-            foreach (date in dates)
-            {
+            foreach (date in dates) {
                 count++;
                 Assert.AreEqual(1, date.Day);
             }
@@ -86,15 +79,13 @@ package com.quantconnect.lean.Tests.Common.Scheduling
         }
 
         [Test]
-        public void StartOfMonthNoSymbolMidMonthStart()
-        {
+        public void StartOfMonthNoSymbolMidMonthStart() {
             rules = GetDateRules();
             rule = rules.MonthStart();
             dates = rule.GetDates(new DateTime(2000, 01, 04), new DateTime(2000, 12, 31));
 
             int count = 0;
-            foreach (date in dates)
-            {
+            foreach (date in dates) {
                 count++;
                 Assert.AreEqual(1, date.Day);
             }
@@ -103,15 +94,13 @@ package com.quantconnect.lean.Tests.Common.Scheduling
         }
 
         [Test]
-        public void StartOfMonthWithSymbol()
-        {
+        public void StartOfMonthWithSymbol() {
             rules = GetDateRules();
             rule = rules.MonthStart(Symbols.SPY);
             dates = rule.GetDates(new DateTime(2000, 01, 01), new DateTime(2000, 12, 31));
 
             int count = 0;
-            foreach (date in dates)
-            {
+            foreach (date in dates) {
                 count++;
                 Assert.AreNotEqual(DayOfWeek.Saturday, date.DayOfWeek);
                 Assert.AreNotEqual(DayOfWeek.Sunday, date.DayOfWeek);
@@ -123,15 +112,13 @@ package com.quantconnect.lean.Tests.Common.Scheduling
         }
 
         [Test]
-        public void StartOfMonthWithSymbolMidMonthStart()
-        {
+        public void StartOfMonthWithSymbolMidMonthStart() {
             rules = GetDateRules();
             rule = rules.MonthStart(Symbols.SPY);
             dates = rule.GetDates(new DateTime(2000, 01, 04), new DateTime(2000, 12, 31));
 
             int count = 0;
-            foreach (date in dates)
-            {
+            foreach (date in dates) {
                 count++;
                 Assert.AreNotEqual(DayOfWeek.Saturday, date.DayOfWeek);
                 Assert.AreNotEqual(DayOfWeek.Sunday, date.DayOfWeek);
@@ -142,8 +129,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             Assert.AreEqual(11, count);
         }
 
-        private static DateRules GetDateRules()
-        {
+        private static DateRules GetDateRules() {
             timeKeeper = new TimeKeeper(DateTime.Today, new List<ZoneId>());
             manager = new SecurityManager(timeKeeper);
             securityExchangeHours = MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.USA, null, SecurityType.Equity);

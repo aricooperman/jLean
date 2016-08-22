@@ -144,8 +144,7 @@ package com.quantconnect.lean.Packets
         /// Initialize the base class and setup the packet type.
         /// </summary>
         /// <param name="type">PacketType for the class.</param>
-        public Packet(PacketType type)
-        {
+        public Packet(PacketType type) {
             Channel = "";
             Type = type;
         }

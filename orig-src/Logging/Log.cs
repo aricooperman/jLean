@@ -62,18 +62,16 @@ package com.quantconnect.lean.Logging
         /// Log error
         /// </summary>
         /// <param name="error">String Error</param>
-        /// <param name="overrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive</param>
-        public static void Error( String error, boolean overrideMessageFloodProtection = false) 
-        {
+        /// <param name="@OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive</param>
+        public static void Error( String error, boolean @OverrideMessageFloodProtection = false) {
             try 
             {
-                if (error == _lastErrorText && !overrideMessageFloodProtection) return;
+                if( error == _lastErrorText && !@OverrideMessageFloodProtection) return;
                 _logHandler.Error(error);
                 _lastErrorText = error; //Stop message flooding filling diskspace.
             } 
-            catch (Exception err)
-            {
-                Console.WriteLine("Log.Error(): Error writing error: " + err.Message);
+            catch (Exception err) {
+                Console.WriteLine( "Log.Error(): Error writing error: " + err.Message);
             }
         }
 
@@ -83,11 +81,10 @@ package com.quantconnect.lean.Logging
         /// <param name="method">The method identifier to be used</param>
         /// <param name="exception">The exception to be logged</param>
         /// <param name="message">An optional message to be logged, if null/whitespace the messge text will be extracted</param>
-        /// <param name="overrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive</param>
-        private static void Error( String method, Exception exception, String message = null, boolean overrideMessageFloodProtection = false)
-        {
+        /// <param name="@OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive</param>
+        private static void Error( String method, Exception exception, String message = null, boolean @OverrideMessageFloodProtection = false) {
             message = method + "(): " + (message ?? string.Empty) + " " + exception;
-            Error(message, overrideMessageFloodProtection);
+            Error(message, @OverrideMessageFloodProtection);
         }
 
         /// <summary>
@@ -95,42 +92,37 @@ package com.quantconnect.lean.Logging
         /// </summary>
         /// <param name="exception">The exception to be logged</param>
         /// <param name="message">An optional message to be logged, if null/whitespace the messge text will be extracted</param>
-        /// <param name="overrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive</param>
-        public static void Error(Exception exception, String message = null, boolean overrideMessageFloodProtection = false)
-        {
-            Error(WhoCalledMe.GetMethodName(1), exception, message, overrideMessageFloodProtection);
+        /// <param name="@OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive</param>
+        public static void Error(Exception exception, String message = null, boolean @OverrideMessageFloodProtection = false) {
+            Error(WhoCalledMe.GetMethodName(1), exception, message, @OverrideMessageFloodProtection);
         }
 
         /// <summary>
         /// Log trace
         /// </summary>
-        public static void Trace( String traceText, boolean overrideMessageFloodProtection = false) 
-        { 
+        public static void Trace( String traceText, boolean @OverrideMessageFloodProtection = false) { 
             try 
             {
-                if (traceText == _lastTraceText && !overrideMessageFloodProtection) return;
+                if( traceText == _lastTraceText && !@OverrideMessageFloodProtection) return;
                 _logHandler.Trace(traceText);
                 _lastTraceText = traceText;
             } 
-            catch (Exception err) 
-            {
-                Console.WriteLine("Log.Trace(): Error writing trace: "  +err.Message);
+            catch (Exception err) {
+                Console.WriteLine( "Log.Trace(): Error writing trace: "  +err.Message);
             }
         }
 
         /// <summary>
         /// Writes the message in normal text
         /// </summary>
-        public static void Trace( String format, params object[] args)
-        {
+        public static void Trace( String format, params object[] args) {
             Trace( String.format(format, args));
         }
 
         /// <summary>
         /// Writes the message in red
         /// </summary>
-        public static void Error( String format, params object[] args)
-        {
+        public static void Error( String format, params object[] args) {
             Error( String.format(format, args));
         }
 
@@ -140,17 +132,15 @@ package com.quantconnect.lean.Logging
         /// <param name="text"></param>
         /// <param name="level">debug level</param>
         /// <param name="delay"></param>
-        public static void Debug( String text, int level = 1, int delay = 0)
-        {
+        public static void Debug( String text, int level = 1, int delay = 0) {
             try
             {
-                if (!_debuggingEnabled || level < _level) return;
+                if( !_debuggingEnabled || level < _level) return;
                 _logHandler.Debug(text);
                 Thread.Sleep(delay);
             }
-            catch (Exception err)
-            {
-                Console.WriteLine("Log.Debug(): Error writing debug: " + err.Message);
+            catch (Exception err) {
+                Console.WriteLine( "Log.Debug(): Error writing debug: " + err.Message);
             }
         }
 
@@ -160,25 +150,22 @@ package com.quantconnect.lean.Logging
         /// <param name="obj"></param>
         /// <param name="recursion"></param>
         /// <returns></returns>
-        public static String VarDump(object obj, int recursion = 0) 
-        {
+        public static String VarDump(object obj, int recursion = 0) {
             result = new StringBuilder();
 
             // Protect the method against endless recursion
-            if (recursion < 5)
-            {
+            if( recursion < 5) {
                 // Determine object type
                 t = obj.GetType();
 
                 // Get array with properties for this object
                 properties = t.GetProperties();
 
-                foreach (property in properties) 
-                {
+                foreach (property in properties) {
                     try
                     {
                         // Get the property value
-                        value = property.GetValue(obj, null);
+                        value = property.GetValue(obj, null );
 
                         // Create indenting String to put in front of properties of a deeper level
                         // We'll need this when we display the property name and value
@@ -186,24 +173,21 @@ package com.quantconnect.lean.Logging
                         spaces = "|   ";
                         trail = "|...";
 
-                        if (recursion > 0) 
-                        {
+                        if( recursion > 0) {
                             indent = new StringBuilder(trail).Insert(0, spaces, recursion - 1).toString();
                         }
 
-                        if (value != null) 
-                        {
+                        if( value != null ) {
                             // If the value is a string, add quotation marks
                             displayValue = value.toString();
-                            if (value is string) displayValue = String.Concat('"', displayValue, '"');
+                            if( value is string) displayValue = String.Concat('"', displayValue, '"');
 
                             // Add property name and value to return string
-                            result.AppendFormat("{0}{1} = {2}\n", indent, property.Name, displayValue);
+                            result.AppendFormat( "%1$s%2$s = %3$s\n", indent, property.Name, displayValue);
 
                             try 
                             {
-                                if (!(value is ICollection)) 
-                                {
+                                if( !(value is ICollection)) {
                                     // Call var_dump() again to list child properties
                                     // This throws an exception if the current property value
                                     // is of an unsupported type (eg. it has not properties)
@@ -215,13 +199,12 @@ package com.quantconnect.lean.Logging
                                     // The value is a collection (eg. it's an arraylist or generic list)
                                     // so loop through its elements and dump their properties
                                     elementCount = 0;
-                                    foreach (element in ((ICollection)value)) 
-                                    {
-                                        elementName = String.format("{0}[{1}]", property.Name, elementCount);
+                                    foreach (element in ((ICollection)value)) {
+                                        elementName = String.format( "%1$s[%2$s]", property.Name, elementCount);
                                         indent = new StringBuilder(trail).Insert(0, spaces, recursion).toString();
 
                                         // Display the collection element name and type
-                                        result.AppendFormat("{0}{1} = {2}\n", indent, elementName, element.toString());
+                                        result.AppendFormat( "%1$s%2$s = %3$s\n", indent, elementName, element.toString());
 
                                         // Display the child properties
                                         result.Append(VarDump(element, recursion + 2));
@@ -234,8 +217,8 @@ package com.quantconnect.lean.Logging
                         } 
                         else 
                         {
-                            // Add empty (null) property to return string
-                            result.AppendFormat("{0}{1} = {2}\n", indent, property.Name, "null");
+                            // Add empty (null ) property to return string
+                            result.AppendFormat( "%1$s%2$s = %3$s\n", indent, property.Name, "null");
                         }
                     } 
                     catch 

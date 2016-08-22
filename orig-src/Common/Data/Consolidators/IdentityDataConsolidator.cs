@@ -33,7 +33,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <summary>
         /// Gets a clone of the data being currently consolidated
         /// </summary>
-        public override BaseData WorkingData
+        public @Override BaseData WorkingData
         {
             get { return _last == null ? null : _last.Clone(); }
         }
@@ -41,7 +41,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <summary>
         /// Gets the type produced by this consolidator
         /// </summary>
-        public override Type OutputType
+        public @Override Type OutputType
         {
             get { return typeof (T); }
         }
@@ -50,10 +50,8 @@ package com.quantconnect.lean.Data.Consolidators
         /// Updates this consolidator with the specified data
         /// </summary>
         /// <param name="data">The new data for the consolidator</param>
-        public override void Update(T data)
-        {
-            if (IsTick || _last == null || _last.EndTime != data.EndTime)
-            {
+        public @Override void Update(T data) {
+            if( IsTick || _last == null || _last.EndTime != data.EndTime) {
                 OnDataConsolidated(data);
                 _last = data;
             }
@@ -63,8 +61,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// Scans this consolidator to see if it should emit a bar due to time passing
         /// </summary>
         /// <param name="currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)</param>
-        public override void Scan(DateTime currentLocalTime)
-        {
+        public @Override void Scan(DateTime currentLocalTime) {
         }
     }
 }

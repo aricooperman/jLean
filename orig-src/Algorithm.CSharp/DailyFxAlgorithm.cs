@@ -29,19 +29,17 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Add the Daily FX type to our algorithm and use its events.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2016, 05, 26);  //Set Start Date
             SetEndDate(2016, 05, 27);    //Set End Date
             SetCash(100000);             //Set Strategy Cash
-            AddData<DailyFx>("DFX", Resolution.Second, ZoneId.Utc);
+            AddData<DailyFx>( "DFX", Resolution.Second, ZoneId.Utc);
         }
 
         private int _sliceCount = 0;
-        public override void OnData(Slice slice)
-        {
+        public @Override void OnData(Slice slice) {
             result = slice.Get<DailyFx>();
-            Console.WriteLine("SLICE >> {0} : {1}", _sliceCount++, result);
+            Console.WriteLine( "SLICE >> %1$s : %2$s", _sliceCount++, result);
         }
 
         /// <summary>
@@ -49,10 +47,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// </summary>
         private int _eventCount = 0;
         private Map<String, DailyFx> _uniqueConfirmation = new Map<String, DailyFx>();
-        public void OnData(DailyFx calendar)
-        {
+        public void OnData(DailyFx calendar) {
             _uniqueConfirmation.Add(calendar.toString(), calendar);
-            Console.WriteLine("ONDATA >> {0}: {1}", _eventCount++, calendar);
+            Console.WriteLine( "ONDATA >> %1$s: %2$s", _eventCount++, calendar);
         }
     }
 }

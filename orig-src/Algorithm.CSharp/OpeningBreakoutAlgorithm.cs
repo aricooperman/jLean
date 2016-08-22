@@ -105,8 +105,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             // initialize algorithm level parameters
             SetStartDate(2013, 10, 07);
             SetEndDate(2013, 10, 11);
@@ -134,33 +133,32 @@ package com.quantconnect.lean.Algorithm.CSharp
 
             // smooth our ATR over a week, we'll use this to determine if recent volatilty warrants entrance
             oneWeekInMarketHours = (int)(5*6.5);
-            SmoothedATR14 = new ExponentialMovingAverage("Smoothed_" + ATR14.Name, oneWeekInMarketHours).Of(ATR14);
+            SmoothedATR14 = new ExponentialMovingAverage( "Smoothed_" + ATR14.Name, oneWeekInMarketHours).Of(ATR14);
             // smooth our STD over a week as well
-            SmoothedSTD14 = new ExponentialMovingAverage("Smoothed_"+STD14.Name, oneWeekInMarketHours).Of(STD14);
+            SmoothedSTD14 = new ExponentialMovingAverage( "Smoothed_"+STD14.Name, oneWeekInMarketHours).Of(STD14);
 
             // initialize our charts
             chart = new Chart(Symbol);
             chart.AddSeries(new Series(ADX14.Name, SeriesType.Line, 0));
-            chart.AddSeries(new Series("Enter", SeriesType.Scatter, 0));
-            chart.AddSeries(new Series("Exit", SeriesType.Scatter, 0));
+            chart.AddSeries(new Series( "Enter", SeriesType.Scatter, 0));
+            chart.AddSeries(new Series( "Exit", SeriesType.Scatter, 0));
             chart.AddSeries(new Series(PSARMin.Name, SeriesType.Scatter, 0));
             AddChart(chart);
 
             history = History(Symbol, 20, Resolution.Daily);
-            foreach (bar in history)
-            {
+            foreach (bar in history) {
                 ADX14.Update(bar);
                 ATR14.Update(bar);
                 STD14.Update(bar.EndTime, bar.Close);
             }
 
             // schedule an event to run every day at five minutes after our Symbol's market open
-            Schedule.Event("MarketOpenSpan")
+            Schedule.Event( "MarketOpenSpan")
                 .EveryDay(Symbol)
                 .AfterMarketOpen(Symbol, minutesAfterOpen: OpeningSpanInMinutes)
                 .Run(MarketOpeningSpanHandler);
 
-            Schedule.Event("MarketOpen")
+            Schedule.Event( "MarketOpen")
                 .EveryDay(Symbol)
                 .AfterMarketOpen(Symbol, minutesAfterOpen: -1)
                 .Run(() => PSARMin.Reset());
@@ -169,14 +167,13 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// This function is scheduled to be run every day at the specified number of minutes after market open
         /// </summary>
-        public void MarketOpeningSpanHandler()
-        {
+        public void MarketOpeningSpanHandler() {
             // request the last n minutes of data in minute bars, we're going to
             // define the opening rang
             history = History(Symbol, OpeningSpanInMinutes, Resolution.Minute);
 
             // this is our bar size
-            openingSpan = TimeSpan.FromMinutes(OpeningSpanInMinutes);
+            openingSpan = Duration.ofMinutes(OpeningSpanInMinutes);
 
             // we only care about the high and low here
             OpeningBarRange = new TradeBar
@@ -191,8 +188,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             };
 
             // aggregate the high/low for the opening range
-            foreach (tradeBar in history)
-            {
+            foreach (tradeBar in history) {
                 OpeningBarRange.Low = Math.Min(OpeningBarRange.Low, tradeBar.Low);
                 OpeningBarRange.High = Math.Max(OpeningBarRange.High, tradeBar.High);
             }
@@ -201,55 +197,50 @@ package com.quantconnect.lean.Algorithm.CSharp
             OpeningBarRange.Low *= 1 - BreakoutThresholdPercent;
             OpeningBarRange.High *= 1 + BreakoutThresholdPercent;
 
-            Log("---------" + Time.Date + "---------");
-            Log("OpeningBarRange: Low: " + OpeningBarRange.Low.SmartRounding() + " High: " + OpeningBarRange.High.SmartRounding());
+            Log( "---------" + Time.Date + "---------");
+            Log( "OpeningBarRange: Low: " + OpeningBarRange.Low.SmartRounding() + " High: " + OpeningBarRange.High.SmartRounding());
         }
 
         /// <summary>
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">Slice object keyed by symbol containing the stock data</param>
-        public override void OnData(Slice data)
-        {
+        public @Override void OnData(Slice data) {
             // we don't need to run any of this during our warmup phase
-            if (IsWarmingUp) return;
+            if( IsWarmingUp) return;
 
             // when we're done warming up, register our indicators to start plotting
-            if (!IsWarmingUp && !FinishedWarmup)
-            {
+            if( !IsWarmingUp && !FinishedWarmup) {
                 // this is a run once flag for when we're finished warmup
                 FinishedWarmup = true;
 
                 // plot our hourly indicators automatically, wait for them to ready
-                PlotIndicator("ADX", ADX14);
-                PlotIndicator("ADX", ADX14.NegativeDirectionalIndex, ADX14.PositiveDirectionalIndex);
+                PlotIndicator( "ADX", ADX14);
+                PlotIndicator( "ADX", ADX14.NegativeDirectionalIndex, ADX14.PositiveDirectionalIndex);
 
-                PlotIndicator("ATR", true, ATR14);
-                PlotIndicator("STD", true, STD14);
-                PlotIndicator("ATR", true, SmoothedATR14);
+                PlotIndicator( "ATR", true, ATR14);
+                PlotIndicator( "STD", true, STD14);
+                PlotIndicator( "ATR", true, SmoothedATR14);
             }
 
             // update our PSAR
             PSARMin.Update((TradeBar) Security.GetLastData());
 
             // plot price until an hour after we close so we can see our execution skillz
-            if (ShouldPlot)
-            {
+            if( ShouldPlot) {
                 // we can plot price more often if we want
                 Plot(Symbol, "Price", Security.Close);
                 // only plot psar on the minute
-                if (PSARMin.IsReady)
-                {
+                if( PSARMin.IsReady) {
                     Plot(Symbol, PSARMin);
                 }
             }
 
             // first wait for our opening range bar to be set to today
-            if (OpeningBarRange == null || OpeningBarRange.EndTime.Date != Time.Date || OpeningBarRange.EndTime == Time) return;
+            if( OpeningBarRange == null || OpeningBarRange.EndTime.Date != Time.Date || OpeningBarRange.EndTime == Time) return;
 
             // we only trade max once per day, so if we've already exited the stop loss, bail
-            if (StopLossTicket != null && StopLossTicket.Status == OrderStatus.Filled)
-            {
+            if( StopLossTicket != null && StopLossTicket.Status == OrderStatus.Filled) {
                 // null these out to signal that we're done trading for the day
                 OpeningBarRange = null;
                 StopLossTicket = null;
@@ -257,19 +248,16 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
 
             // now that we have our opening bar, test to see if we're already in a positio
-            if (!Security.Invested)
-            {
+            if( !Security.Invested) {
                 ScanForEntrance();
             }
             else
             {
                 // if we haven't exited yet then manage our stop loss, this controls our exit point
-                if (Security.Invested)
-                {
+                if( Security.Invested) {
                     ManageStopLoss();
                 }
-                else if (StopLossTicket != null && StopLossTicket.Status.IsOpen())
-                {
+                else if( StopLossTicket != null && StopLossTicket.Status.IsOpen()) {
                     StopLossTicket.Cancel();
                 }
             }
@@ -278,10 +266,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Scans for a breakout from the opening range bar
         /// </summary>
-        private void ScanForEntrance()
-        {
+        private void ScanForEntrance() {
             // scan for entrances, we only want to do this before 10am
-            if (Time.TimeOfDay.Hours >= 10) return;
+            if( Time.TimeOfDay.Hours >= 10) return;
 
             // expect capture 10% of the daily range
             expectedCaptureRange = 0.1m*ATR14;
@@ -302,11 +289,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             //shares = Math.Max(shares, minShare);
 
             // we're looking for a breakout of the opening range bar in the direction of the medium term trend
-            if (ShouldEnterLong)
-            {
+            if( ShouldEnterLong) {
                 // breakout to the upside, go long (fills synchronously)
                 MarketTicket = MarketOrder(Symbol, shares);
-                Log("Enter long @ " + MarketTicket.AverageFillPrice.SmartRounding() + " Shares: " + shares);
+                Log( "Enter long @ " + MarketTicket.AverageFillPrice.SmartRounding() + " Shares: " + shares);
                 Plot(Symbol, "Enter", MarketTicket.AverageFillPrice);
 
                 // we'll start with a global, non-trailing stop loss
@@ -315,16 +301,14 @@ package com.quantconnect.lean.Algorithm.CSharp
                 // submit stop loss order for max loss on the trade
                 stopPrice = Security.Low*(1 - GlobalStopLossPercent);
                 StopLossTicket = StopMarketOrder(Symbol, -shares, stopPrice);
-                if (EnableOrderUpdateLogging)
-                {
-                    Log("Submitted stop loss @ " + stopPrice.SmartRounding());
+                if( EnableOrderUpdateLogging) {
+                    Log( "Submitted stop loss @ " + stopPrice.SmartRounding());
                 }
             }
-            else if (ShouldEnterShort)
-            {
+            else if( ShouldEnterShort) {
                 // breakout to the downside, go short
                 MarketTicket = MarketOrder(Symbol, - -shares);
-                Log("Enter short @ " + MarketTicket.AverageFillPrice.SmartRounding());
+                Log( "Enter short @ " + MarketTicket.AverageFillPrice.SmartRounding());
                 Plot(Symbol, "Enter", MarketTicket.AverageFillPrice);
 
                 // we'll start with a global, non-trailing stop loss
@@ -333,9 +317,8 @@ package com.quantconnect.lean.Algorithm.CSharp
                 // submit stop loss order for max loss on the trade
                 stopPrice = Security.High*(1 + GlobalStopLossPercent);
                 StopLossTicket = StopMarketOrder(Symbol, -shares, stopPrice);
-                if (EnableOrderUpdateLogging)
-                {
-                    Log("Submitted stop loss @ " + stopPrice.SmartRounding() + " Shares: " + shares);
+                if( EnableOrderUpdateLogging) {
+                    Log( "Submitted stop loss @ " + stopPrice.SmartRounding() + " Shares: " + shares);
                 }
             }
         }
@@ -343,29 +326,26 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Manages our stop loss ticket
         /// </summary>
-        private void ManageStopLoss()
-        {
+        private void ManageStopLoss() {
             // if we've already exited then no need to do more
-            if (StopLossTicket == null || StopLossTicket.Status == OrderStatus.Filled) return;
+            if( StopLossTicket == null || StopLossTicket.Status == OrderStatus.Filled) return;
 
             // only do this once per minute
-            //if (Time.RoundDown(TimeSpan.FromMinutes(1)) != Time) return;
+            //if( Time.RoundDown(Duration.ofMinutes(1)) != Time) return;
 
             // get the current stop price
             stopPrice = StopLossTicket.Get(OrderField.StopPrice);
 
             // check for enabling the psar trailing stop
-            if (ShouldEnablePsarTrailingStop(stopPrice))
-            {
+            if( ShouldEnablePsarTrailingStop(stopPrice)) {
                 EnablePsarTrailingStop = true;
-                Log("Enabled PSAR trailing stop @ ProfitPercent: " + Security.Holdings.UnrealizedProfitPercent.SmartRounding());
+                Log( "Enabled PSAR trailing stop @ ProfitPercent: " + Security.Holdings.UnrealizedProfitPercent.SmartRounding());
             }
 
             // we've trigger the psar trailing stop, so start updating our stop loss tick
-            if (EnablePsarTrailingStop && PSARMin.IsReady)
-            {
+            if( EnablePsarTrailingStop && PSARMin.IsReady) {
                 StopLossTicket.Update(new UpdateOrderFields {StopPrice = PSARMin});
-                Log("Submitted stop loss @ " + PSARMin.Current.Value.SmartRounding());
+                Log( "Submitted stop loss @ " + PSARMin.Current.Value.SmartRounding());
             }
         }
 
@@ -373,17 +353,14 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// This event handler is fired for each and every order event the algorithm
         /// receives. We'll perform some logging and house keeping here
         /// </summary>
-        public override void OnOrderEvent(OrderEvent orderEvent)
-        {
+        public @Override void OnOrderEvent(OrderEvent orderEvent) {
             // print debug messages for all order events
-            if (LiveMode || orderEvent.Status.IsFill() || EnableOrderUpdateLogging)
-            {
-                LiveDebug("Filled: " + orderEvent.FillQuantity + " Price: " + orderEvent.FillPrice);
+            if( LiveMode || orderEvent.Status.IsFill() || EnableOrderUpdateLogging) {
+                LiveDebug( "Filled: " + orderEvent.FillQuantity + " Price: " + orderEvent.FillPrice);
             }
 
             // if this is a fill and we now don't own any stock, that means we've closed for the day
-            if (!Security.Invested && orderEvent.Status == OrderStatus.Filled)
-            {
+            if( !Security.Invested && orderEvent.Status == OrderStatus.Filled) {
                 // reset values for tomorrow
                 LastExitTime = Time;
                 ticket = Transactions.GetOrderTickets(x => x.OrderId == orderEvent.OrderId).Single();
@@ -394,10 +371,8 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// If we're still invested by the end of the day, liquidate
         /// </summary>
-        public override void OnEndOfDay()
-        {
-            if (Security.Invested)
-            {
+        public @Override void OnEndOfDay() {
+            if( Security.Invested) {
                 Liquidate();
             }
         }
@@ -413,17 +388,17 @@ package com.quantconnect.lean.Algorithm.CSharp
             get
             {
                 // always in live
-                if (LiveMode) return true;
-                // set in top to override plotting during long backtests
-                if (!EnablePlotting) return false;
+                if( LiveMode) return true;
+                // set in top to @Override plotting during long backtests
+                if( !EnablePlotting) return false;
                 // every 30 seconds in backtest
-                if (Time.RoundDown(TimeSpan.FromSeconds(PricePlotFrequencyInSeconds)) != Time) return false;
+                if( Time.RoundDown(Duration.ofSeconds(PricePlotFrequencyInSeconds)) != Time) return false;
                 // always if we're invested
-                if (Security.Invested) return true;
+                if( Security.Invested) return true;
                 // always if it's before noon
-                if (Time.TimeOfDay.Hours < 10.25) return true;
+                if( Time.TimeOfDay.Hours < 10.25) return true;
                 // for an hour after our exit
-                if (Time - LastExitTime < TimeSpan.FromMinutes(30)) return true;
+                if( Time - LastExitTime < Duration.ofMinutes(30)) return true;
 
                 return false;
             }
@@ -434,12 +409,10 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// as well as the log, this allows easy real time inspection of
         /// how the algorithm is performing
         /// </summary>
-        public void LiveDebug(object msg)
-        {
-            if (msg == null) return;
+        public void LiveDebug(object msg) {
+            if( msg == null ) return;
 
-            if (LiveMode)
-            {
+            if( LiveMode) {
                 Debug(msg.toString());
                 Log(msg.toString());
             }
@@ -510,8 +483,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// Determines whether or not we should enable the psar trailing stop
         /// </summary>
         /// <param name="stopPrice">current stop price of our stop loss tick</param>
-        private boolean ShouldEnablePsarTrailingStop( BigDecimal stopPrice)
-        {
+        private boolean ShouldEnablePsarTrailingStop( BigDecimal stopPrice) {
             // no need to enable if it's already enabled
             return !EnablePsarTrailingStop
                 // once we're up a certain percentage, we'll use PSAR to control our stop
@@ -537,8 +509,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Determines whether or not the PSAR stop price is better than the specified stop price
         /// </summary>
-        private boolean IsPsarMoreProfitableThanStop( BigDecimal stopPrice)
-        {
+        private boolean IsPsarMoreProfitableThanStop( BigDecimal stopPrice) {
             return (Security.Holdings.IsLong && PSARMin > stopPrice) 
                 || (Security.Holdings.IsShort && PSARMin < stopPrice);
         }

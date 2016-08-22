@@ -53,8 +53,7 @@ package com.quantconnect.lean.Data.Auxiliary
         /// <summary>
         /// Initializes a new instance of the <see cref="FactorFileRow"/> class
         /// </summary>
-        public FactorFileRow(DateTime date, BigDecimal priceFactor, BigDecimal splitFactor)
-        {
+        public FactorFileRow(DateTime date, BigDecimal priceFactor, BigDecimal splitFactor) {
             Date = date;
             PriceFactor = priceFactor;
             SplitFactor = splitFactor;
@@ -63,8 +62,7 @@ package com.quantconnect.lean.Data.Auxiliary
         /// <summary>
         /// Reads in the factor file for the specified equity symbol
         /// </summary>
-        public static IEnumerable<FactorFileRow> Read( String permtick, String market)
-        {
+        public static IEnumerable<FactorFileRow> Read( String permtick, String market) {
             String path = Path.Combine(Globals.DataFolder, "equity", market, "factor_files", permtick.toLowerCase() + ".csv");
             return File.ReadAllLines(path).Where(l => !string.IsNullOrWhiteSpace(l)).Select(Parse);
         }
@@ -72,9 +70,8 @@ package com.quantconnect.lean.Data.Auxiliary
         /// <summary>
         /// Parses the specified line as a factor file row
         /// </summary>
-        public static FactorFileRow Parse( String line)
-        {
-            csv = line.Split(',');
+        public static FactorFileRow Parse( String line) {
+            csv = line.split(',');
             return new FactorFileRow(
                 DateTime.ParseExact(csv[0], DateFormat.EightCharacter, CultureInfo.InvariantCulture, DateTimeStyles.None),
                 decimal.Parse(csv[1], CultureInfo.InvariantCulture),
@@ -89,9 +86,8 @@ package com.quantconnect.lean.Data.Auxiliary
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
-            return Date + ": " + PriceScaleFactor.toString("0.0000");
+        public @Override String toString() {
+            return Date + ": " + PriceScaleFactor.toString( "0.0000");
         }
     }
 }

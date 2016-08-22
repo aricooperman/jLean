@@ -28,11 +28,9 @@ package com.quantconnect.lean.Benchmarks
         /// Initializes a new instance of the <see cref="FuncBenchmark"/> class
         /// </summary>
         /// <param name="benchmark">The functional benchmark implementation</param>
-        public FuncBenchmark(Func<DateTime, decimal> benchmark)
-        {
-            if (benchmark == null)
-            {
-                throw new ArgumentNullException("benchmark");
+        public FuncBenchmark(Func<DateTime, decimal> benchmark) {
+            if( benchmark == null ) {
+                throw new ArgumentNullException( "benchmark");
             }
             _benchmark = benchmark;
         }
@@ -42,8 +40,7 @@ package com.quantconnect.lean.Benchmarks
         /// </summary>
         /// <param name="time">The time to evaluate the benchmark at</param>
         /// <returns>The value of the benchmark at the specified time</returns>
-        public BigDecimal Evaluate(DateTime time)
-        {
+        public BigDecimal Evaluate(DateTime time) {
             return _benchmark(time);
         }
     }

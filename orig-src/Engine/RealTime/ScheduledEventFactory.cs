@@ -42,11 +42,9 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         /// <param name="callback">The delegate to call when an event fires</param>
         /// <param name="currentUtcTime">Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.</param>
         /// <returns>A new <see cref="ScheduledEvent"/> instance that fires events each tradeable day from the start to the finish at the specified time</returns>
-        public static ScheduledEvent EveryDayAt( String name, IEnumerable<DateTime> dates, TimeSpan timeOfDay, Action<String, DateTime> callback, DateTime? currentUtcTime = null)
-        {
+        public static ScheduledEvent EveryDayAt( String name, IEnumerable<DateTime> dates, TimeSpan timeOfDay, Action<String, DateTime> callback, DateTime? currentUtcTime = null ) {
             eventTimes = dates.Select(x => x.Date + timeOfDay);
-            if (currentUtcTime.HasValue)
-            {
+            if( currentUtcTime.HasValue) {
                 eventTimes = eventTimes.Where(x => x < currentUtcTime.Value);
             }
             return new ScheduledEvent(name, eventTimes, callback);
@@ -62,11 +60,9 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         /// <param name="endOfDayDelta">The time difference between the market close and the event, positive time will fire before market close</param>
         /// <param name="currentUtcTime">Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.</param>
         /// <returns>The new <see cref="ScheduledEvent"/> that will fire near market close each tradeable dat</returns>
-        public static ScheduledEvent EveryAlgorithmEndOfDay(IAlgorithm algorithm, IResultHandler resultHandler, DateTime start, DateTime end, TimeSpan endOfDayDelta, DateTime? currentUtcTime = null)
-        {
-            if (endOfDayDelta >= Time.OneDay)
-            {
-                throw new ArgumentException("Delta must be less than a day", "endOfDayDelta");
+        public static ScheduledEvent EveryAlgorithmEndOfDay(IAlgorithm algorithm, IResultHandler resultHandler, DateTime start, DateTime end, TimeSpan endOfDayDelta, DateTime? currentUtcTime = null ) {
+            if( endOfDayDelta >= Time.OneDay) {
+                throw new ArgumentException( "Delta must be less than a day", "endOfDayDelta");
             }
 
             // set up an event to fire every tradeable date for the algorithm as a whole
@@ -84,16 +80,15 @@ package com.quantconnect.lean.Lean.Engine.RealTime
                 where !currentUtcTime.HasValue || eventUtcTime > currentUtcTime.Value
                 select eventUtcTime;
 
-            return new ScheduledEvent(CreateEventName("Algorithm", "EndOfDay"), times, (name, triggerTime) =>
+            return new ScheduledEvent(CreateEventName( "Algorithm", "EndOfDay"), times, (name, triggerTime) =>
             {
                 try
                 {
                     algorithm.OnEndOfDay();
                 }
-                catch (Exception err)
-                {
-                    resultHandler.RuntimeError(String.format("Runtime error in {0} event: {1}", name, err.Message), err.StackTrace);
-                    Log.Error(err, String.format("ScheduledEvent.{0}:", name));
+                catch (Exception err) {
+                    resultHandler.RuntimeError(String.format( "Runtime error in %1$s event: %2$s", name, err.Message), err.StackTrace);
+                    Log.Error(err, String.format( "ScheduledEvent.%1$s:", name));
                 }
             });
         }
@@ -109,11 +104,9 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         /// <param name="endOfDayDelta">The time difference between the market close and the event, positive time will fire before market close</param>
         /// <param name="currentUtcTime">Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.</param>
         /// <returns>The new <see cref="ScheduledEvent"/> that will fire near market close each tradeable dat</returns>
-        public static ScheduledEvent EverySecurityEndOfDay(IAlgorithm algorithm, IResultHandler resultHandler, Security security, DateTime start, DateTime end, TimeSpan endOfDayDelta, DateTime? currentUtcTime = null)
-        {
-            if (endOfDayDelta >= Time.OneDay)
-            {
-                throw new ArgumentException("Delta must be less than a day", "endOfDayDelta");
+        public static ScheduledEvent EverySecurityEndOfDay(IAlgorithm algorithm, IResultHandler resultHandler, Security security, DateTime start, DateTime end, TimeSpan endOfDayDelta, DateTime? currentUtcTime = null ) {
+            if( endOfDayDelta >= Time.OneDay) {
+                throw new ArgumentException( "Delta must be less than a day", "endOfDayDelta");
             }
 
             // define all the times we want this event to be fired, every tradeable day for the securtiy
@@ -137,10 +130,9 @@ package com.quantconnect.lean.Lean.Engine.RealTime
                 {
                     algorithm.OnEndOfDay(security.Symbol);
                 }
-                catch (Exception err)
-                {
-                    resultHandler.RuntimeError(String.format("Runtime error in {0} event: {1}", name, err.Message), err.StackTrace);
-                    Log.Error(err, String.format("ScheduledEvent.{0}:", name));
+                catch (Exception err) {
+                    resultHandler.RuntimeError(String.format( "Runtime error in %1$s event: %2$s", name, err.Message), err.StackTrace);
+                    Log.Error(err, String.format( "ScheduledEvent.%1$s:", name));
                 }
             });
         }
@@ -151,9 +143,8 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         /// <param name="scope">The scope of the event, example, 'Algorithm' or 'Security'</param>
         /// <param name="name">A name for this specified event in this scope, example, 'EndOfDay'</param>
         /// <returns>A String representing a fully scoped event name</returns>
-        public static String CreateEventName( String scope, String name)
-        {
-            return String.format("{0}.{1}", scope, name);
+        public static String CreateEventName( String scope, String name) {
+            return String.format( "%1$s.%2$s", scope, name);
         }
     }
 }

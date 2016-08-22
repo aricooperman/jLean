@@ -31,10 +31,8 @@ package com.quantconnect.lean.Util
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            if (value is T)
-            {
+        public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+            if( value is T) {
                 value = new List<T> {(T)value};
             }
             serializer.Serialize(writer, value);
@@ -49,16 +47,14 @@ package com.quantconnect.lean.Util
         /// <param name="existingValue">The existing value of object being read.</param>
         /// <param name="serializer">The calling serializer.</param>
         /// <returns>The object value</returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            switch (reader.TokenType)
-            {
+        public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+            switch (reader.TokenType) {
                 case JsonToken.StartObject:
                     return new List<T> {serializer.Deserialize<T>(reader)};
                 case JsonToken.StartArray:
                     return serializer.Deserialize<List<T>>(reader);
                 default:
-                    throw new ArgumentException("The JsonReader is expected to point at a JsonToken.StartObject or JsonToken.StartArray.");
+                    throw new ArgumentException( "The JsonReader is expected to point at a JsonToken.StartObject or JsonToken.StartArray.");
             }
         }
 
@@ -67,8 +63,7 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="objectType">Type of the object.</param>
         /// <returns><c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.</returns>
-        public override boolean CanConvert(Type objectType)
-        {
+        public @Override boolean CanConvert(Type objectType) {
             return objectType == typeof(T) || objectType == typeof(List<T>);
         }
     }

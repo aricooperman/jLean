@@ -26,8 +26,7 @@ package com.quantconnect.lean.Securities.Forex
         /// </summary>
         /// <param name="security">The forex security being held</param>
         public ForexHolding(Forex security)
-            : base(security)
-        {
+            : base(security) {
         }
     }
 }

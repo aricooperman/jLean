@@ -32,8 +32,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the MIDPOINT</param>
         public MidPoint( String name, int period) 
-            : base(name)
-        {
+            : base(name) {
             _period = period;
             _maximum = new Maximum(period);
             _minimum = new Minimum(period);
@@ -44,14 +43,13 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="period">The period of the MIDPOINT</param>
         public MidPoint(int period)
-            : this("MIDPOINT" + period, period)
-        {
+            : this( "MIDPOINT" + period, period) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
@@ -61,8 +59,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _maximum.Update(input);
             _minimum.Update(input);
 
@@ -72,8 +69,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _maximum.Reset();
             _minimum.Reset();
             base.Reset();

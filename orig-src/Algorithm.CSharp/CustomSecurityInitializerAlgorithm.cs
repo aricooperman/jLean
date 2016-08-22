@@ -27,8 +27,7 @@ package com.quantconnect.lean.Algorithm.CSharp
     /// </summary>
     public class CustomSecurityInitializerAlgorithm : QCAlgorithm
     {
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             // set our initializer to our custom type
             SetBrokerageModel(BrokerageName.TradierBrokerage);
             SetSecurityInitializer(new CustomSecurityInitializer(BrokerageModel, DataNormalizationMode.Raw));
@@ -39,11 +38,9 @@ package com.quantconnect.lean.Algorithm.CSharp
             AddSecurity(SecurityType.Equity, "SPY", Resolution.Hour);
         }
 
-        public void OnData(TradeBars data)
-        {
-            if (!Portfolio.Invested)
-            {
-                SetHoldings("SPY", 1);
+        public void OnData(TradeBars data) {
+            if( !Portfolio.Invested) {
+                SetHoldings( "SPY", 1);
             }
         }
 
@@ -64,8 +61,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             /// <param name="brokerageModel">The brokerage model used to get fill/fee/slippage/settlement models</param>
             /// <param name="dataNormalizationMode">The desired data normalization mode</param>
             public CustomSecurityInitializer(IBrokerageModel brokerageModel, DataNormalizationMode dataNormalizationMode)
-                : base(brokerageModel)
-            {
+                : base(brokerageModel) {
                 _dataNormalizationMode = dataNormalizationMode;
             }
 
@@ -73,8 +69,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             /// Initializes the specified security by setting up the models
             /// </summary>
             /// <param name="security">The security to be initialized</param>
-            public override void Initialize(Security security)
-            {
+            public @Override void Initialize(Security security) {
                 // first call the default implementation
                 base.Initialize(security);
 

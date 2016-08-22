@@ -43,19 +43,18 @@ package com.quantconnect.lean.Securities
         /// <param name="maxStrike">The maximum strike relative to the underlying price, for example, +1 would filter out contracts further than 1 strike above market price</param>
         /// <param name="minExpiry">The minium time until expiry, for example, 7 days would filter out contracts expiring sooner than 7 days</param>
         /// <param name="maxExpiry">The maximum time until expiry, for example, 30 days would filter out contracts expriring later than 30 days</param>
-        public StrikeExpiryOptionFilter(int minStrike, int maxStrike, TimeSpan minExpiry, TimeSpan maxExpiry)
-        {
+        public StrikeExpiryOptionFilter(int minStrike, int maxStrike, TimeSpan minExpiry, TimeSpan maxExpiry) {
             _minStrike = minStrike;
             _maxStrike = maxStrike;
             _minExpiry = minExpiry;
             _maxExpiry = maxExpiry;
 
             // prevent parameter mistakes that would prevent all contracts from coming through
-            if (maxStrike < minStrike) throw new ArgumentException("maxStrike must be greater than minStrike");
-            if (maxExpiry < minExpiry) throw new ArgumentException("maxExpiry must be greater than minExpiry");
+            if( maxStrike < minStrike) throw new ArgumentException( "maxStrike must be greater than minStrike");
+            if( maxExpiry < minExpiry) throw new ArgumentException( "maxExpiry must be greater than minExpiry");
 
             // protect from overflow on additions
-            if (_maxExpiry > Time.MaxTimeSpan) _maxExpiry = Time.MaxTimeSpan;
+            if( _maxExpiry > Time.MaxTimeSpan) _maxExpiry = Time.MaxTimeSpan;
         }
 
         /// <summary>
@@ -64,17 +63,14 @@ package com.quantconnect.lean.Securities
         /// <param name="symbols">The derivative symbols to be filtered</param>
         /// <param name="underlying">The underlying price data</param>
         /// <returns>The filtered set of symbols</returns>
-        public IEnumerable<Symbol> Filter(IEnumerable<Symbol> symbols, BaseData underlying)
-        {
+        public IEnumerable<Symbol> Filter(IEnumerable<Symbol> symbols, BaseData underlying) {
             // we can't properly apply this filter without knowing the underlying price
             // so in the event we're missing the underlying, just skip the filtering step
-            if (underlying == null)
-            {
+            if( underlying == null ) {
                 return symbols;
             }
 
-            if (underlying.Time.Date != _strikeSizeResolveDate)
-            {
+            if( underlying.Time.Date != _strikeSizeResolveDate) {
                 // each day we need to recompute the strike size
                 symbols = symbols.ToList();
                 uniqueStrikes = symbols.DistinctBy(x => x.ID.StrikePrice).OrderBy(x => x.ID.StrikePrice).ToList();

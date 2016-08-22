@@ -67,10 +67,9 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <summary>
         /// Initializes a new BrokerageSetupHandler
         /// </summary>
-        public BrokerageSetupHandler()
-        {
+        public BrokerageSetupHandler() {
             Errors = new List<String>();
-            MaximumRuntime = TimeSpan.FromDays(10*365);
+            MaximumRuntime = Duration.ofDays(10*365);
             MaxOrders = int.MaxValue;
         }
 
@@ -80,27 +79,25 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <param name="assemblyPath">The path to the assembly's location</param>
         /// <param name="language">The algorithm's language</param>
         /// <returns>A new instance of IAlgorithm, or throws an exception if there was an error</returns>
-        public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language)
-        {
+        public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language) {
             String error;
             IAlgorithm algorithm;
 
             // limit load times to 10 seconds and force the assembly to have exactly one derived type
-            loader = new Loader(language, TimeSpan.FromSeconds(15), names =>
+            loader = new Loader(language, Duration.ofSeconds(15), names =>
             {
                 // if there's only one use that guy
-                if (names.Count == 1)
-                {
+                if( names.Count == 1) {
                     return names.Single();
                 }
 
                 // if there's more than one then check configuration for which one we should use
-                algorithmName = Config.Get("algorithm-type-name");
-                return names.Single(x => x.Contains("." + algorithmName));
+                algorithmName = Config.Get( "algorithm-type-name");
+                return names.Single(x => x.Contains( "." + algorithmName));
             });
 
             complete = loader.TryCreateAlgorithmInstanceWithIsolator(assemblyPath, out algorithm, out error);
-            if (!complete) throw new Exception(error + " Try re-building algorithm.");
+            if( !complete) throw new Exception(error + " Try re-building algorithm.");
 
             return algorithm;
         }
@@ -111,12 +108,10 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <param name="algorithmNodePacket">Job packet</param>
         /// <param name="uninitializedAlgorithm">The algorithm instance before Initialize has been called</param>
         /// <returns>The brokerage instance, or throws if error creating instance</returns>
-        public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm)
-        {
+        public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm) {
             liveJob = algorithmNodePacket as LiveNodePacket;
-            if (liveJob == null)
-            {
-                throw new ArgumentException("BrokerageSetupHandler.CreateBrokerage requires a live node packet");
+            if( liveJob == null ) {
+                throw new ArgumentException( "BrokerageSetupHandler.CreateBrokerage requires a live node packet");
             }
 
             // find the correct brokerage factory based on the specified brokerage in the live job packet
@@ -138,22 +133,19 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <param name="transactionHandler">The configurated transaction handler</param>
         /// <param name="realTimeHandler">The configured real time handler</param>
         /// <returns>True on successfully setting up the algorithm state, or false on error.</returns>
-        public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket job, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler)
-        {
+        public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket job, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler) {
             _algorithm = algorithm;
 
             // verify we were given the correct job packet type
             liveJob = job as LiveNodePacket;
-            if (liveJob == null)
-            {
-                AddInitializationError("BrokerageSetupHandler requires a LiveNodePacket");
+            if( liveJob == null ) {
+                AddInitializationError( "BrokerageSetupHandler requires a LiveNodePacket");
                 return false;
             }
 
             // verify the brokerage was specified
-            if ( String.IsNullOrWhiteSpace(liveJob.Brokerage))
-            {
-                AddInitializationError("A brokerage must be specified");
+            if(  String.IsNullOrWhiteSpace(liveJob.Brokerage)) {
+                AddInitializationError( "A brokerage must be specified");
                 return false;
             }
 
@@ -161,22 +153,21 @@ package com.quantconnect.lean.Lean.Engine.Setup
             // attach to the message event to relay brokerage specific initialization messages
             EventHandler<BrokerageMessageEvent> brokerageOnMessage = (sender, args) =>
             {
-                if (args.Type == BrokerageMessageType.Error)
-                {
-                    AddInitializationError( String.format("Brokerage Error Code: {0} - {1}", args.Code, args.Message));
+                if( args.Type == BrokerageMessageType.Error) {
+                    AddInitializationError( String.format( "Brokerage Error Code: %1$s - %2$s", args.Code, args.Message));
                 }
             };
 
             try
             {
-                Log.Trace("BrokerageSetupHandler.Setup(): Initializing algorithm...");
+                Log.Trace( "BrokerageSetupHandler.Setup(): Initializing algorithm...");
 
                 resultHandler.SendStatusUpdate(AlgorithmStatus.Initializing, "Initializing algorithm...");
 
                 //Execute the initialize code:
                 controls = job.Controls;
                 isolator = new Isolator();
-                initializeComplete = isolator.ExecuteWithTimeLimit(TimeSpan.FromSeconds(300), () =>
+                initializeComplete = isolator.ExecuteWithTimeLimit(Duration.ofSeconds(300), () =>
                 {
                     try
                     {
@@ -192,24 +183,20 @@ package com.quantconnect.lean.Lean.Engine.Setup
                         algorithm.Schedule.SetEventSchedule(realTimeHandler);
                         //Initialise the algorithm, get the required data:
                         algorithm.Initialize();
-                        if (liveJob.Brokerage != "PaperBrokerage")
-                        {
+                        if( liveJob.Brokerage != "PaperBrokerage") {
                             //Zero the CashBook - we'll populate directly from brokerage
-                            foreach (kvp in algorithm.Portfolio.CashBook)
-                            {
+                            foreach (kvp in algorithm.Portfolio.CashBook) {
                                 kvp.Value.SetAmount(0);
                             }
                         }
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         AddInitializationError(err.Message);
                     }
                 });
 
-                if (!initializeComplete)
-                {
-                    AddInitializationError("Initialization timed out.");
+                if( !initializeComplete) {
+                    AddInitializationError( "Initialization timed out.");
                     return false;
                 }
 
@@ -221,90 +208,81 @@ package com.quantconnect.lean.Lean.Engine.Setup
                 algorithm.Transactions.SetOrderProcessor(transactionHandler);
                 algorithm.PostInitialize();
 
-                Log.Trace("BrokerageSetupHandler.Setup(): Connecting to brokerage...");
+                Log.Trace( "BrokerageSetupHandler.Setup(): Connecting to brokerage...");
                 try
                 {
                     // this can fail for various reasons, such as already being logged in somewhere else
                     brokerage.Connect();
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     Log.Error(err);
-                    AddInitializationError( String.format("Error connecting to brokerage: {0}. " +
+                    AddInitializationError( String.format( "Error connecting to brokerage: %1$s. " +
                         "This may be caused by incorrect login credentials or an unsupported account type.", err.Message));
                     return false;
                 }
 
-                if (!brokerage.IsConnected)
-                {
+                if( !brokerage.IsConnected) {
                     // if we're reporting that we're not connected, bail
-                    AddInitializationError("Unable to connect to brokerage.");
+                    AddInitializationError( "Unable to connect to brokerage.");
                     return false;
                 }
 
-                Log.Trace("BrokerageSetupHandler.Setup(): Fetching cash balance from brokerage...");
+                Log.Trace( "BrokerageSetupHandler.Setup(): Fetching cash balance from brokerage...");
                 try
                 {
                     // set the algorithm's cash balance for each currency
                     cashBalance = brokerage.GetCashBalance();
-                    foreach (cash in cashBalance)
-                    {
-                        Log.Trace("BrokerageSetupHandler.Setup(): Setting " + cash.Symbol + " cash to " + cash.Amount);
+                    foreach (cash in cashBalance) {
+                        Log.Trace( "BrokerageSetupHandler.Setup(): Setting " + cash.Symbol + " cash to " + cash.Amount);
                         algorithm.Portfolio.SetCash(cash.Symbol, cash.Amount, cash.ConversionRate);
                     }
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     Log.Error(err);
-                    AddInitializationError("Error getting cash balance from brokerage: " + err.Message);
+                    AddInitializationError( "Error getting cash balance from brokerage: " + err.Message);
                     return false;
                 }
 
-                Log.Trace("BrokerageSetupHandler.Setup(): Fetching open orders from brokerage...");
+                Log.Trace( "BrokerageSetupHandler.Setup(): Fetching open orders from brokerage...");
                 try
                 {
                     // populate the algorithm with the account's outstanding orders
                     openOrders = brokerage.GetOpenOrders();
-                    foreach (order in openOrders)
-                    {
+                    foreach (order in openOrders) {
                         // be sure to assign order IDs such that we increment from the SecurityTransactionManager to avoid ID collisions
-                        Log.Trace("BrokerageSetupHandler.Setup(): Has open order: " + order.Symbol.toString() + " - " + order.Quantity);
+                        Log.Trace( "BrokerageSetupHandler.Setup(): Has open order: " + order.Symbol.toString() + " - " + order.Quantity);
                         order.Id = algorithm.Transactions.GetIncrementOrderId();
                         transactionHandler.Orders.AddOrUpdate(order.Id, order, (i, o) => order);
                     }
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     Log.Error(err);
-                    AddInitializationError("Error getting open orders from brokerage: " + err.Message);
+                    AddInitializationError( "Error getting open orders from brokerage: " + err.Message);
                     return false;
                 }
 
-                Log.Trace("BrokerageSetupHandler.Setup(): Fetching holdings from brokerage...");
+                Log.Trace( "BrokerageSetupHandler.Setup(): Fetching holdings from brokerage...");
                 try
                 {
                     // populate the algorithm with the account's current holdings
                     holdings = brokerage.GetAccountHoldings();
                     supportedSecurityTypes = new HashSet<SecurityType> { SecurityType.Equity, SecurityType.Forex, SecurityType.Cfd };
                     minResolution = new Lazy<Resolution>(() => algorithm.Securities.Select(x => x.Value.Resolution).DefaultIfEmpty(Resolution.Second).Min());
-                    foreach (holding in holdings)
-                    {
-                        Log.Trace("BrokerageSetupHandler.Setup(): Has existing holding: " + holding);
+                    foreach (holding in holdings) {
+                        Log.Trace( "BrokerageSetupHandler.Setup(): Has existing holding: " + holding);
 
                         // verify existing holding security type
-                        if (!supportedSecurityTypes.Contains(holding.Type))
-                        {
-                            Log.Error("BrokerageSetupHandler.Setup(): Unsupported security type: " + holding.Type + "-" + holding.Symbol.Value);
-                            AddInitializationError("Found unsupported security type in existing brokerage holdings: " + holding.Type + ". " +
-                                "QuantConnect currently supports the following security types: " + string.Join(",", supportedSecurityTypes));
+                        if( !supportedSecurityTypes.Contains(holding.Type)) {
+                            Log.Error( "BrokerageSetupHandler.Setup(): Unsupported security type: " + holding.Type + "-" + holding.Symbol.Value);
+                            AddInitializationError( "Found unsupported security type in existing brokerage holdings: " + holding.Type + ". " +
+                                "QuantConnect currently supports the following security types: " + String.join( ",", supportedSecurityTypes));
 
                             // keep aggregating these errors
                             continue;
                         }
 
-                        if (!algorithm.Portfolio.ContainsKey(holding.Symbol))
-                        {
-                            Log.Trace("BrokerageSetupHandler.Setup(): Adding unrequested security: " + holding.Symbol.toString());
+                        if( !algorithm.Portfolio.ContainsKey(holding.Symbol)) {
+                            Log.Trace( "BrokerageSetupHandler.Setup(): Adding unrequested security: " + holding.Symbol.toString());
                             // for items not directly requested set leverage to 1 and at the min resolution
                             algorithm.AddSecurity(holding.Type, holding.Symbol.Value, minResolution.Value, null, true, 1.0m, false);
                         }
@@ -322,10 +300,9 @@ package com.quantconnect.lean.Lean.Engine.Setup
                         });
                     }
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     Log.Error(err);
-                    AddInitializationError("Error getting account holdings from brokerage: " + err.Message);
+                    AddInitializationError( "Error getting account holdings from brokerage: " + err.Message);
                     return false;
                 }
 
@@ -333,14 +310,12 @@ package com.quantconnect.lean.Lean.Engine.Setup
                 StartingPortfolioValue = algorithm.Portfolio.TotalPortfolioValue;
                 StartingDate = DateTime.Now;
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 AddInitializationError(err.Message);
             }
             finally
             {
-                if (brokerage != null)
-                {
+                if( brokerage != null ) {
                     brokerage.Message -= brokerageOnMessage;
                 }
             }
@@ -352,19 +327,16 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// Adds initializaion error to the Errors list
         /// </summary>
         /// <param name="message">The error message to be added</param>
-        private void AddInitializationError( String message)
-        {
-            Errors.Add("Failed to initialize algorithm: " + message);
+        private void AddInitializationError( String message) {
+            Errors.Add( "Failed to initialize algorithm: " + message);
         }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            if (_factory != null)
-            {
+        public void Dispose() {
+            if( _factory != null ) {
                 _factory.Dispose();
             }
         }

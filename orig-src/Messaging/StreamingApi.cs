@@ -32,10 +32,10 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Gets a flag indicating whether or not the streaming api is enabled
         /// </summary>
-        public static readonly boolean IsEnabled = Config.GetBool("send-via-api");
+        public static readonly boolean IsEnabled = Config.GetBool( "send-via-api");
 
         // Client for sending asynchronous requests.
-        private static readonly RestClient Client = new RestClient("http://streaming.quantconnect.com");
+        private static readonly RestClient Client = new RestClient( "http://streaming.quantconnect.com");
 
         /// <summary>
         /// Send a message to the QuantConnect Chart Streaming API.
@@ -43,49 +43,43 @@ package com.quantconnect.lean.Messaging
         /// <param name="userId">User Id</param>
         /// <param name="apiToken">API token for authentication</param>
         /// <param name="packet">Packet to transmit</param>
-        public static void Transmit(int userId, String apiToken, Packet packet)
-        {
+        public static void Transmit(int userId, String apiToken, Packet packet) {
             try
             {
                 tx = JsonConvert.SerializeObject(packet);
-                if (tx.Length > 10000)
-                {
-                    Log.Trace("StreamingApi.Transmit(): Packet too long: " + packet.GetType());
+                if( tx.Length > 10000) {
+                    Log.Trace( "StreamingApi.Transmit(): Packet too long: " + packet.GetType());
                     return;
                 }
-                if (userId == 0)
-                {
-                    Log.Error("StreamingApi.Transmit(): UserId is not set. Check your config.json file 'job-user-id' property.");
+                if( userId == 0) {
+                    Log.Error( "StreamingApi.Transmit(): UserId is not set. Check your config.json file 'job-user-id' property.");
                     return;
                 }
-                if (apiToken == "")
-                {
-                    Log.Error("StreamingApi.Transmit(): API Access token not set. Check your config.json file 'api-access-token' property.");
+                if( apiToken == "") {
+                    Log.Error( "StreamingApi.Transmit(): API Access token not set. Check your config.json file 'api-access-token' property.");
                     return;
                 }
 
                 request = new RestRequest();
-                request.AddParameter("uid", userId);
-                request.AddParameter("token", apiToken);
-                request.AddParameter("tx", tx);
+                request.AddParameter( "uid", userId);
+                request.AddParameter( "token", apiToken);
+                request.AddParameter( "tx", tx);
                 Client.ExecuteAsyncPost(request, (response, handle) =>
                 {
                     try
                     {
                         result = JsonConvert.DeserializeObject<Response>(response.Content);
-                        if (result.Type == "error")
-                        {
+                        if( result.Type == "error") {
                             Log.Error(new Exception(result.Message), "PacketType: " + packet.Type);
                         }
                     }
                     catch
                     {
-                        Log.Error("StreamingApi.Client.ExecuteAsyncPost(): Error deserializing JSON content.");
+                        Log.Error( "StreamingApi.Client.ExecuteAsyncPost(): Error deserializing JSON content.");
                     }
                 }, "POST");
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err, "PacketType: " + packet.Type);
             }
         }

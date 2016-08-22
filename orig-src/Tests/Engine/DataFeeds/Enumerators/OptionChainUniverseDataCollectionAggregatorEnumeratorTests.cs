@@ -28,8 +28,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
     public class OptionChainUniverseDataCollectionAggregatorEnumeratorTests
     {
         [Test]
-        public void StoresZipEntryNamesInDataCollection()
-        {
+        public void StoresZipEntryNamesInDataCollection() {
             Console.WriteLine(new DateTime().Ticks);
             Console.WriteLine(DateTime.MinValue.Ticks);
             list = new List<BaseData>

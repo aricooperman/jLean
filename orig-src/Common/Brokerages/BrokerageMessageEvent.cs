@@ -41,8 +41,7 @@ package com.quantconnect.lean.Brokerages
         /// <param name="type">The type of brokerage message</param>
         /// <param name="code">The brokerage specific code</param>
         /// <param name="message">The message text received from the brokerage</param>
-        public BrokerageMessageEvent(BrokerageMessageType type, int code, String message)
-        {
+        public BrokerageMessageEvent(BrokerageMessageType type, int code, String message) {
             Type = type;
             Code = code.toString();
             Message = message;
@@ -54,8 +53,7 @@ package com.quantconnect.lean.Brokerages
         /// <param name="type">The type of brokerage message</param>
         /// <param name="code">The brokerage specific code</param>
         /// <param name="message">The message text received from the brokerage</param>
-        public BrokerageMessageEvent(BrokerageMessageType type, String code, String message)
-        {
+        public BrokerageMessageEvent(BrokerageMessageType type, String code, String message) {
             Type = type;
             Code = code;
             Message = message;
@@ -66,8 +64,7 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="message">The message from the brokerage</param>
         /// <returns>A brokerage disconnect message</returns>
-        public static BrokerageMessageEvent Disconnected( String message)
-        {
+        public static BrokerageMessageEvent Disconnected( String message) {
             return new BrokerageMessageEvent(BrokerageMessageType.Disconnect, "Disconnect", message);
         }
 
@@ -76,8 +73,7 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="message">The message from the brokerage</param>
         /// <returns>A brokerage reconnect message</returns>
-        public static BrokerageMessageEvent Reconnected( String message)
-        {
+        public static BrokerageMessageEvent Reconnected( String message) {
             return new BrokerageMessageEvent(BrokerageMessageType.Reconnect, "Reconnect", message);
         }
 
@@ -88,9 +84,8 @@ package com.quantconnect.lean.Brokerages
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
-            return String.format("{0} - Code: {1} - {2}", Type, Code, Message);
+        public @Override String toString() {
+            return String.format( "%1$s - Code: %2$s - %3$s", Type, Code, Message);
         }
     }
 }

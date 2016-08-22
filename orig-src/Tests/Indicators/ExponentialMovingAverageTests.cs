@@ -23,8 +23,7 @@ package com.quantconnect.lean.Tests.Indicators
     public class ExponentialMovingAverageTests
     {
         [Test]
-        public void EMAComputesCorrectly()
-        {
+        public void EMAComputesCorrectly() {
             static final int period = 4;
             decimal[] values = {1m, 10m, 100m, 1000m};
             static final BigDecimal expFactor = 2m/(1m + period);
@@ -32,11 +31,9 @@ package com.quantconnect.lean.Tests.Indicators
             ema4 = new ExponentialMovingAverage(period);
 
             BigDecimal current = 0m;
-            for (int i = 0; i < values.Length; i++)
-            {
+            for (int i = 0; i < values.Length; i++) {
                 ema4.Update(new IndicatorDataPoint(DateTime.UtcNow.AddSeconds(i), values[i]));
-                if (i == 0)
-                {
+                if( i == 0) {
                     current = values[i];
                 }
                 else
@@ -48,13 +45,11 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             // ema reset is just setting the value and samples back to 0
             ema = new ExponentialMovingAverage(3);
 
-            foreach (data in TestHelper.GetDataStream(5))
-            {
+            foreach (data in TestHelper.GetDataStream(5)) {
                 ema.Update(data);
             }
             Assert.IsTrue(ema.IsReady);
@@ -67,8 +62,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComparesAgainstExternalData()
-        {
+        public void ComparesAgainstExternalData() {
             ema = new ExponentialMovingAverage(14);
             TestHelper.TestIndicator(ema, "spy_with_indicators.txt", "EMA14", TestHelper.AssertDeltaDecreases(2.5e-2));
         }

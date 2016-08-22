@@ -22,19 +22,15 @@ package com.quantconnect.lean.Tests.Indicators
     public class TriangularMovingAverageTests : CommonIndicatorTests<IndicatorDataPoint>
     {
         [Test]
-        public override void ComparesAgainstExternalData()
-        {
-            foreach (period in new[] {5, 6})
-            {
+        public @Override void ComparesAgainstExternalData() {
+            foreach (period in new[] {5, 6}) {
                 RunTestIndicator(new TriangularMovingAverage(period), period);
             }
         }
 
         [Test]
-        public override void ComparesAgainstExternalDataAfterReset()
-        {
-            foreach (period in new[] { 5, 6 })
-            {
+        public @Override void ComparesAgainstExternalDataAfterReset() {
+            foreach (period in new[] { 5, 6 }) {
                 indicator = new TriangularMovingAverage(period);
                 RunTestIndicator(indicator, period);
                 indicator.Reset();
@@ -42,23 +38,21 @@ package com.quantconnect.lean.Tests.Indicators
             }
         }
 
-        protected override IndicatorBase<IndicatorDataPoint> CreateIndicator()
-        {
+        protected @Override IndicatorBase<IndicatorDataPoint> CreateIndicator() {
             return new TriangularMovingAverage(5);
         }
 
-        protected override String TestFileName
+        protected @Override String TestFileName
         {
             get { return "spy_trima.txt"; }
         }
 
-        protected override String TestColumnName
+        protected @Override String TestColumnName
         {
             get { return "TRIMA"; }
         }
 
-        private void RunTestIndicator(TriangularMovingAverage trima, int period)
-        {
+        private void RunTestIndicator(TriangularMovingAverage trima, int period) {
             TestHelper.TestIndicator(trima, TestFileName, TestColumnName + "_" + period, Assertion);
         }
     }

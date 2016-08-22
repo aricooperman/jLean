@@ -73,15 +73,13 @@ package com.quantconnect.lean.Packets
         /// Default constructor for JSON Serialization
         /// </summary>
         public LiveResultPacket()
-            : base(PacketType.LiveResult)
-        { }
+            : base(PacketType.LiveResult) { }
         
         /// <summary>
         /// Compose the packet from a JSON string:
         /// </summary>
         public LiveResultPacket( String json)
-            : base(PacketType.LiveResult)
-        {
+            : base(PacketType.LiveResult) {
             try
             {
                 packet = JsonConvert.DeserializeObject<LiveResultPacket>(json);
@@ -95,9 +93,8 @@ package com.quantconnect.lean.Packets
                 Results            = packet.Results;
                 ProcessingTime     = packet.ProcessingTime;
             } 
-            catch (Exception err)
-            {
-                Log.Trace("LiveResultPacket(): Error converting json: " + err);
+            catch (Exception err) {
+                Log.Trace( "LiveResultPacket(): Error converting json: " + err);
             }
         }
 
@@ -107,8 +104,7 @@ package com.quantconnect.lean.Packets
         /// <param name="job">Job that started this request</param>
         /// <param name="results">Results class for the Backtest job</param>
         public LiveResultPacket(LiveNodePacket job, LiveResult results) 
-            :base (PacketType.LiveResult)
-        {
+            :base (PacketType.LiveResult) {
             try
             {
                 SessionId = job.SessionId;
@@ -171,14 +167,12 @@ package com.quantconnect.lean.Packets
         /// <summary>
         /// Default Constructor
         /// </summary>
-        public LiveResult() 
-        { }
+        public LiveResult() { }
 
         /// <summary>
         /// Constructor for the result class for dictionary objects
         /// </summary>
-        public LiveResult(Map<String, Chart> charts, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, Map<String,String> statistics, Map<String,String> runtime, Map<String,String> serverStatistics = null)
-        {
+        public LiveResult(Map<String, Chart> charts, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, Map<String,String> statistics, Map<String,String> runtime, Map<String,String> serverStatistics = null ) {
             Charts = charts;
             Orders = orders;
             ProfitLoss = profitLoss;

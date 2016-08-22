@@ -63,8 +63,7 @@ package com.quantconnect.lean.Commands
         /// <summary>
         /// Default construct that applies default values
         /// </summary>
-        public AddSecurityCommand()
-        {
+        public AddSecurityCommand() {
             Resolution = Resolution.Minute;
             Market = null;
             FillDataForward = true;
@@ -76,8 +75,7 @@ package com.quantconnect.lean.Commands
         /// Runs this command against the specified algorithm instance
         /// </summary>
         /// <param name="algorithm">The algorithm to run this command against</param>
-        public CommandResultPacket Run(IAlgorithm algorithm)
-        {
+        public CommandResultPacket Run(IAlgorithm algorithm) {
             security = algorithm.AddSecurity(SecurityType, Symbol, Resolution, Market, FillDataForward, Leverage, ExtendedMarketHours);
             return new Result(this, true, security.Symbol);
         }
@@ -96,8 +94,7 @@ package com.quantconnect.lean.Commands
             /// Initializes a new instance of the <see cref="Result"/> class
             /// </summary>
             public Result(AddSecurityCommand command, boolean success, Symbol symbol)
-                : base(command, success)
-            {
+                : base(command, success) {
                 Symbol = symbol;
             }
         }

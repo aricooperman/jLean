@@ -40,8 +40,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="k">The number of standard deviations specifying the distance between the middle band and upper or lower bands</param>
         /// <param name="movingAverageType">The type of moving average to be used</param>
         public BollingerBands(int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple)
-            : this( String.format("BB({0},{1})", period, k), period, k, movingAverageType)
-        {
+            : this( String.format( "BB(%1$s,%2$s)", period, k), period, k, movingAverageType) {
         }
 
         /// <summary>
@@ -52,8 +51,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="k">The number of standard deviations specifying the distance between the middle band and upper or lower bands</param>
         /// <param name="movingAverageType">The type of moving average to be used</param>
         public BollingerBands(String name, int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple)
-            : base(name)
-        {
+            : base(name) {
             MovingAverageType = movingAverageType;
             StandardDeviation = new StandardDeviation(name + "_StandardDeviation", period);
             MiddleBand = movingAverageType.AsIndicator(name + "_MiddleBand", period);
@@ -64,7 +62,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return MiddleBand.IsReady && UpperBand.IsReady && LowerBand.IsReady; }
         }
@@ -75,8 +73,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>The input is returned unmodified.</returns>
-        protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             StandardDeviation.Update(input);
             MiddleBand.Update(input);
             UpperBand.Update(input);
@@ -87,8 +84,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator and all sub-indicators (StandardDeviation, LowerBand, MiddleBand, UpperBand)
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             StandardDeviation.Reset();
             MiddleBand.Reset();
             UpperBand.Reset();

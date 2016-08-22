@@ -34,8 +34,8 @@ package com.quantconnect.lean.Lean.Engine
     /// </summary>
     public class DefaultBrokerageMessageHandler : IBrokerageMessageHandler
     {
-        private static readonly TimeSpan DefaultOpenThreshold = TimeSpan.FromMinutes(5);
-        private static readonly TimeSpan DefaultInitialDelay = TimeSpan.FromMinutes(15);
+        private static readonly TimeSpan DefaultOpenThreshold = Duration.ofMinutes(5);
+        private static readonly TimeSpan DefaultInitialDelay = Duration.ofMinutes(15);
 
         private volatile boolean _connected;
 
@@ -56,8 +56,7 @@ package com.quantconnect.lean.Lean.Engine
         /// <param name="api">The api for the algorithm</param>
         /// <param name="initialDelay"></param>
         /// <param name="openThreshold">Defines how long before market open to re-check for brokerage reconnect message</param>
-        public DefaultBrokerageMessageHandler(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler results, IApi api, TimeSpan? initialDelay = null, TimeSpan? openThreshold = null)
-        {
+        public DefaultBrokerageMessageHandler(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler results, IApi api, TimeSpan? initialDelay = null, TimeSpan? openThreshold = null ) {
             _api = api;
             _job = job;
             _results = results;
@@ -71,28 +70,26 @@ package com.quantconnect.lean.Lean.Engine
         /// Handles the message
         /// </summary>
         /// <param name="message">The message to be handled</param>
-        public void Handle(BrokerageMessageEvent message)
-        {
+        public void Handle(BrokerageMessageEvent message) {
             // based on message type dispatch to result handler
-            switch (message.Type)
-            {
+            switch (message.Type) {
                 case BrokerageMessageType.Information:
-                    _results.DebugMessage("Brokerage Info: " + message.Message);
+                    _results.DebugMessage( "Brokerage Info: " + message.Message);
                     break;
                 
                 case BrokerageMessageType.Warning:
-                    _results.ErrorMessage("Brokerage Warning: " + message.Message);
+                    _results.ErrorMessage( "Brokerage Warning: " + message.Message);
                     _api.SendUserEmail(_job.AlgorithmId, "Brokerage Warning", message.Message);
                     break;
 
                 case BrokerageMessageType.Error:
-                    _results.ErrorMessage("Brokerage Error: " + message.Message);
+                    _results.ErrorMessage( "Brokerage Error: " + message.Message);
                     _algorithm.RunTimeError = new Exception(message.Message);
                     break;
 
                 case BrokerageMessageType.Disconnect:
                     _connected = false;
-                    Log.Trace("DefaultBrokerageMessageHandler.Handle(): Disconnected.");
+                    Log.Trace( "DefaultBrokerageMessageHandler.Handle(): Disconnected.");
 
                     // check to see if any non-custom security exchanges are open within the next x minutes
                     open = (from kvp in _algorithm.Securities
@@ -104,19 +101,17 @@ package com.quantconnect.lean.Lean.Engine
                                 select security).Any();
 
                     // if any are open then we need to kill the algorithm
-                    if (open)
-                    {
+                    if( open) {
                         // wait 15 minutes before killing algorithm
                         StartCheckReconnected(_initialDelay, message);
                     }
                     else
                     {
-                        Log.Trace("DefaultBrokerageMessageHandler.Handle(): Disconnect when exchanges are closed, checking back before exchange open.");
+                        Log.Trace( "DefaultBrokerageMessageHandler.Handle(): Disconnect when exchanges are closed, checking back before exchange open.");
 
                         // if they aren't open, we'll need to check again a little bit before markets open
                         DateTime nextMarketOpenUtc;
-                        if (_algorithm.Securities.Count != 0)
-                        {
+                        if( _algorithm.Securities.Count != 0) {
                             nextMarketOpenUtc = (from kvp in _algorithm.Securities
                                                  let security = kvp.Value
                                                  where security.Type != SecurityType.Base
@@ -141,25 +136,22 @@ package com.quantconnect.lean.Lean.Engine
 
                 case BrokerageMessageType.Reconnect:
                     _connected = true;
-                    Log.Trace("DefaultBrokerageMessageHandler.Handle(): Reconnected.");
+                    Log.Trace( "DefaultBrokerageMessageHandler.Handle(): Reconnected.");
 
-                    if (_cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested)
-                    {
+                    if( _cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested) {
                         _cancellationTokenSource.Cancel();
                     }
                     break;
             }
         }
 
-        private void StartCheckReconnected(TimeSpan delay, BrokerageMessageEvent message)
-        {
+        private void StartCheckReconnected(TimeSpan delay, BrokerageMessageEvent message) {
             _cancellationTokenSource = new CancellationTokenSource(delay);
 
             Task.Run(() =>
             {
-                while (!_cancellationTokenSource.IsCancellationRequested)
-                {
-                    Thread.Sleep(TimeSpan.FromMinutes(1));
+                while (!_cancellationTokenSource.IsCancellationRequested) {
+                    Thread.Sleep(Duration.ofMinutes(1));
                 }
 
                 CheckReconnected(message);
@@ -167,12 +159,10 @@ package com.quantconnect.lean.Lean.Engine
             }, _cancellationTokenSource.Token);
         }
 
-        private void CheckReconnected(BrokerageMessageEvent message)
-        {
-            if (!_connected)
-            {
-                Log.Error("DefaultBrokerageMessageHandler.Handle(): Still disconnected, goodbye.");
-                _results.ErrorMessage("Brokerage Disconnect: " + message.Message);
+        private void CheckReconnected(BrokerageMessageEvent message) {
+            if( !_connected) {
+                Log.Error( "DefaultBrokerageMessageHandler.Handle(): Still disconnected, goodbye.");
+                _results.ErrorMessage( "Brokerage Disconnect: " + message.Message);
                 _algorithm.RunTimeError = new Exception(message.Message);
             }
         }

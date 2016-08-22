@@ -26,19 +26,17 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
 {
     public class ForexTransactionModelTests
     {
-        private SubscriptionDataConfig CreateTradeBarDataConfig(SecurityType type)
-        {
-            if (type == SecurityType.Equity)
+        private SubscriptionDataConfig CreateTradeBarDataConfig(SecurityType type) {
+            if( type == SecurityType.Equity)
                 return new SubscriptionDataConfig(typeof(TradeBar), Symbols.USDJPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, true);
-            if (type == SecurityType.Forex)
+            if( type == SecurityType.Forex)
                 return new SubscriptionDataConfig(typeof(TradeBar), Symbols.USDJPY, Resolution.Minute, TimeZones.EasternStandard, TimeZones.EasternStandard, true, true, true);
             throw new NotImplementedException(type.toString());
         }
 
         private static readonly TimeKeeper TimeKeeper = new TimeKeeper(DateTime.UtcNow, new[] { TimeZones.NewYork });
         [Test]
-        public void PerformsMarketFillBuy()
-        {
+        public void PerformsMarketFillBuy() {
             model = new ForexTransactionModel();
             security = CreateSecurity();
             order = new MarketOrder(Symbols.USDJPY, 100, DateTime.Now);
@@ -55,8 +53,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
         }
 
         [Test]
-        public void PerformsMarketFillSell()
-        {
+        public void PerformsMarketFillSell() {
             model = new ForexTransactionModel();
             security = CreateSecurity();
             order = new MarketOrder(Symbols.USDJPY, -100, DateTime.Now);
@@ -73,8 +70,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
         }
 
         [Test]
-        public void PerformsLimitFillBuy()
-        {
+        public void PerformsLimitFillBuy() {
             model = new ForexTransactionModel();
             security = CreateSecurity();
             order = new LimitOrder(Symbols.USDJPY, 100, 101.5m, DateTime.Now);
@@ -98,8 +94,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
         }
 
         [Test]
-        public void PerformsLimitFillSell()
-        {
+        public void PerformsLimitFillSell() {
             model = new ForexTransactionModel();
             security = CreateSecurity();
             order = new LimitOrder(Symbols.USDJPY, -100, 101.5m, DateTime.Now);
@@ -123,8 +118,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
         }
 
         [Test]
-        public void PerformsStopLimitFillBuy()
-        {
+        public void PerformsStopLimitFillBuy() {
             model = new ForexTransactionModel();
             security = CreateSecurity();
             order = new StopLimitOrder(Symbols.USDJPY, 100, 101.5m, 101.75m, DateTime.Now);
@@ -156,8 +150,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
         }
 
         [Test]
-        public void PerformsStopLimitFillSell()
-        {
+        public void PerformsStopLimitFillSell() {
             model = new ForexTransactionModel();
             security = CreateSecurity();
             order = new StopLimitOrder(Symbols.USDJPY, -100, 101.75m, 101.50m, DateTime.Now);
@@ -189,8 +182,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
         }
 
         [Test]
-        public void PerformsStopMarketFillBuy()
-        {
+        public void PerformsStopMarketFillBuy() {
             model = new ForexTransactionModel();
             security = CreateSecurity();
             order = new StopMarketOrder(Symbols.USDJPY, 100, 101.5m, DateTime.Now);
@@ -216,8 +208,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
         }
 
         [Test]
-        public void PerformsStopMarketFillSell()
-        {
+        public void PerformsStopMarketFillSell() {
             model = new ForexTransactionModel();
             security = CreateSecurity();
             order = new StopMarketOrder(Symbols.USDJPY, -100, 101.5m, DateTime.Now);
@@ -242,10 +233,9 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
             Assert.AreEqual(OrderStatus.Filled, fill.Status);
         }
 
-        private Security CreateSecurity()
-        {
+        private Security CreateSecurity() {
             config = CreateTradeBarDataConfig(SecurityType.Forex);
-            security = new QuantConnect.Securities.Forex.Forex(SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork), new Cash("abc", 0, 0), config, SymbolProperties.GetDefault("abc"));
+            security = new QuantConnect.Securities.Forex.Forex(SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork), new Cash( "abc", 0, 0), config, SymbolProperties.GetDefault( "abc"));
             return security;
         }
     }

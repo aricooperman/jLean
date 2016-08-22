@@ -25,10 +25,9 @@ package com.quantconnect.lean.Tests.Engine.RealTime
     public class ScheduledEventTests
     {
         [Test]
-        public void FiresEventWhenTimeEquals()
-        {
+        public void FiresEventWhenTimeEquals() {
             triggered = false;
-            se = new ScheduledEvent("test", new DateTime(2015, 08, 07), (name, triggerTime) =>
+            se = new ScheduledEvent( "test", new DateTime(2015, 08, 07), (name, triggerTime) =>
             {
                 triggered = true;
             });
@@ -42,10 +41,9 @@ package com.quantconnect.lean.Tests.Engine.RealTime
         }
 
         [Test]
-        public void FiresEventWhenTimePasses()
-        {
+        public void FiresEventWhenTimePasses() {
             triggered = false;
-            se = new ScheduledEvent("test", new DateTime(2015, 08, 07), (name, triggerTime) =>
+            se = new ScheduledEvent( "test", new DateTime(2015, 08, 07), (name, triggerTime) =>
             {
                 triggered = true;
             });
@@ -59,12 +57,11 @@ package com.quantconnect.lean.Tests.Engine.RealTime
         }
 
         [Test]
-        public void SchedulesNextEvent()
-        {
+        public void SchedulesNextEvent() {
             first = new DateTime(2015, 08, 07);
             second = new DateTime(2015, 08, 08);
             dates = new[] { first, second }.ToHashSet();
-            se = new ScheduledEvent("test", dates.ToList(), (name, triggerTime) =>
+            se = new ScheduledEvent( "test", dates.ToList(), (name, triggerTime) =>
             {
                 dates.Remove(triggerTime);
             });
@@ -77,11 +74,10 @@ package com.quantconnect.lean.Tests.Engine.RealTime
         }
 
         [Test]
-        public void DoesNothingAfterEventsEnd()
-        {
+        public void DoesNothingAfterEventsEnd() {
             triggered = false;
             first = new DateTime(2015, 08, 07);
-            se = new ScheduledEvent("test", first, (name, triggerTime) =>
+            se = new ScheduledEvent( "test", first, (name, triggerTime) =>
             {
                 triggered = true;
             });

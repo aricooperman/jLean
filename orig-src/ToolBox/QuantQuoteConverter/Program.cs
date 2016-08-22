@@ -26,42 +26,38 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
         /// <summary>
         /// Primary entry point to the program
         /// </summary>
-        private static void Main( String[] args)
-        {
+        private static void Main( String[] args) {
             //Document the process:
-            Console.WriteLine("QuantConnect.ToolBox: QuantQuote Converter: ");
-            Console.WriteLine("==============================================");
-            Console.WriteLine("The QuantQuote converter transforms QuantQuote orders into the LEAN Algorithmic Trading Engine Data Format.");
-            Console.WriteLine("Two parameters are required: ");
-            Console.WriteLine("   1> Source Directory of Unzipped QuantQuote Data.");
-            Console.WriteLine("   2> Destination Directory of LEAN Data Folder. (Typically located under Lean/Data)");
-            Console.WriteLine("   3> Resolution of your QuantQuote data. (either minute, second or tick)");
-            Console.WriteLine(" ");
-            Console.WriteLine("NOTE: THIS WILL OVERWRITE ANY EXISTING FILES.");
-            if (args.Length == 0)
-            {
-                Console.WriteLine("Press any key to Continue or Escape to quit.");
-                if (Console.ReadKey().Key == ConsoleKey.Escape)
-                {
+            Console.WriteLine( "QuantConnect.ToolBox: QuantQuote Converter: ");
+            Console.WriteLine( "==============================================");
+            Console.WriteLine( "The QuantQuote converter transforms QuantQuote orders into the LEAN Algorithmic Trading Engine Data Format.");
+            Console.WriteLine( "Two parameters are required: ");
+            Console.WriteLine( "   1> Source Directory of Unzipped QuantQuote Data.");
+            Console.WriteLine( "   2> Destination Directory of LEAN Data Folder. (Typically located under Lean/Data)");
+            Console.WriteLine( "   3> Resolution of your QuantQuote data. (either minute, second or tick)");
+            Console.WriteLine( " ");
+            Console.WriteLine( "NOTE: THIS WILL OVERWRITE ANY EXISTING FILES.");
+            if( args.Length == 0) {
+                Console.WriteLine( "Press any key to Continue or Escape to quit.");
+                if( Console.ReadKey().Key == ConsoleKey.Escape) {
                     Environment.Exit(0);
                 }
             }
             destinationDirectory = "";
             resolution = "";
             String sourceDirectory;
-            if (args.Length == 3)
-            {
+            if( args.Length == 3) {
                 sourceDirectory = args[0];
                 destinationDirectory = args[1];
                 resolution = args[2];
             }
             else
             {
-                Console.WriteLine("1. Source QuantQuote source directory: ");
+                Console.WriteLine( "1. Source QuantQuote source directory: ");
                 sourceDirectory = (Console.ReadLine() ?? "");
-                Console.WriteLine("2. Destination LEAN Data directory: ");
+                Console.WriteLine( "2. Destination LEAN Data directory: ");
                 destinationDirectory = (Console.ReadLine() ?? "");
-                Console.WriteLine("3. Enter Resolution (minute/second/tick): ");
+                Console.WriteLine( "3. Enter Resolution (minute/second/tick): ");
                 resolution = (Console.ReadLine() ?? "");
                 resolution = resolution.toLowerCase();
             }
@@ -74,30 +70,27 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
             destinationDirectory = StripFinalSlash(destinationDirectory);
 
             //Count the total files to process:
-            Console.WriteLine("Counting Files...");
+            Console.WriteLine( "Counting Files...");
             count = 0;
             totalCount = GetCount(sourceDirectory);
-            Console.WriteLine("Processing {0} Files ...", totalCount);
+            Console.WriteLine( "Processing %1$s Files ...", totalCount);
 
             //Enumerate files 
-            foreach (directory in Directory.EnumerateDirectories(sourceDirectory))
-            {
+            foreach (directory in Directory.EnumerateDirectories(sourceDirectory)) {
                 date = GetDate(directory);
-                foreach (file in Directory.EnumerateFiles(directory))
-                {
+                foreach (file in Directory.EnumerateFiles(directory)) {
                     symbol = GetSymbol(file);
                     fileContents = File.ReadAllText(file);
-                    data = new Map<String,String> { { String.format("{0}_{1}_Trade_Second.csv", date.toString("yyyyMMdd"), symbol), fileContents } };
+                    data = new Map<String,String> { { String.format( "%1$s_%2$s_Trade_Second.csv", date.toString( "yyyyMMdd"), symbol), fileContents } };
 
-                    fileDestination = String.format("{0}/equity/{1}/{2}/{3}_trade.zip",  destinationDirectory, resolution, symbol, date.toString("yyyyMMdd"));
+                    fileDestination = String.format( "%1$s/equity/%2$s/%3$s/{3}_trade.zip",  destinationDirectory, resolution, symbol, date.toString( "yyyyMMdd"));
 
-                    if (!Compression.ZipData(fileDestination, data))
-                    {
-                        Error("Error: Could not convert to Lean zip file.");
+                    if( !Compression.ZipData(fileDestination, data)) {
+                        Error( "Error: Could not convert to Lean zip file.");
                     }
                     else
                     {
-                        Console.WriteLine("Successfully processed {0} of {1} files: {2}", count, totalCount, fileDestination);
+                        Console.WriteLine( "Successfully processed %1$s of %2$s files: %3$s", count, totalCount, fileDestination);
                     }
                     count++;
                 }
@@ -110,8 +103,7 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
         /// Application error: display error and then stop conversion
         /// </summary>
         /// <param name="error">Error string</param>
-        private static void Error( String error)
-        {
+        private static void Error( String error) {
             Console.WriteLine(error);
             Console.ReadKey();
             Environment.Exit(0);
@@ -122,11 +114,9 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
         /// </summary>
         /// <param name="sourceDirectory"></param>
         /// <returns></returns>
-        private static int GetCount( String sourceDirectory)
-        {
+        private static int GetCount( String sourceDirectory) {
             count = 0;
-            foreach (directory in Directory.EnumerateDirectories(sourceDirectory))
-            {
+            foreach (directory in Directory.EnumerateDirectories(sourceDirectory)) {
                 count += Directory.EnumerateFiles(directory, "*.csv").Count();
             }
             return count;
@@ -135,8 +125,7 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
         /// <summary>
         /// Remove the final slash to make path building easier
         /// </summary>
-        private static String StripFinalSlash( String directory)
-        {
+        private static String StripFinalSlash( String directory) {
             return directory.Trim('/', '\\');
         }
 
@@ -145,10 +134,9 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        private static DateTime GetDate( String date)
-        {
-            splits = date.Split('/', '\\');
-            dateString = splits[splits.Length - 1].Replace("allstocks_", "");
+        private static DateTime GetDate( String date) {
+            splits = date.split('/', '\\');
+            dateString = splits[splits.Length - 1].Replace( "allstocks_", "");
             return DateTime.ParseExact(dateString, "yyyyMMdd", CultureInfo.InvariantCulture);
         }
 
@@ -156,39 +144,32 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
         /// <summary>
         /// Extract the symbol from the path
         /// </summary>
-        private static String GetSymbol( String filePath)
-        {
-            splits = filePath.Split('/', '\\');
+        private static String GetSymbol( String filePath) {
+            splits = filePath.split('/', '\\');
             file = splits[splits.Length - 1];
             file = file.Trim( '.', '/', '\\');
-            file = file.Replace("table_", "");
-            return file.Replace(".csv", "");
+            file = file.Replace( "table_", "");
+            return file.Replace( ".csv", "");
         }
 
         /// <summary>
         /// Validate the users input and throw error if not valid
         /// </summary>
-        private static void Validate( String sourceDirectory, String destinationDirectory, String resolution)
-        {
-            if ( String.IsNullOrWhiteSpace(sourceDirectory))
-            {
-                Error("Error: Please enter a valid source directory.");
+        private static void Validate( String sourceDirectory, String destinationDirectory, String resolution) {
+            if(  String.IsNullOrWhiteSpace(sourceDirectory)) {
+                Error( "Error: Please enter a valid source directory.");
             }
-            if ( String.IsNullOrWhiteSpace(destinationDirectory))
-            {
-                Error("Error: Please enter a valid destination directory.");
+            if(  String.IsNullOrWhiteSpace(destinationDirectory)) {
+                Error( "Error: Please enter a valid destination directory.");
             }
-            if (!Directory.Exists(sourceDirectory))
-            {
-                Error("Error: Source directory does not exist.");
+            if( !Directory.Exists(sourceDirectory)) {
+                Error( "Error: Source directory does not exist.");
             }
-            if (!Directory.Exists(destinationDirectory))
-            {
-                Error("Error: Destination directory does not exist.");
+            if( !Directory.Exists(destinationDirectory)) {
+                Error( "Error: Destination directory does not exist.");
             }
-            if (resolution != "minute" && resolution != "second" && resolution != "tick")
-            {
-                Error("Error: Resolution specified is not supported. Please enter tick, second or minute");
+            if( resolution != "minute" && resolution != "second" && resolution != "tick") {
+                Error( "Error: Resolution specified is not supported. Please enter tick, second or minute");
             }
         }
     }

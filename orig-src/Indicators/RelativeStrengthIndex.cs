@@ -43,8 +43,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period used for up and down days</param>
         /// <param name="movingAverageType">The type of moving average to be used for computing the average gain/loss values</param>
         public RelativeStrengthIndex(int period, MovingAverageType movingAverageType = MovingAverageType.Wilders)
-            : this("RSI" + period, period, movingAverageType)
-        {
+            : this( "RSI" + period, period, movingAverageType) {
         }
 
         /// <summary>
@@ -54,8 +53,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period used for up and down days</param>
         /// <param name="movingAverageType">The type of moving average to be used for computing the average gain/loss values</param>
         public RelativeStrengthIndex( String name, int period, MovingAverageType movingAverageType = MovingAverageType.Wilders)
-            : base(name)
-        {
+            : base(name) {
             MovingAverageType = movingAverageType;
             AverageGain = movingAverageType.AsIndicator(name + "Up", period);
             AverageLoss = movingAverageType.AsIndicator(name + "Down", period);
@@ -64,7 +62,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return AverageGain.IsReady && AverageLoss.IsReady; }
         }
@@ -74,22 +72,18 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-        {
-            if (previousInput != null && input.Value >= previousInput.Value)
-            {
+        protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
+            if( previousInput != null && input.Value >= previousInput.Value) {
                 AverageGain.Update(input.Time, input.Value - previousInput.Value);
                 AverageLoss.Update(input.Time, 0m);
             }
-            else if (previousInput != null && input.Value < previousInput.Value)
-            {
+            else if( previousInput != null && input.Value < previousInput.Value) {
                 AverageGain.Update(input.Time, 0m);
                 AverageLoss.Update(input.Time, previousInput.Value - input.Value);
             }
 
             previousInput = input;
-            if (AverageLoss == 0m)
-            {
+            if( AverageLoss == 0m) {
                 // all up days is 100
                 return 100m;
             }
@@ -101,8 +95,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             AverageGain.Reset();
             AverageLoss.Reset();
             base.Reset();

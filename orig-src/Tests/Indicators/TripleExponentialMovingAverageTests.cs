@@ -21,17 +21,16 @@ package com.quantconnect.lean.Tests.Indicators
     [TestFixture]
     public class TripleExponentialMovingAverageTests : CommonIndicatorTests<IndicatorDataPoint>
     {
-        protected override IndicatorBase<IndicatorDataPoint> CreateIndicator()
-        {
+        protected @Override IndicatorBase<IndicatorDataPoint> CreateIndicator() {
             return new TripleExponentialMovingAverage(5);
         }
 
-        protected override String TestFileName
+        protected @Override String TestFileName
         {
             get { return "spy_tema.txt"; }
         }
 
-        protected override String TestColumnName
+        protected @Override String TestColumnName
         {
             get { return "TEMA_5"; }
         }

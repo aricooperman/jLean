@@ -32,8 +32,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         /// Initializes a new instance of the <see cref="RestSubscriptionStreamReader"/> class.
         /// </summary>
         /// <param name="source">The source url to poll with a GET</param>
-        public RestSubscriptionStreamReader( String source)
-        {
+        public RestSubscriptionStreamReader( String source) {
             _client = new RestClient(source);
             _request = new RestRequest(Method.GET);
         }
@@ -57,18 +56,15 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         /// <summary>
         /// Gets the next line/batch of content from the stream 
         /// </summary>
-        public String ReadLine()
-        {
+        public String ReadLine() {
             try
             {
                 response = _client.Execute(_request);
-                if (response != null)
-                {
+                if( response != null ) {
                     return response.Content;
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
 
@@ -78,8 +74,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         /// <summary>
         /// This stream reader doesn't require disposal
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
         }
     }
 }

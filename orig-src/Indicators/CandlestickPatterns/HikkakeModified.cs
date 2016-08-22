@@ -51,8 +51,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// </summary>
         /// <param name="name">The name of this indicator</param>
         public HikkakeModified( String name) 
-            : base(name, Math.Max(1, CandleSettings.Get(CandleSettingType.Near).AveragePeriod) + 5 + 1)
-        {
+            : base(name, Math.Max(1, CandleSettings.Get(CandleSettingType.Near).AveragePeriod) + 5 + 1) {
             _nearAveragePeriod = CandleSettings.Get(CandleSettingType.Near).AveragePeriod;
         }
 
@@ -60,14 +59,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Initializes a new instance of the <see cref="HikkakeModified"/> class.
         /// </summary>
         public HikkakeModified()
-            : this("HIKKAKEMODIFIED")
-        {
+            : this( "HIKKAKEMODIFIED") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -78,20 +76,16 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
-                if (Samples >= Period - _nearAveragePeriod - 3 && Samples < Period - 3)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
+                if( Samples >= Period - _nearAveragePeriod - 3 && Samples < Period - 3) {
                     _nearPeriodTotal += GetCandleRange(CandleSettingType.Near, window[2]);
                 }
 
-                else if (Samples >= Period - 3)
-                {
+                else if( Samples >= Period - 3) {
                         // copy here the pattern recognition code below
                         // 2nd: lower high and higher low than 1st
-                        if (window[2].High < window[3].High && window[2].Low > window[3].Low &&
+                        if( window[2].High < window[3].High && window[2].Low > window[3].Low &&
                         // 3rd: lower high and higher low than 2nd
                         window[1].High < window[2].High && window[1].Low > window[2].Low &&
                         // (bull) 4th: lower high and lower low
@@ -106,15 +100,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                           window[2].Close >= window[2].High - GetCandleAverage(CandleSettingType.Near, _nearPeriodTotal, window[2])
                              )
                             )
-                        )
-                    {
+                        ) {
                         _patternResult = (input.High < window[1].High ? 1 : -1);
                         _patternIndex = (int) Samples - 1;
                     }
                     else
                     {
                         // search for confirmation if modified hikkake was no more than 3 bars ago
-                        if (Samples <= _patternIndex + 4 &&
+                        if( Samples <= _patternIndex + 4 &&
                             // close higher than the high of 3rd
                             ((_patternResult > 0 && input.Close > window[(int) Samples - _patternIndex].High)
                              ||
@@ -136,7 +129,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
 
             BigDecimal value;
             // 2nd: lower high and higher low than 1st
-            if (window[2].High < window[3].High && window[2].Low > window[3].Low &&
+            if( window[2].High < window[3].High && window[2].Low > window[3].Low &&
                 // 3rd: lower high and higher low than 2nd
                 window[1].High < window[2].High && window[1].Low > window[2].Low &&
                 // (bull) 4th: lower high and lower low
@@ -151,8 +144,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                   window[2].Close >= window[2].High - GetCandleAverage(CandleSettingType.Near, _nearPeriodTotal, window[2])
                      )
                     )
-                )
-            {
+                ) {
                 _patternResult = (input.High < window[1].High ? 1 : -1);
                 _patternIndex = (int) Samples - 1;
                 value = _patternResult;
@@ -160,14 +152,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             else
             {
                 // search for confirmation if modified hikkake was no more than 3 bars ago
-                if (Samples <= _patternIndex + 4 &&
+                if( Samples <= _patternIndex + 4 &&
                     // close higher than the high of 3rd
                     ((_patternResult > 0 && input.Close > window[(int)Samples - _patternIndex].High)
                      ||
                      // close lower than the low of 3rd
                      (_patternResult < 0 && input.Close < window[(int)Samples - _patternIndex].Low))
-                        )
-                {
+                        ) {
                     value = _patternResult + (_patternResult > 0 ? 1 : -1);
                     _patternIndex = 0;
                 }
@@ -187,8 +178,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _nearPeriodTotal = 0;
             _patternIndex = 0;
             _patternResult = 0;

@@ -25,8 +25,7 @@ package com.quantconnect.lean.Tests.Common.Data
     public class TradeBarConsolidatorTests
     {
         [Test]
-        public void ZeroCountAlwaysFires()
-        {
+        public void ZeroCountAlwaysFires() {
             // defining a TradeBarConsolidator with a zero max count should cause it to always fire identity
 
             TradeBar consolidated = null;
@@ -41,8 +40,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void OneCountAlwaysFires()
-        {
+        public void OneCountAlwaysFires() {
             // defining a TradeBarConsolidator with a one max count should cause it to always fire identity
 
             TradeBar consolidated = null;
@@ -57,8 +55,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void TwoCountFiresEveryOther()
-        {
+        public void TwoCountFiresEveryOther() {
             // defining a TradeBarConsolidator with a two max count should cause it to fire every other TradeBar
 
             TradeBar consolidated = null;
@@ -84,8 +81,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void ZeroSpanAlwaysFires()
-        {
+        public void ZeroSpanAlwaysFires() {
             // defining a TradeBarConsolidator with a zero period should cause it to always fire identity
 
             TradeBar consolidated = null;
@@ -110,14 +106,13 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void OneMinuteAlwaysFiresEveryTimeOnMinuteDataExceptFirstPoint()
-        {
+        public void OneMinuteAlwaysFiresEveryTimeOnMinuteDataExceptFirstPoint() {
             // defining a TradeBarConsolidator with the same period as the resolution of input data will cause
             // it to not fire on the first piece of data as it is initializing, but will then fire for each
             // consecutive data point
 
             TradeBar consolidated = null;
-            consolidator = new TradeBarConsolidator(TimeSpan.FromMinutes(1));
+            consolidator = new TradeBarConsolidator(Duration.ofMinutes(1));
             consolidator.DataConsolidated += (sender, bar) =>
             {
                 consolidated = bar;
@@ -137,8 +132,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void ConsolidatesOHLCV()
-        {
+        public void ConsolidatesOHLCV() {
             // verifies that the TradeBarConsolidator correctly consolidates OHLCV data into a new TradeBar instance
 
             TradeBar consolidated = null;
@@ -195,12 +189,11 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void ConsolidatedTimeIsFromBeginningOfBar()
-        {
+        public void ConsolidatedTimeIsFromBeginningOfBar() {
             // verifies that the consolidated bar uses the time from the beginning of the first bar
             // in the period that covers the current bar
 
-            consolidator = new TradeBarConsolidator(TimeSpan.FromMinutes(1));
+            consolidator = new TradeBarConsolidator(Duration.ofMinutes(1));
 
             TradeBar consolidated = null;
             consolidator.DataConsolidated += (sender, bar) =>
@@ -246,10 +239,9 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void HandlesDataGapsInMixedMode()
-        {
+        public void HandlesDataGapsInMixedMode() {
             // define a three minute consolidator on a one minute stream of data
-            consolidator = new TradeBarConsolidator(3, TimeSpan.FromMinutes(3));
+            consolidator = new TradeBarConsolidator(3, Duration.ofMinutes(3));
 
             TradeBar consolidated = null;
             consolidator.DataConsolidated += (sender, bar) =>
@@ -286,11 +278,10 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void HandlesGappingAcrossDays()
-        {
+        public void HandlesGappingAcrossDays() {
             // this test requires inspection to verify we're getting clean bars on the correct times
 
-            consolidator = new TradeBarConsolidator(TimeSpan.FromHours(1));
+            consolidator = new TradeBarConsolidator(Duration.ofHours(1));
 
             TradeBar consolidated = null;
             consolidator.DataConsolidated += (sender, bar) =>
@@ -301,8 +292,7 @@ package com.quantconnect.lean.Tests.Common.Data
             // from 1/1 9:30 to 1/2 12:00 by minute
             start = new DateTime(2014, 01, 01, 09, 30, 00, 00);
             end =   new DateTime(2014, 01, 02, 12, 00, 00, 00);
-            foreach (bar in StreamTradeBars(start, end, TimeSpan.FromMinutes(1)))
-            {
+            foreach (bar in StreamTradeBars(start, end, Duration.ofMinutes(1))) {
                 consolidator.Update(bar);
             }
         }
@@ -314,11 +304,10 @@ package com.quantconnect.lean.Tests.Common.Data
         /// 10:01 is not included in the bar starting at 10:00.
         /// </summary>
         [Test]
-        public void ClosedLeftOpenRightInTimeSpanModeTest()
-        {
+        public void ClosedLeftOpenRightInTimeSpanModeTest() {
             // define a three minute consolidator 
             int timeSpanUnits = 3;
-            consolidator = new TradeBarConsolidator(TimeSpan.FromMinutes(timeSpanUnits));
+            consolidator = new TradeBarConsolidator(Duration.ofMinutes(timeSpanUnits));
 
             TradeBar consolidated = null;
             consolidator.DataConsolidated += (sender, bar) =>
@@ -329,18 +318,17 @@ package com.quantconnect.lean.Tests.Common.Data
             refDateTime = new DateTime(2014, 12, 1, 10, 00, 0);
 
             // loop for 3 times the timeSpanUnits + 1, so it would consolidate the bars 3 times
-            for (int i=0; i < 3*timeSpanUnits + 1 ; ++i) 
-            {
+            for (int i=0; i < 3*timeSpanUnits + 1 ; ++i) {
                 consolidator.Update(new TradeBar { Time = refDateTime });
 
-                if (i < timeSpanUnits)  // before initial consolidation happens
+                if( i < timeSpanUnits)  // before initial consolidation happens
                 {
                     Assert.IsNull(consolidated);
                 }
                 else 
                 {
                     Assert.IsNotNull(consolidated);
-                    if (i % timeSpanUnits == 0) // i = 3, 6, 9
+                    if( i % timeSpanUnits == 0) // i = 3, 6, 9
                     {
                         Assert.AreEqual(refDateTime.AddMinutes(-timeSpanUnits), consolidated.Time);
                     }
@@ -351,10 +339,9 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AggregatesPeriodInCountModeWithDailyData()
-        {
+        public void AggregatesPeriodInCountModeWithDailyData() {
             TradeBar consolidated = null;
-            period = TimeSpan.FromDays(1);
+            period = Duration.ofDays(1);
             consolidator = new TradeBarConsolidator(2);
             consolidator.DataConsolidated += (sender, bar) =>
             {
@@ -368,7 +355,7 @@ package com.quantconnect.lean.Tests.Common.Data
             consolidator.Update(new TradeBar { Time = reference.AddDays(1), Period = period });
             Assert.IsNotNull(consolidated);
 
-            Assert.AreEqual(TimeSpan.FromDays(2), consolidated.Period);
+            Assert.AreEqual(Duration.ofDays(2), consolidated.Period);
             consolidated = null;
 
             consolidator.Update(new TradeBar { Time = reference.AddDays(2), Period = period });
@@ -377,14 +364,13 @@ package com.quantconnect.lean.Tests.Common.Data
             consolidator.Update(new TradeBar { Time = reference.AddDays(3), Period = period });
             Assert.IsNotNull(consolidated);
 
-            Assert.AreEqual(TimeSpan.FromDays(2), consolidated.Period);
+            Assert.AreEqual(Duration.ofDays(2), consolidated.Period);
         }
 
         [Test]
-        public void AggregatesPeriodInPeriodModeWithDailyData()
-        {
+        public void AggregatesPeriodInPeriodModeWithDailyData() {
             TradeBar consolidated = null;
-            period = TimeSpan.FromDays(1);
+            period = Duration.ofDays(1);
             consolidator = new TradeBarConsolidator(period);
             consolidator.DataConsolidated += (sender, bar) =>
             {
@@ -411,10 +397,9 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AggregatesPeriodInPeriodModeWithDailyDataAndRoundedTime()
-        {
+        public void AggregatesPeriodInPeriodModeWithDailyDataAndRoundedTime() {
             TradeBar consolidated = null;
-            period = TimeSpan.FromDays(1);
+            period = Duration.ofDays(1);
             consolidator = new TradeBarConsolidator(period);
             consolidator.DataConsolidated += (sender, bar) =>
             {
@@ -444,10 +429,9 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void FiresEventAfterTimePassesViaScan()
-        {
+        public void FiresEventAfterTimePassesViaScan() {
             TradeBar consolidated = null;
-            period = TimeSpan.FromDays(1);
+            period = Duration.ofDays(1);
             consolidator = new TradeBarConsolidator(period);
             consolidator.DataConsolidated += (sender, bar) =>
             {
@@ -464,14 +448,11 @@ package com.quantconnect.lean.Tests.Common.Data
 
         private readonly TimeSpan marketStop = new DateTime(2000, 1, 1, 12 + 4, 0, 0).TimeOfDay;
         private readonly TimeSpan marketStart = new DateTime(2000, 1, 1, 9, 30, 0).TimeOfDay;
-        private IEnumerable<TradeBar> StreamTradeBars(DateTime start, DateTime end, TimeSpan resolution, boolean skipAferMarketHours = true)
-        {
+        private IEnumerable<TradeBar> StreamTradeBars(DateTime start, DateTime end, TimeSpan resolution, boolean skipAferMarketHours = true) {
             DateTime current = start;
-            while (current < end)
-            {
+            while (current < end) {
                 timeOfDay = current.TimeOfDay;
-                if (skipAferMarketHours && (marketStart > timeOfDay || marketStop < timeOfDay))
-                {
+                if( skipAferMarketHours && (marketStart > timeOfDay || marketStop < timeOfDay)) {
                     // set current to the next days market start
                     current = current.Date.AddDays(1).Add(marketStart);
                     continue;

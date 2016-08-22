@@ -53,9 +53,8 @@ package com.quantconnect.lean.Tests.Algorithm
         //  Isostatic market conditions tests.
         /*****************************************************/
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToLong( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ZeroToLong( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25 & Target 50%
@@ -64,9 +63,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(2000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToLong_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ZeroToLong_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25 & Target 50%
@@ -76,9 +74,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(1999, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToLong_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ZeroToLong_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25 & Target 50%
@@ -88,9 +85,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(1600, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToShort( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ZeroToShort( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25 & Target 50%
@@ -99,9 +95,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-2000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToShort_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ZeroToShort_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25 & Target 50%
@@ -110,9 +105,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-1999, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ZeroToShort_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ZeroToShort_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25 & Target 50%
@@ -121,9 +115,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-1600, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToLonger( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -136,9 +129,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(1000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToLonger_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25
@@ -151,9 +143,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(999, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToLonger_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25
@@ -166,9 +157,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(600, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongerToLong( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongerToLong( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -181,9 +171,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-1000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongerToLong_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongerToLong_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25
@@ -196,9 +185,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-999, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongerToLong_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongerToLong_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25
@@ -211,9 +199,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-600, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToZero( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToZero( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -226,9 +213,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-2000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToZero_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToZero_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25
@@ -241,9 +227,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-2000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToZero_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToZero_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25
@@ -256,9 +241,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-2000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToShort( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToShort( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -272,9 +256,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-4000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToShort_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToShort_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25
@@ -288,9 +271,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-3999, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToShort_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToShort_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25
@@ -304,9 +286,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-3600, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_HalfLongToFullShort( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_HalfLongToFullShort( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -320,9 +301,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-6000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_HalfLongToFullShort_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_HalfLongToFullShort_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25
@@ -336,9 +316,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-5999, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_HalfLongToFullShort_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_HalfLongToFullShort_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25
@@ -352,9 +331,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-5600, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToZero( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToZero( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -367,9 +345,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(2000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToZero_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToZero_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25
@@ -382,9 +359,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(2000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToZero_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToZero_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25
@@ -397,9 +373,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(2000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToShorter( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToShorter( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -418,9 +393,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-1000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToShorter_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToShorter_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25
@@ -439,9 +413,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-999, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToShorter_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToShorter_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25
@@ -460,9 +433,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-600, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToLong( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToLong( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -475,9 +447,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(4000, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToLong_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToLong_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25
@@ -490,9 +461,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(3999, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToLong_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToLong_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25
@@ -505,9 +475,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(3600, actual);
         }
 
-        [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToHalfShort_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
-        {
+        [Test, TestCaseSource( "TestParametersDifferentMargins")]
+        public void SetHoldings_HalfLongToHalfShort_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement) {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 0);
             //Set price to $25
@@ -521,9 +490,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-4000, actual);
         }
 
-        [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToHalfShort_SmallConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
-        {
+        [Test, TestCaseSource( "TestParametersDifferentMargins")]
+        public void SetHoldings_HalfLongToHalfShort_SmallConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement) {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 1);
             //Set price to $25
@@ -537,9 +505,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-3999, actual);
         }
 
-        [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToHalfShort_HighConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
-        {
+        [Test, TestCaseSource( "TestParametersDifferentMargins")]
+        public void SetHoldings_HalfLongToHalfShort_HighConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement) {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 10000);
             //Set price to $25
@@ -553,9 +520,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-3600, actual);
         }
 
-        [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFullShort_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
-        {
+        [Test, TestCaseSource( "TestParametersDifferentMargins")]
+        public void SetHoldings_HalfLongToFullShort_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement) {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 0);
             //Set price to $25
@@ -569,9 +535,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-6000, actual);
         }
 
-        [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFullShort_SmallConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
-        {
+        [Test, TestCaseSource( "TestParametersDifferentMargins")]
+        public void SetHoldings_HalfLongToFullShort_SmallConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement) {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 1);
             //Set price to $25
@@ -585,9 +550,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-5999, actual);
         }
 
-        [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFullShort_HighConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
-        {
+        [Test, TestCaseSource( "TestParametersDifferentMargins")]
+        public void SetHoldings_HalfLongToFullShort_HighConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement) {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 10000);
             //Set price to $25
@@ -601,9 +565,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-5600, actual);
         }
 
-        [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFull2xShort_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
-        {
+        [Test, TestCaseSource( "TestParametersDifferentMargins")]
+        public void SetHoldings_HalfLongToFull2xShort_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement) {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 0);
             //Set price to $25
@@ -617,9 +580,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-10000, actual);
         }
 
-        [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFull2xShort_SmallConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
-        {
+        [Test, TestCaseSource( "TestParametersDifferentMargins")]
+        public void SetHoldings_HalfLongToFull2xShort_SmallConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement) {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 1);
             //Set price to $25
@@ -633,9 +595,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-9999, actual);
         }
 
-        [Test, TestCaseSource("TestParametersDifferentMargins")]
-        public void SetHoldings_HalfLongToFull2xShort_HighConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement)
-        {
+        [Test, TestCaseSource( "TestParametersDifferentMargins")]
+        public void SetHoldings_HalfLongToFull2xShort_HighConstantFeeStructure_DifferentMargins( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement) {
             Security msft;
             algo = GetAlgorithm(out msft, initialMarginRequirement, maintenanceMarginRequirement, 10000);
             //Set price to $25
@@ -654,9 +615,8 @@ package com.quantconnect.lean.Tests.Algorithm
         //  Rising market conditions tests.
         /*****************************************************/
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongFixed_PriceRise( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongFixed_PriceRise( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -677,9 +637,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-500, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongFixed_PriceRise_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongFixed_PriceRise_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25
@@ -700,9 +659,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-499, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongFixed_PriceRise_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongFixed_PriceRise_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25
@@ -723,9 +681,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-300, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger_PriceRise( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToLonger_PriceRise( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -745,9 +702,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(250, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger_PriceRise_SmallConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToLonger_PriceRise_SmallConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 1);
             //Set price to $25
@@ -767,9 +723,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(249, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToLonger_PriceRise_HighConstantFeeStructure( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToLonger_PriceRise_HighConstantFeeStructure( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 10000);
             //Set price to $25
@@ -789,9 +744,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(50, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongerToLong_PriceRise( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongerToLong_PriceRise( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -812,9 +766,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-1250, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_LongToShort_PriceRise( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_LongToShort_PriceRise( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -833,9 +786,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(-3500, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToShorter_PriceRise( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToShorter_PriceRise( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -859,9 +811,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(1250, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToLong_PriceRise_ZeroValue( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToLong_PriceRise_ZeroValue( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -880,9 +831,8 @@ package com.quantconnect.lean.Tests.Algorithm
             Assert.AreEqual(2500, actual);
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortToLong_PriceRise( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortToLong_PriceRise( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -912,9 +862,8 @@ package com.quantconnect.lean.Tests.Algorithm
         //  Falling market conditions tests.
         /*****************************************************/
 
-        [Test, TestCaseSource("TestParameters")]
-        public void SetHoldings_ShortFixed_PriceFall( BigDecimal leverage)
-        {
+        [Test, TestCaseSource( "TestParameters")]
+        public void SetHoldings_ShortFixed_PriceFall( BigDecimal leverage) {
             Security msft;
             algo = GetAlgorithm(out msft, leverage, 0);
             //Set price to $25
@@ -941,8 +890,7 @@ package com.quantconnect.lean.Tests.Algorithm
         /*************************************************************************/
 
         [Test]
-        public void SetHoldings_Long_RoundOff()
-        {
+        public void SetHoldings_Long_RoundOff() {
             algo = new QCAlgorithm();
             algo.AddSecurity(SecurityType.Forex, "EURUSD");
             algo.SetCash(100000);
@@ -952,14 +900,13 @@ package com.quantconnect.lean.Tests.Algorithm
             // Set Price to $26
             Update(eurusd, 26);
             // So 100000/26 = 3846, After Rounding off becomes 3000
-            actual = algo.CalculateOrderQuantity("EURUSD", 1m);
+            actual = algo.CalculateOrderQuantity( "EURUSD", 1m);
             Assert.AreEqual(3000m, actual);
 
         }
 
         [Test]
-        public void SetHoldings_Short_RoundOff()
-        {
+        public void SetHoldings_Short_RoundOff() {
             algo = new QCAlgorithm();
             algo.AddSecurity(SecurityType.Forex, "EURUSD");
             algo.SetCash(100000);
@@ -969,13 +916,12 @@ package com.quantconnect.lean.Tests.Algorithm
             // Set Price to $26
             Update(eurusd, 26);
             // So -100000/26 = -3846, After Rounding off becomes -3000
-            actual = algo.CalculateOrderQuantity("EURUSD", -1m);
+            actual = algo.CalculateOrderQuantity( "EURUSD", -1m);
             Assert.AreEqual(-3000m, actual);
         }
 
         [Test]
-        public void SetHoldings_Long_ToZero_RoundOff()
-        {
+        public void SetHoldings_Long_ToZero_RoundOff() {
             algo = new QCAlgorithm();
             algo.AddSecurity(SecurityType.Forex, "EURUSD");
             algo.SetCash(10000);
@@ -985,7 +931,7 @@ package com.quantconnect.lean.Tests.Algorithm
             // Set Price to $25
             Update(eurusd, 25);
             // So 10000/25 = 400, After Rounding off becomes 0
-            actual = algo.CalculateOrderQuantity("EURUSD", 1m);
+            actual = algo.CalculateOrderQuantity( "EURUSD", 1m);
             Assert.AreEqual(0m, actual);
         }
         
@@ -1095,8 +1041,7 @@ package com.quantconnect.lean.Tests.Algorithm
         //}
 
 
-        private QCAlgorithm GetAlgorithm(out Security msft, BigDecimal leverage, BigDecimal fee)
-        {
+        private QCAlgorithm GetAlgorithm(out Security msft, BigDecimal leverage, BigDecimal fee) {
             //Initialize algorithm
             algo = new QCAlgorithm();
             algo.AddSecurity(SecurityType.Equity, "MSFT");
@@ -1107,8 +1052,7 @@ package com.quantconnect.lean.Tests.Algorithm
             return algo;
         }
 
-        private QCAlgorithm GetAlgorithm(out Security msft, BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement, BigDecimal fee)
-        {
+        private QCAlgorithm GetAlgorithm(out Security msft, BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement, BigDecimal fee) {
             //Initialize algorithm
             algo = new QCAlgorithm();
             algo.AddSecurity(SecurityType.Equity, "MSFT");
@@ -1119,8 +1063,7 @@ package com.quantconnect.lean.Tests.Algorithm
             return algo;
         }
 
-        private void Update(Security security, BigDecimal close)
-        {
+        private void Update(Security security, BigDecimal close) {
             security.SetMarketPrice(new TradeBar
             {
                 Time = DateTime.Now,

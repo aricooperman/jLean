@@ -25,23 +25,20 @@ package com.quantconnect.lean.Tests.Common.Util
     public class BusyBlockingCollectionTests
     {
         [Test]
-        public void IsNotBusyWithZeroItemsWaiting()
-        {
+        public void IsNotBusyWithZeroItemsWaiting() {
             collection = new BusyBlockingCollection<Integer>();
             Assert.IsTrue(collection.WaitHandle.WaitOne(0));
         }
 
         [Test]
-        public void IsBusyWithItemsWaiting()
-        {
+        public void IsBusyWithItemsWaiting() {
             collection = new BusyBlockingCollection<Integer>();
             collection.Add(1);
             Assert.IsFalse(collection.WaitHandle.WaitOne(0));
         }
 
         [Test]
-        public void GetConsumingEnumerableReturnsItemsInOrder()
-        {
+        public void GetConsumingEnumerableReturnsItemsInOrder() {
             collection = new BusyBlockingCollection<Integer>();
             collection.Add(1);
             collection.Add(2);
@@ -51,16 +48,14 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void WaitForProcessingCompletedDuringGetConsumingEnumerable()
-        {
+        public void WaitForProcessingCompletedDuringGetConsumingEnumerable() {
             collection = new BusyBlockingCollection<Integer>();
             collection.Add(1);
             collection.Add(2);
             collection.Add(3);
             collection.CompleteAdding();
             Assert.IsFalse(collection.WaitHandle.WaitOne(0));
-            foreach (item in collection.GetConsumingEnumerable())
-            {
+            foreach (item in collection.GetConsumingEnumerable()) {
                 Assert.IsFalse(collection.WaitHandle.WaitOne(0));
             }
             Assert.IsTrue(collection.WaitHandle.WaitOne(0));

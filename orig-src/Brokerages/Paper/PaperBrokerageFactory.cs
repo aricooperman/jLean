@@ -61,8 +61,7 @@ package com.quantconnect.lean.Brokerages.Paper
         /// <param name="job">The job packet to create the brokerage for</param>
         /// <param name="algorithm">The algorithm instance</param>
         /// <returns>A new brokerage instance</returns>
-        public IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm)
-        {
+        public IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm) {
             return new PaperBrokerage(algorithm, job);
         }
 
@@ -70,8 +69,7 @@ package com.quantconnect.lean.Brokerages.Paper
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             // NOP
         }
     }

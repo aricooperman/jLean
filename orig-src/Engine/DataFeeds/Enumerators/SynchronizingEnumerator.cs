@@ -59,16 +59,14 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// </summary>
         /// <param name="enumerators">The enumerators to be synchronized. NOTE: Assumes the same time zone for all data</param>
         public SynchronizingEnumerator(params IEnumerator<BaseData>[] enumerators)
-            : this ((IEnumerable<IEnumerator<BaseData>>)enumerators)
-        {
+            : this ((IEnumerable<IEnumerator<BaseData>>)enumerators) {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SynchronizingEnumerator"/> class
         /// </summary>
         /// <param name="enumerators">The enumerators to be synchronized. NOTE: Assumes the same time zone for all data</param>
-        public SynchronizingEnumerator(IEnumerable<IEnumerator<BaseData>> enumerators)
-        {
+        public SynchronizingEnumerator(IEnumerable<IEnumerator<BaseData>> enumerators) {
             _enumerators = enumerators.ToArray();
             _syncer = GetSynchronizedEnumerator(_enumerators);
         }
@@ -80,8 +78,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
         /// </returns>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
-        public boolean MoveNext()
-        {
+        public boolean MoveNext() {
             moveNext =  _syncer.MoveNext();
             Current = moveNext ? _syncer.Current : null;
             return moveNext;
@@ -91,10 +88,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
-        public void Reset()
-        {
-            foreach (enumerator in _enumerators)
-            {
+        public void Reset() {
+            foreach (enumerator in _enumerators) {
                 enumerator.Reset();
             }
             // don't call syncer.reset since the impl will just throw
@@ -104,23 +99,18 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
-            foreach (enumerator in _enumerators)
-            {
+        public void Dispose() {
+            foreach (enumerator in _enumerators) {
                 enumerator.Dispose();
             }
             _syncer.Dispose();
         }
 
-        private static IEnumerator<BaseData> GetSynchronizedEnumerator(IEnumerator<BaseData>[] enumerators)
-        {
+        private static IEnumerator<BaseData> GetSynchronizedEnumerator(IEnumerator<BaseData>[] enumerators) {
             ticks = DateTime.MaxValue.Ticks;
             collection = new ConcurrentMap<IEnumerator<BaseData>,Integer>();
-            foreach (enumerator in enumerators)
-            {
-                if (enumerator.MoveNext())
-                {
+            foreach (enumerator in enumerators) {
+                if( enumerator.MoveNext()) {
                     ticks = Math.Min(ticks, enumerator.Current.EndTime.Ticks);
                     collection.TryAdd(enumerator, 0);
                 }
@@ -131,32 +121,26 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             }
 
             frontier = new DateTime(ticks);
-            while (!collection.IsEmpty)
-            {
+            while (!collection.IsEmpty) {
                 nextFrontierTicks = DateTime.MaxValue.Ticks;
-                foreach (kvp in collection)
-                {
+                foreach (kvp in collection) {
                     enumerator = kvp.Key;
-                    while (enumerator.Current.EndTime <= frontier)
-                    {
+                    while (enumerator.Current.EndTime <= frontier) {
                         yield return enumerator.Current;
-                        if (!enumerator.MoveNext())
-                        {
+                        if( !enumerator.MoveNext()) {
                             int value;
                             collection.TryRemove(enumerator, out value);
                             break;
                         }
                     }
 
-                    if (enumerator.Current != null)
-                    {
+                    if( enumerator.Current != null ) {
                         nextFrontierTicks = Math.Min(nextFrontierTicks, enumerator.Current.EndTime.Ticks);
                     }
                 }
                 
                 frontier = new DateTime(nextFrontierTicks);
-                if (frontier == DateTime.MaxValue)
-                {
+                if( frontier == DateTime.MaxValue) {
                     break;
                 }
             }

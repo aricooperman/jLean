@@ -23,12 +23,11 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 {
     [TestFixture]
-    [Ignore("These tests require the IBController and IB TraderWorkstation to be installed.")]
+    [Ignore( "These tests require the IBController and IB TraderWorkstation to be installed.")]
     public class InteractiveBrokersBrokerageDataQueueHandlerTest
     {
         [Test]
-        public void GetsTickData()
-        {
+        public void GetsTickData() {
             InteractiveBrokersGatewayRunner.StartFromConfiguration();
             
             ib = new InteractiveBrokersBrokerage(new OrderProvider(), new SecurityProvider());
@@ -38,11 +37,9 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             
             Thread.Sleep(1000);
 
-            for (int i = 0; i < 10; i++)
-            {
-                foreach (tick in ib.GetNextTicks())
-                {
-                    Console.WriteLine("{0}: {1} - {2} @ {3}", tick.Time, tick.Symbol, tick.Price, ((Tick)tick).Quantity);
+            for (int i = 0; i < 10; i++) {
+                foreach (tick in ib.GetNextTicks()) {
+                    Console.WriteLine( "%1$s: %2$s - %3$s @ {3}", tick.Time, tick.Symbol, tick.Price, ((Tick)tick).Quantity);
                 }
             }
 

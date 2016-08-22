@@ -44,8 +44,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="date">The date of the source</param>
         /// <param name="source">The source that cause the error</param>
-        public CreateStreamReaderErrorEventArgs(DateTime date, SubscriptionDataSource source)
-        {
+        public CreateStreamReaderErrorEventArgs(DateTime date, SubscriptionDataSource source) {
             Date = date;
             Source = source;
         }

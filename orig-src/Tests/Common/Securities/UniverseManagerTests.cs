@@ -28,8 +28,7 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class UniverseManagerTests
     {
         [Test]
-        public void NotifiesWhenSecurityAdded()
-        {
+        public void NotifiesWhenSecurityAdded() {
             manager = new UniverseManager();
 
             universe = new FuncUniverse(CreateTradeBarConfig(), new UniverseSettings(Resolution.Minute, 2, true, false, TimeSpan.Zero), SecurityInitializer.Null,
@@ -38,9 +37,8 @@ package com.quantconnect.lean.Tests.Common.Securities
 
             manager.CollectionChanged += (sender, args) =>
             {
-                if (args.NewItems.OfType<object>().Single() != universe)
-                {
-                    Assert.Fail("Expected args.NewItems to have exactly one element equal to universe");
+                if( args.NewItems.OfType<object>().Single() != universe) {
+                    Assert.Fail( "Expected args.NewItems to have exactly one element equal to universe");
                 }
                 else
                 {
@@ -53,8 +51,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void NotifiesWhenSecurityAddedViaIndexer()
-        {
+        public void NotifiesWhenSecurityAddedViaIndexer() {
             manager = new UniverseManager();
 
             universe = new FuncUniverse(CreateTradeBarConfig(), new UniverseSettings(Resolution.Minute, 2, true, false, TimeSpan.Zero), SecurityInitializer.Null,
@@ -63,9 +60,8 @@ package com.quantconnect.lean.Tests.Common.Securities
 
             manager.CollectionChanged += (sender, args) =>
             {
-                if (args.NewItems.OfType<object>().Single() != universe)
-                {
-                    Assert.Fail("Expected args.NewItems to have exactly one element equal to universe");
+                if( args.NewItems.OfType<object>().Single() != universe) {
+                    Assert.Fail( "Expected args.NewItems to have exactly one element equal to universe");
                 }
                 else
                 {
@@ -78,8 +74,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void NotifiesWhenSecurityRemoved()
-        {
+        public void NotifiesWhenSecurityRemoved() {
             manager = new UniverseManager();
 
             universe = new FuncUniverse(CreateTradeBarConfig(), new UniverseSettings(Resolution.Minute, 2, true, false, TimeSpan.Zero), SecurityInitializer.Null,
@@ -89,9 +84,8 @@ package com.quantconnect.lean.Tests.Common.Securities
             manager.Add(universe.Configuration.Symbol, universe);
             manager.CollectionChanged += (sender, args) =>
             {
-                if (args.OldItems.OfType<object>().Single() != universe)
-                {
-                    Assert.Fail("Expected args.OldItems to have exactly one element equal to universe");
+                if( args.OldItems.OfType<object>().Single() != universe) {
+                    Assert.Fail( "Expected args.OldItems to have exactly one element equal to universe");
                 }
                 else
                 {
@@ -103,8 +97,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             manager.Remove(universe.Configuration.Symbol);
         }
 
-        private SubscriptionDataConfig CreateTradeBarConfig()
-        {
+        private SubscriptionDataConfig CreateTradeBarConfig() {
             return new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, false, false, true);
         }
     }

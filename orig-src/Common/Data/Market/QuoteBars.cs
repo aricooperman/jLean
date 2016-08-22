@@ -25,16 +25,14 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Creates a new instance of the <see cref="QuoteBars"/> dictionary
         /// </summary>
-        public QuoteBars()
-        {
+        public QuoteBars() {
         }
 
         /// <summary>
         /// Creates a new instance of the <see cref="QuoteBars"/> dictionary
         /// </summary>
         public QuoteBars(DateTime time)
-            : base(time)
-        {
+            : base(time) {
         }
     }
 }

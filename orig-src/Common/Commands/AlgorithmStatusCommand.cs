@@ -31,8 +31,7 @@ package com.quantconnect.lean.Commands
         /// <summary>
         /// Initializes a new instance of the <see cref="AlgorithmStatusCommand"/>
         /// </summary>
-        public AlgorithmStatusCommand()
-        {
+        public AlgorithmStatusCommand() {
             Status = AlgorithmStatus.Running;
         }
 
@@ -40,8 +39,7 @@ package com.quantconnect.lean.Commands
         /// Initializes a new instance of the <see cref="AlgorithmStatusCommand"/> with
         /// the specified status
         /// </summary>
-        public AlgorithmStatusCommand(AlgorithmStatus status)
-        {
+        public AlgorithmStatusCommand(AlgorithmStatus status) {
             Status = status;
         }
 
@@ -49,8 +47,7 @@ package com.quantconnect.lean.Commands
         /// Sets the algoritm's status to <see cref="Status"/>
         /// </summary>
         /// <param name="algorithm">The algorithm to run this command against</param>
-        public CommandResultPacket Run(IAlgorithm algorithm)
-        {
+        public CommandResultPacket Run(IAlgorithm algorithm) {
             algorithm.Status = Status;
             return new CommandResultPacket(this, true);
         }

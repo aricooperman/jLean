@@ -31,8 +31,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Equity
         private static readonly TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), new[] {TimeZones.NewYork});
 
         [Test]
-        public void PerformsMarketFillBuy()
-        {
+        public void PerformsMarketFillBuy() {
             model = new EquityTransactionModel();
             order = new MarketOrder(Symbols.SPY, 100, Noon);
             config = CreateTradeBarConfig();
@@ -46,8 +45,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Equity
             Assert.AreEqual(OrderStatus.Filled, fill.Status);
         }
         [Test]
-        public void PerformsMarketFillSell()
-        {
+        public void PerformsMarketFillSell() {
             model = new EquityTransactionModel();
             order = new MarketOrder(Symbols.SPY, -100, Noon);
             config = CreateTradeBarConfig();
@@ -62,8 +60,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Equity
         }
 
         [Test]
-        public void PerformsLimitFillBuy()
-        {
+        public void PerformsLimitFillBuy() {
             model = new EquityTransactionModel();
             order = new LimitOrder(Symbols.SPY, 100, 101.5m, Noon);
             config = CreateTradeBarConfig();
@@ -88,8 +85,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Equity
         }
 
         [Test]
-        public void PerformsLimitFillSell()
-        {
+        public void PerformsLimitFillSell() {
             model = new EquityTransactionModel();
             order = new LimitOrder(Symbols.SPY, -100, 101.5m, Noon);
             config = CreateTradeBarConfig();
@@ -114,8 +110,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Equity
         }
 
         [Test]
-        public void PerformsStopLimitFillBuy()
-        {
+        public void PerformsStopLimitFillBuy() {
             model = new EquityTransactionModel();
             order = new StopLimitOrder(Symbols.SPY, 100, 101.5m, 101.75m, Noon);
             config = CreateTradeBarConfig();
@@ -148,8 +143,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Equity
         }
 
         [Test]
-        public void PerformsStopLimitFillSell()
-        {
+        public void PerformsStopLimitFillSell() {
             model = new EquityTransactionModel();
             order = new StopLimitOrder(Symbols.SPY, -100, 101.75m, 101.50m, Noon);
             config = CreateTradeBarConfig();
@@ -182,8 +176,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Equity
         }
 
         [Test]
-        public void PerformsStopMarketFillBuy()
-        {
+        public void PerformsStopMarketFillBuy() {
             model = new EquityTransactionModel();
             order = new StopMarketOrder(Symbols.SPY, 100, 101.5m, Noon);
             config = CreateTradeBarConfig();
@@ -208,8 +201,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Equity
         }
 
         [Test]
-        public void PerformsStopMarketFillSell()
-        {
+        public void PerformsStopMarketFillSell() {
             model = new EquityTransactionModel();
             order = new StopMarketOrder(Symbols.SPY, -100, 101.5m, Noon);
             config = CreateTradeBarConfig();
@@ -233,8 +225,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Equity
             Assert.AreEqual(OrderStatus.Filled, fill.Status);
         }
 
-        private SubscriptionDataConfig CreateTradeBarConfig()
-        {
+        private SubscriptionDataConfig CreateTradeBarConfig() {
             return new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, false);
         }
     }

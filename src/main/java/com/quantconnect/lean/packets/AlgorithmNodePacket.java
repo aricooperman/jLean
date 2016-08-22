@@ -122,8 +122,7 @@ package com.quantconnect.lean.Packets
         /// </summary>
         /// <param name="type"></param>
         public AlgorithmNodePacket(PacketType type)
-            : base(type)
-        { }
+            : base(type) { }
 
         /// <summary>
         /// User Id placing request
@@ -145,8 +144,7 @@ package com.quantconnect.lean.Packets
         {
             get
             {
-                if (Type == PacketType.LiveNode)
-                {
+                if( Type == PacketType.LiveNode) {
                     return ((LiveNodePacket)this).DeployId;
                 }
                 return ((BacktestNodePacket)this).BacktestId;

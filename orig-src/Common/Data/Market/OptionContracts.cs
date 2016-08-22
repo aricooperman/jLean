@@ -25,16 +25,14 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Creates a new instance of the <see cref="OptionContracts"/> dictionary
         /// </summary>
-        public OptionContracts()
-        {
+        public OptionContracts() {
         }
 
         /// <summary>
         /// Creates a new instance of the <see cref="OptionContracts"/> dictionary
         /// </summary>
         public OptionContracts(DateTime time)
-            : base(time)
-        {
+            : base(time) {
         }
     }
 }

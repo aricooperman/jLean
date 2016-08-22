@@ -37,8 +37,7 @@ package com.quantconnect.lean.Securities
         /// Create a new holding class instance setting the initial properties to $0.
         /// </summary>
         /// <param name="security">The security being held</param>
-        public SecurityHolding(Security security)
-        {
+        public SecurityHolding(Security security) {
             _security = security;
             //Total Sales Volume for the day
             _totalSaleVolume = 0;
@@ -110,7 +109,7 @@ package com.quantconnect.lean.Securities
         {
             get 
             {
-                return AveragePrice * Convert.ToDecimal(Quantity) * _security.QuoteCurrency.ConversionRate * _security.SymbolProperties.ContractMultiplier;
+                return AveragePrice * new BigDecimal( Quantity) * _security.QuoteCurrency.ConversionRate * _security.SymbolProperties.ContractMultiplier;
             }
         }
 
@@ -161,7 +160,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         public virtual BigDecimal HoldingsValue
         {
-            get { return _price*Convert.ToDecimal(Quantity)*_security.QuoteCurrency.ConversionRate*_security.SymbolProperties.ContractMultiplier; }
+            get { return _price*new BigDecimal( Quantity)*_security.QuoteCurrency.ConversionRate*_security.SymbolProperties.ContractMultiplier; }
         }
 
         /// <summary>
@@ -289,7 +288,7 @@ package com.quantconnect.lean.Securities
         {
             get
             {
-                if (AbsoluteHoldingsCost == 0) return 0m;
+                if( AbsoluteHoldingsCost == 0) return 0m;
                 return UnrealizedProfit/AbsoluteHoldingsCost;
             }
         }
@@ -306,8 +305,7 @@ package com.quantconnect.lean.Securities
         /// Adds a fee to the running total of total fees.
         /// </summary>
         /// <param name="newFee"></param>
-        public void AddNewFee( BigDecimal newFee) 
-        {
+        public void AddNewFee( BigDecimal newFee) {
             _totalFees += newFee;
         }
 
@@ -315,8 +313,7 @@ package com.quantconnect.lean.Securities
         /// Adds a profit record to the running total of profit.
         /// </summary>
         /// <param name="profitLoss">The cash change in portfolio from closing a position</param>
-        public void AddNewProfit( BigDecimal profitLoss) 
-        {
+        public void AddNewProfit( BigDecimal profitLoss) {
             _profit += profitLoss;
         }
 
@@ -324,8 +321,7 @@ package com.quantconnect.lean.Securities
         /// Adds a new sale value to the running total trading volume in terms of the account currency
         /// </summary>
         /// <param name="saleValue"></param>
-        public void AddNewSale( BigDecimal saleValue)
-        {
+        public void AddNewSale( BigDecimal saleValue) {
             _totalSaleVolume += saleValue;
         }
 
@@ -333,16 +329,14 @@ package com.quantconnect.lean.Securities
         /// Set the last trade profit for this security from a Portfolio.ProcessFill call.
         /// </summary>
         /// <param name="lastTradeProfit">Value of the last trade profit</param>
-        public void SetLastTradeProfit( BigDecimal lastTradeProfit) 
-        {
+        public void SetLastTradeProfit( BigDecimal lastTradeProfit) {
             _lastTradeProfit = lastTradeProfit;
         }
             
         /// <summary>
         /// Set the quantity of holdings and their average price after processing a portfolio fill.
         /// </summary>
-        public virtual void SetHoldings( BigDecimal averagePrice, int quantity) 
-        {
+        public virtual void SetHoldings( BigDecimal averagePrice, int quantity) {
             _averagePrice = averagePrice;
             _quantity = quantity;
         }
@@ -351,8 +345,7 @@ package com.quantconnect.lean.Securities
         /// Update local copy of closing price value.
         /// </summary>
         /// <param name="closingPrice">Price of the underlying asset to be used for calculating market price / portfolio value</param>
-        public virtual void UpdateMarketPrice( BigDecimal closingPrice)
-        {
+        public virtual void UpdateMarketPrice( BigDecimal closingPrice) {
             _price = closingPrice;
         }
 
@@ -360,10 +353,8 @@ package com.quantconnect.lean.Securities
         /// Profit if we closed the holdings right now including the approximate fees.
         /// </summary>
         /// <remarks>Does not use the transaction model for market fills but should.</remarks>
-        public virtual BigDecimal TotalCloseProfit() 
-        {
-            if (AbsoluteQuantity == 0)
-            {
+        public virtual BigDecimal TotalCloseProfit() {
+            if( AbsoluteQuantity == 0) {
                 return 0;
             }
 

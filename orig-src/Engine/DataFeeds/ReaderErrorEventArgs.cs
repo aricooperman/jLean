@@ -43,8 +43,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="line">The line that caused the error</param>
         /// <param name="exception">The exception that was caught during the read</param>
-        public ReaderErrorEventArgs( String line, Exception exception)
-        {
+        public ReaderErrorEventArgs( String line, Exception exception) {
             Line = line;
             Exception = exception;
         }

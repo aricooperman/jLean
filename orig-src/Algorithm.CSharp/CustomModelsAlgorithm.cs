@@ -30,8 +30,7 @@ package com.quantconnect.lean.Algorithm.CSharp
     public class CustomModelsAlgorithm : QCAlgorithm
     {
         private Security _security;
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2012, 01, 01);
             SetEndDate(2012, 02, 01);
             AddSecurity(SecurityType.Equity, "SPY", Resolution.Hour);
@@ -43,22 +42,19 @@ package com.quantconnect.lean.Algorithm.CSharp
             _security.SlippageModel = new CustomSlippageModel(this);
         }
 
-        public void OnData(TradeBars data)
-        {
-            openOrders = Transactions.GetOpenOrders("SPY");
-            if (openOrders.Count != 0) return;
+        public void OnData(TradeBars data) {
+            openOrders = Transactions.GetOpenOrders( "SPY");
+            if( openOrders.Count != 0) return;
 
-            if (Time.Day > 10 && _security.Holdings.Quantity <= 0)
-            {
-                quantity = CalculateOrderQuantity("SPY", .5m);
-                Log("MarketOrder: " + quantity);
-                MarketOrder("SPY", quantity, asynchronous: true); // async needed for partial fill market orders
+            if( Time.Day > 10 && _security.Holdings.Quantity <= 0) {
+                quantity = CalculateOrderQuantity( "SPY", .5m);
+                Log( "MarketOrder: " + quantity);
+                MarketOrder( "SPY", quantity, asynchronous: true); // async needed for partial fill market orders
             }
-            else if (Time.Day > 20 && _security.Holdings.Quantity >= 0)
-            {
-                quantity = CalculateOrderQuantity("SPY", -.5m);
-                Log("MarketOrder: " + quantity);
-                MarketOrder("SPY", quantity, asynchronous: true); // async needed for partial fill market orders
+            else if( Time.Day > 20 && _security.Holdings.Quantity >= 0) {
+                quantity = CalculateOrderQuantity( "SPY", -.5m);
+                Log( "MarketOrder: " + quantity);
+                MarketOrder( "SPY", quantity, asynchronous: true); // async needed for partial fill market orders
             }
         }
 
@@ -68,18 +64,15 @@ package com.quantconnect.lean.Algorithm.CSharp
             private readonly Random _random = new Random(387510346); // seed it for reproducibility
             private readonly Map<long, decimal> _absoluteRemainingByOrderId = new Map<long, decimal>();
 
-            public CustomFillModel(QCAlgorithm algorithm)
-            {
+            public CustomFillModel(QCAlgorithm algorithm) {
                 _algorithm = algorithm;
             }
 
-            public override OrderEvent MarketFill(Security asset, MarketOrder order)
-            {
+            public @Override OrderEvent MarketFill(Security asset, MarketOrder order) {
                 // this model randomly fills market orders
 
                 BigDecimal absoluteRemaining;
-                if (!_absoluteRemainingByOrderId.TryGetValue(order.Id, out absoluteRemaining))
-                {
+                if( !_absoluteRemainingByOrderId.TryGetValue(order.Id, out absoluteRemaining)) {
                     absoluteRemaining = order.AbsoluteQuantity;
                     _absoluteRemainingByOrderId.Add(order.Id, order.AbsoluteQuantity);
                 }
@@ -88,8 +81,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 absoluteFillQuantity = (int) (Math.Min(absoluteRemaining, _random.Next(0, 2*(int)order.AbsoluteQuantity)));
                 fill.FillQuantity = Math.Sign(order.Quantity) * absoluteFillQuantity;
 
-                if (absoluteRemaining == absoluteFillQuantity)
-                {
+                if( absoluteRemaining == absoluteFillQuantity) {
                     fill.Status = OrderStatus.Filled;
                     _absoluteRemainingByOrderId.Remove(order.Id);
                 }
@@ -100,7 +92,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                     fill.Status = OrderStatus.PartiallyFilled;
                 }
 
-                _algorithm.Log("CustomFillModel: " + fill);
+                _algorithm.Log( "CustomFillModel: " + fill);
 
                 return fill;
             }
@@ -110,17 +102,15 @@ package com.quantconnect.lean.Algorithm.CSharp
         {
             private readonly QCAlgorithm _algorithm;
 
-            public CustomFeeModel(QCAlgorithm algorithm)
-            {
+            public CustomFeeModel(QCAlgorithm algorithm) {
                 _algorithm = algorithm;
             }
 
-            public BigDecimal GetOrderFee(Security security, Order order)
-            {
+            public BigDecimal GetOrderFee(Security security, Order order) {
                 // custom fee math
                 fee = Math.Max(1m, security.Price*order.AbsoluteQuantity*0.00001m);
 
-                _algorithm.Log("CustomFeeModel: " + fee);
+                _algorithm.Log( "CustomFeeModel: " + fee);
                 return fee;
             }
         }
@@ -129,17 +119,15 @@ package com.quantconnect.lean.Algorithm.CSharp
         {
             private readonly QCAlgorithm _algorithm;
 
-            public CustomSlippageModel(QCAlgorithm algorithm)
-            {
+            public CustomSlippageModel(QCAlgorithm algorithm) {
                 _algorithm = algorithm;
             }
 
-            public BigDecimal GetSlippageApproximation(Security asset, Order order)
-            {
+            public BigDecimal GetSlippageApproximation(Security asset, Order order) {
                 // custom slippage math
                 slippage = asset.Price*0.0001m*(decimal) Math.Log10(2*(double) order.AbsoluteQuantity);
 
-                _algorithm.Log("CustomSlippageModel: " + slippage);
+                _algorithm.Log( "CustomSlippageModel: " + slippage);
                 return slippage;
             }
         }

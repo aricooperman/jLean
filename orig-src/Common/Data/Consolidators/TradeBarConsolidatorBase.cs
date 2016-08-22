@@ -33,8 +33,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         protected TradeBarConsolidatorBase(TimeSpan period)
-            : base(period)
-        {
+            : base(period) {
         }
 
         /// <summary>
@@ -42,8 +41,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         protected TradeBarConsolidatorBase(int maxCount)
-            : base(maxCount)
-        {
+            : base(maxCount) {
         }
 
         /// <summary>
@@ -52,8 +50,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         protected TradeBarConsolidatorBase(int maxCount, TimeSpan period)
-            : base(maxCount, period)
-        {
+            : base(maxCount, period) {
         }
         
         /// <summary>

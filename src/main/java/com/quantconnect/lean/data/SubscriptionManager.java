@@ -23,31 +23,30 @@ import java.util.Objects;
 import com.quantconnect.lean.Global.Resolution;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.TimeKeeper;
+import com.quantconnect.lean.data.consolidators.IDataConsolidator;
+import com.quantconnect.lean.data.market.Tick;
 import com.quantconnect.lean.data.market.TradeBar;
 
-//using NodaTime;
-//using QuantConnect.Data.Consolidators;
-//using QuantConnect.Data.Market;
 
 /// Enumerable Subscription Management Class
-public class SubscriptionManager
-{
-    private final TimeKeeper _timeKeeper;
+public class SubscriptionManager {
+    
+    private final TimeKeeper timeKeeper;
 
     /// Generic Market Data Requested and Object[] Arguments to Get it:
-    public List<SubscriptionDataConfig> Subscriptions;
+    private final List<SubscriptionDataConfig> subscriptions;
 
     /// Initialise the Generic Data Manager Class
     /// <param name="timeKeeper">The algoritm's time keeper</param>
     public SubscriptionManager( TimeKeeper timeKeeper ) {
-        this._timeKeeper = timeKeeper;
+        this.timeKeeper = timeKeeper;
         //Generic Type Data Holder:
-        this.Subscriptions = new ArrayList<SubscriptionDataConfig>();
+        this.subscriptions = new ArrayList<SubscriptionDataConfig>();
     }
 
     /// Get the count of assets:
     public int getCount() {
-        return Subscriptions.size(); 
+        return subscriptions.size(); 
     }
 
     /// Add Market Data Required (Overloaded method for backwards compatibility).
@@ -61,7 +60,7 @@ public class SubscriptionManager
     /// <param name="extendedMarketHours">Request premarket data as well when true </param>
     /// <returns>The newly created <see cref="SubscriptionDataConfig"/></returns>
     public SubscriptionDataConfig add( Symbol symbol, Resolution resolution, ZoneId timeZone, ZoneId exchangeTimeZone ) {
-        add( symbol, resolution, timeZone, exchangeTimeZone, false, true, false );
+        return add( symbol, resolution, timeZone, exchangeTimeZone, false, true, false );
     }
 
     public SubscriptionDataConfig add( Symbol symbol, Resolution resolution, ZoneId timeZone, ZoneId exchangeTimeZone, 
@@ -69,15 +68,13 @@ public class SubscriptionManager
         //Set the type: market data only comes in two forms -- ticks(trade by trade) or tradebar(time summaries)
         
         Class<? extends BaseData> dataType = TradeBar.class;
-        if (resolution == Resolution.Tick) 
+        if( resolution == Resolution.Tick ) 
             dataType = Tick.class;
 
-        return add( dataType, symbol, resolution, timeZone, exchangeTimeZone, isCustomData, fillDataForward, extendedMarketHours, false );
+        return add( dataType, symbol, resolution, timeZone, exchangeTimeZone, isCustomData, fillDataForward, extendedMarketHours, false, true );
     }
 
-    /// <summary>
     /// Add Market Data Required - generic data typing support as long as Type implements BaseData.
-    /// </summary>
     /// <param name="dataType">Set the type of the data we're subscribing to.</param>
     /// <param name="symbol">Symbol of the asset we're like</param>
     /// <param name="resolution">Resolution of Asset Required</param>
@@ -91,53 +88,52 @@ public class SubscriptionManager
     /// <param name="isFilteredSubscription">True if this subscription should have filters applied to it (market hours/user filters from security), false otherwise</param>
     /// <returns>The newly created <see cref="SubscriptionDataConfig"/></returns>
     public SubscriptionDataConfig add( Class<? extends BaseData> dataType, Symbol symbol, Resolution resolution, ZoneId dataTimeZone, ZoneId exchangeTimeZone, 
-            boolean isCustomData, boolean fillDataForward = true, boolean extendedMarketHours = false, boolean isInternalFeed = false, boolean isFilteredSubscription = true ) {
+            boolean isCustomData ) {
+        return add( dataType, symbol, resolution, dataTimeZone, exchangeTimeZone, isCustomData, true, false, false, true );
+    }
+
+    public SubscriptionDataConfig add( Class<? extends BaseData> dataType, Symbol symbol, Resolution resolution, ZoneId dataTimeZone, ZoneId exchangeTimeZone, 
+            boolean isCustomData, boolean fillDataForward, boolean extendedMarketHours, boolean isInternalFeed, boolean isFilteredSubscription ) {
         Objects.requireNonNull( dataTimeZone, 
                 "DataTimeZone is a required parameter for new subscriptions.  Set to the time zone the raw data is time stamped in." );
 
-        if (exchangeTimeZone == null)
-            throw new ArgumentNullException( "exchangeTimeZone", "ExchangeTimeZone is a required parameter for new subscriptions.  Set to the time zone the security exchange resides in.");
+        if( exchangeTimeZone == null )
+            throw new NullPointerException( "ExchangeTimeZone is a required parameter for new subscriptions.  Set to the time zone the security exchange resides in." );
         
         //Create:
-        newConfig = new SubscriptionDataConfig(dataType, symbol, resolution, dataTimeZone, exchangeTimeZone, fillDataForward, extendedMarketHours, 
-                isInternalFeed, isCustomData, isFilteredSubscription: isFilteredSubscription );
+        final SubscriptionDataConfig newConfig = new SubscriptionDataConfig( dataType, symbol, resolution, dataTimeZone, exchangeTimeZone, fillDataForward, extendedMarketHours, 
+                isInternalFeed, isCustomData, null, isFilteredSubscription );
 
         //Add to subscription list: make sure we don't have his symbol:
-        Subscriptions.add( newConfig );
+        subscriptions.add( newConfig );
 
         // add the time zone to our time keeper
-        _timeKeeper.AddTimeZone( exchangeTimeZone );
+        timeKeeper.addTimeZone( exchangeTimeZone );
 
         return newConfig;
     }
 
-    /// <summary>
     /// Add a consolidator for the symbol
-    /// </summary>
     /// <param name="symbol">Symbol of the asset to consolidate</param>
     /// <param name="consolidator">The consolidator</param>
-    public void AddConsolidator(Symbol symbol, IDataConsolidator consolidator)
-    {
+    public void addConsolidator( Symbol symbol, IDataConsolidator consolidator ) {
         //Find the right subscription and add the consolidator to it
-        for (i = 0; i < Subscriptions.Count; i++)
-        {
-            if (Subscriptions[i].Symbol == symbol)
-            {
+        for( int i = 0; i < subscriptions.size(); i++ ) {
+            if( subscriptions.get( i ).getSymbol().equals( symbol ) ) {
                 // we need to be able to pipe data directly from the data feed into the consolidator
-                if (!consolidator.InputType.IsAssignableFrom(Subscriptions[i].Type))
-                {
-                    throw new ArgumentException( String.format("Type mismatch found between consolidator and symbol. " +
-                        "Symbol: {0} expects type {1} but tried to register consolidator with input type {2}", 
-                        symbol, Subscriptions[i].Type.Name, consolidator.InputType.Name)
-                        );
+                if( !consolidator.getInputType().isAssignableFrom( subscriptions.get( i ).type ) ) {
+                    throw new IllegalArgumentException( String.format( "Type mismatch found between consolidator and symbol. " +
+                        "Symbol: %1$s expects type %2$s but tried to register consolidator with input type %3$s", 
+                        symbol, subscriptions.get( i ).type.getName(), consolidator.getInputType().getName() ) );
                 }
-                Subscriptions[i].Consolidators.Add(consolidator);
+                
+                subscriptions.get( i ).consolidators.add( consolidator );
                 return;
             }
         }
 
         //If we made it here it is because we never found the symbol in the subscription list
-        throw new ArgumentException("Please subscribe to this symbol before adding a consolidator for it. Symbol: " + symbol.toString());
+        throw new IllegalArgumentException( "Please subscribe to this symbol before adding a consolidator for it. Symbol: " + symbol.toString() );
     }
 
 } // End Algorithm MetaData Manager Class

@@ -48,8 +48,7 @@ package com.quantconnect.lean.Securities.Forex
                 Securities.VolatilityModel.Null,
                 new SecurityMarginModel(50m),
                 new ForexDataFilter()
-                )
-        {
+                ) {
             Holdings = new ForexHolding(this);
 
             // decompose the symbol into each currency pair
@@ -79,8 +78,7 @@ package com.quantconnect.lean.Securities.Forex
                 Securities.VolatilityModel.Null,
                 new SecurityMarginModel(50m),
                 new ForexDataFilter()
-                )
-        {
+                ) {
             Holdings = new ForexHolding(this);
 
             // decompose the symbol into each currency pair
@@ -104,11 +102,9 @@ package com.quantconnect.lean.Securities.Forex
         /// <param name="currencyPair">The input currency pair to be decomposed, for example, "EURUSD"</param>
         /// <param name="baseCurrency">The output base currency</param>
         /// <param name="quoteCurrency">The output quote currency</param>
-        public static void DecomposeCurrencyPair( String currencyPair, out String baseCurrency, out String quoteCurrency)
-        {
-            if (currencyPair == null || currencyPair.Length != 6)
-            {
-                throw new ArgumentException("Currency pairs must be exactly 6 characters: " + currencyPair);
+        public static void DecomposeCurrencyPair( String currencyPair, out String baseCurrency, out String quoteCurrency) {
+            if( currencyPair == null || currencyPair.Length != 6) {
+                throw new ArgumentException( "Currency pairs must be exactly 6 characters: " + currencyPair);
             }
             baseCurrency = currencyPair.Substring(0, 3);
             quoteCurrency = currencyPair.Substring(3);

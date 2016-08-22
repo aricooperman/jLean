@@ -24,16 +24,14 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class SubscriptionDataConfigTests
     {
         [Test]
-        public void UsesValueEqualsSemantics()
-        {
+        public void UsesValueEqualsSemantics() {
             config1 = new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, false, false, false, false, TickType.Trade, false);
             config2 = new SubscriptionDataConfig(config1);
             Assert.AreEqual(config1, config2);
         }
 
         [Test]
-        public void UsedAsDictionaryKey()
-        {
+        public void UsedAsDictionaryKey() {
             set = new HashSet<SubscriptionDataConfig>();
             config1 = new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, false, false, false, false, TickType.Trade, false);
             Assert.IsTrue(set.Add(config1));

@@ -65,12 +65,11 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <summary>
         /// Setup the algorithm data, cash, job start end date etc:
         /// </summary>
-        public ConsoleSetupHandler()
-        {
+        public ConsoleSetupHandler() {
             MaxOrders = int.MaxValue;
             StartingPortfolioValue = 0;
             StartingDate = new DateTime(1998, 01, 01);
-            MaximumRuntime = TimeSpan.FromDays(10 * 365);
+            MaximumRuntime = Duration.ofDays(10 * 365);
             Errors = new List<String>();
         }
 
@@ -81,17 +80,16 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <param name="assemblyPath">Physical path of the algorithm dll.</param>
         /// <param name="language">Language of the assembly.</param>
         /// <returns>Algorithm instance</returns>
-        public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language)
-        {
+        public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language) {
             String error;
             IAlgorithm algorithm;
-            algorithmName = Config.Get("algorithm-type-name");
+            algorithmName = Config.Get( "algorithm-type-name");
 
             // don't force load times to be fast here since we're running locally, this allows us to debug
             // and step through some code that may take us longer than the default 10 seconds
-            loader = new Loader(language, TimeSpan.FromHours(1), names => names.SingleOrDefault(name => MatchTypeName(name, algorithmName)));
+            loader = new Loader(language, Duration.ofHours(1), names => names.SingleOrDefault(name => MatchTypeName(name, algorithmName)));
             complete = loader.TryCreateAlgorithmInstanceWithIsolator(assemblyPath, out algorithm, out error);
-            if (!complete) throw new Exception(error + ": try re-building algorithm.");
+            if( !complete) throw new Exception(error + ": try re-building algorithm.");
 
             return algorithm;
         }
@@ -102,8 +100,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <param name="algorithmNodePacket">Job packet</param>
         /// <param name="uninitializedAlgorithm">The algorithm instance before Initialize has been called</param>
         /// <returns>The brokerage instance, or throws if error creating instance</returns>
-        public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm)
-        {
+        public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm) {
             return new BacktestingBrokerage(uninitializedAlgorithm);
         }
 
@@ -117,16 +114,14 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <param name="transactionHandler">The configuration transaction handler</param>
         /// <param name="realTimeHandler">The configured real time handler</param>
         /// <returns>Boolean true on successfully setting up the console.</returns>
-        public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket baseJob, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler)
-        {
+        public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket baseJob, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler) {
             initializeComplete = false;
 
             try
             {
                 //Set common variables for console programs:
 
-                if (baseJob.Type == PacketType.BacktestNode)
-                {
+                if( baseJob.Type == PacketType.BacktestNode) {
                     backtestJob = baseJob as BacktestNodePacket;
                     
                     algorithm.SetMaximumOrders(int.MaxValue);
@@ -154,17 +149,15 @@ package com.quantconnect.lean.Lean.Engine.Setup
                 }
                 else
                 {
-                    throw new Exception("The ConsoleSetupHandler is for backtests only. Use the BrokerageSetupHandler.");
+                    throw new Exception( "The ConsoleSetupHandler is for backtests only. Use the BrokerageSetupHandler.");
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
-                Errors.Add("Failed to initialize algorithm: Initialize(): " + err.Message);
+                Errors.Add( "Failed to initialize algorithm: Initialize(): " + err.Message);
             }
 
-            if (Errors.Count == 0)
-            {
+            if( Errors.Count == 0) {
                 initializeComplete = true;
             }
 
@@ -181,10 +174,8 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <param name="currentTypeFullName"></param>
         /// <param name="expectedTypeName"></param>
         /// <returns>True on matching the type name</returns>
-        private static boolean MatchTypeName( String currentTypeFullName, String expectedTypeName)
-        {
-            if ( String.IsNullOrEmpty(expectedTypeName))
-            {
+        private static boolean MatchTypeName( String currentTypeFullName, String expectedTypeName) {
+            if(  String.IsNullOrEmpty(expectedTypeName)) {
                 return true;
             }
             return currentTypeFullName == expectedTypeName
@@ -195,8 +186,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             // nothing to clean up
         }
 

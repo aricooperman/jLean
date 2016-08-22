@@ -24,9 +24,8 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
     {
         public Heartbeat heartbeat;
         public Price tick;
-        public boolean IsHeartbeat()
-        {
-            return (heartbeat != null);
+        public boolean IsHeartbeat() {
+            return (heartbeat != null );
         }
     }
 #pragma warning restore 1591

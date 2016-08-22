@@ -42,16 +42,14 @@ package com.quantconnect.lean.ToolBox
         /// <summary>
         /// Creates a new data processor that will filter in input data before piping it into the specified processor
         /// </summary>
-        public static IDataProcessor FilteredBy(this IDataProcessor processor, Func<BaseData, bool> predicate)
-        {
+        public static IDataProcessor FilteredBy(this IDataProcessor processor, Func<BaseData, bool> predicate) {
             return new FilteredDataProcessor(processor, predicate);
         }
 
         /// <summary>
         /// Creates a data processor that will aggregate and zip the requested resolutions of data
         /// </summary>
-        public static IDataProcessor Zip( String dataDirectory, IEnumerable<Resolution> resolutions, TickType tickType, boolean sourceIsTick)
-        {
+        public static IDataProcessor Zip( String dataDirectory, IEnumerable<Resolution> resolutions, TickType tickType, boolean sourceIsTick) {
             set = resolutions.ToHashSet();
 
             root = new PipeDataProcessor();
@@ -60,36 +58,30 @@ package com.quantconnect.lean.ToolBox
             stack = !sourceIsTick ? root 
                 : (IDataProcessor) new FilteredDataProcessor(root, x => ((Tick) x).TickType == tickType);
 
-            if (set.Contains(Resolution.Tick))
-            {
+            if( set.Contains(Resolution.Tick)) {
                 // tick is filtered via trade/quote
                 tick = new CsvDataProcessor(dataDirectory, Resolution.Tick, tickType);
                 root.PipeTo(tick);
             }
-            if (set.Contains(Resolution.Second))
-            {
+            if( set.Contains(Resolution.Second)) {
                 root = AddResolution(dataDirectory, tickType, root, Resolution.Second, sourceIsTick);
                 sourceIsTick = false;
             }
-            if (set.Contains(Resolution.Minute))
-            {
+            if( set.Contains(Resolution.Minute)) {
                 root = AddResolution(dataDirectory, tickType, root, Resolution.Minute, sourceIsTick);
                 sourceIsTick = false;
             }
-            if (set.Contains(Resolution.Hour))
-            {
+            if( set.Contains(Resolution.Hour)) {
                 root = AddResolution(dataDirectory, tickType, root, Resolution.Hour, sourceIsTick);
                 sourceIsTick = false;
             }
-            if (set.Contains(Resolution.Daily))
-            {
+            if( set.Contains(Resolution.Daily)) {
                 AddResolution(dataDirectory, tickType, root, Resolution.Daily, sourceIsTick);
             }
             return stack;
         }
 
-        private static PipeDataProcessor AddResolution( String dataDirectory, TickType tickType, PipeDataProcessor root, Resolution resolution, boolean sourceIsTick)
-        {
+        private static PipeDataProcessor AddResolution( String dataDirectory, TickType tickType, PipeDataProcessor root, Resolution resolution, boolean sourceIsTick) {
             second = new CsvDataProcessor(dataDirectory, resolution, tickType);
             secondRoot = new PipeDataProcessor(second);
             aggregator = new ConsolidatorDataProcessor(secondRoot, data => CreateConsolidator(resolution, tickType, data, sourceIsTick));
@@ -97,11 +89,9 @@ package com.quantconnect.lean.ToolBox
             return secondRoot;
         }
 
-        private static IDataConsolidator CreateConsolidator(Resolution resolution, TickType tickType, BaseData data, boolean sourceIsTick)
-        {
+        private static IDataConsolidator CreateConsolidator(Resolution resolution, TickType tickType, BaseData data, boolean sourceIsTick) {
             securityType = data.Symbol.ID.SecurityType;
-            switch (securityType)
-            {
+            switch (securityType) {
                 case SecurityType.Base:
                 case SecurityType.Equity:
                 case SecurityType.Cfd:
@@ -109,21 +99,19 @@ package com.quantconnect.lean.ToolBox
                     return new TickConsolidator(resolution.ToTimeSpan());
 
                 case SecurityType.Option:
-                    if (tickType == TickType.Trade)
-                    {
+                    if( tickType == TickType.Trade) {
                         return sourceIsTick
                             ? new TickConsolidator(resolution.ToTimeSpan())
                             : (IDataConsolidator) new TradeBarConsolidator(resolution.ToTimeSpan());
                     }
-                    if (tickType == TickType.Quote)
-                    {
+                    if( tickType == TickType.Quote) {
                         return sourceIsTick
                             ? new TickQuoteBarConsolidator(resolution.ToTimeSpan())
                             : (IDataConsolidator) new QuoteBarConsolidator(resolution.ToTimeSpan());
                     }
                     break;
             }
-            throw new NotImplementedException("Consolidator creation is not defined for " + securityType + " " + tickType);
+            throw new NotImplementedException( "Consolidator creation is not defined for " + securityType + " " + tickType);
         }
     }
 }

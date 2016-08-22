@@ -66,8 +66,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="k">The number of multiplies specifying the distance between the middle band and upper or lower bands</param>
         /// <param name="movingAverageType">The type of moving average to be used</param>
         public KeltnerChannels(int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple)
-            : this( String.format("KC({0},{1})", period, k), period, k, movingAverageType)
-        {
+            : this( String.format( "KC(%1$s,%2$s)", period, k), period, k, movingAverageType) {
         }
 
         /// <summary>
@@ -78,8 +77,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="k">The number of multiples specifying the distance between the middle band and upper or lower bands</param>
         /// <param name="movingAverageType">The type of moving average to be used</param>
         public KeltnerChannels( String name, int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple)
-            : base(name)
-        {
+            : base(name) {
             _k = k;
 
             //Initialise ATR and SMA
@@ -104,7 +102,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return MiddleBand.IsReady && UpperBand.IsReady && LowerBand.IsReady && AverageTrueRange.IsReady; }
         }
@@ -112,8 +110,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             AverageTrueRange.Reset();
             MiddleBand.Reset();
             UpperBand.Reset();
@@ -126,8 +123,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The TradeBar to this indicator on this time step</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             AverageTrueRange.Update(input);
 
             typicalPrice = (input.High + input.Low + input.Close)/3m;
@@ -143,16 +139,14 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Calculates the lower band
         /// </summary>
-        private BigDecimal ComputeLowerBand()
-        {
+        private BigDecimal ComputeLowerBand() {
             return MiddleBand.IsReady ? MiddleBand - AverageTrueRange*_k : new decimal(0.0);
         }
 
         /// <summary>
         /// Calculates the upper band
         /// </summary>
-        private BigDecimal ComputeUpperBand()
-        {
+        private BigDecimal ComputeUpperBand() {
             return MiddleBand.IsReady ? MiddleBand + AverageTrueRange*_k : new decimal(0.0);
         }
     }

@@ -31,8 +31,7 @@ package com.quantconnect.lean.ToolBox
         /// Initializes a new instance of the <see cref="PipeDataProcessor"/> class
         /// </summary>
         /// <param name="processors">The processors to pipe the data to</param>
-        public PipeDataProcessor(IEnumerable<IDataProcessor> processors)
-        {
+        public PipeDataProcessor(IEnumerable<IDataProcessor> processors) {
             _processors = processors.ToHashSet();
         }
 
@@ -41,16 +40,14 @@ package com.quantconnect.lean.ToolBox
         /// </summary>
         /// <param name="processors">The processors to pipe the data to</param>
         public PipeDataProcessor(params IDataProcessor[] processors)
-            : this((IEnumerable<IDataProcessor>)processors)
-        {
+            : this((IEnumerable<IDataProcessor>)processors) {
         }
 
         /// <summary>
         /// Adds the specified processor to the output pipe
         /// </summary>
         /// <param name="processor">Processor to receive data from this pipe</param>
-        public void PipeTo(IDataProcessor processor)
-        {
+        public void PipeTo(IDataProcessor processor) {
             _processors.Add(processor);
         }
 
@@ -58,10 +55,8 @@ package com.quantconnect.lean.ToolBox
         /// Invoked for each piece of data from the source file
         /// </summary>
         /// <param name="data">The data to be processed</param>
-        public void Process(BaseData data)
-        {
-            foreach (processor in _processors)
-            {
+        public void Process(BaseData data) {
+            foreach (processor in _processors) {
                 processor.Process(data);
             }
         }
@@ -69,10 +64,8 @@ package com.quantconnect.lean.ToolBox
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
-            foreach (processor in _processors)
-            {
+        public void Dispose() {
+            foreach (processor in _processors) {
                 processor.Dispose();
             }
         }

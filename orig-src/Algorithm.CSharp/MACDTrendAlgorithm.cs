@@ -31,8 +31,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2009, 01, 01);
             SetEndDate(2015, 01, 01);
 
@@ -46,12 +45,11 @@ package com.quantconnect.lean.Algorithm.Examples
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">TradeBars IDictionary object with your stock data</param>
-        public void OnData(TradeBars data)
-        {
+        public void OnData(TradeBars data) {
             // only once per day
-            if (previous.Date == Time.Date) return;
+            if( previous.Date == Time.Date) return;
 
-            if (!macd.IsReady) return;
+            if( !macd.IsReady) return;
 
             holding = Portfolio[Symbol];
 
@@ -59,19 +57,18 @@ package com.quantconnect.lean.Algorithm.Examples
             tolerance = 0.0025m;
 
             // if our macd is greater than our signal, then let's go long
-            if (holding.Quantity <= 0 && signalDeltaPercent > tolerance) // 0.01%
+            if( holding.Quantity <= 0 && signalDeltaPercent > tolerance) // 0.01%
             {
                 // longterm says buy as well
                 SetHoldings(Symbol, 1.0);
             }
             // of our macd is less than our signal, then let's go short
-            else if (holding.Quantity >= 0 && signalDeltaPercent < -tolerance)
-            {
+            else if( holding.Quantity >= 0 && signalDeltaPercent < -tolerance) {
                 Liquidate(Symbol);
             }
 
             // plot both lines
-            Plot("MACD", macd, macd.Signal);
+            Plot( "MACD", macd, macd.Signal);
             Plot(Symbol, "Open", data[Symbol].Open);
             Plot(Symbol, macd.Fast, macd.Slow);
 

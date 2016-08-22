@@ -21,6 +21,7 @@ import java.math.RoundingMode;
 
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.data.BaseData;
+import com.quantconnect.lean.data.SubscriptionManager;
 
 //using System.Linq;
 //using QuantConnect.Data;
@@ -130,21 +131,18 @@ public class Cash {
             return null;
         }
 
-        if (subscriptions.Count == 0)
+        if( subscriptions.Count == 0)
             throw new UnsupportedOperationException( "Unable to add cash when no subscriptions are present. Please add subscriptions in the Initialize() method." );
 
         // we require a subscription that converts this into the base currency
         String normal = Symbol + CashBook.AccountCurrency;
         String invert = CashBook.AccountCurrency + Symbol;
-        foreach (config in subscriptions.Subscriptions.Where(config => config.SecurityType == SecurityType.Forex || config.SecurityType == SecurityType.Cfd))
-        {
-            if (config.Symbol.Value == normal)
-            {
+        foreach (config in subscriptions.Subscriptions.Where(config => config.SecurityType == SecurityType.Forex || config.SecurityType == SecurityType.Cfd)) {
+            if( config.Symbol.Value == normal) {
                 SecuritySymbol = config.Symbol;
                 return null;
             }
-            if (config.Symbol.Value == invert)
-            {
+            if( config.Symbol.Value == invert) {
                 SecuritySymbol = config.Symbol;
                 _invertRealTimePrice = true;
                 return null;
@@ -153,7 +151,7 @@ public class Cash {
         // if we've made it here we didn't find a subscription, so we'll need to add one
         currencyPairs = Currencies.CurrencyPairs.Select( x -> {
             // allow XAU or XAG to be used as quote currencies, but pairs including them are CFDs
-            securityType = Symbol.StartsWith("X") ? SecurityType.Cfd : SecurityType.Forex;
+            securityType = Symbol.StartsWith( "X") ? SecurityType.Cfd : SecurityType.Forex;
             market = marketMap[securityType];
             return QuantConnect.Symbol.Create(x, securityType, market);
         } );
@@ -165,8 +163,8 @@ public class Cash {
                 securityType = symbol.ID.SecurityType;
                 symbolProperties = symbolPropertiesDatabase.GetSymbolProperties(symbol.ID.Market, symbol.Value, securityType, Symbol);
                 Cash quoteCash;
-                if (!cashBook.TryGetValue(symbolProperties.QuoteCurrency, out quoteCash))
-                    throw new Exception("Unable to resolve quote cash: " + symbolProperties.QuoteCurrency + ". This is required to add conversion feed: " + symbol.toString());
+                if( !cashBook.TryGetValue(symbolProperties.QuoteCurrency, out quoteCash))
+                    throw new Exception( "Unable to resolve quote cash: " + symbolProperties.QuoteCurrency + ". This is required to add conversion feed: " + symbol.toString());
 
                 marketHoursDbEntry = marketHoursDatabase.GetEntry(symbol.ID.Market, symbol.Value, symbol.ID.SecurityType);
                 exchangeHours = marketHoursDbEntry.ExchangeHours;
@@ -175,18 +173,18 @@ public class Cash {
                 SecuritySymbol = config.Symbol;
 
                 Security security;
-                if (securityType == SecurityType.Cfd)
+                if( securityType == SecurityType.Cfd)
                     security = new Cfd.Cfd(exchangeHours, quoteCash, config, symbolProperties);
                 else
                     security = new Forex.Forex(exchangeHours, quoteCash, config, symbolProperties);
                 securities.Add(config.Symbol, security);
-                Log.Trace("Cash.EnsureCurrencyDataFeed(): Adding " + symbol.Value + " for cash " + Symbol + " currency feed");
+                Log.Trace( "Cash.EnsureCurrencyDataFeed(): Adding " + symbol.Value + " for cash " + Symbol + " currency feed");
                 return security;
             }
         }
 
         // if this still hasn't been set then it's an error condition
-        throw new IllegalArgumentException( String.format( "In order to maintain cash in {0} you are required to add a subscription for Forex pair {0}{1} or {1}{0}", Symbol, CashBook.AccountCurrency));
+        throw new IllegalArgumentException( String.format( "In order to maintain cash in %1$s you are required to add a subscription for Forex pair %1$s%2$s or %2$s%1$s", Symbol, CashBook.AccountCurrency));
     }
 
     /// Returns a <see cref="System.String"/> that represents the current <see cref="QuantConnect.Securities.Cash"/>.
@@ -195,10 +193,10 @@ public class Cash {
         // round the conversion rate for output
         BigDecimal rate = ConversionRate;
         rate = rate < 1000 ? rate.setScale( 5, RoundingMode.HALF_UP ) : Math.round( rate, 2 );
-        return String.format("{0}: {1,15} @ ${2,10} = {3}{4}", 
+        return String.format( "%1$s: {1,15} @ ${2,10} = {3}{4}", 
             Symbol, 
             Amount.toString( "0.00" ), 
-            rate.toString("0.00####"), 
+            rate.toString( "0.00####"), 
             Currencies.CurrencySymbols[Symbol], 
             Math.Round( ValueInAccountCurrency, 2 )
             );

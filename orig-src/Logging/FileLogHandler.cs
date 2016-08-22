@@ -36,8 +36,7 @@ package com.quantconnect.lean.Logging
         /// </summary>
         /// <param name="filepath">The file path use to save the log messages</param>
         /// <param name="useTimestampPrefix">True to prefix each line in the log which the UTC timestamp, false otherwise</param>
-        public FileLogHandler( String filepath, boolean useTimestampPrefix = true)
-        {
+        public FileLogHandler( String filepath, boolean useTimestampPrefix = true) {
             _useTimestampPrefix = useTimestampPrefix;
             _writer = new Lazy<TextWriter>(
                 () => new StreamWriter(File.Open(filepath, FileMode.Append, FileAccess.Write, FileShare.Read))
@@ -48,16 +47,14 @@ package com.quantconnect.lean.Logging
         /// Initializes a new instance of the <see cref="FileLogHandler"/> class using 'log.txt' for the filepath.
         /// </summary>
         public FileLogHandler()
-            : this("log.txt")
-        {
+            : this( "log.txt") {
         }
 
         /// <summary>
         /// Write error message to log
         /// </summary>
         /// <param name="text">The error text to log</param>
-        public void Error( String text)
-        {
+        public void Error( String text) {
             WriteMessage(text, "ERROR");
         }
 
@@ -65,8 +62,7 @@ package com.quantconnect.lean.Logging
         /// Write debug message to log
         /// </summary>
         /// <param name="text">The debug text to log</param>
-        public void Debug( String text)
-        {
+        public void Debug( String text) {
             WriteMessage(text, "DEBUG");
         }
 
@@ -74,8 +70,7 @@ package com.quantconnect.lean.Logging
         /// Write debug message to log
         /// </summary>
         /// <param name="text">The trace text to log</param>
-        public void Trace( String text)
-        {
+        public void Trace( String text) {
             WriteMessage(text, "TRACE");
         }
 
@@ -83,12 +78,9 @@ package com.quantconnect.lean.Logging
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            lock (_lock)
-            {
-                if (_writer.IsValueCreated)
-                {
+        public void Dispose() {
+            lock (_lock) {
+                if( _writer.IsValueCreated) {
                     _disposed = true;
                     _writer.Value.Dispose();
                 }
@@ -101,23 +93,19 @@ package com.quantconnect.lean.Logging
         /// <param name="text">The text to be logged</param>
         /// <param name="level">The logging leel</param>
         /// <returns></returns>
-        protected virtual String CreateMessage( String text, String level)
-        {
-            if (_useTimestampPrefix)
-            {
-                return String.format("{0} {1}:: {2}", DateTime.UtcNow.toString("o"), level, text);
+        protected virtual String CreateMessage( String text, String level) {
+            if( _useTimestampPrefix) {
+                return String.format( "%1$s %2$s:: %3$s", DateTime.UtcNow.toString( "o"), level, text);
             }
-            return String.format("{0}:: {1}", level, text);
+            return String.format( "%1$s:: %2$s", level, text);
         }
 
         /// <summary>
         /// Writes the message to the writer
         /// </summary>
-        private void WriteMessage( String text, String level)
-        {
-            lock (_lock)
-            {
-                if (_disposed) return;
+        private void WriteMessage( String text, String level) {
+            lock (_lock) {
+                if( _disposed) return;
                 _writer.Value.WriteLine(CreateMessage(text, level));
                 _writer.Value.Flush();
             }

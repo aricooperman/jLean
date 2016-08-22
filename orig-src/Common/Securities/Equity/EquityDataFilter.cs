@@ -26,8 +26,7 @@ package com.quantconnect.lean.Securities.Equity
         /// <summary>
         /// Initialize Data Filter Class:
         /// </summary>
-        public EquityDataFilter() : base()
-        {
+        public EquityDataFilter() : base() {
 
         }
 
@@ -36,8 +35,7 @@ package com.quantconnect.lean.Securities.Equity
         /// </summary>
         /// <param name="data">Data class</param>
         /// <param name="vehicle">Security asset</param>
-        public override boolean Filter(Security vehicle, BaseData data)
-        {
+        public @Override boolean Filter(Security vehicle, BaseData data) {
             // No data filter for bad ticks. All raw data will be piped into algorithm
             return true;
         }

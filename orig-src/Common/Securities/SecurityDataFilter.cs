@@ -26,16 +26,14 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Initialize data filter class
         /// </summary>
-        public SecurityDataFilter()
-        { }
+        public SecurityDataFilter() { }
 
         /// <summary>
         /// Filter the data packet passing through this method by returning true to accept, or false to fail/reject the data point.
         /// </summary>
         /// <param name="data">BasData data object we're filtering</param>
         /// <param name="vehicle">Security vehicle for filter</param>
-        public virtual boolean Filter(Security vehicle, BaseData data)
-        {
+        public virtual boolean Filter(Security vehicle, BaseData data) {
             //By default the filter does not change data.
             return true;
         }

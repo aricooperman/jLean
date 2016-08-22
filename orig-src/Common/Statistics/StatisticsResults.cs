@@ -43,8 +43,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="totalPerformance">The algorithm total performance</param>
         /// <param name="rollingPerformances">The algorithm rolling performances</param>
         /// <param name="summary">The summary performance Map</param>
-        public StatisticsResults(AlgorithmPerformance totalPerformance, Map<String, AlgorithmPerformance> rollingPerformances, Map<String,String> summary)
-        {
+        public StatisticsResults(AlgorithmPerformance totalPerformance, Map<String, AlgorithmPerformance> rollingPerformances, Map<String,String> summary) {
             TotalPerformance = totalPerformance;
             RollingPerformances = rollingPerformances;
             Summary = summary;
@@ -53,8 +52,7 @@ package com.quantconnect.lean.Statistics
         /// <summary>
         /// Initializes a new instance of the <see cref="StatisticsResults"/> class
         /// </summary>
-        public StatisticsResults()
-        {
+        public StatisticsResults() {
             TotalPerformance = new AlgorithmPerformance();
             RollingPerformances = new Map<String, AlgorithmPerformance>();
             Summary = new Map<String,String>();

@@ -45,63 +45,52 @@ package com.quantconnect.lean.Views
         /// Get the version of internet explorer from the registry
         /// </summary>
         /// <returns>int version of IE.</returns>
-        public static int GetInternetExplorerMajorVersion()
-        {
+        public static int GetInternetExplorerMajorVersion() {
             result = 0;
             try
             {
                 key = Registry.LocalMachine.OpenSubKey(InternetExplorerRootKey);
 
-                if (key != null)
-                {
-                    value = key.GetValue("svcVersion", null) ?? key.GetValue("Version", null);
+                if( key != null ) {
+                    value = key.GetValue( "svcVersion", null ) ?? key.GetValue( "Version", null );
 
-                    if (value != null)
-                    {
+                    if( value != null ) {
                         version = value.toString();
                         separator = version.IndexOf('.');
-                        if (separator != -1)
-                        {
+                        if( separator != -1) {
                             int.TryParse(version.Substring(0, separator), out result);
                         }
                     }
                 }
             }
-            catch (SecurityException)
-            {
+            catch (SecurityException) {
                 // The user does not have the permissions required to read from the registry key.
             }
-            catch (UnauthorizedAccessException)
-            {
+            catch (UnauthorizedAccessException) {
                 // The user does not have the necessary registry rights.
             }
             return result;
         }
         
 
-        public static BrowserEmulationVersion GetBrowserEmulationVersion()
-        {
+        public static BrowserEmulationVersion GetBrowserEmulationVersion() {
             result = BrowserEmulationVersion.Default;
             try
             {
                 key = Registry.CurrentUser.OpenSubKey(BrowserEmulationKey, true);
-                if (key != null)
-                {
+                if( key != null ) {
                     programName = Path.GetFileName(Environment.GetCommandLineArgs()[0]);
-                    value = key.GetValue(programName, null);
+                    value = key.GetValue(programName, null );
 
-                    if (value != null)
-                    {
-                        result = (BrowserEmulationVersion)Convert.ToInt32(value);
+                    if( value != null ) {
+                        result = (BrowserEmulationVersion) Integer.parseInt( value);
                     }
                 }
             }
-            catch (SecurityException)
-            {
+            catch (SecurityException) {
                 // The user does not have the permissions required to read from the registry key.
             }
-            catch (UnauthorizedAccessException)
-            {
+            catch (UnauthorizedAccessException) {
                 // The user does not have the necessary registry rights.
             }
             return result;
@@ -112,17 +101,14 @@ package com.quantconnect.lean.Views
         /// </summary>
         /// <param name="browserEmulationVersion"></param>
         /// <returns></returns>
-        public static boolean SetBrowserEmulationVersion(BrowserEmulationVersion browserEmulationVersion)
-        {
+        public static boolean SetBrowserEmulationVersion(BrowserEmulationVersion browserEmulationVersion) {
             result = false;
             try
             {
                 key = Registry.CurrentUser.OpenSubKey(BrowserEmulationKey, true);
-                if (key != null)
-                {
+                if( key != null ) {
                     programName = Path.GetFileName(Environment.GetCommandLineArgs()[0]);
-                    if (browserEmulationVersion != BrowserEmulationVersion.Default)
-                    {
+                    if( browserEmulationVersion != BrowserEmulationVersion.Default) {
                         // if it's a valid value, update or create the value
                         key.SetValue(programName, (int)browserEmulationVersion, RegistryValueKind.DWord);
                     }
@@ -135,12 +121,10 @@ package com.quantconnect.lean.Views
                     result = true;
                 }
             }
-            catch (SecurityException)
-            {
+            catch (SecurityException) {
                 // The user does not have the permissions required to read from the registry key.
             }
-            catch (UnauthorizedAccessException)
-            {
+            catch (UnauthorizedAccessException) {
                 // The user does not have the necessary registry rights.
             }
             return result;
@@ -149,19 +133,16 @@ package com.quantconnect.lean.Views
         /// <summary>
         /// Set the enumulation version for the web browser control
         /// </summary>
-        public static boolean SetBrowserEmulationVersion()
-        {
+        public static boolean SetBrowserEmulationVersion() {
             BrowserEmulationVersion emulationCode;
             ieVersion = GetInternetExplorerMajorVersion();
 
-            if (ieVersion >= 11)
-            {
+            if( ieVersion >= 11) {
                 emulationCode = BrowserEmulationVersion.Version11;
             }
             else
             {
-                switch (ieVersion)
-                {
+                switch (ieVersion) {
                     case 10:
                         emulationCode = BrowserEmulationVersion.Version10;
                         break;
@@ -183,8 +164,7 @@ package com.quantconnect.lean.Views
         /// Helper to confirm if the browser 
         /// </summary>
         /// <returns>Bool check if its set</returns>
-        public static boolean IsBrowserEmulationSet()
-        {
+        public static boolean IsBrowserEmulationSet() {
             return GetBrowserEmulationVersion() != BrowserEmulationVersion.Default;
         }
     }

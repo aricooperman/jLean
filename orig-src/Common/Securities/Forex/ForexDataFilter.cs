@@ -27,8 +27,7 @@ package com.quantconnect.lean.Securities.Forex
         /// Initialize forex data filter class:
         /// </summary>
         public ForexDataFilter()
-            : base() 
-        {
+            : base() {
             
         }
 
@@ -37,8 +36,7 @@ package com.quantconnect.lean.Securities.Forex
         /// </summary>
         /// <param name="data">Data object we're scanning to filter</param>
         /// <param name="vehicle">Security asset</param>
-        public override boolean Filter(Security vehicle, BaseData data)
-        {
+        public @Override boolean Filter(Security vehicle, BaseData data) {
             //FX data is from FXCM and fairly clean already. Accept all packets.
             return true;
         }

@@ -22,24 +22,22 @@ package com.quantconnect.lean.Tests.Indicators
     [TestFixture]
     public class MaximumTests : CommonIndicatorTests<IndicatorDataPoint>
     {
-        protected override IndicatorBase<IndicatorDataPoint> CreateIndicator()
-        {
+        protected @Override IndicatorBase<IndicatorDataPoint> CreateIndicator() {
             return new Maximum(5);
         }
 
-        protected override String TestFileName
+        protected @Override String TestFileName
         {
             get { return "spy_max.txt"; }
         }
 
-        protected override String TestColumnName
+        protected @Override String TestColumnName
         {
             get { return "MAX_5"; }
         }
 
         [Test]
-        public void ComputesCorrectly()
-        {
+        public void ComputesCorrectly() {
             max = new Maximum(3);
 
             reference = DateTime.MinValue;
@@ -66,24 +64,21 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComputesCorrectly2()
-        {
+        public void ComputesCorrectly2() {
             static final int period = 5;
             max = new Maximum(period);
 
             Assert.AreEqual(0m, max.Current.Value);
 
             // test an increasing stream of data
-            for (int i = 0; i < period; i++)
-            {
+            for (int i = 0; i < period; i++) {
                 max.Update(DateTime.Now.AddDays(i), i);
                 Assert.AreEqual(i, max.Current.Value);
                 Assert.AreEqual(0, max.PeriodsSinceMaximum);
             }
 
             // test a decreasing stream of data
-            for (int i = 0; i < period; i++)
-            {
+            for (int i = 0; i < period; i++) {
                 max.Update(DateTime.Now.AddDays(period + i), period - i - 1);
                 Assert.AreEqual(period - 1, max.Current.Value);
                 Assert.AreEqual(i, max.PeriodsSinceMaximum);
@@ -93,8 +88,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             max = new Maximum(3);
             max.Update(DateTime.Today, 1m);
             max.Update(DateTime.Today.AddSeconds(1), 2m);

@@ -173,8 +173,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public BigDecimal StockShortValue;
 
         ///Constructor
-        public TradierAccountTypeSettings()
-        { }
+        public TradierAccountTypeSettings() { }
     }
 
     /// <summary>
@@ -187,8 +186,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public BigDecimal DayTradeBuyingPower;
 
         /// Constructor
-        public TradierAccountTypeDayTrader()
-        { }
+        public TradierAccountTypeDayTrader() { }
     }
 
     /// <summary>
@@ -201,8 +199,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public int Sweep;
 
         /// Constructor
-        public TradierAccountTypeMargin()
-        { }
+        public TradierAccountTypeMargin() { }
     }
 
     /// <summary>
@@ -223,7 +220,6 @@ package com.quantconnect.lean.Brokerages.Tradier
         public BigDecimal UnsettledFunds;
 
         /// Constructor
-        public TradierAccountTypeCash()
-        { }
+        public TradierAccountTypeCash() { }
     }
 }

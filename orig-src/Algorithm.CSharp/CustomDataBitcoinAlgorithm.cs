@@ -33,8 +33,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             //Weather data we have is within these days:
             SetStartDate(2011, 9, 13);
             SetEndDate(DateTime.Now.Date.AddDays(-1));
@@ -43,7 +42,7 @@ package com.quantconnect.lean.Algorithm.Examples
             SetCash(100000);
 
             //Define the symbol and "type" of our generic data:
-            AddData<Bitcoin>("BTC");
+            AddData<Bitcoin>( "BTC");
         }
 
         /// <summary>
@@ -51,19 +50,16 @@ package com.quantconnect.lean.Algorithm.Examples
         /// "Weather" type below and fired into this event handler.
         /// </summary>
         /// <param name="data">One(1) Weather Object, streamed into our algorithm synchronised in time with our other data streams</param>
-        public void OnData(Bitcoin data)
-        {
+        public void OnData(Bitcoin data) {
             //If we don't have any weather "SHARES" -- invest"
-            if (!Portfolio.Invested)
-            {
+            if( !Portfolio.Invested) {
                 //Weather used as a tradable asset, like stocks, futures etc. 
-                if (data.Close != 0)
-                {
-                    Order("BTC", (Portfolio.Cash / Math.Abs(data.Close + 1)));
+                if( data.Close != 0) {
+                    Order( "BTC", (Portfolio.Cash / Math.Abs(data.Close + 1)));
                 }
-                Console.WriteLine("Buying BTC 'Shares': BTC: " + data.Close);
+                Console.WriteLine( "Buying BTC 'Shares': BTC: " + data.Close);
             }
-            Console.WriteLine("Time: " + Time.ToLongDateString() + " " + Time.ToLongTimeString() + data.Close.toString());
+            Console.WriteLine( "Time: " + Time.ToLongDateString() + " " + Time.ToLongTimeString() + data.Close.toString());
         }
     }
 }

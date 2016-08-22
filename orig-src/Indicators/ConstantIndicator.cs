@@ -30,7 +30,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets true since the ConstantIndicator is always ready to return the same value
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return true; }
         }
@@ -41,8 +41,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="value">The constant value to be returned</param>
         public ConstantIndicator( String name, BigDecimal value)
-            : base(name)
-        {
+            : base(name) {
             _value = value;
 
             // set this immediatelyso it always has the .Value property correctly set, the
@@ -55,16 +54,14 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(T input)
-        {
+        protected @Override BigDecimal ComputeNextValue(T input) {
             return _value;
         }
 
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             base.Reset();
 
             // re-initialize the current value, constant should ALWAYS return this value

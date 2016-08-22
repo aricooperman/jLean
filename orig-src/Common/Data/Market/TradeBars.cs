@@ -25,8 +25,7 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Creates a new instance of the <see cref="TradeBars"/> dictionary
         /// </summary>
-        public TradeBars()
-        {
+        public TradeBars() {
         }
 
         /// <summary>
@@ -34,8 +33,7 @@ package com.quantconnect.lean.Data.Market
         /// </summary>
         /// <param name="frontier">The time associated with the data in this Map</param>
         public TradeBars(DateTime frontier)
-            : base(frontier)
-        {
+            : base(frontier) {
         }
     }
 }

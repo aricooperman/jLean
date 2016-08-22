@@ -29,8 +29,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// </summary>
         private class TupleList<T1, T2, T3> : List<Tuple<T1, T2, T3>>
         {
-            public void Add(T1 item1, T2 item2, T3 item3)
-            {
+            public void Add(T1 item1, T2 item2, T3 item3) {
                 Add(new Tuple<T1, T2, T3>(item1, item2, item3));
             }
         }
@@ -142,10 +141,8 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// <summary>
         /// Static constructor for the <see cref="DukascopySymbolMapper"/> class
         /// </summary>
-        static DukascopySymbolMapper()
-        {
-            foreach (mapping in DukascopySymbolMappings)
-            {
+        static DukascopySymbolMapper() {
+            foreach (mapping in DukascopySymbolMappings) {
                 MapDukascopyToLean[mapping.Item1] = mapping.Item2;
                 MapLeanToDukascopy[mapping.Item2] = mapping.Item1;
                 PointValues[mapping.Item2] = mapping.Item3;
@@ -157,18 +154,17 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// </summary>
         /// <param name="symbol">A Lean symbol instance</param>
         /// <returns>The Dukascopy symbol</returns>
-        public String GetBrokerageSymbol(Symbol symbol)
-        {
-            if (symbol == null || symbol == Symbol.Empty || string.IsNullOrWhiteSpace(symbol.Value))
-                throw new ArgumentException("Invalid symbol: " + (symbol == null ? "null" : symbol.toString()));
+        public String GetBrokerageSymbol(Symbol symbol) {
+            if( symbol == null || symbol == Symbol.Empty || string.IsNullOrWhiteSpace(symbol.Value))
+                throw new ArgumentException( "Invalid symbol: " + (symbol == null ? "null" : symbol.toString()));
 
-            if (symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
-                throw new ArgumentException("Invalid security type: " + symbol.ID.SecurityType);
+            if( symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
+                throw new ArgumentException( "Invalid security type: " + symbol.ID.SecurityType);
 
             brokerageSymbol = ConvertLeanSymbolToDukascopySymbol(symbol.Value);
 
-            if (!IsKnownBrokerageSymbol(brokerageSymbol))
-                throw new ArgumentException("Unknown symbol: " + symbol.Value);
+            if( !IsKnownBrokerageSymbol(brokerageSymbol))
+                throw new ArgumentException( "Unknown symbol: " + symbol.Value);
 
             return brokerageSymbol;
         }
@@ -180,19 +176,18 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// <param name="securityType">The security type</param>
         /// <param name="market">The market</param>
         /// <returns>A new Lean Symbol instance</returns>
-        public Symbol GetLeanSymbol( String brokerageSymbol, SecurityType securityType, String market)
-        {
-            if ( String.IsNullOrWhiteSpace(brokerageSymbol))
-                throw new ArgumentException("Invalid Dukascopy symbol: " + brokerageSymbol);
+        public Symbol GetLeanSymbol( String brokerageSymbol, SecurityType securityType, String market) {
+            if(  String.IsNullOrWhiteSpace(brokerageSymbol))
+                throw new ArgumentException( "Invalid Dukascopy symbol: " + brokerageSymbol);
 
-            if (!IsKnownBrokerageSymbol(brokerageSymbol))
-                throw new ArgumentException("Unknown Dukascopy symbol: " + brokerageSymbol);
+            if( !IsKnownBrokerageSymbol(brokerageSymbol))
+                throw new ArgumentException( "Unknown Dukascopy symbol: " + brokerageSymbol);
 
-            if (securityType != SecurityType.Forex && securityType != SecurityType.Cfd)
-                throw new ArgumentException("Invalid security type: " + securityType);
+            if( securityType != SecurityType.Forex && securityType != SecurityType.Cfd)
+                throw new ArgumentException( "Invalid security type: " + securityType);
 
-            if (market != Market.Dukascopy)
-                throw new ArgumentException("Invalid market: " + market);
+            if( market != Market.Dukascopy)
+                throw new ArgumentException( "Invalid market: " + market);
 
             return Symbol.Create(ConvertDukascopySymbolToLeanSymbol(brokerageSymbol), GetBrokerageSecurityType(brokerageSymbol), Market.Dukascopy);
         }
@@ -202,8 +197,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// </summary>
         /// <param name="brokerageSymbol">The Dukascopy symbol</param>
         /// <returns>The security type</returns>
-        public SecurityType GetBrokerageSecurityType( String brokerageSymbol)
-        {
+        public SecurityType GetBrokerageSecurityType( String brokerageSymbol) {
             return (brokerageSymbol.Length == 6 && KnownCurrencies.Contains(brokerageSymbol.Substring(0, 3)) && KnownCurrencies.Contains(brokerageSymbol.Substring(3, 3)))
                 ? SecurityType.Forex
                 : SecurityType.Cfd;
@@ -214,11 +208,10 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// </summary>
         /// <param name="leanSymbol">The Lean symbol</param>
         /// <returns>The security type</returns>
-        public SecurityType GetLeanSecurityType( String leanSymbol)
-        {
+        public SecurityType GetLeanSecurityType( String leanSymbol) {
             String dukascopySymbol;
-            if (!MapLeanToDukascopy.TryGetValue(leanSymbol, out dukascopySymbol))
-                throw new ArgumentException("Unknown Lean symbol: " + leanSymbol);
+            if( !MapLeanToDukascopy.TryGetValue(leanSymbol, out dukascopySymbol))
+                throw new ArgumentException( "Unknown Lean symbol: " + leanSymbol);
 
             return GetBrokerageSecurityType(dukascopySymbol);
         }
@@ -228,8 +221,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// </summary>
         /// <param name="brokerageSymbol">The Dukascopy symbol</param>
         /// <returns>True if Dukascopy supports the symbol</returns>
-        public boolean IsKnownBrokerageSymbol( String brokerageSymbol)
-        {
+        public boolean IsKnownBrokerageSymbol( String brokerageSymbol) {
             return brokerageSymbol != null && MapDukascopyToLean.ContainsKey(brokerageSymbol);
         }
 
@@ -238,9 +230,8 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// </summary>
         /// <param name="symbol">The Lean symbol</param>
         /// <returns>True if Dukascopy supports the symbol</returns>
-        public boolean IsKnownLeanSymbol(Symbol symbol)
-        {
-            if (symbol == null || string.IsNullOrWhiteSpace(symbol.Value))
+        public boolean IsKnownLeanSymbol(Symbol symbol) {
+            if( symbol == null || string.IsNullOrWhiteSpace(symbol.Value))
                 return false;
 
             dukascopySymbol = ConvertLeanSymbolToDukascopySymbol(symbol.Value);
@@ -251,16 +242,14 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// <summary>
         /// Returns the point value for a Lean symbol
         /// </summary>
-        public int GetPointValue(Symbol symbol)
-        {
+        public int GetPointValue(Symbol symbol) {
             return PointValues[symbol.Value];
         }
 
         /// <summary>
         /// Converts a Dukascopy symbol to a Lean symbol string
         /// </summary>
-        private static String ConvertDukascopySymbolToLeanSymbol( String dukascopySymbol)
-        {
+        private static String ConvertDukascopySymbolToLeanSymbol( String dukascopySymbol) {
             String leanSymbol;
             return MapDukascopyToLean.TryGetValue(dukascopySymbol, out leanSymbol) ? leanSymbol : string.Empty;
         }
@@ -268,8 +257,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// <summary>
         /// Converts a Lean symbol String to a Dukascopy symbol
         /// </summary>
-        private static String ConvertLeanSymbolToDukascopySymbol( String leanSymbol)
-        {
+        private static String ConvertLeanSymbolToDukascopySymbol( String leanSymbol) {
             String dukascopySymbol;
             return MapLeanToDukascopy.TryGetValue(leanSymbol, out dukascopySymbol) ? dukascopySymbol : string.Empty;
         }

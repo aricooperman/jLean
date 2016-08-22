@@ -54,8 +54,7 @@ package com.quantconnect.lean.Securities.Equity
                 Securities.VolatilityModel.Null,
                 new SecurityMarginModel(2m),
                 new EquityDataFilter()
-                )
-        {
+                ) {
             Holdings = new EquityHolding(this);
         }
 
@@ -77,8 +76,7 @@ package com.quantconnect.lean.Securities.Equity
                 Securities.VolatilityModel.Null,
                 new SecurityMarginModel(2m),
                 new EquityDataFilter()
-                )
-        {
+                ) {
             Holdings = new EquityHolding(this);
         }
     }

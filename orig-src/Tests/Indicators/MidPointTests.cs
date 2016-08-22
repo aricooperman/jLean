@@ -21,17 +21,16 @@ package com.quantconnect.lean.Tests.Indicators
     [TestFixture]
     public class MidPointTests : CommonIndicatorTests<IndicatorDataPoint>
     {
-        protected override IndicatorBase<IndicatorDataPoint> CreateIndicator()
-        {
+        protected @Override IndicatorBase<IndicatorDataPoint> CreateIndicator() {
             return new MidPoint(5);
         }
 
-        protected override String TestFileName
+        protected @Override String TestFileName
         {
             get { return "spy_midpoint.txt"; }
         }
 
-        protected override String TestColumnName
+        protected @Override String TestColumnName
         {
             get { return "MIDPOINT_5"; }
         }

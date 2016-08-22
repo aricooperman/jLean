@@ -31,8 +31,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <summary>
         /// Initializes a new instance of the <see cref="SubscriptionCollection"/> class
         /// </summary>
-        public SubscriptionCollection()
-        {
+        public SubscriptionCollection() {
             _subscriptions = new ConcurrentMap<Symbol, ConcurrentMap<SubscriptionDataConfig, Subscription>>();
         }
 
@@ -41,11 +40,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="configuration">The subscription configuration to check for</param>
         /// <returns>True if a subscription with the specified configuration is found in this collection, false otherwise</returns>
-        public boolean Contains(SubscriptionDataConfig configuration)
-        {
+        public boolean Contains(SubscriptionDataConfig configuration) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
-            if (!_subscriptions.TryGetValue(configuration.Symbol, out dictionary))
-            {
+            if( !_subscriptions.TryGetValue(configuration.Symbol, out dictionary)) {
                 return false;
             }
 
@@ -57,8 +54,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="symbol">The symbol to check</param>
         /// <returns>True if any subscriptions are found with the specified symbol</returns>
-        public boolean ContainsAny(Symbol symbol)
-        {
+        public boolean ContainsAny(Symbol symbol) {
             return _subscriptions.ContainsKey(symbol);
         }
 
@@ -68,11 +64,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="subscription">The subscription to add</param>
         /// <returns>True if the subscription is successfully added, false otherwise</returns>
-        public boolean TryAdd(Subscription subscription)
-        {
+        public boolean TryAdd(Subscription subscription) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
-            if (!_subscriptions.TryGetValue(subscription.Configuration.Symbol, out dictionary))
-            {
+            if( !_subscriptions.TryGetValue(subscription.Configuration.Symbol, out dictionary)) {
                 dictionary = new ConcurrentMap<SubscriptionDataConfig, Subscription>();
                 _subscriptions[subscription.Configuration.Symbol] = dictionary;
             }
@@ -86,11 +80,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="configuration">The subscription's configuration</param>
         /// <param name="subscription">The subscription matching the configuration, null if not found</param>
         /// <returns>True if the subscription is successfully retrieved, false otherwise</returns>
-        public boolean TryGetValue(SubscriptionDataConfig configuration, out Subscription subscription)
-        {
+        public boolean TryGetValue(SubscriptionDataConfig configuration, out Subscription subscription) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
-            if (!_subscriptions.TryGetValue(configuration.Symbol, out dictionary))
-            {
+            if( !_subscriptions.TryGetValue(configuration.Symbol, out dictionary)) {
                 subscription = null;
                 return false;
             }
@@ -104,11 +96,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="symbol">The symbol of the subscription's configuration</param>
         /// <param name="subscriptions">The subscriptions matching the symbol, null if not found</param>
         /// <returns>True if the subscriptions are successfully retrieved, false otherwise</returns>
-        public boolean TryGetAll(Symbol symbol, out ICollection<Subscription> subscriptions)
-        {
+        public boolean TryGetAll(Symbol symbol, out ICollection<Subscription> subscriptions) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
-            if (!_subscriptions.TryGetValue(symbol, out dictionary))
-            {
+            if( !_subscriptions.TryGetValue(symbol, out dictionary)) {
                 subscriptions = null;
                 return false;
             }
@@ -123,11 +113,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="configuration">The configuration of the subscription to remove</param>
         /// <param name="subscription">The removed subscription, null if not found.</param>
         /// <returns>True if the subscription is successfully removed, false otherwise</returns>
-        public boolean TryRemove(SubscriptionDataConfig configuration, out Subscription subscription)
-        {
+        public boolean TryRemove(SubscriptionDataConfig configuration, out Subscription subscription) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
-            if (!_subscriptions.TryRemove(configuration.Symbol, out dictionary))
-            {
+            if( !_subscriptions.TryRemove(configuration.Symbol, out dictionary)) {
                 subscription = null;
                 return false;
             }
@@ -141,11 +129,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="symbol">The symbol of the subscriptions to remove</param>
         /// <param name="subscriptions">The removed subscriptions</param>
         /// <returns></returns>
-        public boolean TryRemoveAll(Symbol symbol, out ICollection<Subscription> subscriptions)
-        {
+        public boolean TryRemoveAll(Symbol symbol, out ICollection<Subscription> subscriptions) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
-            if (!_subscriptions.TryRemove(symbol, out dictionary))
-            {
+            if( !_subscriptions.TryRemove(symbol, out dictionary)) {
                 subscriptions = null;
                 return false;
             }
@@ -160,13 +146,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <returns>
         /// An enumerator that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<Subscription> GetEnumerator()
-        {
-            foreach (subscriptionsBySymbol in _subscriptions)
-            {
+        public IEnumerator<Subscription> GetEnumerator() {
+            foreach (subscriptionsBySymbol in _subscriptions) {
                 subscriptionsByConfig = subscriptionsBySymbol.Value;
-                foreach (kvp in subscriptionsByConfig)
-                {
+                foreach (kvp in subscriptionsByConfig) {
                     subscription = kvp.Value;
                     yield return subscription;
                 }
@@ -179,8 +162,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+        IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
     }

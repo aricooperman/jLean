@@ -26,8 +26,7 @@ package com.quantconnect.lean.Securities.Option
         /// </summary>
         /// <param name="security">The option security being held</param>
         public OptionHolding(Security security)
-            : base(security)
-        {
+            : base(security) {
         }
     }
 }

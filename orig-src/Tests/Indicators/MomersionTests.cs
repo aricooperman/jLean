@@ -52,8 +52,7 @@ package com.quantconnect.lean.Tests.Indicators
         #endregion Array input
 
         [Test]
-        public void OnlyFullPeriodTest()
-        {
+        public void OnlyFullPeriodTest() {
             static final int fullPeriod = 10;
             momersion = new MomersionIndicator(fullPeriod);
 
@@ -61,8 +60,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void MinPeriodTest()
-        {
+        public void MinPeriodTest() {
             static final int minPeriod = 7;
             static final int fullPeriod = 20;
             momersion = new MomersionIndicator(minPeriod, fullPeriod);
@@ -71,8 +69,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             momersion = new MomersionIndicator(7, 20);
 
             RunTestIndicator(momersion, _expectedMinPeriod);
@@ -84,18 +81,16 @@ package com.quantconnect.lean.Tests.Indicators
             TestHelper.AssertIndicatorIsInDefaultState(momersion);
         }
 
-        private void RunTestIndicator(MomersionIndicator momersion, decimal[] expected)
-        {
+        private void RunTestIndicator(MomersionIndicator momersion, decimal[] expected) {
             time = DateTime.Now;
             actual = new decimal[_prices.Length];
 
-            for (i = 0; i < _prices.Length; i++)
-            {
+            for (i = 0; i < _prices.Length; i++) {
                 momersion.Update(new IndicatorDataPoint(time, _prices[i]));
                 momersionValue = Math.Round(momersion.Current.Value, 2);
                 actual[i] = momersionValue;
 
-                Console.WriteLine("Bar : {0} | {1}, Is ready? {2}", i, momersion, momersion.IsReady);
+                Console.WriteLine( "Bar : %1$s | %2$s, Is ready? %3$s", i, momersion, momersion.IsReady);
                 time = time.AddMinutes(1);
             }
             Assert.AreEqual(expected, actual);

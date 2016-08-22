@@ -156,8 +156,7 @@ package com.quantconnect.lean.Data
         /// <param name="time">The timestamp for this slice of data</param>
         /// <param name="data">The raw data in this slice</param>
         public Slice(DateTime time, IEnumerable<BaseData> data)
-            : this(time, data, null, null, null, null, null, null, null, null)
-        {
+            : this(time, data, null, null, null, null, null, null, null, null ) {
         }
 
         /// <summary>
@@ -174,8 +173,7 @@ package com.quantconnect.lean.Data
         /// <param name="delistings">The delistings for this slice</param>
         /// <param name="symbolChanges">The symbol changed events for this slice</param>
         /// <param name="hasData">true if this slice contains data</param>
-        public Slice(DateTime time, IEnumerable<BaseData> data, TradeBars tradeBars, QuoteBars quoteBars, Ticks ticks, OptionChains optionChains, Splits splits, Dividends dividends, Delistings delistings, SymbolChangedEvents symbolChanges, bool? hasData = null)
-        {
+        public Slice(DateTime time, IEnumerable<BaseData> data, TradeBars tradeBars, QuoteBars quoteBars, Ticks ticks, OptionChains optionChains, Splits splits, Dividends dividends, Delistings delistings, SymbolChangedEvents symbolChanges, bool? hasData = null ) {
             Time = time;
 
             _dataByType = new Map<Type, Lazy<object>>();
@@ -210,11 +208,10 @@ package com.quantconnect.lean.Data
             get
             {
                 SymbolData value;
-                if (_data.Value.TryGetValue(symbol, out value))
-                {
+                if( _data.Value.TryGetValue(symbol, out value)) {
                     return value.GetData();
                 }
-                throw new KeyNotFoundException( String.format("'{0}' wasn't found in the Slice object, likely because there was no-data at this moment in time and it wasn't possible to fillforward historical data. Please check the data exists before accessing it with data.ContainsKey(\"{0}\")", symbol));
+                throw new KeyNotFoundException( String.format( "'%1$s' wasn't found in the Slice object, likely because there was no-data at this moment in time and it wasn't possible to fillforward historical data. Please check the data exists before accessing it with data.ContainsKey(\"%1$s\")", symbol));
             }
         }
 
@@ -227,10 +224,8 @@ package com.quantconnect.lean.Data
             where T : BaseData
         {
             Lazy<object> dictionary;
-            if (!_dataByType.TryGetValue(typeof(T), out dictionary))
-            {
-                if (typeof(T) == typeof(Tick))
-                {
+            if( !_dataByType.TryGetValue(typeof(T), out dictionary)) {
+                if( typeof(T) == typeof(Tick)) {
                     dictionary = new Lazy<object>(() => new DataMap<T>(_data.Value.Values.SelectMany<dynamic, dynamic>(x => x.GetData()).OfType<T>(), x => x.Symbol));
                 }
                 else
@@ -260,8 +255,7 @@ package com.quantconnect.lean.Data
         /// </summary>
         /// <param name="symbol">The symbol we seek data for</param>
         /// <returns>True if this instance contains data for the symbol, false otherwise</returns>
-        public boolean ContainsKey(Symbol symbol)
-        {
+        public boolean ContainsKey(Symbol symbol) {
             return _data.Value.ContainsKey(symbol);
         }
 
@@ -271,12 +265,10 @@ package com.quantconnect.lean.Data
         /// <param name="symbol">The symbol we want data for</param>
         /// <param name="data">The data for the specifed symbol, or null if no data was found</param>
         /// <returns>True if data was found, false otherwise</returns>
-        public boolean TryGetValue(Symbol symbol, out dynamic data)
-        {
+        public boolean TryGetValue(Symbol symbol, out dynamic data) {
             data = null;
             SymbolData symbolData;
-            if (_data.Value.TryGetValue(symbol, out symbolData))
-            {
+            if( _data.Value.TryGetValue(symbol, out symbolData)) {
                 data = symbolData.GetData();
                 return data != null;
             }
@@ -286,20 +278,16 @@ package com.quantconnect.lean.Data
         /// <summary>
         /// Produces the dynamic data dictionary from the input data
         /// </summary>
-        private static DataMap<SymbolData> CreateDynamicDataDictionary(IEnumerable<BaseData> data)
-        {
+        private static DataMap<SymbolData> CreateDynamicDataDictionary(IEnumerable<BaseData> data) {
             allData = new DataMap<SymbolData>();
-            foreach (datum in data)
-            {
+            foreach (datum in data) {
                 SymbolData symbolData;
-                if (!allData.TryGetValue(datum.Symbol, out symbolData))
-                {
+                if( !allData.TryGetValue(datum.Symbol, out symbolData)) {
                     symbolData = new SymbolData(datum.Symbol);
                     allData[datum.Symbol] = symbolData;
                 }
 
-                switch (datum.DataType)
-                {
+                switch (datum.DataType) {
                     case MarketDataType.Base:
                         symbolData.Type = SubscriptionType.Custom;
                         symbolData.Custom = datum;
@@ -329,12 +317,10 @@ package com.quantconnect.lean.Data
         /// <summary>
         /// Returns the input ticks if non-null, otherwise produces one fom the dynamic data dictionary
         /// </summary>
-        private Ticks CreateTicksCollection(Ticks ticks)
-        {
-            if (ticks != null) return ticks;
+        private Ticks CreateTicksCollection(Ticks ticks) {
+            if( ticks != null ) return ticks;
             ticks = new Ticks(Time);
-            foreach (listTicks in _data.Value.Values.Select(x => x.GetData()).OfType<List<Tick>>().Where(x => x.Count != 0))
-            {
+            foreach (listTicks in _data.Value.Values.Select(x => x.GetData()).OfType<List<Tick>>().Where(x => x.Count != 0)) {
                 ticks[listTicks[0].Symbol] = listTicks;
             }
             return ticks;
@@ -351,13 +337,12 @@ package com.quantconnect.lean.Data
             where T : DataMap<TItem>, new()
             where TItem : BaseData
         {
-            if (collection != null) return collection;
+            if( collection != null ) return collection;
             collection = new T();
 #pragma warning disable 618 // This assignment is left here until the Time property is removed.
             collection.Time = Time;
 #pragma warning restore 618
-            foreach (item in _data.Value.Values.Select(x => x.GetData()).OfType<TItem>())
-            {
+            foreach (item in _data.Value.Values.Select(x => x.GetData()).OfType<TItem>()) {
                 collection[item.Symbol] = item;
             }
             return collection;
@@ -370,8 +355,7 @@ package com.quantconnect.lean.Data
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public IEnumerator<KeyValuePair<Symbol, BaseData>> GetEnumerator()
-        {
+        public IEnumerator<KeyValuePair<Symbol, BaseData>> GetEnumerator() {
             return GetKeyValuePairEnumerable().GetEnumerator();
         }
 
@@ -382,13 +366,11 @@ package com.quantconnect.lean.Data
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+        IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
-        private IEnumerable<KeyValuePair<Symbol, BaseData>> GetKeyValuePairEnumerable()
-        {
+        private IEnumerable<KeyValuePair<Symbol, BaseData>> GetKeyValuePairEnumerable() {
             // this will not enumerate auxilliary data!
             return _data.Value.Select(kvp => new KeyValuePair<Symbol, BaseData>(kvp.Key, kvp.Value.GetData()));
         }
@@ -405,17 +387,14 @@ package com.quantconnect.lean.Data
             public readonly List<Tick> Ticks;
             public readonly List<BaseData> AuxilliaryData;
 
-            public SymbolData(Symbol symbol)
-            {
+            public SymbolData(Symbol symbol) {
                 Symbol = symbol;
                 Ticks = new List<Tick>();
                 AuxilliaryData = new List<BaseData>();
             }
 
-            public dynamic GetData()
-            {
-                switch (Type)
-                {
+            public dynamic GetData() {
+                switch (Type) {
                     case SubscriptionType.TradeBar:
                         return TradeBar;
                     case SubscriptionType.Tick:

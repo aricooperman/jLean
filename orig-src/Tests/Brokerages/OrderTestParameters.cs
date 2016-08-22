@@ -27,18 +27,15 @@ package com.quantconnect.lean.Tests.Brokerages
         public Symbol Symbol { get; private set; }
         public SecurityType SecurityType { get; private set; }
 
-        protected OrderTestParameters(Symbol symbol)
-        {
+        protected OrderTestParameters(Symbol symbol) {
             Symbol = symbol;
             SecurityType = symbol.ID.SecurityType;
         }
 
-        public MarketOrder CreateLongMarketOrder(int quantity)
-        {
+        public MarketOrder CreateLongMarketOrder(int quantity) {
             return new MarketOrder(Symbol, Math.Abs(quantity), DateTime.Now);
         }
-        public MarketOrder CreateShortMarketOrder(int quantity)
-        {
+        public MarketOrder CreateShortMarketOrder(int quantity) {
             return new MarketOrder(Symbol, -Math.Abs(quantity), DateTime.Now);
         }
 

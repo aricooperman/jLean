@@ -71,8 +71,7 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Gets a <see cref="SecurityExchangeHours"/> instance that is always open
         /// </summary>
-        public static SecurityExchangeHours AlwaysOpen(ZoneId timeZone)
-        {
+        public static SecurityExchangeHours AlwaysOpen(ZoneId timeZone) {
             dayOfWeeks = Enum.GetValues(typeof (DayOfWeek)).OfType<DayOfWeek>();
             return new SecurityExchangeHours(timeZone,
                 Enumerable.Empty<DateTime>(),
@@ -86,8 +85,7 @@ package com.quantconnect.lean.Securities
         /// <param name="timeZone">The time zone the dates and hours are represented in</param>
         /// <param name="holidayDates">The dates this exchange is closed for holiday</param>
         /// <param name="marketHoursForEachDayOfWeek">The exchange's schedule for each day of the week</param>
-        public SecurityExchangeHours(ZoneId timeZone, IEnumerable<DateTime> holidayDates, IReadOnlyMap<DayOfWeek, LocalMarketHours> marketHoursForEachDayOfWeek)
-        {
+        public SecurityExchangeHours(ZoneId timeZone, IEnumerable<DateTime> holidayDates, IReadOnlyMap<DayOfWeek, LocalMarketHours> marketHoursForEachDayOfWeek) {
             _timeZone = timeZone;
             _holidays = holidayDates.Select(x => x.Date.Ticks).ToHashSet();
             // make a copy of the dictionary for internal use
@@ -108,10 +106,8 @@ package com.quantconnect.lean.Securities
         /// <param name="localDateTime">The time to check represented as a local time</param>
         /// <param name="extendedMarket">True to use the extended market hours, false for just regular market hours</param>
         /// <returns>True if the exchange is considered open at the specified time, false otherwise</returns>
-        public boolean IsOpen(DateTime localDateTime, boolean extendedMarket)
-        {
-            if (_holidays.Contains(localDateTime.Date.Ticks))
-            {
+        public boolean IsOpen(DateTime localDateTime, boolean extendedMarket) {
+            if( _holidays.Contains(localDateTime.Date.Ticks)) {
                 return false;
             }
 
@@ -125,10 +121,8 @@ package com.quantconnect.lean.Securities
         /// <param name="endLocalDateTime">The end of the interval in local time</param>
         /// <param name="extendedMarket">True to use the extended market hours, false for just regular market hours</param>
         /// <returns>True if the exchange is considered open at the specified time, false otherwise</returns>
-        public boolean IsOpen(DateTime startLocalDateTime, DateTime endLocalDateTime, boolean extendedMarket)
-        {
-            if (startLocalDateTime == endLocalDateTime)
-            {
+        public boolean IsOpen(DateTime startLocalDateTime, DateTime endLocalDateTime, boolean extendedMarket) {
+            if( startLocalDateTime == endLocalDateTime) {
                 // if we're testing an instantaneous moment, use the other function
                 return IsOpen(startLocalDateTime, extendedMarket);
             }
@@ -138,12 +132,10 @@ package com.quantconnect.lean.Securities
             end = new DateTime(Math.Min(endLocalDateTime.Ticks, start.Date.Ticks + Time.OneDay.Ticks - 1));
             do
             {
-                if (!_holidays.Contains(start.Date.Ticks))
-                {
+                if( !_holidays.Contains(start.Date.Ticks)) {
                     // check to see if the market is open
                     marketHours = GetMarketHours(start.DayOfWeek);
-                    if (marketHours.IsOpen(start.TimeOfDay, end.TimeOfDay, extendedMarket))
-                    {
+                    if( marketHours.IsOpen(start.TimeOfDay, end.TimeOfDay, extendedMarket)) {
                         return true;
                     }
                 }
@@ -161,11 +153,9 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="localDateTime">The date time to check if the day is open</param>
         /// <returns>True if the exchange will be open on the specified date, false otherwise</returns>
-        public boolean IsDateOpen(DateTime localDateTime)
-        {
+        public boolean IsDateOpen(DateTime localDateTime) {
             marketHours = GetMarketHours(localDateTime.DayOfWeek);
-            if (marketHours.IsClosedAllDay)
-            {
+            if( marketHours.IsClosedAllDay) {
                 // if we don't have hours for this day then we're not open
                 return false;
             }
@@ -178,8 +168,7 @@ package com.quantconnect.lean.Securities
         /// Helper to access the market hours field based on the day of week
         /// </summary>
         /// <param name="localDateTime">The local date time to retrieve market hours for</param>
-        public LocalMarketHours GetMarketHours(DateTime localDateTime)
-        {
+        public LocalMarketHours GetMarketHours(DateTime localDateTime) {
             return GetMarketHours(localDateTime.DayOfWeek);
         }
 
@@ -189,21 +178,17 @@ package com.quantconnect.lean.Securities
         /// <param name="localDateTime">The time to begin searching for market open (non-inclusive)</param>
         /// <param name="extendedMarket">True to include extended market hours in the search</param>
         /// <returns>The next market opening date time following the specified local date time</returns>
-        public DateTime GetNextMarketOpen(DateTime localDateTime, boolean extendedMarket)
-        {
+        public DateTime GetNextMarketOpen(DateTime localDateTime, boolean extendedMarket) {
             time = localDateTime;
             oneWeekLater = localDateTime.Date.AddDays(15);
             do
             {
                 marketHours = GetMarketHours(time.DayOfWeek);
-                if (!marketHours.IsClosedAllDay && !_holidays.Contains(time.Ticks))
-                {
+                if( !marketHours.IsClosedAllDay && !_holidays.Contains(time.Ticks)) {
                     marketOpenTimeOfDay = marketHours.GetMarketOpen(time.TimeOfDay, extendedMarket);
-                    if (marketOpenTimeOfDay.HasValue)
-                    {
+                    if( marketOpenTimeOfDay.HasValue) {
                         marketOpen = time.Date + marketOpenTimeOfDay.Value;
-                        if (localDateTime < marketOpen)
-                        {
+                        if( localDateTime < marketOpen) {
                             return marketOpen;
                         }
                     }
@@ -213,7 +198,7 @@ package com.quantconnect.lean.Securities
             }
             while (time < oneWeekLater);
 
-            throw new Exception("Unable to locate next market open within two weeks.");
+            throw new Exception( "Unable to locate next market open within two weeks.");
         }
 
         /// <summary>
@@ -222,21 +207,17 @@ package com.quantconnect.lean.Securities
         /// <param name="localDateTime">The time to begin searching for market close (non-inclusive)</param>
         /// <param name="extendedMarket">True to include extended market hours in the search</param>
         /// <returns>The next market closing date time following the specified local date time</returns>
-        public DateTime GetNextMarketClose(DateTime localDateTime, boolean extendedMarket)
-        {
+        public DateTime GetNextMarketClose(DateTime localDateTime, boolean extendedMarket) {
             time = localDateTime;
             oneWeekLater = localDateTime.Date.AddDays(15);
             do
             {
                 marketHours = GetMarketHours(time.DayOfWeek);
-                if (!marketHours.IsClosedAllDay && !_holidays.Contains(time.Ticks))
-                {
+                if( !marketHours.IsClosedAllDay && !_holidays.Contains(time.Ticks)) {
                     marketCloseTimeOfDay = marketHours.GetMarketClose(time.TimeOfDay, extendedMarket);
-                    if (marketCloseTimeOfDay.HasValue)
-                    {
+                    if( marketCloseTimeOfDay.HasValue) {
                         marketClose = time.Date + marketCloseTimeOfDay.Value;
-                        if (localDateTime < marketClose)
-                        {
+                        if( localDateTime < marketClose) {
                             return marketClose;
                         }
                     }
@@ -246,17 +227,15 @@ package com.quantconnect.lean.Securities
             }
             while (time < oneWeekLater);
 
-            throw new Exception("Unable to locate next market close within two weeks.");
+            throw new Exception( "Unable to locate next market close within two weeks.");
         }
 
         /// <summary>
         /// Helper to extract market hours from the <see cref="_openHoursByDay"/> dictionary, filling
         /// in Closed instantes when not present
         /// </summary>
-        private void SetMarketHoursForDay(DayOfWeek dayOfWeek, out LocalMarketHours localMarketHoursForDay)
-        {
-            if (!_openHoursByDay.TryGetValue(dayOfWeek, out localMarketHoursForDay))
-            {
+        private void SetMarketHoursForDay(DayOfWeek dayOfWeek, out LocalMarketHours localMarketHoursForDay) {
+            if( !_openHoursByDay.TryGetValue(dayOfWeek, out localMarketHoursForDay)) {
                 // assign to our dictionary that we're closed this day, as well as our local field
                 _openHoursByDay[dayOfWeek] = localMarketHoursForDay = LocalMarketHours.ClosedAllDay(dayOfWeek);
             }
@@ -265,10 +244,8 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Helper to access the market hours field based on the day of week
         /// </summary>
-        private LocalMarketHours GetMarketHours(DayOfWeek day)
-        {
-            switch (day)
-            {
+        private LocalMarketHours GetMarketHours(DayOfWeek day) {
+            switch (day) {
                 case DayOfWeek.Sunday:
                     return _sunday;
                 case DayOfWeek.Monday:
@@ -284,7 +261,7 @@ package com.quantconnect.lean.Securities
                 case DayOfWeek.Saturday:
                     return _saturday;
                 default:
-                    throw new ArgumentOutOfRangeException("day", day, null);
+                    throw new ArgumentOutOfRangeException( "day", day, null );
             }
         }
     }

@@ -31,8 +31,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         // initialize our changes to nothing
         SecurityChanges _changes = SecurityChanges.None;
 
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             UniverseSettings.Resolution = Resolution.Daily;
 
             SetStartDate(2014, 01, 01);
@@ -45,8 +44,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         // sort the data by daily dollar volume and take the top 'NumberOfSymbols'
-        public static IEnumerable<Symbol> CoarseSelectionFunction(IEnumerable<CoarseFundamental> coarse)
-        {
+        public static IEnumerable<Symbol> CoarseSelectionFunction(IEnumerable<CoarseFundamental> coarse) {
             // sort descending by daily dollar volume
             sortedByDollarVolume = coarse.OrderByDescending(x => x.DollarVolume);
 
@@ -58,23 +56,19 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         //Data Event Handler: New data arrives here. "TradeBars" type is a dictionary of strings so you can access it by symbol.
-        public void OnData(TradeBars data)
-        {
+        public void OnData(TradeBars data) {
             // if we have no changes, do nothing
-            if (_changes == SecurityChanges.None) return;
+            if( _changes == SecurityChanges.None) return;
 
             // liquidate removed securities
-            foreach (security in _changes.RemovedSecurities)
-            {
-                if (security.Invested)
-                {
+            foreach (security in _changes.RemovedSecurities) {
+                if( security.Invested) {
                     Liquidate(security.Symbol);
                 }
             }
 
             // we want 20% allocation in each security in our universe
-            foreach (security in _changes.AddedSecurities)
-            {
+            foreach (security in _changes.AddedSecurities) {
                 SetHoldings(security.Symbol, 0.2m);
             }
 
@@ -82,8 +76,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         // this event fires whenever we have changes to our universe
-        public override void OnSecuritiesChanged(SecurityChanges changes)
-        {
+        public @Override void OnSecuritiesChanged(SecurityChanges changes) {
             _changes = changes;
         }
     }

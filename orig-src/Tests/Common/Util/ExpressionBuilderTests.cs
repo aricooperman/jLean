@@ -24,8 +24,7 @@ package com.quantconnect.lean.Tests.Common.Util
     public class ExpressionBuilderTests
     {
         [Test]
-        public void MakesPropertyOrFieldSelectorThatWorks()
-        {
+        public void MakesPropertyOrFieldSelectorThatWorks() {
             static final String DayOfYear = "DayOfYear";
             Expression<Func<DateTime,Integer>> expected = x => x.DayOfYear;
 
@@ -36,8 +35,7 @@ package com.quantconnect.lean.Tests.Common.Util
             Assert.AreEqual(expected.Compile().Invoke(now), actual.Compile().Invoke(now));
         }
         [Test]
-        public void NonGenericMakesPropertyOrFieldSelectorThatWorks()
-        {
+        public void NonGenericMakesPropertyOrFieldSelectorThatWorks() {
             static final String DayOfYear = "DayOfYear";
             Expression<Func<DateTime,Integer>> expected = x => x.DayOfYear;
 

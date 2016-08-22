@@ -25,8 +25,7 @@ package com.quantconnect.lean.Tests.Common.Data
     public class BaseDataConsolidatorTests
     {
         [Test]
-        public void AggregatesNewTradeBarProperly()
-        {
+        public void AggregatesNewTradeBarProperly() {
             TradeBar newTradeBar = null;
             creator = new BaseDataConsolidator(4);
             creator.DataConsolidated += (sender, tradeBar) =>
@@ -86,8 +85,7 @@ package com.quantconnect.lean.Tests.Common.Data
 
 
         [Test]
-        public void AggregatesPeriodInCountModeWithHourlyData()
-        {
+        public void AggregatesPeriodInCountModeWithHourlyData() {
             TradeBar consolidated = null;
             consolidator = new BaseDataConsolidator(2);
             consolidator.DataConsolidated += (sender, bar) =>
@@ -103,7 +101,7 @@ package com.quantconnect.lean.Tests.Common.Data
             Assert.IsNotNull(consolidated);
 
             // sadly the first emit will be off by the data resolution since we 'swallow' a point, so to speak.
-            Assert.AreEqual(TimeSpan.FromHours(1), consolidated.Period);
+            Assert.AreEqual(Duration.ofHours(1), consolidated.Period);
             consolidated = null;
 
             consolidator.Update(new Tick { Time = reference.AddHours(2) });
@@ -112,7 +110,7 @@ package com.quantconnect.lean.Tests.Common.Data
             consolidator.Update(new Tick { Time = reference.AddHours(3) });
             Assert.IsNotNull(consolidated);
 
-            Assert.AreEqual(TimeSpan.FromHours(2), consolidated.Period);
+            Assert.AreEqual(Duration.ofHours(2), consolidated.Period);
             consolidated = null;
 
             consolidator.Update(new Tick { Time = reference.AddHours(4) });
@@ -121,14 +119,13 @@ package com.quantconnect.lean.Tests.Common.Data
             consolidator.Update(new Tick { Time = reference.AddHours(5) });
             Assert.IsNotNull(consolidated);
 
-            Assert.AreEqual(TimeSpan.FromHours(2), consolidated.Period);
+            Assert.AreEqual(Duration.ofHours(2), consolidated.Period);
         }
 
         [Test]
-        public void AggregatesPeriodInPeriodModeWithDailyData()
-        {
+        public void AggregatesPeriodInPeriodModeWithDailyData() {
             TradeBar consolidated = null;
-            consolidator = new BaseDataConsolidator(TimeSpan.FromDays(1));
+            consolidator = new BaseDataConsolidator(Duration.ofDays(1));
             consolidator.DataConsolidated += (sender, bar) =>
             {
                 consolidated = bar;
@@ -140,24 +137,23 @@ package com.quantconnect.lean.Tests.Common.Data
 
             consolidator.Update(new Tick { Time = reference.AddDays(1) });
             Assert.IsNotNull(consolidated);
-            Assert.AreEqual(TimeSpan.FromDays(1), consolidated.Period);
+            Assert.AreEqual(Duration.ofDays(1), consolidated.Period);
             consolidated = null;
 
             consolidator.Update(new Tick { Time = reference.AddDays(2) });
             Assert.IsNotNull(consolidated);
-            Assert.AreEqual(TimeSpan.FromDays(1), consolidated.Period);
+            Assert.AreEqual(Duration.ofDays(1), consolidated.Period);
             consolidated = null;
 
             consolidator.Update(new Tick { Time = reference.AddDays(3) });
             Assert.IsNotNull(consolidated);
-            Assert.AreEqual(TimeSpan.FromDays(1), consolidated.Period);
+            Assert.AreEqual(Duration.ofDays(1), consolidated.Period);
         }
 
         [Test]
-        public void AggregatesPeriodInPeriodModeWithDailyDataAndRoundedTime()
-        {
+        public void AggregatesPeriodInPeriodModeWithDailyDataAndRoundedTime() {
             TradeBar consolidated = null;
-            consolidator = new BaseDataConsolidator(TimeSpan.FromDays(1));
+            consolidator = new BaseDataConsolidator(Duration.ofDays(1));
             consolidator.DataConsolidated += (sender, bar) =>
             {
                 consolidated = bar;
@@ -169,19 +165,19 @@ package com.quantconnect.lean.Tests.Common.Data
 
             consolidator.Update(new Tick { Time = reference.AddDays(1).AddMinutes(1) });
             Assert.IsNotNull(consolidated);
-            Assert.AreEqual(TimeSpan.FromDays(1), consolidated.Period);
+            Assert.AreEqual(Duration.ofDays(1), consolidated.Period);
             Assert.AreEqual(reference, consolidated.Time);
             consolidated = null;
 
             consolidator.Update(new Tick { Time = reference.AddDays(2).AddHours(1).AddMinutes(1).AddSeconds(1) });
             Assert.IsNotNull(consolidated);
-            Assert.AreEqual(TimeSpan.FromDays(1), consolidated.Period);
+            Assert.AreEqual(Duration.ofDays(1), consolidated.Period);
             Assert.AreEqual(reference.AddDays(1), consolidated.Time);
             consolidated = null;
 
             consolidator.Update(new Tick { Time = reference.AddDays(3) });
             Assert.IsNotNull(consolidated);
-            Assert.AreEqual(TimeSpan.FromDays(1), consolidated.Period);
+            Assert.AreEqual(Duration.ofDays(1), consolidated.Period);
             Assert.AreEqual(reference.AddDays(2), consolidated.Time);
         }
     }

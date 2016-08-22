@@ -39,8 +39,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="config">The subscription's configuration</param>
         /// <param name="date">The date this factory was produced to read data for</param>
         /// <param name="isLiveMode">True if we're in live mode, false for backtesting</param>
-        public CollectionSubscriptionDataSourceReader(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-        {
+        public CollectionSubscriptionDataSourceReader(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             _date = date;
             _config = config;
             _isLiveMode = isLiveMode;
@@ -64,14 +63,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="source">The source to be read</param>
         /// <returns>An <see cref="IEnumerable{BaseData}"/> that contains the data in the source</returns>
-        public IEnumerable<BaseData> Read(SubscriptionDataSource source)
-        {
+        public IEnumerable<BaseData> Read(SubscriptionDataSource source) {
             IStreamReader reader = null;
             instances = new BaseDataCollection();
             try
             {
-                switch (source.TransportMedium)
-                {
+                switch (source.TransportMedium) {
                     default:
                     case SubscriptionTransportMedium.Rest:
                         reader = new RestSubscriptionStreamReader(source.Source);
@@ -90,24 +87,21 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     raw = reader.ReadLine();
                     result = _factory.Reader(_config, raw, _date, _isLiveMode);
                     instances = result as BaseDataCollection;
-                    if (instances == null)
-                    {
-                        OnInvalidSource(source, new Exception("Reader must generate a BaseDataCollection with the FileFormat.Collection"));
+                    if( instances == null ) {
+                        OnInvalidSource(source, new Exception( "Reader must generate a BaseDataCollection with the FileFormat.Collection"));
                     }
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     OnReaderError(raw, err);
                 }
 
-                foreach (instance in instances.Data)
-                {
+                foreach (instance in instances.Data) {
                     yield return instance;
                 }
             }
             finally
             {
-                if (reader != null)
+                if( reader != null )
                     reader.Dispose();
             }
         }
@@ -117,10 +111,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="line">The line that caused the exception</param>
         /// <param name="exception">The exception that was caught</param>
-        private void OnReaderError( String line, Exception exception)
-        {
+        private void OnReaderError( String line, Exception exception) {
             handler = ReaderError;
-            if (handler != null) handler(this, new ReaderErrorEventArgs(line, exception));
+            if( handler != null ) handler(this, new ReaderErrorEventArgs(line, exception));
         }
 
         /// <summary>
@@ -128,10 +121,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="source">The <see cref="SubscriptionDataSource"/> that was invalid</param>
         /// <param name="exception">The exception if one was raised, otherwise null</param>
-        private void OnInvalidSource(SubscriptionDataSource source, Exception exception)
-        {
+        private void OnInvalidSource(SubscriptionDataSource source, Exception exception) {
             handler = InvalidSource;
-            if (handler != null) handler(this, new InvalidSourceEventArgs(source, exception));
+            if( handler != null ) handler(this, new InvalidSourceEventArgs(source, exception));
         }
     }
 }

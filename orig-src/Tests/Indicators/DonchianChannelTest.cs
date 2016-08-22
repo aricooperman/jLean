@@ -22,27 +22,24 @@ package com.quantconnect.lean.Tests.Indicators
     public class DonchianChannelTest
     {
         [Test]
-        public void CompareAgainstExternalDataForUpperBand()
-        {
-            donchianChannel = new DonchianChannel("dch", 50);
+        public void CompareAgainstExternalDataForUpperBand() {
+            donchianChannel = new DonchianChannel( "dch", 50);
 
             TestHelper.TestIndicator(donchianChannel, "spy_with_don50.txt", "Donchian Channels 50 Top",
                     (ind, expected) => Assert.AreEqual(expected, (double)((DonchianChannel)ind).UpperBand.Current.Value));
         }
 
         [Test]
-        public void CompareAgainstExternalDataForLowerBand()
-        {
-            donchianChannel = new DonchianChannel("dch", 50);
+        public void CompareAgainstExternalDataForLowerBand() {
+            donchianChannel = new DonchianChannel( "dch", 50);
 
             TestHelper.TestIndicator(donchianChannel, "spy_with_don50.txt", "Donchian Channels 50 Bottom",
                     (ind, expected) => Assert.AreEqual(expected, (double)((DonchianChannel)ind).LowerBand.Current.Value));
         }
         
         [Test]
-        public void ComputesPrimaryOutputCorrectly()
-        {
-            donchianChannel = new DonchianChannel("dch", 50);
+        public void ComputesPrimaryOutputCorrectly() {
+            donchianChannel = new DonchianChannel( "dch", 50);
 
             TestHelper.TestIndicator(donchianChannel, "spy_with_don50.txt", "Donchian Channels 50 Mean",
                     (ind, expected) => Assert.AreEqual(expected, (double)((DonchianChannel)ind).Current.Value));
@@ -50,11 +47,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
-            donchianChannelIndicator = new DonchianChannel("DCH", 50);
-            foreach (data in TestHelper.GetTradeBarStream("spy_with_don50.txt", false))
-            {
+        public void ResetsProperly() {
+            donchianChannelIndicator = new DonchianChannel( "DCH", 50);
+            foreach (data in TestHelper.GetTradeBarStream( "spy_with_don50.txt", false)) {
                 donchianChannelIndicator.Update(data);
             }
 

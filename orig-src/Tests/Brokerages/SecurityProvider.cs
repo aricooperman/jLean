@@ -26,13 +26,11 @@ package com.quantconnect.lean.Tests.Brokerages
     {
         private readonly Map<Symbol, Security> _securities;
 
-        public SecurityProvider(Map<Symbol, Security> securities)
-        {
+        public SecurityProvider(Map<Symbol, Security> securities) {
             _securities = securities;
         }
 
-        public SecurityProvider()
-        {
+        public SecurityProvider() {
             _securities = new Map<Symbol, Security>();
         }
 
@@ -42,15 +40,13 @@ package com.quantconnect.lean.Tests.Brokerages
             set { _securities[symbol] = value; }
         }
 
-        public Security GetSecurity(Symbol symbol)
-        {
+        public Security GetSecurity(Symbol symbol) {
             Security holding;
             _securities.TryGetValue(symbol, out holding);
             return holding;
         }
 
-        public boolean TryGetValue(Symbol symbol, out Security security)
-        {
+        public boolean TryGetValue(Symbol symbol, out Security security) {
             return _securities.TryGetValue(symbol, out security);
         }
     }

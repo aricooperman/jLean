@@ -79,11 +79,11 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Returns true if we're currently connected to the broker
         /// </summary>
-        public override boolean IsConnected
+        public @Override boolean IsConnected
         {
             get
             {
-                if (_client == null) return false;
+                if( _client == null ) return false;
                 return _client.Connected;
             }
         }
@@ -101,12 +101,11 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             : this(
                 orderProvider,
                 securityProvider,
-                Config.Get("ib-account"),
-                Config.Get("ib-host", "LOCALHOST"),
-                Config.GetInt("ib-port", 4001),
-                Config.GetValue("ib-agent-description", IB.AgentDescription.Individual)
-                )
-        {
+                Config.Get( "ib-account"),
+                Config.Get( "ib-host", "LOCALHOST"),
+                Config.GetInt( "ib-port", 4001),
+                Config.GetValue( "ib-agent-description", IB.AgentDescription.Individual)
+                ) {
         }
 
         /// <summary>
@@ -119,11 +118,10 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             : this(orderProvider,
                 securityProvider,
                 account,
-                Config.Get("ib-host", "LOCALHOST"),
-                Config.GetInt("ib-port", 4001),
-                Config.GetValue("ib-agent-description", IB.AgentDescription.Individual)
-                )
-        {
+                Config.Get( "ib-host", "LOCALHOST"),
+                Config.GetInt( "ib-port", 4001),
+                Config.GetValue( "ib-agent-description", IB.AgentDescription.Individual)
+                ) {
         }
 
         /// <summary>
@@ -136,8 +134,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <param name="port">must match the port specified in TWS on the Configure&gt;API&gt;Socket Port field.</param>
         /// <param name="agentDescription">Used for Rule 80A describes the type of trader.</param>
         public InteractiveBrokersBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider, String account, String host, int port, IB.AgentDescription agentDescription = IB.AgentDescription.Individual)
-            : base("Interactive Brokers Brokerage")
-        {
+            : base( "Interactive Brokers Brokerage") {
             _orderProvider = orderProvider;
             _securityProvider = securityProvider;
             _account = account;
@@ -160,12 +157,11 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             _client.NextValidId += (sender, e) =>
             {
                 // only grab this id when we initialize, and we'll manually increment it here to avoid threading issues
-                if (_nextValidID == 0)
-                {
+                if( _nextValidID == 0) {
                     _nextValidID = e.OrderId;
                     _waitForNextValidID.Set();
                 }
-                Log.Trace("InteractiveBrokersBrokerage.HandleNextValidID(): " + e.OrderId);
+                Log.Trace( "InteractiveBrokersBrokerage.HandleNextValidID(): " + e.OrderId);
             };
         }
 
@@ -182,18 +178,16 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// </summary>
         /// <param name="order">The order to be placed</param>
         /// <returns>True if the request for a new order has been placed, false otherwise</returns>
-        public override boolean PlaceOrder(Order order)
-        {
+        public @Override boolean PlaceOrder(Order order) {
             try
             {
-                Log.Trace("InteractiveBrokersBrokerage.PlaceOrder(): Symbol: " + order.Symbol.Value + " Quantity: " + order.Quantity);
+                Log.Trace( "InteractiveBrokersBrokerage.PlaceOrder(): Symbol: " + order.Symbol.Value + " Quantity: " + order.Quantity);
 
                 IBPlaceOrder(order, true);
                 return true;
             }
-            catch (Exception err)
-            {
-                Log.Error("InteractiveBrokersBrokerage.PlaceOrder(): " + err);
+            catch (Exception err) {
+                Log.Error( "InteractiveBrokersBrokerage.PlaceOrder(): " + err);
                 return false;
             }
         }
@@ -203,17 +197,15 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// </summary>
         /// <param name="order">The new order information</param>
         /// <returns>True if the request was made for the order to be updated, false otherwise</returns>
-        public override boolean UpdateOrder(Order order)
-        {
+        public @Override boolean UpdateOrder(Order order) {
             try
             {
-                Log.Trace("InteractiveBrokersBrokerage.UpdateOrder(): Symbol: " + order.Symbol.Value + " Quantity: " + order.Quantity + " Status: " + order.Status);
+                Log.Trace( "InteractiveBrokersBrokerage.UpdateOrder(): Symbol: " + order.Symbol.Value + " Quantity: " + order.Quantity + " Status: " + order.Status);
 
                 IBPlaceOrder(order, false);
             }
-            catch (Exception err)
-            {
-                Log.Error("InteractiveBrokersBrokerage.UpdateOrder(): " + err);
+            catch (Exception err) {
+                Log.Error( "InteractiveBrokersBrokerage.UpdateOrder(): " + err);
                 return false;
             }
             return true;
@@ -224,23 +216,20 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// </summary>
         /// <param name="order">The order to cancel</param>
         /// <returns>True if the request was made for the order to be canceled, false otherwise</returns>
-        public override boolean CancelOrder(Order order)
-        {
+        public @Override boolean CancelOrder(Order order) {
             try
             {
-                Log.Trace("InteractiveBrokersBrokerage.CancelOrder(): Symbol: " + order.Symbol.Value + " Quantity: " + order.Quantity);
+                Log.Trace( "InteractiveBrokersBrokerage.CancelOrder(): Symbol: " + order.Symbol.Value + " Quantity: " + order.Quantity);
 
                 // this could be better
-                foreach (id in order.BrokerId)
-                {
+                foreach (id in order.BrokerId) {
                     _client.CancelOrder(int.Parse(id));
                 }
 
                 // canceled order events fired upon confirmation, see HandleError
             }
-            catch (Exception err)
-            {
-                Log.Error("InteractiveBrokersBrokerage.CancelOrder(): OrderID: " + order.Id + " - " + err);
+            catch (Exception err) {
+                Log.Error( "InteractiveBrokersBrokerage.CancelOrder(): OrderID: " + order.Id + " - " + err);
                 return false;
             }
             return true;
@@ -250,8 +239,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// Gets all open orders on the account
         /// </summary>
         /// <returns>The open orders returned from IB</returns>
-        public override List<Order> GetOpenOrders()
-        {
+        public @Override List<Order> GetOpenOrders() {
             orders = new List<Order>();
 
             manualResetEvent = new ManualResetEvent(false);
@@ -274,9 +262,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             _client.RequestOpenOrders();
 
             // wait for our end signal
-            if (!manualResetEvent.WaitOne(15000))
-            {
-                throw new TimeoutException("InteractiveBrokersBrokerage.GetOpenOrders(): Operation took longer than 15 seconds.");
+            if( !manualResetEvent.WaitOne(15000)) {
+                throw new TimeoutException( "InteractiveBrokersBrokerage.GetOpenOrders(): Operation took longer than 15 seconds.");
             }
 
             // remove our handlers
@@ -290,31 +277,28 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// Gets all holdings for the account
         /// </summary>
         /// <returns>The current holdings from the account</returns>
-        public override List<Holding> GetAccountHoldings()
-        {
+        public @Override List<Holding> GetAccountHoldings() {
             holdings = _accountHoldings.Select(x => (Holding) ObjectActivator.Clone(x.Value)).Where(x => x.Quantity != 0).ToList();
 
             // fire up tasks to resolve the conversion rates so we can do them in parallel
             tasks = holdings.Select(local =>
             {
                 // we need to resolve the conversion rate for non-USD currencies
-                if (local.Type != SecurityType.Forex)
-                {
+                if( local.Type != SecurityType.Forex) {
                     // this assumes all non-forex are us denominated, we should add the currency to 'holding'
                     local.ConversionRate = 1m;
                     return null;
                 }
                 // if quote currency is in USD don't bother making the request
                 String currency = local.Symbol.Value.Substring(3);
-                if (currency == "USD")
-                {
+                if( currency == "USD") {
                     local.ConversionRate = 1m;
                     return null;
                 }
 
                 // this will allow us to do this in parallel
                 return Task.Factory.StartNew(() => local.ConversionRate = GetUsdConversion(currency));
-            }).Where(x => x != null).ToArray();
+            }).Where(x => x != null ).ToArray();
 
             Task.WaitAll(tasks, 5000);
 
@@ -325,8 +309,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// Gets the current cash balance for each currency held in the brokerage account
         /// </summary>
         /// <returns>The current cash balance for each currency available for trading</returns>
-        public override List<Cash> GetCashBalance()
-        {
+        public @Override List<Cash> GetCashBalance() {
             return _cashBalances.Select(x => new Cash(x.Key, x.Value, GetUsdConversion(x.Key))).ToList();
         }
 
@@ -334,8 +317,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// Gets the execution details matching the filter
         /// </summary>
         /// <returns>A list of executions matching the filter</returns>
-        public List<IB.ExecDetailsEventArgs> GetExecutions( String symbol, IB.SecurityType? type, String exchange, DateTime? timeSince, IB.ActionSide? side)
-        {
+        public List<IB.ExecDetailsEventArgs> GetExecutions( String symbol, IB.SecurityType? type, String exchange, DateTime? timeSince, IB.ActionSide? side) {
             filter = new IB.ExecutionFilter
             {
                 AcctCode = _account,
@@ -348,8 +330,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             };
 
             details = new List<IB.ExecDetailsEventArgs>();
-            using (client = new IB.IBClient())
-            {
+            using (client = new IB.IBClient()) {
                 client.Connect(_host, _port, IncrementClientID());
 
                 manualResetEvent = new ManualResetEvent(false);
@@ -359,11 +340,11 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                 // define our event handlers
                 EventHandler<IB.ExecutionDataEndEventArgs> clientOnExecutionDataEnd = (sender, args) =>
                 {
-                    if (args.RequestId == requestID) manualResetEvent.Set();
+                    if( args.RequestId == requestID) manualResetEvent.Set();
                 };
                 EventHandler<IB.ExecDetailsEventArgs> clientOnExecDetails = (sender, args) =>
                 {
-                    if (args.RequestId == requestID) details.Add(args);
+                    if( args.RequestId == requestID) details.Add(args);
                 };
 
                 client.ExecDetails += clientOnExecDetails;
@@ -372,9 +353,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                 // no need to be fancy with request id since that's all this client does is 1 request
                 client.RequestExecutions(requestID, filter);
 
-                if (!manualResetEvent.WaitOne(5000))
-                {
-                    throw new TimeoutException("InteractiveBrokersBrokerage.GetExecutions(): Operation took longer than 1 second.");
+                if( !manualResetEvent.WaitOne(5000)) {
+                    throw new TimeoutException( "InteractiveBrokersBrokerage.GetExecutions(): Operation took longer than 1 second.");
                 }
 
                 // remove our event handlers
@@ -388,9 +368,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Connects the client to the IB gateway
         /// </summary>
-        public override void Connect()
-        {
-            if (IsConnected) return;
+        public @Override void Connect() {
+            if( IsConnected) return;
 
             // we're going to receive fresh values for both of these collections, so clear them
             _accountHoldings.Clear();
@@ -398,23 +377,20 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
 
             int attempt = 1;
             static final int maxAttempts = 65;
-            while (true)
-            {
+            while (true) {
                 try
                 {
-                    Log.Trace("InteractiveBrokersBrokerage.Connect(): Attempting to connect ({0}/{1}) ...", attempt, maxAttempts);
+                    Log.Trace( "InteractiveBrokersBrokerage.Connect(): Attempting to connect (%1$s/%2$s) ...", attempt, maxAttempts);
 
                     // we're going to try and connect several times, if successful break
                     _client.Connect(_host, _port, _clientID);
 
-                    if (!_client.Connected) throw new Exception("InteractiveBrokersBrokerage.Connect(): Connection returned but was not in connected state.");
+                    if( !_client.Connected) throw new Exception( "InteractiveBrokersBrokerage.Connect(): Connection returned but was not in connected state.");
                     break;
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     // max out at 65 attempts to connect ~1 minute
-                    if (attempt++ < maxAttempts)
-                    {
+                    if( attempt++ < maxAttempts) {
                         Thread.Sleep(1000);
                         continue;
                     }
@@ -423,8 +399,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     Log.Error(err);
 
                     // add a blurb about TWS for connection refused errors
-                    if (err.Message.Contains("Connection refused"))
-                    {
+                    if( err.Message.Contains( "Connection refused")) {
                         throw new Exception(err.Message + ". Be sure to logout of Trader Workstation. " +
                             "IB only allows one active log in at a time. " +
                             "This can also be caused by requiring two-factor authentication. " +
@@ -436,15 +411,14 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             }
 
             // pause for a moment to receive next valid ID message from gateway
-            if (!_waitForNextValidID.WaitOne(15000))
-            {
-                throw new TimeoutException("InteractiveBrokersBrokerage.Connect(): Operation took longer than 15 seconds.");
+            if( !_waitForNextValidID.WaitOne(15000)) {
+                throw new TimeoutException( "InteractiveBrokersBrokerage.Connect(): Operation took longer than 15 seconds.");
             }
 
             // define our event handler, this acts as stop to make sure when we leave Connect we have downloaded the full account
             EventHandler<IB.AccountDownloadEndEventArgs> clientOnAccountDownloadEnd = (sender, args) =>
             {
-                Log.Trace("InteractiveBrokersBrokerage.AccountDownloadEnd(): Finished account download for " + args.AccountName);
+                Log.Trace( "InteractiveBrokersBrokerage.AccountDownloadEnd(): Finished account download for " + args.AccountName);
                 _accountHoldingsResetEvent.Set();
             };
             _client.AccountDownloadEnd += clientOnAccountDownloadEnd;
@@ -469,9 +443,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             // linux there appears to be different behavior where the account download end fires immediately.
             Thread.Sleep(2500);
 
-            if (!_accountHoldingsResetEvent.WaitOne(15000))
-            {
-                throw new TimeoutException("InteractiveBrokersBrokerage.GetAccountHoldings(): Operation took longer than 15 seconds.");
+            if( !_accountHoldingsResetEvent.WaitOne(15000)) {
+                throw new TimeoutException( "InteractiveBrokersBrokerage.GetAccountHoldings(): Operation took longer than 15 seconds.");
             }
 
             // remove our end handler
@@ -482,9 +455,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Disconnects the client from the IB gateway
         /// </summary>
-        public override void Disconnect()
-        {
-            if (!IsConnected) return;
+        public @Override void Disconnect() {
+            if( !IsConnected) return;
 
             _client.Disconnect();
         }
@@ -492,10 +464,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
-            if (_client != null)
-            {
+        public void Dispose() {
+            if( _client != null ) {
                 _client.Disconnect();
                 _client.Dispose();
             }
@@ -504,8 +474,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Gets the raw account values sent from IB
         /// </summary>
-        public Map<String,String> GetAccountValues()
-        {
+        public Map<String,String> GetAccountValues() {
             return new Map<String,String>(_accountProperties);
         }
 
@@ -515,51 +484,44 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <param name="order">The order to be placed</param>
         /// <param name="needsNewID">Set to true to generate a new order ID, false to leave it alone</param>
         /// <param name="exchange">The exchange to send the order to, defaults to "Smart" to use IB's smart routing</param>
-        private void IBPlaceOrder(Order order, boolean needsNewID, String exchange = null)
-        {
+        private void IBPlaceOrder(Order order, boolean needsNewID, String exchange = null ) {
             // connect will throw if it fails
             Connect();
 
-            if (!IsConnected)
-            {
-                throw new InvalidOperationException("InteractiveBrokersBrokerage.IBPlaceOrder(): Unable to place order while not connected.");
+            if( !IsConnected) {
+                throw new InvalidOperationException( "InteractiveBrokersBrokerage.IBPlaceOrder(): Unable to place order while not connected.");
             }
 
             contract = CreateContract(order.Symbol, exchange);
 
             int ibOrderID = 0;
-            if (needsNewID)
-            {
+            if( needsNewID) {
                 // the order ids are generated for us by the SecurityTransactionManaer
                 int id = GetNextBrokerageOrderID();
                 order.BrokerId.Add(id.toString());
                 ibOrderID = id;
             }
-            else if (order.BrokerId.Any())
-            {
+            else if( order.BrokerId.Any()) {
                 // this is *not* perfect code
                 ibOrderID = int.Parse(order.BrokerId[0]);
             }
             else
             {
-                throw new ArgumentException("Expected order with populated BrokerId for updating orders.");
+                throw new ArgumentException( "Expected order with populated BrokerId for updating orders.");
             }
 
             ibOrder = ConvertOrder(order, contract, ibOrderID);
             _client.PlaceOrder(ibOrder.OrderId, contract, ibOrder);
         }
 
-        private String GetPrimaryExchange(IB.Contract contract)
-        {
+        private String GetPrimaryExchange(IB.Contract contract) {
             IB.ContractDetails details;
-            if (_contractDetails.TryGetValue(contract.Symbol, out details))
-            {
+            if( _contractDetails.TryGetValue(contract.Symbol, out details)) {
                 return details.Summary.PrimaryExchange;
             }
 
             details = GetContractDetails(contract);
-            if (details == null)
-            {
+            if( details == null ) {
                 // we were unable to find the contract details
                 return null;
             }
@@ -567,17 +529,14 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             return details.Summary.PrimaryExchange;
         }
 
-        private BigDecimal GetMinTick(IB.Contract contract)
-        {
+        private BigDecimal GetMinTick(IB.Contract contract) {
             IB.ContractDetails details;
-            if (_contractDetails.TryGetValue(contract.Symbol, out details))
-            {
+            if( _contractDetails.TryGetValue(contract.Symbol, out details)) {
                 return (decimal) details.MinTick;
             }
 
             details = GetContractDetails(contract);
-            if (details == null)
-            {
+            if( details == null ) {
                 // we were unable to find the contract details
                 return 0;
             }
@@ -585,8 +544,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             return (decimal) details.MinTick;
         }
 
-        private IB.ContractDetails GetContractDetails(IB.Contract contract)
-        {
+        private IB.ContractDetails GetContractDetails(IB.Contract contract) {
             IB.ContractDetails details = null;
             requestID = GetNextRequestID();
 
@@ -596,7 +554,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             EventHandler<IB.ContractDetailsEventArgs> clientOnContractDetails = (sender, args) =>
             {
                 // ignore other requests
-                if (args.RequestId != requestID) return;
+                if( args.RequestId != requestID) return;
                 details = args.ContractDetails;
                 _contractDetails.TryAdd(contract.Symbol, details);
                 manualResetEvent.Set();
@@ -620,10 +578,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// Gets the current conversion rate into USD
         /// </summary>
         /// <remarks>Synchronous, blocking</remarks>
-        private BigDecimal GetUsdConversion( String currency)
-        {
-            if (currency == "USD")
-            {
+        private BigDecimal GetUsdConversion( String currency) {
+            if( currency == "USD") {
                 return 1m;
             }
 
@@ -631,9 +587,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             String invertedSymbol = "USD" + currency;
             String normalSymbol = currency + "USD";
             currencyPair = Currencies.CurrencyPairs.FirstOrDefault(x => x == invertedSymbol || x == normalSymbol);
-            if (currencyPair == null)
-            {
-                throw new Exception("Unable to resolve currency conversion pair for currency: " + currency);
+            if( currencyPair == null ) {
+                throw new Exception( "Unable to resolve currency conversion pair for currency: " + currency);
             }
 
             // is it XXXUSD or USDXXX
@@ -641,9 +596,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             symbol = Symbol.Create(currencyPair, SecurityType.Forex, Market.FXCM);
             contract = CreateContract(symbol);
             details = GetContractDetails(contract);
-            if (details == null)
-            {
-                Log.Error("InteractiveBrokersBrokerage.GetUsdConversion(): Unable to resolve conversion for currency: " + currency);
+            if( details == null ) {
+                Log.Error( "InteractiveBrokersBrokerage.GetUsdConversion(): Unable to resolve conversion for currency: " + currency);
                 return 1m;
             }
 
@@ -659,8 +613,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             lastHistoricalData = DateTime.MaxValue;
             EventHandler<IB.HistoricalDataEventArgs> clientOnHistoricalData = (sender, args) =>
             {
-                if (args.RequestId == historicalTicker)
-                {
+                if( args.RequestId == historicalTicker) {
                     data.Add(args);
                     lastHistoricalData = DateTime.UtcNow;
                 }
@@ -669,7 +622,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             _client.HistoricalData += clientOnHistoricalData;
 
             // request some historical data, IB's api takes into account weekends/market opening hours
-            requestSpan = TimeSpan.FromSeconds(100);
+            requestSpan = Duration.ofSeconds(100);
             _client.RequestHistoricalData(historicalTicker, contract, DateTime.UtcNow, requestSpan, IB.BarSize.OneSecond, IB.HistoricalDataType.Ask, 0);
 
             // define and add our tick handler for the ticks
@@ -677,8 +630,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             priceTick = new Collection<IB.GenericTickType>();
             EventHandler<IB.TickPriceEventArgs> clientOnTickPrice = (sender, args) =>
             {
-                if (args.TickerId == marketDataTicker && args.TickType == IB.TickType.AskPrice)
-                {
+                if( args.TickerId == marketDataTicker && args.TickType == IB.TickType.AskPrice) {
                     rate = args.Price;
                     manualResetEvent.Set();
                 }
@@ -693,17 +645,15 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             _client.TickPrice -= clientOnTickPrice;
 
             // check to see if ticks returned something
-            if (rate == 0)
-            {
+            if( rate == 0) {
                 // history doesn't have a completed event, so we'll just wait for it to not have been called for a second
                 while (DateTime.UtcNow - lastHistoricalData < Time.OneSecond) Thread.Sleep(20);
 
                 // check for history
                 ordered = data.OrderByDescending(x => x.Date);
                 mostRecentQuote = ordered.FirstOrDefault();
-                if (mostRecentQuote == null)
-                {
-                    throw new Exception("Unable to get recent quote for " + currencyPair);
+                if( mostRecentQuote == null ) {
+                    throw new Exception( "Unable to get recent quote for " + currencyPair);
                 }
                 rate = mostRecentQuote.Close;
             }
@@ -711,8 +661,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             // be sure to unwire our history handler as well
             _client.HistoricalData -= clientOnHistoricalData;
 
-            if (inverted)
-            {
+            if( inverted) {
                 return 1/rate;
             }
             return rate;
@@ -721,43 +670,37 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Handles error messages from IB
         /// </summary>
-        private void HandleError(object sender, IB.ErrorEventArgs e)
-        {
+        private void HandleError(object sender, IB.ErrorEventArgs e) {
             // https://www.interactivebrokers.com/en/software/api/apiguide/tables/api_message_codes.htm
 
             // rewrite these messages to be single lined
-            e.ErrorMsg = e.ErrorMsg.Replace("\r\n", ". ").Replace("\r", ". ").Replace("\n", ". ");
-            Log.Trace( String.format("InteractiveBrokersBrokerage.HandleError(): Order: {0} ErrorCode: {1} - {2}", e.TickerId, e.ErrorCode, e.ErrorMsg));
+            e.ErrorMsg = e.ErrorMsg.Replace( "\r\n", ". ").Replace( "\r", ". ").Replace( "\n", ". ");
+            Log.Trace( String.format( "InteractiveBrokersBrokerage.HandleError(): Order: %1$s ErrorCode: %2$s - %3$s", e.TickerId, e.ErrorCode, e.ErrorMsg));
 
             // figure out the message type based on our code collections below
             brokerageMessageType = BrokerageMessageType.Information;
-            if (ErrorCodes.Contains((int) e.ErrorCode))
-            {
+            if( ErrorCodes.Contains((int) e.ErrorCode)) {
                 brokerageMessageType = BrokerageMessageType.Error;
             }
-            else if (WarningCodes.Contains((int) e.ErrorCode))
-            {
+            else if( WarningCodes.Contains((int) e.ErrorCode)) {
                 brokerageMessageType = BrokerageMessageType.Warning;
             }
 
             // code 1100 is a connection failure, we'll wait a minute before exploding gracefully
-            if ((int) e.ErrorCode == 1100 && !_disconnected1100Fired)
-            {
+            if( (int) e.ErrorCode == 1100 && !_disconnected1100Fired) {
                 _disconnected1100Fired = true;
 
                 // begin the try wait logic
                 TryWaitForReconnect();
             }
-            else if ((int) e.ErrorCode == 1102)
-            {
+            else if( (int) e.ErrorCode == 1102) {
                 // we've reconnected
                 _disconnected1100Fired = false;
                 OnMessage(BrokerageMessageEvent.Reconnected(e.ErrorMsg));
             }
 
-            if (InvalidatingCodes.Contains((int)e.ErrorCode))
-            {
-                Log.Trace( String.format("InteractiveBrokersBrokerage.HandleError.InvalidateOrder(): Order: {0} ErrorCode: {1} - {2}", e.TickerId, e.ErrorCode, e.ErrorMsg));
+            if( InvalidatingCodes.Contains((int)e.ErrorCode)) {
+                Log.Trace( String.format( "InteractiveBrokersBrokerage.HandleError.InvalidateOrder(): Order: %1$s ErrorCode: %2$s - %3$s", e.TickerId, e.ErrorCode, e.ErrorMsg));
 
                 // invalidate the order
                 order = _orderProvider.GetOrderByBrokerageId(e.TickerId);
@@ -773,30 +716,26 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// If we lose connection to TWS/IB servers we don't want to send the Error event if it is within
         /// the scheduled server reset times
         /// </summary>
-        private void TryWaitForReconnect()
-        {
+        private void TryWaitForReconnect() {
             // IB has server reset schedule: https://www.interactivebrokers.com/en/?f=%2Fen%2Fsoftware%2FsystemStatus.php%3Fib_entity%3Dllc
             
-            if (_disconnected1100Fired && !IsWithinScheduledServerResetTimes())
-            {
+            if( _disconnected1100Fired && !IsWithinScheduledServerResetTimes()) {
                 // if we were disconnected and we're nothing within the reset times, send the error event
-                OnMessage(BrokerageMessageEvent.Disconnected("Connection with Interactive Brokers lost. " +
+                OnMessage(BrokerageMessageEvent.Disconnected( "Connection with Interactive Brokers lost. " +
                     "This could be because of internet connectivity issues or a log in from another location."
                     ));
             }
-            else if (_disconnected1100Fired && IsWithinScheduledServerResetTimes())
-            {
-                Log.Trace("InteractiveBrokersBrokerage.TryWaitForReconnect(): Within server reset times, trying to wait for reconnect...");
+            else if( _disconnected1100Fired && IsWithinScheduledServerResetTimes()) {
+                Log.Trace( "InteractiveBrokersBrokerage.TryWaitForReconnect(): Within server reset times, trying to wait for reconnect...");
                 // we're still not connected but we're also within the schedule reset time, so just keep polling
-                Task.Delay(TimeSpan.FromMinutes(1)).ContinueWith(_ => TryWaitForReconnect());
+                Task.Delay(Duration.ofMinutes(1)).ContinueWith(_ => TryWaitForReconnect());
             }
         }
 
         /// <summary>
         /// Stores all the account values
         /// </summary>
-        private void HandleUpdateAccountValue(object sender, IB.UpdateAccountValueEventArgs e)
-        {
+        private void HandleUpdateAccountValue(object sender, IB.UpdateAccountValueEventArgs e) {
             //https://www.interactivebrokers.com/en/software/api/apiguide/activex/updateaccountvalue.htm
 
             try
@@ -804,37 +743,32 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                 _accountProperties[e.Currency + ":" + e.Key] = e.Value;
 
                 // we want to capture if the user's cash changes so we can reflect it in the algorithm
-                if (e.Key == AccountValueKeys.CashBalance && e.Currency != "BASE")
-                {
+                if( e.Key == AccountValueKeys.CashBalance && e.Currency != "BASE") {
                     cashBalance = decimal.Parse(e.Value, CultureInfo.InvariantCulture);
                     _cashBalances.AddOrUpdate(e.Currency, cashBalance);
                     OnAccountChanged(new AccountEvent(e.Currency, cashBalance));
                 }
             }
-            catch (Exception err)
-            {
-                Log.Error("InteractiveBrokersBrokerage.HandleUpdateAccountValue(): " + err);
+            catch (Exception err) {
+                Log.Error( "InteractiveBrokersBrokerage.HandleUpdateAccountValue(): " + err);
             }
         }
 
         /// <summary>
         /// Handle order events from IB
         /// </summary>
-        private void HandleOrderStatusUpdates(object sender, IB.OrderStatusEventArgs update)
-        {
+        private void HandleOrderStatusUpdates(object sender, IB.OrderStatusEventArgs update) {
             try
             {
                 order = _orderProvider.GetOrderByBrokerageId(update.OrderId);
-                if (order == null)
-                {
-                    Log.Error("InteractiveBrokersBrokerage.HandleOrderStatusUpdates(): Unable to locate order with BrokerageID " + update.OrderId);
+                if( order == null ) {
+                    Log.Error( "InteractiveBrokersBrokerage.HandleOrderStatusUpdates(): Unable to locate order with BrokerageID " + update.OrderId);
                     return;
                 }
 
 
                 status = ConvertOrderStatus(update.Status);
-                if (order.Status == OrderStatus.Filled && update.Filled == 0 && update.Remaining == 0)
-                {
+                if( order.Status == OrderStatus.Filled && update.Filled == 0 && update.Remaining == 0) {
                     // we're done with this order, remove from our state
                     int value;
                     _orderFills.TryRemove(order.Id, out value);
@@ -842,12 +776,10 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
 
                 orderFee = 0m;
                 int filledThisTime;
-                lock (_orderFillsLock)
-                {
+                lock (_orderFillsLock) {
                     // lock since we're getting and updating in multiple operations
                     currentFilled = _orderFills.GetOrAdd(order.Id, 0);
-                    if (currentFilled == 0)
-                    {
+                    if( currentFilled == 0) {
                         // apply order fees on the first fill event TODO: What about partial filled orders that get cancelled?
                         security = _securityProvider.GetSecurity(order.Symbol);
                         orderFee = security.FeeModel.GetOrderFee(security, order);
@@ -856,59 +788,50 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     _orderFills.AddOrUpdate(order.Id, currentFilled, (sym, filled) => update.Filled);
                 }
 
-                if (status == OrderStatus.Invalid)
-                {
-                    Log.Error("InteractiveBrokersBrokerage.HandleOrderStatusUpdates(): ERROR -- " + update.OrderId);
+                if( status == OrderStatus.Invalid) {
+                    Log.Error( "InteractiveBrokersBrokerage.HandleOrderStatusUpdates(): ERROR -- " + update.OrderId);
                 }
 
                 // set status based on filled this time
-                if (filledThisTime != 0)
-                {
+                if( filledThisTime != 0) {
                     status = update.Remaining != 0 ? OrderStatus.PartiallyFilled : OrderStatus.Filled;
                 }
                 // don't send empty fill events
-                else if (status == OrderStatus.PartiallyFilled || status == OrderStatus.Filled)
-                {
-                    Log.Trace("InteractiveBrokersBrokerage.HandleOrderStatusUpdates(): Ignored zero fill event: OrderId: " + update.OrderId + " Remaining: " + update.Remaining);
+                else if( status == OrderStatus.PartiallyFilled || status == OrderStatus.Filled) {
+                    Log.Trace( "InteractiveBrokersBrokerage.HandleOrderStatusUpdates(): Ignored zero fill event: OrderId: " + update.OrderId + " Remaining: " + update.Remaining);
                     return;
                 }
 
                 // mark sells as negative quantities
                 fillQuantity = order.Direction == OrderDirection.Buy ? filledThisTime : -filledThisTime;
                 order.PriceCurrency = _securityProvider.GetSecurity(order.Symbol).SymbolProperties.QuoteCurrency;
-                orderEvent = new OrderEvent(order, DateTime.UtcNow, orderFee, "Interactive Brokers Fill Event")
-                {
+                orderEvent = new OrderEvent(order, DateTime.UtcNow, orderFee, "Interactive Brokers Fill Event") {
                     Status = status,
                     FillPrice = update.LastFillPrice,
                     FillQuantity = fillQuantity
                 };
-                if (update.Remaining != 0)
-                {
+                if( update.Remaining != 0) {
                     orderEvent.Message += " - " + update.Remaining + " remaining";
                 }
 
                 // if we're able to add to our fixed length, unique queue then send the event
                 // otherwise it is a duplicate, so skip it
-                if (_recentOrderEvents.Add(orderEvent.toString() + update.Remaining))
-                {
+                if( _recentOrderEvents.Add(orderEvent.toString() + update.Remaining)) {
                     OnOrderEvent(orderEvent);
                 }
             }
-            catch(InvalidOperationException err)
-            {
-                Log.Error("InteractiveBrokersBrokerage.HandleOrderStatusUpdates(): Unable to resolve executions for BrokerageID: " + update.OrderId + " - " + err);
+            catch(InvalidOperationException err) {
+                Log.Error( "InteractiveBrokersBrokerage.HandleOrderStatusUpdates(): Unable to resolve executions for BrokerageID: " + update.OrderId + " - " + err);
             }
-            catch (Exception err)
-            {
-                Log.Error("InteractiveBrokersBrokerage.HandleOrderStatusUpdates(): " + err);
+            catch (Exception err) {
+                Log.Error( "InteractiveBrokersBrokerage.HandleOrderStatusUpdates(): " + err);
             }
         }
 
         /// <summary>
         /// Handle portfolio changed events from IB
         /// </summary>
-        private void HandlePortfolioUpdates(object sender, IB.UpdatePortfolioEventArgs e)
-        {
+        private void HandlePortfolioUpdates(object sender, IB.UpdatePortfolioEventArgs e) {
             _accountHoldingsResetEvent.Reset();
             holding = CreateHolding(e);
             _accountHoldings[holding.Symbol.Value] = holding;
@@ -917,8 +840,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Converts a QC order to an IB order
         /// </summary>
-        private IB.Order ConvertOrder(Order order, IB.Contract contract, int ibOrderID)
-        {
+        private IB.Order ConvertOrder(Order order, IB.Contract contract, int ibOrderID) {
             ibOrder = new IB.Order
             {
                 ClientId = _clientID,
@@ -933,24 +855,20 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                 Rule80A = _agentDescription
             };
 
-            if (order.Type == OrderType.MarketOnOpen)
-            {
+            if( order.Type == OrderType.MarketOnOpen) {
                 ibOrder.Tif = IB.TimeInForce.MarketOnOpen;
             }
 
             limitOrder = order as LimitOrder;
             stopMarketOrder = order as StopMarketOrder;
             stopLimitOrder = order as StopLimitOrder;
-            if (limitOrder != null)
-            {
+            if( limitOrder != null ) {
                 ibOrder.LimitPrice = RoundPrice(limitOrder.LimitPrice, GetMinTick(contract));
             }
-            else if (stopMarketOrder != null)
-            {
+            else if( stopMarketOrder != null ) {
                 ibOrder.AuxPrice = RoundPrice(stopMarketOrder.StopPrice, GetMinTick(contract));
             }
-            else if (stopLimitOrder != null)
-            {
+            else if( stopLimitOrder != null ) {
                 minTick = GetMinTick(contract);
                 ibOrder.LimitPrice = RoundPrice(stopLimitOrder.LimitPrice, minTick);
                 ibOrder.AuxPrice = RoundPrice(stopLimitOrder.StopPrice, minTick);
@@ -963,8 +881,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             return ibOrder;
         }
 
-        private Order ConvertOrder(IB.Order ibOrder, IB.Contract contract)
-        {
+        private Order ConvertOrder(IB.Order ibOrder, IB.Contract contract) {
             // this function is called by GetOpenOrders which is mainly used by the setup handler to
             // initialize algorithm state.  So the only time we'll be executing this code is when the account
             // has orders sitting and waiting from before algo initialization...
@@ -973,8 +890,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             Order order;
             mappedSymbol = MapSymbol(contract);
             orderType = ConvertOrderType(ibOrder);
-            switch (orderType)
-            {
+            switch (orderType) {
                 case OrderType.Market:
                     order = new MarketOrder(mappedSymbol,
                         ibOrder.TotalQuantity,
@@ -1021,7 +937,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     break;
 
                 default:
-                    throw new InvalidEnumArgumentException("orderType", (int) orderType, typeof (OrderType));
+                    throw new InvalidEnumArgumentException( "orderType", (int) orderType, typeof (OrderType));
             }
 
             order.BrokerId.Add(ibOrder.OrderId.toString());
@@ -1035,21 +951,18 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <param name="symbol">The symbol whose contract we need to create</param>
         /// <param name="exchange">The exchange where the order will be placed, defaults to 'Smart'</param>
         /// <returns>A new IB contract for the order</returns>
-        private IB.Contract CreateContract(Symbol symbol, String exchange = null)
-        {
+        private IB.Contract CreateContract(Symbol symbol, String exchange = null ) {
             securityType = ConvertSecurityType(symbol.ID.SecurityType);
             ibSymbol = _symbolMapper.GetBrokerageSymbol(symbol);
             contract = new IB.Contract(ibSymbol, exchange ?? "Smart", securityType, "USD");
-            if (symbol.ID.SecurityType == SecurityType.Forex)
-            {
+            if( symbol.ID.SecurityType == SecurityType.Forex) {
                 // forex is special, so rewrite some of the properties to make it work
                 contract.Exchange = "IDEALPRO";
                 contract.Symbol = ibSymbol.Substring(0, 3);
                 contract.Currency = ibSymbol.Substring(3);
             }
 
-            if (symbol.ID.SecurityType == SecurityType.Option)
-            {
+            if( symbol.ID.SecurityType == SecurityType.Option) {
                 contract.Expiry = symbol.ID.Date.toString(DateFormat.EightCharacter);
                 contract.Right = symbol.ID.OptionRight == OptionRight.Call ? IB.RightType.Call : IB.RightType.Put;
                 contract.Strike = Convert.ToDouble(symbol.ID.StrikePrice);
@@ -1065,25 +978,21 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Maps OrderDirection enumeration
         /// </summary>
-        private IB.ActionSide ConvertOrderDirection(OrderDirection direction)
-        {
-            switch (direction)
-            {
+        private IB.ActionSide ConvertOrderDirection(OrderDirection direction) {
+            switch (direction) {
                 case OrderDirection.Buy:  return IB.ActionSide.Buy;
                 case OrderDirection.Sell: return IB.ActionSide.Sell;
                 case OrderDirection.Hold: return IB.ActionSide.Undefined;
                 default:
-                    throw new InvalidEnumArgumentException("direction", (int) direction, typeof (OrderDirection));
+                    throw new InvalidEnumArgumentException( "direction", (int) direction, typeof (OrderDirection));
             }
         }
 
         /// <summary>
         /// Maps OrderType enum
         /// </summary>
-        private IB.OrderType ConvertOrderType(OrderType type)
-        {
-            switch (type)
-            {
+        private IB.OrderType ConvertOrderType(OrderType type) {
+            switch (type) {
                 case OrderType.Market:          return IB.OrderType.Market;
                 case OrderType.Limit:           return IB.OrderType.Limit;
                 case OrderType.StopMarket:      return IB.OrderType.Stop;
@@ -1091,41 +1000,36 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                 case OrderType.MarketOnOpen:    return IB.OrderType.Market;
                 case OrderType.MarketOnClose:   return IB.OrderType.MarketOnClose;
                 default:
-                    throw new InvalidEnumArgumentException("type", (int)type, typeof(OrderType));
+                    throw new InvalidEnumArgumentException( "type", (int)type, typeof(OrderType));
             }
         }
 
         /// <summary>
         /// Maps OrderType enum
         /// </summary>
-        private OrderType ConvertOrderType(IB.Order order)
-        {
-            switch (order.OrderType)
-            {
+        private OrderType ConvertOrderType(IB.Order order) {
+            switch (order.OrderType) {
                 case IB.OrderType.Limit:            return OrderType.Limit;
                 case IB.OrderType.Stop:             return OrderType.StopMarket;
                 case IB.OrderType.StopLimit:        return OrderType.StopLimit;
                 case IB.OrderType.MarketOnClose:    return OrderType.MarketOnClose;
 
                 case IB.OrderType.Market:
-                    if (order.Tif == IB.TimeInForce.MarketOnOpen)
-                    {
+                    if( order.Tif == IB.TimeInForce.MarketOnOpen) {
                         return OrderType.MarketOnOpen;
                     }
                     return OrderType.Market;
 
                 default:
-                    throw new InvalidEnumArgumentException("order.OrderType", (int)order.OrderType, typeof(OrderType));
+                    throw new InvalidEnumArgumentException( "order.OrderType", (int)order.OrderType, typeof(OrderType));
             }
         }
 
         /// <summary>
         /// Maps IB's OrderStats enum
         /// </summary>
-        private OrderStatus ConvertOrderStatus(IB.OrderStatus status)
-        {
-            switch (status)
-            {
+        private OrderStatus ConvertOrderStatus(IB.OrderStatus status) {
+            switch (status) {
                 case IB.OrderStatus.ApiPending:
                 case IB.OrderStatus.PendingSubmit:
                 case IB.OrderStatus.PreSubmitted: 
@@ -1149,7 +1053,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     return OrderStatus.Invalid;
 
                 case IB.OrderStatus.Inactive:
-                    Log.Error("InteractiveBrokersBrokerage.ConvertOrderStatus(): Inactive order");
+                    Log.Error( "InteractiveBrokersBrokerage.ConvertOrderStatus(): Inactive order");
                     return OrderStatus.None;
 
                 case IB.OrderStatus.None: 
@@ -1157,17 +1061,15 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     
                 // not sure how to map these guys
                 default:
-                    throw new InvalidEnumArgumentException("status", (int)status, typeof(IB.OrderStatus));
+                    throw new InvalidEnumArgumentException( "status", (int)status, typeof(IB.OrderStatus));
             }
         }
 
         /// <summary>
         /// Maps SecurityType enum
         /// </summary>
-        private static IB.SecurityType ConvertSecurityType(SecurityType type)
-        {
-            switch (type)
-            {
+        private static IB.SecurityType ConvertSecurityType(SecurityType type) {
+            switch (type) {
                 case SecurityType.Equity:
                     return IB.SecurityType.Stock;
 
@@ -1184,20 +1086,18 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     return IB.SecurityType.Future;
 
                 case SecurityType.Base:
-                    throw new ArgumentException("InteractiveBrokers does not support SecurityType.Base");
+                    throw new ArgumentException( "InteractiveBrokers does not support SecurityType.Base");
 
                 default:
-                    throw new InvalidEnumArgumentException("type", (int)type, typeof(SecurityType));
+                    throw new InvalidEnumArgumentException( "type", (int)type, typeof(SecurityType));
             }
         }
         
         /// <summary>
         /// Maps SecurityType enum
         /// </summary>
-        private static SecurityType ConvertSecurityType(IB.SecurityType type)
-        {
-            switch (type)
-            {
+        private static SecurityType ConvertSecurityType(IB.SecurityType type) {
+            switch (type) {
                 case IB.SecurityType.Stock:
                     return SecurityType.Equity;
 
@@ -1224,18 +1124,16 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     return SecurityType.Base;
 
                 default:
-                    throw new ArgumentOutOfRangeException("type");
+                    throw new ArgumentOutOfRangeException( "type");
             }
         }
 
         /// <summary>
         /// Creates a holding object from te UpdatePortfolioEventArgs
         /// </summary>
-        private Holding CreateHolding(IB.UpdatePortfolioEventArgs e)
-        {
+        private Holding CreateHolding(IB.UpdatePortfolioEventArgs e) {
             String currencySymbol;
-            if (!Currencies.CurrencySymbols.TryGetValue(e.Contract.Currency, out currencySymbol))
-            {
+            if( !Currencies.CurrencySymbols.TryGetValue(e.Contract.Currency, out currencySymbol)) {
                 currencySymbol = "$";
             }
 
@@ -1254,8 +1152,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// <summary>
         /// Maps the IB Contract's symbol to a QC symbol
         /// </summary>
-        private Symbol MapSymbol(IB.Contract contract)
-        {
+        private Symbol MapSymbol(IB.Contract contract) {
             securityType = ConvertSecurityType(contract.SecurityType);
             ibSymbol = securityType == SecurityType.Forex ? contract.Symbol + contract.Currency : contract.Symbol;
             market = securityType == SecurityType.Forex ? Market.FXCM : Market.USA;
@@ -1263,9 +1160,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             return _symbolMapper.GetLeanSymbol(ibSymbol, securityType, market);
         }
 
-        private BigDecimal RoundPrice( BigDecimal input, BigDecimal minTick)
-        {
-            if (minTick == 0) return minTick;
+        private BigDecimal RoundPrice( BigDecimal input, BigDecimal minTick) {
+            if( minTick == 0) return minTick;
             return Math.Round(input/minTick)*minTick;
         }
 
@@ -1273,8 +1169,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// Handles the threading issues of creating an IB order ID
         /// </summary>
         /// <returns>The new IB ID</returns>
-        private int GetNextBrokerageOrderID()
-        {
+        private int GetNextBrokerageOrderID() {
             // spin until we get a next valid id, this should only execute if we create a new instance
             // and immediately try to place an order
             while (_nextValidID == 0) { Thread.Yield(); }
@@ -1282,21 +1177,18 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             return Interlocked.Increment(ref _nextValidID);
         }
 
-        private int GetNextRequestID()
-        {
+        private int GetNextRequestID() {
             return Interlocked.Increment(ref _nextRequestID);
         }
 
-        private int GetNextTickerID()
-        {
+        private int GetNextTickerID() {
             return Interlocked.Increment(ref _nextTickerID);
         }
 
         /// <summary>
         /// Increments the client ID for communication with the gateway
         /// </summary>
-        private static int IncrementClientID()
-        {
+        private static int IncrementClientID() {
             return Interlocked.Increment(ref _nextClientID);
         }
 
@@ -1306,14 +1198,12 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// and on Fridays they take everything down, so we'll prevent killing algos
         /// on Saturdays completely for the time being.
         /// </summary>
-        private static boolean IsWithinScheduledServerResetTimes()
-        {
+        private static boolean IsWithinScheduledServerResetTimes() {
             boolean result;
             time = DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork);
             
             // don't kill algos on Saturdays if we don't have a connection
-            if (time.DayOfWeek == DayOfWeek.Saturday)
-            {
+            if( time.DayOfWeek == DayOfWeek.Saturday) {
                 result = true;
             }
             else
@@ -1323,17 +1213,15 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                 result = timeOfDay > new TimeSpan(23, 0, 0) || timeOfDay < new TimeSpan(1, 30, 0);
             }
 
-            Log.Trace("InteractiveBrokersBrokerage.IsWithinScheduledServerRestTimes(): " + result);
+            Log.Trace( "InteractiveBrokersBrokerage.IsWithinScheduledServerRestTimes(): " + result);
 
             return result;
         }
 
-        private DateTime GetBrokerTime()
-        {
+        private DateTime GetBrokerTime() {
             return DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork).Add(_brokerTimeDiff);
         }
-        void HandleBrokerTime(object sender, IB.CurrentTimeEventArgs e)
-        {
+        void HandleBrokerTime(object sender, IB.CurrentTimeEventArgs e) {
             // keep track of clock drift
             _brokerTimeDiff = e.Time.Subtract(DateTime.UtcNow);
         }
@@ -1344,10 +1232,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// IDataQueueHandler interface implementaion 
         /// </summary>
         /// 
-        public IEnumerable<BaseData> GetNextTicks()
-        {
-            lock (_ticks)
-            {
+        public IEnumerable<BaseData> GetNextTicks() {
+            lock (_ticks) {
                 copy = _ticks.ToArray();
                 _ticks.Clear();
                 return copy;
@@ -1359,10 +1245,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// </summary>
         /// <param name="job">Job we're subscribing for:</param>
         /// <param name="symbols">The symbols to be added keyed by SecurityType</param>
-        public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols)
-        {
-            foreach (symbol in symbols)
-            {
+        public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
+            foreach (symbol in symbols) {
                 id = GetNextRequestID();
                 contract = CreateContract(symbol);
                 Client.RequestMarketData(id, contract, null, false, false);
@@ -1377,14 +1261,11 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         /// </summary>
         /// <param name="job">Job we're processing.</param>
         /// <param name="symbols">The symbols to be removed keyed by SecurityType</param>
-        public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols)
-        {
-            foreach (symbol in symbols)
-            {
+        public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
+            foreach (symbol in symbols) {
                 res = default(int);
 
-                if (_subscribedSymbols.TryRemove(symbol, out res))
-                {
+                if( _subscribedSymbols.TryRemove(symbol, out res)) {
                     Client.CancelMarketData(res);
 
                     secRes = default(Symbol);
@@ -1394,11 +1275,10 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         
-        void HandleTickPrice(object sender, IB.TickPriceEventArgs e)
-        {
+        void HandleTickPrice(object sender, IB.TickPriceEventArgs e) {
             symbol = default(Symbol);
 
-            if (!_subscribedTickets.TryGetValue(e.TickerId, out symbol)) return;
+            if( !_subscribedTickets.TryGetValue(e.TickerId, out symbol)) return;
 
             tick = new Tick();
             // in the event of a symbol change this will break since we'll be assigning the
@@ -1406,20 +1286,18 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             tick.Symbol = symbol;
             tick.Time = GetBrokerTime();
             securityType = symbol.ID.SecurityType;
-            if (securityType == SecurityType.Forex)
-            {
+            if( securityType == SecurityType.Forex) {
                 // forex exchange hours are specified in UTC-05
-                tick.Time = tick.Time.ConvertTo(TimeZones.NewYork, TimeZones.EasternStandard);
+                tick.Time = tick.Time Extensions.convertTo(  )TimeZones.NewYork, TimeZones.EasternStandard);
             }
             tick.Value = e.Price;
 
-            if (e.Price <= 0 &&
+            if( e.Price <= 0 &&
                 securityType != SecurityType.Future &&
                 securityType != SecurityType.Option)
                 return;
 
-            switch (e.TickType)
-            {
+            switch (e.TickType) {
                 case IB.TickType.BidPrice:
 
                     tick.TickType = TickType.Quote;
@@ -1452,17 +1330,15 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             }
 
             lock (_ticks)
-                if (tick.IsValid()) _ticks.Add(tick);
+                if( tick.IsValid()) _ticks.Add(tick);
 
         }
 
         /// <summary>
         /// Modifies the quantity received from IB based on the security type
         /// </summary>
-        public static int AdjustQuantity(SecurityType type, int size)
-        {
-            switch (type)
-            {
+        public static int AdjustQuantity(SecurityType type, int size) {
+            switch (type) {
                 case SecurityType.Equity:
                     return size * 100;
                 default:
@@ -1470,11 +1346,10 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             }
         }
 
-        void HandleTickSize(object sender, IB.TickSizeEventArgs e)
-        {
+        void HandleTickSize(object sender, IB.TickSizeEventArgs e) {
             symbol = default(Symbol);
 
-            if (!_subscribedTickets.TryGetValue(e.TickerId, out symbol)) return;
+            if( !_subscribedTickets.TryGetValue(e.TickerId, out symbol)) return;
 
             tick = new Tick();
             // in the event of a symbol change this will break since we'll be assigning the
@@ -1483,16 +1358,14 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             securityType = symbol.ID.SecurityType;
             tick.Quantity = AdjustQuantity(securityType, e.Size);
             tick.Time = GetBrokerTime();
-            if (securityType == SecurityType.Forex)
-            {
+            if( securityType == SecurityType.Forex) {
                 // forex exchange hours are specified in UTC-05
-                tick.Time = tick.Time.ConvertTo(TimeZones.NewYork, TimeZones.EasternStandard);
+                tick.Time = tick.Time Extensions.convertTo(  )TimeZones.NewYork, TimeZones.EasternStandard);
             }
 
-            if (tick.Quantity == 0) return;
+            if( tick.Quantity == 0) return;
 
-            switch (e.TickType)
-            { 
+            switch (e.TickType) { 
                 case IB.TickType.BidSize:
 
                     tick.TickType = TickType.Quote;
@@ -1531,7 +1404,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     return;
             }
             lock (_ticks)
-                if (tick.IsValid()) _ticks.Add(tick);
+                if( tick.IsValid()) _ticks.Add(tick);
 
         }
 

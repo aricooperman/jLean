@@ -44,8 +44,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             public readonly ExponentialMovingAverage Fast;
             public readonly ExponentialMovingAverage Slow;
 
-            public SelectionData()
-            {
+            public SelectionData() {
                 Fast = new ExponentialMovingAverage(100);
                 Slow = new ExponentialMovingAverage(300);
             }
@@ -57,8 +56,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
 
             // updates the EMA50 and EMA100 indicators, returning true when they're both ready
-            public boolean Update(DateTime time, BigDecimal value)
-            {
+            public boolean Update(DateTime time, BigDecimal value) {
                 return Fast.Update(time, value) && Slow.Update(time, value);
             }
         }
@@ -66,8 +64,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             UniverseSettings.Leverage = 2.0m;
             UniverseSettings.Resolution = Resolution.Daily;
 
@@ -95,22 +92,18 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">TradeBars dictionary object keyed by symbol containing the stock data</param>
-        public void OnData(TradeBars data)
-        {
-            if (_changes == SecurityChanges.None) return;
+        public void OnData(TradeBars data) {
+            if( _changes == SecurityChanges.None) return;
 
             // liquidate securities removed from our universe
-            foreach (security in _changes.RemovedSecurities)
-            {
-                if (security.Invested)
-                {
+            foreach (security in _changes.RemovedSecurities) {
+                if( security.Invested) {
                     Liquidate(security.Symbol);
                 }
             }
 
             // we'll simply go long each security we added to the universe
-            foreach (security in _changes.AddedSecurities)
-            {
+            foreach (security in _changes.AddedSecurities) {
                 SetHoldings(security.Symbol, TargetPercent);
             }
         }
@@ -119,8 +112,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// Event fired each time the we add/remove securities from the data feed
         /// </summary>
         /// <param name="changes">Object containing AddedSecurities and RemovedSecurities</param>
-        public override void OnSecuritiesChanged(SecurityChanges changes)
-        {
+        public @Override void OnSecuritiesChanged(SecurityChanges changes) {
             _changes = changes;
         }
     }

@@ -24,7 +24,7 @@ package com.quantconnect.lean.Securities.Forex
         /// <summary>
         /// Number of trading days per year for this security, used for performance statistics.
         /// </summary>
-        public override int TradingDaysPerYear
+        public @Override int TradingDaysPerYear
         {
             // 365 - Saturdays = 313;
             get { return 313; }
@@ -35,8 +35,7 @@ package com.quantconnect.lean.Securities.Forex
         /// derived from the market-hours-database for the FXCM Forex market
         /// </summary>
         public ForexExchange()
-            : base(MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.FXCM, null, SecurityType.Forex, TimeZones.NewYork))
-        {
+            : base(MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.FXCM, null, SecurityType.Forex, TimeZones.NewYork)) {
         }
 
         /// <summary>
@@ -45,8 +44,7 @@ package com.quantconnect.lean.Securities.Forex
         /// </summary>
         /// <param name="exchangeHours">Contains the weekly exchange schedule plus holidays</param>
         public ForexExchange(SecurityExchangeHours exchangeHours)
-            : base(exchangeHours)
-        {
+            : base(exchangeHours) {
         }
     }
 }

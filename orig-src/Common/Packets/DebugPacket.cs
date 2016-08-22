@@ -58,15 +58,13 @@ package com.quantconnect.lean.Packets
         /// Default constructor for JSON
         /// </summary>
         public DebugPacket()
-            : base (PacketType.Debug)
-        { }
+            : base (PacketType.Debug) { }
 
         /// <summary>
         /// Create a new instance of the notify debug packet:
         /// </summary>
         public DebugPacket(int projectId, String algorithmId, String compileId, String message, boolean toast = false)
-            : base(PacketType.Debug)
-        {
+            : base(PacketType.Debug) {
             ProjectId = projectId;
             Message = message;
             CompileId = compileId;

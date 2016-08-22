@@ -37,8 +37,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period of the T3MovingAverage</param>
         /// <param name="volumeFactor">The volume factor of the T3MovingAverage (value must be in the [0,1] range, defaults to 0.7)</param>
         public T3MovingAverage( String name, int period, BigDecimal volumeFactor = 0.7m) 
-            : base(name)
-        {
+            : base(name) {
             _period = period;
             _gd1 = new DoubleExponentialMovingAverage(name + "_1", period, volumeFactor);
             _gd2 = new DoubleExponentialMovingAverage(name + "_2", period, volumeFactor);
@@ -51,14 +50,13 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period of the T3MovingAverage</param>
         /// <param name="volumeFactor">The volume factor of the T3MovingAverage (value must be in the [0,1] range, defaults to 0.7)</param>
         public T3MovingAverage(int period, BigDecimal volumeFactor = 0.7m)
-            : this( String.format("T3({0},{1})", period, volumeFactor), period, volumeFactor)
-        {
+            : this( String.format( "T3(%1$s,%2$s)", period, volumeFactor), period, volumeFactor) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples > 6 * (_period - 1); }
         }
@@ -68,16 +66,15 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _gd1.Update(input);
 
-            if (!_gd1.IsReady)
+            if( !_gd1.IsReady)
                 return _gd1;
 
             _gd2.Update(_gd1.Current);
 
-            if (!_gd2.IsReady)
+            if( !_gd2.IsReady)
                 return _gd2;
 
             _gd3.Update(_gd2.Current);
@@ -88,8 +85,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _gd1.Reset();
             _gd2.Reset();
             _gd3.Reset();

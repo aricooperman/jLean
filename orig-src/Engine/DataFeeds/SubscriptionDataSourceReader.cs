@@ -32,10 +32,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="date">The date to be processed</param>
         /// <param name="isLiveMode">True for live mode, false otherwise</param>
         /// <returns>A new <see cref="ISubscriptionDataSourceReader"/> that can read the specified <paramref name="source"/></returns>
-        public static ISubscriptionDataSourceReader ForSource(SubscriptionDataSource source, SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-        {
-            switch (source.Format)
-            {
+        public static ISubscriptionDataSourceReader ForSource(SubscriptionDataSource source, SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
+            switch (source.Format) {
                 case FileFormat.Csv:
                     return new TextSubscriptionDataSourceReader(config, date, isLiveMode);
 
@@ -46,7 +44,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     return new ZipEntryNameSubscriptionDataSourceReader(config, date, isLiveMode);
 
                 default:
-                    throw new NotImplementedException("SubscriptionFactory.ForSource(" + source + ") has not been implemented yet.");
+                    throw new NotImplementedException( "SubscriptionFactory.ForSource( " + source + ") has not been implemented yet.");
             }
         }
     }

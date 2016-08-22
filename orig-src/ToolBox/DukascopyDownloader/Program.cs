@@ -27,48 +27,43 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
         /// <summary>
         /// Primary entry point to the program
         /// </summary>
-        static void Main( String[] args)
-        {
-            if (args.Length != 4)
-            {
-                Console.WriteLine("Usage: DukascopyDownloader SYMBOLS RESOLUTION FROMDATE TODATE");
-                Console.WriteLine("SYMBOLS = eg EURUSD,USDJPY");
-                Console.WriteLine("RESOLUTION = Tick/Second/Minute/Hour/Daily/All");
-                Console.WriteLine("FROMDATE = yyyymmdd");
-                Console.WriteLine("TODATE = yyyymmdd");
+        static void Main( String[] args) {
+            if( args.Length != 4) {
+                Console.WriteLine( "Usage: DukascopyDownloader SYMBOLS RESOLUTION FROMDATE TODATE");
+                Console.WriteLine( "SYMBOLS = eg EURUSD,USDJPY");
+                Console.WriteLine( "RESOLUTION = Tick/Second/Minute/Hour/Daily/All");
+                Console.WriteLine( "FROMDATE = yyyymmdd");
+                Console.WriteLine( "TODATE = yyyymmdd");
                 Environment.Exit(1);
             }
 
             try
             {
                 // Load settings from command line
-                symbols = args[0].Split(',');
+                symbols = args[0].split(',');
                 allResolutions = args[1].toLowerCase() == "all";
                 resolution = allResolutions ? Resolution.Tick : (Resolution)Enum.Parse(typeof(Resolution), args[1]);
                 startDate = DateTime.ParseExact(args[2], "yyyyMMdd", CultureInfo.InvariantCulture);
                 endDate = DateTime.ParseExact(args[3], "yyyyMMdd", CultureInfo.InvariantCulture);
 
                 // Load settings from config.json
-                dataDirectory = Config.Get("data-directory", "../../../Data");
+                dataDirectory = Config.Get( "data-directory", "../../../Data");
 
                 // Download the data
                 static final String market = Market.Dukascopy;
                 downloader = new DukascopyDataDownloader();
 
-                foreach (symbol in symbols)
-                {
-                    if (!downloader.HasSymbol(symbol))
-                        throw new ArgumentException("The symbol " + symbol + " is not available.");
+                foreach (symbol in symbols) {
+                    if( !downloader.HasSymbol(symbol))
+                        throw new ArgumentException( "The symbol " + symbol + " is not available.");
                 }
 
-                foreach (symbol in symbols)
-                {
+                foreach (symbol in symbols) {
                     securityType = downloader.GetSecurityType(symbol);
                     symbolObject = Symbol.Create(symbol, securityType, Market.Dukascopy);
                     data = downloader.Get(symbolObject, resolution, startDate, endDate);
 
-                    if (allResolutions)
-                    {
+                    if( allResolutions) {
                         ticks = data.Cast<Tick>().ToList();
 
                         // Save the data (tick resolution)
@@ -76,8 +71,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
                         writer.Write(ticks);
 
                         // Save the data (other resolutions)
-                        foreach (res in new[] { Resolution.Second, Resolution.Minute, Resolution.Hour, Resolution.Daily })
-                        {
+                        foreach (res in new[] { Resolution.Second, Resolution.Minute, Resolution.Hour, Resolution.Daily }) {
                             resData = DukascopyDataDownloader.AggregateTicks(symbolObject, ticks, res.ToTimeSpan());
 
                             writer = new LeanDataWriter(res, symbolObject, dataDirectory);
@@ -92,8 +86,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
                     }
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }

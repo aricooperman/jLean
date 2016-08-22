@@ -30,10 +30,8 @@ package com.quantconnect.lean.Tests
         /// <param name="wait">The <see cref="WaitHandle"/></param> instance to wait on
         /// <param name="milliseconds">The timeout, in milliseconds</param>
         /// <param name="message">The message to fail with, null to fail with no message</param>
-        public static void WaitOneAssertFail(this WaitHandle wait, int milliseconds, String message = null)
-        {
-            if (!wait.WaitOne(milliseconds))
-            {
+        public static void WaitOneAssertFail(this WaitHandle wait, int milliseconds, String message = null ) {
+            if( !wait.WaitOne(milliseconds)) {
                 Assert.Fail(message);
             }
         }

@@ -124,7 +124,7 @@ public class MapFile implements Iterable<MapFileRow> {
                 .map( t -> new MapFile( t.getLeft(), t.getRight() ) )
                 .collect( Collectors.toList() );
 //        return from file in Directory.EnumerateFiles(mapFileDirectory)
-//               where file.EndsWith(".csv")
+//               where file.EndsWith( ".csv")
 //               let permtick = Path.GetFileNameWithoutExtension(file)
 //               let fileRead = SafeMapFileRowRead(file)
 //               select new MapFile(permtick, fileRead);

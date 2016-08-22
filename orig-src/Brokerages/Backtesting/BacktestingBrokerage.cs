@@ -44,8 +44,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// </summary>
         /// <param name="algorithm">The algorithm instance</param>
         public BacktestingBrokerage(IAlgorithm algorithm)
-            : base("Backtesting Brokerage")
-        {
+            : base( "Backtesting Brokerage") {
             Algorithm = algorithm;
             _pending = new ConcurrentMap<Integer, Order>();
         }
@@ -56,8 +55,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// <param name="algorithm">The algorithm instance</param>
         /// <param name="name">The name of the brokerage</param>
         protected BacktestingBrokerage(IAlgorithm algorithm, String name)
-            : base(name)
-        {
+            : base(name) {
             Algorithm = algorithm;
             _pending = new ConcurrentMap<Integer, Order>();
         }
@@ -68,7 +66,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// <remarks>
         /// The BacktestingBrokerage is always connected
         /// </remarks>
-        public override boolean IsConnected
+        public @Override boolean IsConnected
         {
             get { return true; }
         }
@@ -77,8 +75,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// Gets all open orders on the account
         /// </summary>
         /// <returns>The open orders returned from IB</returns>
-        public override List<Order> GetOpenOrders()
-        {
+        public @Override List<Order> GetOpenOrders() {
             return Algorithm.Transactions.GetOpenOrders();
         }
 
@@ -86,8 +83,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// Gets all holdings for the account
         /// </summary>
         /// <returns>The current holdings from the account</returns>
-        public override List<Holding> GetAccountHoldings()
-        {
+        public @Override List<Holding> GetAccountHoldings() {
             // grab everything from the portfolio with a non-zero absolute quantity
             return (from security in Algorithm.Portfolio.Securities.Values.OrderBy(x => x.Symbol) 
                     where security.Holdings.AbsoluteQuantity > 0 
@@ -98,8 +94,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// Gets the current cash balance for each currency held in the brokerage account
         /// </summary>
         /// <returns>The current cash balance for each currency available for trading</returns>
-        public override List<Cash> GetCashBalance()
-        {
+        public @Override List<Cash> GetCashBalance() {
             return Algorithm.Portfolio.CashBook.Values.ToList();
         }
 
@@ -108,18 +103,15 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// </summary>
         /// <param name="order">The order to be placed</param>
         /// <returns>True if the request for a new order has been placed, false otherwise</returns>
-        public override boolean PlaceOrder(Order order)
-        {
-            if (order.Status == OrderStatus.New)
-            {
-                lock (_needsScanLock)
-                {
+        public @Override boolean PlaceOrder(Order order) {
+            if( order.Status == OrderStatus.New) {
+                lock (_needsScanLock) {
                     _needsScan = true;
                     SetPendingOrder(order);
                 }
 
                 orderId = order.Id.toString();
-                if (!order.BrokerId.Contains(orderId)) order.BrokerId.Add(orderId);
+                if( !order.BrokerId.Contains(orderId)) order.BrokerId.Add(orderId);
 
                 // fire off the event that says this order has been submitted
                 static final int orderFee = 0;
@@ -136,25 +128,21 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// </summary>
         /// <param name="order">The new order information</param>
         /// <returns>True if the request was made for the order to be updated, false otherwise</returns>
-        public override boolean UpdateOrder(Order order)
-        {
-            if (true)
-            {
+        public @Override boolean UpdateOrder(Order order) {
+            if( true) {
                 Order pending;
-                if (!_pending.TryGetValue(order.Id, out pending))
-                {
+                if( !_pending.TryGetValue(order.Id, out pending)) {
                     // can't update something that isn't there
                     return false;
                 }
 
-                lock (_needsScanLock)
-                {
+                lock (_needsScanLock) {
                     _needsScan = true;
                     SetPendingOrder(order);
                 }
 
                 orderId = order.Id.toString();
-                if (!order.BrokerId.Contains(orderId)) order.BrokerId.Add(orderId);
+                if( !order.BrokerId.Contains(orderId)) order.BrokerId.Add(orderId);
 
                 // fire off the event that says this order has been updated
                 static final int orderFee = 0;
@@ -170,17 +158,15 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// </summary>
         /// <param name="order">The order to cancel</param>
         /// <returns>True if the request was made for the order to be canceled, false otherwise</returns>
-        public override boolean CancelOrder(Order order)
-        {
+        public @Override boolean CancelOrder(Order order) {
             Order pending;
-            if (!_pending.TryRemove(order.Id, out pending))
-            {
+            if( !_pending.TryRemove(order.Id, out pending)) {
                 // can't cancel something that isn't there
                 return false;
             }
 
             orderId = order.Id.toString();
-            if (!order.BrokerId.Contains(orderId)) order.BrokerId.Add(order.Id.toString());
+            if( !order.BrokerId.Contains(orderId)) order.BrokerId.Add(order.Id.toString());
 
             // fire off the event that says this order has been canceled
             static final int orderFee = 0;
@@ -193,33 +179,27 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// <summary>
         /// Scans all the outstanding orders and applies the algorithm model fills to generate the order events
         /// </summary>
-        public void Scan()
-        {
-            lock (_needsScanLock)
-            {
+        public void Scan() {
+            lock (_needsScanLock) {
                 // there's usually nothing in here
-                if (!_needsScan)
-                {
+                if( !_needsScan) {
                     return;
                 }
 
                 stillNeedsScan = false;
 
                 // process each pending order to produce fills/fire events
-                foreach (kvp in _pending.OrderBy(x => x.Key))
-                {
+                foreach (kvp in _pending.OrderBy(x => x.Key)) {
                     order = kvp.Value;
 
-                    if (order.Status.IsClosed())
-                    {
+                    if( order.Status.IsClosed()) {
                         // this should never actually happen as we always remove closed orders as they happen
                         _pending.TryRemove(order.Id, out order);
                         continue;
                     }
 
                     // all order fills are processed on the next bar (except for market orders)
-                    if (order.Time == Algorithm.UtcTime && order.Type != OrderType.Market)
-                    {
+                    if( order.Time == Algorithm.UtcTime && order.Type != OrderType.Market) {
                         stillNeedsScan = true;
                         continue;
                     }
@@ -227,9 +207,8 @@ package com.quantconnect.lean.Brokerages.Backtesting
                     fill = new OrderEvent(order, Algorithm.UtcTime, 0);
 
                     Security security;
-                    if (!Algorithm.Securities.TryGetValue(order.Symbol, out security))
-                    {
-                        Log.Error("BacktestingBrokerage.Scan(): Unable to process order: " + order.Id + ". The security no longer exists.");
+                    if( !Algorithm.Securities.TryGetValue(order.Symbol, out security)) {
+                        Log.Error( "BacktestingBrokerage.Scan(): Unable to process order: " + order.Id + ". The security no longer exists.");
                         // invalidate the order in the algorithm before removing
                         OnOrderEvent(new OrderEvent(order, Algorithm.UtcTime, 0m){Status = OrderStatus.Invalid});
                         _pending.TryRemove(order.Id, out order);
@@ -237,8 +216,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
                     }
 
                     // check if we would actually be able to fill this
-                    if (!Algorithm.BrokerageModel.CanExecuteOrder(security, order))
-                    {
+                    if( !Algorithm.BrokerageModel.CanExecuteOrder(security, order)) {
                         continue;
                     }
 
@@ -248,8 +226,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
                     {
                         sufficientBuyingPower = Algorithm.Transactions.GetSufficientCapitalForOrder(Algorithm.Portfolio, order);
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         // if we threw an error just mark it as invalid and remove the order from our pending list
                         Order pending;
                         _pending.TryRemove(order.Id, out pending);
@@ -257,21 +234,19 @@ package com.quantconnect.lean.Brokerages.Backtesting
                         OnOrderEvent(new OrderEvent(order, Algorithm.UtcTime, 0, "Error in GetSufficientCapitalForOrder"));
 
                         Log.Error(err);
-                        Algorithm.Error( String.format("Order Error: id: {0}, Error executing margin models: {1}", order.Id, err.Message));
+                        Algorithm.Error( String.format( "Order Error: id: %1$s, Error executing margin models: %2$s", order.Id, err.Message));
                         continue;
                     }
 
                     //Before we check this queued order make sure we have buying power:
-                    if (sufficientBuyingPower)
-                    {
+                    if( sufficientBuyingPower) {
                         //Model:
                         model = security.FillModel;
 
                         //Based on the order type: refresh its model to get fill price and quantity
                         try
                         {
-                            switch (order.Type)
-                            {
+                            switch (order.Type) {
                                 case OrderType.Limit:
                                     fill = model.LimitFill(security, order as LimitOrder);
                                     break;
@@ -297,10 +272,9 @@ package com.quantconnect.lean.Brokerages.Backtesting
                                     break;
                             }
                         }
-                        catch (Exception err)
-                        {
+                        catch (Exception err) {
                             Log.Error(err);
-                            Algorithm.Error( String.format("Order Error: id: {0}, Transaction model failed to fill for order type: {1} with error: {2}",
+                            Algorithm.Error( String.format( "Order Error: id: %1$s, Transaction model failed to fill for order type: %2$s with error: %3$s",
                                 order.Id, order.Type, err.Message));
                         }
                     }
@@ -308,19 +282,17 @@ package com.quantconnect.lean.Brokerages.Backtesting
                     {
                         //Flag order as invalid and push off queue:
                         order.Status = OrderStatus.Invalid;
-                        Algorithm.Error( String.format("Order Error: id: {0}, Insufficient buying power to complete order (Value:{1}).", order.Id,
+                        Algorithm.Error( String.format( "Order Error: id: %1$s, Insufficient buying power to complete order (Value:%2$s).", order.Id,
                             order.GetValue(security).SmartRounding()));
                     }
 
                     // change in status or a new fill
-                    if (order.Status != fill.Status || fill.FillQuantity != 0)
-                    {
+                    if( order.Status != fill.Status || fill.FillQuantity != 0) {
                         //If the fill models come back suggesting filled, process the affects on portfolio
                         OnOrderEvent(fill);
                     }
 
-                    if (fill.Status.IsClosed())
-                    {
+                    if( fill.Status.IsClosed()) {
                         _pending.TryRemove(order.Id, out order);
                     }
                     else
@@ -337,16 +309,14 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// <summary>
         /// The BacktestingBrokerage is always connected. This is a no-op.
         /// </summary>
-        public override void Connect()
-        {
+        public @Override void Connect() {
             //NOP
         }
 
         /// <summary>
         /// The BacktestingBrokerage is always connected. This is a no-op.
         /// </summary>
-        public override void Disconnect()
-        {
+        public @Override void Disconnect() {
             //NOP
         }
 
@@ -355,8 +325,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /// </summary>
         /// <param name="order">The order to be added to the pending orders Map</param>
         /// <returns></returns>
-        private void SetPendingOrder(Order order)
-        {
+        private void SetPendingOrder(Order order) {
             // only save off clones!
             _pending[order.Id] = order.Clone();
         }

@@ -24,8 +24,7 @@ package com.quantconnect.lean.Tests.Common.Util
     public class LinqExtensionsTests
     {
         [Test]
-        public void ExceptProducesSameResultsAsEnumerableExcept()
-        {
+        public void ExceptProducesSameResultsAsEnumerableExcept() {
             enumerable = Enumerable.Range(0, 100);
             set = new HashSet<Integer>(Enumerable.Range(40, 20));
 

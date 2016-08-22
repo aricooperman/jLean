@@ -24,7 +24,7 @@ package com.quantconnect.lean.Securities.Cfd
         /// <summary>
         /// Number of trading days per year for this security, used for performance statistics.
         /// </summary>
-        public override int TradingDaysPerYear
+        public @Override int TradingDaysPerYear
         {
             // 365 - Saturdays = 313;
             get { return 313; }
@@ -36,8 +36,7 @@ package com.quantconnect.lean.Securities.Cfd
         /// </summary>
         /// <param name="exchangeHours">Contains the weekly exchange schedule plus holidays</param>
         public CfdExchange(SecurityExchangeHours exchangeHours)
-            : base(exchangeHours)
-        {
+            : base(exchangeHours) {
         }
     }
 }

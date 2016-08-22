@@ -56,8 +56,7 @@ package com.quantconnect.lean.Brokerages
         /// Creates a new Brokerage instance with the specified name
         /// </summary>
         /// <param name="name">The name of the brokerage</param>
-        protected Brokerage( String name)
-        {
+        protected Brokerage( String name) {
             Name = name;
         }
 
@@ -96,17 +95,15 @@ package com.quantconnect.lean.Brokerages
         /// Event invocator for the OrderFilled event
         /// </summary>
         /// <param name="e">The OrderEvent</param>
-        protected virtual void OnOrderEvent(OrderEvent e)
-        {
+        protected virtual void OnOrderEvent(OrderEvent e) {
             try
             {
-                Log.Debug("Brokerage.OnOrderEvent(): " + e);
+                Log.Debug( "Brokerage.OnOrderEvent(): " + e);
 
                 handler = OrderStatusChanged;
-                if (handler != null) handler(this, e);
+                if( handler != null ) handler(this, e);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }
@@ -115,17 +112,15 @@ package com.quantconnect.lean.Brokerages
         /// Event invocator for the AccountChanged event
         /// </summary>
         /// <param name="e">The AccountEvent</param>
-        protected virtual void OnAccountChanged(AccountEvent e)
-        {
+        protected virtual void OnAccountChanged(AccountEvent e) {
             try
             {
-                Log.Trace("Brokerage.OnAccountChanged(): " + e);
+                Log.Trace( "Brokerage.OnAccountChanged(): " + e);
 
                 handler = AccountChanged;
-                if (handler != null) handler(this, e);
+                if( handler != null ) handler(this, e);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }
@@ -134,24 +129,21 @@ package com.quantconnect.lean.Brokerages
         /// Event invocator for the Message event
         /// </summary>
         /// <param name="e">The error</param>
-        protected virtual void OnMessage(BrokerageMessageEvent e)
-        {
+        protected virtual void OnMessage(BrokerageMessageEvent e) {
             try
             {
-                if (e.Type == BrokerageMessageType.Error)
-                {
-                    Log.Error("Brokerage.OnMessage(): " + e);
+                if( e.Type == BrokerageMessageType.Error) {
+                    Log.Error( "Brokerage.OnMessage(): " + e);
                 }
                 else
                 {
-                    Log.Trace("Brokerage.OnMessage(): " + e);
+                    Log.Trace( "Brokerage.OnMessage(): " + e);
                 }
 
                 handler = Message;
-                if (handler != null) handler(this, e);
+                if( handler != null ) handler(this, e);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }

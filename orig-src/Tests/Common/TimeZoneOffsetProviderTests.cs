@@ -23,32 +23,29 @@ package com.quantconnect.lean.Tests.Common
     public class TimeZoneOffsetProviderTests
     {
         [Test]
-        public void ReturnsCurrentOffset()
-        {
+        public void ReturnsCurrentOffset() {
             utcDate = new DateTime(2015, 07, 07);
             offsetProvider = new TimeZoneOffsetProvider(TimeZones.NewYork, utcDate, utcDate.AddDays(1));
             currentOffset = offsetProvider.GetOffsetTicks(utcDate);
-            Assert.AreEqual(-TimeSpan.FromHours(4).TotalHours, TimeSpan.FromTicks(currentOffset).TotalHours);
+            Assert.AreEqual(-Duration.ofHours(4).TotalHours, Duration.ofTicks(currentOffset).TotalHours);
         }
 
         [Test]
-        public void ReturnsCorrectOffsetBeforeDST()
-        {
+        public void ReturnsCorrectOffsetBeforeDST() {
             // one tick before DST goes into affect
             utcDate = new DateTime(2015, 03, 08, 2, 0, 0).AddHours(5).AddTicks(-1);
             offsetProvider = new TimeZoneOffsetProvider(TimeZones.NewYork, utcDate, utcDate.AddDays(1));
             currentOffset = offsetProvider.GetOffsetTicks(utcDate);
-            Assert.AreEqual(-TimeSpan.FromHours(5).TotalHours, TimeSpan.FromTicks(currentOffset).TotalHours);
+            Assert.AreEqual(-Duration.ofHours(5).TotalHours, Duration.ofTicks(currentOffset).TotalHours);
         }
 
         [Test]
-        public void ReturnsCorrectOffsetAfterDST()
-        {
+        public void ReturnsCorrectOffsetAfterDST() {
             // the exact instant DST goes into affect
             utcDate = new DateTime(2015, 03, 08, 2, 0, 0).AddHours(5);
             offsetProvider = new TimeZoneOffsetProvider(TimeZones.NewYork, utcDate, utcDate.AddDays(1));
             currentOffset = offsetProvider.GetOffsetTicks(utcDate);
-            Assert.AreEqual(-TimeSpan.FromHours(4).TotalHours, TimeSpan.FromTicks(currentOffset).TotalHours);
+            Assert.AreEqual(-Duration.ofHours(4).TotalHours, Duration.ofTicks(currentOffset).TotalHours);
         }
     }
 }

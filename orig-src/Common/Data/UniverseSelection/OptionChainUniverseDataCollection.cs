@@ -38,8 +38,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// Initializes a new default instance of the <see cref="OptionChainUniverseDataCollection"/> c;ass
         /// </summary>
         public OptionChainUniverseDataCollection()
-            : this(DateTime.MinValue, Symbol.Empty)
-        {
+            : this(DateTime.MinValue, Symbol.Empty) {
             FilteredContracts = new HashSet<Symbol>();
         }
 
@@ -50,9 +49,8 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="symbol">A common identifier for all data in this packet</param>
         /// <param name="data">The data to add to this collection</param>
         /// <param name="underlying">The option chain's underlying price data</param>
-        public OptionChainUniverseDataCollection(DateTime time, Symbol symbol, IEnumerable<BaseData> data = null, BaseData underlying = null)
-            : this(time, time, symbol, data, underlying)
-        {
+        public OptionChainUniverseDataCollection(DateTime time, Symbol symbol, IEnumerable<BaseData> data = null, BaseData underlying = null )
+            : this(time, time, symbol, data, underlying) {
         }
 
         /// <summary>
@@ -63,9 +61,8 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="symbol">A common identifier for all data in this packet</param>
         /// <param name="data">The data to add to this collection</param>
         /// <param name="underlying">The option chain's underlying price data</param>
-        public OptionChainUniverseDataCollection(DateTime time, DateTime endTime, Symbol symbol, IEnumerable<BaseData> data = null, BaseData underlying = null)
-            : base(time, endTime, symbol, data)
-        {
+        public OptionChainUniverseDataCollection(DateTime time, DateTime endTime, Symbol symbol, IEnumerable<BaseData> data = null, BaseData underlying = null )
+            : base(time, endTime, symbol, data) {
             Underlying = underlying;
         }
 
@@ -76,8 +73,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// This base implementation uses reflection to copy all public fields and properties
         /// </remarks>
         /// <returns>A clone of the current object</returns>
-        public override BaseData Clone()
-        {
+        public @Override BaseData Clone() {
             return new OptionChainUniverseDataCollection
             {
                 Underlying = Underlying,

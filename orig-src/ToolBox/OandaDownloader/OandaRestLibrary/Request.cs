@@ -44,30 +44,24 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 			}
 		}
 
-		public static implicit operator SmartProperty<T>(T value)
-		{
+		public static implicit operator SmartProperty<T>(T value) {
 			return new SmartProperty<T>() { Value = value };
 		}
 
-		public static implicit operator T(SmartProperty<T> value)
-		{
+		public static implicit operator T(SmartProperty<T> value) {
 			return value._value;
 		}
 
-		public void SetValue(object obj)
-		{
+		public void SetValue(object obj) {
 			SetValue((T)obj);
 		}
-		public void SetValue(T value)
-		{
+		public void SetValue(T value) {
 			Value = value;
 		}
 
-		public override String toString()
-		{
+		public @Override String toString() {
 			// This is ugly, but c'est la vie for now
-			if (_value is bool)
-			{	// boolean values need to be lower case to be parsed correctly
+			if( _value is bool) {	// boolean values need to be lower case to be parsed correctly
 				return _value.toString().toLowerCase();
 			}
 			return _value.toString();
@@ -78,25 +72,21 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 	{
 		public abstract String EndPoint { get; }
 
-		public String GetRequestString()
-		{
+		public String GetRequestString() {
 			result = new StringBuilder();
 			result.Append(EndPoint);
 			bool firstJoin = true;
-			foreach (declaredField in this.GetType().GetTypeInfo().DeclaredFields)
-			{
+			foreach (declaredField in this.GetType().GetTypeInfo().DeclaredFields) {
 				prop = declaredField.GetValue(this);
 				smartProp = prop as ISmartProperty;
-				if (smartProp != null && smartProp.HasValue)
-				{
-					if (firstJoin)
-					{
-						result.Append("?");
+				if( smartProp != null && smartProp.HasValue) {
+					if( firstJoin) {
+						result.Append( "?");
 						firstJoin = false;
 					}
 					else
 					{
-						result.Append("&");
+						result.Append( "&");
 					}
 
 					result.Append(declaredField.Name + "=" + prop);

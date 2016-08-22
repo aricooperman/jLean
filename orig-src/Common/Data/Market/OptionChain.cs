@@ -81,8 +81,7 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Initializes a new default instance of the <see cref="OptionChain"/> class
         /// </summary>
-        private OptionChain()
-        {
+        private OptionChain() {
             DataType = MarketDataType.OptionChain;
         }
 
@@ -91,8 +90,7 @@ package com.quantconnect.lean.Data.Market
         /// </summary>
         /// <param name="canonicalOptionSymbol">The symbol for this chain.</param>
         /// <param name="time">The time of this chain</param>
-        public OptionChain(Symbol canonicalOptionSymbol, DateTime time)
-        {
+        public OptionChain(Symbol canonicalOptionSymbol, DateTime time) {
             Time = time;
             Symbol = canonicalOptionSymbol;
             DataType = MarketDataType.OptionChain;
@@ -112,8 +110,7 @@ package com.quantconnect.lean.Data.Market
         /// <param name="trades">All trade data for the entire option chain</param>
         /// <param name="quotes">All quote data for the entire option chain</param>
         /// <param name="contracts">All contrains for this option chain</param>
-        public OptionChain(Symbol canonicalOptionSymbol, DateTime time, BaseData underlying, IEnumerable<BaseData> trades, IEnumerable<BaseData> quotes, IEnumerable<OptionContract> contracts, IEnumerable<Symbol> filteredContracts)
-        {
+        public OptionChain(Symbol canonicalOptionSymbol, DateTime time, BaseData underlying, IEnumerable<BaseData> trades, IEnumerable<BaseData> quotes, IEnumerable<OptionContract> contracts, IEnumerable<Symbol> filteredContracts) {
             Time = time;
             Underlying = underlying;
             Symbol = canonicalOptionSymbol;
@@ -125,14 +122,11 @@ package com.quantconnect.lean.Data.Market
             QuoteBars = new QuoteBars(time);
             Contracts = new OptionContracts(time);
 
-            foreach (trade in trades)
-            {
+            foreach (trade in trades) {
                 tick = trade as Tick;
-                if (tick != null)
-                {
+                if( tick != null ) {
                     List<Tick> ticks;
-                    if (!Ticks.TryGetValue(tick.Symbol, out ticks))
-                    {
+                    if( !Ticks.TryGetValue(tick.Symbol, out ticks)) {
                         ticks = new List<Tick>();
                         Ticks[tick.Symbol] = ticks;
                     }
@@ -140,20 +134,16 @@ package com.quantconnect.lean.Data.Market
                     continue;
                 }
                 bar = trade as TradeBar;
-                if (bar != null)
-                {
+                if( bar != null ) {
                     TradeBars[trade.Symbol] = bar;
                 }
             }
 
-            foreach (quote in quotes)
-            {
+            foreach (quote in quotes) {
                 tick = quote as Tick;
-                if (tick != null)
-                {
+                if( tick != null ) {
                     List<Tick> ticks;
-                    if (!Ticks.TryGetValue(tick.Symbol, out ticks))
-                    {
+                    if( !Ticks.TryGetValue(tick.Symbol, out ticks)) {
                         ticks = new List<Tick>();
                         Ticks[tick.Symbol] = ticks;
                     }
@@ -161,14 +151,12 @@ package com.quantconnect.lean.Data.Market
                     continue;
                 }
                 bar = quote as QuoteBar;
-                if (bar != null)
-                {
+                if( bar != null ) {
                     QuoteBars[quote.Symbol] = bar;
                 }
             }
 
-            foreach (contract in contracts)
-            {
+            foreach (contract in contracts) {
                 Contracts[contract.Symbol] = contract;
             }
         }
@@ -179,12 +167,10 @@ package com.quantconnect.lean.Data.Market
         /// <typeparam name="T">The type of auxiliary data</typeparam>
         /// <param name="symbol">The symbol of the auxiliary data</param>
         /// <returns>The last auxiliary data with the specified type and symbol</returns>
-        public T GetAux<T>(Symbol symbol)
-        {
+        public T GetAux<T>(Symbol symbol) {
             List<BaseData> list;
             Map<Symbol, List<BaseData>> dictionary;
-            if (!_auxiliaryData.TryGetValue(typeof(T), out dictionary) || !dictionary.TryGetValue(symbol, out list))
-            {
+            if( !_auxiliaryData.TryGetValue(typeof(T), out dictionary) || !dictionary.TryGetValue(symbol, out list)) {
                 return default(T);
             }
             return list.OfType<T>().LastOrDefault();
@@ -195,19 +181,15 @@ package com.quantconnect.lean.Data.Market
         /// </summary>
         /// <typeparam name="T">The type of auxiliary data</typeparam>
         /// <returns>A dictionary containing all auxiliary data of the specified type</returns>
-        public DataMap<T> GetAux<T>()
-        {
+        public DataMap<T> GetAux<T>() {
             Map<Symbol, List<BaseData>> d;
-            if (!_auxiliaryData.TryGetValue(typeof(T), out d))
-            {
+            if( !_auxiliaryData.TryGetValue(typeof(T), out d)) {
                 return new DataMap<T>();
             }
             dictionary = new DataMap<T>();
-            foreach (kvp in d)
-            {
+            foreach (kvp in d) {
                 item = kvp.Value.OfType<T>().LastOrDefault();
-                if (item != null)
-                {
+                if( item != null ) {
                     dictionary.Add(kvp.Key, item);
                 }
             }
@@ -219,11 +201,9 @@ package com.quantconnect.lean.Data.Market
         /// </summary>
         /// <typeparam name="T">The type of auxiliary data</typeparam>
         /// <returns>A dictionary containing all auxiliary data of the specified type</returns>
-        public Map<Symbol, List<BaseData>> GetAuxList<T>()
-        {
+        public Map<Symbol, List<BaseData>> GetAuxList<T>() {
             Map<Symbol, List<BaseData>> dictionary;
-            if (!_auxiliaryData.TryGetValue(typeof(T), out dictionary))
-            {
+            if( !_auxiliaryData.TryGetValue(typeof(T), out dictionary)) {
                 return new Map<Symbol, List<BaseData>>();
             }
             return dictionary;
@@ -235,12 +215,10 @@ package com.quantconnect.lean.Data.Market
         /// <typeparam name="T">The type of auxiliary data</typeparam>
         /// <param name="symbol">The symbol of the auxiliary data</param>
         /// <returns>The list of auxiliary data with the specified type and symbol</returns>
-        public List<T> GetAuxList<T>(Symbol symbol)
-        {
+        public List<T> GetAuxList<T>(Symbol symbol) {
             List<BaseData> list;
             Map<Symbol, List<BaseData>> dictionary;
-            if (!_auxiliaryData.TryGetValue(typeof(T), out dictionary) || !dictionary.TryGetValue(symbol, out list))
-            {
+            if( !_auxiliaryData.TryGetValue(typeof(T), out dictionary) || !dictionary.TryGetValue(symbol, out list)) {
                 return new List<T>();
             }
             return list.OfType<T>().ToList();
@@ -252,8 +230,7 @@ package com.quantconnect.lean.Data.Market
         /// <returns>
         /// An enumerator that can be used to iterate through the collection.
         /// </returns>
-        public IEnumerator<OptionContract> GetEnumerator()
-        {
+        public IEnumerator<OptionContract> GetEnumerator() {
             return Contracts.Values.GetEnumerator();
         }
 
@@ -263,8 +240,7 @@ package com.quantconnect.lean.Data.Market
         /// <returns>
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+        IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
@@ -272,8 +248,7 @@ package com.quantconnect.lean.Data.Market
         /// Return a new instance clone of this object, used in fill forward
         /// </summary>
         /// <returns>A clone of the current object</returns>
-        public override BaseData Clone()
-        {
+        public @Override BaseData Clone() {
             return new OptionChain
             {
                 Underlying = Underlying,
@@ -293,19 +268,16 @@ package com.quantconnect.lean.Data.Market
         /// Adds the specified auxiliary data to this option chain
         /// </summary>
         /// <param name="baseData">The auxiliary data to be added</param>
-        internal void AddAuxData(BaseData baseData)
-        {
+        internal void AddAuxData(BaseData baseData) {
             type = baseData.GetType();
             Map<Symbol, List<BaseData>> dictionary;
-            if (!_auxiliaryData.TryGetValue(type, out dictionary))
-            {
+            if( !_auxiliaryData.TryGetValue(type, out dictionary)) {
                 dictionary = new Map<Symbol, List<BaseData>>();
                 _auxiliaryData[type] = dictionary;
             }
 
             List<BaseData> list;
-            if (!dictionary.TryGetValue(baseData.Symbol, out list))
-            {
+            if( !dictionary.TryGetValue(baseData.Symbol, out list)) {
                 list = new List<BaseData>();
                 dictionary[baseData.Symbol] = list;
             }

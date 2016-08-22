@@ -43,7 +43,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
     public class LiveTradingDataFeed : IDataFeed
     {
         private SecurityChanges _changes = SecurityChanges.None;
-        private static readonly Symbol DataQueueHandlerSymbol = Symbol.Create("data-queue-handler-symbol", SecurityType.Base, Market.USA);
+        private static readonly Symbol DataQueueHandlerSymbol = Symbol.Create( "data-queue-handler-symbol", SecurityType.Base, Market.USA);
 
         private LiveNodePacket _job;
         private IAlgorithm _algorithm;
@@ -82,11 +82,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <summary>
         /// Initializes the data feed for the specified job and algorithm
         /// </summary>
-        public void Initialize(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler resultHandler, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider)
-        {
-            if (!(job is LiveNodePacket))
-            {
-                throw new ArgumentException("The LiveTradingDataFeed requires a LiveNodePacket.");
+        public void Initialize(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler resultHandler, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider) {
+            if( !(job is LiveNodePacket)) {
+                throw new ArgumentException( "The LiveTradingDataFeed requires a LiveNodePacket.");
             }
 
             _cancellationTokenSource = new CancellationTokenSource();
@@ -98,9 +96,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             _dataQueueHandler = GetDataQueueHandler();
 
             _frontierTimeProvider = new ManualTimeProvider(_timeProvider.GetUtcNow());
-            _customExchange = new BaseDataExchange("CustomDataExchange") {SleepInterval = 10};
+            _customExchange = new BaseDataExchange( "CustomDataExchange") {SleepInterval = 10};
             // sleep is controlled on this exchange via the GetNextTicksEnumerator
-            _exchange = new BaseDataExchange("DataQueueExchange"){SleepInterval = 0};
+            _exchange = new BaseDataExchange( "DataQueueExchange"){SleepInterval = 0};
             _exchange.AddEnumerator(DataQueueHandlerSymbol, GetNextTicksEnumerator());
             _subscriptions = new SubscriptionCollection();
 
@@ -119,13 +117,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             start = _timeProvider.GetUtcNow();
             algorithm.UniverseManager.CollectionChanged += (sender, args) =>
             {
-                switch (args.Action)
-                {
+                switch (args.Action) {
                     case NotifyCollectionChangedAction.Add:
-                        foreach (universe in args.NewItems.OfType<Universe>())
-                        {
-                            if (!_subscriptions.Contains(universe.Configuration))
-                            {
+                        foreach (universe in args.NewItems.OfType<Universe>()) {
+                            if( !_subscriptions.Contains(universe.Configuration)) {
                                 _subscriptions.TryAdd(CreateUniverseSubscription(universe, start, Time.EndOfTime));
                             }
 
@@ -136,14 +131,13 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                         break;
 
                     case NotifyCollectionChangedAction.Remove:
-                        foreach (universe in args.OldItems.OfType<Universe>())
-                        {
+                        foreach (universe in args.OldItems.OfType<Universe>()) {
                             RemoveSubscription(universe.Configuration);
                         }
                         break;
 
                     default:
-                        throw new NotImplementedException("The specified action is not implemented: " + args.Action);
+                        throw new NotImplementedException( "The specified action is not implemented: " + args.Action);
                 }
             };
         }
@@ -157,26 +151,23 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="utcStartTime">The start time of the subscription</param>
         /// <param name="utcEndTime">The end time of the subscription</param>
         /// <returns>True if the subscription was created and added successfully, false otherwise</returns>
-        public boolean AddSubscription(Universe universe, Security security, SubscriptionDataConfig config, DateTime utcStartTime, DateTime utcEndTime)
-        {
+        public boolean AddSubscription(Universe universe, Security security, SubscriptionDataConfig config, DateTime utcStartTime, DateTime utcEndTime) {
             // create and add the subscription to our collection
             subscription = CreateSubscription(universe, security, config, utcStartTime, utcEndTime);
             
             // for some reason we couldn't create the subscription
-            if (subscription == null)
-            {
-                Log.Trace("Unable to add subscription for: " + security.Symbol.toString());
+            if( subscription == null ) {
+                Log.Trace( "Unable to add subscription for: " + security.Symbol.toString());
                 return false;
             }
 
-            Log.Trace("LiveTradingDataFeed.AddSubscription(): Added " + security.Symbol.toString());
+            Log.Trace( "LiveTradingDataFeed.AddSubscription(): Added " + security.Symbol.toString());
 
             _subscriptions.TryAdd(subscription);
 
             // send the subscription for the new symbol through to the data queuehandler
             // unless it is custom data, custom data is retrieved using the same as backtest
-            if (!subscription.Configuration.IsCustomData)
-            {
+            if( !subscription.Configuration.IsCustomData) {
                 _dataQueueHandler.Subscribe(_job, new[] {security.Symbol});
             }
 
@@ -194,20 +185,17 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="configuration">The configuration of the subscription to remove</param>
         /// <returns>True if the subscription was successfully removed, false otherwise</returns>
-        public boolean RemoveSubscription(SubscriptionDataConfig configuration)
-        {
+        public boolean RemoveSubscription(SubscriptionDataConfig configuration) {
             // remove the subscription from our collection
             Subscription subscription;
-            if (!_subscriptions.TryGetValue(configuration, out subscription))
-            {
+            if( !_subscriptions.TryGetValue(configuration, out subscription)) {
                 return false;
             }
 
             security = subscription.Security;
 
             // remove the subscriptions
-            if (subscription.Configuration.IsCustomData)
-            {
+            if( subscription.Configuration.IsCustomData) {
                 _customExchange.RemoveEnumerator(security.Symbol);
                 _customExchange.RemoveDataHandler(security.Symbol);
             }
@@ -224,7 +212,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             _changes += SecurityChanges.Removed(security);
 
 
-            Log.Trace("LiveTradingDataFeed.RemoveSubscription(): Removed " + configuration.toString());
+            Log.Trace( "LiveTradingDataFeed.RemoveSubscription(): Removed " + configuration.toString());
             UpdateFillForwardResolution();
 
             return true;
@@ -233,8 +221,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <summary>
         /// Primary entry point.
         /// </summary>
-        public void Run()
-        {
+        public void Run() {
             IsActive = true;
 
             // we want to emit to the bridge minimally once a second since the data feed is
@@ -244,34 +231,29 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
 
             try
             {
-                while (!_cancellationTokenSource.IsCancellationRequested)
-                {
+                while (!_cancellationTokenSource.IsCancellationRequested) {
                     // perform sleeps to wake up on the second?
                     _frontierUtc = _timeProvider.GetUtcNow();
                     _frontierTimeProvider.SetCurrentTime(_frontierUtc);
 
                     data = new List<DataFeedPacket>();
-                    foreach (subscription in Subscriptions)
-                    {
+                    foreach (subscription in Subscriptions) {
                         packet = new DataFeedPacket(subscription.Security, subscription.Configuration);
 
                         // dequeue data that is time stamped at or before this frontier
-                        while (subscription.MoveNext() && subscription.Current != null)
-                        {
+                        while (subscription.MoveNext() && subscription.Current != null ) {
                             packet.Add(subscription.Current);
                         }
 
                         // if we have data, add it to be added to the bridge
-                        if (packet.Count > 0) data.Add(packet);
+                        if( packet.Count > 0) data.Add(packet);
 
                         // we have new universe data to select based on
-                        if (subscription.IsUniverseSelectionSubscription && packet.Count > 0)
-                        {
+                        if( subscription.IsUniverseSelectionSubscription && packet.Count > 0) {
                             universe = subscription.Universe;
 
                             // always wait for other thread to sync up
-                            if (!_bridge.WaitHandle.WaitOne(Timeout.Infinite, _cancellationTokenSource.Token))
-                            {
+                            if( !_bridge.WaitHandle.WaitOne(Timeout.Infinite, _cancellationTokenSource.Token)) {
                                 break;
                             }
 
@@ -284,11 +266,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     }
 
                     // check for cancellation
-                    if (_cancellationTokenSource.IsCancellationRequested) return;
+                    if( _cancellationTokenSource.IsCancellationRequested) return;
 
                     // emit on data or if we've elapsed a full second since last emit
-                    if (data.Count != 0 || _frontierUtc >= nextEmit)
-                    {
+                    if( data.Count != 0 || _frontierUtc >= nextEmit) {
                         _bridge.Add(TimeSlice.Create(_frontierUtc, _algorithm.TimeZone, _algorithm.Portfolio.CashBook, data, _changes), _cancellationTokenSource.Token);
 
                         // force emitting every second
@@ -302,44 +283,39 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     Thread.Sleep(1);
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
                 _algorithm.RunTimeError = err;
             }
 
-            Log.Trace("LiveTradingDataFeed.Run(): Exited thread.");
+            Log.Trace( "LiveTradingDataFeed.Run(): Exited thread.");
             IsActive = false;
         }
 
         /// <summary>
         /// External controller calls to signal a terminate of the thread.
         /// </summary>
-        public void Exit()
-        {
-            if (_subscriptions != null)
-            {
+        public void Exit() {
+            if( _subscriptions != null ) {
                 // remove each subscription from our collection
-                foreach (subscription in Subscriptions)
-                {
+                foreach (subscription in Subscriptions) {
                     try
                     {
                         RemoveSubscription(subscription.Configuration);
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         Log.Error(err, "Error removing: " + subscription.Configuration);
                     }
                 }
             }
 
-            if (_exchange != null) _exchange.Stop();
-            if (_customExchange != null) _customExchange.Stop();
+            if( _exchange != null ) _exchange.Stop();
+            if( _customExchange != null ) _customExchange.Stop();
 
-            Log.Trace("LiveTradingDataFeed.Exit(): Setting cancellation token...");
+            Log.Trace( "LiveTradingDataFeed.Exit(): Setting cancellation token...");
             _cancellationTokenSource.Cancel();
             
-            if (_bridge != null) _bridge.Dispose();
+            if( _bridge != null ) _bridge.Dispose();
         }
 
         /// <summary>
@@ -347,9 +323,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// the type specified in the configuration via the 'data-queue-handler'
         /// </summary>
         /// <returns>The loaded <see cref="IDataQueueHandler"/></returns>
-        protected virtual IDataQueueHandler GetDataQueueHandler()
-        {
-            return Composer.Instance.GetExportedValueByTypeName<IDataQueueHandler>(Config.Get("data-queue-handler", "LiveDataQueue"));
+        protected virtual IDataQueueHandler GetDataQueueHandler() {
+            return Composer.Instance.GetExportedValueByTypeName<IDataQueueHandler>(Config.Get( "data-queue-handler", "LiveDataQueue"));
         }
 
         /// <summary>
@@ -358,8 +333,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// for the current time
         /// </summary>
         /// <returns>he loaded <see cref="ITimeProvider"/></returns>
-        protected virtual ITimeProvider GetTimeProvider()
-        {
+        protected virtual ITimeProvider GetTimeProvider() {
             return new RealTimeProvider();
         }
 
@@ -372,8 +346,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="utcStartTime">The start time of the subscription in UTC</param>
         /// <param name="utcEndTime">The end time of the subscription in UTC</param>
         /// <returns>A new subscription instance of the specified security</returns>
-        protected Subscription CreateSubscription(Universe universe, Security security, SubscriptionDataConfig config, DateTime utcStartTime, DateTime utcEndTime)
-        {
+        protected Subscription CreateSubscription(Universe universe, Security security, SubscriptionDataConfig config, DateTime utcStartTime, DateTime utcEndTime) {
             Subscription subscription = null;
             try
             {
@@ -381,12 +354,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 timeZoneOffsetProvider = new TimeZoneOffsetProvider(security.Exchange.TimeZone, utcStartTime, utcEndTime);
 
                 IEnumerator<BaseData> enumerator;
-                if (config.IsCustomData)
-                {
-                    if (!Quandl.IsAuthCodeSet)
-                    {
+                if( config.IsCustomData) {
+                    if( !Quandl.IsAuthCodeSet) {
                         // we're not using the SubscriptionDataReader, so be sure to set the auth token here
-                        Quandl.SetAuthCode(Config.Get("quandl-auth-token"));
+                        Quandl.SetAuthCode(Config.Get( "quandl-auth-token"));
                     }
 
                     // each time we exhaust we'll new up this enumerator stack
@@ -397,13 +368,13 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                         source = sourceProvider.GetSource(config, dateInDataTimeZone, true);
                         factory = SubscriptionDataSourceReader.ForSource(source, config, dateInDataTimeZone, false);
                         factoryReadEnumerator = factory.Read(source).GetEnumerator();
-                        maximumDataAge = TimeSpan.FromTicks(Math.Max(config.Increment.Ticks, TimeSpan.FromSeconds(5).Ticks));
+                        maximumDataAge = Duration.ofTicks(Math.Max(config.Increment.Ticks, Duration.ofSeconds(5).Ticks));
                         return new FastForwardEnumerator(factoryReadEnumerator, _timeProvider, security.Exchange.TimeZone, maximumDataAge);
                     });
 
                     // rate limit the refreshing of the stack to the requested interval
-                    minimumTimeBetweenCalls = Math.Min(config.Increment.Ticks, TimeSpan.FromMinutes(30).Ticks);
-                    rateLimit = new RateLimitEnumerator(refresher, _timeProvider, TimeSpan.FromTicks(minimumTimeBetweenCalls));
+                    minimumTimeBetweenCalls = Math.Min(config.Increment.Ticks, Duration.ofMinutes(30).Ticks);
+                    rateLimit = new RateLimitEnumerator(refresher, _timeProvider, Duration.ofTicks(minimumTimeBetweenCalls));
                     frontierAware = new FrontierAwareEnumerator(rateLimit, _timeProvider, timeZoneOffsetProvider);
                     _customExchange.AddEnumerator(config.Symbol, frontierAware);
 
@@ -411,19 +382,18 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     _customExchange.SetDataHandler(config.Symbol, data =>
                     {
                         enqueable.Enqueue(data);
-                        if (subscription != null) subscription.RealtimePrice = data.Value;
+                        if( subscription != null ) subscription.RealtimePrice = data.Value;
                     });
                     enumerator = enqueable;
                 }
-                else if (config.Resolution != Resolution.Tick)
-                {
+                else if( config.Resolution != Resolution.Tick) {
                     // this enumerator allows the exchange to pump ticks into the 'back' of the enumerator,
                     // and the time sync loop can pull aggregated trade bars off the front
                     aggregator = new TradeBarBuilderEnumerator(config.Increment, security.Exchange.TimeZone, _timeProvider);
                     _exchange.SetDataHandler(config.Symbol, data =>
                     {
                         aggregator.ProcessData((Tick) data);
-                        if (subscription != null) subscription.RealtimePrice = data.Value;
+                        if( subscription != null ) subscription.RealtimePrice = data.Value;
                     });
                     enumerator = aggregator;
                 }
@@ -434,19 +404,17 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     _exchange.SetDataHandler(config.Symbol, data =>
                     {
                         tickEnumerator.Enqueue(data);
-                        if (subscription != null) subscription.RealtimePrice = data.Value;
+                        if( subscription != null ) subscription.RealtimePrice = data.Value;
                     });
                     enumerator = tickEnumerator;
                 }
 
-                if (config.FillDataForward)
-                {
+                if( config.FillDataForward) {
                     enumerator = new LiveFillForwardEnumerator(_frontierTimeProvider, enumerator, security.Exchange, _fillForwardResolution, config.ExtendedMarketHours, localEndTime, config.Increment);
                 }
 
                 // define market hours and user filters to incoming data
-                if (config.IsFilteredSubscription)
-                {
+                if( config.IsFilteredSubscription) {
                     enumerator = new SubscriptionFilterEnumerator(enumerator, security, localEndTime);
                 }
 
@@ -455,8 +423,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
 
                 subscription = new Subscription(universe, security, config, enumerator, timeZoneOffsetProvider, utcStartTime, utcEndTime, false);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
 
@@ -469,8 +436,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="universe">The universe to add a subscription for</param>
         /// <param name="startTimeUtc">The start time of the subscription in utc</param>
         /// <param name="endTimeUtc">The end time of the subscription in utc</param>
-        protected virtual Subscription CreateUniverseSubscription(Universe universe, DateTime startTimeUtc, DateTime endTimeUtc)
-        {
+        protected virtual Subscription CreateUniverseSubscription(Universe universe, DateTime startTimeUtc, DateTime endTimeUtc) {
             // TODO : Consider moving the creating of universe subscriptions to a separate, testable class
 
             // grab the relevant exchange hours
@@ -480,8 +446,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             exchangeHours = marketHoursDatabase.GetExchangeHours(config);
             
             Security security;
-            if (!_algorithm.Securities.TryGetValue(config.Symbol, out security))
-            {
+            if( !_algorithm.Securities.TryGetValue(config.Symbol, out security)) {
                 // create a canonical security object
                 security = new Security(exchangeHours, config, _algorithm.Portfolio.CashBook[CashBook.AccountCurrency], SymbolProperties.GetDefault(CashBook.AccountCurrency));
             }
@@ -491,9 +456,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             IEnumerator<BaseData> enumerator;
             
             userDefined = universe as UserDefinedUniverse;
-            if (userDefined != null)
-            {
-                Log.Trace("LiveTradingDataFeed.CreateUniverseSubscription(): Creating user defined universe: " + config.Symbol.toString());
+            if( userDefined != null ) {
+                Log.Trace( "LiveTradingDataFeed.CreateUniverseSubscription(): Creating user defined universe: " + config.Symbol.toString());
 
                 // spoof a tick on the requested interval to trigger the universe selection function
                 enumerator = userDefined.GetTriggerTimes(startTimeUtc, endTimeUtc, marketHoursDatabase)
@@ -505,9 +469,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 _customExchange.AddEnumerator(new EnumeratorHandler(config.Symbol, enumerator, enqueueable));
                 enumerator = enqueueable;
             }
-            else if (config.Type == typeof (CoarseFundamental))
-            {
-                Log.Trace("LiveTradingDataFeed.CreateUniverseSubscription(): Creating coarse universe: " + config.Symbol.toString());
+            else if( config.Type == typeof (CoarseFundamental)) {
+                Log.Trace( "LiveTradingDataFeed.CreateUniverseSubscription(): Creating coarse universe: " + config.Symbol.toString());
 
                 // since we're binding to the data queue exchange we'll need to let him
                 // know that we expect this data
@@ -522,7 +485,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
             else
             {
-                Log.Trace("LiveTradingDataFeed.CreateUniverseSubscription(): Creating custom universe: " + config.Symbol.toString());
+                Log.Trace( "LiveTradingDataFeed.CreateUniverseSubscription(): Creating custom universe: " + config.Symbol.toString());
 
                 // each time we exhaust we'll new up this enumerator stack
                 refresher = new RefreshEnumerator<BaseDataCollection>(() =>
@@ -538,8 +501,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 });
                 
                 // rate limit the refreshing of the stack to the requested interval
-                minimumTimeBetweenCalls = Math.Min(config.Increment.Ticks, TimeSpan.FromMinutes(30).Ticks);
-                rateLimit = new RateLimitEnumerator(refresher, _timeProvider, TimeSpan.FromTicks(minimumTimeBetweenCalls));
+                minimumTimeBetweenCalls = Math.Min(config.Increment.Ticks, Duration.ofMinutes(30).Ticks);
+                rateLimit = new RateLimitEnumerator(refresher, _timeProvider, Duration.ofTicks(minimumTimeBetweenCalls));
                 enqueueable = new EnqueueableEnumerator<BaseData>();
                 _customExchange.AddEnumerator(new EnumeratorHandler(config.Symbol, rateLimit, enqueueable));
                 enumerator = enqueueable;
@@ -556,28 +519,24 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// from the data queue handler while we're not cancelled
         /// </summary>
         /// <returns></returns>
-        private IEnumerator<BaseData> GetNextTicksEnumerator()
-        {
-            while (!_cancellationTokenSource.IsCancellationRequested)
-            {
+        private IEnumerator<BaseData> GetNextTicksEnumerator() {
+            while (!_cancellationTokenSource.IsCancellationRequested) {
                 int ticks = 0;
-                foreach (data in _dataQueueHandler.GetNextTicks())
-                {
+                foreach (data in _dataQueueHandler.GetNextTicks()) {
                     ticks++;
                     yield return data;
                 }
-                if (ticks == 0) Thread.Sleep(1);
+                if( ticks == 0) Thread.Sleep(1);
             }
 
-            Log.Trace("LiveTradingDataFeed.GetNextTicksEnumerator(): Exiting enumerator thread...");
+            Log.Trace( "LiveTradingDataFeed.GetNextTicksEnumerator(): Exiting enumerator thread...");
         }
 
         /// <summary>
         /// Updates the fill forward resolution by checking all existing subscriptions and
         /// selecting the smallest resoluton not equal to tick
         /// </summary>
-        private void UpdateFillForwardResolution()
-        {
+        private void UpdateFillForwardResolution() {
             _fillForwardResolution.Value = _subscriptions
                 .Where(x => !x.Configuration.IsInternalFeed)
                 .Select(x => x.Configuration.Resolution)
@@ -593,8 +552,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public IEnumerator<TimeSlice> GetEnumerator()
-        {
+        public IEnumerator<TimeSlice> GetEnumerator() {
             return _bridge.GetConsumingEnumerable(_cancellationTokenSource.Token).GetEnumerator();
         }
 
@@ -605,8 +563,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+        IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
@@ -618,24 +575,22 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         {
             private readonly EnqueueableEnumerator<BaseData> _enqueueable;
             public EnumeratorHandler(Symbol symbol, IEnumerator<BaseData> enumerator, EnqueueableEnumerator<BaseData> enqueueable)
-                : base(symbol, enumerator, true)
-            {
+                : base(symbol, enumerator, true) {
                 _enqueueable = enqueueable;
             }
             /// <summary>
             /// Returns true if this enumerator should move next
             /// </summary>
-            public override boolean ShouldMoveNext() { return true; }
+            public @Override boolean ShouldMoveNext() { return true; }
             /// <summary>
             /// Calls stop on the internal enqueueable enumerator
             /// </summary>
-            public override void OnEnumeratorFinished() { _enqueueable.Stop(); }
+            public @Override void OnEnumeratorFinished() { _enqueueable.Stop(); }
             /// <summary>
             /// Enqueues the data
             /// </summary>
             /// <param name="data">The data to be handled</param>
-            public override void HandleData(BaseData data)
-            {
+            public @Override void HandleData(BaseData data) {
                 _enqueueable.Enqueue(data);
             }
         }

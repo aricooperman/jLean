@@ -28,15 +28,13 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         /// <summary>
         /// Primary entry point to the program
         /// </summary>
-        private static void Main( String[] args)
-        {
-            if (args.Length != 4)
-            {
-                Console.WriteLine("Usage: FxcmDownloader SYMBOLS RESOLUTION FROMDATE TODATE");
-                Console.WriteLine("SYMBOLS      = eg EURUSD,USDJPY");
-                Console.WriteLine("RESOLUTION   = Second/Minute/Hour/Daily/All");
-                Console.WriteLine("FROMDATE     = yyyymmdd");
-                Console.WriteLine("TODATE       = yyyymmdd");
+        private static void Main( String[] args) {
+            if( args.Length != 4) {
+                Console.WriteLine( "Usage: FxcmDownloader SYMBOLS RESOLUTION FROMDATE TODATE");
+                Console.WriteLine( "SYMBOLS      = eg EURUSD,USDJPY");
+                Console.WriteLine( "RESOLUTION   = Second/Minute/Hour/Daily/All");
+                Console.WriteLine( "FROMDATE     = yyyymmdd");
+                Console.WriteLine( "TODATE       = yyyymmdd");
                 Environment.Exit(1);
             }
 
@@ -47,7 +45,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
                 BasicConfigurator.configure(new FileAppender(new SimpleLayout(), "FxcmDownloader.log", append: false));
 
                 // Load settings from command line
-                tickers = args[0].Split(',');
+                tickers = args[0].split(',');
                 allResolutions = args[1].toLowerCase() == "all";
                 resolution = allResolutions ? Resolution.Tick : (Resolution)Enum.Parse(typeof(Resolution), args[1]);
 
@@ -57,31 +55,28 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
 
 
                 // Load settings from config.json
-                dataDirectory = Config.Get("data-directory", "../../../Data");
-                server = Config.Get("fxcm-server", "http://www.fxcorporate.com/Hosts.jsp");
-                terminal = Config.Get("fxcm-terminal", "Demo");
-                userName = Config.Get("fxcm-user-name", "username");
-                password = Config.Get("fxcm-password", "password");
+                dataDirectory = Config.Get( "data-directory", "../../../Data");
+                server = Config.Get( "fxcm-server", "http://www.fxcorporate.com/Hosts.jsp");
+                terminal = Config.Get( "fxcm-terminal", "Demo");
+                userName = Config.Get( "fxcm-user-name", "username");
+                password = Config.Get( "fxcm-password", "password");
 
                 // Download the data
                 static final String market = Market.FXCM;
                 downloader = new FxcmDataDownloader(server, terminal, userName, password);
 
-                foreach (ticker in tickers)
-                {
-                    if (!downloader.HasSymbol(ticker))
-                        throw new ArgumentException("The symbol " + ticker + " is not available.");
+                foreach (ticker in tickers) {
+                    if( !downloader.HasSymbol(ticker))
+                        throw new ArgumentException( "The symbol " + ticker + " is not available.");
                 }
 
-                foreach (ticker in tickers)
-                {
+                foreach (ticker in tickers) {
                     securityType = downloader.GetSecurityType(ticker);
                     symbol = Symbol.Create(ticker, securityType, market);
 
                     data = downloader.Get(symbol, resolution, startDate, endDate);
 
-                    if (allResolutions)
-                    {
+                    if( allResolutions) {
                         ticks = data.Cast<Tick>().ToList();
 
                         // Save the data (second resolution)
@@ -89,8 +84,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
                         writer.Write(ticks);
 
                         // Save the data (other resolutions)
-                        foreach (res in new[] { Resolution.Second, Resolution.Minute, Resolution.Hour, Resolution.Daily })
-                        {
+                        foreach (res in new[] { Resolution.Second, Resolution.Minute, Resolution.Hour, Resolution.Daily }) {
                             resData = FxcmDataDownloader.AggregateTicks(symbol, ticks, res.ToTimeSpan());
 
                             writer = new LeanDataWriter(res, symbol, dataDirectory);
@@ -106,8 +100,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
                     }
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }

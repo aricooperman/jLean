@@ -34,11 +34,9 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         /// <param name="algorithm">The algorithm instance</param>
         /// <param name="brokerage">The BacktestingBrokerage</param>
         /// <param name="resultHandler"></param>
-        public override void Initialize(IAlgorithm algorithm, IBrokerage brokerage, IResultHandler resultHandler)
-        {
-            if (!(brokerage is BacktestingBrokerage))
-            {
-                throw new ArgumentException("Brokerage must be of type BacktestingBrokerage for use wth the BacktestingTransactionHandler");
+        public @Override void Initialize(IAlgorithm algorithm, IBrokerage brokerage, IResultHandler resultHandler) {
+            if( !(brokerage is BacktestingBrokerage)) {
+                throw new ArgumentException( "Brokerage must be of type BacktestingBrokerage for use wth the BacktestingTransactionHandler");
             }
             
             _brokerage = (BacktestingBrokerage) brokerage;
@@ -49,8 +47,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         /// <summary>
         /// Processes all synchronous events that must take place before the next time loop for the algorithm
         /// </summary>
-        public override void ProcessSynchronousEvents()
-        {
+        public @Override void ProcessSynchronousEvents() {
             base.ProcessSynchronousEvents();
 
             _brokerage.Scan();
@@ -59,8 +56,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         /// <summary>
         /// Processes asynchronous events on the transaction handler's thread
         /// </summary>
-        public override void ProcessAsynchronousEvents()
-        {
+        public @Override void ProcessAsynchronousEvents() {
             base.ProcessAsynchronousEvents();
 
             _brokerage.Scan();

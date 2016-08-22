@@ -26,14 +26,13 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="name">The name of the indicator</param>
         public Identity( String name)
-            : base(name)
-        {
+            : base(name) {
         }
 
         /// <summary>
         ///     Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples > 0; }
         }
@@ -43,8 +42,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             return input.Value;
         }
     }

@@ -30,8 +30,7 @@ package com.quantconnect.lean.Logging
         /// <summary>
         /// Initializes a new instance of the <see cref="QuantConnect.Logging.ConsoleLogHandler"/> class.
         /// </summary>
-        public ConsoleLogHandler()
-        {
+        public ConsoleLogHandler() {
             // saves references to the real console text writer since in a deployed state we may overwrite this in order
             // to redirect messages from algorithm to result handler
             _trace = Console.Out;
@@ -42,8 +41,7 @@ package com.quantconnect.lean.Logging
         /// Write error message to log
         /// </summary>
         /// <param name="text">The error text to log</param>
-        public void Error( String text)
-        {
+        public void Error( String text) {
             Console.ForegroundColor = ConsoleColor.Red;
             _error.WriteLine(DateTime.Now.toString(DateFormat) + " ERROR:: " + text);
             Console.ResetColor();
@@ -53,8 +51,7 @@ package com.quantconnect.lean.Logging
         /// Write debug message to log
         /// </summary>
         /// <param name="text">The debug text to log</param>
-        public void Debug( String text)
-        {
+        public void Debug( String text) {
             _trace.WriteLine(DateTime.Now.toString(DateFormat) + " DEBUG:: " + text);
         }
 
@@ -62,8 +59,7 @@ package com.quantconnect.lean.Logging
         /// Write debug message to log
         /// </summary>
         /// <param name="text">The trace text to log</param>
-        public void Trace( String text)
-        {
+        public void Trace( String text) {
             _trace.WriteLine(DateTime.Now.toString(DateFormat) + " Trace:: " + text);
         }
 
@@ -71,8 +67,7 @@ package com.quantconnect.lean.Logging
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
         }
     }
 }

@@ -33,8 +33,7 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="period">The period of the indicator</param>
         public ChandeMomentumOscillator(int period)
-            : this("CMO" + period, period)
-        {
+            : this( "CMO" + period, period) {
         }
 
         /// <summary>
@@ -43,14 +42,13 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the indicator</param>
         public ChandeMomentumOscillator( String name, int period)
-            : base(name, period)
-        {
+            : base(name, period) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples > Period; }
         }
@@ -61,10 +59,8 @@ package com.quantconnect.lean.Indicators
         /// <param name="input">The input given to the indicator</param>
         /// <param name="window">The window for the input history</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
-            if (Samples == 1)
-            {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
+            if( Samples == 1) {
                 _prevValue = input;
                 return 0m;
             }
@@ -73,18 +69,17 @@ package com.quantconnect.lean.Indicators
 
             _prevValue = input.Value;
 
-            if (Samples > Period + 1)
-            {
+            if( Samples > Period + 1) {
                 _prevLoss *= (Period - 1);
                 _prevGain *= (Period - 1);
             }
 
-            if (difference < 0)
+            if( difference < 0)
                 _prevLoss -= difference;
             else
                 _prevGain += difference;
 
-            if (!IsReady)
+            if( !IsReady)
                 return 0m;
 
             _prevLoss /= Period;
@@ -97,8 +92,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _prevValue = 0;
             _prevGain = 0;
             _prevLoss = 0;

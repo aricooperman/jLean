@@ -24,8 +24,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
 
     public class TextLineEventArgs : EventArgs
     {
-        public TextLineEventArgs( String textLine)
-        {
+        public TextLineEventArgs( String textLine) {
             _textLine = textLine;
         }
         public String textLine { get { return _textLine; } } 
@@ -37,28 +36,24 @@ package com.quantconnect.lean.ToolBox.IQFeed
     public class SocketClient
     {
         public event EventHandler<TextLineEventArgs> TextLineEvent;
-        public SocketClient(IPEndPoint endPoint, int bufferSize)
-        {
+        public SocketClient(IPEndPoint endPoint, int bufferSize) {
             _socket = null;
             _endPoint = endPoint;
             _callback = new AsyncCallback(_OnReceive);
             _buffer = new byte[bufferSize];
         }
-        protected void DisconnectFromSocket(int flushSeconds = 1)
-        {
+        protected void DisconnectFromSocket(int flushSeconds = 1) {
             try
             {
                 _socket.Close(flushSeconds);
             }
-            catch (Exception ex) 
-            {
-                throw new Exception("Unable to close socket", ex);
+            catch (Exception ex) {
+                throw new Exception( "Unable to close socket", ex);
             }
 
         }
 
-        public void Send( String command)
-        {
+        public void Send( String command) {
             szCommand = new byte[command.Length];
             szCommand = Encoding.ASCII.GetBytes(command);
             iBytesToSend = szCommand.Length;
@@ -66,47 +61,40 @@ package com.quantconnect.lean.ToolBox.IQFeed
             {
                 _socket.Send(szCommand, iBytesToSend, SocketFlags.None);
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Error in send in socket", ex);
+            catch (Exception ex) {
+                throw new Exception( "Error in send in socket", ex);
             }
         }
-        protected void ConnectToSocketAndBeginReceive(Socket socket)
-        {
+        protected void ConnectToSocketAndBeginReceive(Socket socket) {
             try
             {
                 _socket = socket;
                 _socket.Connect(_endPoint);
-                _socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, _callback, null);
+                _socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, _callback, null );
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Error in connecting to socket and starting receive: " + ex.Message + " " + _endPoint.Address +":"+ _endPoint.Port + " >>>> " + ex.StackTrace, ex);
+            catch (Exception ex) {
+                throw new Exception( "Error in connecting to socket and starting receive: " + ex.Message + " " + _endPoint.Address +":"+ _endPoint.Port + " >>>> " + ex.StackTrace, ex);
             }
 
         }
 
 
-        protected virtual void OnTextLineEvent(TextLineEventArgs e)
-        {
-            if (TextLineEvent != null) TextLineEvent(this, e);
+        protected virtual void OnTextLineEvent(TextLineEventArgs e) {
+            if( TextLineEvent != null ) TextLineEvent(this, e);
         }
 
         #region private
  
-        private void _OnReceive(IAsyncResult asyn)
-        {
+        private void _OnReceive(IAsyncResult asyn) {
             iReceivedBytes = 0;
              try
             {
                 iReceivedBytes = _socket.EndReceive(asyn);
             }
-            catch (Exception ex)
-            {
+            catch (Exception ex) {
                 ode = ex as ObjectDisposedException;
-                if (ode == null)
-                {
-                    throw new Exception("Error in ending receive", ex);
+                if( ode == null ) {
+                    throw new Exception( "Error in ending receive", ex);
                 }
                 return;
             }
@@ -116,13 +104,11 @@ package com.quantconnect.lean.ToolBox.IQFeed
             sData = _incompleteRecord + sData;
             _incompleteRecord = "";
 
-            while (sData.Length > 0)
-            {
+            while (sData.Length > 0) {
                 iNewLinePos = -1;
-                iNewLinePos = sData.IndexOf("\n");
+                iNewLinePos = sData.IndexOf( "\n");
                 String sLine;
-                if (iNewLinePos == -1)
-                {
+                if( iNewLinePos == -1) {
                     _incompleteRecord = sData;
                     sData = "";
                 }
@@ -133,14 +119,13 @@ package com.quantconnect.lean.ToolBox.IQFeed
                     sData = sData.Substring(sLine.Length + 1);
                 }
             }
-            if (!_socket.Connected) { return; }
+            if( !_socket.Connected) { return; }
             try
             {
-                _socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, _callback, null);
+                _socket.BeginReceive(_buffer, 0, _buffer.Length, SocketFlags.None, _callback, null );
             }
-            catch (Exception ex)
-            {
-                throw new Exception("Error in beginning asynchronous receive", ex);
+            catch (Exception ex) {
+                throw new Exception( "Error in beginning asynchronous receive", ex);
             }
 
         }

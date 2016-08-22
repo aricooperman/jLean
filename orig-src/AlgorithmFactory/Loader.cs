@@ -40,7 +40,7 @@ package com.quantconnect.lean.AlgorithmFactory
         private readonly Language _language;
 
         // Location of the IronPython standard library
-        private readonly String _ironPythonLibrary = Config.Get("ironpython-location", "../ironpython/Lib");
+        private readonly String _ironPythonLibrary = Config.Get( "ironpython-location", "../ironpython/Lib");
 
         // Defines how we resolve a list of type names into a single type name to be instantiated
         private readonly Func<List<String>,String> _multipleTypeNameResolverFunction;
@@ -64,8 +64,7 @@ package com.quantconnect.lean.AlgorithmFactory
         /// Creates a new loader with a 10 second maximum load time that forces exactly one derived type to be found
         /// </summary>
         public Loader()
-            : this(Language.CSharp, TimeSpan.FromSeconds(10), names => names.SingleOrDefault())
-        {
+            : this(Language.CSharp, Duration.ofSeconds(10), names => names.SingleOrDefault()) {
         }
 
         /// <summary>
@@ -82,13 +81,11 @@ package com.quantconnect.lean.AlgorithmFactory
         /// for the QuantConnect.Algorithm assembly in this solution.  In order to pick the correct type, consumers must specify how to pick the type,
         /// that's what this function does, it picks the correct type from the list of types found within the assembly.
         /// </param>
-        public Loader(Language language, TimeSpan loaderTimeLimit, Func<List<String>,String> multipleTypeNameResolverFunction)
-        {
+        public Loader(Language language, TimeSpan loaderTimeLimit, Func<List<String>,String> multipleTypeNameResolverFunction) {
             _language = language;
 
-            if (multipleTypeNameResolverFunction == null)
-            {
-                throw new ArgumentNullException("multipleTypeNameResolverFunction");
+            if( multipleTypeNameResolverFunction == null ) {
+                throw new ArgumentNullException( "multipleTypeNameResolverFunction");
             }
 
             _loaderTimeLimit = loaderTimeLimit;
@@ -103,20 +100,17 @@ package com.quantconnect.lean.AlgorithmFactory
         /// <param name="algorithmInstance">Output algorithm instance</param>
         /// <param name="errorMessage">Output error message on failure</param>
         /// <returns>Bool true on successfully loading the class.</returns>        
-        public boolean TryCreateAlgorithmInstance( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage) 
-        {
+        public boolean TryCreateAlgorithmInstance( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage) {
             //Default initialisation of Assembly.
             algorithmInstance = null;
             errorMessage = "";
 
             //First most basic check:
-            if (!File.Exists(assemblyPath)) 
-            {
+            if( !File.Exists(assemblyPath)) {
                 return false;
             }
 
-            switch (_language)
-            {
+            switch (_language) {
                 case Language.Python:
                     TryCreatePythonAlgorithm(assemblyPath, out algorithmInstance, out errorMessage);
                     break;
@@ -138,8 +132,7 @@ package com.quantconnect.lean.AlgorithmFactory
         /// <param name="algorithmInstance"></param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        private boolean TryCreatePythonAlgorithm( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage)
-        {
+        private boolean TryCreatePythonAlgorithm( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage) {
             success = false;
             algorithmInstance = null;
             errorMessage = "";
@@ -153,7 +146,7 @@ package com.quantconnect.lean.AlgorithmFactory
                 engine.SetSearchPaths(paths);
 
                 //Load the dll - built with clr.Compiler()
-                Log.Trace("Loader.TryCreatePythonAlgorithm(): Loading python assembly: " + assemblyPath);
+                Log.Trace( "Loader.TryCreatePythonAlgorithm(): Loading python assembly: " + assemblyPath);
                 library = Assembly.LoadFile(Path.GetFullPath(assemblyPath));
                 engine.Runtime.LoadAssembly(library);
 
@@ -161,56 +154,50 @@ package com.quantconnect.lean.AlgorithmFactory
                 items = new List<KeyValuePair<String, dynamic>>();
                 try
                 {
-                    Log.Trace("Loader.TryCreatePythonAlgorithm(): Importing python module...");
-                    algorithmName = Config.Get("algorithm-type-name");
+                    Log.Trace( "Loader.TryCreatePythonAlgorithm(): Importing python module...");
+                    algorithmName = Config.Get( "algorithm-type-name");
                     scope = engine.Runtime.ImportModule( String.IsNullOrEmpty(algorithmName) ? "main" : algorithmName);
                     items = (List<KeyValuePair<String, dynamic>>)scope.GetItems();
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     Log.Error(err);
                     errorMessage = err.Message + " - could not locate 'main' module. Please make sure you have a main.py file in your project.";
                     return false;
                 }
 
                 //Loop through the types in the dll, see if we can find a "QCAlgorithm" base class
-                Log.Trace("Loader.TryCreatePythonAlgorithm(): Finding QCAlgorithm...");
+                Log.Trace( "Loader.TryCreatePythonAlgorithm(): Finding QCAlgorithm...");
                 dynamic dynamicAlgorithm = null;
-                foreach (item in items)
-                {
+                foreach (item in items) {
                     try
                     {
                         String baseName = item.Value.__bases__.toString().toString();
-                        if (baseName.Contains("QCAlgorithm"))
-                        {
+                        if( baseName.Contains( "QCAlgorithm")) {
                             dynamicAlgorithm = item.Value;
                         }
                     }
-                    catch (Exception)
-                    { 
+                    catch (Exception) { 
                         //Suppress the error messages
                     }
                 }
 
                 //If we haven't found it yet
-                if (dynamicAlgorithm == null)
-                {
+                if( dynamicAlgorithm == null ) {
                     errorMessage = "Could not find QCAlgorithm class in your project";
                     return false;
                 }
 
                 //Cast DLR object to an IAlgorithm instance with Impromptu
-                Log.Trace("Loader.TryCreatePythonAlgorithm(): Creating IAlgorithm instance...");
+                Log.Trace( "Loader.TryCreatePythonAlgorithm(): Creating IAlgorithm instance...");
                 dynamic instance = engine.Operations.CreateInstance(dynamicAlgorithm);
                 algorithmInstance = Impromptu.ActLike<IAlgorithm>(instance);
                 success = true;
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
 
-            return success && (algorithmInstance != null);
+            return success && (algorithmInstance != null );
         }
 
 
@@ -221,8 +208,7 @@ package com.quantconnect.lean.AlgorithmFactory
         /// <param name="algorithmInstance"></param>
         /// <param name="errorMessage"></param>
         /// <returns></returns>
-        private boolean TryCreateILAlgorithm( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage)
-        {
+        private boolean TryCreateILAlgorithm( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage) {
             errorMessage = "";
             algorithmInstance = null;
 
@@ -232,85 +218,74 @@ package com.quantconnect.lean.AlgorithmFactory
                 
                 // if the assembly is located in the base directory then don't bother loading the pdbs
                 // manually, they'll be loaded automatically by the .NET runtime.
-                if (new FileInfo(assemblyPath).DirectoryName == AppDomain.CurrentDomain.BaseDirectory)
-                {
+                if( new FileInfo(assemblyPath).DirectoryName == AppDomain.CurrentDomain.BaseDirectory) {
                     // see if the pdb exists
                     mdbFilename = assemblyPath + ".mdb";
                     pdbFilename = assemblyPath.Substring(0, assemblyPath.Length - 4) + ".pdb";
-                    if (File.Exists(pdbFilename))
-                    {
+                    if( File.Exists(pdbFilename)) {
                         debugInformationBytes = File.ReadAllBytes(pdbFilename);
                     }
                     // see if the mdb exists
-                    if (File.Exists(mdbFilename))
-                    {
+                    if( File.Exists(mdbFilename)) {
                         debugInformationBytes = File.ReadAllBytes(mdbFilename);
                     }
                 }
 
                 //Load the assembly:
                 Assembly assembly;
-                if (debugInformationBytes == null)
-                {
-                    Log.Trace("Loader.TryCreateILAlgorithm(): Loading only the algorithm assembly");
+                if( debugInformationBytes == null ) {
+                    Log.Trace( "Loader.TryCreateILAlgorithm(): Loading only the algorithm assembly");
                     assembly = Assembly.LoadFrom(assemblyPath);
                 }
                 else
                 {
-                    Log.Trace("Loader.TryCreateILAlgorithm(): Loading debug information with algorithm");
+                    Log.Trace( "Loader.TryCreateILAlgorithm(): Loading debug information with algorithm");
                     assemblyBytes = File.ReadAllBytes(assemblyPath);
                     assembly = Assembly.Load(assemblyBytes, debugInformationBytes);
                 }
-                if (assembly == null)
-                {
+                if( assembly == null ) {
                     errorMessage = "Assembly is null.";
-                    Log.Error("Loader.TryCreateILAlgorithm(): Assembly is null");
+                    Log.Error( "Loader.TryCreateILAlgorithm(): Assembly is null");
                     return false;
                 }
 
                 //Get the list of extention classes in the library: 
                 types = GetExtendedTypeNames(assembly);
-                Log.Debug("Loader.TryCreateILAlgorithm(): Assembly types: " + string.Join(",", types));
+                Log.Debug( "Loader.TryCreateILAlgorithm(): Assembly types: " + String.join( ",", types));
 
                 //No extensions, nothing to load.
-                if (types.Count == 0)
-                {
+                if( types.Count == 0) {
                     errorMessage = "Algorithm type was not found.";
-                    Log.Error("Loader.TryCreateILAlgorithm(): Types array empty, no algorithm type found.");
+                    Log.Error( "Loader.TryCreateILAlgorithm(): Types array empty, no algorithm type found.");
                     return false;
                 }
 
-                if (types.Count > 1)
-                {
+                if( types.Count > 1) {
                     // reshuffle type[0] to the resolved typename
                     types[0] = _multipleTypeNameResolverFunction.Invoke(types);
 
-                    if ( String.IsNullOrEmpty(types[0]))
-                    {
+                    if(  String.IsNullOrEmpty(types[0])) {
                         errorMessage = "Please verify algorithm type name matches the algorithm name in the configuration file. Unable to resolve multiple algorithm types to a single type.";
-                        Log.Error("Loader.TryCreateILAlgorithm(): Failed resolving multiple algorithm types to a single type.");
+                        Log.Error( "Loader.TryCreateILAlgorithm(): Failed resolving multiple algorithm types to a single type.");
                         return false;
                     }
                 }
                 //Load the assembly into this AppDomain:
                 algorithmInstance = (IAlgorithm)assembly.CreateInstance(types[0], true);
 
-                if (algorithmInstance != null)
-                {
-                    Log.Trace("Loader.TryCreateILAlgorithm(): Loaded " + algorithmInstance.GetType().Name);
+                if( algorithmInstance != null ) {
+                    Log.Trace( "Loader.TryCreateILAlgorithm(): Loaded " + algorithmInstance.GetType().Name);
                 }
 
             }
-            catch (ReflectionTypeLoadException err)
-            {
+            catch (ReflectionTypeLoadException err) {
                 Log.Error(err);
-                Log.Error("Loader.TryCreateILAlgorithm(1): " + err.LoaderExceptions[0]);
-                if (err.InnerException != null) errorMessage = err.InnerException.Message;
+                Log.Error( "Loader.TryCreateILAlgorithm(1): " + err.LoaderExceptions[0]);
+                if( err.InnerException != null ) errorMessage = err.InnerException.Message;
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
-                if (err.InnerException != null) errorMessage = err.InnerException.Message;
+                if( err.InnerException != null ) errorMessage = err.InnerException.Message;
             }
 
             return true;
@@ -321,8 +296,7 @@ package com.quantconnect.lean.AlgorithmFactory
         /// </summary>
         /// <param name="assembly">Assembly dll we're loading.</param>
         /// <returns>String list of types available.</returns>
-        public static List<String> GetExtendedTypeNames(Assembly assembly) 
-        {
+        public static List<String> GetExtendedTypeNames(Assembly assembly) {
             types = new List<String>();
             try
             {
@@ -331,13 +305,11 @@ package com.quantconnect.lean.AlgorithmFactory
                 {
                     assemblyTypes = assembly.GetTypes();
                 }
-                catch (ReflectionTypeLoadException e)
-                {
+                catch (ReflectionTypeLoadException e) {
                     assemblyTypes = e.Types;
                 }
 
-                if (assemblyTypes != null && assemblyTypes.Length > 0)
-                {
+                if( assemblyTypes != null && assemblyTypes.Length > 0) {
                     types = (from t in assemblyTypes
                              where t.IsClass                                    // require class
                              where !t.IsAbstract                                // require concrete impl
@@ -348,11 +320,10 @@ package com.quantconnect.lean.AlgorithmFactory
                 }
                 else
                 {
-                    Log.Error("API.GetExtendedTypeNames(): No types found in assembly.");
+                    Log.Error( "API.GetExtendedTypeNames(): No types found in assembly.");
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
 
@@ -366,8 +337,7 @@ package com.quantconnect.lean.AlgorithmFactory
         /// <param name="algorithmInstance">Output algorithm instance</param>
         /// <param name="errorMessage">Output error message on failure</param>
         /// <returns>bool success</returns>     
-        public boolean TryCreateAlgorithmInstanceWithIsolator( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage)
-        {
+        public boolean TryCreateAlgorithmInstanceWithIsolator( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage) {
             IAlgorithm instance = null;
             error = string.Empty;
 
@@ -382,8 +352,7 @@ package com.quantconnect.lean.AlgorithmFactory
             errorMessage = error;
 
             // if the isolator stopped us early add that to our error message
-            if (!complete)
-            {
+            if( !complete) {
                 errorMessage = "Failed to create algorithm instance within 10 seconds. Try re-building algorithm. " + error;
             }
 
@@ -397,8 +366,7 @@ package com.quantconnect.lean.AlgorithmFactory
         /// <remarks>Not used in lean engine. Running the library in an app domain is 10x slower.</remarks>
         /// <seealso cref="CreateAppDomain"/>
         public void Unload() {
-            if (appDomain != null) 
-            {
+            if( appDomain != null ) {
                 AppDomain.Unload(appDomain);
                 appDomain = null;
             }

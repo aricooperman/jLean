@@ -39,8 +39,7 @@ package com.quantconnect.lean.Notifications
         /// <summary>
         /// Initialize the messaging system
         /// </summary>
-        public NotificationManager( boolean liveMode)
-        {
+        public NotificationManager( boolean liveMode) {
             _count = 0;
             _liveMode = liveMode;
             _resetTime = DateTime.Now;
@@ -51,16 +50,13 @@ package com.quantconnect.lean.Notifications
         /// Maintain a rate limit of the notification messages per hour send of roughly 20 messages per hour.
         /// </summary>
         /// <returns>True on under rate limit and acceptable to send message</returns>
-        private boolean Allow()
-        {
-            if (DateTime.Now > _resetTime)
-            {
+        private boolean Allow() {
+            if( DateTime.Now > _resetTime) {
                 _count = 0;
-                _resetTime = DateTime.Now.RoundUp(TimeSpan.FromHours(1));
+                _resetTime = DateTime.Now.RoundUp(Duration.ofHours(1));
             }
 
-            if (_count < _rateLimit)
-            {
+            if( _count < _rateLimit) {
                 _count++;
                 return true;
             }
@@ -74,13 +70,11 @@ package com.quantconnect.lean.Notifications
         /// <param name="message">Message body, up to 10kb</param>
         /// <param name="data">Data attachment (optional)</param>
         /// <param name="address">Email address to send to</param>
-        public boolean Email( String address, String subject, String message, String data = "")
-        {
-            if (!_liveMode) return false;
+        public boolean Email( String address, String subject, String message, String data = "") {
+            if( !_liveMode) return false;
             allow = Allow();
 
-            if (allow)
-            {
+            if( allow) {
                 email = new NotificationEmail(address, subject, message, data);
                 Messages.Enqueue(email);
             }
@@ -93,12 +87,10 @@ package com.quantconnect.lean.Notifications
         /// </summary>
         /// <param name="phoneNumber">Phone number to send to</param>
         /// <param name="message">Message to send</param>
-        public boolean Sms( String phoneNumber, String message)
-        {
-            if (!_liveMode) return false;
+        public boolean Sms( String phoneNumber, String message) {
+            if( !_liveMode) return false;
             allow = Allow();
-            if (allow)
-            {
+            if( allow) {
                 sms = new NotificationSms(phoneNumber, message);
                 Messages.Enqueue(sms);
             }
@@ -110,12 +102,10 @@ package com.quantconnect.lean.Notifications
         /// </summary>
         /// <param name="address">Endpoint address</param>
         /// <param name="data">Data to send in body JSON encoded (optional)</param>
-        public boolean Web( String address, object data = null)
-        {
-            if (!_liveMode) return false;
+        public boolean Web( String address, object data = null ) {
+            if( !_liveMode) return false;
             allow = Allow();
-            if (allow)
-            {
+            if( allow) {
                 web = new NotificationWeb(address, data);
                 Messages.Enqueue(web);
             }

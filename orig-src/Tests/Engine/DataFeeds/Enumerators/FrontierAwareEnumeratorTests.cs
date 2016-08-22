@@ -28,8 +28,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
     public class FrontierAwareEnumeratorTests
     {
         [Test]
-        public void ReturnsTrueWhenNextDataIsAheadOfFrontier()
-        {
+        public void ReturnsTrueWhenNextDataIsAheadOfFrontier() {
             currentTime = new DateTime(2015, 10, 13);
             timeProvider = new ManualTimeProvider(currentTime);
             underlying = new List<Tick>
@@ -45,8 +44,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
         }
 
         [Test]
-        public void YieldsDataWhenFrontierPasses()
-        {
+        public void YieldsDataWhenFrontierPasses() {
             currentTime = new DateTime(2015, 10, 13);
             timeProvider = new ManualTimeProvider(currentTime);
             underlying = new List<Tick>
@@ -65,8 +63,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
         }
 
         [Test]
-        public void YieldsFutureDataAtCorrectTime()
-        {
+        public void YieldsFutureDataAtCorrectTime() {
             currentTime = new DateTime(2015, 10, 13);
             timeProvider = new ManualTimeProvider(currentTime);
             underlying = new List<Tick>
@@ -77,12 +74,10 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
             offsetProvider = new TimeZoneOffsetProvider(ZoneId.Utc, new DateTime(2015, 1, 1), new DateTime(2016, 1, 1));
             frontierAware = new FrontierAwareEnumerator(underlying.GetEnumerator(), timeProvider, offsetProvider);
 
-            for (int i = 0; i < 10; i++)
-            {
+            for (int i = 0; i < 10; i++) {
                 timeProvider.AdvanceSeconds(1);
                 Assert.IsTrue(frontierAware.MoveNext());
-                if (i < 9)
-                {
+                if( i < 9) {
                     Assert.IsNull(frontierAware.Current);
                 }
                 else

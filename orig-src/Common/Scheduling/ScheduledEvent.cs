@@ -29,12 +29,12 @@ package com.quantconnect.lean.Scheduling
         /// <summary>
         /// Gets the default time before market close end of trading day events will fire
         /// </summary>
-        public static readonly TimeSpan SecurityEndOfDayDelta = TimeSpan.FromMinutes(10);
+        public static readonly TimeSpan SecurityEndOfDayDelta = Duration.ofMinutes(10);
 
         /// <summary>
         /// Gets the default time before midnight end of day events will fire
         /// </summary>
-        public static readonly TimeSpan AlgorithmEndOfDayDelta = TimeSpan.FromMinutes(2);
+        public static readonly TimeSpan AlgorithmEndOfDayDelta = Duration.ofMinutes(2);
 
         private boolean _needsMoveNext;
         private boolean _endOfScheduledEvents;
@@ -86,9 +86,8 @@ package com.quantconnect.lean.Scheduling
         /// <param name="name">An identifier for this event</param>
         /// <param name="eventUtcTime">The date time the event should fire</param>
         /// <param name="callback">Delegate to be called when the event time passes</param>
-        public ScheduledEvent( String name, DateTime eventUtcTime, Action<String, DateTime> callback = null)
-            : this(name, new[] { eventUtcTime }.AsEnumerable().GetEnumerator(), callback)
-        {
+        public ScheduledEvent( String name, DateTime eventUtcTime, Action<String, DateTime> callback = null )
+            : this(name, new[] { eventUtcTime }.AsEnumerable().GetEnumerator(), callback) {
         }
 
         /// <summary>
@@ -97,9 +96,8 @@ package com.quantconnect.lean.Scheduling
         /// <param name="name">An identifier for this event</param>
         /// <param name="orderedEventUtcTimes">An enumerable that emits event times</param>
         /// <param name="callback">Delegate to be called each time an event passes</param>
-        public ScheduledEvent( String name, IEnumerable<DateTime> orderedEventUtcTimes, Action<String, DateTime> callback = null)
-            : this(name, orderedEventUtcTimes.GetEnumerator(), callback)
-        {
+        public ScheduledEvent( String name, IEnumerable<DateTime> orderedEventUtcTimes, Action<String, DateTime> callback = null )
+            : this(name, orderedEventUtcTimes.GetEnumerator(), callback) {
         }
 
         /// <summary>
@@ -108,8 +106,7 @@ package com.quantconnect.lean.Scheduling
         /// <param name="name">An identifier for this event</param>
         /// <param name="orderedEventUtcTimes">An enumerator that emits event times</param>
         /// <param name="callback">Delegate to be called each time an event passes</param>
-        public ScheduledEvent( String name, IEnumerator<DateTime> orderedEventUtcTimes, Action<String, DateTime> callback = null)
-        {
+        public ScheduledEvent( String name, IEnumerator<DateTime> orderedEventUtcTimes, Action<String, DateTime> callback = null ) {
             _name = name;
             _callback = callback;
             _orderedEventUtcTimes = orderedEventUtcTimes;
@@ -124,39 +121,31 @@ package com.quantconnect.lean.Scheduling
         /// Scans this event and fires the callback if an event happened
         /// </summary>
         /// <param name="utcTime">The current time in UTC</param>
-        internal void Scan(DateTime utcTime)
-        {
-            if (_endOfScheduledEvents)
-            {
+        internal void Scan(DateTime utcTime) {
+            if( _endOfScheduledEvents) {
                 return;
             }
 
             do
             {
-                if (_needsMoveNext)
-                {
+                if( _needsMoveNext) {
                     // if we've passed an event or are just priming the pump, we need to move next
-                    if (!_orderedEventUtcTimes.MoveNext())
-                    {
-                        if (IsLoggingEnabled)
-                        {
-                            Log.Trace( String.format("ScheduledEvent.{0}: Completed scheduled events.", Name));
+                    if( !_orderedEventUtcTimes.MoveNext()) {
+                        if( IsLoggingEnabled) {
+                            Log.Trace( String.format( "ScheduledEvent.%1$s: Completed scheduled events.", Name));
                         }
                         _endOfScheduledEvents = true;
                         return;
                     }
-                    if (IsLoggingEnabled)
-                    {
-                        Log.Trace( String.format("ScheduledEvent.{0}: Next event: {1} UTC", Name, _orderedEventUtcTimes.Current.toString(DateFormat.UI)));
+                    if( IsLoggingEnabled) {
+                        Log.Trace( String.format( "ScheduledEvent.%1$s: Next event: %2$s UTC", Name, _orderedEventUtcTimes.Current.toString(DateFormat.UI)));
                     }
                 }
 
                 // if time has passed our event
-                if (utcTime >= _orderedEventUtcTimes.Current)
-                {
-                    if (IsLoggingEnabled)
-                    {
-                        Log.Trace( String.format("ScheduledEvent.{0}: Firing at {1} UTC Scheduled at {2} UTC", Name,
+                if( utcTime >= _orderedEventUtcTimes.Current) {
+                    if( IsLoggingEnabled) {
+                        Log.Trace( String.format( "ScheduledEvent.%1$s: Firing at %2$s UTC Scheduled at %3$s UTC", Name,
                             utcTime.toString(DateFormat.UI),
                             _orderedEventUtcTimes.Current.toString(DateFormat.UI))
                             );
@@ -181,22 +170,18 @@ package com.quantconnect.lean.Scheduling
         /// Fast forwards this schedule to the specified time without invoking the events
         /// </summary>
         /// <param name="utcTime">Frontier time</param>
-        internal void SkipEventsUntil(DateTime utcTime)
-        {
+        internal void SkipEventsUntil(DateTime utcTime) {
             // check if our next event is in the past
-            if (utcTime < _orderedEventUtcTimes.Current) return;
+            if( utcTime < _orderedEventUtcTimes.Current) return;
 
-            while (_orderedEventUtcTimes.MoveNext())
-            {
+            while (_orderedEventUtcTimes.MoveNext()) {
                 // zoom through the enumerator until we get to the desired time
-                if (utcTime <= _orderedEventUtcTimes.Current)
-                {
+                if( utcTime <= _orderedEventUtcTimes.Current) {
                     // pump is primed and ready to go
                     _needsMoveNext = false;
 
-                    if (IsLoggingEnabled)
-                    {
-                        Log.Trace( String.format("ScheduledEvent.{0}: Skipped events before {1}. Next event: {2}", Name,
+                    if( IsLoggingEnabled) {
+                        Log.Trace( String.format( "ScheduledEvent.%1$s: Skipped events before %2$s. Next event: %3$s", Name,
                             utcTime.toString(DateFormat.UI),
                             _orderedEventUtcTimes.Current.toString(DateFormat.UI)
                             ));
@@ -204,9 +189,8 @@ package com.quantconnect.lean.Scheduling
                     return;
                 }
             }
-            if (IsLoggingEnabled)
-            {
-                Log.Trace( String.format("ScheduledEvent.{0}: Exhausted event stream during skip until {1}", Name,
+            if( IsLoggingEnabled) {
+                Log.Trace( String.format( "ScheduledEvent.%1$s: Exhausted event stream during skip until %2$s", Name,
                     utcTime.toString(DateFormat.UI)
                     ));
             }
@@ -217,8 +201,7 @@ package com.quantconnect.lean.Scheduling
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        void IDisposable.Dispose()
-        {
+        void IDisposable.Dispose() {
             _orderedEventUtcTimes.Dispose();
         }
 
@@ -226,17 +209,15 @@ package com.quantconnect.lean.Scheduling
         /// Event invocator for the <see cref="EventFired"/> event
         /// </summary>
         /// <param name="triggerTime">The event's time in UTC</param>
-        protected void OnEventFired(DateTime triggerTime)
-        {
+        protected void OnEventFired(DateTime triggerTime) {
             // don't fire the event if we're turned off
-            if (!Enabled) return;
+            if( !Enabled) return;
 
-            if (_callback != null)
-            {
+            if( _callback != null ) {
                 _callback(_name, _orderedEventUtcTimes.Current);
             }
             handler = EventFired;
-            if (handler != null) handler(_name, triggerTime);
+            if( handler != null ) handler(_name, triggerTime);
         }
     }
 }

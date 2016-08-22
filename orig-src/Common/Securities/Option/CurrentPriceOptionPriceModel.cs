@@ -35,8 +35,7 @@ package com.quantconnect.lean.Securities.Option
         /// <param name="contract">The option contract to evaluate</param>
         /// <returns>An instance of <see cref="OptionPriceModelResult"/> containing the theoretical
         /// price of the specified option contract</returns>
-        public OptionPriceModelResult Evaluate(Security security, Slice slice, OptionContract contract)
-        {
+        public OptionPriceModelResult Evaluate(Security security, Slice slice, OptionContract contract) {
             return new OptionPriceModelResult(security.Price, new FirstOrderGreeks());
         }
     }

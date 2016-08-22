@@ -63,8 +63,7 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
         /// <param name="mapFileProvider">Provider used to get a map file resolver to handle equity mapping</param>
         /// <param name="factorFileProvider">Provider used to get factor files to handle equity price scaling</param>
         /// <param name="statusUpdate">Function used to send status updates</param>
-        public void Initialize(AlgorithmNodePacket job, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider, Action<Integer> statusUpdate)
-        {
+        public void Initialize(AlgorithmNodePacket job, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider, Action<Integer> statusUpdate) {
             _mapFileProvider = mapFileProvider;
             _factorFileProvider = factorFileProvider;
         }
@@ -75,12 +74,10 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
         /// <param name="requests">The historical data requests</param>
         /// <param name="sliceTimeZone">The time zone used when time stamping the slice instances</param>
         /// <returns>An enumerable of the slices of data covering the span specified in each request</returns>
-        public IEnumerable<Slice> GetHistory(IEnumerable<HistoryRequest> requests, ZoneId sliceTimeZone)
-        {
+        public IEnumerable<Slice> GetHistory(IEnumerable<HistoryRequest> requests, ZoneId sliceTimeZone) {
             // create subscription objects from the configs
             subscriptions = new List<Subscription>();
-            foreach (request in requests)
-            {
+            foreach (request in requests) {
                 subscription = CreateSubscription(request, request.StartTimeUtc, request.EndTimeUtc);
                 subscription.MoveNext(); // prime pump
                 subscriptions.Add(subscription);
@@ -92,8 +89,7 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
         /// <summary>
         /// Creates a subscription to process the request
         /// </summary>
-        private Subscription CreateSubscription(HistoryRequest request, DateTime start, DateTime end)
-        {
+        private Subscription CreateSubscription(HistoryRequest request, DateTime start, DateTime end) {
             // data reader expects these values in local times
             start = start.ConvertFromUtc(request.ExchangeHours.TimeZone);
             end = end.ConvertFromUtc(request.ExchangeHours.TimeZone);
@@ -123,8 +119,7 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
                 );
 
             // optionally apply fill forward behavior
-            if (request.FillForwardResolution.HasValue)
-            {
+            if( request.FillForwardResolution.HasValue) {
                 readOnlyRef = Ref.CreateReadOnly(() => request.FillForwardResolution.Value.ToTimeSpan());
                 reader = new FillForwardEnumerator(reader, security.Exchange, readOnlyRef, security.IsExtendedMarketHours, end, config.Increment);
             }
@@ -138,9 +133,9 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
             reader = new FilterEnumerator<BaseData>(reader, data =>
             {
                 // allow all ticks
-                if (config.Resolution == Resolution.Tick) return true;
+                if( config.Resolution == Resolution.Tick) return true;
                 // filter out future data
-                if (data.EndTime > end) return false;
+                if( data.EndTime > end) return false;
                 // filter out data before the start
                 return data.EndTime > start;
             });
@@ -152,42 +147,36 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
         /// <summary>
         /// Enumerates the subscriptions into slices
         /// </summary>
-        private IEnumerable<Slice> CreateSliceEnumerableFromSubscriptions(List<Subscription> subscriptions, ZoneId sliceTimeZone)
-        {
+        private IEnumerable<Slice> CreateSliceEnumerableFromSubscriptions(List<Subscription> subscriptions, ZoneId sliceTimeZone) {
             // required by TimeSlice.Create, but we don't need it's behavior
             cashBook = new CashBook();
             cashBook.Clear();
             frontier = DateTime.MinValue;
-            while (true)
-            {
+            while (true) {
                 earlyBirdTicks = long.MaxValue;
                 data = new List<DataFeedPacket>();
-                foreach (subscription in subscriptions)
-                {
-                    if (subscription.EndOfStream) continue;
+                foreach (subscription in subscriptions) {
+                    if( subscription.EndOfStream) continue;
 
                     packet = new DataFeedPacket(subscription.Security, subscription.Configuration);
 
                     offsetProvider = subscription.OffsetProvider;
                     currentOffsetTicks = offsetProvider.GetOffsetTicks(frontier);
-                    while (subscription.Current.EndTime.Ticks - currentOffsetTicks <= frontier.Ticks)
-                    {
+                    while (subscription.Current.EndTime.Ticks - currentOffsetTicks <= frontier.Ticks) {
                         // we want bars rounded using their subscription times, we make a clone
                         // so we don't interfere with the enumerator's internal logic
                         clone = subscription.Current.Clone(subscription.Current.IsFillForward);
                         clone.Time = clone.Time.RoundDown(subscription.Configuration.Increment);
                         packet.Add(clone);
                         Interlocked.Increment(ref _dataPointCount);
-                        if (!subscription.MoveNext())
-                        {
+                        if( !subscription.MoveNext()) {
                             break;
                         }
                     }
                     // only add if we have data
-                    if (packet.Count != 0) data.Add(packet);
+                    if( packet.Count != 0) data.Add(packet);
                     // udate our early bird ticks (next frontier time)
-                    if (subscription.Current != null)
-                    {
+                    if( subscription.Current != null ) {
                         // take the earliest between the next piece of data or the next tz discontinuity
                         nextDataOrDiscontinuity = Math.Min(subscription.Current.EndTime.Ticks - currentOffsetTicks, offsetProvider.GetNextDiscontinuity());
                         earlyBirdTicks = Math.Min(earlyBirdTicks, nextDataOrDiscontinuity);
@@ -195,10 +184,9 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
                 }
 
                 // end of subscriptions
-                if (earlyBirdTicks == long.MaxValue) break;
+                if( earlyBirdTicks == long.MaxValue) break;
 
-                if (data.Count != 0)
-                {
+                if( data.Count != 0) {
                     // reuse the slice construction code from TimeSlice.Create
                     yield return TimeSlice.Create(frontier, sliceTimeZone, cashBook, data, SecurityChanges.None).Slice;
                 }
@@ -207,8 +195,7 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
             }
 
             // make sure we clean up after ourselves
-            foreach (subscription in subscriptions)
-            {
+            foreach (subscription in subscriptions) {
                 subscription.Dispose();
             }
         }
@@ -266,16 +253,14 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
             private readonly IEnumerator<T> _enumerator;
             private readonly Func<T, bool> _filter;
 
-            public FilterEnumerator(IEnumerator<T> enumerator, Func<T, bool> filter)
-            {
+            public FilterEnumerator(IEnumerator<T> enumerator, Func<T, bool> filter) {
                 _enumerator = enumerator;
                 _filter = filter;
             }
 
             #region Implementation of IDisposable
 
-            public void Dispose()
-            {
+            public void Dispose() {
                 _enumerator.Dispose();
             }
 
@@ -283,21 +268,17 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
 
             #region Implementation of IEnumerator
 
-            public boolean MoveNext()
-            {
+            public boolean MoveNext() {
                 // run the enumerator until it passes the specified filter
-                while (_enumerator.MoveNext())
-                {
-                    if (_filter(_enumerator.Current))
-                    {
+                while (_enumerator.MoveNext()) {
+                    if( _filter(_enumerator.Current)) {
                         return true;
                     }
                 }
                 return false;
             }
 
-            public void Reset()
-            {
+            public void Reset() {
                 _enumerator.Reset();
             }
 

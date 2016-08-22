@@ -32,8 +32,7 @@ package com.quantconnect.lean.Brokerages
         /// Initializes a new instance of the <see cref="FxcmTransactionModel"/> class
         /// </summary>
         public FxcmTransactionModel()
-            : base(new ImmediateFillModel(), new FxcmFeeModel(), new SpreadSlippageModel())
-        {
+            : base(new ImmediateFillModel(), new FxcmFeeModel(), new SpreadSlippageModel()) {
         }
     }
 }

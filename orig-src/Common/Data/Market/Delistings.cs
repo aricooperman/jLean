@@ -26,8 +26,7 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Initializes a new instance of the <see cref="Delistings"/> dictionary
         /// </summary>
-        public Delistings()
-        {
+        public Delistings() {
         }
 
         /// <summary>
@@ -35,8 +34,7 @@ package com.quantconnect.lean.Data.Market
         /// </summary>
         /// <param name="frontier">The time associated with the data in this Map</param>
         public Delistings(DateTime frontier)
-            : base(frontier)
-        {
+            : base(frontier) {
         }
     }
 }

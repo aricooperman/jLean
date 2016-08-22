@@ -37,15 +37,13 @@ package com.quantconnect.lean
         {
             get 
             {
-                if (_ramTotalCounter == null) 
-                {
-                    if (IsLinux) 
-                    {
-                        _ramTotalCounter = new PerformanceCounter ("Mono Memory", "Total Physical Memory"); 
+                if( _ramTotalCounter == null ) {
+                    if( IsLinux) {
+                        _ramTotalCounter = new PerformanceCounter ( "Mono Memory", "Total Physical Memory"); 
                     } 
                     else 
                     {
-                        _ramTotalCounter = new PerformanceCounter("Memory", "Available Bytes");
+                        _ramTotalCounter = new PerformanceCounter( "Memory", "Available Bytes");
                     }
                 }
                 return _ramTotalCounter;
@@ -59,15 +57,13 @@ package com.quantconnect.lean
         {
             get 
             {
-                if (_ramAvailableBytes == null) 
-                {
-                    if (IsLinux) 
-                    { 
-                        _ramAvailableBytes = new PerformanceCounter("Mono Memory", "Allocated Objects");
+                if( _ramAvailableBytes == null ) {
+                    if( IsLinux) { 
+                        _ramAvailableBytes = new PerformanceCounter( "Mono Memory", "Allocated Objects");
                     } 
                     else 
                     {
-                        _ramAvailableBytes = new PerformanceCounter("Memory", "Available Bytes");
+                        _ramAvailableBytes = new PerformanceCounter( "Memory", "Available Bytes");
                     }
                 }
                 return _ramAvailableBytes;
@@ -81,9 +77,8 @@ package com.quantconnect.lean
         {
             get
             {
-                if (_cpuUsageCounter == null)
-                {
-                    _cpuUsageCounter = new PerformanceCounter("Processor", "% Processor Time", "_Total");
+                if( _cpuUsageCounter == null ) {
+                    _cpuUsageCounter = new PerformanceCounter( "Processor", "% Processor Time", "_Total");
                 }
                 return _cpuUsageCounter;
             }
@@ -165,8 +160,7 @@ package com.quantconnect.lean
         /// Get the drive.
         /// </summary>
         /// <returns></returns>
-        private static DriveInfo GetDrive()
-        {
+        private static DriveInfo GetDrive() {
             drives = DriveInfo.GetDrives();
             return drives[0];
         }
@@ -214,11 +208,10 @@ package com.quantconnect.lean
         /// <summary>
         /// Gets the statistics of the machine, including CPU% and RAM
         /// </summary>
-        public static Map<String,String> GetServerStatistics()
-        {
+        public static Map<String,String> GetServerStatistics() {
             return new Map<String,String>
             {
-                {"CPU Usage",            CpuUsage.NextValue().toString("0.0") + "%"},
+                {"CPU Usage",            CpuUsage.NextValue().toString( "0.0") + "%"},
                 {"Used RAM (MB)",        TotalPhysicalMemoryUsed.toString()},
                 {"Total RAM (MB)",        TotalPhysicalMemory.toString()},
                 {"Used Disk Space (MB)", DriveSpaceUsed.toString() },

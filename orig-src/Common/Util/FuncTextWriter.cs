@@ -28,7 +28,7 @@ package com.quantconnect.lean.Util
         private readonly Action<String> _writer;
 
         /// <inheritdoc />
-        public override Encoding Encoding
+        public @Override Encoding Encoding
         {
             get { return Encoding.Default; }
         }
@@ -38,8 +38,7 @@ package com.quantconnect.lean.Util
         /// messages to the algorithm's Debug function.
         /// </summary>
         /// <param name="writer">The algorithm hosting the Debug function where messages will be directed</param>
-        public FuncTextWriter(Action<String> writer)
-        {
+        public FuncTextWriter(Action<String> writer) {
             _writer = writer;
         }
 
@@ -47,8 +46,7 @@ package com.quantconnect.lean.Util
         /// Writes the String value using the delegate provided at construction
         /// </summary>
         /// <param name="value">The String value to be written</param>
-        public override void Write( String value)
-        {
+        public @Override void Write( String value) {
             _writer(value);
         }
 
@@ -56,8 +54,7 @@ package com.quantconnect.lean.Util
         /// Writes the String value using the delegate provided at construction
         /// </summary>
         /// <param name="value"></param>
-        public override void WriteLine( String value)
-        {
+        public @Override void WriteLine( String value) {
             // these are grouped in a list so we don't need to add new line characters here
             _writer(value);
         }

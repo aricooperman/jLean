@@ -43,8 +43,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
         /// <summary>
         /// Initializes a new instance of the <see cref="FakeDataQueue"/> class to randomly emit data for each symbol
         /// </summary>
-        public FakeDataQueue()
-        {
+        public FakeDataQueue() {
             _ticks = new ConcurrentQueue<BaseData>();
             _symbols = new HashSet<Symbol>();
             
@@ -67,7 +66,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
             {
                 elapsed = (DateTime.Now - lastTime);
                 ticksPerSecond = (count - lastCount)/elapsed.TotalSeconds;
-                Console.WriteLine("TICKS PER SECOND:: " + ticksPerSecond.toString("000000.0") + " ITEMS IN QUEUE:: " + _ticks.Count);
+                Console.WriteLine( "TICKS PER SECOND:: " + ticksPerSecond.toString( "000000.0") + " ITEMS IN QUEUE:: " + _ticks.Count);
                 lastCount = count;
                 lastTime = DateTime.Now;
                 PopulateQueue();
@@ -78,11 +77,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
         /// Get the next ticks from the live trading data queue
         /// </summary>
         /// <returns>IEnumerable list of ticks since the last update.</returns>
-        public IEnumerable<BaseData> GetNextTicks()
-        {
+        public IEnumerable<BaseData> GetNextTicks() {
             BaseData tick;
-            while (_ticks.TryDequeue(out tick))
-            {
+            while (_ticks.TryDequeue(out tick)) {
                 yield return tick;
                 Interlocked.Increment(ref count);
             }
@@ -93,12 +90,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
         /// </summary>
         /// <param name="job">Job we're subscribing for:</param>
         /// <param name="symbols">The symbols to be added keyed by SecurityType</param>
-        public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols)
-        {
-            foreach (symbol in symbols)
-            {
-                lock (_sync)
-                {
+        public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
+            foreach (symbol in symbols) {
+                lock (_sync) {
                     _symbols.Add(symbol);
                 }
             }
@@ -109,12 +103,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
         /// </summary>
         /// <param name="job">Job we're processing.</param>
         /// <param name="symbols">The symbols to be removed keyed by SecurityType</param>
-        public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols)
-        {
-            foreach (symbol in symbols)
-            {
-                lock (_sync)
-                {
+        public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
+            foreach (symbol in symbols) {
+                lock (_sync) {
                     _symbols.Remove(symbol);
                 }
             }
@@ -123,19 +114,15 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
         /// <summary>
         /// Pumps a bunch of ticks into the queue
         /// </summary>
-        private void PopulateQueue()
-        {
+        private void PopulateQueue() {
             List<Symbol> symbols;
-            lock (_sync)
-            {
+            lock (_sync) {
                 symbols = _symbols.ToList();
             }
 
-            foreach (symbol in symbols)
-            {
+            foreach (symbol in symbols) {
                 // emits 500k per second
-                for (int i = 0; i < 500000; i++)
-                {
+                for (int i = 0; i < 500000; i++) {
                     _ticks.Enqueue(new Tick
                     {
                         Time = DateTime.Now,

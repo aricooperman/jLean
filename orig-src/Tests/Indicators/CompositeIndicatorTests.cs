@@ -23,8 +23,7 @@ package com.quantconnect.lean.Tests.Indicators
     public class CompositeIndicatorTests
     {
         [Test]
-        public void CompositeIsReadyWhenBothAre()
-        {
+        public void CompositeIsReadyWhenBothAre() {
             left = new Delay(1);
             right = new Delay(2);
             composite = new CompositeIndicator<IndicatorDataPoint>(left, right, (l, r) => l + r);
@@ -55,10 +54,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void CallsDelegateCorrectly()
-        {
-            left = new Identity("left");
-            right = new Identity("right");
+        public void CallsDelegateCorrectly() {
+            left = new Identity( "left");
+            right = new Identity( "right");
             composite = new CompositeIndicator<IndicatorDataPoint>(left, right, (l, r) =>
             {
                 Assert.AreEqual(left, l);
@@ -73,8 +71,8 @@ package com.quantconnect.lean.Tests.Indicators
 
         [Test]
         public void ResetsProperly() {
-            left = new Maximum("left", 2);
-            right = new Minimum("right", 2);
+            left = new Maximum( "left", 2);
+            right = new Minimum( "right", 2);
             composite = new CompositeIndicator<IndicatorDataPoint>(left, right, (l, r) => l + r);
 
             left.Update(DateTime.Today, 1m);

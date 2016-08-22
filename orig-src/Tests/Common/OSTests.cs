@@ -21,13 +21,12 @@ package com.quantconnect.lean.Tests.Common
     public class OSTests
     {
         [Test]
-        public void GetServerStatisticsDoesntThrow()
-        {
+        public void GetServerStatisticsDoesntThrow() {
             serverStatistics = OS.GetServerStatistics();
             //maxKeyLength = serverStatistics.Keys.Max(x => x.Length);
             //foreach (statistic in serverStatistics)
             //{
-            //    Console.WriteLine("{0, -" + maxKeyLength + "} - {1}", statistic.Key, statistic.Value);
+            //    Console.WriteLine( "{0, -" + maxKeyLength + "} - %2$s", statistic.Key, statistic.Value);
             //}
         }
     }

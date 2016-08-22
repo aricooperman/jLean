@@ -48,8 +48,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period of the WMA</param>
         public FisherTransform(int period)
-            : this("FISH_" + period, period)
-        {
+            : this( "FISH_" + period, period) {
         }
 
         /// <summary>
@@ -58,19 +57,18 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">string - the name of the indicator</param>
         /// <param name="period">The number of periods for the indicator</param>
         public FisherTransform( String name, int period)
-            : base(name)
-        {
+            : base(name) {
             _alpha = .33;
 
             // Initialize the local variables
-            _medianMax = new Maximum("MedianMax", period);
-            _medianMin = new Minimum("MedianMin", period);
+            _medianMax = new Maximum( "MedianMax", period);
+            _medianMin = new Minimum( "MedianMin", period);
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return _medianMax.IsReady && _medianMax.IsReady; }
         }
@@ -86,27 +84,25 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">IndicatorDataPoint - the time and value of the next price</param>
         /// <returns></returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             x = 0.0;
             y = 0.0;
             price = (input.Low + input.High) / 2m;
             _medianMin.Update(input.Time, price);
             _medianMax.Update(input.Time, price);
 
-            if (!IsReady) return 0;
+            if( !IsReady) return 0;
 
             minL = _medianMin.Current.Value;
             maxH = _medianMax.Current.Value;
             
-            if (minL != maxH)
-            {
+            if( minL != maxH) {
                 x = _alpha * 2 * ((double)((price - minL) / (maxH - minL)) - .5) + (1 - _alpha) * _previous;
                 y = FisherTransformFunction(x);
             }
             _previous = x;
 
-            return Convert.ToDecimal(y) + .5m * Current.Value;
+            return new BigDecimal( y) + .5m * Current.Value;
         }
 
         /// <summary>
@@ -125,14 +121,11 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="x">Input</param>
         /// <returns>Output</returns>
-        private double FisherTransformFunction(double x)
-        {
-            if (x > .99)
-            {
+        private double FisherTransformFunction(double x) {
+            if( x > .99) {
                 x = .999;
             }
-            if (x < -.99)
-            {
+            if( x < -.99) {
                 x = -.999;
             }
 

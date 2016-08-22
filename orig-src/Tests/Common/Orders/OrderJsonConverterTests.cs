@@ -26,10 +26,8 @@ package com.quantconnect.lean.Tests.Common.Orders
     public class OrderJsonConverterTests
     {
         [Test]
-        public void DeserializesMarketOrder()
-        {
-            expected = new MarketOrder(Symbols.SPY, 100, new DateTime(2015, 11, 23, 17, 15, 37), "now")
-            {
+        public void DeserializesMarketOrder() {
+            expected = new MarketOrder(Symbols.SPY, 100, new DateTime(2015, 11, 23, 17, 15, 37), "now") {
                 Id = 12345,
                 Price = 209.03m,
                 ContingentId = 123456,
@@ -40,10 +38,8 @@ package com.quantconnect.lean.Tests.Common.Orders
         }
 
         [Test]
-        public void DeserializesMarketOnOpenOrder()
-        {
-            expected = new MarketOnOpenOrder(Symbols.SPY, 100, new DateTime(2015, 11, 23, 17, 15, 37), "now")
-            {
+        public void DeserializesMarketOnOpenOrder() {
+            expected = new MarketOnOpenOrder(Symbols.SPY, 100, new DateTime(2015, 11, 23, 17, 15, 37), "now") {
                 Id = 12345,
                 Price = 209.03m,
                 ContingentId = 123456,
@@ -54,10 +50,8 @@ package com.quantconnect.lean.Tests.Common.Orders
         }
 
         [Test]
-        public void DeserializesMarketOnCloseOrder()
-        {
-            expected = new MarketOnCloseOrder(Symbols.SPY, 100, new DateTime(2015, 11, 23, 17, 15, 37), "now")
-            {
+        public void DeserializesMarketOnCloseOrder() {
+            expected = new MarketOnCloseOrder(Symbols.SPY, 100, new DateTime(2015, 11, 23, 17, 15, 37), "now") {
                 Id = 12345,
                 Price = 209.03m,
                 ContingentId = 123456,
@@ -68,10 +62,8 @@ package com.quantconnect.lean.Tests.Common.Orders
         }
 
         [Test]
-        public void DeserializesLimitOrder()
-        {
-            expected = new LimitOrder(Symbols.SPY, 100, 210.10m, new DateTime(2015, 11, 23, 17, 15, 37), "now")
-            {
+        public void DeserializesLimitOrder() {
+            expected = new LimitOrder(Symbols.SPY, 100, 210.10m, new DateTime(2015, 11, 23, 17, 15, 37), "now") {
                 Id = 12345,
                 Price = 209.03m,
                 ContingentId = 123456,
@@ -84,10 +76,8 @@ package com.quantconnect.lean.Tests.Common.Orders
         }
 
         [Test]
-        public void DeserializesStopMarketOrder()
-        {
-            expected = new StopMarketOrder(Symbols.SPY, 100, 210.10m, new DateTime(2015, 11, 23, 17, 15, 37), "now")
-            {
+        public void DeserializesStopMarketOrder() {
+            expected = new StopMarketOrder(Symbols.SPY, 100, 210.10m, new DateTime(2015, 11, 23, 17, 15, 37), "now") {
                 Id = 12345,
                 Price = 209.03m,
                 ContingentId = 123456,
@@ -100,10 +90,8 @@ package com.quantconnect.lean.Tests.Common.Orders
         }
 
         [Test]
-        public void DeserializesStopLimitOrder()
-        {
-            expected = new StopLimitOrder(Symbols.SPY, 100, 210.10m, 200.23m, new DateTime(2015, 11, 23, 17, 15, 37), "now")
-            {
+        public void DeserializesStopLimitOrder() {
+            expected = new StopLimitOrder(Symbols.SPY, 100, 210.10m, 200.23m, new DateTime(2015, 11, 23, 17, 15, 37), "now") {
                 Id = 12345,
                 Price = 209.03m,
                 ContingentId = 123456,
@@ -117,8 +105,7 @@ package com.quantconnect.lean.Tests.Common.Orders
         }
 
         [Test]
-        public void DeserializesOldSymbol()
-        {
+        public void DeserializesOldSymbol() {
             static final String json = @"{'Type':0,
 'Value':99986.827413672,
 'Id':1,
@@ -144,8 +131,7 @@ package com.quantconnect.lean.Tests.Common.Orders
         }
 
         [Test]
-        public void WorksWithJsonConvert()
-        {
+        public void WorksWithJsonConvert() {
             JsonConvert.DefaultSettings = () => new JsonSerializerSettings
             {
                 Converters = {new OrderJsonConverter()}

@@ -65,8 +65,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name.</param>
         /// <param name="period">The period.</param>
         public AverageDirectionalIndex( String name, int period)
-            : base(name)
-        {
+            : base(name) {
             _period = period;
 
             TrueRange = new FunctionalIndicator<TradeBar>(name + "_TrueRange",
@@ -139,13 +138,11 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period.</param>
         /// <returns></returns>
-        private BigDecimal ComputeSmoothedDirectionalMovementPlus(int period)
-        {
+        private BigDecimal ComputeSmoothedDirectionalMovementPlus(int period) {
 
             BigDecimal value;
 
-            if (Samples < period)
-            {
+            if( Samples < period) {
                 value = SmoothedDirectionalMovementPlus.Current + DirectionalMovementPlus.Current;
             }
             else
@@ -161,12 +158,10 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period.</param>
         /// <returns></returns>
-        private BigDecimal ComputeSmoothedDirectionalMovementMinus(int period)
-        {
+        private BigDecimal ComputeSmoothedDirectionalMovementMinus(int period) {
             BigDecimal value;
 
-            if (Samples < period)
-            {
+            if( Samples < period) {
                 value = SmoothedDirectionalMovementMinus.Current + DirectionalMovementMinus.Current;
             }
             else
@@ -182,12 +177,10 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period.</param>
         /// <returns></returns>
-        private BigDecimal ComputeSmoothedTrueRange(int period)
-        {
+        private BigDecimal ComputeSmoothedTrueRange(int period) {
             BigDecimal value;
 
-            if (Samples < period)
-            {
+            if( Samples < period) {
                 value = SmoothedTrueRange.Current + TrueRange.Current;
             }
             else
@@ -200,7 +193,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
@@ -210,11 +203,10 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns></returns>
-        private BigDecimal ComputeTrueRange(TradeBar input)
-        {
+        private BigDecimal ComputeTrueRange(TradeBar input) {
             trueRange = new decimal(0.0);
 
-            if (_previousInput == null) return trueRange;
+            if( _previousInput == null ) return trueRange;
 
             trueRange = (Math.Max(Math.Abs(input.Low - _previousInput.Close), Math.Max(TrueRange.Current, Math.Abs(input.High - _previousInput.Close))));
 
@@ -226,16 +218,13 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns></returns>
-        private BigDecimal ComputePositiveDirectionalMovement(TradeBar input)
-        {
+        private BigDecimal ComputePositiveDirectionalMovement(TradeBar input) {
             postiveDirectionalMovement = new decimal(0.0);
 
-            if (_previousInput == null) return postiveDirectionalMovement;
+            if( _previousInput == null ) return postiveDirectionalMovement;
 
-            if ((input.High - _previousInput.High) >= (_previousInput.Low - input.Low))
-            {
-                if ((input.High - _previousInput.High) > 0)
-                {
+            if( (input.High - _previousInput.High) >= (_previousInput.Low - input.Low)) {
+                if( (input.High - _previousInput.High) > 0) {
                     postiveDirectionalMovement = input.High - _previousInput.High;
                 }
             }
@@ -248,16 +237,13 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input.</param>
         /// <returns></returns>
-        private BigDecimal ComputeNegativeDirectionalMovement(TradeBar input)
-        {
+        private BigDecimal ComputeNegativeDirectionalMovement(TradeBar input) {
             negativeDirectionalMovement = new decimal(0.0);
 
-            if (_previousInput == null) return negativeDirectionalMovement;
+            if( _previousInput == null ) return negativeDirectionalMovement;
 
-            if ((_previousInput.Low - input.Low) > (input.High - _previousInput.High))
-            {
-                if ((_previousInput.Low - input.Low) > 0)
-                {
+            if( (_previousInput.Low - input.Low) > (input.High - _previousInput.High)) {
+                if( (_previousInput.Low - input.Low) > 0) {
                     negativeDirectionalMovement = _previousInput.Low - input.Low;
                 }
             }
@@ -270,16 +256,14 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             TrueRange.Update(input);
             DirectionalMovementPlus.Update(input);
             DirectionalMovementMinus.Update(input);
             SmoothedTrueRange.Update(Current);
             SmoothedDirectionalMovementMinus.Update(Current);
             SmoothedDirectionalMovementPlus.Update(Current);
-            if (_previousInput != null)
-            {
+            if( _previousInput != null ) {
                 PositiveDirectionalIndex.Update(Current);
                 NegativeDirectionalIndex.Update(Current);
             }
@@ -294,9 +278,8 @@ package com.quantconnect.lean.Indicators
         /// Computes the Plus Directional Indicator (+DI period).
         /// </summary>
         /// <returns></returns>
-        private BigDecimal ComputePositiveDirectionalIndex()
-        {
-            if (SmoothedTrueRange == 0) return new decimal(0.0);
+        private BigDecimal ComputePositiveDirectionalIndex() {
+            if( SmoothedTrueRange == 0) return new decimal(0.0);
 
             positiveDirectionalIndex = (SmoothedDirectionalMovementPlus.Current.Value / SmoothedTrueRange.Current.Value) * 100;
 
@@ -307,9 +290,8 @@ package com.quantconnect.lean.Indicators
         /// Computes the Minus Directional Indicator (-DI period).
         /// </summary>
         /// <returns></returns>
-        private BigDecimal ComputeNegativeDirectionalIndex()
-        {
-            if (SmoothedTrueRange == 0) return new decimal(0.0);
+        private BigDecimal ComputeNegativeDirectionalIndex() {
+            if( SmoothedTrueRange == 0) return new decimal(0.0);
 
             negativeDirectionalIndex = (SmoothedDirectionalMovementMinus.Current.Value / SmoothedTrueRange.Current.Value) * 100;
 
@@ -319,8 +301,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             base.Reset();
             _previousInput = null;
             TrueRange.Reset();

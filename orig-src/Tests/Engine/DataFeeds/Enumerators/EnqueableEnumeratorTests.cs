@@ -29,8 +29,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
     public class EnqueableEnumeratorTests
     {
         [Test]
-        public void PassesTicksStraightThrough()
-        {
+        public void PassesTicksStraightThrough() {
             enumerator = new EnqueueableEnumerator<Tick>();
 
             // add some ticks
@@ -60,8 +59,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
         }
 
         [Test]
-        public void RecordsInternalQueueCount()
-        {
+        public void RecordsInternalQueueCount() {
             enumerator = new EnqueueableEnumerator<Tick>();
 
             currentTime = new DateTime(2015, 12, 01);
@@ -81,8 +79,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
         }
 
         [Test]
-        public void RecordsMostRecentlyEnqueuedItem()
-        {
+        public void RecordsMostRecentlyEnqueuedItem() {
             enumerator = new EnqueueableEnumerator<Tick>();
 
             currentTime = new DateTime(2015, 12, 01);
@@ -103,8 +100,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
         }
 
         [Test]
-        public void MoveNextBlocks()
-        {
+        public void MoveNextBlocks() {
             finished = new ManualResetEvent(false);
             enumerator = new EnqueueableEnumerator<Tick>(true);
 
@@ -112,14 +108,12 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
             int count = 0;
             Task.Run(() =>
             {
-                while (!finished.WaitOne(TimeSpan.FromMilliseconds(50)))
-                {
+                while (!finished.WaitOne(Duration.ofMilliseconds(50))) {
                     enumerator.Enqueue(new Tick(DateTime.Now, Symbols.SPY, 100, 101));
                     count++;
 
                     // 5 data points is plenty
-                    if (count > 5)
-                    {
+                    if( count > 5) {
                         finished.Set();
                         enumerator.Stop();
                     }
@@ -132,11 +126,9 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
             consumerTaskFinished = new ManualResetEvent(false);
             Task.Run(() =>
             {
-                while (enumerator.MoveNext())
-                {
+                while (enumerator.MoveNext()) {
                     dequeuedCount++;
-                    if (enumerator.Current == null)
-                    {
+                    if( enumerator.Current == null ) {
                         encounteredError = true;
                     }
                 }

@@ -27,12 +27,11 @@ using QuantConnect.Tests.Engine.DataFeeds;
 
 package com.quantconnect.lean.Tests.Engine
 {
-    [TestFixture, Category("TravisExclude")]
+    [TestFixture, Category( "TravisExclude")]
     public class DefaultBrokerageMessageHandlerTests
     {
         [Test]
-        public void DoesNotSetAlgorithmRunTimeErrorOnDisconnectIfAllSecuritiesClosed()
-        {
+        public void DoesNotSetAlgorithmRunTimeErrorOnDisconnectIfAllSecuritiesClosed() {
             referenceTime = DateTime.UtcNow;
             algorithm = new AlgorithmStub(equities: new List<String> { "SPY" });
             algorithm.SetDateTime(referenceTime);
@@ -40,11 +39,11 @@ package com.quantconnect.lean.Tests.Engine
             job = new LiveNodePacket();
             results = new TestResultHandler();//packet => Console.WriteLine(FieldstoString(packet)));
             api = new Api.Api();
-            handler = new DefaultBrokerageMessageHandler(algorithm, job, results, api, TimeSpan.FromMinutes(15));
+            handler = new DefaultBrokerageMessageHandler(algorithm, job, results, api, Duration.ofMinutes(15));
 
             Assert.IsNull(algorithm.RunTimeError);
 
-            handler.Handle(BrokerageMessageEvent.Disconnected("Disconnection!"));
+            handler.Handle(BrokerageMessageEvent.Disconnected( "Disconnection!"));
 
             Assert.IsNull(algorithm.RunTimeError);
 
@@ -52,28 +51,27 @@ package com.quantconnect.lean.Tests.Engine
         }
 
         [Test]
-        public void DoesNotSetRunTimeErrorWhenReconnectMessageComesThrough()
-        {
+        public void DoesNotSetRunTimeErrorWhenReconnectMessageComesThrough() {
             algorithm = new AlgorithmStub(equities: new List<String> { "SPY" });
             referenceTime = DateTime.UtcNow;
             algorithm.SetDateTime(referenceTime);
             localReferencTime = referenceTime.ConvertFromUtc(TimeZones.NewYork);
             open = localReferencTime.AddSeconds(1).TimeOfDay;
-            closed = TimeSpan.FromDays(1);
+            closed = Duration.ofDays(1);
             marketHours = new MarketHoursSegment(MarketHoursState.Market, open, closed);
             algorithm.Securities[Symbols.SPY].Exchange.SetMarketHours(new [] {marketHours}, localReferencTime.DayOfWeek);
             job = new LiveNodePacket();
             results = new TestResultHandler();//packet => Console.WriteLine(FieldstoString(packet)));
             api = new Api.Api();
-            handler = new DefaultBrokerageMessageHandler(algorithm, job, results, api, TimeSpan.FromMinutes(15), TimeSpan.FromSeconds(.25));
+            handler = new DefaultBrokerageMessageHandler(algorithm, job, results, api, Duration.ofMinutes(15), Duration.ofSeconds(.25));
 
             Assert.IsNull(algorithm.RunTimeError);
 
-            handler.Handle(BrokerageMessageEvent.Disconnected("Disconnection!"));
+            handler.Handle(BrokerageMessageEvent.Disconnected( "Disconnection!"));
 
             Thread.Sleep(100);
 
-            handler.Handle(BrokerageMessageEvent.Reconnected("Reconnected!"));
+            handler.Handle(BrokerageMessageEvent.Reconnected( "Reconnected!"));
 
             Thread.Sleep(500);
 

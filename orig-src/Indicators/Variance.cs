@@ -28,8 +28,7 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="period">The period of the indicator</param>
         public Variance(int period)
-            : this("VAR" + period, period)
-        {
+            : this( "VAR" + period, period) {
         }
 
         /// <summary>
@@ -38,14 +37,13 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the indicator</param>
         public Variance( String name, int period)
-            : base(name, period)
-        {
+            : base(name, period) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -56,23 +54,21 @@ package com.quantconnect.lean.Indicators
         /// <param name="input">The input given to the indicator</param>
         /// <param name="window">The window for the input history</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             _rollingSum += input.Value;
             _rollingSumOfSquares += input.Value * input.Value;
 
-            if (Samples < 2)
+            if( Samples < 2)
                 return 0m;
 
             n = Period;
-            if (Samples < n)
+            if( Samples < n)
                 n = (int)Samples;
 
             meanValue1 = _rollingSum / n;
             meanValue2 = _rollingSumOfSquares / n;
 
-            if (n == Period)
-            {
+            if( n == Period) {
                 removedValue = window[Period - 1];
                 _rollingSum -= removedValue;
                 _rollingSumOfSquares -= removedValue * removedValue;
@@ -84,8 +80,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _rollingSum = 0;
             _rollingSumOfSquares = 0;
             base.Reset();

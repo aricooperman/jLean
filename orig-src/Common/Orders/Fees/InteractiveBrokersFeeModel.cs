@@ -32,8 +32,7 @@ package com.quantconnect.lean.Orders.Fees
         /// Initializes a new instance of the <see cref="ImmediateFillModel"/>
         /// </summary>
         /// <param name="monthlyForexTradeAmountInUSDollars">Monthly dollar volume traded</param>
-        public InteractiveBrokersFeeModel( BigDecimal monthlyForexTradeAmountInUSDollars = 0)
-        {
+        public InteractiveBrokersFeeModel( BigDecimal monthlyForexTradeAmountInUSDollars = 0) {
             ProcessForexRateSchedule(monthlyForexTradeAmountInUSDollars, out _forexCommissionRate, out _forexMinimumOrderFee);
         }
 
@@ -44,10 +43,8 @@ package com.quantconnect.lean.Orders.Fees
         /// <param name="security">The security matching the order</param>
         /// <param name="order">The order to compute fees for</param>
         /// <returns>The cost of the order in units of the account currency</returns>
-        public BigDecimal GetOrderFee(Security security, Order order)
-        {
-            switch (security.Type)
-            {
+        public BigDecimal GetOrderFee(Security security, Order order) {
+            switch (security.Type) {
                 case SecurityType.Forex:
                     // get the total order value in the account currency
                     totalOrderValue = order.GetValue(security);
@@ -63,12 +60,10 @@ package com.quantconnect.lean.Orders.Fees
                     //Maximum Per Order: 0.5%
                     //Minimum per order. $1.0
                     maximumPerOrder = 0.005m * tradeValue;
-                    if (tradeFee < 1)
-                    {
+                    if( tradeFee < 1) {
                         tradeFee = 1;
                     }
-                    else if (tradeFee > maximumPerOrder)
-                    {
+                    else if( tradeFee > maximumPerOrder) {
                         tradeFee = maximumPerOrder;
                     }
 
@@ -83,20 +78,19 @@ package com.quantconnect.lean.Orders.Fees
         /// <summary>
         /// Determines which tier an account falls into based on the monthly trading volume
         /// </summary>
-        private static void ProcessForexRateSchedule( BigDecimal monthlyForexTradeAmountInUSDollars, out BigDecimal commissionRate, out BigDecimal minimumOrderFee)
-        {
+        private static void ProcessForexRateSchedule( BigDecimal monthlyForexTradeAmountInUSDollars, out BigDecimal commissionRate, out BigDecimal minimumOrderFee) {
             static final BigDecimal bp = 0.0001m;
-            if (monthlyForexTradeAmountInUSDollars <= 1000000000)      // 1 billion
+            if( monthlyForexTradeAmountInUSDollars <= 1000000000)      // 1 billion
             {
                 commissionRate = 0.20m * bp;
                 minimumOrderFee = 2.00m;
             }
-            else if (monthlyForexTradeAmountInUSDollars <= 2000000000) // 2 billion
+            else if( monthlyForexTradeAmountInUSDollars <= 2000000000) // 2 billion
             {
                 commissionRate = 0.15m * bp;
                 minimumOrderFee = 1.50m;
             }
-            else if (monthlyForexTradeAmountInUSDollars <= 5000000000) // 5 billion
+            else if( monthlyForexTradeAmountInUSDollars <= 5000000000) // 5 billion
             {
                 commissionRate = 0.10m * bp;
                 minimumOrderFee = 1.25m;

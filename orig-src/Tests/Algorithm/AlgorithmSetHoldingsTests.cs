@@ -50,13 +50,10 @@ package com.quantconnect.lean.Tests.Algorithm
 
         public class Permuter<T>
         {
-            private static void Permute(T[] row, int index, IReadOnlyList<List<T>> data, ICollection<T[]> result)
-            {
-                foreach (dataRow in data[index])
-                {
+            private static void Permute(T[] row, int index, IReadOnlyList<List<T>> data, ICollection<T[]> result) {
+                foreach (dataRow in data[index]) {
                     row[index] = dataRow;
-                    if (index >= data.Count - 1)
-                    {
+                    if( index >= data.Count - 1) {
                         rowCopy = new T[row.Length];
                         row.CopyTo(rowCopy, 0);
                         result.Add(rowCopy);
@@ -68,9 +65,8 @@ package com.quantconnect.lean.Tests.Algorithm
                 }
             }
 
-            public static void Permute(List<List<T>> data, List<T[]> result)
-            {
-                if (data.Count == 0)
+            public static void Permute(List<List<T>> data, List<T[]> result) {
+                if( data.Count == 0)
                     return;
 
                 Permute(new T[data.Count], 0, data, result);
@@ -100,24 +96,23 @@ package com.quantconnect.lean.Tests.Algorithm
 
                 ret = permutations
                     .Where(row => (Position)row[0] != (Position)row[1])     // initialPosition != finalPosition
-                    .Select(row => new TestCaseData(row).SetName( String.Join("_", row)))
+                    .Select(row => new TestCaseData(row).SetName( String.Join( "_", row)))
                     .ToArray();
 
                 return ret;
             }
         }
 
-        [Test, TestCaseSource("TestParameters")]
-        public void Run(Position initialPosition, Position finalPosition, FeeType feeType, PriceMovement priceMovement, int leverage)
-        {
-            //Console.WriteLine("----------");
-            //Console.WriteLine("PARAMETERS");
-            //Console.WriteLine("Initial position: " + initialPosition);
-            //Console.WriteLine("Final position: " + finalPosition);
-            //Console.WriteLine("Fee type: " + feeType);
-            //Console.WriteLine("Price movement: " + priceMovement);
-            //Console.WriteLine("Leverage: " + leverage);
-            //Console.WriteLine("----------");
+        [Test, TestCaseSource( "TestParameters")]
+        public void Run(Position initialPosition, Position finalPosition, FeeType feeType, PriceMovement priceMovement, int leverage) {
+            //Console.WriteLine( "----------");
+            //Console.WriteLine( "PARAMETERS");
+            //Console.WriteLine( "Initial position: " + initialPosition);
+            //Console.WriteLine( "Final position: " + finalPosition);
+            //Console.WriteLine( "Fee type: " + feeType);
+            //Console.WriteLine( "Price movement: " + priceMovement);
+            //Console.WriteLine( "Leverage: " + leverage);
+            //Console.WriteLine( "----------");
             //Console.WriteLine();
 
             algorithm = new QCAlgorithm();
@@ -138,8 +133,7 @@ package com.quantconnect.lean.Tests.Algorithm
             int orderQuantity;
             BigDecimal freeMargin;
             BigDecimal requiredMargin;
-            if (initialPosition != Position.Zero)
-            {
+            if( initialPosition != Position.Zero) {
                 targetPercentage = (decimal)initialPosition;
                 orderDirection = initialPosition == Position.Long ? OrderDirection.Buy : OrderDirection.Sell;
                 orderQuantity = algorithm.CalculateOrderQuantity(_symbol, targetPercentage);
@@ -147,12 +141,12 @@ package com.quantconnect.lean.Tests.Algorithm
                 freeMargin = algorithm.Portfolio.GetMarginRemaining(_symbol, orderDirection);
                 requiredMargin = security.MarginModel.GetInitialMarginRequiredForOrder(security, order);
 
-                //Console.WriteLine("Current price: " + security.Price);
-                //Console.WriteLine("Target percentage: " + targetPercentage);
-                //Console.WriteLine("Order direction: " + orderDirection);
-                //Console.WriteLine("Order quantity: " + orderQuantity);
-                //Console.WriteLine("Free margin: " + freeMargin);
-                //Console.WriteLine("Required margin: " + requiredMargin);
+                //Console.WriteLine( "Current price: " + security.Price);
+                //Console.WriteLine( "Target percentage: " + targetPercentage);
+                //Console.WriteLine( "Order direction: " + orderDirection);
+                //Console.WriteLine( "Order quantity: " + orderQuantity);
+                //Console.WriteLine( "Free margin: " + freeMargin);
+                //Console.WriteLine( "Required margin: " + requiredMargin);
                 //Console.WriteLine();
 
                 Assert.That(Math.Abs(requiredMargin) <= freeMargin);
@@ -161,24 +155,20 @@ package com.quantconnect.lean.Tests.Algorithm
                 fill = new OrderEvent(order, DateTime.UtcNow, orderFee) { FillPrice = security.Price, FillQuantity = orderQuantity };
                 algorithm.Portfolio.ProcessFill(fill);
 
-                //Console.WriteLine("Portfolio.Cash: " + algorithm.Portfolio.Cash);
-                //Console.WriteLine("Portfolio.TotalPortfolioValue: " + algorithm.Portfolio.TotalPortfolioValue);
+                //Console.WriteLine( "Portfolio.Cash: " + algorithm.Portfolio.Cash);
+                //Console.WriteLine( "Portfolio.TotalPortfolioValue: " + algorithm.Portfolio.TotalPortfolioValue);
                 //Console.WriteLine();
 
-                if (priceMovement == PriceMovement.RisingSmall)
-                {
+                if( priceMovement == PriceMovement.RisingSmall) {
                     Update(security, HighPrice);
                 }
-                else if (priceMovement == PriceMovement.FallingSmall)
-                {
+                else if( priceMovement == PriceMovement.FallingSmall) {
                     Update(security, LowPrice);
                 }
-                else if (priceMovement == PriceMovement.RisingLarge)
-                {
+                else if( priceMovement == PriceMovement.RisingLarge) {
                     Update(security, VeryHighPrice);
                 }
-                else if (priceMovement == PriceMovement.FallingLarge)
-                {
+                else if( priceMovement == PriceMovement.FallingLarge) {
                     Update(security, VeryLowPrice);
                 }
             }
@@ -190,12 +180,12 @@ package com.quantconnect.lean.Tests.Algorithm
             freeMargin = algorithm.Portfolio.GetMarginRemaining(_symbol, orderDirection);
             requiredMargin = security.MarginModel.GetInitialMarginRequiredForOrder(security, order);
 
-            //Console.WriteLine("Current price: " + security.Price);
-            //Console.WriteLine("Target percentage: " + targetPercentage);
-            //Console.WriteLine("Order direction: " + orderDirection);
-            //Console.WriteLine("Order quantity: " + orderQuantity);
-            //Console.WriteLine("Free margin: " + freeMargin);
-            //Console.WriteLine("Required margin: " + requiredMargin);
+            //Console.WriteLine( "Current price: " + security.Price);
+            //Console.WriteLine( "Target percentage: " + targetPercentage);
+            //Console.WriteLine( "Order direction: " + orderDirection);
+            //Console.WriteLine( "Order quantity: " + orderQuantity);
+            //Console.WriteLine( "Free margin: " + freeMargin);
+            //Console.WriteLine( "Required margin: " + requiredMargin);
             //Console.WriteLine();
 
             Assert.That(Math.Abs(requiredMargin) <= freeMargin);
@@ -204,13 +194,12 @@ package com.quantconnect.lean.Tests.Algorithm
             fill = new OrderEvent(order, DateTime.UtcNow, orderFee) { FillPrice = security.Price, FillQuantity = orderQuantity };
             algorithm.Portfolio.ProcessFill(fill);
 
-            //Console.WriteLine("Portfolio.Cash: " + algorithm.Portfolio.Cash);
-            //Console.WriteLine("Portfolio.TotalPortfolioValue: " + algorithm.Portfolio.TotalPortfolioValue);
+            //Console.WriteLine( "Portfolio.Cash: " + algorithm.Portfolio.Cash);
+            //Console.WriteLine( "Portfolio.TotalPortfolioValue: " + algorithm.Portfolio.TotalPortfolioValue);
             //Console.WriteLine();
         }
 
-        private static void Update(Security security, BigDecimal price)
-        {
+        private static void Update(Security security, BigDecimal price) {
             security.SetMarketPrice(new TradeBar
             {
                 Time = DateTime.Now, Symbol = security.Symbol, Open = price, High = price, Low = price, Close = price

@@ -47,8 +47,7 @@ package com.quantconnect.lean.Parameters
         /// </summary>
         /// <param name="name">The name of the parameter. If null is specified
         /// then the field or property name will be used</param>
-        public ParameterAttribute( String name = null)
-        {
+        public ParameterAttribute( String name = null ) {
             Name = name;
         }
 
@@ -58,40 +57,36 @@ package com.quantconnect.lean.Parameters
         /// </summary>
         /// <param name="parameters">The parameters Map</param>
         /// <param name="instance">The instance to set parameters on</param>
-        public static void ApplyAttributes(Map<String,String> parameters, object instance)
-        {
-            if (instance == null) throw new ArgumentNullException("instance");
+        public static void ApplyAttributes(Map<String,String> parameters, object instance) {
+            if( instance == null ) throw new ArgumentNullException( "instance");
 
             type = instance.GetType();
 
             // get all fields/properties on the instance
             members = type.GetFields(BindingFlags).Concat<MemberInfo>(type.GetProperties(BindingFlags));
-            foreach (memberInfo in members)
-            {
+            foreach (memberInfo in members) {
                 fieldInfo = memberInfo as FieldInfo;
                 propertyInfo = memberInfo as PropertyInfo;
 
                 // this line make static analysis a little happier, but should never actually throw
-                if (fieldInfo == null && propertyInfo == null)
-                {
-                    throw new Exception("Resolved member that is neither FieldInfo or PropertyInfo");
+                if( fieldInfo == null && propertyInfo == null ) {
+                    throw new Exception( "Resolved member that is neither FieldInfo or PropertyInfo");
                 }
 
                 // check the member for our custom attribute
                 attribute = memberInfo.GetCustomAttribute<ParameterAttribute>();
-                if (attribute == null) continue;
+                if( attribute == null ) continue;
 
                 // if no name is specified in the attribute then use the member name
                 parameterName = attribute.Name ?? memberInfo.Name;
 
                 // get the parameter String value to apply to the member
                 String parameterValue;
-                if (!parameters.TryGetValue(parameterName, out parameterValue)) continue;
+                if( !parameters.TryGetValue(parameterName, out parameterValue)) continue;
 
                 // if it's a read-only property with a parameter value we can't really do anything, bail
-                if (propertyInfo != null && !propertyInfo.CanWrite)
-                {
-                    message = String.format("The specified property is read only: {0}.{1}", propertyInfo.DeclaringType, propertyInfo.Name);
+                if( propertyInfo != null && !propertyInfo.CanWrite) {
+                    message = String.format( "The specified property is read only: %1$s.%2$s", propertyInfo.DeclaringType, propertyInfo.Name);
                     throw new Exception(message);
                 }
 
@@ -99,11 +94,10 @@ package com.quantconnect.lean.Parameters
                 memberType = fieldInfo != null ? fieldInfo.FieldType : propertyInfo.PropertyType;
 
                 // convert the parameter String value to the member type
-                value = parameterValue.ConvertTo(memberType);
+                value = parameterValue Extensions.convertTo(  )memberType);
 
                 // set the value to the field/property
-                if (fieldInfo != null)
-                {
+                if( fieldInfo != null ) {
                     fieldInfo.SetValue(instance, value);
                 }
                 else
@@ -118,28 +112,22 @@ package com.quantconnect.lean.Parameters
         /// </summary>
         /// <param name="assembly">The assembly to inspect</param>
         /// <returns>Parameters dictionary keyed by parameter name with a value of the member type</returns>
-        public static Map<String,String> GetParametersFromAssembly(Assembly assembly)
-        {
+        public static Map<String,String> GetParametersFromAssembly(Assembly assembly) {
             parameters = new Map<String,String>();
-            foreach (type in assembly.GetTypes())
-            {
-                Log.Debug("ParameterAttribute.GetParametersFromAssembly(): Checking type " + type.Name);
-                foreach (field in type.GetFields(BindingFlags))
-                {
+            foreach (type in assembly.GetTypes()) {
+                Log.Debug( "ParameterAttribute.GetParametersFromAssembly(): Checking type " + type.Name);
+                foreach (field in type.GetFields(BindingFlags)) {
                     attribute = field.GetCustomAttribute<ParameterAttribute>();
-                    if (attribute != null)
-                    {
+                    if( attribute != null ) {
                         parameterName = attribute.Name ?? field.Name;
                         parameters[parameterName] = field.FieldType.GetBetterTypeName();
                     }
                 }
-                foreach (property in type.GetProperties(BindingFlags))
-                {
+                foreach (property in type.GetProperties(BindingFlags)) {
                     // ignore non-writeable properties
-                    if (!property.CanWrite) continue;
+                    if( !property.CanWrite) continue;
                     attribute = property.GetCustomAttribute<ParameterAttribute>();
-                    if (attribute != null)
-                    {
+                    if( attribute != null ) {
                         parameterName = attribute.Name ?? property.Name;
                         parameters[parameterName] = property.PropertyType.Name;
                     }

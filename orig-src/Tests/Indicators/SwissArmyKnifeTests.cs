@@ -24,12 +24,10 @@ package com.quantconnect.lean.Tests.Indicators
     {
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             sak = new SwissArmyKnife(4, 0.1, SwissArmyKnifeTool.BandPass);
 
-            foreach (data in TestHelper.GetDataStream(5))
-            {
+            foreach (data in TestHelper.GetDataStream(5)) {
                 sak.Update(data);
             }
             Assert.IsTrue(sak.IsReady);
@@ -42,47 +40,40 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComparesBandPassAgainstExternalData()
-        {
-            indicator = new SwissArmyKnife("", 20, 0.1, SwissArmyKnifeTool.BandPass);
+        public void ComparesBandPassAgainstExternalData() {
+            indicator = new SwissArmyKnife( "", 20, 0.1, SwissArmyKnifeTool.BandPass);
             RunTestIndicator(indicator, "BP", 0.043m);
         }
 
         [Test]
-        public void Compares2PHPAgainstExternalData()
-        {
-            indicator = new SwissArmyKnife("", 20, 0.1, SwissArmyKnifeTool.TwoPoleHighPass);
+        public void Compares2PHPAgainstExternalData() {
+            indicator = new SwissArmyKnife( "", 20, 0.1, SwissArmyKnifeTool.TwoPoleHighPass);
             RunTestIndicator(indicator, "2PHP", 0.01m);
         }
 
         [Test]
-        public void ComparesHPAgainstExternalData()
-        {
-            indicator = new SwissArmyKnife("", 20, 0.1, SwissArmyKnifeTool.HighPass);
+        public void ComparesHPAgainstExternalData() {
+            indicator = new SwissArmyKnife( "", 20, 0.1, SwissArmyKnifeTool.HighPass);
             RunTestIndicator(indicator, "HP", 0.01m);
         }
 
         [Test]
-        public void ComparesButterAgainstExternalData()
-        {
-            indicator = new SwissArmyKnife("", 20, 0.1, SwissArmyKnifeTool.Butter);
+        public void ComparesButterAgainstExternalData() {
+            indicator = new SwissArmyKnife( "", 20, 0.1, SwissArmyKnifeTool.Butter);
             RunTestIndicator(indicator, "Butter", 0.01m);
         }
 
         [Test]
-        public void ComparesGaussAgainstExternalData()
-        {
-            indicator = new SwissArmyKnife("", 20, 0.1, SwissArmyKnifeTool.Gauss);
+        public void ComparesGaussAgainstExternalData() {
+            indicator = new SwissArmyKnife( "", 20, 0.1, SwissArmyKnifeTool.Gauss);
             RunTestIndicator(indicator, "Gauss", 0.01m);
         }
 
-        private static void RunTestIndicator(IndicatorBase<IndicatorDataPoint> indicator, String field, BigDecimal variance)
-        {
+        private static void RunTestIndicator(IndicatorBase<IndicatorDataPoint> indicator, String field, BigDecimal variance) {
             TestHelper.TestIndicator(indicator, "spy_swiss.txt", field, (actual, expected) => { AssertResult(expected, actual.Current.Value, variance); });
         }
 
-        private static void AssertResult(double expected, BigDecimal actual, BigDecimal variance)
-        {
+        private static void AssertResult(double expected, BigDecimal actual, BigDecimal variance) {
             System.Diagnostics.Debug.WriteLine(expected + "," + actual + "," + Math.Abs((decimal)expected - actual));
             Assert.IsTrue(Math.Abs((decimal)expected - actual) < variance);
         }

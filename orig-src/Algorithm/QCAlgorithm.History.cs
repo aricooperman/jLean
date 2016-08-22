@@ -49,8 +49,7 @@ package com.quantconnect.lean.Algorithm
         /// Sets the warm up period to the specified value
         /// </summary>
         /// <param name="timeSpan">The amount of time to warm up, this does not take into account market hours/weekends</param>
-        public void SetWarmup(TimeSpan timeSpan)
-        {
+        public void SetWarmup(TimeSpan timeSpan) {
             _warmupBarCount = null;
             _warmupTimeSpan = timeSpan;
         }
@@ -59,8 +58,7 @@ package com.quantconnect.lean.Algorithm
         /// Sets the warm up period to the specified value
         /// </summary>
         /// <param name="timeSpan">The amount of time to warm up, this does not take into account market hours/weekends</param>
-        public void SetWarmUp(TimeSpan timeSpan)
-        {
+        public void SetWarmUp(TimeSpan timeSpan) {
             SetWarmup(timeSpan);
         }
 
@@ -71,8 +69,7 @@ package com.quantconnect.lean.Algorithm
         /// use 200 minute bars.
         /// </summary>
         /// <param name="barCount">The number of data points requested for warm up</param>
-        public void SetWarmup(int barCount)
-        {
+        public void SetWarmup(int barCount) {
             _warmupTimeSpan = null;
             _warmupBarCount = barCount;
         }
@@ -84,16 +81,14 @@ package com.quantconnect.lean.Algorithm
         /// use 200 minute bars.
         /// </summary>
         /// <param name="barCount">The number of data points requested for warm up</param>
-        public void SetWarmUp(int barCount)
-        {
+        public void SetWarmUp(int barCount) {
             SetWarmup(barCount);
         }
 
         /// <summary>
         /// Sets <see cref="IAlgorithm.IsWarmingUp"/> to false to indicate this algorithm has finished its warm up
         /// </summary>
-        public void SetFinishedWarmingUp()
-        {
+        public void SetFinishedWarmingUp() {
             IsWarmingUp = false;
         }
 
@@ -101,14 +96,11 @@ package com.quantconnect.lean.Algorithm
         /// Gets the history requests required for provide warm up data for the algorithm
         /// </summary>
         /// <returns></returns>
-        public IEnumerable<HistoryRequest> GetWarmupHistoryRequests()
-        {
-            if (_warmupBarCount.HasValue)
-            {
+        public IEnumerable<HistoryRequest> GetWarmupHistoryRequests() {
+            if( _warmupBarCount.HasValue) {
                 return CreateBarCountHistoryRequests(Securities.Keys, _warmupBarCount.Value);
             }
-            if (_warmupTimeSpan.HasValue)
-            {
+            if( _warmupTimeSpan.HasValue) {
                 end = UtcTime.ConvertFromUtc(TimeZone);
                 return CreateDateRangeHistoryRequests(Securities.Keys, end - _warmupTimeSpan.Value, end);
             }
@@ -125,8 +117,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="span">The span over which to request data. This is a calendar span, so take into consideration weekends and such</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing data over the most recent span for all configured securities</returns>
-        public IEnumerable<Slice> History(TimeSpan span, Resolution? resolution = null)
-        {
+        public IEnumerable<Slice> History(TimeSpan span, Resolution? resolution = null ) {
             return History(Securities.Keys, Time - span, Time, resolution).Memoize();
         }
 
@@ -138,8 +129,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="periods">The number of bars to request</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing data over the most recent span for all configured securities</returns>
-        public IEnumerable<Slice> History(int periods, Resolution? resolution = null)
-        {
+        public IEnumerable<Slice> History(int periods, Resolution? resolution = null ) {
             return History(Securities.Keys, periods, resolution).Memoize();
         }
 
@@ -151,7 +141,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="span">The span over which to retrieve recent historical data</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<DataMap<T>> History<T>(TimeSpan span, Resolution? resolution = null)
+        public IEnumerable<DataMap<T>> History<T>(TimeSpan span, Resolution? resolution = null )
             where T : BaseData
         {
             return History<T>(Securities.Keys, span, resolution).Memoize();
@@ -166,7 +156,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="span">The span over which to retrieve recent historical data</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, TimeSpan span, Resolution? resolution = null)
+        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, TimeSpan span, Resolution? resolution = null )
             where T : BaseData
         {
             return History<T>(symbols, Time - span, Time, resolution).Memoize();
@@ -182,21 +172,21 @@ package com.quantconnect.lean.Algorithm
         /// <param name="periods">The number of bars to request</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null) 
+        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null ) 
             where T : BaseData
         {
             requests = symbols.Select(x =>
             {
                 security = Securities[x];
                 config = GetMatchingSubscription(security, typeof(T));
-                if (config == null) return null;
+                if( config == null ) return null;
 
                 Resolution? res = resolution ?? security.Resolution;
                 start = GetStartTimeAlgoTz(x, periods, resolution).ConvertToUtc(TimeZone);
                 return CreateHistoryRequest(security, config, start, UtcTime.RoundDown(res.Value.ToTimeSpan()), resolution);
             });
 
-            return History(requests.Where(x => x != null)).Get<T>().Memoize();
+            return History(requests.Where(x => x != null )).Get<T>().Memoize();
         }
 
         /// <summary>
@@ -208,19 +198,19 @@ package com.quantconnect.lean.Algorithm
         /// <param name="end">The end time in the algorithm's time zone</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, DateTime start, DateTime end, Resolution? resolution = null) 
+        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, DateTime start, DateTime end, Resolution? resolution = null ) 
             where T : BaseData
         {
             requests = symbols.Select(x =>
             {
                 security = Securities[x];
                 config = GetMatchingSubscription(security, typeof(T));
-                if (config == null) return null;
+                if( config == null ) return null;
 
                 return CreateHistoryRequest(security, config, start, end, resolution);
             });
 
-            return History(requests.Where(x => x != null)).Get<T>().Memoize();
+            return History(requests.Where(x => x != null )).Get<T>().Memoize();
         }
 
         /// <summary>
@@ -231,7 +221,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="span">The span over which to retrieve recent historical data</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<T> History<T>(Symbol symbol, TimeSpan span, Resolution? resolution = null)
+        public IEnumerable<T> History<T>(Symbol symbol, TimeSpan span, Resolution? resolution = null )
             where T : BaseData
         {
             return History<T>(symbol, Time - span, Time, resolution).Memoize();
@@ -245,8 +235,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="periods">The number of bars to request</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<TradeBar> History(Symbol symbol, int periods, Resolution? resolution = null)
-        {
+        public IEnumerable<TradeBar> History(Symbol symbol, int periods, Resolution? resolution = null ) {
             security = Securities[symbol];
             start = GetStartTimeAlgoTz(symbol, periods, resolution);
             return History(new[] {symbol}, start, Time.RoundDown((resolution ?? security.Resolution).ToTimeSpan()), resolution).Get(symbol).Memoize();
@@ -261,18 +250,17 @@ package com.quantconnect.lean.Algorithm
         /// <param name="periods">The number of bars to request</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<T> History<T>(Symbol symbol, int periods, Resolution? resolution = null)
+        public IEnumerable<T> History<T>(Symbol symbol, int periods, Resolution? resolution = null )
             where T : BaseData
         {
-            if (resolution == Resolution.Tick) throw new ArgumentException("History functions that accept a 'periods' parameter can not be used with Resolution.Tick");
+            if( resolution == Resolution.Tick) throw new ArgumentException( "History functions that accept a 'periods' parameter can not be used with Resolution.Tick");
             security = Securities[symbol];
             // verify the types match
             requestedType = typeof(T);
             config = GetMatchingSubscription(security, requestedType);
-            if (config == null)
-            {
-                actualType = security.Subscriptions.Select(x => x.Type.Name).DefaultIfEmpty("[None]").FirstOrDefault();
-                throw new ArgumentException("The specified security is not of the requested type. Symbol: " + symbol.toString() + " Requested Type: " + requestedType.Name + " Actual Type: " + actualType);
+            if( config == null ) {
+                actualType = security.Subscriptions.Select(x => x.Type.Name).DefaultIfEmpty( "[None]").FirstOrDefault();
+                throw new ArgumentException( "The specified security is not of the requested type. Symbol: " + symbol.toString() + " Requested Type: " + requestedType.Name + " Actual Type: " + actualType);
             }
 
             start = GetStartTimeAlgoTz(symbol, periods, resolution);
@@ -287,17 +275,16 @@ package com.quantconnect.lean.Algorithm
         /// <param name="end">The end time in the algorithm's time zone</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<T> History<T>(Symbol symbol, DateTime start, DateTime end, Resolution? resolution = null)
+        public IEnumerable<T> History<T>(Symbol symbol, DateTime start, DateTime end, Resolution? resolution = null )
             where T : BaseData
         {
             security = Securities[symbol];
             // verify the types match
             requestedType = typeof(T);
             config = GetMatchingSubscription(security, requestedType);
-            if (config == null)
-            {
-                actualType = security.Subscriptions.Select(x => x.Type.Name).DefaultIfEmpty("[None]").FirstOrDefault();
-                throw new ArgumentException("The specified security is not of the requested type. Symbol: " + symbol.toString() + " Requested Type: " + requestedType.Name + " Actual Type: " + actualType);
+            if( config == null ) {
+                actualType = security.Subscriptions.Select(x => x.Type.Name).DefaultIfEmpty( "[None]").FirstOrDefault();
+                throw new ArgumentException( "The specified security is not of the requested type. Symbol: " + symbol.toString() + " Requested Type: " + requestedType.Name + " Actual Type: " + actualType);
             }
 
             request = CreateHistoryRequest(security, config, start, end, resolution);
@@ -311,8 +298,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="span">The span over which to retrieve recent historical data</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<TradeBar> History(Symbol symbol, TimeSpan span, Resolution? resolution = null)
-        {
+        public IEnumerable<TradeBar> History(Symbol symbol, TimeSpan span, Resolution? resolution = null ) {
             return History(new[] {symbol}, span, resolution).Get(symbol).Memoize();
         }
 
@@ -324,8 +310,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="end">The end time in the algorithm's time zone</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<TradeBar> History(Symbol symbol, DateTime start, DateTime end, Resolution? resolution = null)
-        {
+        public IEnumerable<TradeBar> History(Symbol symbol, DateTime start, DateTime end, Resolution? resolution = null ) {
             return History(new[] {symbol}, start, end, resolution).Get(symbol).Memoize();
         }
 
@@ -338,8 +323,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="span">The span over which to retrieve recent historical data</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<Slice> History(IEnumerable<Symbol> symbols, TimeSpan span, Resolution? resolution = null)
-        {
+        public IEnumerable<Slice> History(IEnumerable<Symbol> symbols, TimeSpan span, Resolution? resolution = null ) {
             return History(symbols, Time - span, Time, resolution).Memoize();
         }
 
@@ -352,9 +336,8 @@ package com.quantconnect.lean.Algorithm
         /// <param name="periods">The number of bars to request</param>
         /// <param name="resolution">The resolution to request</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<Slice> History(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null)
-        {
-            if (resolution == Resolution.Tick) throw new ArgumentException("History functions that accept a 'periods' parameter can not be used with Resolution.Tick");
+        public IEnumerable<Slice> History(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null ) {
+            if( resolution == Resolution.Tick) throw new ArgumentException( "History functions that accept a 'periods' parameter can not be used with Resolution.Tick");
             return History(CreateBarCountHistoryRequests(symbols, periods, resolution)).Memoize();
         }
 
@@ -368,22 +351,20 @@ package com.quantconnect.lean.Algorithm
         /// <param name="fillForward">True to fill forward missing data, false otherwise</param>
         /// <param name="extendedMarket">True to include extended market hours data, false otherwise</param>
         /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<Slice> History(IEnumerable<Symbol> symbols, DateTime start, DateTime end, Resolution? resolution = null, bool? fillForward = null, bool? extendedMarket = null)
-        {
+        public IEnumerable<Slice> History(IEnumerable<Symbol> symbols, DateTime start, DateTime end, Resolution? resolution = null, bool? fillForward = null, bool? extendedMarket = null ) {
             return History(CreateDateRangeHistoryRequests(symbols, start, end, resolution, fillForward, extendedMarket)).Memoize();
         }
 
         /// <summary>
         /// Gets the start time required for the specified bar count in terms of the algorithm's time zone
         /// </summary>
-        private DateTime GetStartTimeAlgoTz(Symbol symbol, int periods, Resolution? resolution = null)
-        {
+        private DateTime GetStartTimeAlgoTz(Symbol symbol, int periods, Resolution? resolution = null ) {
             security = Securities[symbol];
             timeSpan = (resolution ?? security.Resolution).ToTimeSpan();
             // make this a minimum of one second
             timeSpan = timeSpan < QuantConnect.Time.OneSecond ? QuantConnect.Time.OneSecond : timeSpan;
             localStartTime = QuantConnect.Time.GetStartTimeForTradeBars(security.Exchange.Hours, UtcTime.ConvertFromUtc(security.Exchange.TimeZone), timeSpan, periods, security.IsExtendedMarketHours);
-            return localStartTime.ConvertTo(security.Exchange.TimeZone, TimeZone);
+            return localStartTime Extensions.convertTo(  )security.Exchange.TimeZone, TimeZone);
         }
 
         /// <summary>
@@ -391,8 +372,7 @@ package com.quantconnect.lean.Algorithm
         /// </summary>
         /// <param name="request">the history request to execute</param>
         /// <returns>An enumerable of slice satisfying the specified history request</returns>
-        public IEnumerable<Slice> History(HistoryRequest request)
-        {
+        public IEnumerable<Slice> History(HistoryRequest request) {
             return History(new[] {request}).Memoize();
         }
 
@@ -401,29 +381,23 @@ package com.quantconnect.lean.Algorithm
         /// </summary>
         /// <param name="requests">the history requests to execute</param>
         /// <returns>An enumerable of slice satisfying the specified history request</returns>
-        public IEnumerable<Slice> History(IEnumerable<HistoryRequest> requests)
-        {
+        public IEnumerable<Slice> History(IEnumerable<HistoryRequest> requests) {
             return History(requests, TimeZone).Memoize();
         }
 
-        private IEnumerable<Slice> History(IEnumerable<HistoryRequest> requests, ZoneId timeZone)
-        {
+        private IEnumerable<Slice> History(IEnumerable<HistoryRequest> requests, ZoneId timeZone) {
             sentMessage = false;
             reqs = requests.ToList();
-            foreach (request in reqs)
-            {
+            foreach (request in reqs) {
                 // prevent future requests
-                if (request.EndTimeUtc > UtcTime)
-                {
+                if( request.EndTimeUtc > UtcTime) {
                     request.EndTimeUtc = UtcTime;
-                    if (request.StartTimeUtc > request.EndTimeUtc)
-                    {
+                    if( request.StartTimeUtc > request.EndTimeUtc) {
                         request.StartTimeUtc = request.EndTimeUtc;
                     }
-                    if (!sentMessage)
-                    {
+                    if( !sentMessage) {
                         sentMessage = true;
-                        Debug("Request for future history modified to end now.");
+                        Debug( "Request for future history modified to end now.");
                     }
                 }
             }
@@ -435,18 +409,17 @@ package com.quantconnect.lean.Algorithm
         /// <summary>
         /// Helper method to create history requests from a date range
         /// </summary>
-        private IEnumerable<HistoryRequest> CreateDateRangeHistoryRequests(IEnumerable<Symbol> symbols, DateTime startAlgoTz, DateTime endAlgoTz, Resolution? resolution = null, bool? fillForward = null, bool? extendedMarket = null)
-        {
+        private IEnumerable<HistoryRequest> CreateDateRangeHistoryRequests(IEnumerable<Symbol> symbols, DateTime startAlgoTz, DateTime endAlgoTz, Resolution? resolution = null, bool? fillForward = null, bool? extendedMarket = null ) {
             return symbols.Select(x =>
             {
                 security = Securities[x];
                 config = GetMatchingSubscription(security, typeof (BaseData));
                 request = CreateHistoryRequest(security, config, startAlgoTz, endAlgoTz, resolution);
 
-                // apply overrides
+                // apply @Overrides
                 Resolution? res = resolution ?? security.Resolution;
-                if (fillForward.HasValue) request.FillForwardResolution = fillForward.Value ? res : null;
-                if (extendedMarket.HasValue) request.IncludeExtendedMarketHours = extendedMarket.Value;
+                if( fillForward.HasValue) request.FillForwardResolution = fillForward.Value ? res : null;
+                if( extendedMarket.HasValue) request.IncludeExtendedMarketHours = extendedMarket.Value;
                 return request;
             });
         }
@@ -454,8 +427,7 @@ package com.quantconnect.lean.Algorithm
         /// <summary>
         /// Helper methods to create a history request for the specified symbols and bar count
         /// </summary>
-        private IEnumerable<HistoryRequest> CreateBarCountHistoryRequests(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null)
-        {
+        private IEnumerable<HistoryRequest> CreateBarCountHistoryRequests(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null ) {
             return symbols.Select(x =>
             {
                 security = Securities[x];
@@ -466,11 +438,9 @@ package com.quantconnect.lean.Algorithm
             });
         }
 
-        private HistoryRequest CreateHistoryRequest(Security security, SubscriptionDataConfig subscription, DateTime startAlgoTz, DateTime endAlgoTz, Resolution? resolution)
-        {
+        private HistoryRequest CreateHistoryRequest(Security security, SubscriptionDataConfig subscription, DateTime startAlgoTz, DateTime endAlgoTz, Resolution? resolution) {
             resolution = resolution ?? security.Resolution;
-            request = new HistoryRequest(subscription, security.Exchange.Hours, startAlgoTz.ConvertToUtc(TimeZone), endAlgoTz.ConvertToUtc(TimeZone))
-            {
+            request = new HistoryRequest(subscription, security.Exchange.Hours, startAlgoTz.ConvertToUtc(TimeZone), endAlgoTz.ConvertToUtc(TimeZone)) {
                 DataType = subscription.IsCustomData ? subscription.Type : resolution == Resolution.Tick ? typeof(Tick) : typeof(TradeBar),
                 Resolution = resolution.Value,
                 FillForwardResolution = subscription.FillDataForward ? resolution : null
@@ -478,8 +448,7 @@ package com.quantconnect.lean.Algorithm
             return request;
         }
 
-        private static SubscriptionDataConfig GetMatchingSubscription(Security security, Type type)
-        {
+        private static SubscriptionDataConfig GetMatchingSubscription(Security security, Type type) {
             // find a subscription matchin the requested type with a higher resolution than requested
             return (from sub in security.Subscriptions.OrderByDescending(s => s.Resolution)
                     where type.IsAssignableFrom(sub.Type)

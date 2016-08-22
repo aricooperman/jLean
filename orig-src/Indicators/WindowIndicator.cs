@@ -40,15 +40,14 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The number of data points to hold in the window</param>
         protected WindowIndicator( String name, int period)
-            : base(name)
-        {
+            : base(name) {
             _window = new RollingWindow<T>(period);
         }
 
         /// <summary>
         ///     Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return _window.IsReady; }
         }
@@ -58,8 +57,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(T input)
-        {
+        protected @Override BigDecimal ComputeNextValue(T input) {
             _window.Add(input);
             return ComputeNextValue(_window, input);
         }
@@ -67,8 +65,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         ///     Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             base.Reset();
             _window.Reset();
         }

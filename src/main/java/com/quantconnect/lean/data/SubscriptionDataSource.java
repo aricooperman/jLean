@@ -15,6 +15,8 @@
 
 package com.quantconnect.lean.data;
 
+import java.nio.file.Path;
+
 import com.quantconnect.lean.Global.SubscriptionTransportMedium;
 import com.quantconnect.lean.data.FileFormat;
 
@@ -22,7 +24,7 @@ import com.quantconnect.lean.data.FileFormat;
 public class SubscriptionDataSource {
 
     /// Identifies where to get the subscription's data from
-    public final String source;
+    public final Path source;
 
     /// Identifies the format of the data within the source
     public final FileFormat format;
@@ -33,7 +35,7 @@ public class SubscriptionDataSource {
     /// Initializes a new instance of the <see cref="SubscriptionDataSource"/> class.
     /// <param name="source">The subscription's data source location</param>
     /// <param name="transportMedium">The transport medium to be used to retrieve the subscription's data from the source</param>
-    public SubscriptionDataSource( String source, SubscriptionTransportMedium transportMedium ) {
+    public SubscriptionDataSource( Path source, SubscriptionTransportMedium transportMedium ) {
         this( source, transportMedium, FileFormat.Csv );
     }
 
@@ -41,7 +43,7 @@ public class SubscriptionDataSource {
     /// <param name="source">The subscription's data source location</param>
     /// <param name="format">The format of the data within the source</param>
     /// <param name="transportMedium">The transport medium to be used to retrieve the subscription's data from the source</param>
-    public SubscriptionDataSource( String source, SubscriptionTransportMedium transportMedium, FileFormat format ) {
+    public SubscriptionDataSource( Path source, SubscriptionTransportMedium transportMedium, FileFormat format ) {
         this.source = source;
         this.format = format;
         this.transportMedium = transportMedium;

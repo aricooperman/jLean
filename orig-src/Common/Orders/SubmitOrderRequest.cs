@@ -25,7 +25,7 @@ package com.quantconnect.lean.Orders
         /// <summary>
         /// Gets <see cref="Orders.OrderRequestType.Submit"/>
         /// </summary>
-        public override OrderRequestType OrderRequestType
+        public @Override OrderRequestType OrderRequestType
         {
             get { return OrderRequestType.Submit; }
         }
@@ -91,8 +91,7 @@ package com.quantconnect.lean.Orders
         /// <param name="time">The time this request was created</param>
         /// <param name="tag">A custom tag for this request</param>
         public SubmitOrderRequest(OrderType orderType, SecurityType securityType, Symbol symbol, int quantity, BigDecimal stopPrice, BigDecimal limitPrice, DateTime time, String tag)
-            : base(time, (int) OrderResponseErrorCode.UnableToFindOrder, tag)
-        {
+            : base(time, (int) OrderResponseErrorCode.UnableToFindOrder, tag) {
             SecurityType = securityType;
             Symbol = symbol;
             OrderType = orderType;
@@ -105,8 +104,7 @@ package com.quantconnect.lean.Orders
         /// Sets the <see cref="OrderRequest.OrderId"/>
         /// </summary>
         /// <param name="orderId">The order id of the generated order</param>
-        internal void SetOrderId(int orderId)
-        {
+        internal void SetOrderId(int orderId) {
             OrderId = orderId;
         }
 
@@ -117,11 +115,10 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
+        public @Override String toString() {
             // create a proxy order object to steal his to String method
             proxy = Order.CreateOrder(this);
-            return String.format("{0} UTC: Submit Order: ({1}) - {2} {3}", Time, OrderId, proxy, Tag) + " Status: " + Status;
+            return String.format( "%1$s UTC: Submit Order: (%2$s) - %3$s {3}", Time, OrderId, proxy, Tag) + " Status: " + Status;
         }
     }
 }

@@ -40,8 +40,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="computeNextValue">A function accepting the input value and returning this indicator's output value</param>
         /// <param name="isReady">A function accepting this indicator and returning true if the indicator is ready, false otherwise</param>
         public FunctionalIndicator( String name, Func<T, decimal> computeNextValue, Func<IndicatorBase<T>, bool> isReady)
-            : base(name)
-        {
+            : base(name) {
             _computeNextValue = computeNextValue;
             _isReady = isReady;
         }
@@ -54,8 +53,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="isReady">A function accepting this indicator and returning true if the indicator is ready, false otherwise</param>
         /// <param name="reset">Function called to reset this indicator and any indicators this is dependent on</param>
         public FunctionalIndicator( String name, Func<T, decimal> computeNextValue, Func<IndicatorBase<T>, bool> isReady, Action reset)
-            : base(name)
-        {
+            : base(name) {
             _computeNextValue = computeNextValue;
             _isReady = isReady;
             _reset = reset;
@@ -64,7 +62,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return _isReady(this); }
         }
@@ -74,18 +72,15 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(T input)
-        {
+        protected @Override BigDecimal ComputeNextValue(T input) {
             return _computeNextValue(input);
         }
 
         /// <summary>
         /// Resets this indicator to its initial state, optionally using the reset action passed via the constructor
         /// </summary>
-        public override void Reset()
-        {
-            if (_reset != null)
-            {
+        public @Override void Reset() {
+            if( _reset != null ) {
                 // if a reset function was specified then use that
                 _reset.Invoke();
             }

@@ -35,8 +35,7 @@ package com.quantconnect.lean.ToolBox.CryptoiqDownloader
         /// </summary>
         /// <param name="exchange">The bitcoin exchange</param>
         /// <param name="scaleFactor">Scale factor used to scale the data, useful for changing the BTC units</param>
-        public CryptoiqDownloader( String exchange = "bitfinex", BigDecimal scaleFactor = 1m)
-        {
+        public CryptoiqDownloader( String exchange = "bitfinex", BigDecimal scaleFactor = 1m) {
             _exchange = exchange;
             _scaleFactor = scaleFactor;
         }
@@ -49,29 +48,23 @@ package com.quantconnect.lean.ToolBox.CryptoiqDownloader
         /// <param name="startUtc">Start time of the data in UTC</param>
         /// <param name="endUtc">End time of the data in UTC</param>
         /// <returns>Enumerable of base data for this symbol</returns>
-        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc)
-        {
-            if (resolution != Resolution.Tick)
-            {
-                throw new ArgumentException("Only tick data is currently supported.");
+        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
+            if( resolution != Resolution.Tick) {
+                throw new ArgumentException( "Only tick data is currently supported.");
             }
 
             hour = 1;
             counter = startUtc;
-            static final String url = "http://cryptoiq.io/api/marketdata/ticker/{3}/{2}/{0}/{1}";
+            static final String url = "http://cryptoiq.io/api/marketdata/ticker/{3}/%3$s/%1$s/%2$s";
 
-            while (counter <= endUtc)
-            {
-                while (hour < 24)
-                {
-                    using (cl = new WebClient())
-                    {
-                        request = String.format(url, counter.toString("yyyy-MM-dd"), hour, symbol.Value, _exchange);
+            while (counter <= endUtc) {
+                while (hour < 24) {
+                    using (cl = new WebClient()) {
+                        request = String.format(url, counter.toString( "yyyy-MM-dd"), hour, symbol.Value, _exchange);
                         data = cl.DownloadString(request);
 
                         mbtc = JsonConvert.DeserializeObject<List<CryptoiqBitcoin>>(data);
-                        foreach (item in mbtc.OrderBy(x => x.Time))
-                        {
+                        foreach (item in mbtc.OrderBy(x => x.Time)) {
                             yield return new Tick
                             {
                                 Time = item.Time,

@@ -29,8 +29,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         public DynamicDataConsolidator(TimeSpan period)
-            : base(period)
-        {
+            : base(period) {
         }
 
         /// <summary>
@@ -38,8 +37,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         public DynamicDataConsolidator(int maxCount)
-            : base(maxCount)
-        {
+            : base(maxCount) {
         }
 
         /// <summary>
@@ -48,8 +46,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         public DynamicDataConsolidator(int maxCount, TimeSpan period)
-            : base(maxCount, period)
-        {
+            : base(maxCount, period) {
         }
 
         /// <summary>
@@ -58,8 +55,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="workingBar">The bar we're building, null if the event was just fired and we're starting a new trade bar</param>
         /// <param name="data">The new data</param>
-        protected override void AggregateBar(ref TradeBar workingBar, DynamicData data)
-        {
+        protected @Override void AggregateBar(ref TradeBar workingBar, DynamicData data) {
             // grab the properties, if they don't exist just use the .Value property
             open = GetNamedPropertyOrValueProperty(data, "Open");
             high = GetNamedPropertyOrValueProperty(data, "High");
@@ -67,12 +63,11 @@ package com.quantconnect.lean.Data.Consolidators
             close = GetNamedPropertyOrValueProperty(data, "Close");
 
             // if we have volume, use it, otherwise just use zero
-            volume = data.HasProperty("Volume")
-                ? (long) Convert.ChangeType(data.GetProperty("Volume"), typeof (long))
+            volume = data.HasProperty( "Volume")
+                ? (long) Convert.ChangeType(data.GetProperty( "Volume"), typeof (long))
                 : 0L;
             
-            if (workingBar == null)
-            {
+            if( workingBar == null ) {
                 workingBar = new TradeBar
                 {
                     Symbol = data.Symbol,
@@ -89,15 +84,13 @@ package com.quantconnect.lean.Data.Consolidators
                 //Aggregate the working bar
                 workingBar.Close = close;
                 workingBar.Volume += volume;
-                if (low < workingBar.Low) workingBar.Low = low;
-                if (high > workingBar.High) workingBar.High = high;
+                if( low < workingBar.Low) workingBar.Low = low;
+                if( high > workingBar.High) workingBar.High = high;
             }
         }
 
-        private static BigDecimal GetNamedPropertyOrValueProperty(DynamicData data, String propertyName)
-        {
-            if (!data.HasProperty(propertyName))
-            {
+        private static BigDecimal GetNamedPropertyOrValueProperty(DynamicData data, String propertyName) {
+            if( !data.HasProperty(propertyName)) {
                 return data.Value;
             }
             return (decimal) Convert.ChangeType(data.GetProperty(propertyName), typeof (decimal));

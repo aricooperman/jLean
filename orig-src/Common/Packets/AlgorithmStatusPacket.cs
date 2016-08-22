@@ -65,16 +65,14 @@ package com.quantconnect.lean.Packets
         /// Default constructor for JSON
         /// </summary>
         public AlgorithmStatusPacket()
-            : base(PacketType.AlgorithmStatus)
-        {
+            : base(PacketType.AlgorithmStatus) {
         }
 
         /// <summary>
         /// Initialize algorithm state packet:
         /// </summary>
         public AlgorithmStatusPacket( String algorithmId, int projectId, AlgorithmStatus status, String message = "")
-            : base (PacketType.AlgorithmStatus)
-        {
+            : base (PacketType.AlgorithmStatus) {
             Status = status;
             ProjectId = projectId;
             AlgorithmId = algorithmId;

@@ -52,7 +52,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <summary>
         /// Gets the settings used for subscriptons added for this universe
         /// </summary>
-        public override UniverseSettings UniverseSettings
+        public @Override UniverseSettings UniverseSettings
         {
             get { return _universeSettings; }
         }
@@ -66,8 +66,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="interval">The interval at which selection should be performed</param>
         /// <param name="symbols">The initial set of symbols in this universe</param>
         public UserDefinedUniverse(SubscriptionDataConfig configuration, UniverseSettings universeSettings, ISecurityInitializer securityInitializer, TimeSpan interval, IEnumerable<Symbol> symbols)
-            : base(configuration, securityInitializer)
-        {
+            : base(configuration, securityInitializer) {
             _interval = interval;
             _symbols = symbols.ToHashSet();
             _universeSettings = universeSettings;
@@ -84,15 +83,14 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="selector">Universe selection function invoked for each time returned via GetTriggerTimes.
         /// The function parameter is a DateTime in the time zone of configuration.ExchangeTimeZone</param>
         public UserDefinedUniverse(SubscriptionDataConfig configuration, UniverseSettings universeSettings, ISecurityInitializer securityInitializer, TimeSpan interval, Func<DateTime,IEnumerable<String>> selector)
-            : base(configuration, securityInitializer)
-        {
+            : base(configuration, securityInitializer) {
             _interval = interval;
             _universeSettings = universeSettings;
             _selector = time =>
             {
                 selectSymbolsResult = selector(time.ConvertFromUtc(Configuration.ExchangeTimeZone));
                 // if we received an unchaged then short circuit the symbol creation and return it directly
-                if (ReferenceEquals(selectSymbolsResult, Unchanged)) return Unchanged;
+                if( ReferenceEquals(selectSymbolsResult, Unchanged)) return Unchanged;
                 return selectSymbolsResult.Select(sym => Symbol.Create(sym, Configuration.SecurityType, Configuration.Market));
             };
         }
@@ -103,12 +101,10 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="securityType">The security</param>
         /// <param name="market">The market</param>
         /// <returns>A symbol for user defined universe of the specified security type and market</returns>
-        public static Symbol CreateSymbol(SecurityType securityType, String market)
-        {
-            ticker = String.format("qc-universe-userdefined-{0}-{1}", market.toLowerCase(), securityType);
+        public static Symbol CreateSymbol(SecurityType securityType, String market) {
+            ticker = String.format( "qc-universe-userdefined-%1$s-%2$s", market.toLowerCase(), securityType);
             SecurityIdentifier sid;
-            switch (securityType)
-            {
+            switch (securityType) {
                 case SecurityType.Base:
                     sid = SecurityIdentifier.GenerateBase(ticker, market);
                     break;
@@ -132,7 +128,7 @@ package com.quantconnect.lean.Data.UniverseSelection
                 case SecurityType.Commodity:
                 case SecurityType.Future:
                 default:
-                    throw new NotImplementedException("The specified security type is not implemented yet: " + securityType);
+                    throw new NotImplementedException( "The specified security type is not implemented yet: " + securityType);
             }
 
             return new Symbol(sid, ticker);
@@ -143,10 +139,8 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// </summary>
         /// <param name="symbol">The symbol to be added to this universe</param>
         /// <returns>True if the symbol was added, false if it was already present</returns>
-        public boolean Add(Symbol symbol)
-        {
-            if (_symbols.Add(symbol))
-            {
+        public boolean Add(Symbol symbol) {
+            if( _symbols.Add(symbol)) {
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, symbol));
                 return true;
             }
@@ -158,10 +152,8 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// </summary>
         /// <param name="symbol">The symbol to be removed</param>
         /// <returns>True if the symbol was removed, false if the symbol was not present</returns>
-        public boolean Remove(Symbol symbol)
-        {
-            if (_symbols.Remove(symbol))
-            {
+        public boolean Remove(Symbol symbol) {
+            if( _symbols.Remove(symbol)) {
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, symbol));
                 return true;
             }
@@ -174,8 +166,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="utcTime">The curren utc time</param>
         /// <param name="data">The symbols to remain in the universe</param>
         /// <returns>The data that passes the filter</returns>
-        public override IEnumerable<Symbol> SelectSymbols(DateTime utcTime, BaseDataCollection data)
-        {
+        public @Override IEnumerable<Symbol> SelectSymbols(DateTime utcTime, BaseDataCollection data) {
             return _selector(utcTime);
         }
 
@@ -183,22 +174,18 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// Returns an enumerator that defines when this user defined universe will be invoked
         /// </summary>
         /// <returns>An enumerator of DateTime that defines when this universe will be invoked</returns>
-        public virtual IEnumerable<DateTime> GetTriggerTimes(DateTime startTimeUtc, DateTime endTimeUtc, MarketHoursDatabase marketHoursDatabase)
-        {
+        public virtual IEnumerable<DateTime> GetTriggerTimes(DateTime startTimeUtc, DateTime endTimeUtc, MarketHoursDatabase marketHoursDatabase) {
             exchangeHours = marketHoursDatabase.GetExchangeHours(Configuration);
             localStartTime = startTimeUtc.ConvertFromUtc(exchangeHours.TimeZone);
             localEndTime = endTimeUtc.ConvertFromUtc(exchangeHours.TimeZone);
 
             first = true;
-            foreach (dateTime in LinqExtensions.Range(localStartTime, localEndTime, dt => dt + Interval))
-            {
-                if (first)
-                {
+            foreach (dateTime in LinqExtensions.Range(localStartTime, localEndTime, dt => dt + Interval)) {
+                if( first) {
                     yield return dateTime;
                     first = false;
                 }
-                else if (exchangeHours.IsOpen(dateTime, dateTime + Interval, Configuration.ExtendedMarketHours))
-                {
+                else if( exchangeHours.IsOpen(dateTime, dateTime + Interval, Configuration.ExtendedMarketHours)) {
                     yield return dateTime;
                 }
             }
@@ -208,10 +195,9 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// Event invocator for the <see cref="CollectionChanged"/> event
         /// </summary>
         /// <param name="e">The notify collection changed event arguments</param>
-        protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
-        {
+        protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs e) {
             handler = CollectionChanged;
-            if (handler != null) handler(this, e);
+            if( handler != null ) handler(this, e);
         }
     }
 }

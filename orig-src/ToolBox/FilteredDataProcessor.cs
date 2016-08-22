@@ -32,8 +32,7 @@ package com.quantconnect.lean.ToolBox
         /// </summary>
         /// <param name="processor">The processor to filter data for</param>
         /// <param name="predicate">The filtering predicate to be applied</param>
-        public FilteredDataProcessor(IDataProcessor processor, Func<BaseData, bool> predicate)
-        {
+        public FilteredDataProcessor(IDataProcessor processor, Func<BaseData, bool> predicate) {
             _predicate = predicate;
             _processor = processor;
         }
@@ -42,10 +41,8 @@ package com.quantconnect.lean.ToolBox
         /// Invoked for each piece of data from the source file
         /// </summary>
         /// <param name="data">The data to be processed</param>
-        public void Process(BaseData data)
-        {
-            if (_predicate(data))
-            {
+        public void Process(BaseData data) {
+            if( _predicate(data)) {
                 _processor.Process(data);
             }
         }
@@ -53,8 +50,7 @@ package com.quantconnect.lean.ToolBox
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
             _processor.Dispose();
         }
     }

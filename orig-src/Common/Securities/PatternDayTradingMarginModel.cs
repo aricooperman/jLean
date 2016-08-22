@@ -27,8 +27,7 @@ package com.quantconnect.lean.Securities
         /// Initializes a new instance of the <see cref="PatternDayTradingMarginModel" />
         /// </summary>
         public PatternDayTradingMarginModel()
-            : this(2.0m, 4.0m)
-        {
+            : this(2.0m, 4.0m) {
         }
 
         /// <summary>
@@ -37,8 +36,7 @@ package com.quantconnect.lean.Securities
         /// <param name="closedMarketLeverage">Leverage used outside regular market hours</param>
         /// <param name="openMarketLeverage">Leverage used during regular market hours</param>
         public PatternDayTradingMarginModel( BigDecimal closedMarketLeverage, BigDecimal openMarketLeverage)
-            : base(openMarketLeverage)
-        {
+            : base(openMarketLeverage) {
             _closedMarginCorrectionFactor = openMarketLeverage/closedMarketLeverage;
         }
 
@@ -50,23 +48,20 @@ package com.quantconnect.lean.Securities
         /// </remarks>
         /// <param name="security">The security to set leverage to</param>
         /// <param name="leverage">The new leverage</param>
-        public override void SetLeverage(Security security, BigDecimal leverage)
-        {
+        public @Override void SetLeverage(Security security, BigDecimal leverage) {
         }
 
         /// <summary>
         /// The percentage of an order's absolute cost that must be held in free cash in order to place the order
         /// </summary>
-        protected override BigDecimal GetInitialMarginRequirement(Security security)
-        {
+        protected @Override BigDecimal GetInitialMarginRequirement(Security security) {
             return base.GetInitialMarginRequirement(security)*GetMarginCorrectionFactor(security);
         }
 
         /// <summary>
         /// The percentage of the holding's absolute cost that must be held in free cash in order to avoid a margin call
         /// </summary>
-        protected override BigDecimal GetMaintenanceMarginRequirement(Security security)
-        {
+        protected @Override BigDecimal GetMaintenanceMarginRequirement(Security security) {
             return base.GetMaintenanceMarginRequirement(security)*GetMarginCorrectionFactor(security);
         }
 
@@ -75,8 +70,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="security">The security to apply conditional leverage to</param>
         /// <returns>The margin correction factor</returns>
-        private BigDecimal GetMarginCorrectionFactor(Security security)
-        {
+        private BigDecimal GetMarginCorrectionFactor(Security security) {
             // when the market is open the base type returns the correct values
             // when the market is closed, we need to multiply by a correction factor
             return security.Exchange.ExchangeOpen ? 1m : _closedMarginCorrectionFactor;

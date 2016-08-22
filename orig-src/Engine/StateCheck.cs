@@ -44,8 +44,7 @@ package com.quantconnect.lean.Lean.Engine
             /// <summary>
             /// Creates an instance of the <see cref="Ping"/> class
             /// </summary>
-            public Ping(AlgorithmManager algorithmManager, IApi api, IResultHandler resultHandler, IMessagingHandler messagingHandler, AlgorithmNodePacket job)
-            {
+            public Ping(AlgorithmManager algorithmManager, IApi api, IResultHandler resultHandler, IMessagingHandler messagingHandler, AlgorithmNodePacket job) {
                 _api = api;
                 _job = job;
                 _resultHandler = resultHandler;
@@ -55,14 +54,11 @@ package com.quantconnect.lean.Lean.Engine
             }
 
             /// DB Ping Run Method:
-            public void Run()
-            {
-                while (!_exitEvent.Wait(1000))
-                {
+            public void Run() {
+                while (!_exitEvent.Wait(1000)) {
                     try
                     {
-                        if (_algorithmManager.AlgorithmId != "" && _algorithmManager.QuitState == false)
-                        {
+                        if( _algorithmManager.AlgorithmId != "" && _algorithmManager.QuitState == false) {
                             //Get the state from the central server:
                             state = _api.GetAlgorithmStatus(_algorithmManager.AlgorithmId, _job.UserId);
 
@@ -75,24 +71,21 @@ package com.quantconnect.lean.Lean.Engine
                             _messagingHandler.HasSubscribers = state.HasSubscribers;
                         }
                     }
-                    catch (ThreadAbortException)
-                    {
+                    catch (ThreadAbortException) {
                         return;
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         Log.Error(err);
                     }
                 }
 
-                Log.Trace("StateCheck.Ping.Run(): Exited thread.");
+                Log.Trace( "StateCheck.Ping.Run(): Exited thread.");
             }
 
             /// <summary>
             /// Send an exit signal to the thread
             /// </summary>
-            public void Exit()
-            {
+            public void Exit() {
                 _exitEvent.Set();
             }
         }

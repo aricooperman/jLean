@@ -50,33 +50,31 @@ package com.quantconnect.lean
         /// <summary>
         /// Called at the start of your algorithm to setup your requirements:
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetCash(100000);
-            symbols.Add("SPY");
+            symbols.Add( "SPY");
             SetStartDate(1998, 1, 1);
             SetEndDate(2014, 6, 1);
 
             //Present Social Media Stocks:
-            // symbols.Add("FB");symbols.Add("LNKD");symbols.Add("GRPN");symbols.Add("TWTR");
+            // symbols.Add( "FB");symbols.Add( "LNKD");symbols.Add( "GRPN");symbols.Add( "TWTR");
             // SetStartDate(2011, 1, 1);
             // SetEndDate(2014, 12, 1);
 
             //2008 Financials: 
-            // symbols.Add("C");symbols.Add("AIG");symbols.Add("BAC");symbols.Add("HBOS");
+            // symbols.Add( "C");symbols.Add( "AIG");symbols.Add( "BAC");symbols.Add( "HBOS");
             // SetStartDate(2003, 1, 1);
             // SetEndDate(2011, 1, 1);
 
             //2000 Dot.com: 
-            // symbols.Add("IPET");symbols.Add("WBVN");symbols.Add("GCTY");
+            // symbols.Add( "IPET");symbols.Add( "WBVN");symbols.Add( "GCTY");
             // SetStartDate(1998, 1, 1);
             // SetEndDate(2000, 1, 1); 
 
             //CAPE data
-            AddData<CAPE>("CAPE");
+            AddData<CAPE>( "CAPE");
 
-            foreach ( String stock in symbols)
-            {
+            foreach ( String stock in symbols) {
                 AddSecurity(SecurityType.Equity, stock, Resolution.Minute);
 
                 macd = MACD(stock, 12, 26, 9, MovingAverageType.Exponential, Resolution.Daily);
@@ -91,13 +89,11 @@ package com.quantconnect.lean
         /// <summary>
         /// Trying to find if current Cape is the lowest Cape in three months to indicate selling period
         /// </summary>
-        public void OnData(CAPE data)
-        {
+        public void OnData(CAPE data) {
             newLow = false;
             //Adds first four Cape Ratios to array c
             currCape = data.Cape;
-            if (counter < 4)
-            {
+            if( counter < 4) {
                 c[counter++] = currCape;
             }
             //Replaces oldest Cape with current Cape
@@ -107,61 +103,52 @@ package com.quantconnect.lean
             {
                 Array.Copy(c, cCopy, 4);
                 Array.Sort(cCopy);
-                if (cCopy[0] > currCape) newLow = true;
+                if( cCopy[0] > currCape) newLow = true;
                 c[counter2++] = currCape;
-                if (counter2 == 4) counter2 = 0;
+                if( counter2 == 4) counter2 = 0;
             }
 
-            Debug("Current Cape: " + currCape + " on " + data.Time);
-            if (newLow) Debug("New Low has been hit on " + data.Time);
+            Debug( "Current Cape: " + currCape + " on " + data.Time);
+            if( newLow) Debug( "New Low has been hit on " + data.Time);
         }
 
         /// <summary>
         /// New TradeBar data for our assets.
         /// </summary>
-        public void OnData(TradeBars data)
-        {
+        public void OnData(TradeBars data) {
             try
             {
                 //Bubble territory 
-                if (currCape > 20 && newLow == false)
-                {
-                    foreach ( String stock in symbols)
-                    {
+                if( currCape > 20 && newLow == false) {
+                    foreach ( String stock in symbols) {
                         //Order stock based on MACD
                         //During market hours, stock is trading, and sufficient cash
-                        if (Securities[stock].Holdings.Quantity == 0 && rsiDic[stock] < 70
+                        if( Securities[stock].Holdings.Quantity == 0 && rsiDic[stock] < 70
                             && Securities[stock].Price != 0 && Portfolio.Cash > Securities[stock].Price * 100
-                            && Time.Hour == 9 && Time.Minute == 30)
-                        {
+                            && Time.Hour == 9 && Time.Minute == 30) {
                             Buy(stock);
                         }
                         //Utilize RSI for overbought territories and liquidate that stock
-                        if (rsiDic[stock] > 70 && Securities[stock].Holdings.Quantity > 0
-                                && Time.Hour == 9 && Time.Minute == 30)
-                        {
+                        if( rsiDic[stock] > 70 && Securities[stock].Holdings.Quantity > 0
+                                && Time.Hour == 9 && Time.Minute == 30) {
                             Sell(stock);
                         }
                     }
                 }
 
                 // Undervalued territory
-                else if (newLow == true)
-                {
-                    foreach ( String stock in symbols)
-                    {
+                else if( newLow == true) {
+                    foreach ( String stock in symbols) {
 
                         //Sell stock based on MACD 
-                        if (Securities[stock].Holdings.Quantity > 0 && rsiDic[stock] > 30
-                            && Time.Hour == 9 && Time.Minute == 30)
-                        {
+                        if( Securities[stock].Holdings.Quantity > 0 && rsiDic[stock] > 30
+                            && Time.Hour == 9 && Time.Minute == 30) {
                             Sell(stock);
                         }
                         //Utilize RSI and MACD to understand oversold territories
-                        else if (Securities[stock].Holdings.Quantity == 0 && rsiDic[stock] < 30
+                        else if( Securities[stock].Holdings.Quantity == 0 && rsiDic[stock] < 30
                             && Securities[stock].Price != 0 && Portfolio.Cash > Securities[stock].Price * 100
-                            && Time.Hour == 9 && Time.Minute == 30)
-                        {
+                            && Time.Hour == 9 && Time.Minute == 30) {
                             Buy(stock);
                         }
                     }
@@ -169,14 +156,12 @@ package com.quantconnect.lean
                 }
                 // Cape Ratio is missing from orignial data
                 // Most recent cape data is most likely to be missing
-                else if (currCape == 0)
-                {
-                    Debug("Exiting due to no CAPE!");
-                    Quit("CAPE ratio not supplied in data, exiting.");
+                else if( currCape == 0) {
+                    Debug( "Exiting due to no CAPE!");
+                    Quit( "CAPE ratio not supplied in data, exiting.");
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Error(err.Message);
             }
         }
@@ -185,14 +170,12 @@ package com.quantconnect.lean
         /// <summary>
         /// Buy this symbol
         /// </summary>
-        public void Buy( String symbol)
-        {
+        public void Buy( String symbol) {
             SecurityHolding s = Securities[symbol].Holdings;
-            if (macdDic[symbol] > 0m)
-            {
+            if( macdDic[symbol] > 0m) {
                 SetHoldings(symbol, 1);
 
-                Debug("Purchasing: " + symbol + "   MACD: " + macdDic[symbol] + "   RSI: " + rsiDic[symbol]
+                Debug( "Purchasing: " + symbol + "   MACD: " + macdDic[symbol] + "   RSI: " + rsiDic[symbol]
                     + "   Price: " + Math.Round(Securities[symbol].Price, 2) + "   Quantity: " + s.Quantity);
             }
         }
@@ -201,14 +184,12 @@ package com.quantconnect.lean
         /// Sell this symbol
         /// </summary>
         /// <param name="symbol"></param>
-        public void Sell(String symbol)
-        {
+        public void Sell(String symbol) {
             SecurityHolding s = Securities[symbol].Holdings;
-            if (s.Quantity > 0 && macdDic[symbol] < 0m)
-            {
+            if( s.Quantity > 0 && macdDic[symbol] < 0m) {
                 Liquidate(symbol);
 
-                Debug("Selling: " + symbol + " at sell MACD: " + macdDic[symbol] + "   RSI: " + rsiDic[symbol]
+                Debug( "Selling: " + symbol + " at sell MACD: " + macdDic[symbol] + "   RSI: " + rsiDic[symbol]
                     + "   Price: " + Math.Round(Securities[symbol].Price, 2) + "   Profit from sale: " + s.LastTradeProfit);
             }
         }
@@ -228,8 +209,7 @@ package com.quantconnect.lean
         /// <summary>
         /// Initializes a new instance of the <see cref="QuantConnect.CAPE"/> indicator.
         /// </summary>
-        public CAPE()
-        {
+        public CAPE() {
             this.Symbol = "CAPE";
         }
 
@@ -240,9 +220,8 @@ package com.quantconnect.lean
         /// <param name="date">Date of this source file</param>
         /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
         /// <returns>String URL of source file.</returns>
-        public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-        {
-            return new SubscriptionDataSource("https://www.dropbox.com/s/ggt6blmib54q36e/CAPE.csv?dl=1", SubscriptionTransportMedium.RemoteFile);
+        public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
+            return new SubscriptionDataSource( "https://www.dropbox.com/s/ggt6blmib54q36e/CAPE.csv?dl=1", SubscriptionTransportMedium.RemoteFile);
         }
 
         /// <summary>
@@ -255,8 +234,7 @@ package com.quantconnect.lean
         /// <param name="line">Line.</param>
         /// <param name="date">Date.</param>
         /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-        public override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode)
-        {
+        public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
             index = new CAPE();
 
             try
@@ -264,12 +242,12 @@ package com.quantconnect.lean
                 //Example File Format:
                 //Date   |  Price |  Div  | Earning | CPI  | FractionalDate | Interest Rate | RealPrice | RealDiv | RealEarnings | CAPE 
                 //2014.06  1947.09  37.38   103.12   238.343    2014.37          2.6           1923.95     36.94        101.89     25.55
-                string[] data = line.Split(',');
+                string[] data = line.split(',');
                 //Dates must be in the format YYYY-MM-DD. If your data source does not have this format, you must use
                 //DateTime.ParseExact() and explicit declare the format your data source has.
                 String dateString = data[0];
                 index.Time = DateTime.ParseExact(dateString, format, provider);
-                index.Cape = Convert.ToDecimal(data[10], CultureInfo.InvariantCulture);
+                index.Cape = new BigDecimal( data[10], CultureInfo.InvariantCulture);
                 index.Symbol = "CAPE";
                 index.Value = index.Cape;
             }

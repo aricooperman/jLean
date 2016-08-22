@@ -34,8 +34,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the MIDPRICE</param>
         public MidPrice( String name, int period) 
-            : base(name)
-        {
+            : base(name) {
             _period = period;
             _maximum = new Maximum(period);
             _minimum = new Minimum(period);
@@ -46,14 +45,13 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="period">The period of the MIDPRICE</param>
         public MidPrice(int period)
-            : this("MIDPRICE" + period, period)
-        {
+            : this( "MIDPRICE" + period, period) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
@@ -63,8 +61,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _maximum.Update(new IndicatorDataPoint { Value = input.High });
             _minimum.Update(new IndicatorDataPoint { Value = input.Low });
 

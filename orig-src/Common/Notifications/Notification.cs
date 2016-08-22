@@ -24,8 +24,7 @@ package com.quantconnect.lean.Notifications
         /// Method for sending implementations of notification object types.
         /// </summary>
         /// <remarks>SMS, Email and Web are all handled by the QC Messaging Handler. To implement your own notification type implement it here.</remarks>
-        public virtual void Send()
-        {
+        public virtual void Send() {
             //
         }
     }
@@ -50,8 +49,7 @@ package com.quantconnect.lean.Notifications
         /// </summary>
         /// <param name="address"></param>
         /// <param name="data"></param>
-        public NotificationWeb( String address, object data = null)
-        {
+        public NotificationWeb( String address, object data = null ) {
             Address = address;
             Data = data;
         }
@@ -77,8 +75,7 @@ package com.quantconnect.lean.Notifications
         /// </summary>
         /// <param name="number"></param>
         /// <param name="message"></param>
-        public NotificationSms( String number, String message)
-        {
+        public NotificationSms( String number, String message) {
             PhoneNumber = number;
             Message = message;
         }
@@ -117,8 +114,7 @@ package com.quantconnect.lean.Notifications
         /// <param name="subject">Subject of the email</param>
         /// <param name="message">Message body of the email</param>
         /// <param name="data">Data to attach to the email</param>
-        public NotificationEmail( String address, String subject, String message, String data)
-        {
+        public NotificationEmail( String address, String subject, String message, String data) {
             Message = message;
             Data = data;
             Subject = subject;

@@ -29,8 +29,7 @@ package com.quantconnect.lean.Tests.Indicators
     public class IndicatorTests
     {
         [Test]
-        public void NameSaves()
-        {
+        public void NameSaves() {
             // just testing that we get the right name out
             static final String name = "name";
             target = new TestIndicator(name);
@@ -38,8 +37,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void UpdatesProperly()
-        {
+        public void UpdatesProperly() {
             // we want to make sure the initialized value is the default value
             // for a datapoint, and also verify the our indicator updates as we
             // expect it to, in this case, it should return identity
@@ -60,8 +58,7 @@ package com.quantconnect.lean.Tests.Indicators
 
         [Test]
         [ExpectedException(typeof(ArgumentException), MatchType = MessageMatch.Contains, ExpectedMessage = "forward only")]
-        public void ThrowsOnPastTimes()
-        {
+        public void ThrowsOnPastTimes() {
             target = new TestIndicator();
 
             time = DateTime.UtcNow;
@@ -71,8 +68,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void PassesOnDuplicateTimes()
-        {
+        public void PassesOnDuplicateTimes() {
             target = new TestIndicator();
 
             time = DateTime.UtcNow;
@@ -89,52 +85,44 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void SortsTheSameAsDecimalDescending()
-        {
+        public void SortsTheSameAsDecimalDescending() {
             int count = 100;
             targets = Enumerable.Range(0, count).Select(x => new TestIndicator(x.toString())).ToList();
-            for (int i = 0; i < targets.Count; i++)
-            {
+            for (int i = 0; i < targets.Count; i++) {
                 targets[i].Update(DateTime.Today, i);
             }
 
             expected = Enumerable.Range(0, count).Select(x => (decimal)x).OrderByDescending(x => x).ToList();
             actual = targets.OrderByDescending(x => x).ToList();
-            foreach (pair in expected.Zip<decimal, TestIndicator, Tuple<decimal, TestIndicator>>(actual, Tuple.Create))
-            {
+            foreach (pair in expected.Zip<decimal, TestIndicator, Tuple<decimal, TestIndicator>>(actual, Tuple.Create)) {
                 Assert.AreEqual(pair.Item1, pair.Item2.Current.Value);
             }
         }
 
         [Test]
-        public void SortsTheSameAsDecimalAsecending()
-        {
+        public void SortsTheSameAsDecimalAsecending() {
             int count = 100;
             targets = Enumerable.Range(0, count).Select(x => new TestIndicator(x.toString())).ToList();
-            for (int i = 0; i < targets.Count; i++)
-            {
+            for (int i = 0; i < targets.Count; i++) {
                 targets[i].Update(DateTime.Today, i);
             }
 
             expected = Enumerable.Range(0, count).Select(x => (decimal)x).OrderBy(x => x).ToList();
             actual = targets.OrderBy(x => x).ToList();
-            foreach (pair in expected.Zip<decimal, TestIndicator, Tuple<decimal, TestIndicator>>(actual, Tuple.Create))
-            {
+            foreach (pair in expected.Zip<decimal, TestIndicator, Tuple<decimal, TestIndicator>>(actual, Tuple.Create)) {
                 Assert.AreEqual(pair.Item1, pair.Item2.Current.Value);
             }
         }
 
         [Test]
-        public void ComparisonFunctions()
-        {   
+        public void ComparisonFunctions() {   
             TestComparisonOperators<Integer>();
             TestComparisonOperators<long>();
             TestComparisonOperators<float>();
             TestComparisonOperators<double>();
         }
 
-        private static void TestComparisonOperators<TValue>()
-        {
+        private static void TestComparisonOperators<TValue>() {
             indicator = new TestIndicator();
             TestOperator(indicator, default(TValue), "GreaterThan", true, false);
             TestOperator(indicator, default(TValue), "GreaterThan", false, false);
@@ -150,8 +138,7 @@ package com.quantconnect.lean.Tests.Indicators
             TestOperator(indicator, default(TValue), "Inequality", false, false);
         }
 
-        private static void TestOperator<TIndicator, TValue>(TIndicator indicator, TValue value, String opName, boolean tvalueIsFirstParm, boolean expected)
-        {
+        private static void TestOperator<TIndicator, TValue>(TIndicator indicator, TValue value, String opName, boolean tvalueIsFirstParm, boolean expected) {
             method = GetOperatorMethodInfo<TValue>(opName, tvalueIsFirstParm ? 0 : 1);
             ctIndicator = Expression.Constant(indicator);
             ctValue = Expression.Constant(value);
@@ -161,16 +148,14 @@ package com.quantconnect.lean.Tests.Indicators
             Assert.AreEqual(expected, func());
         }
 
-        private static MethodInfo GetOperatorMethodInfo<T>( String @operator, int argIndex)
-        {
+        private static MethodInfo GetOperatorMethodInfo<T>( String @operator, int argIndex) {
             methodName = "op_" + @operator;
             method =
                 typeof (IndicatorBase<IndicatorDataPoint>).GetMethods(BindingFlags.Static | BindingFlags.Public)
                 .SingleOrDefault(x => x.Name == methodName && x.GetParameters()[argIndex].ParameterType == typeof(T));
 
-            if (method == null)
-            {
-                Assert.Fail("Failed to find method for " + @operator + " of type " + typeof(T).Name + " at index: " + argIndex);
+            if( method == null ) {
+                Assert.Fail( "Failed to find method for " + @operator + " of type " + typeof(T).Name + " at index: " + argIndex);
             }
 
             return method;
@@ -183,21 +168,19 @@ package com.quantconnect.lean.Tests.Indicators
             /// </summary>
             /// <param name="name">The name of this indicator</param>
             public TestIndicator( String name)
-                : base(name)
-            {
+                : base(name) {
             }
             /// <summary>
             ///     Initializes a new instance of the Indicator class using the name "test"
             /// </summary>
             public TestIndicator()
-                : base("test")
-            {
+                : base( "test") {
             }
 
             /// <summary>
             ///     Gets a flag indicating when this indicator is ready and fully initialized
             /// </summary>
-            public override boolean IsReady
+            public @Override boolean IsReady
             {
                 get { return true; }
             }
@@ -207,8 +190,7 @@ package com.quantconnect.lean.Tests.Indicators
             /// </summary>
             /// <param name="input">The input given to the indicator</param>
             /// <returns>A new value for this indicator</returns>
-            protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-            {
+            protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
                 return input;
             }
         }

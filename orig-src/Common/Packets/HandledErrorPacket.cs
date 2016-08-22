@@ -46,15 +46,13 @@ package com.quantconnect.lean.Packets
         /// Default constructor for JSON
         /// </summary>
         public HandledErrorPacket()
-            : base (PacketType.HandledError)
-        { }
+            : base (PacketType.HandledError) { }
 
         /// <summary>
         /// Create a new handled error packet
         /// </summary>
         public HandledErrorPacket( String algorithmId, String message, String stacktrace = "")
-            : base(PacketType.HandledError)
-        {
+            : base(PacketType.HandledError) {
             Message = message;
             AlgorithmId = algorithmId;
             StackTrace = stacktrace;

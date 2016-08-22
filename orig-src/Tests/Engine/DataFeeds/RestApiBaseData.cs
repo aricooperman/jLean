@@ -28,20 +28,17 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
     public class RestApiBaseData : TradeBar
     {
         public static int ReaderCount = 0;
-        public override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode)
-        {
+        public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
             ReaderCount++;
             //[{"symbol":"SPY","time":1444271505,"alpha":1,"beta":2}]
             array = JsonConvert.DeserializeObject<JsonSerialization[]>(line);
-            if (array.Length > 0)
-            {
+            if( array.Length > 0) {
                 return array[0].ToBaseData(config.DataTimeZone, config.Increment, config.Symbol);
             }
             return null;
         }
 
-        public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-        {
+        public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             remoteFileSource = @"https://www.quantconnect.com/live-test?type=rest&symbols=" + config.Symbol.Value;
             //remoteFileSource = @"http://beta.quantconnect.com/live-test?type=rest&symbols=" + config.Symbol.Value;
             return new SubscriptionDataSource(remoteFileSource, SubscriptionTransportMedium.Rest, FileFormat.Csv);
@@ -54,8 +51,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             public double alpha;
             public double beta;
 
-            public RestApiBaseData ToBaseData(ZoneId timeZone, TimeSpan period, Symbol sym)
-            {
+            public RestApiBaseData ToBaseData(ZoneId timeZone, TimeSpan period, Symbol sym) {
                 dateTime = QuantConnect.Time.UnixTimeStampToDateTime(time).ConvertFromUtc(timeZone).Subtract(period);
                 return new RestApiBaseData
                 {

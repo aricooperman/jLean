@@ -33,8 +33,7 @@ package com.quantconnect.lean.Securities.Forex
         /// </summary>
         /// <param name="monthlyTradeAmountInUSDollars">The monthly dollar volume traded</param>
         public ForexTransactionModel( BigDecimal monthlyTradeAmountInUSDollars = 0)
-            : base(new ImmediateFillModel(), new InteractiveBrokersFeeModel(monthlyTradeAmountInUSDollars), new SpreadSlippageModel())
-        {   
+            : base(new ImmediateFillModel(), new InteractiveBrokersFeeModel(monthlyTradeAmountInUSDollars), new SpreadSlippageModel()) {   
         }
     }
 }

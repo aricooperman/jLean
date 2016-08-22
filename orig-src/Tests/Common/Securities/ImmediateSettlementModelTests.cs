@@ -28,8 +28,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         private static readonly TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), new[] { TimeZones.NewYork });
 
         [Test]
-        public void FundsAreSettledImmediately()
-        {
+        public void FundsAreSettledImmediately() {
             securities = new SecurityManager(TimeKeeper);
             transactions = new SecurityTransactionManager(securities);
             portfolio = new SecurityPortfolioManager(securities, transactions);
@@ -58,8 +57,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.AreEqual(0, portfolio.UnsettledCash);
         }
 
-        private SubscriptionDataConfig CreateTradeBarConfig()
-        {
+        private SubscriptionDataConfig CreateTradeBarConfig() {
             return new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, false);
         }
     }

@@ -32,7 +32,7 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
         // p = period in days
         // ts = start time
         // Strangely Google forces CHLO format instead of normal OHLC.
-        private static final String UrlPrototype = @"http://www.google.com/finance/getprices?q={0}&i={1}&p={2}d&f=d,c,h,l,o,v&ts={3}";
+        private static final String UrlPrototype = @"http://www.google.com/finance/getprices?q=%1$s&i=%2$s&p=%3$sd&f=d,c,h,l,o,v&ts={3}";
 
         /// <summary>
         /// Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
@@ -42,16 +42,15 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
         /// <param name="startUtc">Start time of the data in UTC</param>
         /// <param name="endUtc">End time of the data in UTC</param>
         /// <returns>Enumerable of base data for this symbol</returns>
-        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc)
-        {
-            if (resolution != Resolution.Minute && resolution != Resolution.Hour)
-                throw new NotSupportedException("Resolution not available: " + resolution);
+        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
+            if( resolution != Resolution.Minute && resolution != Resolution.Hour)
+                throw new NotSupportedException( "Resolution not available: " + resolution);
 
-            if (symbol.ID.SecurityType != SecurityType.Equity)
-                throw new NotSupportedException("SecurityType not available: " + symbol.ID.SecurityType);
+            if( symbol.ID.SecurityType != SecurityType.Equity)
+                throw new NotSupportedException( "SecurityType not available: " + symbol.ID.SecurityType);
 
-            if (endUtc < startUtc)
-                throw new ArgumentException("The end date must be greater or equal than the start date.");
+            if( endUtc < startUtc)
+                throw new ArgumentException( "The end date must be greater or equal than the start date.");
 
             numberOfDays = (int)(endUtc - startUtc).TotalDays;
             resolutionSeconds = (int)resolution.ToTimeSpan().TotalSeconds;
@@ -62,46 +61,43 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
 
             // Download the data from Google.
             string[] lines;
-            using (client = new WebClient())
-            {
+            using (client = new WebClient()) {
                 data = client.DownloadString(url);
-                lines = data.Split('\n');
+                lines = data.split('\n');
             }
 
             // First 7 lines are headers 
             currentLine = 7;
 
-            while (currentLine < lines.Length - 1)
-            {
+            while (currentLine < lines.Length - 1) {
                 firstPass = true;
 
                 // Each day google starts date time at 930am and then 
                 // has 390 minutes over the day. Look for the starter rows "a".
-                columns = lines[currentLine].Split(',');
-                startTime = FromUnixTime(columns[0].Remove(0, 1).ToInt64());
+                columns = lines[currentLine].split(',');
+                startTime = FromUnixTime(columns[0].Remove(0, 1) Long.parseLong(  ));
 
-                while (currentLine < lines.Length - 1)
-                {
-                    str = lines[currentLine].Split(',');
-                    if (str.Length < 6)
-                        throw new InvalidDataException("Short record: " + str);
+                while (currentLine < lines.Length - 1) {
+                    str = lines[currentLine].split(',');
+                    if( str.Length < 6)
+                        throw new InvalidDataException( "Short record: " + str);
 
                     // If its the start of a new day, break out of this sub-loop.
                     titleRow = str[0][0] == 'a';
-                    if (titleRow && !firstPass) 
+                    if( titleRow && !firstPass) 
                         break;
 
                     firstPass = false;
 
                     // Build the current datetime, from the row offset
-                    time = startTime.AddSeconds(resolutionSeconds * (titleRow ? 0 : str[0].ToInt64()));
+                    time = startTime.AddSeconds(resolutionSeconds * (titleRow ? 0 : str[0] Long.parseLong(  )));
 
                     // Bar: d0, c1, h2, l3, o4, v5
-                    open = str[4].ToDecimal();
-                    high = str[2].ToDecimal();
-                    low = str[3].ToDecimal();
-                    close = str[1].ToDecimal();
-                    volume = str[5].ToInt64();
+                    open = str[4] new BigDecimal(  );
+                    high = str[2] new BigDecimal(  );
+                    low = str[3] new BigDecimal(  );
+                    close = str[1] new BigDecimal(  );
+                    volume = str[5] Long.parseLong(  );
 
                     currentLine++;
 
@@ -116,8 +112,7 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
         /// <param name="utcDateTime">The DateTime object (UTC)</param>
         /// <returns>A Unix long time value.</returns>
         /// <remarks>When we move to NET 4.6, we can replace this with DateTimeOffset.ToUnixTimeSeconds()</remarks>
-        private static long ToUnixTime(DateTime utcDateTime)
-        {
+        private static long ToUnixTime(DateTime utcDateTime) {
             epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return (long)(utcDateTime - epoch).TotalSeconds;
         }
@@ -128,8 +123,7 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
         /// <param name="unixTime">Unix long time.</param>
         /// <returns>A DateTime value (UTC)</returns>
         /// <remarks>When we move to NET 4.6, we can replace this with DateTimeOffset.FromUnixTimeSeconds()</remarks>
-        private static DateTime FromUnixTime(long unixTime)
-        {
+        private static DateTime FromUnixTime(long unixTime) {
             epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return epoch.AddSeconds(unixTime);
         }

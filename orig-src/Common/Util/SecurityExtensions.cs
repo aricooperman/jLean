@@ -28,8 +28,7 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Determines if all subscriptions for the security are internal feeds
         /// </summary>
-        public static boolean IsInternalFeed(this Security security)
-        {
+        public static boolean IsInternalFeed(this Security security) {
             return security.Subscriptions.All(x => x.IsInternalFeed);
         }
     }

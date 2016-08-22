@@ -63,8 +63,7 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Initialise security portfolio manager.
         /// </summary>
-        public SecurityPortfolioManager(SecurityManager securityManager, SecurityTransactionManager transactions) 
-        {
+        public SecurityPortfolioManager(SecurityManager securityManager, SecurityTransactionManager transactions) {
             Securities = securityManager;
             Transactions = transactions;
             MarginCallModel = new MarginCallModel(this);
@@ -89,7 +88,7 @@ package com.quantconnect.lean.Securities
         /// <param name="holding">SecurityHoldings object</param>
         /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
         /// <remarks>This method is not implemented and using it will throw an exception</remarks>
-        public void Add(Symbol symbol, SecurityHolding holding) { throw new NotImplementedException("Portfolio object is an adaptor for Security Manager. To add a new asset add the required data during initialization."); }
+        public void Add(Symbol symbol, SecurityHolding holding) { throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager. To add a new asset add the required data during initialization."); }
 
         /// <summary>
         /// Add a new securities key value pair to the portfolio.
@@ -97,14 +96,14 @@ package com.quantconnect.lean.Securities
         /// <param name="pair">Key value pair of Map</param>
         /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
         /// <remarks>This method is not implemented and using it will throw an exception</remarks>
-        public void Add(KeyValuePair<Symbol, SecurityHolding> pair) { throw new NotImplementedException("Portfolio object is an adaptor for Security Manager. To add a new asset add the required data during initialization."); }
+        public void Add(KeyValuePair<Symbol, SecurityHolding> pair) { throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager. To add a new asset add the required data during initialization."); }
 
         /// <summary>
         /// Clear the portfolio of securities objects.
         /// </summary>
         /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
         /// <remarks>This method is not implemented and using it will throw an exception</remarks>
-        public void Clear() { throw new NotImplementedException("Portfolio object is an adaptor for Security Manager and cannot be cleared."); }
+        public void Clear() { throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager and cannot be cleared."); }
 
         /// <summary>
         /// Remove this keyvalue pair from the portfolio.
@@ -112,7 +111,7 @@ package com.quantconnect.lean.Securities
         /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
         /// <param name="pair">Key value pair of Map</param>
         /// <remarks>This method is not implemented and using it will throw an exception</remarks>
-        public boolean Remove(KeyValuePair<Symbol, SecurityHolding> pair) { throw new NotImplementedException("Portfolio object is an adaptor for Security Manager and objects cannot be removed."); }
+        public boolean Remove(KeyValuePair<Symbol, SecurityHolding> pair) { throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager and objects cannot be removed."); }
 
         /// <summary>
         /// Remove this symbol from the portfolio.
@@ -120,15 +119,14 @@ package com.quantconnect.lean.Securities
         /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
         /// <param name="symbol">Symbol of Map</param>
         /// <remarks>This method is not implemented and using it will throw an exception</remarks>
-        public boolean Remove(Symbol symbol) { throw new NotImplementedException("Portfolio object is an adaptor for Security Manager and objects cannot be removed."); }
+        public boolean Remove(Symbol symbol) { throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager and objects cannot be removed."); }
 
         /// <summary>
         /// Check if the portfolio contains this symbol string.
         /// </summary>
         /// <param name="symbol">String search symbol for the security</param>
         /// <returns>Boolean true if portfolio contains this symbol</returns>
-        public boolean ContainsKey(Symbol symbol)
-        {
+        public boolean ContainsKey(Symbol symbol) {
             return Securities.ContainsKey(symbol);
         }
 
@@ -138,8 +136,7 @@ package com.quantconnect.lean.Securities
         /// <remarks>IDictionary implementation calling the underlying Securities collection</remarks>
         /// <param name="pair">Pair we're searching for</param>
         /// <returns>True if we have this object</returns>
-        public boolean Contains(KeyValuePair<Symbol, SecurityHolding> pair)
-        {
+        public boolean Contains(KeyValuePair<Symbol, SecurityHolding> pair) {
             return Securities.ContainsKey(pair.Key);
         }
 
@@ -173,14 +170,11 @@ package com.quantconnect.lean.Securities
         /// <remarks>IDictionary implementation calling the underlying Securities collection</remarks>
         /// <param name="array">Destination array</param>
         /// <param name="index">Position in array to start copying</param>
-        public void CopyTo(KeyValuePair<Symbol, SecurityHolding>[] array, int index)
-        {
+        public void CopyTo(KeyValuePair<Symbol, SecurityHolding>[] array, int index) {
             array = new KeyValuePair<Symbol, SecurityHolding>[Securities.Count];
             i = 0;
-            foreach (asset in Securities)
-            {
-                if (i >= index)
-                {
+            foreach (asset in Securities) {
+                if( i >= index) {
                     array[i] = new KeyValuePair<Symbol, SecurityHolding>(asset.Key, asset.Value.Holdings);
                 }
                 i++;
@@ -219,8 +213,7 @@ package com.quantconnect.lean.Securities
         /// <param name="holding">Holdings object of this security</param>
         /// <remarks>IDictionary implementation</remarks>
         /// <returns>Boolean true if successful locating and setting the holdings object</returns>
-        public boolean TryGetValue(Symbol symbol, out SecurityHolding holding)
-        {
+        public boolean TryGetValue(Symbol symbol, out SecurityHolding holding) {
             Security security;
             success = Securities.TryGetValue(symbol, out security);
             holding = success ? security.Holdings : null;
@@ -232,8 +225,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <remarks>IDictionary implementation</remarks>
         /// <returns>Enumerable key value pair</returns>
-        IEnumerator<KeyValuePair<Symbol, SecurityHolding>> IEnumerable<KeyValuePair<Symbol, SecurityHolding>>.GetEnumerator()
-        {
+        IEnumerator<KeyValuePair<Symbol, SecurityHolding>> IEnumerable<KeyValuePair<Symbol, SecurityHolding>>.GetEnumerator() {
             return Securities.Select(x => new KeyValuePair<Symbol, SecurityHolding>(x.Key, x.Value.Holdings)).GetEnumerator();
         }
 
@@ -242,8 +234,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <remarks>IDictionary implementation</remarks>
         /// <returns>Enumerator</returns>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+        IEnumerator IEnumerable.GetEnumerator() {
             return Securities.Select(x => new KeyValuePair<Symbol, SecurityHolding>(x.Key, x.Value.Holdings)).GetEnumerator();
         }
 
@@ -362,10 +353,9 @@ package com.quantconnect.lean.Securities
             {
                 // we can't include forex in this calculation since we would be double accounting with respect to the cash book
                 BigDecimal totalHoldingsValueWithoutForex = 0;
-                foreach (kvp in Securities)
-                {
+                foreach (kvp in Securities) {
                     position = kvp.Value;
-                    if (position.Type != SecurityType.Forex) totalHoldingsValueWithoutForex += position.Holdings.HoldingsValue;
+                    if( position.Type != SecurityType.Forex) totalHoldingsValueWithoutForex += position.Holdings.HoldingsValue;
                 }
 
                 return CashBook.TotalValueInAccountCurrency + UnsettledCashBook.TotalValueInAccountCurrency + totalHoldingsValueWithoutForex;
@@ -416,8 +406,7 @@ package com.quantconnect.lean.Securities
             get
             {
                 BigDecimal sum = 0;
-                foreach (kvp in Securities)
-                {
+                foreach (kvp in Securities) {
                     security = kvp.Value;
                     sum += security.MarginModel.GetMaintenanceMargin(security);
                 }
@@ -465,8 +454,7 @@ package com.quantconnect.lean.Securities
         /// Set the base currrency cash this algorithm is to manage.
         /// </summary>
         /// <param name="cash">Decimal cash value of portfolio</param>
-        public void SetCash( BigDecimal cash) 
-        {
+        public void SetCash( BigDecimal cash) {
             _baseCurrencyCash.SetAmount(cash);
         }
 
@@ -476,11 +464,9 @@ package com.quantconnect.lean.Securities
         /// <param name="symbol">The cash symbol to set</param>
         /// <param name="cash">Decimal cash value of portfolio</param>
         /// <param name="conversionRate">The current conversion rate for the</param>
-        public void SetCash( String symbol, BigDecimal cash, BigDecimal conversionRate)
-        {
+        public void SetCash( String symbol, BigDecimal cash, BigDecimal conversionRate) {
             Cash item;
-            if (CashBook.TryGetValue(symbol, out item))
-            {
+            if( CashBook.TryGetValue(symbol, out item)) {
                 item.SetAmount(cash);
                 item.ConversionRate = conversionRate;
             }
@@ -496,8 +482,7 @@ package com.quantconnect.lean.Securities
         /// <param name="symbol">The symbol to compute margin remaining for</param>
         /// <param name="direction">The order/trading direction</param>
         /// <returns>The maximum order size that is currently executable in the specified direction</returns>
-        public BigDecimal GetMarginRemaining(Symbol symbol, OrderDirection direction = OrderDirection.Buy)
-        {
+        public BigDecimal GetMarginRemaining(Symbol symbol, OrderDirection direction = OrderDirection.Buy) {
             security = Securities[symbol];
             return security.MarginModel.GetMarginRemaining(this, security, direction);
         }
@@ -509,8 +494,7 @@ package com.quantconnect.lean.Securities
         /// <param name="symbol">The symbol to compute margin remaining for</param>
         /// <param name="direction">The order/trading direction</param>
         /// <returns>The maximum order size that is currently executable in the specified direction</returns>
-        public BigDecimal GetBuyingPower(Symbol symbol, OrderDirection direction = OrderDirection.Buy)
-        {
+        public BigDecimal GetBuyingPower(Symbol symbol, OrderDirection direction = OrderDirection.Buy) {
             return GetMarginRemaining(symbol, direction);
         }
 
@@ -522,8 +506,7 @@ package com.quantconnect.lean.Securities
         ///     When simply partially reducing holdings the average price remains the same.
         ///     When crossing zero holdings the average price becomes the trade price in the new side of zero.
         /// </remarks>
-        public virtual void ProcessFill(OrderEvent fill)
-        {
+        public virtual void ProcessFill(OrderEvent fill) {
             security = Securities[fill.Symbol];
             security.PortfolioModel.ProcessFill(this, security, fill);
         }
@@ -534,22 +517,19 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="issueMarginCallWarning">Set to true if a warning should be issued to the algorithm</param>
         /// <returns>True for a margin call on the holdings.</returns>
-        public List<SubmitOrderRequest> ScanForMarginCall(out boolean issueMarginCallWarning)
-        {
+        public List<SubmitOrderRequest> ScanForMarginCall(out boolean issueMarginCallWarning) {
             issueMarginCallWarning = false;
 
             totalMarginUsed = TotalMarginUsed;
 
             // don't issue a margin call if we're not using margin
-            if (totalMarginUsed <= 0)
-            {
+            if( totalMarginUsed <= 0) {
                 return new List<SubmitOrderRequest>();
             }
 
             // don't issue a margin call if we're under 1x implied leverage on the whole portfolio's holdings
             averageHoldingsLeverage = TotalAbsoluteHoldingsCost/totalMarginUsed;
-            if (averageHoldingsLeverage <= 1.0m)
-            {
+            if( averageHoldingsLeverage <= 1.0m) {
                 return new List<SubmitOrderRequest>();
             }
 
@@ -557,14 +537,12 @@ package com.quantconnect.lean.Securities
 
             // issue a margin warning when we're down to 5% margin remaining
             totalPortfolioValue = TotalPortfolioValue;
-            if (marginRemaining <= totalPortfolioValue*0.05m)
-            {
+            if( marginRemaining <= totalPortfolioValue*0.05m) {
                 issueMarginCallWarning = true;
             }
 
             // if we still have margin remaining then there's no need for a margin call
-            if (marginRemaining > 0)
-            {
+            if( marginRemaining > 0) {
                 return new List<SubmitOrderRequest>();
             }
 
@@ -572,11 +550,9 @@ package com.quantconnect.lean.Securities
             marginCallOrders = new List<SubmitOrderRequest>();
 
             // skip securities that have no price data or no holdings, we can't liquidate nothingness
-            foreach (security in Securities.Values.Where(x => x.Holdings.Quantity != 0 && x.Price != 0))
-            {
+            foreach (security in Securities.Values.Where(x => x.Holdings.Quantity != 0 && x.Price != 0)) {
                 marginCallOrder = security.MarginModel.GenerateMarginCallOrder(security, totalPortfolioValue, totalMarginUsed);
-                if (marginCallOrder != null && marginCallOrder.Quantity != 0)
-                {
+                if( marginCallOrder != null && marginCallOrder.Quantity != 0) {
                     marginCallOrders.Add(marginCallOrder);
                 }
             }
@@ -588,14 +564,12 @@ package com.quantconnect.lean.Securities
         /// Applies a dividend to the portfolio
         /// </summary>
         /// <param name="dividend">The dividend to be applied</param>
-        public void ApplyDividend(Dividend dividend)
-        {
+        public void ApplyDividend(Dividend dividend) {
             security = Securities[dividend.Symbol];
 
             // only apply dividends when we're in raw mode or split adjusted mode
             mode = security.DataNormalizationMode;
-            if (mode == DataNormalizationMode.Raw || mode == DataNormalizationMode.SplitAdjusted)
-            {
+            if( mode == DataNormalizationMode.Raw || mode == DataNormalizationMode.splitAdjusted) {
                 // longs get benefits, shorts get clubbed on dividends
                 total = security.Holdings.Quantity*dividend.Distribution;
 
@@ -608,20 +582,18 @@ package com.quantconnect.lean.Securities
         /// Applies a split to the portfolio
         /// </summary>
         /// <param name="split">The split to be applied</param>
-        public void ApplySplit(Split split)
-        {
+        public void ApplySplit(Split split) {
             security = Securities[split.Symbol];
 
             // only apply splits in raw data mode, 
             mode = security.DataNormalizationMode;
-            if (mode != DataNormalizationMode.Raw)
-            {
+            if( mode != DataNormalizationMode.Raw) {
                 return;
             }
 
             // we need to modify our holdings in lght of the split factor
-            quantity = security.Holdings.Quantity/split.SplitFactor;
-            avgPrice = security.Holdings.AveragePrice*split.SplitFactor;
+            quantity = security.Holdings.Quantity/split.splitFactor;
+            avgPrice = security.Holdings.AveragePrice*split.splitFactor;
 
             // we'll model this as a cash adjustment
             leftOver = quantity - (int) quantity;
@@ -632,31 +604,28 @@ package com.quantconnect.lean.Securities
 
             // build a 'next' value to update the market prices in light of the split factor
             next = security.GetLastData();
-            if (next == null)
-            {
+            if( next == null ) {
                 // sometimes we can get splits before we receive data which
                 // will cause this to return null, in this case we can't possibly
                 // have any holdings or price to set since we haven't received
                 // data yet, so just do nothing
                 return;
             }
-            next.Value *= split.SplitFactor;
+            next.Value *= split.splitFactor;
 
             // make sure to modify open/high/low as well for tradebar data types
             tradeBar = next as TradeBar;
-            if (tradeBar != null)
-            {
-                tradeBar.Open *= split.SplitFactor;
-                tradeBar.High *= split.SplitFactor;
-                tradeBar.Low *= split.SplitFactor;
+            if( tradeBar != null ) {
+                tradeBar.Open *= split.splitFactor;
+                tradeBar.High *= split.splitFactor;
+                tradeBar.Low *= split.splitFactor;
             }
             
             // make sure to modify bid/ask as well for tradebar data types
             tick = next as Tick;
-            if (tick != null)
-            {
-                tick.AskPrice *= split.SplitFactor;
-                tick.BidPrice *= split.SplitFactor;
+            if( tick != null ) {
+                tick.AskPrice *= split.splitFactor;
+                tick.BidPrice *= split.splitFactor;
             }
 
             security.SetMarketPrice(next);
@@ -671,11 +640,9 @@ package com.quantconnect.lean.Securities
         /// </remarks>
         /// <param name="time">Time of order processed </param>
         /// <param name="transactionProfitLoss">Profit Loss.</param>
-        public void AddTransactionRecord(DateTime time, BigDecimal transactionProfitLoss)
-        {
+        public void AddTransactionRecord(DateTime time, BigDecimal transactionProfitLoss) {
             clone = time;
-            while (Transactions.TransactionRecord.ContainsKey(clone))
-            {
+            while (Transactions.TransactionRecord.ContainsKey(clone)) {
                 clone = clone.AddMilliseconds(1);
             }
             Transactions.TransactionRecord.Add(clone, transactionProfitLoss);
@@ -686,11 +653,9 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="symbol">The symbol to get holdings for</param>
         /// <returns>The holdings for the symbol or null if the symbol is invalid and/or not in the portfolio</returns>
-        Security ISecurityProvider.GetSecurity(Symbol symbol)
-        {
+        Security ISecurityProvider.GetSecurity(Symbol symbol) {
             Security security;
-            if (Securities.TryGetValue(symbol, out security))
-            {
+            if( Securities.TryGetValue(symbol, out security)) {
                 return security;
             }
             return null;
@@ -700,10 +665,8 @@ package com.quantconnect.lean.Securities
         /// Adds an item to the list of unsettled cash amounts
         /// </summary>
         /// <param name="item">The item to add</param>
-        public void AddUnsettledCashAmount(UnsettledCashAmount item)
-        {
-            lock (_unsettledCashAmountsLocker)
-            {
+        public void AddUnsettledCashAmount(UnsettledCashAmount item) {
+            lock (_unsettledCashAmountsLocker) {
                 _unsettledCashAmounts.Add(item);
             }
         }
@@ -711,15 +674,11 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Scan the portfolio to check if unsettled funds should be settled
         /// </summary>
-        public void ScanForCashSettlement(DateTime timeUtc)
-        {
-            lock (_unsettledCashAmountsLocker)
-            {
-                foreach (item in _unsettledCashAmounts.ToList())
-                {
+        public void ScanForCashSettlement(DateTime timeUtc) {
+            lock (_unsettledCashAmountsLocker) {
+                foreach (item in _unsettledCashAmounts.ToList()) {
                     // check if settlement time has passed
-                    if (timeUtc >= item.SettlementTimeUtc)
-                    {
+                    if( timeUtc >= item.SettlementTimeUtc) {
                         // remove item from unsettled funds list
                         _unsettledCashAmounts.Remove(item);
 

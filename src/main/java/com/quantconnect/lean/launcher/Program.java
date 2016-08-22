@@ -46,9 +46,9 @@ public class Program {
 //            #endif
 
         final String environment = Config.get( "environment" );
-        final boolean liveMode = Config.getBool("live-mode");
-//        LOG.debuggingEnabled = Config.GetBool("debug-mode");
-//        Log.LogHandler = Composer.Instance.GetExportedValueByTypeName<ILogHandler>(Config.Get("log-handler", "CompositeLogHandler"));
+        final boolean liveMode = Config.getBool( "live-mode");
+//        LOG.debuggingEnabled = Config.GetBool( "debug-mode");
+//        Log.LogHandler = Composer.Instance.GetExportedValueByTypeName<ILogHandler>(Config.Get( "log-handler", "CompositeLogHandler"));
    
             //Name thread for the profiler:
         Thread.currentThread().setName( "Algorithm Analysis Thread" );
@@ -64,7 +64,7 @@ public class Program {
                 leanEngineSystemHandlers = LeanEngineSystemHandlers.FromConfiguration(Composer.Instance);
             }
             catch( CompositionException compositionException ) {
-                Log.Error("Engine.Main(): Failed to load library: " + compositionException);
+                Log.Error( "Engine.Main(): Failed to load library: " + compositionException);
                 throw compositionException;
             }
 
@@ -75,9 +75,8 @@ public class Program {
             string assemblyPath;
             job = leanEngineSystemHandlers.JobQueue.NextJob(out assemblyPath);
 
-            if (job == null)
-            {
-                throw new Exception("Engine.Main(): Job was null.");
+            if( job == null ) {
+                throw new Exception( "Engine.Main(): Job was null.");
             }
             
             LeanEngineAlgorithmHandlers leanEngineAlgorithmHandlers;
@@ -85,13 +84,12 @@ public class Program {
             {
                 leanEngineAlgorithmHandlers = LeanEngineAlgorithmHandlers.FromConfiguration(Composer.Instance);
             }
-            catch (CompositionException compositionException)
-            {
-                Log.Error("Engine.Main(): Failed to load library: " + compositionException);
+            catch (CompositionException compositionException) {
+                Log.Error( "Engine.Main(): Failed to load library: " + compositionException);
                 throw;
             }
 
-//            if (environment.EndsWith("-desktop"))
+//            if( environment.EndsWith( "-desktop"))
 //            {
 //                Application.EnableVisualStyles();
 //                messagingHandler = leanEngineSystemHandlers.Notify;
@@ -101,21 +99,20 @@ public class Program {
 //            }
 
             // log the job endpoints
-            LOG.trace("JOB HANDLERS: ");
-            LOG.trace("         DataFeed:     " + leanEngineAlgorithmHandlers.DataFeed.GetType().FullName);
-            LOG.trace("         Setup:        " + leanEngineAlgorithmHandlers.Setup.GetType().FullName);
-            LOG.trace("         RealTime:     " + leanEngineAlgorithmHandlers.RealTime.GetType().FullName);
-            LOG.trace("         Results:      " + leanEngineAlgorithmHandlers.Results.GetType().FullName);
-            LOG.trace("         Transactions: " + leanEngineAlgorithmHandlers.Transactions.GetType().FullName);
-            LOG.trace("         History:      " + leanEngineAlgorithmHandlers.HistoryProvider.GetType().FullName);
-            LOG.trace("         Commands:     " + leanEngineAlgorithmHandlers.CommandQueue.GetType().FullName);
-            if (job is LiveNodePacket) LOG.trace("         Brokerage:    " + ((LiveNodePacket)job).Brokerage);
+            LOG.trace( "JOB HANDLERS: ");
+            LOG.trace( "         DataFeed:     " + leanEngineAlgorithmHandlers.DataFeed.GetType().FullName);
+            LOG.trace( "         Setup:        " + leanEngineAlgorithmHandlers.Setup.GetType().FullName);
+            LOG.trace( "         RealTime:     " + leanEngineAlgorithmHandlers.RealTime.GetType().FullName);
+            LOG.trace( "         Results:      " + leanEngineAlgorithmHandlers.Results.GetType().FullName);
+            LOG.trace( "         Transactions: " + leanEngineAlgorithmHandlers.Transactions.GetType().FullName);
+            LOG.trace( "         History:      " + leanEngineAlgorithmHandlers.HistoryProvider.GetType().FullName);
+            LOG.trace( "         Commands:     " + leanEngineAlgorithmHandlers.CommandQueue.GetType().FullName);
+            if( job is LiveNodePacket) LOG.trace( "         Brokerage:    " + ((LiveNodePacket)job).Brokerage);
 
             // if the job version doesn't match this instance version then we can't process it
             // we also don't want to reprocess redelivered jobs
-            if (VersionHelper.IsNotEqualVersion(job.Version) || job.Redelivered)
-            {
-                Log.Error("Engine.Run(): Job Version: " + job.Version + "  Deployed Version: " + Globals.Version + " Redelivered: " + job.Redelivered);
+            if( VersionHelper.IsNotEqualVersion(job.Version) || job.Redelivered) {
+                Log.Error( "Engine.Run(): Job Version: " + job.Version + "  Deployed Version: " + Globals.Version + " Redelivered: " + job.Redelivered);
                 //Tiny chance there was an uncontrolled collapse of a server, resulting in an old user task circulating.
                 //In this event kill the old algorithm and leave a message so the user can later review.
                 leanEngineSystemHandlers.Api.SetAlgorithmStatus(job.AlgorithmId, AlgorithmStatus.RuntimeError, _collapseMessage);
@@ -134,7 +131,7 @@ public class Program {
             {
                 //Delete the message from the job queue:
                 leanEngineSystemHandlers.JobQueue.AcknowledgeJob(job);
-                LOG.trace("Engine.Main(): Packet removed from queue: " + job.AlgorithmId);
+                LOG.trace( "Engine.Main(): Packet removed from queue: " + job.AlgorithmId);
 
                 // clean up resources
                 leanEngineSystemHandlers.Dispose();
@@ -147,7 +144,7 @@ public class Program {
     //    /// </summary>
     //    static void LaunchUX( IMessagingHandler messaging, AlgorithmNodePacket job ) {
     //            //Launch the UX
-    //            //form = Composer.Instance.GetExportedValueByTypeName<Form>("desktop-ux-classname");
+    //            //form = Composer.Instance.GetExportedValueByTypeName<Form>( "desktop-ux-classname");
     //            form = new Views.WinForms.LeanWinForm(messaging, job);
     //            Application.Run(form);
     //        }
@@ -179,18 +176,18 @@ public class Program {
  * #if DEBUG
  * mode = "DEBUG";
  * #endif
- * environment = Config.Get("environment");
- * liveMode = Config.GetBool("live-mode");
- * Log.DebuggingEnabled = Config.GetBool("debug-mode");
+ * environment = Config.Get( "environment");
+ * liveMode = Config.GetBool( "live-mode");
+ * Log.DebuggingEnabled = Config.GetBool( "debug-mode");
  * Log.LogHandler =
- * Composer.Instance.GetExportedValueByTypeName<ILogHandler>(Config.Get("log-handler",
+ * Composer.Instance.GetExportedValueByTypeName<ILogHandler>(Config.Get( "log-handler",
  * "CompositeLogHandler"));
  * //Name thread for the profiler:
  * Thread.CurrentThread.Name = "Algorithm Analysis Thread";
- * Log.Trace("Engine.Main(): LEAN ALGORITHMIC TRADING ENGINE v" + Globals.Version + " Mode: " +
+ * Log.Trace( "Engine.Main(): LEAN ALGORITHMIC TRADING ENGINE v" + Globals.Version + " Mode: " +
  * mode);
- * Log.Trace("Engine.Main(): Started " + DateTime.Now.ToShortTimeString());
- * Log.Trace("Engine.Main(): Memory " + OS.ApplicationMemoryUsed + "Mb-App  " +
+ * Log.Trace( "Engine.Main(): Started " + DateTime.Now.ToShortTimeString());
+ * Log.Trace( "Engine.Main(): Memory " + OS.ApplicationMemoryUsed + "Mb-App  " +
  * +OS.TotalPhysicalMemoryUsed + "Mb-Used  " + OS.TotalPhysicalMemory + "Mb-Total");
  * //Import external libraries specific to physical server location (cloud/local)
  * LeanEngineSystemHandlers leanEngineSystemHandlers;
@@ -200,7 +197,7 @@ public class Program {
  * }
  * catch (CompositionException compositionException)
  * {
- * Log.Error("Engine.Main(): Failed to load library: " + compositionException);
+ * Log.Error( "Engine.Main(): Failed to load library: " + compositionException);
  * throw;
  * }
  * //Setup packeting, queue and controls system: These don't do much locally.
@@ -208,9 +205,9 @@ public class Program {
  * //-> Pull job from QuantConnect job queue, or, pull local build:
  * string assemblyPath;
  * job = leanEngineSystemHandlers.JobQueue.NextJob(out assemblyPath);
- * if (job == null)
+ * if( job == null )
  * {
- * throw new Exception("Engine.Main(): Job was null.");
+ * throw new Exception( "Engine.Main(): Job was null.");
  * }
  * LeanEngineAlgorithmHandlers leanEngineAlgorithmHandlers;
  * try
@@ -219,10 +216,10 @@ public class Program {
  * }
  * catch (CompositionException compositionException)
  * {
- * Log.Error("Engine.Main(): Failed to load library: " + compositionException);
+ * Log.Error( "Engine.Main(): Failed to load library: " + compositionException);
  * throw;
  * }
- * if (environment.EndsWith("-desktop"))
+ * if( environment.EndsWith( "-desktop"))
  * {
  * Application.EnableVisualStyles();
  * messagingHandler = leanEngineSystemHandlers.Notify;
@@ -231,24 +228,24 @@ public class Program {
  * thread.Start();
  * }
  * // log the job endpoints
- * Log.Trace("JOB HANDLERS: ");
- * Log.Trace("         DataFeed:     " + leanEngineAlgorithmHandlers.DataFeed.GetType().FullName);
- * Log.Trace("         Setup:        " + leanEngineAlgorithmHandlers.Setup.GetType().FullName);
- * Log.Trace("         RealTime:     " + leanEngineAlgorithmHandlers.RealTime.GetType().FullName);
- * Log.Trace("         Results:      " + leanEngineAlgorithmHandlers.Results.GetType().FullName);
- * Log.Trace("         Transactions: " +
+ * Log.Trace( "JOB HANDLERS: ");
+ * Log.Trace( "         DataFeed:     " + leanEngineAlgorithmHandlers.DataFeed.GetType().FullName);
+ * Log.Trace( "         Setup:        " + leanEngineAlgorithmHandlers.Setup.GetType().FullName);
+ * Log.Trace( "         RealTime:     " + leanEngineAlgorithmHandlers.RealTime.GetType().FullName);
+ * Log.Trace( "         Results:      " + leanEngineAlgorithmHandlers.Results.GetType().FullName);
+ * Log.Trace( "         Transactions: " +
  * leanEngineAlgorithmHandlers.Transactions.GetType().FullName);
- * Log.Trace("         History:      " +
+ * Log.Trace( "         History:      " +
  * leanEngineAlgorithmHandlers.HistoryProvider.GetType().FullName);
- * Log.Trace("         Commands:     " +
+ * Log.Trace( "         Commands:     " +
  * leanEngineAlgorithmHandlers.CommandQueue.GetType().FullName);
- * if (job is LiveNodePacket) Log.Trace("         Brokerage:    " +
+ * if( job is LiveNodePacket) Log.Trace( "         Brokerage:    " +
  * ((LiveNodePacket)job).Brokerage);
  * // if the job version doesn't match this instance version then we can't process it
  * // we also don't want to reprocess redelivered jobs
- * if (VersionHelper.IsNotEqualVersion(job.Version) || job.Redelivered)
+ * if( VersionHelper.IsNotEqualVersion(job.Version) || job.Redelivered)
  * {
- * Log.Error("Engine.Run(): Job Version: " + job.Version + "  Deployed Version: " + Globals.Version
+ * Log.Error( "Engine.Run(): Job Version: " + job.Version + "  Deployed Version: " + Globals.Version
  * + " Redelivered: " + job.Redelivered);
  * //Tiny chance there was an uncontrolled collapse of a server, resulting in an old user task
  * circulating.
@@ -269,7 +266,7 @@ public class Program {
  * {
  * //Delete the message from the job queue:
  * leanEngineSystemHandlers.JobQueue.AcknowledgeJob(job);
- * Log.Trace("Engine.Main(): Packet removed from queue: " + job.AlgorithmId);
+ * Log.Trace( "Engine.Main(): Packet removed from queue: " + job.AlgorithmId);
  * // clean up resources
  * leanEngineSystemHandlers.Dispose();
  * leanEngineAlgorithmHandlers.Dispose();
@@ -282,7 +279,7 @@ public class Program {
  * static void LaunchUX(IMessagingHandler messaging, AlgorithmNodePacket job)
  * {
  * //Launch the UX
- * //form = Composer.Instance.GetExportedValueByTypeName<Form>("desktop-ux-classname");
+ * //form = Composer.Instance.GetExportedValueByTypeName<Form>( "desktop-ux-classname");
  * form = new Views.WinForms.LeanWinForm(messaging, job);
  * Application.Run(form);
  * }

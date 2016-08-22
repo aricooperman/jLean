@@ -39,16 +39,14 @@ package com.quantconnect.lean.Queues
         /// using the 'command-json-file' configuration value for the command json file
         /// </summary>
         public FileCommandQueueHandler()
-            : this(Config.Get("command-json-file", "command.json"))
-        {
+            : this(Config.Get( "command-json-file", "command.json")) {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FileCommandQueueHandler"/> class
         /// </summary>
         /// <param name="commandJsonFilePath">The file path to the commands json file</param>
-        public FileCommandQueueHandler( String commandJsonFilePath)
-        {
+        public FileCommandQueueHandler( String commandJsonFilePath) {
             _commandJsonFilePath = commandJsonFilePath;
         }
 
@@ -57,24 +55,20 @@ package com.quantconnect.lean.Queues
         /// </summary>
         /// <param name="job">The job that defines what queue to bind to</param>
         /// <param name="algorithm">The algorithm instance</param>
-        public void Initialize(AlgorithmNodePacket job, IAlgorithm algorithm)
-        {
+        public void Initialize(AlgorithmNodePacket job, IAlgorithm algorithm) {
         }
 
         /// <summary>
         /// Gets the next command in the queue
         /// </summary>
         /// <returns>The next command in the queue, if present, null if no commands present</returns>
-        public IEnumerable<ICommand> GetCommands()
-        {
-            if (File.Exists(_commandJsonFilePath))
-            {
+        public IEnumerable<ICommand> GetCommands() {
+            if( File.Exists(_commandJsonFilePath)) {
                 // update the queue by reading the command file
                 ReadCommandFile();
             }
 
-            while (_commands.Count != 0)
-            {
+            while (_commands.Count != 0) {
                 yield return _commands.Dequeue();
             }
         }
@@ -82,17 +76,15 @@ package com.quantconnect.lean.Queues
         /// <summary>
         /// Reads the commnd file on disk and populates the queue with the commands
         /// </summary>
-        private void ReadCommandFile()
-        {
+        private void ReadCommandFile() {
             object deserialized;
             try
             {
-                if (!File.Exists(_commandJsonFilePath)) return;
+                if( !File.Exists(_commandJsonFilePath)) return;
                 contents = File.ReadAllText(_commandJsonFilePath);
                 deserialized = JsonConvert.DeserializeObject(contents, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All });
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
                 deserialized = null;
             }
@@ -102,10 +94,8 @@ package com.quantconnect.lean.Queues
 
             // try it as an enumerable
             enumerable = deserialized as IEnumerable<ICommand>;
-            if (enumerable != null)
-            {
-                foreach (command in enumerable)
-                {
+            if( enumerable != null ) {
+                foreach (command in enumerable) {
                     _commands.Enqueue(command);
                 }
                 return;
@@ -113,8 +103,7 @@ package com.quantconnect.lean.Queues
             
             // try it as a single command
             item = deserialized as ICommand;
-            if (item != null)
-            {
+            if( item != null ) {
                 _commands.Enqueue(item);
             }
         }
@@ -123,8 +112,7 @@ package com.quantconnect.lean.Queues
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
         }
     }
 }

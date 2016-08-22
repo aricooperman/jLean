@@ -108,8 +108,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             TimeZoneOffsetProvider timeZoneOffsetProvider,
             DateTime utcStartTime,
             DateTime utcEndTime,
-            boolean isUniverseSelectionSubscription)
-        {
+            boolean isUniverseSelectionSubscription) {
             Universe = universe;
             Security = security;
             _enumerator = enumerator;
@@ -128,10 +127,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
         /// </returns>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public virtual boolean MoveNext()
-        {
-            if (EndOfStream)
-            {
+        public virtual boolean MoveNext() {
+            if( EndOfStream) {
                 return false;
             }
 
@@ -145,8 +142,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public void Reset()
-        {
+        public void Reset() {
             _enumerator.Reset();
         }
 
@@ -174,8 +170,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             EndOfStream = true;
             _enumerator.Dispose();
         }
@@ -187,8 +182,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// A hash code for the current <see cref="T:System.Object"/>.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override int hashCode()
-        {
+        public @Override int hashCode() {
             return Configuration.Symbol.hashCode();
         }
     }

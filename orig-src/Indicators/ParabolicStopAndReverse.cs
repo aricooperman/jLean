@@ -42,8 +42,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="afIncrement">Acceleration factor increment value</param>
         /// <param name="afMax">Acceleration factor max value</param>
         public ParabolicStopAndReverse( String name, BigDecimal afStart = 0.02m, BigDecimal afIncrement = 0.02m, BigDecimal afMax = 0.2m)
-            : base(name)
-        {
+            : base(name) {
             _afInit = afStart;
             _af = afStart;
             _afIncrement = afIncrement;
@@ -57,14 +56,13 @@ package com.quantconnect.lean.Indicators
         /// <param name="afIncrement">Acceleration factor increment value</param>
         /// <param name="afMax">Acceleration factor max value</param>
         public ParabolicStopAndReverse( BigDecimal afStart = 0.02m, BigDecimal afIncrement = 0.02m, BigDecimal afMax = 0.2m)
-            : this( String.format("PSAR({0},{1},{2})", afStart, afIncrement, afMax), afStart, afIncrement, afMax)
-        {
+            : this( String.format( "PSAR(%1$s,%2$s,%3$s)", afStart, afIncrement, afMax), afStart, afIncrement, afMax) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= 2; }
         }
@@ -72,8 +70,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _af = _afInit;
             base.Reset();
         }
@@ -83,11 +80,9 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The trade bar input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             // On first iteration we can’t produce an SAR value so we save the current bar and return zero
-            if (Samples == 1)
-            {
+            if( Samples == 1) {
                 _previousBar = input;
 
                 // return a value that's close to where we will be, returning 0 doesn't make sense
@@ -95,15 +90,13 @@ package com.quantconnect.lean.Indicators
             }
 
             // On second iteration we initiate the position the extreme point and the SAR
-            if (Samples == 2)
-            {
+            if( Samples == 2) {
                 Init(input);
                 _previousBar = input;
                 return _sar;
             }
 
-            if (_isLong)
-            {
+            if( _isLong) {
                 HandleLongPosition(input);
             }
             else
@@ -119,15 +112,13 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Initialize the indicator values 
         /// </summary>
-        private void Init(TradeBar currentBar)
-        {
+        private void Init(TradeBar currentBar) {
             // init position
             _isLong = currentBar.Close >= _previousBar.Close;
 
 
             // init sar and Extreme price
-            if (_isLong)
-            {
+            if( _isLong) {
                 _ep = Math.Min(currentBar.High, _previousBar.High);
                 _sar = _previousBar.Low;
             }
@@ -141,19 +132,17 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Calculate indicator value when the position is long
         /// </summary>
-        private void HandleLongPosition(TradeBar currentBar)
-        {
+        private void HandleLongPosition(TradeBar currentBar) {
             // Switch to short if the low penetrates the SAR value.
-            if (currentBar.Low <= _sar)
-            {
+            if( currentBar.Low <= _sar) {
                 // Switch and Overide the SAR with the ep
                 _isLong = false;
                 _sar = _ep;
 
                 // Make sure the overide SAR is within yesterday's and today's range.
-                if (_sar < _previousBar.High)
+                if( _sar < _previousBar.High)
                     _sar = _previousBar.High;
-                if (_sar < currentBar.High)
+                if( _sar < currentBar.High)
                     _sar = currentBar.High;
 
                 // Output the overide SAR 
@@ -167,9 +156,9 @@ package com.quantconnect.lean.Indicators
                 _sar = _sar + _af * (_ep - _sar);
 
                 // Make sure the new SAR is within yesterday's and today's range.
-                if (_sar < _previousBar.High)
+                if( _sar < _previousBar.High)
                     _sar = _previousBar.High;
-                if (_sar < currentBar.High)
+                if( _sar < currentBar.High)
                     _sar = currentBar.High;
 
             }
@@ -181,11 +170,10 @@ package com.quantconnect.lean.Indicators
                 _outputSar = _sar;
 
                 // Adjust af and ep.
-                if (currentBar.High > _ep)
-                {
+                if( currentBar.High > _ep) {
                     _ep = currentBar.High;
                     _af += _afIncrement;
-                    if (_af > _afMax)
+                    if( _af > _afMax)
                         _af = _afMax;
                 }
 
@@ -193,9 +181,9 @@ package com.quantconnect.lean.Indicators
                 _sar = _sar + _af * (_ep - _sar);
 
                 // Make sure the new SAR is within yesterday's and today's range.
-                if (_sar > _previousBar.Low)
+                if( _sar > _previousBar.Low)
                     _sar = _previousBar.Low;
-                if (_sar > currentBar.Low)
+                if( _sar > currentBar.Low)
                     _sar = currentBar.Low;
             }
         }
@@ -203,19 +191,17 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Calculate indicator value when the position is short
         /// </summary>
-        private void HandleShortPosition(TradeBar currentBar)
-        {
+        private void HandleShortPosition(TradeBar currentBar) {
             // Switch to long if the high penetrates the SAR value.
-            if (currentBar.High >= _sar)
-            {
+            if( currentBar.High >= _sar) {
                 // Switch and Overide the SAR with the ep
                 _isLong = true;
                 _sar = _ep;
 
                 // Make sure the overide SAR is within yesterday's and today's range.
-                if (_sar > _previousBar.Low)
+                if( _sar > _previousBar.Low)
                     _sar = _previousBar.Low;
-                if (_sar > currentBar.Low)
+                if( _sar > currentBar.Low)
                     _sar = currentBar.Low;
 
                 // Output the overide SAR 
@@ -229,9 +215,9 @@ package com.quantconnect.lean.Indicators
                 _sar = _sar + _af * (_ep - _sar);
 
                 // Make sure the new SAR is within yesterday's and today's range.
-                if (_sar > _previousBar.Low)
+                if( _sar > _previousBar.Low)
                     _sar = _previousBar.Low;
-                if (_sar > currentBar.Low)
+                if( _sar > currentBar.Low)
                     _sar = currentBar.Low;
             }
 
@@ -242,11 +228,10 @@ package com.quantconnect.lean.Indicators
                 _outputSar = _sar;
 
                 // Adjust af and ep.
-                if (currentBar.Low < _ep)
-                {
+                if( currentBar.Low < _ep) {
                     _ep = currentBar.Low;
                     _af += _afIncrement;
-                    if (_af > _afMax)
+                    if( _af > _afMax)
                         _af = _afMax;
                 }
 
@@ -254,9 +239,9 @@ package com.quantconnect.lean.Indicators
                 _sar = _sar + _af * (_ep - _sar);
 
                 // Make sure the new SAR is within yesterday's and today's range.
-                if (_sar < _previousBar.High)
+                if( _sar < _previousBar.High)
                     _sar = _previousBar.High;
-                if (_sar < currentBar.High)
+                if( _sar < currentBar.High)
                     _sar = currentBar.High;
             }
         }

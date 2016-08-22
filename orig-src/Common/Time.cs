@@ -47,32 +47,32 @@ package com.quantconnect.lean
         /// Provides a value large enough that we won't hit the limit, while small enough
         /// we can still do math against it without checking everywhere for <see cref="TimeSpan.MaxValue"/>
         /// </summary>
-        public static readonly TimeSpan MaxTimeSpan = TimeSpan.FromDays(1000*365);
+        public static readonly TimeSpan MaxTimeSpan = Duration.ofDays(1000*365);
 
         /// <summary>
         /// One Day TimeSpan Period Constant
         /// </summary>
-        public static readonly TimeSpan OneDay = TimeSpan.FromDays(1);
+        public static readonly TimeSpan OneDay = Duration.ofDays(1);
 
         /// <summary>
         /// One Hour TimeSpan Period Constant
         /// </summary>
-        public static readonly TimeSpan OneHour = TimeSpan.FromHours(1);
+        public static readonly TimeSpan OneHour = Duration.ofHours(1);
         
         /// <summary>
         /// One Minute TimeSpan Period Constant
         /// </summary>
-        public static readonly TimeSpan OneMinute = TimeSpan.FromMinutes(1);
+        public static readonly TimeSpan OneMinute = Duration.ofMinutes(1);
 
         /// <summary>
         /// One Second TimeSpan Period Constant
         /// </summary>
-        public static readonly TimeSpan OneSecond = TimeSpan.FromSeconds(1);
+        public static readonly TimeSpan OneSecond = Duration.ofSeconds(1);
 
         /// <summary>
         /// One Millisecond TimeSpan Period Constant
         /// </summary>
-        public static readonly TimeSpan OneMillisecond = TimeSpan.FromMilliseconds(1);
+        public static readonly TimeSpan OneMillisecond = Duration.ofMilliseconds(1);
 
         /// <summary>
         /// Live charting is sensitive to timezone so need to convert the local system time to a UTC and display in browser as UTC.
@@ -87,8 +87,7 @@ package com.quantconnect.lean
             /// </summary>
             /// <param name="dateTime">Date time.</param>
             /// <param name="timeZone">Time zone.</param>
-            public DateTimeWithZone(DateTime dateTime, TimeZoneInfo timeZone)
-            {
+            public DateTimeWithZone(DateTime dateTime, TimeZoneInfo timeZone) {
                 utcDateTime = TimeZoneInfo.ConvertTimeToUtc(dateTime, timeZone);
                 this.timeZone = timeZone;
             }
@@ -125,16 +124,14 @@ package com.quantconnect.lean
         /// </summary>
         /// <param name="unixTimeStamp">Double unix timestamp (Time since Midnight Jan 1 1970)</param>
         /// <returns>C# date timeobject</returns>
-        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp) 
-        {
+        public static DateTime UnixTimeStampToDateTime(double unixTimeStamp) {
             DateTime time;
             try 
             {
                 // Unix timestamp is seconds past epoch
                 time = EpochTime.AddSeconds(unixTimeStamp);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err, "UnixTimeStamp: " + unixTimeStamp);
                 time = DateTime.Now;
             }
@@ -146,16 +143,14 @@ package com.quantconnect.lean
         /// </summary>
         /// <param name="time">C# datetime object</param>
         /// <returns>Double unix timestamp</returns>
-        public static double DateTimeToUnixTimeStamp(DateTime time) 
-        {
+        public static double DateTimeToUnixTimeStamp(DateTime time) {
             double timestamp = 0;
             try 
             {
                 timestamp = (time - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds;
             } 
-            catch (Exception err) 
-            {
-                Log.Error(err, time.toString("o"));
+            catch (Exception err) {
+                Log.Error(err, time.toString( "o"));
             }
             return timestamp;
         }
@@ -164,24 +159,21 @@ package com.quantconnect.lean
         /// Get the current time as a unix timestamp
         /// </summary>
         /// <returns>Double value of the unix as UTC timestamp</returns>
-        public static double TimeStamp() 
-        {
+        public static double TimeStamp() {
             return DateTimeToUnixTimeStamp(DateTime.UtcNow);
         }
         
         /// <summary>
         /// Returns the timespan with the larger value
         /// </summary>
-        public static TimeSpan Max(TimeSpan one, TimeSpan two)
-        {
-            return TimeSpan.FromTicks(Math.Max(one.Ticks, two.Ticks));
+        public static TimeSpan Max(TimeSpan one, TimeSpan two) {
+            return Duration.ofTicks(Math.Max(one.Ticks, two.Ticks));
         }
         /// <summary>
         /// Returns the timespan with the smaller value
         /// </summary>
-        public static TimeSpan Min(TimeSpan one, TimeSpan two)
-        {
-            return TimeSpan.FromTicks(Math.Min(one.Ticks, two.Ticks));
+        public static TimeSpan Min(TimeSpan one, TimeSpan two) {
+            return Duration.ofTicks(Math.Min(one.Ticks, two.Ticks));
         }
 
         /// <summary>
@@ -189,35 +181,28 @@ package com.quantconnect.lean
         /// </summary>
         /// <param name="dateToParse">String date time to parse</param>
         /// <returns>Date time</returns>
-        public static DateTime ParseDate( String dateToParse)
-        {
+        public static DateTime ParseDate( String dateToParse) {
             try
             {
                 //First try the exact options:
                 DateTime date;
-                if (DateTime.TryParseExact(dateToParse, DateFormat.SixCharacter, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
-                {
+                if( DateTime.TryParseExact(dateToParse, DateFormat.SixCharacter, CultureInfo.InvariantCulture, DateTimeStyles.None, out date)) {
                     return date;
                 }
-                if (DateTime.TryParseExact(dateToParse, DateFormat.EightCharacter, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
-                {
+                if( DateTime.TryParseExact(dateToParse, DateFormat.EightCharacter, CultureInfo.InvariantCulture, DateTimeStyles.None, out date)) {
                     return date;
                 }
-                if (DateTime.TryParseExact(dateToParse.Substring(0, 19), DateFormat.JsonFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
-                {
+                if( DateTime.TryParseExact(dateToParse.Substring(0, 19), DateFormat.JsonFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out date)) {
                     return date;
                 }
-                if (DateTime.TryParseExact(dateToParse, DateFormat.US, CultureInfo.InvariantCulture, DateTimeStyles.None, out date))
-                {
+                if( DateTime.TryParseExact(dateToParse, DateFormat.US, CultureInfo.InvariantCulture, DateTimeStyles.None, out date)) {
                     return date;
                 }
-                if (DateTime.TryParse(dateToParse, out date))
-                {
+                if( DateTime.TryParse(dateToParse, out date)) {
                     return date;
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
             
@@ -231,8 +216,7 @@ package com.quantconnect.lean
         /// <param name="from">DateTime start date</param>
         /// <param name="thru">DateTime end date</param>
         /// <returns>Enumerable date range</returns>
-        public static IEnumerable<DateTime> EachDay(DateTime from, DateTime thru) 
-        {
+        public static IEnumerable<DateTime> EachDay(DateTime from, DateTime thru) {
             for (day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
                 yield return day;
         }
@@ -245,12 +229,9 @@ package com.quantconnect.lean
         /// <param name="from">Start date</param>
         /// <param name="thru">End date</param>
         /// <returns>Enumerable date range</returns>
-        public static IEnumerable<DateTime> EachTradeableDay(ICollection<Security> securities, DateTime from, DateTime thru)
-        {
-            for (day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
-            {
-                if (TradableDate(securities, day))
-                {
+        public static IEnumerable<DateTime> EachTradeableDay(ICollection<Security> securities, DateTime from, DateTime thru) {
+            for (day = from.Date; day.Date <= thru.Date; day = day.AddDays(1)) {
+                if( TradableDate(securities, day)) {
                     yield return day;
                 }
             }
@@ -264,8 +245,7 @@ package com.quantconnect.lean
         /// <param name="from">Start date</param>
         /// <param name="thru">End date</param>
         /// <returns>Enumerable date range</returns>
-        public static IEnumerable<DateTime> EachTradeableDay(Security security, DateTime from, DateTime thru)
-        {
+        public static IEnumerable<DateTime> EachTradeableDay(Security security, DateTime from, DateTime thru) {
             return EachTradeableDay(security.Exchange.Hours, from, thru);
         }
 
@@ -277,12 +257,9 @@ package com.quantconnect.lean
         /// <param name="from">Start date</param>
         /// <param name="thru">End date</param>
         /// <returns>Enumerable date range</returns>
-        public static IEnumerable<DateTime> EachTradeableDay(SecurityExchangeHours exchange, DateTime from, DateTime thru)
-        {
-            for (day = from.Date; day.Date <= thru.Date; day = day.AddDays(1))
-            {
-                if (exchange.IsDateOpen(day))
-                {
+        public static IEnumerable<DateTime> EachTradeableDay(SecurityExchangeHours exchange, DateTime from, DateTime thru) {
+            for (day = from.Date; day.Date <= thru.Date; day = day.AddDays(1)) {
+                if( exchange.IsDateOpen(day)) {
                     yield return day;
                 }
             }
@@ -301,30 +278,26 @@ package com.quantconnect.lean
         /// <param name="timeZone">The timezone to project the dates into (inclusive of the final day)</param>
         /// <param name="includeExtendedMarketHours">True to include extended market hours trading in the search, false otherwise</param>
         /// <returns></returns>
-        public static IEnumerable<DateTime> EachTradeableDayInTimeZone(SecurityExchangeHours exchange, DateTime from, DateTime thru, ZoneId timeZone, boolean includeExtendedMarketHours = true)
-        {
+        public static IEnumerable<DateTime> EachTradeableDayInTimeZone(SecurityExchangeHours exchange, DateTime from, DateTime thru, ZoneId timeZone, boolean includeExtendedMarketHours = true) {
             currentExchangeTime = from;
             thru = thru.Date.AddDays(1); // we want to include the full thru date
-            while (currentExchangeTime < thru)
-            {
+            while (currentExchangeTime < thru) {
                 // take steps of max size of one day in the data time zone
-                currentInTimeZone = currentExchangeTime.ConvertTo(exchange.TimeZone, timeZone);
+                currentInTimeZone = currentExchangeTime Extensions.convertTo(  )exchange.TimeZone, timeZone);
                 currentInTimeZoneEod = currentInTimeZone.Date.AddDays(1);
 
                 // don't pass the end
-                if (currentInTimeZoneEod.ConvertTo(timeZone, exchange.TimeZone) > thru)
-                {
-                    currentInTimeZoneEod = thru.ConvertTo(exchange.TimeZone, timeZone);
+                if( currentInTimeZoneEod Extensions.convertTo(  )timeZone, exchange.TimeZone) > thru) {
+                    currentInTimeZoneEod = thru Extensions.convertTo(  )exchange.TimeZone, timeZone);
                 }
 
                 // perform market open checks in the exchange time zone
-                currentExchangeTimeEod = currentInTimeZoneEod.ConvertTo(timeZone, exchange.TimeZone);
-                if (exchange.IsOpen(currentExchangeTime, currentExchangeTimeEod, includeExtendedMarketHours))
-                {
+                currentExchangeTimeEod = currentInTimeZoneEod Extensions.convertTo(  )timeZone, exchange.TimeZone);
+                if( exchange.IsOpen(currentExchangeTime, currentExchangeTimeEod, includeExtendedMarketHours)) {
                     yield return currentInTimeZone.Date;
                 }
 
-                currentExchangeTime = currentInTimeZoneEod.ConvertTo(timeZone, exchange.TimeZone);
+                currentExchangeTime = currentInTimeZoneEod Extensions.convertTo(  )timeZone, exchange.TimeZone);
             }
         } 
 
@@ -334,17 +307,14 @@ package com.quantconnect.lean
         /// <param name="securities">Security manager from the algorithm</param>
         /// <param name="day">DateTime to check if trade-able.</param>
         /// <returns>True if tradeable date</returns>
-        public static boolean TradableDate(IEnumerable<Security> securities, DateTime day)
-        {
+        public static boolean TradableDate(IEnumerable<Security> securities, DateTime day) {
             try
             {
-                foreach (security in securities)
-                {
-                    if (security.Exchange.IsOpenDuringBar(day.Date, day.Date.AddDays(1), security.IsExtendedMarketHours)) return true;
+                foreach (security in securities) {
+                    if( security.Exchange.IsOpenDuringBar(day.Date, day.Date.AddDays(1), security.IsExtendedMarketHours)) return true;
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
             return false;
@@ -358,22 +328,18 @@ package com.quantconnect.lean
         /// <param name="start">Start of Date Loop</param>
         /// <param name="finish">End of Date Loop</param>
         /// <returns>Number of dates</returns>
-        public static int TradeableDates(ICollection<Security> securities, DateTime start, DateTime finish)
-        {
+        public static int TradeableDates(ICollection<Security> securities, DateTime start, DateTime finish) {
             count = 0;
-            Log.Trace("Time.TradeableDates(): Security Count: " + securities.Count);
+            Log.Trace( "Time.TradeableDates(): Security Count: " + securities.Count);
             try 
             {
-                foreach (day in EachDay(start, finish)) 
-                {
-                    if (TradableDate(securities, day)) 
-                    {
+                foreach (day in EachDay(start, finish)) {
+                    if( TradableDate(securities, day)) {
                         count++;
                     }
                 }
             } 
-            catch (Exception err) 
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
             return count;
@@ -388,20 +354,16 @@ package com.quantconnect.lean
         /// <param name="barCount">The number of bars requested</param>
         /// <param name="extendedMarketHours">True to allow extended market hours bars, otherwise false for only normal market hours</param>
         /// <returns>The start time that would provide the specified number of bars ending at the specified end time, rounded down by the requested bar size</returns>
-        public static DateTime GetStartTimeForTradeBars(SecurityExchangeHours exchange, DateTime end, TimeSpan barSize, int barCount, boolean extendedMarketHours)
-        {
-            if (barSize <= TimeSpan.Zero)
-            {
-                throw new ArgumentException("barSize must be greater than TimeSpan.Zero", "barSize");
+        public static DateTime GetStartTimeForTradeBars(SecurityExchangeHours exchange, DateTime end, TimeSpan barSize, int barCount, boolean extendedMarketHours) {
+            if( barSize <= TimeSpan.Zero) {
+                throw new ArgumentException( "barSize must be greater than TimeSpan.Zero", "barSize");
             }
 
             current = end.RoundDown(barSize);
-            for (int i = 0; i < barCount;)
-            {
+            for (int i = 0; i < barCount;) {
                 previous = current;
                 current = current - barSize;
-                if (exchange.IsOpen(current, previous, extendedMarketHours))
-                {
+                if( exchange.IsOpen(current, previous, extendedMarketHours)) {
                     i++;
                 }
             }

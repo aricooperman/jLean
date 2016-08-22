@@ -69,8 +69,7 @@ package com.quantconnect.lean.Securities
         /// <param name="day">The day of the week these hours are applicable</param>
         /// <param name="segments">The open/close segments defining the market hours for one day</param>
         public LocalMarketHours(DayOfWeek day, params MarketHoursSegment[] segments)
-            : this(day, (IEnumerable<MarketHoursSegment>) segments)
-        {
+            : this(day, (IEnumerable<MarketHoursSegment>) segments) {
         }
 
         /// <summary>
@@ -78,8 +77,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="day">The day of the week these hours are applicable</param>
         /// <param name="segments">The open/close segments defining the market hours for one day</param>
-        public LocalMarketHours(DayOfWeek day, IEnumerable<MarketHoursSegment> segments)
-        {
+        public LocalMarketHours(DayOfWeek day, IEnumerable<MarketHoursSegment> segments) {
             _dayOfWeek = day;
             // filter out the closed states, we'll assume closed if no segment exists
             _segments = (segments ?? Enumerable.Empty<MarketHoursSegment>()).Where(x => x.State != MarketHoursState.Closed).ToArray();
@@ -89,14 +87,11 @@ package com.quantconnect.lean.Securities
                 && _segments[0].End == Time.OneDay
                 && _segments[0].State == MarketHoursState.Market;
 
-            foreach (segment in _segments)
-            {
-                if (segment.State == MarketHoursState.PreMarket)
-                {
+            foreach (segment in _segments) {
+                if( segment.State == MarketHoursState.PreMarket) {
                     _hasPreMarket = true;
                 }
-                if (segment.State == MarketHoursState.PostMarket)
-                {
+                if( segment.State == MarketHoursState.PostMarket) {
                     _hasPostMarket = true;
                 }
             }
@@ -110,25 +105,21 @@ package com.quantconnect.lean.Securities
         /// <param name="marketOpen">The regular market open time, must be greater than or equal to the extended market open time</param>
         /// <param name="marketClose">The regular market close time, must be greater than the regular market open time</param>
         /// <param name="extendedMarketClose">The extended market close time, must be greater than or equal to the regular market close time</param>
-        public LocalMarketHours(DayOfWeek day, TimeSpan extendedMarketOpen, TimeSpan marketOpen, TimeSpan marketClose, TimeSpan extendedMarketClose)
-        {
+        public LocalMarketHours(DayOfWeek day, TimeSpan extendedMarketOpen, TimeSpan marketOpen, TimeSpan marketClose, TimeSpan extendedMarketClose) {
             _dayOfWeek = day;
 
             segments = new List<MarketHoursSegment>();
 
-            if (extendedMarketOpen != marketOpen)
-            {
+            if( extendedMarketOpen != marketOpen) {
                 _hasPreMarket = true;
                 segments.Add(new MarketHoursSegment(MarketHoursState.PreMarket, extendedMarketOpen, marketOpen));
             }
 
-            if (marketOpen != TimeSpan.Zero || marketClose != TimeSpan.Zero)
-            {
+            if( marketOpen != TimeSpan.Zero || marketClose != TimeSpan.Zero) {
                 segments.Add(new MarketHoursSegment(MarketHoursState.Market, marketOpen, marketClose));
             }
 
-            if (marketClose != extendedMarketClose)
-            {
+            if( marketClose != extendedMarketClose) {
                 _hasPostMarket = true;
                 segments.Add(new MarketHoursSegment(MarketHoursState.PostMarket, marketClose, extendedMarketClose));
             }
@@ -137,17 +128,14 @@ package com.quantconnect.lean.Securities
             _isClosedAllDay = _segments.Length == 0;
 
             // perform some sanity checks
-            if (marketOpen < extendedMarketOpen)
-            {
-                throw new ArgumentException("Extended market open time must be less than or equal to market open time.");
+            if( marketOpen < extendedMarketOpen) {
+                throw new ArgumentException( "Extended market open time must be less than or equal to market open time.");
             }
-            if (marketClose < marketOpen)
-            {
-                throw new ArgumentException("Market close time must be after market open time.");
+            if( marketClose < marketOpen) {
+                throw new ArgumentException( "Market close time must be after market open time.");
             }
-            if (extendedMarketClose < marketClose)
-            {
-                throw new ArgumentException("Extended market close time must be greater than or equal to market close time.");
+            if( extendedMarketClose < marketClose) {
+                throw new ArgumentException( "Extended market close time must be greater than or equal to market close time.");
             }
         }
 
@@ -160,8 +148,7 @@ package com.quantconnect.lean.Securities
         /// <param name="marketOpen">The regular market open time</param>
         /// <param name="marketClose">The regular market close time, must be greater than the regular market open time</param>
         public LocalMarketHours(DayOfWeek day, TimeSpan marketOpen, TimeSpan marketClose)
-            : this(day, marketOpen, marketOpen, marketClose, marketClose)
-        {
+            : this(day, marketOpen, marketOpen, marketClose, marketClose) {
         }
 
         /// <summary>
@@ -170,24 +157,18 @@ package com.quantconnect.lean.Securities
         /// <param name="time">The reference time, the open returned will be the first open after the specified time if there are multiple market open segments</param>
         /// <param name="extendedMarket">True to include extended market hours, false for regular market hours</param>
         /// <returns>The market's opening time of day</returns>
-        public TimeSpan? GetMarketOpen(TimeSpan time, boolean extendedMarket)
-        {
-            for (int i = 0; i < _segments.Length; i++)
-            {
-                if (_segments[i].State == MarketHoursState.Closed || _segments[i].End <= time)
-                {
+        public TimeSpan? GetMarketOpen(TimeSpan time, boolean extendedMarket) {
+            for (int i = 0; i < _segments.Length; i++) {
+                if( _segments[i].State == MarketHoursState.Closed || _segments[i].End <= time) {
                     continue;
                 }
 
-                if (extendedMarket && _hasPreMarket)
-                {
-                    if (_segments[i].State == MarketHoursState.PreMarket)
-                    {
+                if( extendedMarket && _hasPreMarket) {
+                    if( _segments[i].State == MarketHoursState.PreMarket) {
                         return _segments[i].Start;
                     }
                 }
-                else if (_segments[i].State == MarketHoursState.Market)
-                {
+                else if( _segments[i].State == MarketHoursState.Market) {
                     return _segments[i].Start;
                 }
             }
@@ -202,24 +183,18 @@ package com.quantconnect.lean.Securities
         /// <param name="time">The reference time, the close returned will be the first close after the specified time if there are multiple market open segments</param>
         /// <param name="extendedMarket">True to include extended market hours, false for regular market hours</param>
         /// <returns>The market's closing time of day</returns>
-        public TimeSpan? GetMarketClose(TimeSpan time, boolean extendedMarket)
-        {
-            for (int i = 0; i < _segments.Length; i++)
-            {
-                if (_segments[i].State == MarketHoursState.Closed || _segments[i].End <= time)
-                {
+        public TimeSpan? GetMarketClose(TimeSpan time, boolean extendedMarket) {
+            for (int i = 0; i < _segments.Length; i++) {
+                if( _segments[i].State == MarketHoursState.Closed || _segments[i].End <= time) {
                     continue;
                 }
 
-                if (extendedMarket && _hasPostMarket)
-                {
-                    if (_segments[i].State == MarketHoursState.PostMarket)
-                    {
+                if( extendedMarket && _hasPostMarket) {
+                    if( _segments[i].State == MarketHoursState.PostMarket) {
                         return _segments[i].End;
                     }
                 }
-                else if (_segments[i].State == MarketHoursState.Market)
-                {
+                else if( _segments[i].State == MarketHoursState.Market) {
                     return _segments[i].End;
                 }
             }
@@ -234,17 +209,13 @@ package com.quantconnect.lean.Securities
         /// <param name="time">The time of day to check</param>
         /// <param name="extendedMarket">True to check exended market hours, false to check regular market hours</param>
         /// <returns>True if the exchange is considered open, false otherwise</returns>
-        public boolean IsOpen(TimeSpan time, boolean extendedMarket)
-        {
-            for (int i = 0; i < _segments.Length; i++)
-            {
-                if (_segments[i].State == MarketHoursState.Closed)
-                {
+        public boolean IsOpen(TimeSpan time, boolean extendedMarket) {
+            for (int i = 0; i < _segments.Length; i++) {
+                if( _segments[i].State == MarketHoursState.Closed) {
                     continue;
                 }
 
-                if (_segments[i].Contains(time))
-                {
+                if( _segments[i].Contains(time)) {
                     return extendedMarket || _segments[i].State == MarketHoursState.Market;
                 }
             }
@@ -260,24 +231,18 @@ package com.quantconnect.lean.Securities
         /// <param name="end">The end time of the interval</param>
         /// <param name="extendedMarket">True to check exended market hours, false to check regular market hours</param>
         /// <returns>True if the exchange is considered open, false otherwise</returns>
-        public boolean IsOpen(TimeSpan start, TimeSpan end, boolean extendedMarket)
-        {
-            if (start == end)
-            {
+        public boolean IsOpen(TimeSpan start, TimeSpan end, boolean extendedMarket) {
+            if( start == end) {
                 return IsOpen(start, extendedMarket);
             }
             
-            for (int i = 0; i < _segments.Length; i++)
-            {
-                if (_segments[i].State == MarketHoursState.Closed)
-                {
+            for (int i = 0; i < _segments.Length; i++) {
+                if( _segments[i].State == MarketHoursState.Closed) {
                     continue;
                 }
 
-                if (extendedMarket || _segments[i].State == MarketHoursState.Market)
-                {
-                    if (_segments[i].Overlaps(start, end))
-                    {
+                if( extendedMarket || _segments[i].State == MarketHoursState.Market) {
+                    if( _segments[i].Overlaps(start, end)) {
                         return true;
                     }
                 }
@@ -292,8 +257,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="dayOfWeek">The day of week</param>
         /// <returns>A <see cref="LocalMarketHours"/> instance that is always closed</returns>
-        public static LocalMarketHours ClosedAllDay(DayOfWeek dayOfWeek)
-        {
+        public static LocalMarketHours ClosedAllDay(DayOfWeek dayOfWeek) {
             return new LocalMarketHours(dayOfWeek);
         }
 
@@ -302,8 +266,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="dayOfWeek">The day of week</param>
         /// <returns>A <see cref="LocalMarketHours"/> instance that is always open</returns>
-        public static LocalMarketHours OpenAllDay(DayOfWeek dayOfWeek)
-        {
+        public static LocalMarketHours OpenAllDay(DayOfWeek dayOfWeek) {
             return new LocalMarketHours(dayOfWeek, new MarketHoursSegment(MarketHoursState.Market, TimeSpan.Zero, Time.OneDay));
         }
 
@@ -314,17 +277,14 @@ package com.quantconnect.lean.Securities
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
-            if (IsClosedAllDay)
-            {
+        public @Override String toString() {
+            if( IsClosedAllDay) {
                 return "Closed All Day";
             }
-            if (IsOpenAllDay)
-            {
+            if( IsOpenAllDay) {
                 return "Open All Day";
             }
-            return DayOfWeek + ": " + string.Join(" | ", (IEnumerable<MarketHoursSegment>) _segments);
+            return DayOfWeek + ": " + String.join( " | ", (IEnumerable<MarketHoursSegment>) _segments);
         }
     }
 }

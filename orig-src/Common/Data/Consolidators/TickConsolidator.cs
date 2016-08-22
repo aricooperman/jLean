@@ -29,8 +29,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         public TickConsolidator(TimeSpan period)
-            : base(period)
-        {
+            : base(period) {
         }
 
         /// <summary>
@@ -38,8 +37,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         public TickConsolidator(int maxCount)
-            : base(maxCount)
-        {
+            : base(maxCount) {
         }
 
         /// <summary>
@@ -48,8 +46,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         public TickConsolidator(int maxCount, TimeSpan period)
-            : base(maxCount, period)
-        {
+            : base(maxCount, period) {
         }
 
         /// <summary>
@@ -58,10 +55,8 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="workingBar">The bar we're building</param>
         /// <param name="data">The new data</param>
-        protected override void AggregateBar(ref TradeBar workingBar, Tick data)
-        {
-            if (workingBar == null)
-            {
+        protected @Override void AggregateBar(ref TradeBar workingBar, Tick data) {
+            if( workingBar == null ) {
                 workingBar = new TradeBar
                 {
                     Symbol = data.Symbol,
@@ -80,8 +75,8 @@ package com.quantconnect.lean.Data.Consolidators
                 //Aggregate the working bar
                 workingBar.Close = data.Value;
                 workingBar.Volume += data.Quantity;
-                if (data.Value < workingBar.Low) workingBar.Low = data.Value;
-                if (data.Value > workingBar.High) workingBar.High = data.Value;
+                if( data.Value < workingBar.Low) workingBar.Low = data.Value;
+                if( data.Value > workingBar.High) workingBar.High = data.Value;
             }
         }
     }

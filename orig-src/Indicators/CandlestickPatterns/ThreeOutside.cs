@@ -37,22 +37,20 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// </summary>
         /// <param name="name">The name of this indicator</param>
         public ThreeOutside( String name) 
-            : base(name, 3)
-        {
+            : base(name, 3) {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ThreeOutside"/> class.
         /// </summary>
         public ThreeOutside()
-            : this("THREEOUTSIDE")
-        {
+            : this( "THREEOUTSIDE") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -63,15 +61,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
                 return 0m;
             }
 
             BigDecimal value;
-            if (
+            if( 
                (
                   // white engulfs black
                   GetCandleColor(window[1]) == CandleColor.White && GetCandleColor(window[2]) == CandleColor.Black &&

@@ -44,8 +44,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// Creates a consolidator to produce a new <typeparamref name="TConsolidated"/> instance representing the period
         /// </summary>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
-        protected PeriodCountConsolidatorBase(TimeSpan period)
-        {
+        protected PeriodCountConsolidatorBase(TimeSpan period) {
             _period = period;
         }
 
@@ -53,8 +52,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// Creates a consolidator to produce a new <typeparamref name="TConsolidated"/> instance representing the last count pieces of data
         /// </summary>
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
-        protected PeriodCountConsolidatorBase(int maxCount)
-        {
+        protected PeriodCountConsolidatorBase(int maxCount) {
             _maxCount = maxCount;
         }
 
@@ -63,8 +61,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
-        protected PeriodCountConsolidatorBase(int maxCount, TimeSpan period)
-        {
+        protected PeriodCountConsolidatorBase(int maxCount, TimeSpan period) {
             _maxCount = maxCount;
             _period = period;
         }
@@ -72,7 +69,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <summary>
         /// Gets the type produced by this consolidator
         /// </summary>
-        public override Type OutputType
+        public @Override Type OutputType
         {
             get { return typeof(TConsolidated); }
         }
@@ -80,7 +77,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <summary>
         /// Gets a clone of the data being currently consolidated
         /// </summary>
-        public override BaseData WorkingData
+        public @Override BaseData WorkingData
         {
             get { return _workingBar != null ? _workingBar.Clone() : null; }
         }
@@ -99,10 +96,8 @@ package com.quantconnect.lean.Data.Consolidators
         /// included in the bar starting at 10:00.
         /// </summary>
         /// <param name="data">The new data for the consolidator</param>
-        public override void Update(T data)
-        {
-            if (!ShouldProcess(data))
-            {
+        public @Override void Update(T data) {
+            if( !ShouldProcess(data)) {
                 // first allow the base class a chance to filter out data it doesn't want
                 // before we start incrementing counts and what not
                 return;
@@ -115,58 +110,47 @@ package com.quantconnect.lean.Data.Consolidators
             // always aggregate before firing in counting mode
             boolean aggregateBeforeFire = _maxCount.HasValue;
 
-            if (_maxCount.HasValue)
-            {
+            if( _maxCount.HasValue) {
                 // we're in count mode
                 _currentCount++;
-                if (_currentCount >= _maxCount.Value)
-                {
+                if( _currentCount >= _maxCount.Value) {
                     _currentCount = 0;
                     fireDataConsolidated = true;
                 }
             }
 
-            if (!_lastEmit.HasValue)
-            {
+            if( !_lastEmit.HasValue) {
                 // initialize this value for period computations
                 _lastEmit = data.Time;
             }
 
-            if (_period.HasValue)
-            {
+            if( _period.HasValue) {
                 // we're in time span mode and initialized
-                if (_workingBar != null && data.Time - _workingBar.Time >= _period.Value)
-                {
+                if( _workingBar != null && data.Time - _workingBar.Time >= _period.Value) {
                     fireDataConsolidated = true;
                 }
 
                 // special case: always aggregate before event trigger when TimeSpan is zero
-                if (_period.Value == TimeSpan.Zero)
-                {
+                if( _period.Value == TimeSpan.Zero) {
                     fireDataConsolidated = true;
                     aggregateBeforeFire = true;
                 }
             }
 
-            if (aggregateBeforeFire)
-            {
+            if( aggregateBeforeFire) {
                 AggregateBar(ref _workingBar, data);
             }
 
             //Fire the event
-            if (fireDataConsolidated)
-            {
+            if( fireDataConsolidated) {
                 workingTradeBar = _workingBar as TradeBar;
-                if (workingTradeBar != null)
-                {
+                if( workingTradeBar != null ) {
                     // we kind of are cheating here...
-                    if (_period.HasValue)
-                    {
+                    if( _period.HasValue) {
                         workingTradeBar.Period = _period.Value;
                     }
                     // since trade bar has period it aggregates this properly
-                    else if (!(data is TradeBar))
-                    {
+                    else if( !(data is TradeBar)) {
                         workingTradeBar.Period = data.Time - _lastEmit.Value;
                     }
                 }
@@ -176,8 +160,7 @@ package com.quantconnect.lean.Data.Consolidators
                 _workingBar = null;
             }
 
-            if (!aggregateBeforeFire)
-            {
+            if( !aggregateBeforeFire) {
                 AggregateBar(ref _workingBar, data);
             }
         }
@@ -186,19 +169,14 @@ package com.quantconnect.lean.Data.Consolidators
         /// Scans this consolidator to see if it should emit a bar due to time passing
         /// </summary>
         /// <param name="currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)</param>
-        public override void Scan(DateTime currentLocalTime)
-        {
-            if (_period.HasValue)
-            {
-                if (_workingBar != null)
-                {
+        public @Override void Scan(DateTime currentLocalTime) {
+            if( _period.HasValue) {
+                if( _workingBar != null ) {
                     fireDataConsolidated = _period.Value == TimeSpan.Zero;
-                    if (!fireDataConsolidated && currentLocalTime - _workingBar.Time >= _period.Value)
-                    {
+                    if( !fireDataConsolidated && currentLocalTime - _workingBar.Time >= _period.Value) {
                         fireDataConsolidated = true;
                     }
-                    if (fireDataConsolidated)
-                    {
+                    if( fireDataConsolidated) {
                         OnDataConsolidated(_workingBar);
                         _lastEmit = currentLocalTime;
                         _workingBar = null;
@@ -212,8 +190,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="data">The data to check</param>
         /// <returns>True if the consolidator should process this data, false otherwise</returns>
-        protected virtual boolean ShouldProcess(T data)
-        {
+        protected virtual boolean ShouldProcess(T data) {
             return true;
         }
 
@@ -230,8 +207,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="time">The bar time to be rounded down</param>
         /// <returns>The rounded bar time</returns>
-        protected DateTime GetRoundedBarTime(DateTime time)
-        {
+        protected DateTime GetRoundedBarTime(DateTime time) {
             // rounding is performed only in time span mode
             return _period.HasValue && !_maxCount.HasValue ? time.RoundDown((TimeSpan)_period) : time;
         }
@@ -240,10 +216,9 @@ package com.quantconnect.lean.Data.Consolidators
         /// Event invocator for the <see cref="DataConsolidated"/> event
         /// </summary>
         /// <param name="e">The consolidated data</param>
-        protected virtual void OnDataConsolidated(TConsolidated e)
-        {
+        protected virtual void OnDataConsolidated(TConsolidated e) {
             handler = DataConsolidated;
-            if (handler != null) handler(this, e);
+            if( handler != null ) handler(this, e);
             base.OnDataConsolidated(e);
         }
     }

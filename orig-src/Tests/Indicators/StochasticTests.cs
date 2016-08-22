@@ -24,9 +24,8 @@ package com.quantconnect.lean.Tests.Indicators
     public class StochasticTests
     {
         [Test]
-        public void ComparesAgainstExternalDataOnStochasticsK()
-        {
-            stochastics = new Stochastic("sto", 12, 3, 5);
+        public void ComparesAgainstExternalDataOnStochasticsK() {
+            stochastics = new Stochastic( "sto", 12, 3, 5);
 
             static final double epsilon = 1e-3;
 
@@ -36,9 +35,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void PrimaryOutputIsFastStochProperty()
-        {
-            stochastics = new Stochastic("sto", 12, 3, 5);
+        public void PrimaryOutputIsFastStochProperty() {
+            stochastics = new Stochastic( "sto", 12, 3, 5);
 
             TestHelper.TestIndicator(stochastics, "spy_with_stoch12k3.txt", "Stochastics 12 %K 3",
                 (ind, expected) => Assert.AreEqual((double) ((Stochastic) ind).FastStoch.Current.Value, ind.Current.Value)
@@ -46,9 +44,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComparesAgainstExternalDataOnStochasticsD()
-        {
-            stochastics = new Stochastic("sto", 12, 3, 5);
+        public void ComparesAgainstExternalDataOnStochasticsD() {
+            stochastics = new Stochastic( "sto", 12, 3, 5);
 
             static final double epsilon = 1e-3;
             TestHelper.TestIndicator(stochastics, "spy_with_stoch12k3.txt", "%D 5",
@@ -57,12 +54,10 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
-            stochastics = new Stochastic("sto", 12, 3, 5);
+        public void ResetsProperly() {
+            stochastics = new Stochastic( "sto", 12, 3, 5);
 
-            foreach (bar in TestHelper.GetTradeBarStream("spy_with_stoch12k3.txt", false))
-            {
+            foreach (bar in TestHelper.GetTradeBarStream( "spy_with_stoch12k3.txt", false)) {
                 stochastics.Update(bar);
             }
             Assert.IsTrue(stochastics.IsReady);
@@ -79,12 +74,10 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void HandlesEqualMinAndMax()
-        {
+        public void HandlesEqualMinAndMax() {
             reference = new DateTime(2015, 09, 01);
-            stochastics = new Stochastic("sto", 2, 2, 2);
-            for (int i = 0; i < 4; i++)
-            {
+            stochastics = new Stochastic( "sto", 2, 2, 2);
+            for (int i = 0; i < 4; i++) {
                 bar = new TradeBar{Time = reference.AddSeconds(i)};
                 bar.Open = bar.Close = bar.High = bar.Low = bar.Volume = 1;
                 stochastics.Update(bar);

@@ -46,8 +46,7 @@ package com.quantconnect.lean.Statistics
             List<ChartPoint> pointsBenchmark, 
             BigDecimal startingCapital, 
             BigDecimal totalFees, 
-            int totalTransactions)
-        {
+            int totalTransactions) {
             equity = ChartPointToDictionary(pointsEquity);
 
             firstDate = equity.Keys.FirstOrDefault().Date;
@@ -80,8 +79,7 @@ package com.quantconnect.lean.Statistics
             SortedMap<DateTime, decimal> equity, 
             List<ChartPoint> pointsPerformance, 
             List<ChartPoint> pointsBenchmark, 
-            BigDecimal startingCapital)
-        {
+            BigDecimal startingCapital) {
             periodTrades = trades.Where(x => x.ExitTime.Date >= fromDate && x.ExitTime < toDate.AddDays(1)).ToList();
             periodProfitLoss = new SortedMap<DateTime, decimal>(profitLoss.Where(x => x.Key >= fromDate && x.Key.Date < toDate.AddDays(1)).ToDictionary(x => x.Key, y => y.Value));
             periodEquity = new SortedMap<DateTime, decimal>(equity.Where(x => x.Key.Date >= fromDate && x.Key.Date < toDate.AddDays(1)).ToDictionary(x => x.Key, y => y.Value));
@@ -119,18 +117,15 @@ package com.quantconnect.lean.Statistics
             SortedMap<DateTime, decimal> equity, 
             List<ChartPoint> pointsPerformance, 
             List<ChartPoint> pointsBenchmark, 
-            BigDecimal startingCapital)
-        {
+            BigDecimal startingCapital) {
             rollingPerformances = new Map<String, AlgorithmPerformance>();
             
             monthPeriods = new[] { 1, 3, 6, 12 };
-            foreach (monthPeriod in monthPeriods)
-            {
+            foreach (monthPeriod in monthPeriods) {
                 ranges = GetPeriodRanges(monthPeriod, firstDate, lastDate);
 
-                foreach (period in ranges)
-                {
-                    key = "M" + monthPeriod + "_" + period.EndDate.toString("yyyyMMdd");
+                foreach (period in ranges) {
+                    key = "M" + monthPeriod + "_" + period.EndDate.toString( "yyyyMMdd");
                     periodPerformance = GetAlgorithmPerformance(period.StartDate, period.EndDate, trades, profitLoss, equity, pointsPerformance, pointsBenchmark, startingCapital);
                     rollingPerformances[key] = periodPerformance;
                 }
@@ -142,8 +137,7 @@ package com.quantconnect.lean.Statistics
         /// <summary>
         /// Returns a summary of the algorithm performance as a dictionary
         /// </summary>
-        private static Map<String,String> GetSummary(AlgorithmPerformance totalPerformance, BigDecimal totalFees, int totalTransactions)
-        {
+        private static Map<String,String> GetSummary(AlgorithmPerformance totalPerformance, BigDecimal totalFees, int totalTransactions) {
             return new Map<String,String> 
             { 
                 { "Total Trades", totalTransactions.toString(CultureInfo.InvariantCulture) },
@@ -164,14 +158,13 @@ package com.quantconnect.lean.Statistics
                 { "Information Ratio", Math.Round((double)totalPerformance.PortfolioStatistics.InformationRatio, 3).toString(CultureInfo.InvariantCulture) },
                 { "Tracking Error", Math.Round((double)totalPerformance.PortfolioStatistics.TrackingError, 3).toString(CultureInfo.InvariantCulture) },
                 { "Treynor Ratio", Math.Round((double)totalPerformance.PortfolioStatistics.TreynorRatio, 3).toString(CultureInfo.InvariantCulture) },
-                { "Total Fees", "$" + totalFees.toString("0.00") }
+                { "Total Fees", "$" + totalFees.toString( "0.00") }
             };
         }
 
-        private static BigDecimal SafeMultiply100(this BigDecimal value)
-        {
+        private static BigDecimal SafeMultiply100(this BigDecimal value) {
             static final BigDecimal max = decimal.MaxValue/100m;
-            if (value >= max) return decimal.MaxValue;
+            if( value >= max) return decimal.MaxValue;
             return value*100m;
         }
 
@@ -193,8 +186,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="firstDate">The first date of the total period</param>
         /// <param name="lastDate">The last date of the total period</param>
         /// <returns>The list of date ranges</returns>
-        private static IEnumerable<PeriodRange> GetPeriodRanges(int periodMonths, DateTime firstDate, DateTime lastDate)
-        {
+        private static IEnumerable<PeriodRange> GetPeriodRanges(int periodMonths, DateTime firstDate, DateTime lastDate) {
             // get end dates
             date = lastDate.Date;
             endDates = new List<DateTime>();
@@ -206,10 +198,9 @@ package com.quantconnect.lean.Statistics
 
             // build period ranges
             ranges = new List<PeriodRange> { new PeriodRange { StartDate = firstDate, EndDate = endDates[endDates.Count - 1] } };
-            for (i = endDates.Count - 2; i >= 0; i--)
-            {
+            for (i = endDates.Count - 2; i >= 0; i--) {
                 startDate = ranges[ranges.Count - 1].EndDate.AddDays(1).AddMonths(1 - periodMonths);
-                if (startDate < firstDate) startDate = firstDate;
+                if( startDate < firstDate) startDate = firstDate;
 
                 ranges.Add(new PeriodRange
                 {
@@ -229,16 +220,14 @@ package com.quantconnect.lean.Statistics
         /// <param name="fromDate">An optional starting date</param>
         /// <param name="toDate">An optional ending date</param>
         /// <returns>SortedDictionary of the equity BigDecimal values ordered in time</returns>
-        private static SortedMap<DateTime, decimal> ChartPointToDictionary(IEnumerable<ChartPoint> points, DateTime? fromDate = null, DateTime? toDate = null)
-        {
+        private static SortedMap<DateTime, decimal> ChartPointToDictionary(IEnumerable<ChartPoint> points, DateTime? fromDate = null, DateTime? toDate = null ) {
             dictionary = new SortedMap<DateTime, decimal>();
 
-            foreach (point in points)
-            {
+            foreach (point in points) {
                 x = Time.UnixTimeStampToDateTime(point.x);
 
-                if (fromDate != null && x.Date < fromDate) continue;
-                if (toDate != null && x.Date >= ((DateTime)toDate).AddDays(1)) break;
+                if( fromDate != null && x.Date < fromDate) continue;
+                if( toDate != null && x.Date >= ((DateTime)toDate).AddDays(1)) break;
                     
                 dictionary[x] = point.y;
             }
@@ -252,8 +241,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="benchmark">The benchmark values</param>
         /// <param name="equity">The equity values</param>
         /// <returns>The list of benchmark differences</returns>
-        private static List<double> CreateBenchmarkDifferences(SortedMap<DateTime, decimal> benchmark, SortedMap<DateTime, decimal> equity)
-        {
+        private static List<double> CreateBenchmarkDifferences(SortedMap<DateTime, decimal> benchmark, SortedMap<DateTime, decimal> equity) {
             // to find the delta in benchmark for first day, we need to know the price at
             // the opening moment of the day, but since we cannot find this, we cannot find
             // the first benchmark's delta, so we start looking for data in a inexistent day. 
@@ -268,11 +256,9 @@ package com.quantconnect.lean.Statistics
             // Get benchmark performance array for same period:
             benchmark.Keys.ToList().ForEach(dt =>
             {
-                if (dt >= minDate && dt <= maxDate)
-                {
+                if( dt >= minDate && dt <= maxDate) {
                     BigDecimal previous;
-                    if (benchmark.TryGetValue(dtPrevious, out previous) && previous != 0)
-                    {
+                    if( benchmark.TryGetValue(dtPrevious, out previous) && previous != 0) {
                         deltaBenchmark = (benchmark[dt] - previous) / previous;
                         listBenchmark.Add((double)deltaBenchmark);
                     }
@@ -292,18 +278,15 @@ package com.quantconnect.lean.Statistics
         /// </summary>
         /// <param name="listPerformance">The performance list</param>
         /// <param name="listBenchmark">The benchmark list</param>
-        private static void EnsureSameLength(List<double> listPerformance, List<double> listBenchmark)
-        {
+        private static void EnsureSameLength(List<double> listPerformance, List<double> listBenchmark) {
             // THIS SHOULD NEVER HAPPEN --> But if it does, log it and fail silently.
-            while (listPerformance.Count < listBenchmark.Count)
-            {
+            while (listPerformance.Count < listBenchmark.Count) {
                 listPerformance.Add(0);
-                Log.Trace("StatisticsBuilder.EnsureSameLength(): Padded Performance");
+                Log.Trace( "StatisticsBuilder.EnsureSameLength(): Padded Performance");
             }
-            while (listPerformance.Count > listBenchmark.Count)
-            {
+            while (listPerformance.Count > listBenchmark.Count) {
                 listBenchmark.Add(0);
-                Log.Trace("StatisticsBuilder.EnsureSameLength(): Padded Benchmark");
+                Log.Trace( "StatisticsBuilder.EnsureSameLength(): Padded Benchmark");
             }
         }
 

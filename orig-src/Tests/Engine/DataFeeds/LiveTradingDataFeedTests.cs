@@ -34,12 +34,11 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
-    [TestFixture, Ignore("These tests depend on a remote server")]
+    [TestFixture, Ignore( "These tests depend on a remote server")]
     public class LiveTradingDataFeedTests
     {
         [Test]
-        public void EmitsData()
-        {
+        public void EmitsData() {
             algorithm = new AlgorithmStub(forex: new List<String> {"EURUSD"});
 
             // job is used to send into DataQueueHandler
@@ -52,7 +51,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             dataQueueHandler = new FuncDataQueueHandler(fdqh =>
             {
                 time = timeProvider.GetUtcNow().ConvertFromUtc(TimeZones.EasternStandard);
-                if (time == lastTime) return Enumerable.Empty<BaseData>();
+                if( time == lastTime) return Enumerable.Empty<BaseData>();
                 lastTime = time;
                  return Enumerable.Range(0, 9).Select(x => new Tick(time.AddMilliseconds(x*100), Symbols.EURUSD, 1.3m, 1.2m, 1.3m));
             });
@@ -72,12 +71,11 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             feedThreadStarted.WaitOne();
 
             emittedData = false;
-            ConsumeBridge(feed, TimeSpan.FromSeconds(10), true, ts =>
+            ConsumeBridge(feed, Duration.ofSeconds(10), true, ts =>
             {
-                if (ts.Slice.Count != 0)
-                {
+                if( ts.Slice.Count != 0) {
                     emittedData = true;
-                    Console.WriteLine("HasData: " + ts.Slice.Bars[Symbols.EURUSD].EndTime);
+                    Console.WriteLine( "HasData: " + ts.Slice.Bars[Symbols.EURUSD].EndTime);
                     Console.WriteLine();
                 }
             });
@@ -86,24 +84,22 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void HandlesMultipleSecurities()
-        {
+        public void HandlesMultipleSecurities() {
             algorithm = new AlgorithmStub(
                 equities: new List<String> {"SPY", "IBM", "AAPL", "GOOG", "MSFT", "BAC", "GS"},
                 forex: new List<String> {"EURUSD", "USDJPY", "GBPJPY", "AUDUSD", "NZDUSD"}
                 );
             feed = RunDataFeed(algorithm);
 
-            ConsumeBridge(feed, TimeSpan.FromSeconds(5), ts =>
+            ConsumeBridge(feed, Duration.ofSeconds(5), ts =>
             {
                 delta = (DateTime.UtcNow - ts.Time).TotalMilliseconds;
-                Console.WriteLine(((decimal)delta).SmartRounding() + "ms : " + string.Join(",", ts.Slice.Keys.Select(x => x.Value)));
+                Console.WriteLine(((decimal)delta).SmartRounding() + "ms : " + String.join( ",", ts.Slice.Keys.Select(x => x.Value)));
             });
         }
 
         [Test]
-        public void PerformanceBenchmark()
-        {
+        public void PerformanceBenchmark() {
             symbolCount = 600;
             algorithm = new AlgorithmStub(Resolution.Tick,
                 equities: Enumerable.Range(0, symbolCount).Select(x => "E"+x.toString()).ToList()
@@ -111,29 +107,28 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             securitiesCount = algorithm.Securities.Count;
             expected = algorithm.Securities.Keys.ToHashSet();
-            Console.WriteLine("Securities.Count: " + securitiesCount);
+            Console.WriteLine( "Securities.Count: " + securitiesCount);
 
             FuncDataQueueHandler queue;
             count = new Count();
             stopwatch = Stopwatch.StartNew();
             feed = RunDataFeed(algorithm, out queue, null, fdqh => ProduceBenchmarkTicks(fdqh, count));
              
-            ConsumeBridge(feed, TimeSpan.FromSeconds(5), ts =>
+            ConsumeBridge(feed, Duration.ofSeconds(5), ts =>
             {
-                Console.WriteLine("Count: " + ts.Slice.Keys.Count + " " + DateTime.UtcNow.toString("o"));
-                if (ts.Slice.Keys.Count != securitiesCount)
-                {
+                Console.WriteLine( "Count: " + ts.Slice.Keys.Count + " " + DateTime.UtcNow.toString( "o"));
+                if( ts.Slice.Keys.Count != securitiesCount) {
                     included = ts.Slice.Keys.ToHashSet();
                     expected.ExceptWith(included);
-                    Console.WriteLine("Missing: " + string.Join(",", expected.OrderBy(x => x.Value)));
+                    Console.WriteLine( "Missing: " + String.join( ",", expected.OrderBy(x => x.Value)));
                 }
             });
             stopwatch.Stop();
 
-            Console.WriteLine("Total ticks: " + count.Value);
-            Console.WriteLine("Elapsed time: " + stopwatch.Elapsed);
-            Console.WriteLine("Ticks/sec: " + (count.Value/stopwatch.Elapsed.TotalSeconds));
-            Console.WriteLine("Ticks/sec/symbol: " + (count.Value/stopwatch.Elapsed.TotalSeconds)/symbolCount);
+            Console.WriteLine( "Total ticks: " + count.Value);
+            Console.WriteLine( "Elapsed time: " + stopwatch.Elapsed);
+            Console.WriteLine( "Ticks/sec: " + (count.Value/stopwatch.Elapsed.TotalSeconds));
+            Console.WriteLine( "Ticks/sec/symbol: " + (count.Value/stopwatch.Elapsed.TotalSeconds)/symbolCount);
         }
 
         class Count
@@ -141,12 +136,9 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             public int Value;
         }
 
-        private static IEnumerable<BaseData> ProduceBenchmarkTicks(FuncDataQueueHandler fdqh, Count count)
-        {
-            for (int i = 0; i < 10000; i++)
-            {
-                foreach (symbol in fdqh.Subscriptions)
-                {
+        private static IEnumerable<BaseData> ProduceBenchmarkTicks(FuncDataQueueHandler fdqh, Count count) {
+            for (int i = 0; i < 10000; i++) {
+                foreach (symbol in fdqh.Subscriptions) {
                     count.Value++;
                     yield return new Tick{Symbol = symbol};
                 }
@@ -154,15 +146,14 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void DoesNotSubscribeToCustomData()
-        {
+        public void DoesNotSubscribeToCustomData() {
             // Current implementation only sends equity/forex subscriptions to the queue handler,
             // new impl sends all, the restriction shouldn't live in the feed, but rather in the
             // queue handler impl
 
             algorithm = new AlgorithmStub(equities: new List<String> { "SPY" }, forex: new List<String> { "EURUSD" });
-            algorithm.AddData<RemoteFileBaseData>("RemoteFile");
-            remoteFile = SymbolCache.GetSymbol("RemoteFile");
+            algorithm.AddData<RemoteFileBaseData>( "RemoteFile");
+            remoteFile = SymbolCache.GetSymbol( "RemoteFile");
             FuncDataQueueHandler dataQueueHandler;
             RunDataFeed(algorithm, out dataQueueHandler);
 
@@ -173,11 +164,10 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void Unsubscribes()
-        {
+        public void Unsubscribes() {
             algorithm = new AlgorithmStub(equities: new List<String> { "SPY" }, forex: new List<String> { "EURUSD" });
-            algorithm.AddData<RemoteFileBaseData>("RemoteFile");
-            remoteFile = SymbolCache.GetSymbol("RemoteFile");
+            algorithm.AddData<RemoteFileBaseData>( "RemoteFile");
+            remoteFile = SymbolCache.GetSymbol( "RemoteFile");
             FuncDataQueueHandler dataQueueHandler;
             feed = RunDataFeed(algorithm, out dataQueueHandler);
 
@@ -190,8 +180,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void HandlesAtLeast10kTicksPerSecondWithTwentySymbols()
-        {
+        public void HandlesAtLeast10kTicksPerSecondWithTwentySymbols() {
             // this ran at ~25k ticks/per symbol for 20 symbols
             algorithm = new AlgorithmStub(Resolution.Tick, Enumerable.Range(0, 20).Select(x => x.toString()).ToList());
             t = Enumerable.Range(0, 20).Select(x => new Tick {Symbol = SymbolCache.GetSymbol(x.toString())}).ToList();
@@ -203,40 +192,38 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             {
                 avg = ticks/20m;
                 Interlocked.Exchange(ref ticks, 0);
-                Console.WriteLine("Average ticks per symbol: " + avg.SmartRounding());
-                if (flag) flag = false;
+                Console.WriteLine( "Average ticks per symbol: " + avg.SmartRounding());
+                if( flag) flag = false;
                 averages.Add(avg);
             }, null, Time.OneSecond, Time.OneSecond);
-            ConsumeBridge(feed, TimeSpan.FromSeconds(5), false, ts =>
+            ConsumeBridge(feed, Duration.ofSeconds(5), false, ts =>
             {
                 Interlocked.Add(ref ticks, ts.Slice.Ticks.Sum(x => x.Value.Count));
             }, true);
 
 
             average = averages.Average();
-            Console.WriteLine("\r\nAverage ticks per symbol per second: " + average);
+            Console.WriteLine( "\r\nAverage ticks per symbol per second: " + average);
             Assert.That(average, Is.GreaterThan(10000));
         }
 
         [Test]
-        public void EmitsForexDataWithRoundedUtcTimes()
-        {
+        public void EmitsForexDataWithRoundedUtcTimes() {
             algorithm = new AlgorithmStub(forex: new List<String> { "EURUSD" });
 
             feed = RunDataFeed(algorithm);
 
             emittedData = false;
             lastTime = DateTime.UtcNow;
-            ConsumeBridge(feed, TimeSpan.FromSeconds(5), ts =>
+            ConsumeBridge(feed, Duration.ofSeconds(5), ts =>
             {
-                if (!emittedData)
-                {
+                if( !emittedData) {
                     emittedData = true;
                     lastTime = ts.Time;
                     return;
                 }
                 delta = (DateTime.UtcNow - ts.Time).TotalMilliseconds;
-                Console.WriteLine(((decimal)delta).SmartRounding() + "ms : " + string.Join(", ", ts.Slice.Keys.Select(x => x.Value + ": " + ts.Slice[x].Volume)));
+                Console.WriteLine(((decimal)delta).SmartRounding() + "ms : " + String.join( ", ", ts.Slice.Keys.Select(x => x.Value + ": " + ts.Slice[x].Volume)));
                 Assert.AreEqual(lastTime.Add(Time.OneSecond), ts.Time);
                 Assert.AreEqual(1, ts.Slice.Bars.Count);
                 lastTime = ts.Time;
@@ -246,12 +233,10 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void HandlesManyCustomDataSubscriptions()
-        {
+        public void HandlesManyCustomDataSubscriptions() {
             resolution = Resolution.Second;
             algorithm = new AlgorithmStub();
-            for (int i = 0; i < 5; i++)
-            {
+            for (int i = 0; i < 5; i++) {
                 algorithm.AddData<RemoteFileBaseData>((100+ i).toString(), resolution, fillDataForward: false);
             }
 
@@ -260,28 +245,28 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             int count = 0;
             boolean receivedData = false;
             stopwatch = Stopwatch.StartNew();
-            Console.WriteLine("start: " + DateTime.UtcNow.toString("o"));
-            ConsumeBridge(feed, TimeSpan.FromSeconds(5), ts =>
+            Console.WriteLine( "start: " + DateTime.UtcNow.toString( "o"));
+            ConsumeBridge(feed, Duration.ofSeconds(5), ts =>
             {
                 // because this is a remote file we may skip data points while the newest
                 // version of the file is downloading [internet speed] and also we decide
                 // not to emit old data
 
                 stopwatch.Stop();
-                if (ts.Slice.Count == 0) return;
+                if( ts.Slice.Count == 0) return;
 
                 count++;
                 receivedData = true;
                 time = ts.Slice.Min(x => x.Value.EndTime).ConvertToUtc(TimeZones.NewYork);
                 // make sure within 2 seconds
                 delta = DateTime.UtcNow.Subtract(time);
-                //Assert.IsTrue(delta <= TimeSpan.FromSeconds(2), delta.toString());
-                Console.WriteLine("Count: " + ts.Slice.Count + "Data time: " + time.ConvertFromUtc(TimeZones.NewYork) + " Delta (ms): "
+                //Assert.IsTrue(delta <= Duration.ofSeconds(2), delta.toString());
+                Console.WriteLine( "Count: " + ts.Slice.Count + "Data time: " + time.ConvertFromUtc(TimeZones.NewYork) + " Delta (ms): "
                     + ((decimal) delta.TotalMilliseconds).SmartRounding() + Environment.NewLine);
             });
 
-            Console.WriteLine("end: " + DateTime.UtcNow.toString("o"));
-            Console.WriteLine("Spool up time: " + stopwatch.Elapsed);
+            Console.WriteLine( "end: " + DateTime.UtcNow.toString( "o"));
+            Console.WriteLine( "Spool up time: " + stopwatch.Elapsed);
 
             // even though we're doing 20 seconds, give a little
             // leeway for slow internet traffic
@@ -290,35 +275,32 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void HandlesRestApi()
-        {
+        public void HandlesRestApi() {
             resolution = Resolution.Second;
             algorithm = new AlgorithmStub();
-            algorithm.AddData<RestApiBaseData>("RestApi", resolution);
-            symbol = SymbolCache.GetSymbol("RestApi");
+            algorithm.AddData<RestApiBaseData>( "RestApi", resolution);
+            symbol = SymbolCache.GetSymbol( "RestApi");
             FuncDataQueueHandler dqgh;
             timeProvider = new ManualTimeProvider(new DateTime(2015, 10, 10, 16, 36, 0));
-            feed = RunDataFeed(algorithm, out dqgh, null);
+            feed = RunDataFeed(algorithm, out dqgh, null );
 
             count = 0;
             receivedData = false;
             timeZone = algorithm.Securities[symbol].Exchange.TimeZone;
             RestApiBaseData last = null;
 
-            timeout = new CancellationTokenSource(TimeSpan.FromSeconds(5));
-            foreach (ts in feed)
-            {
+            timeout = new CancellationTokenSource(Duration.ofSeconds(5));
+            foreach (ts in feed) {
                 //timeProvider.AdvanceSeconds(0.5);
 
-                if (!ts.Slice.ContainsKey(symbol)) return;
+                if( !ts.Slice.ContainsKey(symbol)) return;
 
                 count++;
                 receivedData = true;
                 data = (RestApiBaseData)ts.Slice[symbol];
                 time = data.EndTime.ConvertToUtc(timeZone);
                 Console.WriteLine(DateTime.UtcNow + ": Data time: " + time.ConvertFromUtc(TimeZones.NewYork) + Environment.NewLine);
-                if (last != null)
-                {
+                if( last != null ) {
                     Assert.AreEqual(last.EndTime, data.EndTime.Subtract(resolution.ToTimeSpan()));
                 }
                 last = data;
@@ -330,12 +312,11 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             Assert.IsTrue(receivedData);
             Assert.That(RestApiBaseData.ReaderCount, Is.LessThanOrEqualTo(30)); // we poll at 10x frequency
 
-            Console.WriteLine("Count: " + count + " ReaderCount: " + RestApiBaseData.ReaderCount);
+            Console.WriteLine( "Count: " + count + " ReaderCount: " + RestApiBaseData.ReaderCount);
         }
 
         [Test]
-        public void HandlesCoarseFundamentalData()
-        {
+        public void HandlesCoarseFundamentalData() {
             algorithm = new AlgorithmStub();
             Symbol symbol = CoarseFundamental.CreateUniverseSymbol(Market.USA);
             algorithm.AddUniverse(new FuncUniverse(
@@ -352,8 +333,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 currentTime = DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork);
                 Console.WriteLine(currentTime + ": timer.Elapsed");
 
-                lock (state)
-                {
+                lock (state) {
                     list = new BaseDataCollection {Symbol = symbol};
                     list.Data.AddRange(Enumerable.Range(0, coarseDataPointCount).Select(x => new CoarseFundamental
                     {
@@ -361,14 +341,13 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                         Time = currentTime - Time.OneDay, // hard-coded coarse period of one day
                     }));
                 }
-            }, lck, TimeSpan.FromSeconds(3), TimeSpan.FromSeconds(500));
+            }, lck, Duration.ofSeconds(3), Duration.ofSeconds(500));
 
             boolean yieldedUniverseData = false;
             feed = RunDataFeed(algorithm, fdqh =>
             {
-                lock (lck)
-                {
-                    if (list != null)
+                lock (lck) {
+                    if( list != null )
                         try
                         {
                             tmp = list;
@@ -388,7 +367,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             universeSelectionHadAllData = false;
 
 
-            ConsumeBridge(feed, TimeSpan.FromSeconds(5), ts =>
+            ConsumeBridge(feed, Duration.ofSeconds(5), ts =>
             {
             });
 
@@ -398,14 +377,12 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
 
 
-        private IDataFeed RunDataFeed(IAlgorithm algorithm, Func<FuncDataQueueHandler, IEnumerable<BaseData>> getNextTicksFunction = null)
-        {
+        private IDataFeed RunDataFeed(IAlgorithm algorithm, Func<FuncDataQueueHandler, IEnumerable<BaseData>> getNextTicksFunction = null ) {
             FuncDataQueueHandler dataQueueHandler;
             return RunDataFeed(algorithm, out dataQueueHandler, null, getNextTicksFunction);
         }
 
-        private IDataFeed RunDataFeed(IAlgorithm algorithm, out FuncDataQueueHandler dataQueueHandler, ITimeProvider timeProvider = null, Func<FuncDataQueueHandler, IEnumerable<BaseData>> getNextTicksFunction = null)
-        {
+        private IDataFeed RunDataFeed(IAlgorithm algorithm, out FuncDataQueueHandler dataQueueHandler, ITimeProvider timeProvider = null, Func<FuncDataQueueHandler, IEnumerable<BaseData>> getNextTicksFunction = null ) {
             getNextTicksFunction = getNextTicksFunction ?? (fdqh => fdqh.Subscriptions.Select(symbol => new Tick(DateTime.Now, symbol, 1, 2){Quantity = 1}));
 
             // job is used to send into DataQueueHandler
@@ -432,36 +409,29 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             return feed;
         }
 
-        private static void ConsumeBridge(IDataFeed feed, Action<TimeSlice> handler)
-        {
-            ConsumeBridge(feed, TimeSpan.FromSeconds(10), handler);
+        private static void ConsumeBridge(IDataFeed feed, Action<TimeSlice> handler) {
+            ConsumeBridge(feed, Duration.ofSeconds(10), handler);
         }
 
-        private static void ConsumeBridge(IDataFeed feed, TimeSpan timeout, Action<TimeSlice> handler)
-        {
+        private static void ConsumeBridge(IDataFeed feed, TimeSpan timeout, Action<TimeSlice> handler) {
             ConsumeBridge(feed, timeout, false, handler);
         }
 
-        private static void ConsumeBridge(IDataFeed feed, TimeSpan timeout, boolean alwaysInvoke, Action<TimeSlice> handler, boolean noOutput = false)
-        {
+        private static void ConsumeBridge(IDataFeed feed, TimeSpan timeout, boolean alwaysInvoke, Action<TimeSlice> handler, boolean noOutput = false) {
             Task.Delay(timeout).ContinueWith(_ => feed.Exit());
             boolean startedReceivingata = false;
-            foreach (timeSlice in feed)
-            {
-                if (!noOutput)
-                {
-                    Console.WriteLine("\r\n" + "Now (EDT): {0} TimeSlice.Time (EDT): {1}",
-                        DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork).toString("o"),
-                        timeSlice.Time.ConvertFromUtc(TimeZones.NewYork).toString("o")
+            foreach (timeSlice in feed) {
+                if( !noOutput) {
+                    Console.WriteLine( "\r\n" + "Now (EDT): %1$s TimeSlice.Time (EDT): %2$s",
+                        DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork).toString( "o"),
+                        timeSlice.Time.ConvertFromUtc(TimeZones.NewYork).toString( "o")
                         );
                 }
 
-                if (!startedReceivingata && timeSlice.Slice.Count != 0)
-                {
+                if( !startedReceivingata && timeSlice.Slice.Count != 0) {
                     startedReceivingata = true;
                 }
-                if (startedReceivingata || alwaysInvoke)
-                {
+                if( startedReceivingata || alwaysInvoke) {
                     handler(timeSlice);
                 }
             }
@@ -474,19 +444,16 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         private readonly ITimeProvider _timeProvider;
         private readonly IDataQueueHandler _dataQueueHandler;
 
-        public TestableLiveTradingDataFeed(IDataQueueHandler dataQueueHandler, ITimeProvider timeProvider = null)
-        {
+        public TestableLiveTradingDataFeed(IDataQueueHandler dataQueueHandler, ITimeProvider timeProvider = null ) {
             _dataQueueHandler = dataQueueHandler;
             _timeProvider = timeProvider ?? new RealTimeProvider();
         }
 
-        protected override IDataQueueHandler GetDataQueueHandler()
-        {
+        protected @Override IDataQueueHandler GetDataQueueHandler() {
             return _dataQueueHandler;
         }
 
-        protected override ITimeProvider GetTimeProvider()
-        {
+        protected @Override ITimeProvider GetTimeProvider() {
             return _timeProvider;
         }
     }

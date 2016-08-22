@@ -34,8 +34,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the indicator</param>
         public Trix( String name, int period)
-            : base(name)
-        {
+            : base(name) {
             _period = period;
             _ema1 = new ExponentialMovingAverage(name + "_1", period);
             _ema2 = new ExponentialMovingAverage(name + "_2", period);
@@ -48,14 +47,13 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="period">The period of the indicator</param>
         public Trix(int period)
-            : this("TRIX" + period, period)
-        {
+            : this( "TRIX" + period, period) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples > 3 * (_period - 1) + 1; }
         }
@@ -65,17 +63,16 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _ema1.Update(input);
 
-            if (Samples > _period - 1)
+            if( Samples > _period - 1)
                 _ema2.Update(_ema1.Current);
 
-            if (Samples > 2 * (_period - 1))
+            if( Samples > 2 * (_period - 1))
                 _ema3.Update(_ema2.Current);
 
-            if (Samples > 3 * (_period - 1))
+            if( Samples > 3 * (_period - 1))
                 _roc.Update(_ema3.Current);
 
             return _roc;
@@ -84,8 +81,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _ema1.Reset();
             _ema2.Reset();
             _ema3.Reset();

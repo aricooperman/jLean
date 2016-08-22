@@ -92,8 +92,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// </summary>
         /// <param name="config">The configuration used to source data for this universe</param>
         /// <param name="securityInitializer">Initializes securities when they're added to the universe</param>
-        protected Universe(SubscriptionDataConfig config, ISecurityInitializer securityInitializer = null)
-        {
+        protected Universe(SubscriptionDataConfig config, ISecurityInitializer securityInitializer = null ) {
             _previousSelections = new HashSet<Symbol>();
             _securities = new ConcurrentMap<Symbol, Member>();
 
@@ -110,14 +109,11 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="utcTime">The current utc time</param>
         /// <param name="security">The security to check if its ok to remove</param>
         /// <returns>True if we can remove the security, false otherwise</returns>
-        public virtual boolean CanRemoveMember(DateTime utcTime, Security security)
-        {
+        public virtual boolean CanRemoveMember(DateTime utcTime, Security security) {
             Member member;
-            if (_securities.TryGetValue(security.Symbol, out member))
-            {
+            if( _securities.TryGetValue(security.Symbol, out member)) {
                 timeInUniverse = utcTime - member.Added;
-                if (timeInUniverse >= UniverseSettings.MinimumTimeInUniverse)
-                {
+                if( timeInUniverse >= UniverseSettings.MinimumTimeInUniverse) {
                     return true;
                 }
             }
@@ -130,19 +126,16 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="utcTime">The current utc time</param>
         /// <param name="data">The symbols to remain in the universe</param>
         /// <returns>The data that passes the filter</returns>
-        public IEnumerable<Symbol> PerformSelection(DateTime utcTime, BaseDataCollection data)
-        {
+        public IEnumerable<Symbol> PerformSelection(DateTime utcTime, BaseDataCollection data) {
             result = SelectSymbols(utcTime, data);
-            if (ReferenceEquals(result, Unchanged))
-            {
+            if( ReferenceEquals(result, Unchanged)) {
                 return Unchanged;
             }
 
             selections = result.ToHashSet();
             hasDiffs = _previousSelections.Except(selections).Union(selections.Except(_previousSelections)).Any();
             _previousSelections = selections;
-            if (!hasDiffs)
-            {
+            if( !hasDiffs) {
                 return Unchanged;
             }
             return selections;
@@ -164,8 +157,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="marketHoursDatabase">The market hours database</param>
         /// <param name="symbolPropertiesDatabase">The symbol properties database</param>
         /// <returns>The newly initialized security object</returns>
-        public virtual Security CreateSecurity(Symbol symbol, IAlgorithm algorithm, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase)
-        {
+        public virtual Security CreateSecurity(Symbol symbol, IAlgorithm algorithm, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase) {
             // by default invoke the create security method to handle security initialization
             return SecurityManager.CreateSecurity(algorithm.Portfolio, algorithm.SubscriptionManager, marketHoursDatabase, symbolPropertiesDatabase,
                 SecurityInitializer, symbol, UniverseSettings.Resolution, UniverseSettings.FillForward, UniverseSettings.Leverage,
@@ -178,12 +170,11 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <remarks>
         /// In most cases the default implementaon of returning the security's configuration is
         /// sufficient. It's when we want multiple subscriptions (trade/quote data) that we'll need
-        /// to override this
+        /// to @Override this
         /// </remarks>
         /// <param name="security">The security to get subscriptions for</param>
         /// <returns>All subscriptions required by this security</returns>
-        public virtual IEnumerable<SubscriptionDataConfig> GetSubscriptions(Security security)
-        {
+        public virtual IEnumerable<SubscriptionDataConfig> GetSubscriptions(Security security) {
             return security.Subscriptions;
         }
 
@@ -192,8 +183,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// </summary>
         /// <param name="symbol">The symbol whose membership is to be checked</param>
         /// <returns>True if the specified symbol is part of this universe, false otherwise</returns>
-        public boolean ContainsMember(Symbol symbol)
-        {
+        public boolean ContainsMember(Symbol symbol) {
             return _securities.ContainsKey(symbol);
         }
 
@@ -204,10 +194,8 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="security">The security to be added</param>
         /// <returns>True if the security was successfully added,
         /// false if the security was already in the universe</returns>
-        internal boolean AddMember(DateTime utcTime, Security security)
-        {
-            if (_securities.ContainsKey(security.Symbol))
-            {
+        internal boolean AddMember(DateTime utcTime, Security security) {
+            if( _securities.ContainsKey(security.Symbol)) {
                 return false;
             }
             return _securities.TryAdd(security.Symbol, new Member(utcTime, security));
@@ -222,10 +210,8 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="security">The security to be removed</param>
         /// <returns>True if the security was successfully removed, false if
         /// we're not allowed to remove or if the security didn't exist</returns>
-        internal boolean RemoveMember(DateTime utcTime, Security security)
-        {
-            if (CanRemoveMember(utcTime, security))
-            {
+        internal boolean RemoveMember(DateTime utcTime, Security security) {
+            if( CanRemoveMember(utcTime, security)) {
                 Member member;
                 return _securities.TryRemove(security.Symbol, out member);
             }
@@ -252,8 +238,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         {
             public readonly DateTime Added;
             public readonly Security Security;
-            public Member(DateTime added, Security security)
-            {
+            public Member(DateTime added, Security security) {
                 Added = added;
                 Security = security;
             }

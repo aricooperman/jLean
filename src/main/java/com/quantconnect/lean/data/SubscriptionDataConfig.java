@@ -201,8 +201,8 @@ public class SubscriptionDataConfig {
         this.fillDataForward = fillForward;
     }
 
-    /// Copy constructor with overrides
-    /// <param name="config">The config to copy, then overrides are applied and all option</param>
+    /// Copy constructor with @Overrides
+    /// <param name="config">The config to copy, then @Overrides are applied and all option</param>
     /// <param name="objectType">Type of the data objects.</param>
     /// <param name="symbol">Symbol of the asset we're requesting</param>
     /// <param name="resolution">Resolution of the asset we're requesting</param>
@@ -248,7 +248,7 @@ public class SubscriptionDataConfig {
 
     /// Normalizes the specified price based on the DataNormalizationMode
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public BigDecimal GetNormalizedPrice( BigDecimal price ) {
+    public BigDecimal getNormalizedPrice( BigDecimal price ) {
         switch( dataNormalizationMode ) {
             case Raw:
                 return price;

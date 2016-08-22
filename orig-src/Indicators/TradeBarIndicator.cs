@@ -29,8 +29,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="name">The name of this indicator</param>
         protected TradeBarIndicator( String name)
-            : base(name)
-        {
+            : base(name) {
         }
     }
 }

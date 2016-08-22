@@ -207,7 +207,7 @@ public abstract class Order implements Cloneable {
     /// </returns>
     /// <filterpriority>2</filterpriority>
     public String toString() {
-        return String.format( "OrderId: %d %s {2} order for %d unit%s of %s", id, status, Type, quantity, quantity == 1 ? "" : "s", symbol );
+        return String.format( "OrderId: %d %s %3$s order for %d unit%s of %s", id, status, Type, quantity, quantity == 1 ? "" : "s", symbol );
     }
 
     /// Creates a deep-copy clone of this order

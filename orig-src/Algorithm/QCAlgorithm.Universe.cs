@@ -55,8 +55,7 @@ package com.quantconnect.lean.Algorithm
         /// Adds the universe to the algorithm
         /// </summary>
         /// <param name="universe">The universe to be added</param>
-        public void AddUniverse(Universe universe)
-        {
+        public void AddUniverse(Universe universe) {
             UniverseManager.Add(universe.Configuration.Symbol, universe);
         }
 
@@ -68,8 +67,7 @@ package com.quantconnect.lean.Algorithm
         /// <typeparam name="T">The data type</typeparam>
         /// <param name="name">A unique name for this universe</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, Func<IEnumerable<T>, IEnumerable<Symbol>> selector)
-        {
+        public void AddUniverse<T>( String name, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, UniverseSettings, selector);
         }
 
@@ -81,8 +79,7 @@ package com.quantconnect.lean.Algorithm
         /// <typeparam name="T">The data type</typeparam>
         /// <param name="name">A unique name for this universe</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, Func<IEnumerable<T>, IEnumerable<String>> selector)
-        {
+        public void AddUniverse<T>( String name, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, UniverseSettings, selector);
         }
 
@@ -95,8 +92,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="name">A unique name for this universe</param>
         /// <param name="universeSettings">The settings used for securities added by this universe</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<Symbol>> selector)
-        {
+        public void AddUniverse<T>( String name, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, universeSettings, selector);
         }
 
@@ -109,8 +105,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="name">A unique name for this universe</param>
         /// <param name="universeSettings">The settings used for securities added by this universe</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector)
-        {
+        public void AddUniverse<T>( String name, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, universeSettings, selector);
         }
 
@@ -123,8 +118,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="name">A unique name for this universe</param>
         /// <param name="resolution">The epected resolution of the universe data</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, Resolution resolution, Func<IEnumerable<T>, IEnumerable<Symbol>> selector)
-        {
+        public void AddUniverse<T>( String name, Resolution resolution, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, UniverseSettings, selector);
         }
 
@@ -137,8 +131,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="name">A unique name for this universe</param>
         /// <param name="resolution">The epected resolution of the universe data</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, Resolution resolution, Func<IEnumerable<T>, IEnumerable<String>> selector)
-        {
+        public void AddUniverse<T>( String name, Resolution resolution, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, UniverseSettings, selector);
         }
 
@@ -152,8 +145,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="resolution">The epected resolution of the universe data</param>
         /// <param name="universeSettings">The settings used for securities added by this universe</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, Resolution resolution, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<Symbol>> selector)
-        {
+        public void AddUniverse<T>( String name, Resolution resolution, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, universeSettings, selector);
         }
 
@@ -167,8 +159,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="resolution">The epected resolution of the universe data</param>
         /// <param name="universeSettings">The settings used for securities added by this universe</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>( String name, Resolution resolution, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector)
-        {
+        public void AddUniverse<T>( String name, Resolution resolution, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, universeSettings, selector);
         }
 
@@ -182,8 +173,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="resolution">The epected resolution of the universe data</param>
         /// <param name="market">The market for selected symbols</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, Func<IEnumerable<T>, IEnumerable<Symbol>> selector)
-        {
+        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             AddUniverse(securityType, name, resolution, market, UniverseSettings, selector);
         }
 
@@ -197,8 +187,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="resolution">The epected resolution of the universe data</param>
         /// <param name="market">The market for selected symbols</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, Func<IEnumerable<T>, IEnumerable<String>> selector)
-        {
+        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             AddUniverse(securityType, name, resolution, market, UniverseSettings, selector);
         }
 
@@ -212,8 +201,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="market">The market for selected symbols</param>
         /// <param name="universeSettings">The subscription settings to use for newly created subscriptions</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<Symbol>> selector)
-        {
+        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             marketHoursDbEntry = _marketHoursDatabase.GetEntry(market, name, securityType);
             dataTimeZone = marketHoursDbEntry.DataTimeZone;
             exchangeTimeZone = marketHoursDbEntry.ExchangeHours.TimeZone;
@@ -232,8 +220,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="market">The market for selected symbols</param>
         /// <param name="universeSettings">The subscription settings to use for newly created subscriptions</param>
         /// <param name="selector">Function delegate that performs selection on the universe data</param>
-        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector)
-        {
+        public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             marketHoursDbEntry = _marketHoursDatabase.GetEntry(market, name, securityType);
             dataTimeZone = marketHoursDbEntry.DataTimeZone;
             exchangeTimeZone = marketHoursDbEntry.ExchangeHours.TimeZone;
@@ -247,8 +234,7 @@ package com.quantconnect.lean.Algorithm
         /// will be executed on day changes in the NewYork time zone (<see cref="TimeZones.NewYork"/>
         /// </summary>
         /// <param name="selector">Defines an initial coarse selection</param>
-        public void AddUniverse(Func<IEnumerable<CoarseFundamental>, IEnumerable<Symbol>> selector)
-        {
+        public void AddUniverse(Func<IEnumerable<CoarseFundamental>, IEnumerable<Symbol>> selector) {
             symbol = CoarseFundamental.CreateUniverseSymbol(Market.USA);
             config = new SubscriptionDataConfig(typeof(CoarseFundamental), symbol, Resolution.Daily, TimeZones.NewYork, TimeZones.NewYork, false, false, true, isFilteredSubscription: false);
             AddUniverse(new FuncUniverse(config, UniverseSettings, SecurityInitializer, selectionData => selector(selectionData.OfType<CoarseFundamental>())));
@@ -260,8 +246,7 @@ package com.quantconnect.lean.Algorithm
         /// </summary>
         /// <param name="name">A unique name for this universe</param>
         /// <param name="selector">Function delegate that accepts a DateTime and returns a collection of String symbols</param>
-        public void AddUniverse( String name, Func<DateTime, IEnumerable<String>> selector)
-        {
+        public void AddUniverse( String name, Func<DateTime, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, UniverseSettings, selector);
         }
 
@@ -272,8 +257,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="name">A unique name for this universe</param>
         /// <param name="resolution">The resolution this universe should be triggered on</param>
         /// <param name="selector">Function delegate that accepts a DateTime and returns a collection of String symbols</param>
-        public void AddUniverse( String name, Resolution resolution, Func<DateTime, IEnumerable<String>> selector)
-        {
+        public void AddUniverse( String name, Resolution resolution, Func<DateTime, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, UniverseSettings, selector);
         }
 
@@ -286,8 +270,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="market">The market of the universe</param>
         /// <param name="universeSettings">The subscription settings used for securities added from this universe</param>
         /// <param name="selector">Function delegate that accepts a DateTime and returns a collection of String symbols</param>
-        public void AddUniverse(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<DateTime, IEnumerable<String>> selector)
-        {
+        public void AddUniverse(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<DateTime, IEnumerable<String>> selector) {
             marketHoursDbEntry = _marketHoursDatabase.GetEntry(market, name, securityType);
             dataTimeZone = marketHoursDbEntry.DataTimeZone;
             exchangeTimeZone = marketHoursDbEntry.ExchangeHours.TimeZone;
@@ -299,16 +282,14 @@ package com.quantconnect.lean.Algorithm
         /// <summary>
         /// Adds the security to the user defined universe for the specified 
         /// </summary>
-        private void AddToUserDefinedUniverse(Security security)
-        {
+        private void AddToUserDefinedUniverse(Security security) {
             Securities.Add(security);
 
             // add this security to the user defined universe
             Universe universe;
             subscription = security.Subscriptions.First();
             universeSymbol = UserDefinedUniverse.CreateSymbol(subscription.SecurityType, subscription.Market);
-            if (!UniverseManager.TryGetValue(universeSymbol, out universe))
-            {
+            if( !UniverseManager.TryGetValue(universeSymbol, out universe)) {
                 // create a new universe, these subscription settings don't currently get used
                 // since universe selection proper is never invoked on this type of universe
                 uconfig = new SubscriptionDataConfig(subscription, symbol: universeSymbol, isInternalFeed: true, fillForward: false);
@@ -322,14 +303,13 @@ package com.quantconnect.lean.Algorithm
             }
             
             userDefinedUniverse = universe as UserDefinedUniverse;
-            if (userDefinedUniverse != null)
-            {
+            if( userDefinedUniverse != null ) {
                 userDefinedUniverse.Add(security.Symbol);
             }
             else
             {
                 // should never happen, someone would need to add a non-user defined universe with this symbol
-                throw new Exception("Expected universe with symbol '" + universeSymbol.Value + "' to be of type UserDefinedUniverse.");
+                throw new Exception( "Expected universe with symbol '" + universeSymbol.Value + "' to be of type UserDefinedUniverse.");
             }
         }
     }

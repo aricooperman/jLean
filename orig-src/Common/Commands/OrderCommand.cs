@@ -64,15 +64,13 @@ package com.quantconnect.lean.Commands
         /// Runs this command against the specified algorithm instance
         /// </summary>
         /// <param name="algorithm">The algorithm to run this command against</param>
-        public CommandResultPacket Run(IAlgorithm algorithm)
-        {
+        public CommandResultPacket Run(IAlgorithm algorithm) {
             request = new SubmitOrderRequest(OrderType, SecurityType, Symbol, Quantity, StopPrice, LimitPrice, DateTime.UtcNow, Tag);
             ticket = algorithm.Transactions.ProcessRequest(request);
             response = ticket.GetMostRecentOrderResponse();
-            message = String.format("{0} for {1} units of {2}: {3}", OrderType, Quantity, Symbol, response);
+            message = String.format( "%1$s for %2$s units of %3$s: {3}", OrderType, Quantity, Symbol, response);
             
-            if (response.IsSuccess)
-            {
+            if( response.IsSuccess) {
                 algorithm.Debug(message);
             }
             else
@@ -90,8 +88,7 @@ package com.quantconnect.lean.Commands
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
+        public @Override String toString() {
             // delegate to the order request
             return new SubmitOrderRequest(OrderType, SecurityType, Symbol, Quantity, StopPrice, LimitPrice, DateTime.UtcNow, Tag).toString();
         }

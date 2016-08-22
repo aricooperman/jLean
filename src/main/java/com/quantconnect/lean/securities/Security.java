@@ -114,7 +114,7 @@ public class Security {
     /// <summary>
     /// Gets the subscription configuration for this security
     /// </summary>
-    [Obsolete("This property returns only the first subscription. Use the 'Subscriptions' property for all of this security's subscriptions.")]
+    [Obsolete( "This property returns only the first subscription. Use the 'Subscriptions' property for all of this security's subscriptions.")]
     public SubscriptionDataConfig SubscriptionDataConfig
     {
         get { return SubscriptionsBag.FirstOrDefault(); }
@@ -178,7 +178,7 @@ public class Security {
     /// <remarks>This is ignored in live trading and the real fill prices are used instead</remarks>
     /// <seealso cref="EquityTransactionModel"/>
     /// <seealso cref="ForexTransactionModel"/>
-    [Obsolete("Security.Model has been made obsolete, use Security.TransactionModel instead.")]
+    [Obsolete( "Security.Model has been made obsolete, use Security.TransactionModel instead.")]
     public virtual ISecurityTransactionModel Model
     {
         get { return TransactionModel; }
@@ -198,10 +198,9 @@ public class Security {
         get
         {
             // check if the FillModel/FeeModel/Slippage models are all the same reference
-            if (FillModel is ISecurityTransactionModel 
+            if( FillModel is ISecurityTransactionModel 
              && ReferenceEquals(FillModel, FeeModel)
-             && ReferenceEquals(FeeModel, SlippageModel))
-            {
+             && ReferenceEquals(FeeModel, SlippageModel)) {
                 return (ISecurityTransactionModel) FillModel;
             }
             return new SecurityTransactionModel(FillModel, FeeModel, SlippageModel);
@@ -306,8 +305,7 @@ public class Security {
             new ImmediateSettlementModel(),
             Securities.VolatilityModel.Null,
             new SecurityMarginModel(1m),
-            new SecurityDataFilter())
-    {
+            new SecurityDataFilter()) {
     }
 
     /// <summary>
@@ -327,8 +325,7 @@ public class Security {
             Securities.VolatilityModel.Null,
             new SecurityMarginModel(1m),
             new SecurityDataFilter()
-            )
-    {
+            ) {
     }
 
     /// <summary>
@@ -347,17 +344,14 @@ public class Security {
         IVolatilityModel volatilityModel,
         ISecurityMarginModel marginModel,
         ISecurityDataFilter dataFilter
-        )
-    {
+        ) {
 
-        if (symbolProperties == null)
-        {
-            throw new ArgumentNullException("symbolProperties", "Security requires a valid SymbolProperties instance.");
+        if( symbolProperties == null ) {
+            throw new ArgumentNullException( "symbolProperties", "Security requires a valid SymbolProperties instance.");
         }
 
-        if (symbolProperties.QuoteCurrency != quoteCurrency.Symbol)
-        {
-            throw new ArgumentException("symbolProperties.QuoteCurrency must match the quoteCurrency.Symbol");
+        if( symbolProperties.QuoteCurrency != quoteCurrency.Symbol) {
+            throw new ArgumentException( "symbolProperties.QuoteCurrency must match the quoteCurrency.Symbol");
         }
 
         _symbol = symbol;
@@ -409,8 +403,7 @@ public class Security {
             volatilityModel,
             marginModel,
             dataFilter
-            )
-    {
+            ) {
         SubscriptionsBag.Add(config);
     }
 
@@ -444,9 +437,8 @@ public class Security {
     {
         get
         {
-            if (_localTimeKeeper == null)
-            {
-                throw new Exception("Security.SetLocalTimeKeeper(LocalTimeKeeper) must be called in order to use the LocalTime property.");
+            if( _localTimeKeeper == null ) {
+                throw new Exception( "Security.SetLocalTimeKeeper(LocalTimeKeeper) must be called in order to use the LocalTime property.");
             }
             return _localTimeKeeper.LocalTime;
         }
@@ -547,8 +539,7 @@ public class Security {
     /// Get the last price update set to the security.
     /// </summary>
     /// <returns>BaseData object for this security</returns>
-    public BaseData GetLastData() 
-    {
+    public BaseData GetLastData() {
         return Cache.GetData();
     }
 
@@ -557,8 +548,7 @@ public class Security {
     /// This is the source of this instance's time.
     /// </summary>
     /// <param name="localTimeKeeper">The source of this <see cref="Security"/>'s time.</param>
-    public void SetLocalTimeKeeper(LocalTimeKeeper localTimeKeeper)
-    {
+    public void SetLocalTimeKeeper(LocalTimeKeeper localTimeKeeper) {
         _localTimeKeeper = localTimeKeeper;
         Exchange.SetLocalDateTimeFrontier(localTimeKeeper.LocalTime);
 
@@ -573,10 +563,9 @@ public class Security {
     /// Update any security properties based on the latest market data and time
     /// </summary>
     /// <param name="data">New data packet from LEAN</param>
-    public void SetMarketPrice(BaseData data) 
-    {
+    public void SetMarketPrice(BaseData data) {
         //Add new point to cache:
-        if (data == null) return;
+        if( data == null ) return;
         Cache.AddData(data);
         Holdings.UpdateMarketPrice(Price);
         VolatilityModel.Update(this, data);
@@ -586,10 +575,9 @@ public class Security {
     /// Update any security properties based on the latest realtime data and time
     /// </summary>
     /// <param name="data">New data packet from LEAN</param>
-    public void SetRealTimePrice(BaseData data)
-    {
+    public void SetRealTimePrice(BaseData data) {
         //Add new point to cache:
-            if (data == null) return;
+            if( data == null ) return;
             Cache.AddData(data);
             Holdings.UpdateMarketPrice(Price);
         }
@@ -598,18 +586,15 @@ public class Security {
     /// Set the leverage parameter for this security
     /// </summary>
     /// <param name="leverage">Leverage for this asset</param>
-    public void SetLeverage( BigDecimal leverage)
-    {
+    public void SetLeverage( BigDecimal leverage) {
         MarginModel.SetLeverage(this, leverage);
     }
 
     /// <summary>
     /// Sets the data normalization mode to be used by this security
     /// </summary>
-    public void SetDataNormalizationMode(DataNormalizationMode mode)
-    {
-        foreach (subscription in SubscriptionsBag)
-        {
+    public void SetDataNormalizationMode(DataNormalizationMode mode) {
+        foreach (subscription in SubscriptionsBag) {
             subscription.DataNormalizationMode = mode;
         }
     }
@@ -621,8 +606,7 @@ public class Security {
     /// A String that represents the current object.
     /// </returns>
     /// <filterpriority>2</filterpriority>
-    public override String toString()
-    {
+    public @Override String toString() {
         return Symbol.toString();
     }
 
@@ -630,10 +614,9 @@ public class Security {
     /// Adds the specified data subscription to this security.
     /// </summary>
     /// <param name="subscription">The subscription configuration to add. The Symbol and ExchangeTimeZone properties must match the existing Security object</param>
-    internal void AddData(SubscriptionDataConfig subscription)
-    {
-        if (subscription.Symbol != _symbol) throw new ArgumentException("Symbols must match.", "subscription.Symbol");
-        if (!subscription.ExchangeTimeZone.Equals(Exchange.TimeZone)) throw new ArgumentException("ExchangeTimeZones must match.", "subscription.ExchangeTimeZone");
+    internal void AddData(SubscriptionDataConfig subscription) {
+        if( subscription.Symbol != _symbol) throw new ArgumentException( "Symbols must match.", "subscription.Symbol");
+        if( !subscription.ExchangeTimeZone.Equals(Exchange.TimeZone)) throw new ArgumentException( "ExchangeTimeZones must match.", "subscription.ExchangeTimeZone");
         SubscriptionsBag.Add(subscription);
     }
 }

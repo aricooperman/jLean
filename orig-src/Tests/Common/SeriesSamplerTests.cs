@@ -23,13 +23,12 @@ package com.quantconnect.lean.Tests.Common
     public class SeriesSamplerTests
     {
         [Test]
-        public void ReturnsIdentityOnSinglePoint()
-        {
+        public void ReturnsIdentityOnSinglePoint() {
             series = new Series {Name = "name"};
             reference = DateTime.Now.ToUniversalTime();
             series.AddPoint(reference, 1m);
 
-            sampler = new SeriesSampler(TimeSpan.FromDays(1));
+            sampler = new SeriesSampler(Duration.ofDays(1));
 
             sampled = sampler.Sample(series, reference.AddSeconds(-1), reference.AddSeconds(1));
             Assert.AreEqual(1, sampled.Values.Count);
@@ -38,8 +37,7 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void DownSamples()
-        {
+        public void DownSamples() {
             series = new Series {Name = "name"};
             reference = DateTime.UtcNow.Date;
             series.AddPoint(reference, 1m);
@@ -47,7 +45,7 @@ package com.quantconnect.lean.Tests.Common
             series.AddPoint(reference.AddDays(2), 3m);
             series.AddPoint(reference.AddDays(3), 4m);
 
-            sampler = new SeriesSampler(TimeSpan.FromDays(1.5));
+            sampler = new SeriesSampler(Duration.ofDays(1.5));
 
             sampled = sampler.Sample(series, reference, reference.AddDays(3));
             Assert.AreEqual(3, sampled.Values.Count);
@@ -63,8 +61,7 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void SubSamples()
-        {
+        public void SubSamples() {
             series = new Series {Name = "name"};
             reference = DateTime.UtcNow.Date;
             series.AddPoint(reference, 1m);
@@ -73,7 +70,7 @@ package com.quantconnect.lean.Tests.Common
             series.AddPoint(reference.AddDays(3), 4m);
             series.AddPoint(reference.AddDays(4), 5m);
 
-            sampler = new SeriesSampler(TimeSpan.FromDays(1));
+            sampler = new SeriesSampler(Duration.ofDays(1));
 
             sampled = sampler.Sample(series, reference.AddDays(1), reference.AddDays(2));
             Assert.AreEqual(2, sampled.Values.Count);
@@ -86,8 +83,7 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void DoesNotSampleBeforeStart()
-        {
+        public void DoesNotSampleBeforeStart() {
             series = new Series { Name = "name" };
             reference = DateTime.UtcNow.Date;
             series.AddPoint(reference, 1m);
@@ -96,7 +92,7 @@ package com.quantconnect.lean.Tests.Common
             series.AddPoint(reference.AddDays(3), 4m);
             series.AddPoint(reference.AddDays(4), 5m);
 
-            sampler = new SeriesSampler(TimeSpan.FromDays(1));
+            sampler = new SeriesSampler(Duration.ofDays(1));
 
             sampled = sampler.Sample(series, reference.AddDays(-1), reference.AddDays(2));
             Assert.AreEqual(3, sampled.Values.Count);
@@ -112,53 +108,48 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void HandlesDuplicateTimes()
-        {
+        public void HandlesDuplicateTimes() {
             series = new Series();
             series.Values.Add(new ChartPoint(DateTime.Today, 1m));
             series.Values.Add(new ChartPoint(DateTime.Today, 2m));
             series.Values.Add(new ChartPoint(DateTime.Today.AddDays(1), 3m));
 
-            sampler = new SeriesSampler(TimeSpan.FromDays(1));
+            sampler = new SeriesSampler(Duration.ofDays(1));
             sampled = sampler.Sample(series, DateTime.Today, DateTime.Today.AddDays(1));
 
             // sampler will only produce one value at the time
             // it was also respect the latest value
 
             Assert.AreEqual(2, sampled.Values.Count);
-            foreach (pair in series.Values.Skip(1).Zip<ChartPoint, ChartPoint, Tuple<ChartPoint, ChartPoint>>(sampled.Values, Tuple.Create))
-            {
+            foreach (pair in series.Values.Skip(1).Zip<ChartPoint, ChartPoint, Tuple<ChartPoint, ChartPoint>>(sampled.Values, Tuple.Create)) {
                 Assert.AreEqual(pair.Item1.x, pair.Item2.x);
                 Assert.AreEqual(pair.Item1.y, pair.Item2.y);
             }
         }
 
         [Test]
-        public void DoesNotSampleScatterPlots()
-        {
-            scatter = new Series("scatter", SeriesType.Scatter, 0, "$");
+        public void DoesNotSampleScatterPlots() {
+            scatter = new Series( "scatter", SeriesType.Scatter, 0, "$");
             scatter.AddPoint(DateTime.Today, 1m);
             scatter.AddPoint(DateTime.Today, 3m);
             scatter.AddPoint(DateTime.Today.AddSeconds(1), 1.5m);
             scatter.AddPoint(DateTime.Today.AddSeconds(0.5), 1.5m);
 
-            sampler = new SeriesSampler(TimeSpan.FromMilliseconds(1));
+            sampler = new SeriesSampler(Duration.ofMilliseconds(1));
             sampled = sampler.Sample(scatter, DateTime.Today, DateTime.Today.AddDays(1));
-            foreach (pair in scatter.Values.Zip<ChartPoint, ChartPoint, Tuple<ChartPoint, ChartPoint>>(sampled.Values, Tuple.Create))
-            {
+            foreach (pair in scatter.Values.Zip<ChartPoint, ChartPoint, Tuple<ChartPoint, ChartPoint>>(sampled.Values, Tuple.Create)) {
                 Assert.AreEqual(pair.Item1.x, pair.Item2.x);
                 Assert.AreEqual(pair.Item1.y, pair.Item2.y);
             }
         }
 
         [Test]
-        public void EmitsEmptySeriesWithSinglePointOutsideOfStartStop()
-        {
+        public void EmitsEmptySeriesWithSinglePointOutsideOfStartStop() {
             series = new Series { Name = "name" };
             reference = DateTime.Now;
             series.AddPoint(reference.AddSeconds(-1), 1m);
 
-            sampler = new SeriesSampler(TimeSpan.FromDays(1));
+            sampler = new SeriesSampler(Duration.ofDays(1));
 
             sampled = sampler.Sample(series, reference, reference);
             Assert.AreEqual(0, sampled.Values.Count);

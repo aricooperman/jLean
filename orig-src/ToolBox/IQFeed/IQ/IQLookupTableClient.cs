@@ -23,9 +23,8 @@ package com.quantconnect.lean.ToolBox.IQFeed
     public class LookupTableMarketEventArgs : LookupEventArgs
     {
         public LookupTableMarketEventArgs( String line) :
-            base(null, LookupType.REQ_TAB_MKT, LookupSequence.MessageDetail)
-        {
-            fields = line.Split(',');
+            base(null, LookupType.REQ_TAB_MKT, LookupSequence.MessageDetail) {
+            fields = line.split(',');
             _code = fields[0];
             _shortName = fields[1];
             _longName = fields[2];
@@ -43,12 +42,11 @@ package com.quantconnect.lean.ToolBox.IQFeed
     public class LookupTableMarketCenterEventArgs : LookupEventArgs
     {
         public LookupTableMarketCenterEventArgs( String line) :
-            base(null, LookupType.REQ_TAB_MKC, LookupSequence.MessageDetail)
-        {
-            fields = line.Split(',');
+            base(null, LookupType.REQ_TAB_MKC, LookupSequence.MessageDetail) {
+            fields = line.split(',');
            _code = fields[0];
-            _marketEquityId = fields[1].Split(' ');
-            _marketOptionId = fields[2].Split(' ');
+            _marketEquityId = fields[1].split(' ');
+            _marketOptionId = fields[2].split(' ');
         }
         public String Code { get { return _code; } }
         public string[] MarketEquityId { get { return _marketEquityId; } }
@@ -64,9 +62,8 @@ package com.quantconnect.lean.ToolBox.IQFeed
     public class LookupTableNaicEventArgs : LookupEventArgs
     {
         public LookupTableNaicEventArgs( String line) :
-            base(null, LookupType.REQ_TAB_NAC, LookupSequence.MessageDetail)
-        {
-            fields = line.Split(',');
+            base(null, LookupType.REQ_TAB_NAC, LookupSequence.MessageDetail) {
+            fields = line.split(',');
             _code = fields[0];
             _description = fields[1];
         }
@@ -81,9 +78,8 @@ package com.quantconnect.lean.ToolBox.IQFeed
     public class LookupTableSecurityTypeEventArgs : LookupEventArgs
     {
         public LookupTableSecurityTypeEventArgs( String line) :
-            base(null, LookupType.REQ_TAB_SEC, LookupSequence.MessageDetail)
-        {
-            fields = line.Split(',');
+            base(null, LookupType.REQ_TAB_SEC, LookupSequence.MessageDetail) {
+            fields = line.split(',');
             _code = fields[0];
             _shortName = fields[1];
             _longName = fields[2];
@@ -101,9 +97,8 @@ package com.quantconnect.lean.ToolBox.IQFeed
     public class LookupTableSicEventArgs : LookupEventArgs
     {
         public LookupTableSicEventArgs( String line) :
-            base(null, LookupType.REQ_TAB_SIC, LookupSequence.MessageDetail)
-        {
-            fields = line.Split(',');
+            base(null, LookupType.REQ_TAB_SIC, LookupSequence.MessageDetail) {
+            fields = line.split(',');
             _code = fields[0];
             _description = fields[1];
         }
@@ -122,53 +117,42 @@ package com.quantconnect.lean.ToolBox.IQFeed
         public event EventHandler<LookupEventArgs> LookupEvent;
 
 
-        public IQLookupTableClient(int bufferSize) : base(IQSocket.GetEndPoint(PortType.Lookup), bufferSize)
-        {
+        public IQLookupTableClient(int bufferSize) : base(IQSocket.GetEndPoint(PortType.Lookup), bufferSize) {
             _que = new ConcurrentQueue<LookupType>();
         }
-        public void Connect()
-        {
+        public void Connect() {
             ConnectToSocketAndBeginReceive(IQSocket.GetSocket());
         }
-        public void Disconnect(int flushSeconds = 2)
-        {
+        public void Disconnect(int flushSeconds = 2) {
             DisconnectFromSocket(flushSeconds);
         }
-        public void SetClientName( String name)
-        {
-            Send("S,SET CLIENT NAME," + name + "\r\n");
+        public void SetClientName( String name) {
+            Send( "S,SET CLIENT NAME," + name + "\r\n");
         }
 
-        public void RequestMarkets()
-        {
-            Send("SLM\r\n");
+        public void RequestMarkets() {
+            Send( "SLM\r\n");
             _enQue(LookupType.REQ_TAB_MKT);
         }
-        public void RequestMarketCenters()
-        {
-            Send("SMC\r\n");
+        public void RequestMarketCenters() {
+            Send( "SMC\r\n");
             _enQue(LookupType.REQ_TAB_MKC);
         }
-        public void RequestNaic()
-        {
-            Send("SNC\r\n");
+        public void RequestNaic() {
+            Send( "SNC\r\n");
             _enQue(LookupType.REQ_TAB_NAC);
          }
-        public void RequestSecurityTypes()
-        {
-            Send("SST\r\n");
+        public void RequestSecurityTypes() {
+            Send( "SST\r\n");
             _enQue(LookupType.REQ_TAB_SEC);
         }
-        public void RequestSic()
-        {
-            Send("SSC\r\n");
+        public void RequestSic() {
+            Send( "SSC\r\n");
             _enQue(LookupType.REQ_TAB_SIC);
         }
 
-        protected override void OnTextLineEvent(TextLineEventArgs e)
-        {
-            if (e.textLine.StartsWith("!ENDMSG!"))
-            {
+        protected @Override void OnTextLineEvent(TextLineEventArgs e) {
+            if( e.textLine.StartsWith( "!ENDMSG!")) {
                 lut = _peekQue();
                 OnLookupEvent(new LookupEventArgs(null, lut, LookupSequence.MessageEnd));
                 _deQue();
@@ -177,8 +161,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
 
             lute = _peekQue();
  
-            switch (lute)
-            {
+            switch (lute) {
                 case LookupType.REQ_TAB_MKC:
                     OnLookupEvent(new LookupTableMarketCenterEventArgs(e.textLine));
                     return;
@@ -196,43 +179,35 @@ package com.quantconnect.lean.ToolBox.IQFeed
                     return;
             }
 
-            throw new Exception("(Lookup Table) NOT HANDLED:" + e.textLine);
+            throw new Exception( "(Lookup Table) NOT HANDLED:" + e.textLine);
         }
-        protected virtual void OnLookupEvent(LookupEventArgs e)
-        {
-            if (LookupEvent != null) LookupEvent(this, e);
+        protected virtual void OnLookupEvent(LookupEventArgs e) {
+            if( LookupEvent != null ) LookupEvent(this, e);
         }
 
  
         #region private
 
-        void _deQue()
-        {
+        void _deQue() {
             LookupType lut;
-            if (!_que.TryDequeue(out lut))
-            {
-                throw new Exception("Out of sequence - Table receive");
+            if( !_que.TryDequeue(out lut)) {
+                throw new Exception( "Out of sequence - Table receive");
             }
-            if (_que.Count > 0)
-            {
+            if( _que.Count > 0) {
                 OnLookupEvent(new LookupEventArgs(null, _peekQue(), LookupSequence.MessageStart));
             }
             return;
         }
-        LookupType _peekQue()
-        {
+        LookupType _peekQue() {
             LookupType lut;
-            if (!_que.TryPeek(out lut))
-            {
-                throw new Exception("Out of sequence - Table receive");
+            if( !_que.TryPeek(out lut)) {
+                throw new Exception( "Out of sequence - Table receive");
             }
             return lut;
         }
-        void _enQue(LookupType lut)
-        {
+        void _enQue(LookupType lut) {
             _que.Enqueue(lut);
-            if (_que.Count == 1)
-            {
+            if( _que.Count == 1) {
                 OnLookupEvent(new LookupEventArgs(null, lut, LookupSequence.MessageStart));
             }
         }

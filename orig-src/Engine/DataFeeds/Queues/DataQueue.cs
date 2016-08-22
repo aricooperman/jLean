@@ -30,25 +30,22 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
         /// Desktop/Local doesn't support live data from this handler
         /// </summary>
         /// <returns>Tick</returns>
-        public virtual IEnumerable<BaseData> GetNextTicks()
-        {
-            throw new NotImplementedException("QuantConnect.Queues.LiveDataQueue has not implemented live data.");
+        public virtual IEnumerable<BaseData> GetNextTicks() {
+            throw new NotImplementedException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
         }
 
         /// <summary>
         /// Desktop/Local doesn't support live data from this handler
         /// </summary>
-        public virtual void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols)
-        {
-            throw new NotImplementedException("QuantConnect.Queues.LiveDataQueue has not implemented live data.");
+        public virtual void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
+            throw new NotImplementedException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
         }
 
         /// <summary>
         /// Desktop/Local doesn't support live data from this handler
         /// </summary>
-        public virtual void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols)
-        {
-            throw new NotImplementedException("QuantConnect.Queues.LiveDataQueue has not implemented live data.");
+        public virtual void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
+            throw new NotImplementedException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
         }
     }
 }

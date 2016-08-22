@@ -87,15 +87,13 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Initializes a new default instance of the <see cref="FirstOrderGreeks"/> class
         /// </summary>
-        public FirstOrderGreeks()
-        {
+        public FirstOrderGreeks() {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="FirstOrderGreeks"/> class
         /// </summary>
-        public FirstOrderGreeks( BigDecimal delta, BigDecimal vega, BigDecimal theta, BigDecimal rho, BigDecimal lambda)
-        {
+        public FirstOrderGreeks( BigDecimal delta, BigDecimal vega, BigDecimal theta, BigDecimal rho, BigDecimal lambda) {
             Delta = delta;
             Vega = vega;
             Theta = theta;

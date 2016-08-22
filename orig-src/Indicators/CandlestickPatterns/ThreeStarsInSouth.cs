@@ -51,8 +51,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="name">The name of this indicator</param>
         public ThreeStarsInSouth( String name) 
             : base(name, Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod),
-                  Math.Max(CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod)) + 2 + 1)
-        {
+                  Math.Max(CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod)) + 2 + 1) {
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
             _shadowLongAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod;
             _shadowVeryShortAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod;
@@ -63,14 +62,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Initializes a new instance of the <see cref="ThreeStarsInSouth"/> class.
         /// </summary>
         public ThreeStarsInSouth()
-            : this("THREESTARSINSOUTH")
-        {
+            : this( "THREESTARSINSOUTH") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -81,28 +79,22 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
-                if (Samples >= Period - _bodyLongAveragePeriod)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
+                if( Samples >= Period - _bodyLongAveragePeriod) {
                     _bodyLongPeriodTotal += GetCandleRange(CandleSettingType.BodyLong, window[2]);
                 }
 
-                if (Samples >= Period - _shadowLongAveragePeriod)
-                {
+                if( Samples >= Period - _shadowLongAveragePeriod) {
                     _shadowLongPeriodTotal += GetCandleRange(CandleSettingType.ShadowLong, window[2]);
                 }
 
-                if (Samples >= Period - _shadowVeryShortAveragePeriod)
-                {
+                if( Samples >= Period - _shadowVeryShortAveragePeriod) {
                     _shadowVeryShortPeriodTotal[1] += GetCandleRange(CandleSettingType.ShadowVeryShort, window[1]);
                     _shadowVeryShortPeriodTotal[0] += GetCandleRange(CandleSettingType.ShadowVeryShort, input);
                 }
 
-                if (Samples >= Period - _bodyShortAveragePeriod)
-                {
+                if( Samples >= Period - _bodyShortAveragePeriod) {
                     _bodyShortPeriodTotal += GetCandleRange(CandleSettingType.BodyShort, input);
                 }
 
@@ -110,7 +102,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             }
 
             BigDecimal value;
-            if (
+            if( 
                 // 1st black
                 GetCandleColor(window[2]) == CandleColor.Black &&
                 // 2nd black
@@ -151,8 +143,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             _shadowLongPeriodTotal += GetCandleRange(CandleSettingType.ShadowLong, window[2]) -
                                       GetCandleRange(CandleSettingType.ShadowLong, window[2 + _shadowLongAveragePeriod]);
 
-            for (i = 1; i >= 0; i--)
-            {
+            for (i = 1; i >= 0; i--) {
                 _shadowVeryShortPeriodTotal[i] += GetCandleRange(CandleSettingType.ShadowVeryShort, window[i]) -
                                                   GetCandleRange(CandleSettingType.ShadowVeryShort, window[i + _shadowVeryShortAveragePeriod]);
             }
@@ -166,8 +157,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _bodyLongPeriodTotal = 0;
             _shadowLongPeriodTotal = 0;
             _shadowVeryShortPeriodTotal = new decimal[2];

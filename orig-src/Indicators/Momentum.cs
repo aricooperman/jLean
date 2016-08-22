@@ -26,8 +26,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period over which to perform to computation</param>
         public Momentum(int period)
-            : base("MOM" + period, period)
-        {
+            : base( "MOM" + period, period) {
         }
 
         /// <summary>
@@ -36,8 +35,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period over which to perform to computation</param>
         public Momentum( String name, int period)
-            : base(name, period)
-        {
+            : base(name, period) {
         }
 
         /// <summary>
@@ -46,10 +44,8 @@ package com.quantconnect.lean.Indicators
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input value to this indicator on this time step</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
-            if (!window.IsReady)
-            {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
+            if( !window.IsReady) {
                 // keep returning the delta from the first item put in there to init
                 return input - window[window.Count - 1];
             }

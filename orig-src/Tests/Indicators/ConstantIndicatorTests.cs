@@ -23,9 +23,8 @@ package com.quantconnect.lean.Tests.Indicators
     public class ConstantIndicatorTests
     {
         [Test]
-        public void ComputesCorrectly()
-        {
-            cons = new ConstantIndicator<IndicatorDataPoint>("c", 1m);
+        public void ComputesCorrectly() {
+            cons = new ConstantIndicator<IndicatorDataPoint>( "c", 1m);
             Assert.AreEqual(1m, cons.Current.Value);
             Assert.IsTrue(cons.IsReady);
 
@@ -34,10 +33,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             // constant reset should reset samples but the value should still be the same
-            cons = new ConstantIndicator<IndicatorDataPoint>("c", 1m);
+            cons = new ConstantIndicator<IndicatorDataPoint>( "c", 1m);
             cons.Update(DateTime.Today, 3m);
             cons.Update(DateTime.Today.AddDays(1), 10m);
 

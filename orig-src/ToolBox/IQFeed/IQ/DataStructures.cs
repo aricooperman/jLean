@@ -23,18 +23,16 @@ package com.quantconnect.lean.ToolBox.IQFeed
 {
     public class Time
     {
-        public Time(int hour = 0, int minute = 0, int second = 0)
-        {
+        public Time(int hour = 0, int minute = 0, int second = 0) {
             _hour = hour;
             _minute = minute;
             _second = second;
         }
-        public Time( String textTime)
-        {
-            if (textTime.Length < 8) { _hour = 0; _minute = 0; _second = 0; return; }
-            if (!int.TryParse(textTime.Substring(0, 2), out _hour)) _hour = 0;
-            if (!int.TryParse(textTime.Substring(3, 2), out _minute)) _minute = 0;
-            if (!int.TryParse(textTime.Substring(6, 2), out _second)) _second = 0;
+        public Time( String textTime) {
+            if( textTime.Length < 8) { _hour = 0; _minute = 0; _second = 0; return; }
+            if( !int.TryParse(textTime.Substring(0, 2), out _hour)) _hour = 0;
+            if( !int.TryParse(textTime.Substring(3, 2), out _minute)) _minute = 0;
+            if( !int.TryParse(textTime.Substring(6, 2), out _second)) _second = 0;
         }
         public int Hour { get { return _hour; } set { _hour = value; } }
         public int Minute { get { return _minute; } set { _minute = value; } }
@@ -43,7 +41,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
         {
             get
             {
-                return String.format("{0}{1}{2}", _hour.toString("00"), _minute.toString("00"), _second.toString("00"));
+                return String.format( "%1$s%2$s%3$s", _hour.toString( "00"), _minute.toString( "00"), _second.toString( "00"));
             }
         }
         #region private
@@ -56,8 +54,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
     public enum PeriodType { Second, Minute, Hour }
     public class Interval
     {
-        public Interval(PeriodType periodType, int periods)
-        {
+        public Interval(PeriodType periodType, int periods) {
             _periodType = periodType;
             _periods = periods;
         }
@@ -67,13 +64,12 @@ package com.quantconnect.lean.ToolBox.IQFeed
         {
             get
             {
-                switch (_periodType)
-                {
+                switch (_periodType) {
                     case PeriodType.Second: return _periods;
                     case PeriodType.Minute: return _periods * 60;
                     case PeriodType.Hour: return _periods * 3600;
                 }
-                throw new Exception("May not get seconds for " + _periodType.toString());
+                throw new Exception( "May not get seconds for " + _periodType.toString());
             }
         }
         #region private

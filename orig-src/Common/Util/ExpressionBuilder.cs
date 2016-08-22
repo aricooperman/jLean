@@ -31,8 +31,7 @@ package com.quantconnect.lean.Util
         /// <param name="type">The type of the parameter in the expression</param>
         /// <param name="propertyOrField">The name of the property or field to bind to</param>
         /// <returns>A new lambda expression that represents accessing the property or field on 'type'</returns>
-        public static LambdaExpression MakePropertyOrFieldSelector(Type type, String propertyOrField)
-        {
+        public static LambdaExpression MakePropertyOrFieldSelector(Type type, String propertyOrField) {
             parameter = Expression.Parameter(type);
             property = Expression.PropertyOrField(parameter, propertyOrField);
             lambda = Expression.Lambda(property, parameter);
@@ -46,8 +45,7 @@ package com.quantconnect.lean.Util
         /// <typeparam name="TProperty">The type of the property or field being accessed in the expression</typeparam>
         /// <param name="propertyOrField">The name of the property or field to bind to</param>
         /// <returns>A new lambda expression that represents accessing the property or field on 'type'</returns>
-        public static Expression<Func<T, TProperty>> MakePropertyOrFieldSelector<T, TProperty>( String propertyOrField)
-        {
+        public static Expression<Func<T, TProperty>> MakePropertyOrFieldSelector<T, TProperty>( String propertyOrField) {
             return (Expression<Func<T, TProperty>>) MakePropertyOrFieldSelector(typeof (T), propertyOrField);
         }
 
@@ -56,8 +54,7 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="expression">The expression to enumerate</param>
         /// <returns>An enumerable containing all expressions in the input expression</returns>
-        public static IEnumerable<Expression> AsEnumerable(this Expression expression)
-        {
+        public static IEnumerable<Expression> AsEnumerable(this Expression expression) {
             walker = new ExpressionWalker();
             walker.Visit(expression);
             return walker.Expressions;
@@ -78,8 +75,7 @@ package com.quantconnect.lean.Util
         private class ExpressionWalker : ExpressionVisitor
         {
             public readonly HashSet<Expression> Expressions = new HashSet<Expression>(); 
-            public override Expression Visit(Expression node)
-            {
+            public @Override Expression Visit(Expression node) {
                 Expressions.Add(node);
                 return base.Visit(node);
             }

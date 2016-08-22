@@ -22,24 +22,22 @@ package com.quantconnect.lean.Tests.Indicators
     [TestFixture]
     public class HeikinAshiTests : CommonIndicatorTests<TradeBar>
     {
-        protected override IndicatorBase<TradeBar> CreateIndicator()
-        {
+        protected @Override IndicatorBase<TradeBar> CreateIndicator() {
             return new HeikinAshi();
         }
 
-        protected override String TestFileName
+        protected @Override String TestFileName
         {
             get { return "spy_heikin_ashi.txt"; }
         }
 
-        protected override String TestColumnName
+        protected @Override String TestColumnName
         {
             get { return ""; }
         }
 
         [Test]
-        public override void ComparesAgainstExternalData()
-        {
+        public @Override void ComparesAgainstExternalData() {
             TestHelper.TestIndicator(new HeikinAshi(), TestFileName, "HA_Open", (ind, expected) => Assert.AreEqual(expected, (double)((HeikinAshi)ind).Open.Current.Value, 1e-3));
             TestHelper.TestIndicator(new HeikinAshi(), TestFileName, "HA_High", (ind, expected) => Assert.AreEqual(expected, (double)((HeikinAshi)ind).High.Current.Value, 1e-3));
             TestHelper.TestIndicator(new HeikinAshi(), TestFileName, "HA_Low", (ind, expected) => Assert.AreEqual(expected, (double)((HeikinAshi)ind).Low.Current.Value, 1e-3));
@@ -47,11 +45,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public override void ComparesAgainstExternalDataAfterReset()
-        {
+        public @Override void ComparesAgainstExternalDataAfterReset() {
             indicator = new HeikinAshi();
-            for (i = 1; i <= 2; i++)
-            {
+            for (i = 1; i <= 2; i++) {
                 TestHelper.TestIndicator(indicator, TestFileName, "HA_Open", (ind, expected) => Assert.AreEqual(expected, (double)((HeikinAshi)ind).Open.Current.Value, 1e-3));
                 indicator.Reset();
                 TestHelper.TestIndicator(indicator, TestFileName, "HA_High", (ind, expected) => Assert.AreEqual(expected, (double)((HeikinAshi)ind).High.Current.Value, 1e-3));

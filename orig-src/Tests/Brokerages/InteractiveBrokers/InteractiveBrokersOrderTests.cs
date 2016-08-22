@@ -9,7 +9,7 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 {
-    [TestFixture, Ignore("These tests require the IBController and IB TraderWorkstation to be installed.")]
+    [TestFixture, Ignore( "These tests require the IBController and IB TraderWorkstation to be installed.")]
     public class InteractiveBrokersForexOrderTests : BrokerageTests
     {
         // set to true to disable launch of gateway from tests
@@ -17,60 +17,53 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         private static boolean _gatewayLaunched;
      
         [TestFixtureSetUp]
-        public void InitializeBrokerage()
-        {
+        public void InitializeBrokerage() {
         }
 
         [TestFixtureTearDown]
-        public void DisposeBrokerage()
-        {
+        public void DisposeBrokerage() {
             InteractiveBrokersGatewayRunner.Stop();
         }
 
-        protected override Symbol Symbol
+        protected @Override Symbol Symbol
         {
             get { return Symbols.USDJPY; }
         }
 
-        protected override SecurityType SecurityType
+        protected @Override SecurityType SecurityType
         {
             get { return SecurityType.Forex; }
         }
 
-        protected override BigDecimal HighPrice
+        protected @Override BigDecimal HighPrice
         {
             get { return 10000m; }
         }
 
-        protected override BigDecimal LowPrice
+        protected @Override BigDecimal LowPrice
         {
             get { return 0.01m; }
         }
 
-        protected override BigDecimal GetAskPrice(Symbol symbol)
-        {
+        protected @Override BigDecimal GetAskPrice(Symbol symbol) {
             throw new NotImplementedException();
         }
 
-        protected override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider)
-        {
-            if (!_manualGatewayControl && !_gatewayLaunched)
-            {
+        protected @Override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider) {
+            if( !_manualGatewayControl && !_gatewayLaunched) {
                 _gatewayLaunched = true;
-                InteractiveBrokersGatewayRunner.Start(Config.Get("ib-controller-dir"),
-                    Config.Get("ib-tws-dir"),
-                    Config.Get("ib-user-name"),
-                    Config.Get("ib-password"),
-                    Config.GetBool("ib-use-tws")
+                InteractiveBrokersGatewayRunner.Start(Config.Get( "ib-controller-dir"),
+                    Config.Get( "ib-tws-dir"),
+                    Config.Get( "ib-user-name"),
+                    Config.Get( "ib-password"),
+                    Config.GetBool( "ib-use-tws")
                     );
             }
             return new InteractiveBrokersBrokerage(orderProvider, securityProvider);
         }
 
-        protected override void DisposeBrokerage(IBrokerage brokerage)
-        {
-            if (!_manualGatewayControl && brokerage != null)
-            {
+        protected @Override void DisposeBrokerage(IBrokerage brokerage) {
+            if( !_manualGatewayControl && brokerage != null ) {
                 brokerage.Disconnect();
             }
         }

@@ -24,8 +24,7 @@ package com.quantconnect.lean.Tests.Common.Data
     public class SequentialConsolidatorTests
     {
         [Test]
-        public void SequentialConsolidatorsFiresAllEvents()
-        {
+        public void SequentialConsolidatorsFiresAllEvents() {
             first = new IdentityDataConsolidator<BaseData>();
             second = new IdentityDataConsolidator<BaseData>();
             sequential = new SequentialConsolidator(first, second);
@@ -57,8 +56,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void SequentialConsolidatorAcceptsSubTypesForSecondInputType()
-        {
+        public void SequentialConsolidatorAcceptsSubTypesForSecondInputType() {
             first = new IdentityDataConsolidator<TradeBar>();
             second = new IdentityDataConsolidator<BaseData>();
             sequential = new SequentialConsolidator(first, second);

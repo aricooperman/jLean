@@ -38,8 +38,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the KAMA</param>
         public KaufmanAdaptiveMovingAverage( String name, int period) 
-            : base(name, period + 1)
-        {
+            : base(name, period + 1) {
         }
 
         /// <summary>
@@ -47,14 +46,13 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="period">The period of the KAMA</param>
         public KaufmanAdaptiveMovingAverage(int period)
-            : this("KAMA" + period, period)
-        {
+            : this( "KAMA" + period, period) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -65,20 +63,16 @@ package com.quantconnect.lean.Indicators
         /// <param name="input">The input given to the indicator</param>
         /// <param name="window">The window for the input history</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
-            if (Samples < Period)
-            {
-                if (Samples > 1)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
+            if( Samples < Period) {
+                if( Samples > 1) {
                     _sumRoc1 += Math.Abs(input.Value - window[1].Value);
                 }
 
                 return input.Value;
             }
 
-            if (Samples == Period)
-            {
+            if( Samples == Period) {
                 _sumRoc1 += Math.Abs(input.Value - window[1].Value);
 
                 // At this point sumROC1 represents the 
@@ -93,8 +87,7 @@ package com.quantconnect.lean.Indicators
             newTrailingValue = window[Period - 1];
             _periodRoc = input.Value - newTrailingValue;
 
-            if (Samples > Period)
-            {
+            if( Samples > Period) {
                 // Adjust sumROC1:
                 // - Remove trailing ROC1 
                 // - Add new ROC1
@@ -122,8 +115,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _sumRoc1 = 0;
             _periodRoc = 0;
             _prevKama = 0;

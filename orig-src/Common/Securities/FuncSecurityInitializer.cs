@@ -29,8 +29,7 @@ package com.quantconnect.lean.Securities
         /// Initializes a new instance of the <see cref="FuncSecurityInitializer"/> class
         /// </summary>
         /// <param name="initializer">The functional implementation of <see cref="ISecurityInitializer.Initialize"/></param>
-        public FuncSecurityInitializer(Action<Security> initializer)
-        {
+        public FuncSecurityInitializer(Action<Security> initializer) {
             _initializer = initializer;
         }
 
@@ -38,8 +37,7 @@ package com.quantconnect.lean.Securities
         /// Initializes the specified security
         /// </summary>
         /// <param name="security">The security to be initialized</param>
-        public void Initialize(Security security)
-        {
+        public void Initialize(Security security) {
             _initializer(security);
         }
     }

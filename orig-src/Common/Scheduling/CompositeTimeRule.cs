@@ -36,16 +36,14 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         /// <param name="timeRules">The time rules to compose</param>
         public CompositeTimeRule(params ITimeRule[] timeRules)
-            : this((IEnumerable<ITimeRule>) timeRules)
-        {
+            : this((IEnumerable<ITimeRule>) timeRules) {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CompositeTimeRule"/> class
         /// </summary>
         /// <param name="timeRules">The time rules to compose</param>
-        public CompositeTimeRule(IEnumerable<ITimeRule> timeRules)
-        {
+        public CompositeTimeRule(IEnumerable<ITimeRule> timeRules) {
             Rules = timeRules.ToList();
         }
 
@@ -54,7 +52,7 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         public String Name
         {
-            get { return string.Join(",", Rules.Select(x => x.Name)); }
+            get { return String.join( ",", Rules.Select(x => x.Name)); }
         }
 
         /// <summary>
@@ -63,15 +61,12 @@ package com.quantconnect.lean.Scheduling
         /// <param name="dates">The dates to apply times to</param>
         /// <returns>An enumerable of date times that is the result
         /// of applying this rule to the specified dates</returns>
-        public IEnumerable<DateTime> CreateUtcEventTimes(IEnumerable<DateTime> dates)
-        {
-            foreach (date in dates)
-            {
+        public IEnumerable<DateTime> CreateUtcEventTimes(IEnumerable<DateTime> dates) {
+            foreach (date in dates) {
                 // make unqiue times and order the events before yielding
                 enumerable = new[] {date};
                 times = Rules.SelectMany(time => time.CreateUtcEventTimes(enumerable)).ToHashSet().OrderBy(x => x);
-                foreach (time in times)
-                {
+                foreach (time in times) {
                     yield return time;
                 }
             }

@@ -34,8 +34,7 @@ package com.quantconnect.lean.ToolBox.QuandlBitfinexDownloader
         /// </summary>
         /// <param name="apiKey">The quandl api key</param>
         /// <param name="scaleFactor">Scale factor used to scale the data, useful for changing the BTC units</param>
-        public QuandlBitfinexDownloader( String apiKey, int scaleFactor = 100)
-        {
+        public QuandlBitfinexDownloader( String apiKey, int scaleFactor = 100) {
             _apiKey = apiKey;
             _scaleFactor = scaleFactor;
         }
@@ -48,27 +47,22 @@ package com.quantconnect.lean.ToolBox.QuandlBitfinexDownloader
         /// <param name="startUtc">Start time of the data in UTC</param>
         /// <param name="endUtc">End time of the data in UTC</param>
         /// <returns>Enumerable of base data for this symbol</returns>
-        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc)
-        {
-            if (resolution != Resolution.Daily)
-            {
-                throw new ArgumentException("Only daily data is currently supported.");
+        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
+            if( resolution != Resolution.Daily) {
+                throw new ArgumentException( "Only daily data is currently supported.");
             }
 
             static final String collapse = "daily";
 
             url = "https://www.quandl.com/api/v3/datasets/BCHARTS/BITFINEXUSD.csv?order=asc&collapse=" + collapse + "&api_key=" + _apiKey + "&start_date="
-                + startUtc.toString("yyyy-MM-dd");
-            using (cl = new WebClient())
-            {
+                + startUtc.toString( "yyyy-MM-dd");
+            using (cl = new WebClient()) {
                 data = cl.DownloadString(url);
 
                 // skip the header line
-                foreach (item in data.Split('\n').Skip(1))
-                {
-                    line = item.Split(',');
-                    if (line.Length != 8)
-                    {
+                foreach (item in data.split('\n').Skip(1)) {
+                    line = item.split(',');
+                    if( line.Length != 8) {
                         continue;
                     }
 

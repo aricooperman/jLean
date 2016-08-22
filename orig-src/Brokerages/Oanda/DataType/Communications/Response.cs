@@ -28,28 +28,25 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
     /// </summary>
 	public class Response
 	{
-		public override String toString()
-		{
+		public @Override String toString() {
 			// use reflection to display all the properties that have non default values
 			StringBuilder result = new StringBuilder();
 			props = this.GetType().GetTypeInfo().DeclaredProperties;
-			result.AppendLine("{");
-			foreach (prop in props)
-			{
-				if (prop.Name != "Content" && prop.Name != "Subtitle" && prop.Name != "Title" && prop.Name != "UniqueId")
-				{
+			result.AppendLine( "{");
+			foreach (prop in props) {
+				if( prop.Name != "Content" && prop.Name != "Subtitle" && prop.Name != "Title" && prop.Name != "UniqueId") {
 					object value = prop.GetValue(this);
 					bool valueIsNull = value == null;
 					object defaultValue = Common.GetDefault(prop.PropertyType);
 					bool defaultValueIsNull = defaultValue == null;
-					if ((valueIsNull != defaultValueIsNull) // one is null when the other isn't
+					if( (valueIsNull != defaultValueIsNull) // one is null when the other isn't
 						|| (!valueIsNull && (value.toString() != defaultValue.toString()))) // both aren't null, so compare as strings
 					{
 						result.AppendLine(prop.Name + " : " + prop.GetValue(this));
 					}
 				}
 			}
-			result.AppendLine("}");
+			result.AppendLine( "}");
 			return result.toString();
 		}
 	}

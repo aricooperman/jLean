@@ -43,7 +43,7 @@ package com.quantconnect.lean.Data.Custom
         /// The end time of this data. Some data covers spans (trade bars) and as such we want
         /// to know the entire time span covered
         /// </summary>
-        public override DateTime EndTime
+        public @Override DateTime EndTime
         {
             get { return Time + Period; }
             set { Time = value - Period; }
@@ -60,16 +60,14 @@ package com.quantconnect.lean.Data.Custom
         /// <summary>
         /// Default quandl constructor uses Close as its value column
         /// </summary>
-        public Quandl() : this("Close")
-        {
+        public Quandl() : this( "Close") {
         }
 
         /// <summary>
         /// Constructor for creating customized quandl instance which doesn't use "Close" as its value item.
         /// </summary>
         /// <param name="valueColumnName"></param>
-        protected Quandl( String valueColumnName)
-        {
+        protected Quandl( String valueColumnName) {
             _valueColumn = valueColumnName;
         }
 
@@ -81,18 +79,15 @@ package com.quantconnect.lean.Data.Custom
         /// <param name="date">Date of the requested line</param>
         /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
         /// <returns></returns>
-        public override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode)
-        {
+        public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
             // be sure to instantiate the correct type
             data = (Quandl) Activator.CreateInstance(GetType());
             data.Symbol = config.Symbol;
-            csv = line.Split(',');
+            csv = line.split(',');
 
-            if (!_isInitialized)
-            {
+            if( !_isInitialized) {
                 _isInitialized = true;
-                foreach (propertyName in csv)
-                {
+                foreach (propertyName in csv) {
                     property = propertyName.TrimStart().TrimEnd();
                     // should we remove property names like Time?
                     // do we need to alias the Time??
@@ -105,9 +100,8 @@ package com.quantconnect.lean.Data.Custom
 
             data.Time = DateTime.ParseExact(csv[0], "yyyy-MM-dd", CultureInfo.InvariantCulture);
 
-            for (i = 1; i < csv.Length; i++)
-            {
-                value = csv[i].ToDecimal();
+            for (i = 1; i < csv.Length; i++) {
+                value = csv[i] new BigDecimal(  );
                 data.SetProperty(_propertyNames[i], value);
             }
 
@@ -124,8 +118,7 @@ package com.quantconnect.lean.Data.Custom
         /// <param name="date">Date of the data file we're looking for</param>
         /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
         /// <returns>STRING API Url for Quandl.</returns>
-        public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-        {
+        public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             source = @"https://www.quandl.com/api/v3/datasets/" + config.Symbol.Value + ".csv?order=asc&api_key=" + _authCode;
             return new SubscriptionDataSource(source, SubscriptionTransportMedium.RemoteFile);
         }
@@ -134,9 +127,8 @@ package com.quantconnect.lean.Data.Custom
         /// Set the auth code for the quandl set to the QuantConnect auth code.
         /// </summary>
         /// <param name="authCode"></param>
-        public static void SetAuthCode( String authCode)
-        {
-            if ( String.IsNullOrWhiteSpace(authCode)) return;
+        public static void SetAuthCode( String authCode) {
+            if(  String.IsNullOrWhiteSpace(authCode)) return;
 
             _authCode = authCode;
             IsAuthCodeSet = true;

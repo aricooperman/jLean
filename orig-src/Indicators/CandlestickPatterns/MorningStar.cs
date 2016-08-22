@@ -29,7 +29,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// - third candle: white real body that moves well within the first candle's real body
     /// The meaning of "short" and "long" is specified with SetCandleSettings
     /// The meaning of "moves well within" is specified with penetration and "moves" should mean the real body should
-    /// not be short ("short" is specified with SetCandleSettings) - Greg Morris wants it to be long, someone else want
+    /// not be short ( "short" is specified with SetCandleSettings) - Greg Morris wants it to be long, someone else want
     /// it to be relatively long
     /// The returned value is positive(+1): morning star is always bullish;
     /// The user should consider that a morning star is significant when it appears in a downtrend,
@@ -52,8 +52,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="name">The name of this indicator</param>
         /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
         public MorningStar( String name, BigDecimal penetration = 0.3m) 
-            : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 2 + 1)
-        {
+            : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 2 + 1) {
             _penetration = penetration;
 
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
@@ -65,14 +64,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// </summary>
         /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
         public MorningStar( BigDecimal penetration = 0.3m)
-            : this("MORNINGSTAR", penetration)
-        {
+            : this( "MORNINGSTAR", penetration) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -83,17 +81,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
-                if (Samples >= Period - _bodyLongAveragePeriod - 2 && Samples < Period - 2)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
+                if( Samples >= Period - _bodyLongAveragePeriod - 2 && Samples < Period - 2) {
                     _bodyLongPeriodTotal += GetCandleRange(CandleSettingType.BodyLong, input);
                 }
 
-                if (Samples >= Period - _bodyShortAveragePeriod - 1 && Samples < Period - 1)
-                {
+                if( Samples >= Period - _bodyShortAveragePeriod - 1 && Samples < Period - 1) {
                     _bodyShortPeriodTotal += GetCandleRange(CandleSettingType.BodyShort, input);
                     _bodyShortPeriodTotal2 += GetCandleRange(CandleSettingType.BodyShort, window[1]);
                 }
@@ -102,7 +96,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             }
 
             BigDecimal value;
-            if (
+            if( 
                 // 1st: long
                 GetRealBody(window[2]) > GetCandleAverage(CandleSettingType.BodyLong, _bodyLongPeriodTotal, window[2]) &&
                 //      black
@@ -140,8 +134,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _bodyLongPeriodTotal = 0;
             _bodyShortPeriodTotal = 0;
             _bodyShortPeriodTotal2 = 0;

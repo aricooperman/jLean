@@ -24,20 +24,19 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Tests.Brokerages.Fxcm
 {
-    [TestFixture, Ignore("These tests require a configured and active FXCM practice account")]
+    [TestFixture, Ignore( "These tests require a configured and active FXCM practice account")]
     public partial class FxcmBrokerageTests : BrokerageTests
     {
         /// <summary>
         /// Creates the brokerage under test
         /// </summary>
         /// <returns>A connected brokerage instance</returns>
-        protected override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider)
-        {
-            server = Config.Get("fxcm-server");
-            terminal = Config.Get("fxcm-terminal");
-            userName = Config.Get("fxcm-user-name");
-            password = Config.Get("fxcm-password");
-            accountId = Config.Get("fxcm-account-id");
+        protected @Override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider) {
+            server = Config.Get( "fxcm-server");
+            terminal = Config.Get( "fxcm-terminal");
+            userName = Config.Get( "fxcm-user-name");
+            password = Config.Get( "fxcm-password");
+            accountId = Config.Get( "fxcm-account-id");
 
             return new FxcmBrokerage(orderProvider, securityProvider, server, terminal, userName, password, accountId);
         }
@@ -46,23 +45,22 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         /// Disposes of the brokerage and any external resources started in order to create it
         /// </summary>
         /// <param name="brokerage">The brokerage instance to be disposed of</param>
-        protected override void DisposeBrokerage(IBrokerage brokerage)
-        {
+        protected @Override void DisposeBrokerage(IBrokerage brokerage) {
             brokerage.Disconnect();
         }
 
         /// <summary>
         /// Provides the data required to test each order type in various cases
         /// </summary>
-        public override TestCaseData[] OrderParameters
+        public @Override TestCaseData[] OrderParameters
         {
             get
             {
                 return new[]
                 {
-                    new TestCaseData(new MarketOrderTestParameters(Symbol)).SetName("MarketOrder"),
-                    new TestCaseData(new FxcmLimitOrderTestParameters(Symbol, HighPrice, LowPrice)).SetName("LimitOrder"),
-                    new TestCaseData(new FxcmStopMarketOrderTestParameters(Symbol, HighPrice, LowPrice)).SetName("StopMarketOrder"),
+                    new TestCaseData(new MarketOrderTestParameters(Symbol)).SetName( "MarketOrder"),
+                    new TestCaseData(new FxcmLimitOrderTestParameters(Symbol, HighPrice, LowPrice)).SetName( "LimitOrder"),
+                    new TestCaseData(new FxcmStopMarketOrderTestParameters(Symbol, HighPrice, LowPrice)).SetName( "StopMarketOrder"),
                 };
             }
         }
@@ -70,7 +68,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         /// <summary>
         /// Gets the symbol to be traded, must be shortable
         /// </summary>
-        protected override Symbol Symbol
+        protected @Override Symbol Symbol
         {
             get { return Symbols.EURUSD; }
         }
@@ -78,7 +76,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         /// <summary>
         /// Gets the security type associated with the <see cref="BrokerageTests.Symbol"/>
         /// </summary>
-        protected override SecurityType SecurityType
+        protected @Override SecurityType SecurityType
         {
             get { return SecurityType.Forex; }
         }
@@ -86,7 +84,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         /// <summary>
         /// Gets a high price for the specified symbol so a limit sell won't fill
         /// </summary>
-        protected override BigDecimal HighPrice
+        protected @Override BigDecimal HighPrice
         {
             // FXCM requires order prices to be not more than 5600 pips from the market price (at least for EURUSD)
             get { return 1.5m; }
@@ -95,7 +93,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         /// <summary>
         /// Gets a low price for the specified symbol so a limit buy won't fill
         /// </summary>
-        protected override BigDecimal LowPrice
+        protected @Override BigDecimal LowPrice
         {
             // FXCM requires order prices to be not more than 5600 pips from the market price (at least for EURUSD)
             get { return 0.7m; }
@@ -104,8 +102,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         /// <summary>
         /// Gets the current market price of the specified security
         /// </summary>
-        protected override BigDecimal GetAskPrice(Symbol symbol)
-        {
+        protected @Override BigDecimal GetAskPrice(Symbol symbol) {
             // not used, we use bid/ask prices
             return 0;
         }
@@ -113,42 +110,38 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         /// <summary>
         /// Gets the default order quantity
         /// </summary>
-        protected override int GetDefaultQuantity()
-        {
+        protected @Override int GetDefaultQuantity() {
             // FXCM requires a multiple of 1000 for Forex instruments
             return 1000;
         }
 
-        [Test, Ignore("This test requires disconnecting the internet to test for connection resiliency")]
-        public void ClientReconnectsAfterInternetDisconnect()
-        {
+        [Test, Ignore( "This test requires disconnecting the internet to test for connection resiliency")]
+        public void ClientReconnectsAfterInternetDisconnect() {
             brokerage = Brokerage;
             Assert.IsTrue(brokerage.IsConnected);
 
-            tenMinutes = TimeSpan.FromMinutes(10);
+            tenMinutes = Duration.ofMinutes(10);
 
-            Console.WriteLine("------");
-            Console.WriteLine("Waiting for internet disconnection ");
-            Console.WriteLine("------");
+            Console.WriteLine( "------");
+            Console.WriteLine( "Waiting for internet disconnection ");
+            Console.WriteLine( "------");
 
             // spin while we manually disconnect the internet
-            while (brokerage.IsConnected)
-            {
+            while (brokerage.IsConnected) {
                 Thread.Sleep(2500);
-                Console.Write(".");
+                Console.Write( ".");
             }
 
             stopwatch = Stopwatch.StartNew();
 
-            Console.WriteLine("------");
-            Console.WriteLine("Trying to reconnect ");
-            Console.WriteLine("------");
+            Console.WriteLine( "------");
+            Console.WriteLine( "Trying to reconnect ");
+            Console.WriteLine( "------");
 
             // spin until we're reconnected
-            while (!brokerage.IsConnected && stopwatch.Elapsed < tenMinutes)
-            {
+            while (!brokerage.IsConnected && stopwatch.Elapsed < tenMinutes) {
                 Thread.Sleep(2500);
-                Console.Write(".");
+                Console.Write( ".");
             }
 
             Assert.IsTrue(brokerage.IsConnected);

@@ -26,8 +26,7 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class SecurityPortfolioModelTests
     {
         [Test]
-        public void LastTradeProfit_FlatToLong()
-        {
+        public void LastTradeProfit_FlatToLong() {
             reference = new DateTime(2016, 02, 16, 11, 53, 30);
             SecurityPortfolioManager portfolio;
             security = InitializeTest(reference, out portfolio);
@@ -44,8 +43,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void LastTradeProfit_FlatToShort()
-        {
+        public void LastTradeProfit_FlatToShort() {
             reference = new DateTime(2016, 02, 16, 11, 53, 30);
             SecurityPortfolioManager portfolio;
             security = InitializeTest(reference, out portfolio);
@@ -62,8 +60,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void LastTradeProfit_LongToLonger()
-        {
+        public void LastTradeProfit_LongToLonger() {
             reference = new DateTime(2016, 02, 16, 11, 53, 30);
             SecurityPortfolioManager portfolio;
             security = InitializeTest(reference, out portfolio);
@@ -82,8 +79,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void LastTradeProfit_LongToFlat()
-        {
+        public void LastTradeProfit_LongToFlat() {
             reference = new DateTime(2016, 02, 16, 11, 53, 30);
             SecurityPortfolioManager portfolio;
             security = InitializeTest(reference, out portfolio);
@@ -103,8 +99,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void LastTradeProfit_LongToShort()
-        {
+        public void LastTradeProfit_LongToShort() {
             reference = new DateTime(2016, 02, 16, 11, 53, 30);
             SecurityPortfolioManager portfolio;
             security = InitializeTest(reference, out portfolio);
@@ -126,8 +121,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void LastTradeProfit_ShortToShorter()
-        {
+        public void LastTradeProfit_ShortToShorter() {
             reference = new DateTime(2016, 02, 16, 11, 53, 30);
             SecurityPortfolioManager portfolio;
             security = InitializeTest(reference, out portfolio);
@@ -145,8 +139,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void LastTradeProfit_ShortToFlat()
-        {
+        public void LastTradeProfit_ShortToFlat() {
             reference = new DateTime(2016, 02, 16, 11, 53, 30);
             SecurityPortfolioManager portfolio;
             security = InitializeTest(reference, out portfolio);
@@ -167,8 +160,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void LastTradeProfit_ShortToLong()
-        {
+        public void LastTradeProfit_ShortToLong() {
             reference = new DateTime(2016, 02, 16, 11, 53, 30);
             SecurityPortfolioManager portfolio;
             security = InitializeTest(reference, out portfolio);
@@ -189,8 +181,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.AreEqual(-5000m, security.Holdings.LastTradeProfit);
         }
 
-        private Security InitializeTest(DateTime reference, out SecurityPortfolioManager portfolio)
-        {
+        private Security InitializeTest(DateTime reference, out SecurityPortfolioManager portfolio) {
             security = new Security(SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork), CreateTradeBarConfig(), new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
             security.SetMarketPrice(new Tick { Value = 100 });
             timeKeeper = new TimeKeeper(reference);
@@ -198,14 +189,13 @@ package com.quantconnect.lean.Tests.Common.Securities
             securityManager.Add(security);
             transactionManager = new SecurityTransactionManager(securityManager);
             portfolio = new SecurityPortfolioManager(securityManager, transactionManager);
-            portfolio.SetCash("USD", 100 * 1000m, 1m);
+            portfolio.SetCash( "USD", 100 * 1000m, 1m);
             Assert.AreEqual(0, security.Holdings.Quantity);
             Assert.AreEqual(100*1000m, portfolio.CashBook[CashBook.AccountCurrency].Amount);
             return security;
         }
 
-        private static SubscriptionDataConfig CreateTradeBarConfig()
-        {
+        private static SubscriptionDataConfig CreateTradeBarConfig() {
             return new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, false);
         }
     }

@@ -33,8 +33,7 @@ package com.quantconnect.lean.ToolBox
         /// <summary>
         /// Initializes a new instance of the <see cref="LeanDataPathComponents"/> class
         /// </summary>
-        public LeanDataPathComponents(SecurityType securityType, String market, Resolution resolution, Symbol symbol, String filename, DateTime date)
-        {
+        public LeanDataPathComponents(SecurityType securityType, String market, Resolution resolution, Symbol symbol, String filename, DateTime date) {
             Date = date;
             SecurityType = securityType;
             Market = market;
@@ -48,41 +47,36 @@ package com.quantconnect.lean.ToolBox
         /// </summary>
         /// <param name="path">The path to be parsed</param>
         /// <returns>A new instance of the <see cref="LeanDataPathComponents"/> class representing the specified path</returns>
-        public static LeanDataPathComponents Parse( String path)
-        {
+        public static LeanDataPathComponents Parse( String path) {
             //"../Data/equity/usa/hour/spy.zip"
             //"../Data/equity/usa/hour/spy/20160218_trade.zip"
             fileinfo = new FileInfo(path);
             filename = fileinfo.Name;
-            parts = path.Split('/', '\\');
-            if (parts.Length < 4)
-            {
-                throw new FormatException("Unexpected path format: " + path);
+            parts = path.split('/', '\\');
+            if( parts.Length < 4) {
+                throw new FormatException( "Unexpected path format: " + path);
             }
 
             offset = 4;
             SecurityType securityType;
             rawValue = parts[parts.Length - offset];
-            if (!Enum.TryParse(rawValue, true, out securityType))
-            {
+            if( !Enum.TryParse(rawValue, true, out securityType)) {
                 offset++;
                 rawValue = parts[parts.Length - offset];
-                if (!Enum.TryParse(rawValue, true, out securityType))
-                {
-                    throw new FormatException("Unexpected path format: " + path);
+                if( !Enum.TryParse(rawValue, true, out securityType)) {
+                    throw new FormatException( "Unexpected path format: " + path);
                 }
             }
 
             market = parts[parts.Length - offset + 1];
             resolution = (Resolution) Enum.Parse(typeof (Resolution), parts[parts.Length - offset + 2], true);
             ticker = offset == 4 ? Path.GetFileNameWithoutExtension(path) : parts[parts.Length - offset + 3];
-            date = offset == 4 ? DateTime.MinValue : DateTime.ParseExact(filename.Substring(0, filename.IndexOf("_", StringComparison.Ordinal)), DateFormat.EightCharacter, null);
+            date = offset == 4 ? DateTime.MinValue : DateTime.ParseExact(filename.Substring(0, filename.IndexOf( "_", StringComparison.Ordinal)), DateFormat.EightCharacter, null );
 
             Symbol symbol;
-            if (securityType == SecurityType.Option)
-            {
+            if( securityType == SecurityType.Option) {
                 withoutExtension = Path.GetFileNameWithoutExtension(filename);
-                rawValue = withoutExtension.Substring(withoutExtension.LastIndexOf("_", StringComparison.Ordinal) + 1);
+                rawValue = withoutExtension.Substring(withoutExtension.LastIndexOf( "_", StringComparison.Ordinal) + 1);
                 style = (OptionStyle) Enum.Parse(typeof (OptionStyle), rawValue, true);
                 symbol = Symbol.CreateOption(ticker, market, style, OptionRight.Call | OptionRight.Put, 0, SecurityIdentifier.DefaultDate);
             }

@@ -26,8 +26,7 @@ package com.quantconnect.lean.Securities.Forex
         /// Initialize forex cache
         /// </summary>
         public ForexCache()
-            : base()
-        {
+            : base() {
             //Nothing to do:
         }
     } //End ForexCache Class

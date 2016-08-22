@@ -30,8 +30,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
     public class FillForwardEnumeratorTest
     {
         [Test]
-        public void FillsForwardMidDay()
-        {
+        public void FillsForwardMidDay() {
             dataResolution = Time.OneMinute;
             
             reference = new DateTime(2015, 6, 25, 9, 30, 0);
@@ -45,7 +44,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             isExtendedMarketHours = false;
-            fillForwardResolution = TimeSpan.FromMinutes(1);
+            fillForwardResolution = Duration.ofMinutes(1);
             fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(fillForwardResolution), isExtendedMarketHours, data.Last().EndTime, dataResolution);
 
             // 9:31
@@ -72,8 +71,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void FillsForwardFromPreMarket()
-        {
+        public void FillsForwardFromPreMarket() {
             dataResolution = Time.OneMinute;
             reference = new DateTime(2015, 6, 25, 9, 28, 0);
             data = new []
@@ -95,7 +93,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             isExtendedMarketHours = false;
-            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(TimeSpan.FromMinutes(1)), isExtendedMarketHours, data.Last().EndTime, dataResolution);
+            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(Duration.ofMinutes(1)), isExtendedMarketHours, data.Last().EndTime, dataResolution);
 
             // 9:29
             Assert.IsTrue(fillForwardEnumerator.MoveNext());
@@ -129,8 +127,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void FillsForwardRestOfDay()
-        {
+        public void FillsForwardRestOfDay() {
             dataResolution = Time.OneMinute;
             reference = new DateTime(2015, 6, 25, 15, 57, 0);
             data = Enumerable.Range(0, 1).Select(x => new TradeBar
@@ -143,7 +140,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             isExtendedMarketHours = false;
-            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(TimeSpan.FromMinutes(1)), isExtendedMarketHours, reference.AddMinutes(3), dataResolution);
+            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(Duration.ofMinutes(1)), isExtendedMarketHours, reference.AddMinutes(3), dataResolution);
 
             // 3:58
             Assert.IsTrue(fillForwardEnumerator.MoveNext());
@@ -170,8 +167,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void FillsForwardEndOfSubscription()
-        {
+        public void FillsForwardEndOfSubscription() {
             dataResolution = Time.OneMinute;
             reference = new DateTime(2015, 6, 25, 15, 57, 0);
             data = new[]
@@ -188,7 +184,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             isExtendedMarketHours = false;
-            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(TimeSpan.FromMinutes(1)), isExtendedMarketHours, reference.AddMinutes(3), dataResolution);
+            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(Duration.ofMinutes(1)), isExtendedMarketHours, reference.AddMinutes(3), dataResolution);
 
             // 3:58
             Assert.IsTrue(fillForwardEnumerator.MoveNext());
@@ -215,8 +211,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void FillsForwardGapBeforeEndOfSubscription()
-        {
+        public void FillsForwardGapBeforeEndOfSubscription() {
             dataResolution = Time.OneMinute;
             reference = new DateTime(2015, 6, 25, 15, 57, 0);
             data = new[]
@@ -232,7 +227,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             isExtendedMarketHours = false;
-            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(TimeSpan.FromMinutes(1)), isExtendedMarketHours, reference.Date.AddHours(16), dataResolution);
+            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(Duration.ofMinutes(1)), isExtendedMarketHours, reference.Date.AddHours(16), dataResolution);
 
             // 3:58
             Assert.IsTrue(fillForwardEnumerator.MoveNext());
@@ -259,8 +254,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void FillsForwardToNextDay()
-        {
+        public void FillsForwardToNextDay() {
             dataResolution = Time.OneHour;
             reference = new DateTime(2015, 6, 25, 14, 0, 0);
             end = reference.Date.AddDays(1).AddHours(10);
@@ -283,7 +277,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             boolean isExtendedMarketHours = false;
-            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(TimeSpan.FromHours(1)), isExtendedMarketHours, end, dataResolution);
+            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(Duration.ofHours(1)), isExtendedMarketHours, end, dataResolution);
 
             // 3:00
             Assert.IsTrue(fillForwardEnumerator.MoveNext());
@@ -310,8 +304,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void SkipsAfterMarketData()
-        {
+        public void SkipsAfterMarketData() {
             dataResolution = Time.OneHour;
             reference = new DateTime(2015, 6, 25, 14, 0, 0);
             end = reference.Date.AddDays(1).AddHours(10);
@@ -340,7 +333,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             boolean isExtendedMarketHours = false;
-            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(TimeSpan.FromHours(1)), isExtendedMarketHours, end, dataResolution);
+            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(Duration.ofHours(1)), isExtendedMarketHours, end, dataResolution);
 
             // 3:00
             Assert.IsTrue(fillForwardEnumerator.MoveNext());
@@ -374,8 +367,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void FillsForwardDailyOnHoursInMarketHours()
-        {
+        public void FillsForwardDailyOnHoursInMarketHours() {
             dataResolution = Time.OneDay;
             reference = new DateTime(2015, 6, 25);
             data = new BaseData[]
@@ -389,7 +381,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             boolean isExtendedMarketHours = false;
-            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(TimeSpan.FromHours(1)), isExtendedMarketHours, data.Last().EndTime, dataResolution);
+            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(Duration.ofHours(1)), isExtendedMarketHours, data.Last().EndTime, dataResolution);
 
             // 12:00am
             Assert.IsTrue(fillForwardEnumerator.MoveNext());
@@ -458,8 +450,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void FillsForwardDailyMissingDays()
-        {
+        public void FillsForwardDailyMissingDays() {
             dataResolution = Time.OneDay;
             reference = new DateTime(2015, 6, 25);
             data = new BaseData[]
@@ -473,7 +464,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             boolean isExtendedMarketHours = false;
-            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(TimeSpan.FromDays(1)), isExtendedMarketHours, data.Last().EndTime.AddDays(1), dataResolution);
+            fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(Duration.ofDays(1)), isExtendedMarketHours, data.Last().EndTime.AddDays(1), dataResolution);
 
             // 6/25
             Assert.IsTrue(fillForwardEnumerator.MoveNext());
@@ -514,8 +505,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void FillForwardHoursAtEndOfDayByHalfHour()
-        {
+        public void FillForwardHoursAtEndOfDayByHalfHour() {
             dataResolution = Time.OneHour;
             reference = new DateTime(2015, 6, 25, 14, 0, 0);
             data = new BaseData[]
@@ -529,7 +519,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             boolean isExtendedMarketHours = false;
-            ffResolution = TimeSpan.FromMinutes(30);
+            ffResolution = Duration.ofMinutes(30);
             fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(ffResolution), isExtendedMarketHours, data.Last().EndTime, dataResolution);
 
             // 3:00
@@ -560,8 +550,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void FillsForwardHourlyOnMinutesBeginningOfDay()
-        {
+        public void FillsForwardHourlyOnMinutesBeginningOfDay() {
             dataResolution = Time.OneHour;
             reference = new DateTime(2015, 6, 25);
             data = new BaseData[]
@@ -575,7 +564,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             boolean isExtendedMarketHours = false;
-            ffResolution = TimeSpan.FromMinutes(15);
+            ffResolution = Duration.ofMinutes(15);
             fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(ffResolution), isExtendedMarketHours, data.Last().EndTime, dataResolution);
 
             // 12:00
@@ -600,8 +589,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         [Test]
-        public void FillsForwardMissingDaysOnFillForwardResolutionOfAnHour()
-        {
+        public void FillsForwardMissingDaysOnFillForwardResolutionOfAnHour() {
             dataResolution = Time.OneDay;
             reference = new DateTime(2015, 6, 23);
             data = new BaseData[]
@@ -615,16 +603,14 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             exchange = new EquityExchange();
             boolean isExtendedMarketHours = false;
-            ffResolution = TimeSpan.FromHours(1);
+            ffResolution = Duration.ofHours(1);
             fillForwardEnumerator = new FillForwardEnumerator(enumerator, exchange, Ref.Create(ffResolution), isExtendedMarketHours, data.Last().EndTime, dataResolution);
 
             int dailyBars = 0;
             int hourlyBars = 0;
-            while (fillForwardEnumerator.MoveNext())
-            {
+            while (fillForwardEnumerator.MoveNext()) {
                 Console.WriteLine(fillForwardEnumerator.Current.EndTime);
-                if (fillForwardEnumerator.Current.Time.TimeOfDay == TimeSpan.Zero)
-                {
+                if( fillForwardEnumerator.Current.Time.TimeOfDay == TimeSpan.Zero) {
                     dailyBars++;
                 }
                 else

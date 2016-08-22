@@ -31,7 +31,7 @@ package com.quantconnect.lean.Securities
         private readonly SecurityManager _securities;
         private static final BigDecimal _minimumOrderSize = 0;
         private static final int _minimumOrderQuantity = 1;
-        private TimeSpan _marketOrderFillTimeout = TimeSpan.FromSeconds(5);
+        private TimeSpan _marketOrderFillTimeout = Duration.ofSeconds(5);
 
         private IOrderProcessor _orderProcessor;
         private Map<DateTime, decimal> _transactionRecord;
@@ -47,8 +47,7 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Initialise the transaction manager for holding and processing orders.
         /// </summary>
-        public SecurityTransactionManager(SecurityManager security)
-        {
+        public SecurityTransactionManager(SecurityManager security) {
             //Private reference for processing transactions
             _securities = security;
 
@@ -127,11 +126,9 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="request">The request to be processed</param>
         /// <returns>The order ticket for the request</returns>
-        public OrderTicket ProcessRequest(OrderRequest request)
-        {
+        public OrderTicket ProcessRequest(OrderRequest request) {
             submit = request as SubmitOrderRequest;
-            if (submit != null)
-            {
+            if( submit != null ) {
                 submit.SetOrderId(GetIncrementOrderId());
             }
             return _orderProcessor.Process(request);
@@ -142,8 +139,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="request">A request detailing the order to be submitted</param>
         /// <returns>New unique, increasing orderid</returns>
-        public OrderTicket AddOrder(SubmitOrderRequest request)
-        {
+        public OrderTicket AddOrder(SubmitOrderRequest request) {
             return ProcessRequest(request);
         }
 
@@ -152,8 +148,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="request">Request detailing how the order should be updated</param>
         /// <remarks>Does not apply if the order is already fully filled</remarks>
-        public OrderTicket UpdateOrder(UpdateOrderRequest request)
-        {
+        public OrderTicket UpdateOrder(UpdateOrderRequest request) {
             return ProcessRequest(request);
         }
 
@@ -161,8 +156,7 @@ package com.quantconnect.lean.Securities
         /// Added alias for RemoveOrder - 
         /// </summary>
         /// <param name="orderId">Order id we wish to cancel</param>
-        public OrderTicket CancelOrder(int orderId)
-        {
+        public OrderTicket CancelOrder(int orderId) {
             return RemoveOrder(orderId);
         }
 
@@ -171,11 +165,9 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="symbol">The symbol whose orders are to be cancelled</param>
         /// <returns>List containing the cancelled order tickets</returns>
-        public List<OrderTicket> CancelOpenOrders(Symbol symbol)
-        {
+        public List<OrderTicket> CancelOpenOrders(Symbol symbol) {
             cancelledOrders = new List<OrderTicket>();
-            foreach (ticket in GetOrderTickets(x => x.Symbol == symbol && x.Status.IsOpen()))
-            {
+            foreach (ticket in GetOrderTickets(x => x.Symbol == symbol && x.Status.IsOpen())) {
                 ticket.Cancel();
                 cancelledOrders.Add(ticket);
             }
@@ -186,8 +178,7 @@ package com.quantconnect.lean.Securities
         /// Remove this order from outstanding queue: user is requesting a cancel.
         /// </summary>
         /// <param name="orderId">Specific order id to remove</param>
-        public OrderTicket RemoveOrder(int orderId)
-        {
+        public OrderTicket RemoveOrder(int orderId) {
             return ProcessRequest(new CancelOrderRequest(_securities.UtcTime, orderId, string.Empty));
         }
 
@@ -196,8 +187,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="filter">The filter predicate used to find the required order tickets</param>
         /// <returns>An enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/></returns>
-        public IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null)
-        {
+        public IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null ) {
             return _orderProcessor.GetOrderTickets(filter ?? (x => true));
         }
 
@@ -206,8 +196,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="orderId">The order's id</param>
         /// <returns>The order ticket with the specified id, or null if not found</returns>
-        public OrderTicket GetOrderTicket(int orderId)
-        {
+        public OrderTicket GetOrderTicket(int orderId) {
             return _orderProcessor.GetOrderTicket(orderId);
         }
 
@@ -218,18 +207,15 @@ package com.quantconnect.lean.Securities
         /// <returns>True if we successfully wait for the fill, false if we were unable
         /// to wait. This may be because it is not a market order or because the timeout
         /// was reached</returns>
-        public boolean WaitForOrder(int orderId)
-        {
+        public boolean WaitForOrder(int orderId) {
             orderTicket = GetOrderTicket(orderId);
-            if (orderTicket == null)
-            {
-                Log.Error("SecurityTransactionManager.WaitForOrder(): Unable to locate ticket for order: " + orderId);
+            if( orderTicket == null ) {
+                Log.Error( "SecurityTransactionManager.WaitForOrder(): Unable to locate ticket for order: " + orderId);
                 return false;
             }
 
-            if (!orderTicket.OrderClosed.WaitOne(_marketOrderFillTimeout))
-            {
-                Log.Error("SecurityTransactionManager.WaitForOrder(): Order did not fill within {0} seconds.", _marketOrderFillTimeout.TotalSeconds);
+            if( !orderTicket.OrderClosed.WaitOne(_marketOrderFillTimeout)) {
+                Log.Error( "SecurityTransactionManager.WaitForOrder(): Order did not fill within %1$s seconds.", _marketOrderFillTimeout.TotalSeconds);
                 return false;
             }
 
@@ -240,8 +226,7 @@ package com.quantconnect.lean.Securities
         /// Get a list of all open orders.
         /// </summary>
         /// <returns>List of open orders.</returns>
-        public List<Order> GetOpenOrders()
-        {
+        public List<Order> GetOpenOrders() {
             return _orderProcessor.GetOrders(x => x.Status.IsOpen()).ToList();
         }
 
@@ -250,8 +235,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="symbol">The symbol for which to return the orders</param>
         /// <returns>List of open orders.</returns>
-        public List<Order> GetOpenOrders(Symbol symbol)
-        {
+        public List<Order> GetOpenOrders(Symbol symbol) {
             return _orderProcessor.GetOrders(x => x.Symbol == symbol && x.Status.IsOpen()).ToList();
         }
 
@@ -268,8 +252,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="orderId">Order id to fetch</param>
         /// <returns>The order with the specified id, or null if no match is found</returns>
-        public Order GetOrderById(int orderId)
-        {
+        public Order GetOrderById(int orderId) {
             return _orderProcessor.GetOrderById(orderId);
         }
 
@@ -278,8 +261,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="brokerageId">The brokerage id to fetch</param>
         /// <returns>The first order matching the brokerage id, or null if no match is found</returns>
-        public Order GetOrderByBrokerageId( String brokerageId)
-        {
+        public Order GetOrderByBrokerageId( String brokerageId) {
             return _orderProcessor.GetOrderByBrokerageId(brokerageId);
         }
 
@@ -288,8 +270,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="filter">Delegate used to filter the orders</param>
         /// <returns>All open orders this order provider currently holds</returns>
-        public IEnumerable<Order> GetOrders(Func<Order, bool> filter)
-        {
+        public IEnumerable<Order> GetOrders(Func<Order, bool> filter) {
             return _orderProcessor.GetOrders(filter);
         }
 
@@ -299,22 +280,20 @@ package com.quantconnect.lean.Securities
         /// <param name="portfolio">Our portfolio</param>
         /// <param name="order">Order we're checking</param>
         /// <returns>True if sufficient capital.</returns>
-        public boolean GetSufficientCapitalForOrder(SecurityPortfolioManager portfolio, Order order)
-        {
+        public boolean GetSufficientCapitalForOrder(SecurityPortfolioManager portfolio, Order order) {
             // short circuit the div 0 case
-            if (order.Quantity == 0) return true;
+            if( order.Quantity == 0) return true;
 
             security = _securities[order.Symbol];
 
             ticket = GetOrderTicket(order.Id);
-            if (ticket == null)
-            {
-                Log.Error("SecurityTransactionManager.GetSufficientCapitalForOrder(): Null order ticket for id: " + order.Id);
+            if( ticket == null ) {
+                Log.Error( "SecurityTransactionManager.GetSufficientCapitalForOrder(): Null order ticket for id: " + order.Id);
                 return false;
             }
 
             // When order only reduces or closes a security position, capital is always sufficient
-            if (security.Holdings.Quantity * order.Quantity < 0 && Math.Abs(security.Holdings.Quantity) >= Math.Abs(order.Quantity)) return true;
+            if( security.Holdings.Quantity * order.Quantity < 0 && Math.Abs(security.Holdings.Quantity) >= Math.Abs(order.Quantity)) return true;
 
             freeMargin = security.MarginModel.GetMarginRemaining(portfolio, security, order.Direction);
             initialMarginRequiredForOrder = security.MarginModel.GetInitialMarginRequiredForOrder(security, order);
@@ -323,9 +302,8 @@ package com.quantconnect.lean.Securities
             percentUnfilled = (Math.Abs(order.Quantity) - Math.Abs(ticket.QuantityFilled))/Math.Abs(order.Quantity);
             initialMarginRequiredForRemainderOfOrder = percentUnfilled*initialMarginRequiredForOrder;
 
-            if (Math.Abs(initialMarginRequiredForRemainderOfOrder) > freeMargin)
-            {
-                Log.Error( String.format("SecurityTransactionManager.GetSufficientCapitalForOrder(): Id: {0}, Initial Margin: {1}, Free Margin: {2}", order.Id, initialMarginRequiredForOrder, freeMargin));
+            if( Math.Abs(initialMarginRequiredForRemainderOfOrder) > freeMargin) {
+                Log.Error( String.format( "SecurityTransactionManager.GetSufficientCapitalForOrder(): Id: %1$s, Initial Margin: %2$s, Free Margin: %3$s", order.Id, initialMarginRequiredForOrder, freeMargin));
                 return false;
             }
             return true;
@@ -335,8 +313,7 @@ package com.quantconnect.lean.Securities
         /// Get a new order id, and increment the internal counter.
         /// </summary>
         /// <returns>New unique int order id.</returns>
-        public int GetIncrementOrderId()
-        {
+        public int GetIncrementOrderId() {
             return Interlocked.Increment(ref _orderId);
         }
 
@@ -344,16 +321,14 @@ package com.quantconnect.lean.Securities
         /// Sets the <see cref="IOrderProvider"/> used for fetching orders for the algorithm
         /// </summary>
         /// <param name="orderProvider">The <see cref="IOrderProvider"/> to be used to manage fetching orders</param>
-        public void SetOrderProcessor(IOrderProcessor orderProvider)
-        {
+        public void SetOrderProcessor(IOrderProcessor orderProvider) {
             _orderProcessor = orderProvider;
         }
 
         /// <summary>
         /// Returns true when the specified order is in a completed state
         /// </summary>
-        private static boolean Completed(Order order)
-        {
+        private static boolean Completed(Order order) {
             return order.Status == OrderStatus.Filled || order.Status == OrderStatus.PartiallyFilled || order.Status == OrderStatus.Invalid || order.Status == OrderStatus.Canceled;
         }
     }

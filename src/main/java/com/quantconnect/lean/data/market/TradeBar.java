@@ -16,96 +16,115 @@
 package com.quantconnect.lean.data.market;
 
 import java.math.BigDecimal;
+import java.nio.file.Path;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.quantconnect.lean.Extensions;
+import com.quantconnect.lean.Global.DateFormat;
+import com.quantconnect.lean.Global.MarketDataType;
+import com.quantconnect.lean.Global.Resolution;
+import com.quantconnect.lean.Global.SecurityType;
+import com.quantconnect.lean.Global.SubscriptionTransportMedium;
+import com.quantconnect.lean.Globals;
+import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.data.BaseData;
+import com.quantconnect.lean.data.FileFormat;
+import com.quantconnect.lean.data.SubscriptionDataConfig;
+import com.quantconnect.lean.data.SubscriptionDataSource;
+import com.quantconnect.lean.util.LeanData;
 
-//using System.Globalization;
-//using System.IO;
-//using System.Threading;
-//using QuantConnect.Logging;
-//using QuantConnect.Util;
 
 /// TradeBar class for second and minute resolution data: 
 /// An OHLC implementation of the QuantConnect BaseData class with parameters for candles.
 public class TradeBar extends BaseData implements IBar {
     // scale factor used in QC equity/forex data files
-    private static final BigDecimal _scaleFactor = 1/10000m;
+    private static final BigDecimal _scaleFactor = BigDecimal.ONE.divide( BigDecimal.valueOf( 10000 ) );
 
-    private int _initialized;
-    private BigDecimal _open;
-    private BigDecimal _high;
-    private BigDecimal _low;
+    private final Logger log = LoggerFactory.getLogger( getClass() );
 
-    /// <summary>
+    private final AtomicBoolean initialized;
+    private BigDecimal open;
+    private BigDecimal high;
+    private BigDecimal low;
+
     /// Volume:
-    /// </summary>
-    public long Volume { get; set; }
-
-    /// <summary>
-    /// Opening price of the bar: Defined as the price at the start of the time period.
-    /// </summary>
-    public BigDecimal Open
-    {
-        get { return _open; }
-        set
-        {
-            Initialize(value);
-            _open = value;
-        }
-    }
-
-    /// <summary>
-    /// High price of the TradeBar during the time period.
-    /// </summary>
-    public BigDecimal High
-    {
-        get { return _high; }
-        set
-        {
-            Initialize(value);
-            _high = value;
-        }
-    }
-
-    /// <summary>
-    /// Low price of the TradeBar during the time period.
-    /// </summary>
-    public BigDecimal Low
-    {
-        get { return _low; }
-        set
-        {
-            Initialize(value);
-            _low = value;
-        }
-    }
-
-    /// <summary>
-    /// Closing price of the TradeBar. Defined as the price at Start Time + TimeSpan.
-    /// </summary>
-    public BigDecimal Close
-    {
-        get { return Value; }
-        set
-        {
-            Initialize(value);
-            Value = value;
-        }
-    }
-
-    /// <summary>
-    /// The closing time of this bar, computed via the Time and Period
-    /// </summary>
-    public override DateTime EndTime
-    {
-        get { return Time + Period; }
-        set { Period = value - Time; } 
-    }
-
-    /// <summary>
+    private long volume;
+    
     /// The period of this trade bar, (second, minute, daily, ect...)
-    /// </summary>
-    public TimeSpan Period { get; set; }
+    private Duration period;
+    
+    public long getVolume() {
+        return volume;
+    }
+    
+    public void setVolume( long v ) {
+        volume = v;
+    }
+
+    /// Opening price of the bar: Defined as the price at the start of the time period.
+    public BigDecimal getOpen() {
+        return open;
+    }
+    
+    public void setOpen( BigDecimal value ) {
+        initialize( value );
+        open = value;
+    }
+
+    /// High price of the TradeBar during the time period.
+    public BigDecimal getHigh() {
+        return high;
+    }
+    
+    public void setHigh( BigDecimal value ) {
+        initialize( value );
+        high = value;
+    }
+
+    /// Low price of the TradeBar during the time period.
+    public BigDecimal getLow() {
+        return low; 
+    }
+    
+    public void setLow( BigDecimal value ) {
+        initialize( value );
+        low = value;
+    }
+
+    /// Closing price of the TradeBar. Defined as the price at Start Time + TimeSpan.
+    public BigDecimal getClose() {
+        return getValue();
+    }
+     
+    public void setClose( BigDecimal value ) {
+        initialize( value );
+        setValue( value );
+    }
+
+    /// The closing time of this bar, computed via the Time and Period
+    public LocalDateTime getEndTime() {
+        return getTime().plus( period );
+    }
+    
+    public void setEndTime( LocalDateTime value ) {
+        period = Duration.between( getTime(), value ); 
+    }
+
+    
+    public Duration getPeriod() {
+        return period;
+    }
+    
+    public void setPeriod( Duration value ) {
+        this.period = value;
+    }
 
     //In Base Class: Alias of Closing:
     //public BigDecimal Price;
@@ -118,33 +137,30 @@ public class TradeBar extends BaseData implements IBar {
 
     /// Default initializer to setup an empty tradebar.
     public TradeBar() {
-        Symbol = Symbol.Empty;
-        DataType = MarketDataType.TradeBar;
-        Period = TimeSpan.FromMinutes(1);
+        setSymbol( Symbol.EMPTY );
+        setDataType( MarketDataType.TradeBar );
+        period = Duration.ofMinutes( 1 );
+        initialized = new AtomicBoolean( false );
     }
 
-    /// <summary>
     /// Cloner constructor for implementing fill forward. 
     /// Return a new instance with the same values as this original.
-    /// </summary>
     /// <param name="original">Original tradebar object we seek to clone</param>
     public TradeBar( TradeBar original ) {
-        DataType = MarketDataType.TradeBar;
-        Time = new DateTime(original.Time.Ticks);
-        Symbol = original.Symbol;
-        Value = original.Close;
-        Open = original.Open;
-        High = original.High;
-        Low = original.Low;
-        Close = original.Close;
-        Volume = original.Volume;
-        Period = original.Period;
-        _initialized = 1;
+        setDataType( MarketDataType.TradeBar );
+        setTime( original.getTime() );
+        setSymbol( original.getSymbol() );
+        setValue( original.getClose() );
+        setClose( original.getClose() );
+        this.open = original.open;
+        this.high = original.high;
+        this.low = original.low;
+        this.volume = original.volume;
+        this.period = original.period;
+        this.initialized = new AtomicBoolean( true );
     }
 
-    /// <summary>
     /// Initialize Trade Bar with OHLC Values:
-    /// </summary>
     /// <param name="time">DateTime Timestamp of the bar</param>
     /// <param name="symbol">Market MarketType Symbol</param>
     /// <param name="open">Decimal Opening Price</param>
@@ -153,201 +169,179 @@ public class TradeBar extends BaseData implements IBar {
     /// <param name="close">Decimal Close price of this bar</param>
     /// <param name="volume">Volume sum over day</param>
     /// <param name="period">The period of this bar, specify null for default of 1 minute</param>
-    public TradeBar( DateTime time, Symbol symbol, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close, long volume, TimeSpan? period = null) {
-        Time = time;
-        Symbol = symbol;
-        Value = close;
-        Open = open;
-        High = high;
-        Low = low;
-        Close = close;
-        Volume = volume;
-        Period = period ?? TimeSpan.FromMinutes(1);
-        DataType = MarketDataType.TradeBar;
-        _initialized = 1;
+    public TradeBar( LocalDateTime time, Symbol symbol, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close, long volume ) {
+        this( time, symbol, open, high, low, close, volume, null );
+    }
+    
+    public TradeBar( LocalDateTime time, Symbol symbol, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close, long volume, Duration period ) {
+        setTime( time );
+        setSymbol( symbol );
+        setValue( close );
+        setDataType( MarketDataType.TradeBar );
+        setClose( close );
+        this.open = open;
+        this.high = high;
+        this.low = low;
+        this.volume = volume;
+        this.period = period != null ? period : Duration.ofMinutes( 1 );
+        this.initialized = new AtomicBoolean( true );
     }
 
-    /// <summary>
     /// TradeBar Reader: Fetch the data from the QC storage and feed it line by line into the engine.
-    /// </summary>
     /// <param name="config">Symbols, Resolution, DataType, </param>
     /// <param name="line">Line from the data file requested</param>
     /// <param name="date">Date of this reader request</param>
     /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
     /// <returns>Enumerable iterator for returning each line of the required data.</returns>
     @Override
-    public BaseData reader( SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode ) {
+    public BaseData reader( SubscriptionDataConfig config, String line, LocalDate date, boolean isLiveMode ) {
         //Handle end of file:
-        if (line == null)
-        {
+        if( line == null )
             return null;
-        }
 
-        if (isLiveMode)
-        {
+        if( isLiveMode )
             return new TradeBar();
-        }
 
-        try
-        {
-            switch (config.SecurityType)
-            {
+        try {
+            switch( config.securityType ) {
                 //Equity File Data Format:
-                case SecurityType.Equity:
-                    return ParseEquity<TradeBar>(config, line, date);
-
+                case Equity:
+                    return parseEquity( config, line, date, TradeBar.class );
                 //FOREX has a different data file format:
-                case SecurityType.Forex:
-                    return ParseForex<TradeBar>(config, line, date);
-
-                case SecurityType.Cfd:
-                    return ParseCfd<TradeBar>(config, line, date);
-
-                case SecurityType.Option:
-                    return ParseOption<TradeBar>(config, line, date);
+                case Forex:
+                    return parseForex( config, line, date, TradeBar.class );
+                case Cfd:
+                    return parseCfd( config, line, date, TradeBar.class );
+                case Option:
+                    return parseOption( config, line, date, TradeBar.class );
+                default:
+                    break;
             }
         }
-        catch (Exception err)
-        {
-            Log.Error(err, "SecurityType: " + config.SecurityType + " Line: " + line);
+        catch( Exception err ) {
+            log .error( "SecurityType: " + config.securityType + " Line: " + line, err );
         }
 
         // if we couldn't parse it above return a default instance
-        return new TradeBar{Symbol = config.Symbol, Period = config.Increment};
+        final TradeBar tradeBar = new TradeBar();
+        tradeBar.setSymbol( config.getSymbol() );
+        tradeBar.period = config.increment;
+        return tradeBar;
     }
 
-    /// <summary>
     /// Parses the trade bar data line assuming QC data formats
-    /// </summary>
-    public static TradeBar Parse(SubscriptionDataConfig config, String line, DateTime baseDate)
-    {
-        switch (config.SecurityType)
-        {
-            case SecurityType.Equity:
-                return ParseEquity(config, line, baseDate);
-
-            case SecurityType.Forex:
-                return ParseForex(config, line, baseDate);
-
-            case SecurityType.Cfd:
-                return ParseCfd(config, line, baseDate);
+    public static TradeBar parse( SubscriptionDataConfig config, String line, LocalDate baseDate ) {
+        switch( config.securityType ) {
+            case Equity:
+                return parseEquity( config, line, baseDate );
+            case Forex:
+                return parseForex( config, line, baseDate );
+            case Cfd:
+                return parseCfd( config, line, baseDate );
+            default:
+                break;
         }
 
         return null;
     }
 
-    /// <summary>
     /// Parses equity trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
-    /// </summary>
     /// <typeparam name="T">The requested output type, must derive from TradeBar</typeparam>
     /// <param name="config">Symbols, Resolution, DataType, </param>
     /// <param name="line">Line from the data file requested</param>
     /// <param name="date">Date of this reader request</param>
     /// <returns></returns>
-    public static T ParseEquity<T>(SubscriptionDataConfig config, String line, DateTime date)
-        where T : TradeBar, new()
-    {
-        tradeBar = new T
-        {
-            Symbol = config.Symbol,
-            Period = config.Increment
-        };
+    public static <T extends TradeBar> T parseEquity( SubscriptionDataConfig config, String line, LocalDate date, Class<T> clazz ) {
+        T tradeBar;
+        try {
+            tradeBar = clazz.newInstance();
+        }
+        catch( InstantiationException | IllegalAccessException e ) {
+            throw new RuntimeException( e );
+        }
 
-        csv = line.ToCsv(6);
-        if (config.Resolution == Resolution.Daily || config.Resolution == Resolution.Hour)
-        {
+        tradeBar.setSymbol( config.getSymbol() );
+        tradeBar.setPeriod( config.increment );
+
+        final String[] csv = Extensions.toCsv( line, 6 );
+        if( config.resolution == Resolution.Daily || config.resolution == Resolution.Hour )
             // hourly and daily have different time format, and can use slow, robust c# parser.
-            tradeBar.Time = DateTime.ParseExact(csv[0], DateFormat.TwelveCharacter, CultureInfo.InvariantCulture).ConvertTo(config.DataTimeZone, config.ExchangeTimeZone);
-        }
+            tradeBar.setTime( Extensions.convertTo( LocalDateTime.parse( csv[0], DateFormat.TwelveCharacter ), config.dataTimeZone, config.exchangeTimeZone ) );
         else
-        {
             // Using custom "ToDecimal" conversion for speed on high resolution data.
-            tradeBar.Time = date.Date.AddMilliseconds(csv[0].ToInt32()).ConvertTo(config.DataTimeZone, config.ExchangeTimeZone);
-        }
+            tradeBar.setTime( Extensions.convertTo( date.atStartOfDay().plus( Integer.parseInt( csv[0] ), ChronoUnit.MILLIS ), config.dataTimeZone, config.exchangeTimeZone ) );
 
-        tradeBar.Open = config.GetNormalizedPrice(csv[1].ToDecimal()*_scaleFactor);
-        tradeBar.High = config.GetNormalizedPrice(csv[2].ToDecimal()*_scaleFactor);
-        tradeBar.Low = config.GetNormalizedPrice(csv[3].ToDecimal()*_scaleFactor);
-        tradeBar.Close = config.GetNormalizedPrice(csv[4].ToDecimal()*_scaleFactor);
-        tradeBar.Volume = csv[5].ToInt64();
+        tradeBar.setOpen( config.getNormalizedPrice( _scaleFactor.multiply( new BigDecimal( csv[1] ) ) ) );
+        tradeBar.setHigh( config.getNormalizedPrice( _scaleFactor.multiply( new BigDecimal( csv[2] ) ) ) );
+        tradeBar.setLow( config.getNormalizedPrice( _scaleFactor.multiply( new BigDecimal( csv[3] ) ) ) );
+        tradeBar.setClose( config.getNormalizedPrice( _scaleFactor.multiply( new BigDecimal( csv[4] ) ) ) );
+        tradeBar.setVolume( Long.parseLong( csv[5] ) );
 
         return tradeBar;
     }
 
-    /// <summary>
     /// Parses equity trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
-    /// </summary>
     /// <param name="config">Symbols, Resolution, DataType, </param>
     /// <param name="line">Line from the data file requested</param>
     /// <param name="date">Date of this reader request</param>
     /// <returns></returns>
-    public static TradeBar ParseEquity(SubscriptionDataConfig config, String line, DateTime date)
-    {
-        return ParseEquity<TradeBar>(config, line, date);
+    public static TradeBar parseEquity( SubscriptionDataConfig config, String line, LocalDate date ) {
+        return parseEquity( config, line, date, TradeBar.class );
     }
 
-    /// <summary>
     /// Parses forex trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
-    /// </summary>
     /// <typeparam name="T">The requested output type, must derive from TradeBar</typeparam>
     /// <param name="config">Symbols, Resolution, DataType, </param>
     /// <param name="line">Line from the data file requested</param>
     /// <param name="date">The base data used to compute the time of the bar since the line specifies a milliseconds since midnight</param>
     /// <returns></returns>
-    public static T ParseForex<T>(SubscriptionDataConfig config, String line, DateTime date)
-        where T : TradeBar, new()
-    {
-        tradeBar = new T
-        {
-            Symbol = config.Symbol,
-            Period = config.Increment
-        };
-
-        csv = line.ToCsv(5);
-        if (config.Resolution == Resolution.Daily || config.Resolution == Resolution.Hour)
-        {
-            // hourly and daily have different time format, and can use slow, robust c# parser.
-            tradeBar.Time = DateTime.ParseExact(csv[0], DateFormat.TwelveCharacter, CultureInfo.InvariantCulture).ConvertTo(config.DataTimeZone, config.ExchangeTimeZone);
+    public static <T extends TradeBar> T parseForex( SubscriptionDataConfig config, String line, LocalDate date, Class<T> clazz ) {
+        T tradeBar;
+        try {
+            tradeBar = clazz.newInstance();
         }
+        catch( InstantiationException | IllegalAccessException e ) {
+            throw new RuntimeException( e );
+        }
+
+        tradeBar.setSymbol( config.getSymbol() );
+        tradeBar.setPeriod( config.increment );
+
+        final String[] csv = Extensions.toCsv( line, 5 );
+        if( config.resolution == Resolution.Daily || config.resolution == Resolution.Hour )
+            // hourly and daily have different time format, and can use slow, robust c# parser.
+            tradeBar.setTime( Extensions.convertTo( LocalDateTime.parse( csv[0], DateFormat.TwelveCharacter ), config.dataTimeZone, config.exchangeTimeZone ) );
         else
-        {
             //Fast BigDecimal conversion
-            tradeBar.Time = date.Date.AddMilliseconds(csv[0].ToInt32()).ConvertTo(config.DataTimeZone, config.ExchangeTimeZone);
-        }
+            tradeBar.setTime( Extensions.convertTo( date.atStartOfDay().plus( Integer.parseInt( csv[0] ), ChronoUnit.MILLIS ), 
+                    config.dataTimeZone, config.exchangeTimeZone ) );
 
-        tradeBar.Open = csv[1].ToDecimal();
-        tradeBar.High = csv[2].ToDecimal();
-        tradeBar.Low = csv[3].ToDecimal();
-        tradeBar.Close = csv[4].ToDecimal();
+        tradeBar.setOpen( new BigDecimal( csv[1] ) );
+        tradeBar.setHigh( new BigDecimal( csv[2] ) );
+        tradeBar.setLow( new BigDecimal( csv[3] ) );
+        tradeBar.setClose( new BigDecimal( csv[4] ) );
 
         return tradeBar;
     }
 
-    /// <summary>
     /// Parses forex trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
-    /// </summary>
     /// <param name="config">Symbols, Resolution, DataType, </param>
     /// <param name="line">Line from the data file requested</param>
     /// <param name="date">The base data used to compute the time of the bar since the line specifies a milliseconds since midnight</param>
     /// <returns></returns>
-    public static TradeBar ParseForex(SubscriptionDataConfig config, String line, DateTime date)
-    {
-        return ParseForex<TradeBar>(config, line, date);
+    public static TradeBar parseForex( SubscriptionDataConfig config, String line, LocalDate date ) {
+        return parseForex( config, line, date, TradeBar.class );
     }
 
-    /// <summary>
     /// Parses CFD trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
-    /// </summary>
     /// <typeparam name="T">The requested output type, must derive from TradeBar</typeparam>
     /// <param name="config">Symbols, Resolution, DataType, </param>
     /// <param name="line">Line from the data file requested</param>
     /// <param name="date">The base data used to compute the time of the bar since the line specifies a milliseconds since midnight</param>
     /// <returns></returns>
-    public static T ParseCfd<T>(SubscriptionDataConfig config, String line, DateTime date)
-        where T : TradeBar, new()
-    {
+    public static <T extends TradeBar> T parseCfd( SubscriptionDataConfig config, String line, LocalDate date, Class<T> clazz ) {
         // CFD has the same data format as Forex
-        return ParseForex<T>(config, line, date);
+        return parseForex( config, line, date, clazz );
     }
 
     /// <summary>
@@ -357,79 +351,74 @@ public class TradeBar extends BaseData implements IBar {
     /// <param name="line">Line from the data file requested</param>
     /// <param name="date">The base data used to compute the time of the bar since the line specifies a milliseconds since midnight</param>
     /// <returns></returns>
-    public static TradeBar ParseCfd(SubscriptionDataConfig config, String line, DateTime date)
-    {
-        return ParseCfd<TradeBar>(config, line, date);
+    public static TradeBar parseCfd( SubscriptionDataConfig config, String line, LocalDate date ) {
+        return parseCfd( config, line, date, TradeBar.class );
     }
 
-    /// <summary>
     /// Parses CFD trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
-    /// </summary>
     /// <typeparam name="T">The requested output type, must derive from TradeBar</typeparam>
     /// <param name="config">Symbols, Resolution, DataType, </param>
     /// <param name="line">Line from the data file requested</param>
     /// <param name="date">The base data used to compute the time of the bar since the line specifies a milliseconds since midnight</param>
     /// <returns></returns>
-    public static T ParseOption<T>(SubscriptionDataConfig config, String line, DateTime date)
-        where T : TradeBar, new()
-    {
-        tradeBar = new T
-        {
-            Period = config.Increment,
-            Symbol = config.Symbol
-        };
+    public static <T extends TradeBar> T parseOption( SubscriptionDataConfig config, String line, LocalDate date, Class<T> clazz ) {
+        T tradeBar;
+        try {
+            tradeBar = clazz.newInstance();
+        }
+        catch( InstantiationException | IllegalAccessException e ) {
+            throw new RuntimeException( e );
+        }
+        
+        tradeBar.setPeriod( config.increment );
+        tradeBar.setSymbol( config.getSymbol() );
 
-        csv = line.ToCsv(6);
-        if (config.Resolution == Resolution.Daily || config.Resolution == Resolution.Hour)
-        {
+        final String[] csv = Extensions.toCsv( line, 6 );
+        if( config.resolution == Resolution.Daily || config.resolution == Resolution.Hour )
             // hourly and daily have different time format, and can use slow, robust c# parser.
-            tradeBar.Time = DateTime.ParseExact(csv[0], DateFormat.TwelveCharacter, CultureInfo.InvariantCulture).ConvertTo(config.DataTimeZone, config.ExchangeTimeZone);
-        }
+            tradeBar.setTime( Extensions.convertTo( LocalDateTime.parse( csv[0], DateFormat.TwelveCharacter ), config.dataTimeZone, config.exchangeTimeZone ) );
         else
-        {
             // Using custom "ToDecimal" conversion for speed on high resolution data.
-            tradeBar.Time = date.Date.AddMilliseconds(csv[0].ToInt32()).ConvertTo(config.DataTimeZone, config.ExchangeTimeZone);
-        }
+            tradeBar.setTime( Extensions.convertTo( date.atStartOfDay().plus( Integer.parseInt( csv[0] ), ChronoUnit.MILLIS ), config.dataTimeZone, config.exchangeTimeZone ) );
 
-        tradeBar.Open = config.GetNormalizedPrice(csv[1].ToDecimal() * _scaleFactor);
-        tradeBar.High = config.GetNormalizedPrice(csv[2].ToDecimal() * _scaleFactor);
-        tradeBar.Low = config.GetNormalizedPrice(csv[3].ToDecimal() * _scaleFactor);
-        tradeBar.Close = config.GetNormalizedPrice(csv[4].ToDecimal() * _scaleFactor);
-        tradeBar.Volume = csv[5].ToInt64();
+        tradeBar.setOpen( config.getNormalizedPrice( _scaleFactor.multiply( new BigDecimal( csv[1] ) ) ) );
+        tradeBar.setHigh( config.getNormalizedPrice( _scaleFactor.multiply( new BigDecimal( csv[2] ) ) ) );
+        tradeBar.setLow( config.getNormalizedPrice( _scaleFactor.multiply( new BigDecimal( csv[3] ) ) ) );
+        tradeBar.setClose( config.getNormalizedPrice( _scaleFactor.multiply( new BigDecimal( csv[4] ) ) ) );
+        tradeBar.setVolume( Long.parseLong( csv[5] ) );
 
         return tradeBar;
     }
 
-    /// <summary>
     /// Parses CFD trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
-    /// </summary>
     /// <param name="config">Symbols, Resolution, DataType, </param>
     /// <param name="line">Line from the data file requested</param>
     /// <param name="date">The base data used to compute the time of the bar since the line specifies a milliseconds since midnight</param>
     /// <returns></returns>
-    public static TradeBar ParseOption(SubscriptionDataConfig config, String line, DateTime date)
-    {
-        return ParseOption<TradeBar>(config, line, date);
+    public static TradeBar parseOption( SubscriptionDataConfig config, String line, LocalDate date ) {
+        return parseOption( config, line, date, TradeBar.class );
     }
 
-    /// <summary>
     /// Update the tradebar - build the bar from this pricing information:
-    /// </summary>
     /// <param name="lastTrade">This trade price</param>
     /// <param name="bidPrice">Current bid price (not used) </param>
     /// <param name="askPrice">Current asking price (not used) </param>
     /// <param name="volume">Volume of this trade</param>
     /// <param name="bidSize">The size of the current bid, if available</param>
     /// <param name="askSize">The size of the current ask, if available</param>
-    public override void Update( BigDecimal lastTrade, BigDecimal bidPrice, BigDecimal askPrice, BigDecimal volume, BigDecimal bidSize, BigDecimal askSize)
-    {
-        Initialize(lastTrade);
-        if (lastTrade > High) High = lastTrade;
-        if (lastTrade < Low) Low = lastTrade;
+    @Override
+    public void update( BigDecimal lastTrade, BigDecimal bidPrice, BigDecimal askPrice, BigDecimal volume, BigDecimal bidSize, BigDecimal askSize ) {
+        initialize( lastTrade );
+        if( lastTrade.compareTo( high ) > 0 ) 
+            high = lastTrade;
+        
+        if( lastTrade.compareTo( low ) < 0 ) 
+            low = lastTrade;
+        
         //Volume is the total summed volume of trades in this bar:
-        Volume += Convert.ToInt32(volume);
+        this.volume += volume.intValue();
         //Always set the closing price;
-        Close = lastTrade;
+        setClose( lastTrade );
     }
 
     /// <summary>
@@ -440,33 +429,30 @@ public class TradeBar extends BaseData implements IBar {
     /// <param name="date">Date of this source request if source spread across multiple files</param>
     /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
     /// <returns>String source location of the file</returns>
-    public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-    {
-        if (isLiveMode)
-        {
-            return new SubscriptionDataSource( String.Empty, SubscriptionTransportMedium.LocalFile);
-        }
+    @Override
+    public SubscriptionDataSource getSource( SubscriptionDataConfig config, LocalDate date, boolean isLiveMode ) {
+        if( isLiveMode)
+            return new SubscriptionDataSource( null, SubscriptionTransportMedium.LocalFile );
 
-        source = LeanData.GenerateZipFilePath(Globals.DataFolder, config.Symbol, date, config.Resolution, config.TickType);
-        if (config.SecurityType == SecurityType.Option)
-        {
-            source += "#" + LeanData.GenerateZipEntryName(config.Symbol, date, config.Resolution, config.TickType);
-        }
-        return new SubscriptionDataSource(source, SubscriptionTransportMedium.LocalFile, FileFormat.Csv);
+        Path source = LeanData.generateZipFilePath( Globals.getDataFolder(), config.getSymbol(), date, config.resolution, config.tickType );
+        if( config.securityType == SecurityType.Option )
+            source = source.resolve( "#" + LeanData.generateZipEntryName( config.getSymbol(), date, config.resolution, config.tickType ) );
+
+        return new SubscriptionDataSource( source, SubscriptionTransportMedium.LocalFile, FileFormat.Csv );
     }
 
     /// Return a new instance clone of this object
     public BaseData clone() {
-        return (BaseData)MemberwiseClone();
+        return (BaseData)super.clone();
     }
 
     /// Initializes this bar with a first data point
     /// <param name="value">The seed value for this bar</param>
     private void initialize( BigDecimal value ) {
-        if( Interlocked.CompareExchange( ref _initialized, 1, 0 ) == 0 ) {
-            _open = value;
-            _low = value;
-            _high = value;
+        if( initialized.compareAndSet( false, true ) ) {
+            open = value;
+            low = value;
+            high = value;
         }
     }
 }

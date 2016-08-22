@@ -43,7 +43,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return _smoother.IsReady; }
         }
@@ -55,9 +55,8 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The smoothing period used to smooth the true range values</param>
         /// <param name="movingAverageType">The type of smoothing used to smooth the true range values</param>
         public AverageTrueRange( String name, int period, MovingAverageType movingAverageType = MovingAverageType.Wilders)
-            : base(name)
-        {
-            _smoother = movingAverageType.AsIndicator( String.format("{0}_{1}", name, movingAverageType), period);
+            : base(name) {
+            _smoother = movingAverageType.AsIndicator( String.format( "%1$s_%2$s", name, movingAverageType), period);
 
             TradeBar previous = null;
             TrueRange = new FunctionalIndicator<TradeBar>(name + "_TrueRange", currentBar =>
@@ -77,8 +76,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The smoothing period used to smooth the true range values</param>
         /// <param name="movingAverageType">The type of smoothing used to smooth the true range values</param>
         public AverageTrueRange(int period, MovingAverageType movingAverageType = MovingAverageType.Wilders)
-            : this("ATR" + period, period, movingAverageType)
-        {
+            : this( "ATR" + period, period, movingAverageType) {
         }
 
         /// <summary>
@@ -92,11 +90,9 @@ package com.quantconnect.lean.Indicators
         /// <param name="previous">The previous trade bar</param>
         /// <param name="current">The current trade bar</param>
         /// <returns>The true range</returns>
-        public static BigDecimal ComputeTrueRange(TradeBar previous, TradeBar current)
-        {
+        public static BigDecimal ComputeTrueRange(TradeBar previous, TradeBar current) {
             range1 = current.High - current.Low;
-            if (previous == null)
-            {
+            if( previous == null ) {
                 return range1;
             }
 
@@ -111,8 +107,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             // compute the true range and then send it to our smoother
             TrueRange.Update(input);
             _smoother.Update(input.Time, TrueRange);
@@ -123,8 +118,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _smoother.Reset();
             TrueRange.Reset();
             base.Reset();

@@ -52,8 +52,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             AddSecurity(SecurityType.Equity, "SPY");
 
             // we have data for these dates locally
@@ -63,23 +62,23 @@ package com.quantconnect.lean.Algorithm.Examples
 
             // define our 30 minute trade bar consolidator. we can access the 30 minute bar
             // from the DataConsolidated events
-            thirtyMinuteConsolidator = new TradeBarConsolidator(TimeSpan.FromMinutes(30));
+            thirtyMinuteConsolidator = new TradeBarConsolidator(Duration.ofMinutes(30));
             
             // attach our event handler. the event handler is a function that will be called each time we produce
             // a new consolidated piece of data.
             thirtyMinuteConsolidator.DataConsolidated += ThirtyMinuteBarHandler;
 
             // this call adds our 30 minute consolidator to the manager to receive updates from the engine
-            SubscriptionManager.AddConsolidator("SPY", thirtyMinuteConsolidator);
+            SubscriptionManager.AddConsolidator( "SPY", thirtyMinuteConsolidator);
 
             // here we'll define a slightly more complex consolidator. what we're trying to produce is a 3
-            // day bar.  Now we could just use a single TradeBarConsolidator like above and pass in TimeSpan.FromDays(3),
+            // day bar.  Now we could just use a single TradeBarConsolidator like above and pass in Duration.ofDays(3),
             // but in reality that's not what we want. For time spans of longer than a day we'll get incorrect results around
             // weekends and such. What we really want are tradeable days. So we'll create a daily consolidator, and then wrap
             // it with a 3 count consolidator.
 
             // first define a one day trade bar -- this produces a consolidated piece of data after a day has passed
-            oneDayConsolidator = new TradeBarConsolidator(TimeSpan.FromDays(1));
+            oneDayConsolidator = new TradeBarConsolidator(Duration.ofDays(1));
 
             // next define our 3 count trade bar -- this produces a consolidated piece of data after it sees 3 pieces of data
             threeCountConsolidator = new TradeBarConsolidator(3);
@@ -93,15 +92,14 @@ package com.quantconnect.lean.Algorithm.Examples
             three_oneDayBar.DataConsolidated += (sender, consolidated) => ThreeDayBarConsolidatedHandler(sender, (TradeBar) consolidated);
 
             // this call adds our 3 day to the manager to receive updates from the engine
-            SubscriptionManager.AddConsolidator("SPY", three_oneDayBar);
+            SubscriptionManager.AddConsolidator( "SPY", three_oneDayBar);
         }
 
         /// <summary>
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="bars">TradeBars IDictionary object with your stock data</param>
-        public void OnData(TradeBars bars)
-        {
+        public void OnData(TradeBars bars) {
             // we need to declare this method
         }
 
@@ -109,8 +107,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// End of a trading day event handler. This method is called at the end of the algorithm day (or multiple times if trading multiple assets).
         /// </summary>
         /// <param name="symbol">Asset symbol for this end of day event. Forex and equities have different closing hours.</param>
-        public override void OnEndOfDay( String symbol)
-        {
+        public @Override void OnEndOfDay( String symbol) {
             // close up shop each day and reset our 'last' value so we start tomorrow fresh
             Liquidate(symbol);
             _last = null;
@@ -121,17 +118,14 @@ package com.quantconnect.lean.Algorithm.Examples
         /// produces a new 30 minute bar, this function will be called automatically. The 'sender' parameter will be the
         /// instance of the IDataConsolidator that invoked the event, but you'll almost never need that!
         /// </summary>
-        private void ThirtyMinuteBarHandler(object sender, TradeBar consolidated)
-        {
-            if (_last != null && consolidated.Close > _last.Close)
-            {
-                Log(consolidated.Time.toString("o") + " >> SPY >> LONG  >> 100 >> " + Portfolio["SPY"].Quantity);
-                Order("SPY", 100);
+        private void ThirtyMinuteBarHandler(object sender, TradeBar consolidated) {
+            if( _last != null && consolidated.Close > _last.Close) {
+                Log(consolidated.Time.toString( "o") + " >> SPY >> LONG  >> 100 >> " + Portfolio["SPY"].Quantity);
+                Order( "SPY", 100);
             }
-            else if (_last != null && consolidated.Close < _last.Close)
-            {
-                Log(consolidated.Time.toString("o") + " >> SPY >> SHORT >> 100 >> " + Portfolio["SPY"].Quantity);
-                Order("SPY", -100);
+            else if( _last != null && consolidated.Close < _last.Close) {
+                Log(consolidated.Time.toString( "o") + " >> SPY >> SHORT >> 100 >> " + Portfolio["SPY"].Quantity);
+                Order( "SPY", -100);
             }
             _last = consolidated;
         }
@@ -141,9 +135,8 @@ package com.quantconnect.lean.Algorithm.Examples
         /// produces a new 3 day bar, this function will be called automatically. The 'sender' parameter will be the
         /// instance of the IDataConsolidator that invoked the event, but you'll almost never need that!
         /// </summary>
-        private void ThreeDayBarConsolidatedHandler(object sender, TradeBar consolidated)
-        {
-            Log(consolidated.Time.toString("0") + " >> Plotting!");
+        private void ThreeDayBarConsolidatedHandler(object sender, TradeBar consolidated) {
+            Log(consolidated.Time.toString( "0") + " >> Plotting!");
             Plot(consolidated.Symbol, "3HourBar", consolidated.Close);
         }
     }

@@ -40,8 +40,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the LWMA</param>
         public LinearWeightedMovingAverage( String name, int period)
-            : base(name, period)
-        {
+            : base(name, period) {
         }
 
         /// <summary>
@@ -49,8 +48,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period of the LWMA</param>
         public LinearWeightedMovingAverage(int period)
-            : this("LWMA" + period, period)
-        {
+            : this( "LWMA" + period, period) {
         }
 
         /// <summary>
@@ -59,21 +57,18 @@ package com.quantconnect.lean.Indicators
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input value to this indicator on this time step</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             BigDecimal numerator = 0m;
             long denominator = 0;
 
             // The denominator is calculated each time in case the Size is less than the period.
             //  There may be a more efficient way of calculating the factorial.
-            for (int i = 0; i <= window.Size; i++)
-            {
+            for (int i = 0; i <= window.Size; i++) {
                 denominator += i;
             }
 
             // our first data point just return identity
-            if (window.Size == 1)
-            {
+            if( window.Size == 1) {
                 return input.Value;
             }
             long index = window.Size;
@@ -82,12 +77,11 @@ package com.quantconnect.lean.Indicators
             //  because the numerator has the minimum of the Size (number of
             //  entries or the Samples (the allocated space)
             long minSizeSamples = (long)Math.Min(window.Size, window.Samples);
-            for (long i = 0; i < minSizeSamples; i++)
-            {
+            for (long i = 0; i < minSizeSamples; i++) {
                 BigDecimal x = (index-- * window[(int)i]);
                 numerator += x;
             }
-            //System.Diagnostics.Debug.WriteLine( String.format("LWMA = {0}", (smooth/denominator)));
+            //System.Diagnostics.Debug.WriteLine( String.format( "LWMA = %1$s", (smooth/denominator)));
             return numerator / denominator;
         }
 

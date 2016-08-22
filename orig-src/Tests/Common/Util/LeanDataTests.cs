@@ -27,44 +27,38 @@ package com.quantconnect.lean.Tests.Common.Util
     [TestFixture]
     public class LeanDataTests
     {
-        [Test, TestCaseSource("GetLeanDataTestParameters")]
-        public void GenerateZipFileName(LeanDataTestParameters parameters)
-        {
+        [Test, TestCaseSource( "GetLeanDataTestParameters")]
+        public void GenerateZipFileName(LeanDataTestParameters parameters) {
             zip = LeanData.GenerateZipFileName(parameters.Symbol, parameters.Date, parameters.Resolution, parameters.TickType);
             Assert.AreEqual(parameters.ExpectedZipFileName, zip);
         }
 
-        [Test, TestCaseSource("GetLeanDataTestParameters")]
-        public void GenerateZipEntryName(LeanDataTestParameters parameters)
-        {
+        [Test, TestCaseSource( "GetLeanDataTestParameters")]
+        public void GenerateZipEntryName(LeanDataTestParameters parameters) {
             entry = LeanData.GenerateZipEntryName(parameters.Symbol, parameters.Date, parameters.Resolution, parameters.TickType);
             Assert.AreEqual(parameters.ExpectedZipEntryName, entry);
         }
 
-        [Test, TestCaseSource("GetLeanDataTestParameters")]
-        public void GenerateRelativeZipFilePath(LeanDataTestParameters parameters)
-        {
+        [Test, TestCaseSource( "GetLeanDataTestParameters")]
+        public void GenerateRelativeZipFilePath(LeanDataTestParameters parameters) {
             relativePath = LeanData.GenerateRelativeZipFilePath(parameters.Symbol, parameters.Date, parameters.Resolution, parameters.TickType);
             Assert.AreEqual(parameters.ExpectedRelativeZipFilePath, relativePath);
         }
 
-        [Test, TestCaseSource("GetLeanDataTestParameters")]
-        public void GenerateZipFilePath(LeanDataTestParameters parameters)
-        {
+        [Test, TestCaseSource( "GetLeanDataTestParameters")]
+        public void GenerateZipFilePath(LeanDataTestParameters parameters) {
             path = LeanData.GenerateZipFilePath(Globals.DataFolder, parameters.Symbol, parameters.Date, parameters.Resolution, parameters.TickType);
             Assert.AreEqual(parameters.ExpectedZipFilePath, path);
         }
 
-        [Test, TestCaseSource("GetLeanDataLineTestParameters")]
-        public void GenerateLine(LeanDataLineTestParameters parameters)
-        {
+        [Test, TestCaseSource( "GetLeanDataLineTestParameters")]
+        public void GenerateLine(LeanDataLineTestParameters parameters) {
             line = LeanData.GenerateLine(parameters.Data, parameters.SecurityType, parameters.Resolution);
             Assert.AreEqual(parameters.ExpectedLine, line);
         }
 
-        [Test, TestCaseSource("GetLeanDataLineTestParameters")]
-        public void ParsesGeneratedLines(LeanDataLineTestParameters parameters)
-        {
+        [Test, TestCaseSource( "GetLeanDataLineTestParameters")]
+        public void ParsesGeneratedLines(LeanDataLineTestParameters parameters) {
             // ignore time zone issues here, we'll just say everything is UTC, so no conversions are performed
             factory = (BaseData) Activator.CreateInstance(parameters.Data.GetType());
             parsed = factory.Reader(parameters.Config, parameters.ExpectedLine, parameters.Data.Time.Date, false);
@@ -74,8 +68,7 @@ package com.quantconnect.lean.Tests.Common.Util
             Assert.AreEqual(parameters.Data.EndTime, parsed.EndTime);
             Assert.AreEqual(parameters.Data.Symbol, parsed.Symbol);
             Assert.AreEqual(parameters.Data.Value, parsed.Value);
-            if (parsed is Tick)
-            {
+            if( parsed is Tick) {
                 expected = (Tick) parameters.Data;
                 actual = (Tick) parsed;
                 Assert.AreEqual(expected.Quantity, actual.Quantity);
@@ -87,15 +80,13 @@ package com.quantconnect.lean.Tests.Common.Util
                 Assert.AreEqual(expected.SaleCondition, actual.SaleCondition);
                 Assert.AreEqual(expected.Suspicious, actual.Suspicious);
             }
-            else if (parsed is TradeBar)
-            {
+            else if( parsed is TradeBar) {
                 expected = (TradeBar) parameters.Data;
                 actual = (TradeBar) parsed;
                 AssertBarsAreEqual(expected, actual);
                 Assert.AreEqual(expected.Volume, actual.Volume);
             }
-            else if (parsed is QuoteBar)
-            {
+            else if( parsed is QuoteBar) {
                 expected = (QuoteBar) parameters.Data;
                 actual = (QuoteBar) parsed;
                 AssertBarsAreEqual(expected.Bid, actual.Bid);
@@ -105,43 +96,36 @@ package com.quantconnect.lean.Tests.Common.Util
             }
         }
 
-        [Test, TestCaseSource("GetLeanDataLineTestParameters")]
-        public void GetSourceMatchesGenerateZipFilePath(LeanDataLineTestParameters parameters)
-        {
+        [Test, TestCaseSource( "GetLeanDataLineTestParameters")]
+        public void GetSourceMatchesGenerateZipFilePath(LeanDataLineTestParameters parameters) {
             source = parameters.Data.GetSource(parameters.Config, parameters.Data.Time.Date, false);
             normalizedSourcePath = new FileInfo(source.Source).FullName;
             zipFilePath = LeanData.GenerateZipFilePath(Globals.DataFolder, parameters.Data.Symbol, parameters.Data.Time.Date, parameters.Resolution, parameters.TickType);
             normalizeZipFilePath = new FileInfo(zipFilePath).FullName;
-            indexOfHash = normalizedSourcePath.LastIndexOf("#", StringComparison.Ordinal);
-            if (indexOfHash > 0)
-            {
+            indexOfHash = normalizedSourcePath.LastIndexOf( "#", StringComparison.Ordinal);
+            if( indexOfHash > 0) {
                 normalizedSourcePath = normalizedSourcePath.Substring(0, indexOfHash);
             }
             Assert.AreEqual(normalizeZipFilePath, normalizedSourcePath);
         }
 
-        [Test, TestCaseSource("GetLeanDataTestParameters")]
-        public void GetSource(LeanDataTestParameters parameters)
-        {
+        [Test, TestCaseSource( "GetLeanDataTestParameters")]
+        public void GetSource(LeanDataTestParameters parameters) {
             factory = (BaseData)Activator.CreateInstance(parameters.BaseDataType);
             source = factory.GetSource(parameters.Config, parameters.Date, false);
             expected = parameters.ExpectedZipFilePath;
-            if (parameters.SecurityType == SecurityType.Option)
-            {
+            if( parameters.SecurityType == SecurityType.Option) {
                 expected += "#" + parameters.ExpectedZipEntryName;
             }
             Assert.AreEqual(expected, source.Source);
         }
 
-        private static void AssertBarsAreEqual(IBar expected, IBar actual)
-        {
-            if (expected == null && actual == null)
-            {
+        private static void AssertBarsAreEqual(IBar expected, IBar actual) {
+            if( expected == null && actual == null ) {
                 return;
             }
-            if (expected == null && actual != null)
-            {
-                Assert.Fail("Expected null bar");
+            if( expected == null && actual != null ) {
+                Assert.Fail( "Expected null bar");
             }
             Assert.AreEqual(expected.Open, actual.Open);
             Assert.AreEqual(expected.High, actual.High);
@@ -149,8 +133,7 @@ package com.quantconnect.lean.Tests.Common.Util
             Assert.AreEqual(expected.Close, actual.Close);
         }
 
-        private static TestCaseData[] GetLeanDataTestParameters()
-        {
+        private static TestCaseData[] GetLeanDataTestParameters() {
             date = new DateTime(2016, 02, 17);
             return new List<LeanDataTestParameters>
             {
@@ -190,51 +173,50 @@ package com.quantconnect.lean.Tests.Common.Util
             }.Select(x => new TestCaseData(x).SetName(x.Name)).ToArray();
         }
 
-        private static TestCaseData[] GetLeanDataLineTestParameters()
-        {
+        private static TestCaseData[] GetLeanDataLineTestParameters() {
             time = new DateTime(2016, 02, 18, 9, 30, 0);
             return new List<LeanDataLineTestParameters>
             {
                 //equity
                 new LeanDataLineTestParameters(new Tick {Time = time, Symbol = Symbols.SPY, Value = 1, Quantity = 2, TickType = TickType.Trade, Exchange = "EX", SaleCondition = "SC", Suspicious = true}, SecurityType.Equity, Resolution.Tick,
                     "34200000,10000,2,EX,SC,1"),
-                new LeanDataLineTestParameters(new TradeBar(time, Symbols.SPY, 1, 2, 3, 4, 5, TimeSpan.FromMinutes(1)), SecurityType.Equity, Resolution.Minute,
+                new LeanDataLineTestParameters(new TradeBar(time, Symbols.SPY, 1, 2, 3, 4, 5, Duration.ofMinutes(1)), SecurityType.Equity, Resolution.Minute,
                     "34200000,10000,20000,30000,40000,5"),
-                new LeanDataLineTestParameters(new TradeBar(time.Date, Symbols.SPY, 1, 2, 3, 4, 5, TimeSpan.FromDays(1)), SecurityType.Equity, Resolution.Daily,
+                new LeanDataLineTestParameters(new TradeBar(time.Date, Symbols.SPY, 1, 2, 3, 4, 5, Duration.ofDays(1)), SecurityType.Equity, Resolution.Daily,
                     "20160218 00:00,10000,20000,30000,40000,5"),
 
                 // options
-                new LeanDataLineTestParameters(new QuoteBar(time, Symbols.SPY_P_192_Feb19_2016, null, 0, new Bar(6, 7, 8, 9), 10, TimeSpan.FromMinutes(1)) {Bid = null}, SecurityType.Option, Resolution.Minute,
+                new LeanDataLineTestParameters(new QuoteBar(time, Symbols.SPY_P_192_Feb19_2016, null, 0, new Bar(6, 7, 8, 9), 10, Duration.ofMinutes(1)) {Bid = null}, SecurityType.Option, Resolution.Minute,
                     "34200000,,,,,0,60000,70000,80000,90000,10"),
-                new LeanDataLineTestParameters(new QuoteBar(time.Date, Symbols.SPY_P_192_Feb19_2016, new Bar(1, 2, 3, 4), 5, null, 0, TimeSpan.FromDays(1)) {Ask = null}, SecurityType.Option, Resolution.Daily,
+                new LeanDataLineTestParameters(new QuoteBar(time.Date, Symbols.SPY_P_192_Feb19_2016, new Bar(1, 2, 3, 4), 5, null, 0, Duration.ofDays(1)) {Ask = null}, SecurityType.Option, Resolution.Daily,
                     "20160218 00:00,10000,20000,30000,40000,5,,,,,0"),
-                new LeanDataLineTestParameters(new QuoteBar(time, Symbols.SPY_P_192_Feb19_2016, new Bar(1, 2, 3, 4), 5, new Bar(6, 7, 8, 9), 10, TimeSpan.FromMinutes(1)), SecurityType.Option, Resolution.Minute,
+                new LeanDataLineTestParameters(new QuoteBar(time, Symbols.SPY_P_192_Feb19_2016, new Bar(1, 2, 3, 4), 5, new Bar(6, 7, 8, 9), 10, Duration.ofMinutes(1)), SecurityType.Option, Resolution.Minute,
                     "34200000,10000,20000,30000,40000,5,60000,70000,80000,90000,10"),
-                new LeanDataLineTestParameters(new QuoteBar(time.Date, Symbols.SPY_P_192_Feb19_2016, new Bar(1, 2, 3, 4), 5, new Bar(6, 7, 8, 9), 10, TimeSpan.FromDays(1)), SecurityType.Option, Resolution.Daily,
+                new LeanDataLineTestParameters(new QuoteBar(time.Date, Symbols.SPY_P_192_Feb19_2016, new Bar(1, 2, 3, 4), 5, new Bar(6, 7, 8, 9), 10, Duration.ofDays(1)), SecurityType.Option, Resolution.Daily,
                     "20160218 00:00,10000,20000,30000,40000,5,60000,70000,80000,90000,10"),
                 new LeanDataLineTestParameters(new Tick(time, Symbols.SPY_P_192_Feb19_2016, 0, 1, 3) {Value = 2m, TickType = TickType.Quote, BidSize = 2, AskSize = 4, Exchange = "EX", Suspicious = true}, SecurityType.Option, Resolution.Tick,
                     "34200000,10000,2,30000,4,EX,1"),
                 new LeanDataLineTestParameters(new Tick {Time = time, Symbol = Symbols.SPY_P_192_Feb19_2016, Value = 1, Quantity = 2,TickType = TickType.Trade, Exchange = "EX", SaleCondition = "SC", Suspicious = true}, SecurityType.Option, Resolution.Tick,
                     "34200000,10000,2,EX,SC,1"),
-                new LeanDataLineTestParameters(new TradeBar(time, Symbols.SPY_P_192_Feb19_2016, 1, 2, 3, 4, 5, TimeSpan.FromMinutes(1)), SecurityType.Option, Resolution.Minute,
+                new LeanDataLineTestParameters(new TradeBar(time, Symbols.SPY_P_192_Feb19_2016, 1, 2, 3, 4, 5, Duration.ofMinutes(1)), SecurityType.Option, Resolution.Minute,
                     "34200000,10000,20000,30000,40000,5"),
-                new LeanDataLineTestParameters(new TradeBar(time.Date, Symbols.SPY_P_192_Feb19_2016, 1, 2, 3, 4, 5, TimeSpan.FromDays(1)), SecurityType.Option, Resolution.Daily,
+                new LeanDataLineTestParameters(new TradeBar(time.Date, Symbols.SPY_P_192_Feb19_2016, 1, 2, 3, 4, 5, Duration.ofDays(1)), SecurityType.Option, Resolution.Daily,
                     "20160218 00:00,10000,20000,30000,40000,5"),
 
                 // forex
                 new LeanDataLineTestParameters(new Tick {Time = time, Symbol = Symbols.EURUSD, BidPrice = 1, Value =1.5m, AskPrice = 2, TickType = TickType.Quote}, SecurityType.Forex, Resolution.Tick,
                     "34200000,1,2"),
-                new LeanDataLineTestParameters(new TradeBar(time, Symbols.EURUSD, 1, 2, 3, 4, 0, TimeSpan.FromMinutes(1)), SecurityType.Forex, Resolution.Minute,
+                new LeanDataLineTestParameters(new TradeBar(time, Symbols.EURUSD, 1, 2, 3, 4, 0, Duration.ofMinutes(1)), SecurityType.Forex, Resolution.Minute,
                     "34200000,1,2,3,4"),
-                new LeanDataLineTestParameters(new TradeBar(time.Date, Symbols.EURUSD, 1, 2, 3, 4, 0, TimeSpan.FromDays(1)), SecurityType.Forex, Resolution.Daily,
+                new LeanDataLineTestParameters(new TradeBar(time.Date, Symbols.EURUSD, 1, 2, 3, 4, 0, Duration.ofDays(1)), SecurityType.Forex, Resolution.Daily,
                     "20160218 00:00,1,2,3,4"),
 
                 // cfd
                 new LeanDataLineTestParameters(new Tick {Time = time, Symbol = Symbols.DE10YBEUR, BidPrice = 1, Value = 1.5m, AskPrice = 2, TickType = TickType.Quote}, SecurityType.Cfd, Resolution.Tick,
                     "34200000,1,2"),
-                new LeanDataLineTestParameters(new TradeBar(time, Symbols.DE10YBEUR, 1, 2, 3, 4, 0, TimeSpan.FromMinutes(1)), SecurityType.Cfd, Resolution.Minute,
+                new LeanDataLineTestParameters(new TradeBar(time, Symbols.DE10YBEUR, 1, 2, 3, 4, 0, Duration.ofMinutes(1)), SecurityType.Cfd, Resolution.Minute,
                     "34200000,1,2,3,4"),
-                new LeanDataLineTestParameters(new TradeBar(time.Date, Symbols.DE10YBEUR, 1, 2, 3, 4, 0, TimeSpan.FromDays(1)), SecurityType.Cfd, Resolution.Daily,
+                new LeanDataLineTestParameters(new TradeBar(time.Date, Symbols.DE10YBEUR, 1, 2, 3, 4, 0, Duration.ofDays(1)), SecurityType.Cfd, Resolution.Daily,
                     "20160218 00:00,1,2,3,4"),
             }.Select(x => new TestCaseData(x).SetName(x.Name)).ToArray();
         }
@@ -254,22 +236,20 @@ package com.quantconnect.lean.Tests.Common.Util
             public readonly String ExpectedZipFilePath;
             public SecurityType SecurityType { get { return Symbol.ID.SecurityType; } }
 
-            public LeanDataTestParameters(Symbol symbol, DateTime date, Resolution resolution, TickType tickType, String expectedZipFileName, String expectedZipEntryName, String expectedRelativeZipFileDirectory = "")
-            {
+            public LeanDataTestParameters(Symbol symbol, DateTime date, Resolution resolution, TickType tickType, String expectedZipFileName, String expectedZipEntryName, String expectedRelativeZipFileDirectory = "") {
                 Symbol = symbol;
                 Date = date;
                 Resolution = resolution;
                 TickType = tickType;
                 ExpectedZipFileName = expectedZipFileName;
                 ExpectedZipEntryName = expectedZipEntryName;
-                ExpectedRelativeZipFilePath = Path.Combine(expectedRelativeZipFileDirectory, expectedZipFileName).Replace("/", Path.DirectorySeparatorChar.toString());
+                ExpectedRelativeZipFilePath = Path.Combine(expectedRelativeZipFileDirectory, expectedZipFileName).Replace( "/", Path.DirectorySeparatorChar.toString());
                 ExpectedZipFilePath = Path.Combine(Globals.DataFolder, ExpectedRelativeZipFilePath);
 
                 Name = SecurityType + "_" + resolution;
 
                 BaseDataType = resolution == Resolution.Tick ? typeof(Tick) : typeof(TradeBar);
-                if (symbol.ID.SecurityType == SecurityType.Option && resolution != Resolution.Tick)
-                {
+                if( symbol.ID.SecurityType == SecurityType.Option && resolution != Resolution.Tick) {
                     BaseDataType = typeof(QuoteBar);
                 }
                 Config = new SubscriptionDataConfig(BaseDataType, symbol, resolution, TimeZones.NewYork, TimeZones.NewYork, true, false, false, false, tickType);
@@ -286,23 +266,19 @@ package com.quantconnect.lean.Tests.Common.Util
             public readonly SubscriptionDataConfig Config;
             public readonly TickType TickType;
 
-            public LeanDataLineTestParameters(BaseData data, SecurityType securityType, Resolution resolution, String expectedLine)
-            {
+            public LeanDataLineTestParameters(BaseData data, SecurityType securityType, Resolution resolution, String expectedLine) {
                 Data = data;
                 SecurityType = securityType;
                 Resolution = resolution;
                 ExpectedLine = expectedLine;
-                if (data is Tick)
-                {
+                if( data is Tick) {
                     tick = (Tick) data;
                     TickType = tick.TickType;
                 }
-                else if (data is TradeBar)
-                {
+                else if( data is TradeBar) {
                     TickType = TickType.Trade;
                 }
-                else if (data is QuoteBar)
-                {
+                else if( data is QuoteBar) {
                     TickType = TickType.Quote;
                 }
                 else
@@ -310,9 +286,8 @@ package com.quantconnect.lean.Tests.Common.Util
                     throw new NotImplementedException();
                 }
 
-                // override for forex/cfd
-                if (data.Symbol.ID.SecurityType == SecurityType.Forex || data.Symbol.ID.SecurityType == SecurityType.Cfd)
-                {
+                // @Override for forex/cfd
+                if( data.Symbol.ID.SecurityType == SecurityType.Forex || data.Symbol.ID.SecurityType == SecurityType.Cfd) {
                     TickType = TickType.Quote;
                 }
 
@@ -320,13 +295,11 @@ package com.quantconnect.lean.Tests.Common.Util
 
                 Name = SecurityType + "_" + data.GetType().Name;
 
-                if (data.GetType() != typeof (Tick) || Resolution != Resolution.Tick)
-                {
+                if( data.GetType() != typeof (Tick) || Resolution != Resolution.Tick) {
                     Name += "_" + Resolution;
                 }
 
-                if (data is Tick)
-                {
+                if( data is Tick) {
                     Name += "_" + ((Tick) data).TickType;
                 }
             }

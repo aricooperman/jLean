@@ -41,8 +41,7 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Creates a new instance of the <see cref="UnsettledCashAmount"/> class
         /// </summary>
-        public UnsettledCashAmount(DateTime settlementTimeUtc, String currency, BigDecimal amount)
-        {
+        public UnsettledCashAmount(DateTime settlementTimeUtc, String currency, BigDecimal amount) {
             SettlementTimeUtc = settlementTimeUtc;
             Currency = currency;
             Amount = amount;

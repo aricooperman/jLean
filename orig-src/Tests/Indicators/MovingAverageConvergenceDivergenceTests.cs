@@ -22,21 +22,18 @@ package com.quantconnect.lean.Tests.Indicators
     public class MovingAverageConvergenceDivergenceTests
     {
         [Test]
-        public void ComputesCorrectly()
-        {
+        public void ComputesCorrectly() {
             fast = new SimpleMovingAverage(3);
             slow = new SimpleMovingAverage(5);
             signal = new SimpleMovingAverage(3);
-            macd = new MovingAverageConvergenceDivergence("macd", 3, 5, 3, MovingAverageType.Simple);
+            macd = new MovingAverageConvergenceDivergence( "macd", 3, 5, 3, MovingAverageType.Simple);
 
-            foreach (data in TestHelper.GetDataStream(7))
-            {
+            foreach (data in TestHelper.GetDataStream(7)) {
                 fast.Update(data);
                 slow.Update(data);
                 macd.Update(data);
                 Assert.AreEqual(fast - slow, macd);
-                if (fast.IsReady && slow.IsReady)
-                {
+                if( fast.IsReady && slow.IsReady) {
                     signal.Update(new IndicatorDataPoint(data.Time, macd));
                     Assert.AreEqual(signal.Current.Value, macd.Current.Value);
                 }
@@ -44,11 +41,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
-            macd = new MovingAverageConvergenceDivergence("macd", 3, 5, 3);
-            foreach (data in TestHelper.GetDataStream(30))
-            {
+        public void ResetsProperly() {
+            macd = new MovingAverageConvergenceDivergence( "macd", 3, 5, 3);
+            foreach (data in TestHelper.GetDataStream(30)) {
                 macd.Update(data);
             }
             Assert.IsTrue(macd.IsReady);

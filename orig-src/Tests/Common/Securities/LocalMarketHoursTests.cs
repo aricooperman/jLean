@@ -26,8 +26,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         private static readonly TimeSpan USEquityClose = new TimeSpan(16, 0, 0);
 
         [Test]
-        public void StartIsOpen()
-        {
+        public void StartIsOpen() {
             marketHours = GetUsEquityWeekDayMarketHours();
 
             // EDT is +4 or +5 depending on time of year, in june it's +4, so this is 530 edt
@@ -35,8 +34,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void EndIsClosed()
-        {
+        public void EndIsClosed() {
             marketHours = GetUsEquityWeekDayMarketHours();
 
             // EDT is +4 or +5 depending on time of year, in june it's +4, so this is 530 edt
@@ -44,8 +42,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void IsOpenRangeAnyOverlap()
-        {
+        public void IsOpenRangeAnyOverlap() {
             marketHours = GetUsEquityWeekDayMarketHours();
 
             // EDT is +4 or +5 depending on time of year, in june it's +4, so this is 530 edt
@@ -54,8 +51,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.IsTrue(marketHours.IsOpen(startTime, endTime, false));
         }
 
-        private static LocalMarketHours GetUsEquityWeekDayMarketHours()
-        {
+        private static LocalMarketHours GetUsEquityWeekDayMarketHours() {
             return new LocalMarketHours(DayOfWeek.Friday, USEquityOpen, USEquityClose);
         }
     }

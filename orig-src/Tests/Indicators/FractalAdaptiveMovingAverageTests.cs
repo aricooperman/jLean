@@ -25,13 +25,11 @@ package com.quantconnect.lean.Tests.Indicators
     {
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
 
-            FractalAdaptiveMovingAverage frama = new FractalAdaptiveMovingAverage("", 6, 198);
+            FractalAdaptiveMovingAverage frama = new FractalAdaptiveMovingAverage( "", 6, 198);
 
-            foreach (data in TestHelper.GetDataStream(7))
-            {
+            foreach (data in TestHelper.GetDataStream(7)) {
                 frama.Update(new TradeBar { High = data, Low = data });
             }
             Assert.IsTrue(frama.IsReady);
@@ -44,19 +42,16 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComparesAgainstExternalData()
-        {
-            indicator = new FractalAdaptiveMovingAverage("", 16, 198);
+        public void ComparesAgainstExternalData() {
+            indicator = new FractalAdaptiveMovingAverage( "", 16, 198);
             RunTestIndicator(indicator);
         }
 
-        private static void RunTestIndicator(TradeBarIndicator indicator)
-        {
+        private static void RunTestIndicator(TradeBarIndicator indicator) {
             TestHelper.TestIndicator(indicator, "frama.txt", "Filt", (actual, expected) => {AssertResult(expected, actual.Current.Value);});
         }
 
-        private static void AssertResult(double expected, BigDecimal actual)
-        {
+        private static void AssertResult(double expected, BigDecimal actual) {
             Assert.IsTrue(Math.Abs((decimal)expected - actual) < 0.006m);
         }
 

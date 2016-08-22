@@ -33,8 +33,7 @@ package com.quantconnect.lean.Scheduling
         /// Initializes a new instance of the <see cref="DateRules"/> helper class
         /// </summary>
         /// <param name="securities">The security manager</param>
-        public DateRules(SecurityManager securities)
-        {
+        public DateRules(SecurityManager securities) {
             _securities = securities;
         }
 
@@ -45,11 +44,10 @@ package com.quantconnect.lean.Scheduling
         /// <param name="month">The month</param>
         /// <param name="day">The day</param>
         /// <returns></returns>
-        public IDateRule On(int year, int month, int day)
-        {
+        public IDateRule On(int year, int month, int day) {
             // make sure they're date objects
             dates = new[] {new DateTime(year, month, day)};
-            return new FuncDateRule( String.Join(",", dates.Select(x => x.ToShortDateString())), (start, end) => dates);
+            return new FuncDateRule( String.Join( ",", dates.Select(x => x.ToShortDateString())), (start, end) => dates);
         }
 
         /// <summary>
@@ -57,11 +55,10 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         /// <param name="dates">The dates the event should fire</param>
         /// <returns></returns>
-        public IDateRule On(params DateTime[] dates)
-        {
+        public IDateRule On(params DateTime[] dates) {
             // make sure they're date objects
             dates = dates.Select(x => x.Date).ToArray();
-            return new FuncDateRule( String.Join(",", dates.Select(x => x.ToShortDateString())), (start, end) => dates);
+            return new FuncDateRule( String.Join( ",", dates.Select(x => x.ToShortDateString())), (start, end) => dates);
         }
 
         /// <summary>
@@ -69,19 +66,17 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         /// <param name="days">The days the event shouls fire</param>
         /// <returns>A date rule that fires on every specified day of week</returns>
-        public IDateRule Every(params DayOfWeek[] days)
-        {
+        public IDateRule Every(params DayOfWeek[] days) {
             hash = days.ToHashSet();
-            return new FuncDateRule( String.Join(",", days), (start, end) => Time.EachDay(start, end).Where(date => hash.Contains(date.DayOfWeek)));
+            return new FuncDateRule( String.Join( ",", days), (start, end) => Time.EachDay(start, end).Where(date => hash.Contains(date.DayOfWeek)));
         }
 
         /// <summary>
         /// Specifies an event should fire every day
         /// </summary>
         /// <returns>A date rule that fires every day</returns>
-        public IDateRule EveryDay()
-        {
-            return new FuncDateRule("EveryDay", Time.EachDay);
+        public IDateRule EveryDay() {
+            return new FuncDateRule( "EveryDay", Time.EachDay);
         }
 
         /// <summary>
@@ -89,8 +84,7 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         /// <param name="symbol">The symbol whose exchange is used to determine tradeable dates</param>
         /// <returns>A date rule that fires every day the specified symbol trades</returns>
-        public IDateRule EveryDay(Symbol symbol)
-        {
+        public IDateRule EveryDay(Symbol symbol) {
             security = GetSecurity(symbol);
             return new FuncDateRule(symbol.toString() + ": EveryDay", (start, end) => Time.EachTradeableDay(security, start, end));
         }
@@ -99,9 +93,8 @@ package com.quantconnect.lean.Scheduling
         /// Specifies an event should fire on the first of each month
         /// </summary>
         /// <returns>A date rule that fires on the first of each month</returns>
-        public IDateRule MonthStart()
-        {
-            return new FuncDateRule("MonthStart", (start, end) => MonthStartIterator(null, start, end));
+        public IDateRule MonthStart() {
+            return new FuncDateRule( "MonthStart", (start, end) => MonthStartIterator(null, start, end));
         }
 
         /// <summary>
@@ -111,8 +104,7 @@ package com.quantconnect.lean.Scheduling
         /// <param name="symbol">The symbol whose exchange is used to determine the first 
         /// tradeable date of the month</param>
         /// <returns>A date rule that fires on the first tradeable date for the specified security each month</returns>
-        public IDateRule MonthStart(Symbol symbol)
-        {
+        public IDateRule MonthStart(Symbol symbol) {
             return new FuncDateRule(symbol.toString() + ": MonthStart", (start, end) => MonthStartIterator(GetSecurity(symbol), start, end));
         }
 
@@ -121,24 +113,19 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         /// <param name="symbol">The security's symbol to search for</param>
         /// <returns>The security object matching the given symbol</returns>
-        private Security GetSecurity(Symbol symbol)
-        {
+        private Security GetSecurity(Symbol symbol) {
             Security security;
-            if (!_securities.TryGetValue(symbol, out security))
-            {
+            if( !_securities.TryGetValue(symbol, out security)) {
                 throw new Exception(symbol.toString() + " not found in portfolio. Request this data when initializing the algorithm.");
             }
             return security;
         }
 
-        private static IEnumerable<DateTime> MonthStartIterator(Security security, DateTime start, DateTime end)
-        {
-            if (security == null)
-            {
-                foreach (date in Time.EachDay(start, end))
-                {
+        private static IEnumerable<DateTime> MonthStartIterator(Security security, DateTime start, DateTime end) {
+            if( security == null ) {
+                foreach (date in Time.EachDay(start, end)) {
                     // fire on the first of each month
-                    if (date.Day == 1) yield return date;
+                    if( date.Day == 1) yield return date;
                 }
                 yield break;
             }
@@ -146,12 +133,9 @@ package com.quantconnect.lean.Scheduling
             // start a month back so we can properly resolve the first event (we may have passed it)
             aMonthBeforeStart = start.AddMonths(-1);
             int lastMonth = aMonthBeforeStart.Month;
-            foreach (date in Time.EachTradeableDay(security, aMonthBeforeStart, end))
-            {
-                if (date.Month != lastMonth)
-                {
-                    if (date >= start)
-                    {
+            foreach (date in Time.EachTradeableDay(security, aMonthBeforeStart, end)) {
+                if( date.Month != lastMonth) {
+                    if( date >= start) {
                         // only emit if the date is on or after the start
                         // the date may be before here because we backed up a month
                         // to properly resolve the first tradeable date

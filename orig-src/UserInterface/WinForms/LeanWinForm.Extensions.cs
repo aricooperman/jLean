@@ -27,8 +27,7 @@ package com.quantconnect.lean.Views.WinForms
     /// </summary>
     public static class Extensions
     {
-        public static void AppendText(this RichTextBox box, String text, Color color)
-        {
+        public static void AppendText(this RichTextBox box, String text, Color color) {
             box.SelectionStart = box.TextLength;
             box.SelectionLength = 0;
             box.SelectionColor = color;
@@ -42,8 +41,7 @@ package com.quantconnect.lean.Views.WinForms
         /// </summary>
         public static TResult SafeInvoke<T, TResult>(this T isi, Func<T, TResult> call) where T : ISynchronizeInvoke
         {
-            if (isi.InvokeRequired)
-            {
+            if( isi.InvokeRequired) {
                 IAsyncResult result = isi.BeginInvoke(call, new object[] { isi });
                 object endResult = isi.EndInvoke(result);
                 return (TResult)endResult;

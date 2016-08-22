@@ -40,19 +40,15 @@ package com.quantconnect.lean.Securities
         {
             get
             {
-                lock (_sync)
-                {
-                    if (_window.Count < 2)
-                    {
+                lock (_sync) {
+                    if( _window.Count < 2) {
                         return 0m;
                     }
 
-                    if (_needsUpdate)
-                    {
+                    if( _needsUpdate) {
                         _needsUpdate = false;
                         mean = Math.Abs(_window.Mean().SafeDecimalCast());
-                        if (mean != 0m)
-                        {
+                        if( mean != 0m) {
                             // volatility here is supposed to be a percentage
                             std = _window.StandardDeviation().SafeDecimalCast();
                             _volatility = std/mean;
@@ -68,12 +64,11 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="periodSpan">The time span representing one 'period' length</param>
         /// <param name="periods">The nuber of 'period' lengths to wait until updating the value</param>
-        public RelativeStandardDeviationVolatilityModel(TimeSpan periodSpan, int periods)
-        {
-            if (periods < 2) throw new ArgumentOutOfRangeException("periods", "'periods' must be greater than or equal to 2.");
+        public RelativeStandardDeviationVolatilityModel(TimeSpan periodSpan, int periods) {
+            if( periods < 2) throw new ArgumentOutOfRangeException( "periods", "'periods' must be greater than or equal to 2.");
             _periodSpan = periodSpan;
             _window = new RollingWindow<double>(periods);
-            _lastUpdate = DateTime.MinValue + TimeSpan.FromMilliseconds(periodSpan.TotalMilliseconds*periods);
+            _lastUpdate = DateTime.MinValue + Duration.ofMilliseconds(periodSpan.TotalMilliseconds*periods);
         }
 
         /// <summary>
@@ -82,13 +77,10 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="security">The security to calculate volatility for</param>
         /// <param name="data"></param>
-        public void Update(Security security, BaseData data)
-        {
+        public void Update(Security security, BaseData data) {
             timeSinceLastUpdate = data.EndTime - _lastUpdate;
-            if (timeSinceLastUpdate >= _periodSpan)
-            {
-                lock (_sync)
-                {
+            if( timeSinceLastUpdate >= _periodSpan) {
+                lock (_sync) {
                     _needsUpdate = true;
                     // we purposefully use security.Price for consistency in our reporting
                     // some streams of data will have trade/quote data, so if we just use

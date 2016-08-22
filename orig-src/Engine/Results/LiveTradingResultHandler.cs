@@ -155,16 +155,15 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <summary>
         /// Initialize the live trading result handler
         /// </summary>
-        public LiveTradingResultHandler()
-        {
+        public LiveTradingResultHandler() {
             _charts = new ConcurrentMap<String, Chart>();
             _orderEvents = new ConcurrentQueue<OrderEvent>();
             _messages = new ConcurrentQueue<Packet>();
             _isActive = true;
             _runtimeStatistics = new Map<String,String>();
 
-            _resamplePeriod = TimeSpan.FromSeconds(1);
-            _notificationPeriod = TimeSpan.FromSeconds(1);
+            _resamplePeriod = Duration.ofSeconds(1);
+            _notificationPeriod = Duration.ofSeconds(1);
             _startTime = DateTime.Now;
 
             //Store log and debug messages sorted by time.
@@ -180,15 +179,14 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="dataFeed"></param>
         /// <param name="setupHandler"></param>
         /// <param name="transactionHandler"></param>
-        public void Initialize(AlgorithmNodePacket job, IMessagingHandler messagingHandler, IApi api, IDataFeed dataFeed, ISetupHandler setupHandler, ITransactionHandler transactionHandler)
-        {
+        public void Initialize(AlgorithmNodePacket job, IMessagingHandler messagingHandler, IApi api, IDataFeed dataFeed, ISetupHandler setupHandler, ITransactionHandler transactionHandler) {
             _api = api;
             _dataFeed = dataFeed;
             _messagingHandler = messagingHandler;
             _setupHandler = setupHandler;
             _transactionHandler = transactionHandler;
             _job = (LiveNodePacket)job;
-            if (_job == null) throw new Exception("LiveResultHandler.Constructor(): Submitted Job type invalid."); 
+            if( _job == null ) throw new Exception( "LiveResultHandler.Constructor(): Submitted Job type invalid."); 
             _deployId = _job.DeployId;
             _compileId = _job.CompileId;
         }
@@ -196,36 +194,31 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <summary>
         /// Live trading result handler thread.
         /// </summary>
-        public void Run()
-        {
+        public void Run() {
             // -> 1. Run Primary Sender Loop: Continually process messages from queue as soon as they arrive.
-            while (!(_exitTriggered && Messages.Count == 0))
-            {
+            while (!(_exitTriggered && Messages.Count == 0)) {
                 try
                 {
                     //1. Process Simple Messages in Queue
                     Packet packet;
-                    if (Messages.TryDequeue(out packet))
-                    {
+                    if( Messages.TryDequeue(out packet)) {
                         _messagingHandler.Send(packet);
                     }
 
                     //2. Update the packet scanner:
                     Update();
 
-                    if (Messages.Count == 0)
-                    {
+                    if( Messages.Count == 0) {
                         // prevent thread lock/tight loop when there's no work to be done
                         Thread.Sleep(10);
                     }
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     Log.Error(err);
                 }
             } // While !End.
 
-            Log.Trace("LiveTradingResultHandler.Run(): Ending Thread...");
+            Log.Trace( "LiveTradingResultHandler.Run(): Ending Thread...");
             _isActive = false;
         } // End Run();
 
@@ -233,36 +226,31 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <summary>
         /// Every so often send an update to the browser with the current state of the algorithm.
         /// </summary>
-        public void Update()
-        {
+        public void Update() {
             //Initialize:
             Map<Integer, Order> deltaOrders;
 
             //Error checks if the algorithm & threads have not loaded yet, or are closing down.
-            if (_algorithm == null || _algorithm.Transactions == null || _transactionHandler.Orders == null || !_algorithm.GetLocked())
-            {
-                Log.Error("LiveTradingResultHandler.Update(): Algorithm not yet initialized.");
+            if( _algorithm == null || _algorithm.Transactions == null || _transactionHandler.Orders == null || !_algorithm.GetLocked()) {
+                Log.Error( "LiveTradingResultHandler.Update(): Algorithm not yet initialized.");
                 return;
             }
 
             try
             {
-                if (DateTime.Now > _nextUpdate || _exitTriggered)
-                {
+                if( DateTime.Now > _nextUpdate || _exitTriggered) {
                     //Extract the orders created since last update
                     OrderEvent orderEvent;
                     deltaOrders = new Map<Integer, Order>();
 
                     stopwatch = Stopwatch.StartNew();
-                    while (_orderEvents.TryDequeue(out orderEvent) && stopwatch.ElapsedMilliseconds < 15)
-                    {
+                    while (_orderEvents.TryDequeue(out orderEvent) && stopwatch.ElapsedMilliseconds < 15) {
                         order = _algorithm.Transactions.GetOrderById(orderEvent.OrderId);
                         deltaOrders[orderEvent.OrderId] = order.Clone();
                     }
 
                     //For charting convert to UTC
-                    foreach (order in deltaOrders)
-                    {
+                    foreach (order in deltaOrders) {
                         order.Value.Price = order.Value.Price.SmartRounding();
                         order.Value.Time = order.Value.Time.ToUniversalTime();
                     }
@@ -271,22 +259,20 @@ package com.quantconnect.lean.Lean.Engine.Results
                     _lastOrderId = (from order in deltaOrders.Values select order.Id).DefaultIfEmpty(_lastOrderId).Max();
 
                     //Limit length of orders we pass back dynamically to avoid flooding.
-                    //if (deltaOrders.Count > 50) deltaOrders.Clear();
+                    //if( deltaOrders.Count > 50) deltaOrders.Clear();
 
                     //Create and send back the changes in chart since the algorithm started.
                     deltaCharts = new Map<String, Chart>();
-                    Log.Debug("LiveTradingResultHandler.Update(): Build delta charts");
-                    lock (_chartLock)
-                    {
+                    Log.Debug( "LiveTradingResultHandler.Update(): Build delta charts");
+                    lock (_chartLock) {
                         //Get the updates since the last chart
-                        foreach (chart in _charts)
-                        {
+                        foreach (chart in _charts) {
                             // remove directory pathing characters from chart names
                             safeName = chart.Value.Name.Replace('/', '-');
                             deltaCharts.Add(safeName, chart.Value.GetUpdates());
                         }
                     }
-                    Log.Debug("LiveTradingResultHandler.Update(): End build delta charts");
+                    Log.Debug( "LiveTradingResultHandler.Update(): End build delta charts");
 
                     //Profit loss changes, get the banner statistics, summary information on the performance for the headers.
                     holdings = new Map<String, Holding>();
@@ -294,24 +280,21 @@ package com.quantconnect.lean.Lean.Engine.Results
                     runtimeStatistics = new Map<String,String>();
                     serverStatistics = OS.GetServerStatistics();
                     upTime = DateTime.UtcNow - _launchTimeUtc;
-                    serverStatistics["Up Time"] = String.format("{0}d {1:hh\\:mm\\:ss}", upTime.Days, upTime);
+                    serverStatistics["Up Time"] = String.format( "%1$sd {1:hh\\:mm\\:ss}", upTime.Days, upTime);
 
                     // Only send holdings updates when we have changes in orders, except for first time, then we want to send all
-                    foreach (asset in _algorithm.Securities.Values.Where(x => !x.IsInternalFeed()).OrderBy(x => x.Symbol.Value))
-                    {
+                    foreach (asset in _algorithm.Securities.Values.Where(x => !x.IsInternalFeed()).OrderBy(x => x.Symbol.Value)) {
                         holdings.Add(asset.Symbol.Value, new Holding(asset));
                     }
 
                     //Add the algorithm statistics first.
-                    Log.Debug("LiveTradingResultHandler.Update(): Build run time stats");
-                    lock (_runtimeLock)
-                    {
-                        foreach (pair in _runtimeStatistics)
-                        {
+                    Log.Debug( "LiveTradingResultHandler.Update(): Build run time stats");
+                    lock (_runtimeLock) {
+                        foreach (pair in _runtimeStatistics) {
                             runtimeStatistics.Add(pair.Key, pair.Value);
                         }
                     }
-                    Log.Debug("LiveTradingResultHandler.Update(): End build run time stats");
+                    Log.Debug( "LiveTradingResultHandler.Update(): End build run time stats");
 
                     //Some users have $0 in their brokerage account / starting cash of $0. Prevent divide by zero errors
                     netReturn = _setupHandler.StartingPortfolioValue > 0 ?
@@ -319,33 +302,29 @@ package com.quantconnect.lean.Lean.Engine.Results
                                     : 0;
 
                     //Add other fixed parameters.
-                    runtimeStatistics.Add("Unrealized:", "$" + _algorithm.Portfolio.TotalUnrealizedProfit.toString("N2"));
-                    runtimeStatistics.Add("Fees:", "-$" + _algorithm.Portfolio.TotalFees.toString("N2"));
-                    runtimeStatistics.Add("Net Profit:", "$" + _algorithm.Portfolio.TotalProfit.toString("N2"));
-                    runtimeStatistics.Add("Return:", netReturn.toString("P"));
-                    runtimeStatistics.Add("Equity:", "$" + _algorithm.Portfolio.TotalPortfolioValue.toString("N2"));
-                    runtimeStatistics.Add("Holdings:", "$" + _algorithm.Portfolio.TotalHoldingsValue.toString("N2"));
-                    runtimeStatistics.Add("Volume:", "$" + _algorithm.Portfolio.TotalSaleVolume.toString("N2"));
+                    runtimeStatistics.Add( "Unrealized:", "$" + _algorithm.Portfolio.TotalUnrealizedProfit.toString( "N2"));
+                    runtimeStatistics.Add( "Fees:", "-$" + _algorithm.Portfolio.TotalFees.toString( "N2"));
+                    runtimeStatistics.Add( "Net Profit:", "$" + _algorithm.Portfolio.TotalProfit.toString( "N2"));
+                    runtimeStatistics.Add( "Return:", netReturn.toString( "P"));
+                    runtimeStatistics.Add( "Equity:", "$" + _algorithm.Portfolio.TotalPortfolioValue.toString( "N2"));
+                    runtimeStatistics.Add( "Holdings:", "$" + _algorithm.Portfolio.TotalHoldingsValue.toString( "N2"));
+                    runtimeStatistics.Add( "Volume:", "$" + _algorithm.Portfolio.TotalSaleVolume.toString( "N2"));
 
                     // since we're sending multiple packets, let's do it async and forget about it
                     // chart data can get big so let's break them up into groups
                     splitPackets = SplitPackets(deltaCharts, deltaOrders, holdings, deltaStatistics, runtimeStatistics, serverStatistics);
 
-                    foreach (liveResultPacket in splitPackets)
-                    {
+                    foreach (liveResultPacket in splitPackets) {
                         _messagingHandler.Send(liveResultPacket);
                     }
 
                     //Send full packet to storage.
-                    if (DateTime.Now > _nextChartsUpdate || _exitTriggered)
-                    {
-                        Log.Debug("LiveTradingResultHandler.Update(): Pre-store result");
+                    if( DateTime.Now > _nextChartsUpdate || _exitTriggered) {
+                        Log.Debug( "LiveTradingResultHandler.Update(): Pre-store result");
                         _nextChartsUpdate = DateTime.Now.AddMinutes(1);
                         chartComplete = new Map<String, Chart>();
-                        lock (_chartLock)
-                        {
-                            foreach (chart in Charts)
-                            {
+                        lock (_chartLock) {
+                            foreach (chart in Charts) {
                                 // remove directory pathing characters from chart names
                                 safeName = chart.Value.Name.Replace('/', '-');
                                 chartComplete.Add(safeName, chart.Value);
@@ -354,31 +333,28 @@ package com.quantconnect.lean.Lean.Engine.Results
                         orders = new Map<Integer, Order>(_transactionHandler.Orders);
                         complete = new LiveResultPacket(_job, new LiveResult(chartComplete, orders, _algorithm.Transactions.TransactionRecord, holdings, deltaStatistics, runtimeStatistics, serverStatistics));
                         StoreResult(complete);
-                        Log.Debug("LiveTradingResultHandler.Update(): End-store result");
+                        Log.Debug( "LiveTradingResultHandler.Update(): End-store result");
                     }
 
                     // Upload the logs every 1-2 minutes; this can be a heavy operation depending on amount of live logging and should probably be done asynchronously.
-                    if (DateTime.Now > _nextLogStoreUpdate || _exitTriggered)
-                    {
+                    if( DateTime.Now > _nextLogStoreUpdate || _exitTriggered) {
                         List<LogEntry> logs;
-                        Log.Debug("LiveTradingResultHandler.Update(): Storing log...");
-                        lock (_logStoreLock)
-                        {
+                        Log.Debug( "LiveTradingResultHandler.Update(): Storing log...");
+                        lock (_logStoreLock) {
                             utc = DateTime.UtcNow;
                             logs = (from log in _logStore
-                                    where log.Time >= utc.RoundDown(TimeSpan.FromHours(1))
+                                    where log.Time >= utc.RoundDown(Duration.ofHours(1))
                                     select log).ToList();
                             //Override the log master to delete the old entries and prevent memory creep.
                             _logStore = logs;
                         }
                         StoreLog(logs);
                         _nextLogStoreUpdate = DateTime.Now.AddMinutes(2);
-                        Log.Debug("LiveTradingResultHandler.Update(): Finished storing log");
+                        Log.Debug( "LiveTradingResultHandler.Update(): Finished storing log");
                     }
 
                     // Every minute send usage statistics:
-                    if (DateTime.Now > _nextStatisticsUpdate || _exitTriggered)
-                    {
+                    if( DateTime.Now > _nextStatisticsUpdate || _exitTriggered) {
                         try
                         {
                             _api.SendStatistics(
@@ -392,21 +368,17 @@ package com.quantconnect.lean.Lean.Engine.Results
                                 _algorithm.Portfolio.TotalSaleVolume, 
                                 _lastOrderId, 0);
                         }
-                        catch (Exception err)
-                        {
+                        catch (Exception err) {
                             Log.Error(err, "Error sending statistics:");
                         }
                         _nextStatisticsUpdate = DateTime.Now.AddMinutes(1);
                     }
 
 
-                    Log.Debug("LiveTradingResultHandler.Update(): Trimming charts");
-                    lock (_chartLock)
-                    {
-                        foreach (chart in Charts)
-                        {
-                            foreach (series in chart.Value.Series)
-                            {
+                    Log.Debug( "LiveTradingResultHandler.Update(): Trimming charts");
+                    lock (_chartLock) {
+                        foreach (chart in Charts) {
+                            foreach (series in chart.Value.Series) {
                                 // trim data that's older than 2 days
                                 series.Value.Values =
                                     (from v in series.Value.Values
@@ -415,7 +387,7 @@ package com.quantconnect.lean.Lean.Engine.Results
                             }
                         }
                     }
-                    Log.Debug("LiveTradingResultHandler.Update(): Finished trimming charts");
+                    Log.Debug( "LiveTradingResultHandler.Update(): Finished trimming charts");
 
 
                     //Set the new update time after we've finished processing. 
@@ -424,8 +396,7 @@ package com.quantconnect.lean.Lean.Engine.Results
 
                 } // End Update Charts:
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err, "LiveTradingResultHandler().Update(): ", true);
             }
         }
@@ -440,8 +411,7 @@ package com.quantconnect.lean.Lean.Engine.Results
             Map<String, Holding> holdings,
             Map<String,String> deltaStatistics,
             Map<String,String> runtimeStatistics,
-            Map<String,String> serverStatistics)
-        {
+            Map<String,String> serverStatistics) {
             // break the charts into groups
 
             static final int groupSize = 10;
@@ -450,10 +420,8 @@ package com.quantconnect.lean.Lean.Engine.Results
 
             // we only want to send data for the chart the user is subscribed to, but
             // we still want to let consumers know that these other charts still exists
-            foreach (chart in deltaCharts.Values)
-            {
-                if (chart.Name != _subscription)
-                {
+            foreach (chart in deltaCharts.Values) {
+                if( chart.Name != _subscription) {
                     current.Add(chart.Name, new Chart(chart.Name));
                 }
             }
@@ -462,8 +430,7 @@ package com.quantconnect.lean.Lean.Engine.Results
 
             // add in our subscription symbol
             Chart subscriptionChart;
-            if (_subscription != null && deltaCharts.TryGetValue(_subscription, out subscriptionChart))
-            {
+            if( _subscription != null && deltaCharts.TryGetValue(_subscription, out subscriptionChart)) {
                 scharts = new Map<String,Chart>();
                 scharts.Add(_subscription, subscriptionChart);
                 chartPackets.Add(new LiveResultPacket(_job, new LiveResult { Charts = scharts }));
@@ -492,9 +459,8 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="message">Message we'd like shown in console.</param>
         /// <remarks>When there are already 500 messages in the queue it stops adding new messages.</remarks>
-        public void DebugMessage( String message)
-        {
-            if (Messages.Count > 500) return; //if too many in the queue already skip the logging.
+        public void DebugMessage( String message) {
+            if( Messages.Count > 500) return; //if too many in the queue already skip the logging.
             Messages.Enqueue(new DebugPacket(_job.ProjectId, _deployId, _compileId, message));
             AddToLogStore(message);
         }
@@ -504,10 +470,9 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="message">String message wed like logged.</param>
         /// <remarks>When there are already 500 messages in the queue it stops adding new messages.</remarks>
-        public void LogMessage( String message)
-        {
+        public void LogMessage( String message) {
             //Send the logging messages out immediately for live trading:
-            if (Messages.Count > 500) return;
+            if( Messages.Count > 500) return;
             Messages.Enqueue(new LogPacket(_deployId, message));
             AddToLogStore(message);
         }
@@ -516,14 +481,12 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// Save an algorithm message to the log store. Uses a different timestamped method of adding messaging to interweve debug and logging messages.
         /// </summary>
         /// <param name="message">String message to send to browser.</param>
-        private void AddToLogStore( String message)
-        {
-            Log.Debug("LiveTradingResultHandler.AddToLogStore(): Adding");
-            lock (_logStoreLock)
-            {
+        private void AddToLogStore( String message) {
+            Log.Debug( "LiveTradingResultHandler.AddToLogStore(): Adding");
+            lock (_logStoreLock) {
                 _logStore.Add(new LogEntry(DateTime.Now.toString(DateFormat.UI) + " " + message));
             }
-            Log.Debug("LiveTradingResultHandler.AddToLogStore(): Finished adding");
+            Log.Debug( "LiveTradingResultHandler.AddToLogStore(): Finished adding");
         }
 
         /// <summary>
@@ -531,9 +494,8 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="message">Message we'd like shown in console.</param>
         /// <param name="stacktrace">Stacktrace to show in the console.</param>
-        public void ErrorMessage( String message, String stacktrace = "")
-        {
-            if (Messages.Count > 500) return;
+        public void ErrorMessage( String message, String stacktrace = "") {
+            if( Messages.Count > 500) return;
             Messages.Enqueue(new HandledErrorPacket(_deployId, message, stacktrace));
             AddToLogStore(message + (!string.IsNullOrEmpty(stacktrace) ? ": StackTrace: " + stacktrace : string.Empty));
         }
@@ -542,8 +504,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// Send a list of secutity types that the algorithm trades to the browser to show the market clock - is this market open or closed!
         /// </summary>
         /// <param name="types">List of security types</param>
-        public void SecurityType(List<SecurityType> types)
-        {
+        public void SecurityType(List<SecurityType> types) {
             packet = new SecurityTypesPacket { Types = types };
             Messages.Enqueue(packet);
         }
@@ -553,8 +514,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="message">Runtime error message</param>
         /// <param name="stacktrace">Associated error stack trace.</param>
-        public void RuntimeError( String message, String stacktrace = "")
-        {
+        public void RuntimeError( String message, String stacktrace = "") {
             Messages.Enqueue(new RuntimeErrorPacket(_deployId, message, stacktrace));
             AddToLogStore(message + (!string.IsNullOrEmpty(stacktrace) ? ": StackTrace: " + stacktrace : string.Empty));
         }
@@ -570,27 +530,23 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="value">Value for the chart sample.</param>
         /// <param name="unit">Unit for the chart axis</param>
         /// <remarks>Sample can be used to create new charts or sample equity - daily performance.</remarks>
-        public void Sample( String chartName, String seriesName, int seriesIndex, SeriesType seriesType, DateTime time, BigDecimal value, String unit = "$")
-        {
-            Log.Debug("LiveTradingResultHandler.Sample(): Sampling " + chartName + "." + seriesName);
-            lock (_chartLock)
-            {
+        public void Sample( String chartName, String seriesName, int seriesIndex, SeriesType seriesType, DateTime time, BigDecimal value, String unit = "$") {
+            Log.Debug( "LiveTradingResultHandler.Sample(): Sampling " + chartName + "." + seriesName);
+            lock (_chartLock) {
                 //Add a copy locally:
-                if (!Charts.ContainsKey(chartName))
-                {
+                if( !Charts.ContainsKey(chartName)) {
                     Charts.AddOrUpdate(chartName, new Chart(chartName));
                 }
 
                 //Add the sample to our chart:
-                if (!Charts[chartName].Series.ContainsKey(seriesName))
-                {
+                if( !Charts[chartName].Series.ContainsKey(seriesName)) {
                     Charts[chartName].Series.Add(seriesName, new Series(seriesName, seriesType, seriesIndex, unit));
                 }
 
                 //Add our value:
                 Charts[chartName].Series[seriesName].Values.Add(new ChartPoint(time, value));
             }
-            Log.Debug("LiveTradingResultHandler.Sample(): Done sampling " + chartName + "." + seriesName);
+            Log.Debug( "LiveTradingResultHandler.Sample(): Done sampling " + chartName + "." + seriesName);
         }
 
         /// <summary>
@@ -599,12 +555,10 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="time">Time of the sample.</param>
         /// <param name="value">Equity value at this moment in time.</param>
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
-        public void SampleEquity(DateTime time, BigDecimal value)
-        {
-            if (value > 0)
-            {
-                Log.Debug("LiveTradingResultHandler.SampleEquity(): " + time.ToShortTimeString() + " >" + value);
-                Sample("Strategy Equity", "Equity", 0, SeriesType.Candle, time, value);
+        public void SampleEquity(DateTime time, BigDecimal value) {
+            if( value > 0) {
+                Log.Debug( "LiveTradingResultHandler.SampleEquity(): " + time.ToShortTimeString() + " >" + value);
+                Sample( "Strategy Equity", "Equity", 0, SeriesType.Candle, time, value);
             }
         }
 
@@ -615,16 +569,13 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="time">Time of sample</param>
         /// <param name="value">Value of the asset price</param>
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
-        public void SampleAssetPrices(Symbol symbol, DateTime time, BigDecimal value)
-        {
+        public void SampleAssetPrices(Symbol symbol, DateTime time, BigDecimal value) {
             // don't send stockplots for internal feeds
             Security security;
-            if (_algorithm.Securities.TryGetValue(symbol, out security) && !security.IsInternalFeed() && value > 0)
-            {
+            if( _algorithm.Securities.TryGetValue(symbol, out security) && !security.IsInternalFeed() && value > 0) {
                 now = DateTime.UtcNow.ConvertFromUtc(security.Exchange.TimeZone);
-                if (security.Exchange.Hours.IsOpen(now, security.IsExtendedMarketHours))
-                {
-                    Sample("Stockplot: " + symbol.Value, "Stockplot: " + symbol.Value, 0, SeriesType.Line, time, value);
+                if( security.Exchange.Hours.IsOpen(now, security.IsExtendedMarketHours)) {
+                    Sample( "Stockplot: " + symbol.Value, "Stockplot: " + symbol.Value, 0, SeriesType.Line, time, value);
                 }
             }
         }
@@ -635,11 +586,10 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="time">Current backtest date.</param>
         /// <param name="value">Current daily performance value.</param>
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
-        public void SamplePerformance(DateTime time, BigDecimal value)
-        {
+        public void SamplePerformance(DateTime time, BigDecimal value) {
             //No "daily performance" sampling for live trading yet.
-            //Log.Debug("LiveTradingResultHandler.SamplePerformance(): " + time.ToShortTimeString() + " >" + value);
-            //Sample("Strategy Equity", ChartType.Overlay, "Daily Performance", SeriesType.Line, time, value, "%");
+            //Log.Debug( "LiveTradingResultHandler.SamplePerformance(): " + time.ToShortTimeString() + " >" + value);
+            //Sample( "Strategy Equity", ChartType.Overlay, "Daily Performance", SeriesType.Line, time, value, "%");
         }
 
         /// <summary>
@@ -648,9 +598,8 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="time">Current backtest date.</param>
         /// <param name="value">Current benchmark value.</param>
         /// <seealso cref="IResultHandler.Sample"/>
-        public void SampleBenchmark(DateTime time, BigDecimal value)
-        {
-            Sample("Benchmark", "Benchmark", 0, SeriesType.Line, time, value);
+        public void SampleBenchmark(DateTime time, BigDecimal value) {
+            Sample( "Benchmark", "Benchmark", 0, SeriesType.Line, time, value);
         }
 
         /// <summary>
@@ -658,25 +607,19 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="updates">Chart updates since the last request.</param>
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
-        public void SampleRange(List<Chart> updates)
-        {
-            Log.Debug("LiveTradingResultHandler.SampleRange(): Begin sampling");
-            lock (_chartLock)
-            {
-                foreach (update in updates)
-                {
+        public void SampleRange(List<Chart> updates) {
+            Log.Debug( "LiveTradingResultHandler.SampleRange(): Begin sampling");
+            lock (_chartLock) {
+                foreach (update in updates) {
                     //Create the chart if it doesn't exist already:
-                    if (!Charts.ContainsKey(update.Name))
-                    {
+                    if( !Charts.ContainsKey(update.Name)) {
                         Charts.AddOrUpdate(update.Name, new Chart(update.Name));
                     }
 
                     //Add these samples to this chart.
-                    foreach (series in update.Series.Values)
-                    {
+                    foreach (series in update.Series.Values) {
                         //If we don't already have this record, its the first packet
-                        if (!Charts[update.Name].Series.ContainsKey(series.Name))
-                        {
+                        if( !Charts[update.Name].Series.ContainsKey(series.Name)) {
                             Charts[update.Name].Series.Add(series.Name, new Series(series.Name, series.SeriesType, series.Index, series.Unit));
                         }
 
@@ -685,21 +628,19 @@ package com.quantconnect.lean.Lean.Engine.Results
                     }
                 }
             }
-            Log.Debug("LiveTradingResultHandler.SampleRange(): Finished sampling");
+            Log.Debug( "LiveTradingResultHandler.SampleRange(): Finished sampling");
         }
 
         /// <summary>
         /// Set the algorithm of the result handler after its been initialized.
         /// </summary>
         /// <param name="algorithm">Algorithm object matching IAlgorithm interface</param>
-        public void SetAlgorithm(IAlgorithm algorithm)
-        {
+        public void SetAlgorithm(IAlgorithm algorithm) {
             _algorithm = algorithm;
 
             types = new List<SecurityType>();
-            foreach (security in _algorithm.Securities.Values)
-            {
-                if (!types.Contains(security.Type)) types.Add(security.Type);
+            foreach (security in _algorithm.Securities.Values) {
+                if( !types.Contains(security.Type)) types.Add(security.Type);
             }
             SecurityType(types);
 
@@ -716,10 +657,9 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="status">Status enum of the algorithm.</param>
         /// <param name="message">Optional String message describing reason for status change.</param>
-        public void SendStatusUpdate(AlgorithmStatus status, String message = "")
-        {
+        public void SendStatusUpdate(AlgorithmStatus status, String message = "") {
             msg = status + ( String.IsNullOrEmpty(message) ? string.Empty : message);
-            Log.Trace("LiveTradingResultHandler.SendStatusUpdate(): " + msg);
+            Log.Trace( "LiveTradingResultHandler.SendStatusUpdate(): " + msg);
             packet = new AlgorithmStatusPacket(_job.AlgorithmId, _job.ProjectId, status, message);
             Messages.Enqueue(packet);
         }
@@ -730,18 +670,15 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// </summary>
         /// <param name="key">Runtime headline statistic name</param>
         /// <param name="value">Runtime headline statistic value</param>
-        public void RuntimeStatistic( String key, String value)
-        {
-            Log.Debug("LiveTradingResultHandler.RuntimeStatistic(): Begin setting statistic");
-            lock (_runtimeLock)
-            {
-                if (!_runtimeStatistics.ContainsKey(key))
-                {
+        public void RuntimeStatistic( String key, String value) {
+            Log.Debug( "LiveTradingResultHandler.RuntimeStatistic(): Begin setting statistic");
+            lock (_runtimeLock) {
+                if( !_runtimeStatistics.ContainsKey(key)) {
                     _runtimeStatistics.Add(key, value);
                 }
                 _runtimeStatistics[key] = value;
             }
-            Log.Debug("LiveTradingResultHandler.RuntimeStatistic(): End setting statistic");
+            Log.Debug( "LiveTradingResultHandler.RuntimeStatistic(): End setting statistic");
         }
 
         /// <summary>
@@ -753,8 +690,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <param name="holdings">Current holdings state for the algorithm</param>
         /// <param name="statisticsResults">Statistics information for the algorithm (empty if not finished)</param>
         /// <param name="runtime">Runtime statistics banner information</param>
-        public void SendFinalResult(AlgorithmNodePacket job, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, StatisticsResults statisticsResults, Map<String,String> runtime)
-        {
+        public void SendFinalResult(AlgorithmNodePacket job, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, StatisticsResults statisticsResults, Map<String,String> runtime) {
             try
             {
                 //Convert local dictionary:
@@ -775,8 +711,7 @@ package com.quantconnect.lean.Lean.Engine.Results
                 //Send the truncated packet:
                 _messagingHandler.Send(result);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }
@@ -786,17 +721,15 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// Process the log entries and save it to permanent storage 
         /// </summary>
         /// <param name="logs">Log list</param>
-        public void StoreLog(IEnumerable<LogEntry> logs)
-        {
+        public void StoreLog(IEnumerable<LogEntry> logs) {
             try
             {
                 //Concatenate and upload the log file:
-                joined = string.Join("\r\n", logs.Select(x=>x.Message));
-                key = "live/" + _job.UserId + "/" + _job.ProjectId + "/" + _job.DeployId + "-" + DateTime.UtcNow.toString("yyyy-MM-dd-HH") + "-log.txt";
+                joined = String.join( "\r\n", logs.Select(x=>x.Message));
+                key = "live/" + _job.UserId + "/" + _job.ProjectId + "/" + _job.DeployId + "-" + DateTime.UtcNow.toString( "yyyy-MM-dd-HH") + "-log.txt";
                 _api.Store(joined, key, StoragePermissions.Authenticated);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }
@@ -810,8 +743,7 @@ package com.quantconnect.lean.Lean.Engine.Results
         ///     Async creates crashes in Mono 3.10 if the thread disappears before the upload is complete so it is disabled for now.
         ///     For live trading we're making assumption its a long running task and safe to async save large files.
         /// </remarks>
-        public void StoreResult(Packet packet, boolean async = true)
-        {
+        public void StoreResult(Packet packet, boolean async = true) {
             // this will hold all the serialized data and the keys to be stored
             data_keys = Enumerable.Range(0, 0).Select(x => new
             {
@@ -821,17 +753,15 @@ package com.quantconnect.lean.Lean.Engine.Results
 
             try
             {
-                Log.Debug("LiveTradingResultHandler.StoreResult(): Begin store result sampling");
-                lock (_chartLock)
-                {
+                Log.Debug( "LiveTradingResultHandler.StoreResult(): Begin store result sampling");
+                lock (_chartLock) {
                     // Make sure this is the right type of packet:
-                    if (packet.Type != PacketType.LiveResult) return;
+                    if( packet.Type != PacketType.LiveResult) return;
 
                     // Port to packet format:
                     live = packet as LiveResultPacket;
 
-                    if (live != null)
-                    {
+                    if( live != null ) {
                         // we need to down sample
                         start = DateTime.UtcNow.Date;
                         stop = start.AddDays(1);
@@ -842,37 +772,36 @@ package com.quantconnect.lean.Lean.Engine.Results
                         highResolutionCharts = new Map<String, Chart>(live.Results.Charts);
 
                         // minute resoluton data, save today
-                        minuteSampler = new SeriesSampler(TimeSpan.FromMinutes(1));
+                        minuteSampler = new SeriesSampler(Duration.ofMinutes(1));
                         minuteCharts = minuteSampler.SampleCharts(live.Results.Charts, start, stop);
 
                         // swap out our charts with the sampeld data
                         live.Results.Charts = minuteCharts;
                         data_keys.Add(new
                         {
-                            Key = CreateKey("minute"),
+                            Key = CreateKey( "minute"),
                             Serialized = JsonConvert.SerializeObject(live.Results)
                         });
 
                         // 10 minute resolution data, save today
-                        tenminuteSampler = new SeriesSampler(TimeSpan.FromMinutes(10));
+                        tenminuteSampler = new SeriesSampler(Duration.ofMinutes(10));
                         tenminuteCharts = tenminuteSampler.SampleCharts(live.Results.Charts, start, stop);
 
                         live.Results.Charts = tenminuteCharts;
                         data_keys.Add(new
                         {
-                            Key = CreateKey("10minute"),
+                            Key = CreateKey( "10minute"),
                             Serialized = JsonConvert.SerializeObject(live.Results)
                         });
 
                         // high resolution data, we only want to save an hour
                         live.Results.Charts = highResolutionCharts;
-                        start = DateTime.UtcNow.RoundDown(TimeSpan.FromHours(1));
-                        stop = DateTime.UtcNow.RoundUp(TimeSpan.FromHours(1));
+                        start = DateTime.UtcNow.RoundDown(Duration.ofHours(1));
+                        stop = DateTime.UtcNow.RoundUp(Duration.ofHours(1));
 
                         Truncate(live.Results, start, stop);
 
-                        foreach (name in live.Results.Charts.Keys)
-                        {
+                        foreach (name in live.Results.Charts.Keys) {
                             newPacket = new LiveResult();
                             newPacket.Orders = new Map<Integer, Order>(live.Results.Orders);
                             newPacket.Holdings = new Map<String, Holding>(live.Results.Holdings);
@@ -881,26 +810,24 @@ package com.quantconnect.lean.Lean.Engine.Results
 
                             data_keys.Add(new
                             {
-                                Key = CreateKey("second_" + Uri.EscapeUriString(name), "yyyy-MM-dd-HH"),
+                                Key = CreateKey( "second_" + Uri.EscapeUriString(name), "yyyy-MM-dd-HH"),
                                 Serialized = JsonConvert.SerializeObject(newPacket)
                             });
                         }
                     }
                     else
                     {
-                        Log.Error("LiveResultHandler.StoreResult(): Result Null.");
+                        Log.Error( "LiveResultHandler.StoreResult(): Result Null.");
                     }
                 }
-                Log.Debug("LiveTradingResultHandler.StoreResult(): End store result sampling");
+                Log.Debug( "LiveTradingResultHandler.StoreResult(): End store result sampling");
 
                 // Upload Results Portion
-                foreach (dataKey in data_keys)
-                {
+                foreach (dataKey in data_keys) {
                     _api.Store(dataKey.Serialized, dataKey.Key, StoragePermissions.Authenticated, async);
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }
@@ -909,26 +836,24 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// New order event for the algorithm backtest: send event to browser.
         /// </summary>
         /// <param name="newEvent">New event details</param>
-        public void OrderEvent(OrderEvent newEvent)
-        {
+        public void OrderEvent(OrderEvent newEvent) {
             // we'll pull these out for the deltaOrders
             _orderEvents.Enqueue(newEvent);
 
             //Send the message to frontend as packet:
-            Log.Trace("LiveTradingResultHandler.OrderEvent(): " + newEvent, true);
+            Log.Trace( "LiveTradingResultHandler.OrderEvent(): " + newEvent, true);
             Messages.Enqueue(new OrderEventPacket(_deployId, newEvent));
 
-            DebugMessage( String.format("New Order Event: OrderId:{0} Symbol:{1} Quantity:{2} Status:{3}", newEvent.OrderId, newEvent.Symbol, newEvent.FillQuantity, newEvent.Status));
+            DebugMessage( String.format( "New Order Event: OrderId:%1$s Symbol:%2$s Quantity:%3$s Status:{3}", newEvent.OrderId, newEvent.Symbol, newEvent.FillQuantity, newEvent.Status));
 
             //Add the order event message to the log:
-            LogMessage("New Order Event: Id:" + newEvent.OrderId + " Symbol:" + newEvent.Symbol.toString() + " Quantity:" + newEvent.FillQuantity + " Status:" + newEvent.Status);
+            LogMessage( "New Order Event: Id:" + newEvent.OrderId + " Symbol:" + newEvent.Symbol.toString() + " Quantity:" + newEvent.FillQuantity + " Status:" + newEvent.Status);
         }
 
         /// <summary>
         /// Terminate the result thread and apply any required exit proceedures.
         /// </summary>
-        public void Exit()
-        {
+        public void Exit() {
             _exitTriggered = true;
             Update();
         }
@@ -936,30 +861,26 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// <summary>
         /// Purge/clear any outstanding messages in message queue.
         /// </summary>
-        public void PurgeQueue()
-        {
+        public void PurgeQueue() {
             Messages.Clear();
         }
 
         /// <summary>
         /// Truncates the chart and order data in the result packet to within the specified time frame
         /// </summary>
-        private static void Truncate(LiveResult result, DateTime start, DateTime stop)
-        {
+        private static void Truncate(LiveResult result, DateTime start, DateTime stop) {
             unixDateStart = Time.DateTimeToUnixTimeStamp(start);
             unixDateStop = Time.DateTimeToUnixTimeStamp(stop);
 
-            //Log.Trace("LiveTradingResultHandler.Truncate: Start: " + start.toString("u") + " Stop : " + stop.toString("u"));
-            //Log.Trace("LiveTradingResultHandler.Truncate: Truncate Delta: " + (unixDateStop - unixDateStart) + " Incoming Points: " + result.Charts["Strategy Equity"].Series["Equity"].Values.Count);
+            //Log.Trace( "LiveTradingResultHandler.Truncate: Start: " + start.toString( "u") + " Stop : " + stop.toString( "u"));
+            //Log.Trace( "LiveTradingResultHandler.Truncate: Truncate Delta: " + (unixDateStop - unixDateStart) + " Incoming Points: " + result.Charts["Strategy Equity"].Series["Equity"].Values.Count);
 
             charts = new Map<String, Chart>();
-            foreach (kvp in result.Charts)
-            {
+            foreach (kvp in result.Charts) {
                 chart = kvp.Value;
                 newChart = new Chart(chart.Name, chart.ChartType);
                 charts.Add(kvp.Key, newChart);
-                foreach (series in chart.Series.Values)
-                {
+                foreach (series in chart.Series.Values) {
                     newSeries = new Series(series.Name, series.SeriesType);
                     newSeries.Values.AddRange(series.Values.Where(chartPoint => chartPoint.x >= unixDateStart && chartPoint.x <= unixDateStop));
                     newChart.AddSeries(newSeries);
@@ -968,26 +889,23 @@ package com.quantconnect.lean.Lean.Engine.Results
             result.Charts = charts;
             result.Orders = result.Orders.Values.Where(x => x.Time >= start && x.Time <= stop).ToDictionary(x => x.Id);
 
-            //Log.Trace("LiveTradingResultHandler.Truncate: Truncate Outgoing: " + result.Charts["Strategy Equity"].Series["Equity"].Values.Count);
+            //Log.Trace( "LiveTradingResultHandler.Truncate: Truncate Outgoing: " + result.Charts["Strategy Equity"].Series["Equity"].Values.Count);
 
             //For live charting convert to UTC
-            foreach (order in result.Orders)
-            {
+            foreach (order in result.Orders) {
                 order.Value.Time = order.Value.Time.ToUniversalTime();
             }
         }
 
-        private String CreateKey( String suffix, String dateFormat = "yyyy-MM-dd")
-        {
-            return String.format("live/{0}/{1}/{2}-{3}_{4}.json", _job.UserId, _job.ProjectId, _job.DeployId, DateTime.UtcNow.toString(dateFormat), suffix);
+        private String CreateKey( String suffix, String dateFormat = "yyyy-MM-dd") {
+            return String.format( "live/%1$s/%2$s/%3$s-{3}_{4}.json", _job.UserId, _job.ProjectId, _job.DeployId, DateTime.UtcNow.toString(dateFormat), suffix);
         }
 
 
         /// <summary>
         /// Set the chart name that we want data from.
         /// </summary>
-        public void SetChartSubscription( String symbol)
-        {
+        public void SetChartSubscription( String symbol) {
             _subscription = symbol;
         }
 
@@ -996,40 +914,33 @@ package com.quantconnect.lean.Lean.Engine.Results
         /// This method is triggered from the algorithm manager thread.
         /// </summary>
         /// <remarks>Prime candidate for putting into a base class. Is identical across all result handlers.</remarks>
-        public void ProcessSynchronousEvents( boolean forceProcess = false)
-        {
+        public void ProcessSynchronousEvents( boolean forceProcess = false) {
             time = DateTime.Now;
 
-            if (time > _nextSample || forceProcess)
-            {
-                Log.Debug("LiveTradingResultHandler.ProcessSynchronousEvents(): Enter");
+            if( time > _nextSample || forceProcess) {
+                Log.Debug( "LiveTradingResultHandler.ProcessSynchronousEvents(): Enter");
 
                 //Set next sample time: 4000 samples per backtest
                 _nextSample = time.Add(ResamplePeriod);
 
                 //Update the asset prices to take a real time sample of the market price even though we're using minute bars
-                if (_dataFeed != null)
-                {
-                    foreach (subscription in _dataFeed.Subscriptions)
-                    {
+                if( _dataFeed != null ) {
+                    foreach (subscription in _dataFeed.Subscriptions) {
 
                         Security security;
-                        if (_algorithm.Securities.TryGetValue(subscription.Configuration.Symbol, out security))
-                        {
+                        if( _algorithm.Securities.TryGetValue(subscription.Configuration.Symbol, out security)) {
                             //Sample Portfolio Value:
                             price = subscription.RealtimePrice;
 
                             last = security.GetLastData();
-                            if (last != null)
-                            {
+                            if( last != null ) {
                                 last.Value = price;
                                 security.SetRealTimePrice(last);
 
                                 // Update CashBook for Forex securities
                                 Cash cash;
                                 forex = security as Forex;
-                                if (forex != null && _algorithm.Portfolio.CashBook.TryGetValue(forex.BaseCurrencySymbol, out cash))
-                                {
+                                if( forex != null && _algorithm.Portfolio.CashBook.TryGetValue(forex.BaseCurrencySymbol, out cash)) {
                                     cash.Update(last);
                                 }
                             }
@@ -1053,63 +964,55 @@ package com.quantconnect.lean.Lean.Engine.Results
             }
 
             // wait until after we're warmed up to start sending running status each minute
-            if (!_algorithm.IsWarmingUp && time > _nextRunningStatus)
-            {
-                _nextRunningStatus = time.Add(TimeSpan.FromMinutes(1));
+            if( !_algorithm.IsWarmingUp && time > _nextRunningStatus) {
+                _nextRunningStatus = time.Add(Duration.ofMinutes(1));
                 _api.SetAlgorithmStatus(_job.AlgorithmId, AlgorithmStatus.Running);
             }
 
             //Send out the debug messages:
             debugMessage = _algorithm.DebugMessages.ToList();
             _algorithm.DebugMessages.Clear();
-            foreach (source in debugMessage)
-            {
+            foreach (source in debugMessage) {
                 DebugMessage(source);
             }
 
             //Send out the error messages:
             errorMessage = _algorithm.ErrorMessages.ToList();
             _algorithm.ErrorMessages.Clear();
-            foreach (source in errorMessage)
-            {
+            foreach (source in errorMessage) {
                 ErrorMessage(source);
             }
 
             //Send out the log messages:
             logMessage = _algorithm.LogMessages.ToList();
             _algorithm.LogMessages.Clear();
-            foreach (source in logMessage)
-            {
+            foreach (source in logMessage) {
                 LogMessage(source);
             }
 
             //Set the running statistics:
-            foreach (pair in _algorithm.RuntimeStatistics)
-            {
+            foreach (pair in _algorithm.RuntimeStatistics) {
                 RuntimeStatistic(pair.Key, pair.Value);
             }
 
             //Send all the notification messages but timeout within a second, or if this is a force process, wait till its done.
             start = DateTime.Now;
-            while (_algorithm.Notify.Messages.Count > 0 && (DateTime.Now < start.AddSeconds(1) || forceProcess))
-            {
+            while (_algorithm.Notify.Messages.Count > 0 && (DateTime.Now < start.AddSeconds(1) || forceProcess)) {
                 Notification message;
-                if (_algorithm.Notify.Messages.TryDequeue(out message))
-                {
+                if( _algorithm.Notify.Messages.TryDequeue(out message)) {
                     //Process the notification messages:
-                    Log.Trace("LiveTradingResultHandler.ProcessSynchronousEvents(): Processing Notification...");
+                    Log.Trace( "LiveTradingResultHandler.ProcessSynchronousEvents(): Processing Notification...");
                     try
                     {
                         _messagingHandler.SendNotification(message);
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         Log.Error(err, "Sending notification: " + message.GetType().FullName);
                     }
                 }
             }
 
-            Log.Debug("LiveTradingResultHandler.ProcessSynchronousEvents(): Exit");
+            Log.Debug( "LiveTradingResultHandler.ProcessSynchronousEvents(): Exit");
         }
     }
 }

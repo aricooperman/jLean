@@ -35,7 +35,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <summary>
         /// Gets or sets the end time of this data
         /// </summary>
-        public override DateTime EndTime
+        public @Override DateTime EndTime
         {
             get { return _endTime; }
             set { _endTime = value; }
@@ -45,8 +45,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// Initializes a new default instance of the <see cref="BaseDataCollection"/> c;ass
         /// </summary>
         public BaseDataCollection()
-            : this(DateTime.MinValue, Symbol.Empty)
-        {
+            : this(DateTime.MinValue, Symbol.Empty) {
         }
 
         /// <summary>
@@ -55,9 +54,8 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="time">The time of this data</param>
         /// <param name="symbol">A common identifier for all data in this packet</param>
         /// <param name="data">The data to add to this collection</param>
-        public BaseDataCollection(DateTime time, Symbol symbol, IEnumerable<BaseData> data = null)
-            : this(time, time, symbol, data)
-        {
+        public BaseDataCollection(DateTime time, Symbol symbol, IEnumerable<BaseData> data = null )
+            : this(time, time, symbol, data) {
         }
 
         /// <summary>
@@ -67,8 +65,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="endTime">The end time of this data</param>
         /// <param name="symbol">A common identifier for all data in this packet</param>
         /// <param name="data">The data to add to this collection</param>
-        public BaseDataCollection(DateTime time, DateTime endTime, Symbol symbol, IEnumerable<BaseData> data = null)
-        {
+        public BaseDataCollection(DateTime time, DateTime endTime, Symbol symbol, IEnumerable<BaseData> data = null ) {
             Symbol = symbol;
             Time = time;
             _endTime = endTime;
@@ -82,8 +79,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// This base implementation uses reflection to copy all public fields and properties
         /// </remarks>
         /// <returns>A clone of the current object</returns>
-        public override BaseData Clone()
-        {
+        public @Override BaseData Clone() {
             return new BaseDataCollection(Time, EndTime, Symbol, Data);
         }
     }

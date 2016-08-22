@@ -53,8 +53,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="kPeriod">The K period given to calculated the Slow %K</param>
         /// <param name="dPeriod">The D period given to calculated the Slow %D</param>
         public Stochastic( String name, int period, int kPeriod, int dPeriod)
-            : base(name)
-        {
+            : base(name) {
             _maximum = new Maximum(name + "_Max", period);
             _mininum = new Minimum(name + "_Min", period);
             _sumFastK = new Sum(name + "_SumFastK", kPeriod);
@@ -86,14 +85,13 @@ package com.quantconnect.lean.Indicators
         /// <param name="kPeriod">The K period given to calculated the Slow %K</param>
         /// <param name="dPeriod">The D period given to calculated the Slow %D</param>
         public Stochastic(int period, int kPeriod, int dPeriod)
-            : this("STO" + period, period, kPeriod, dPeriod)
-        {
+            : this( "STO" + period, period, kPeriod, dPeriod) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return FastStoch.IsReady && StochK.IsReady && StochD.IsReady; }
         }
@@ -101,8 +99,7 @@ package com.quantconnect.lean.Indicators
         /// Computes the next value of this indicator from the given state
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _maximum.Update(input.Time, input.High);
             _mininum.Update(input.Time, input.Low);
             FastStoch.Update(input);
@@ -117,13 +114,11 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period.</param>
         /// <param name="input">The input.</param>
         /// <returns>The Fast Stochastics %K value.</returns>
-        private BigDecimal ComputeFastStoch(int period, TradeBar input)
-        {
+        private BigDecimal ComputeFastStoch(int period, TradeBar input) {
             denominator = (_maximum - _mininum);
             numerator = (input.Close - _mininum);
             BigDecimal fastStoch;
-            if (denominator == 0m)
-            {
+            if( denominator == 0m) {
                 // if there's no range, just return constant zero
                 fastStoch = 0m;
             }
@@ -142,8 +137,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="constantK">The constant k.</param>
         /// <param name="input">The input.</param>
         /// <returns>The Slow Stochastics %K value.</returns>
-        private BigDecimal ComputeStochK(int period, int constantK, TradeBar input)
-        {
+        private BigDecimal ComputeStochK(int period, int constantK, TradeBar input) {
             stochK = _maximum.Samples >= (period + constantK - 1) ? _sumFastK / constantK : new decimal(0.0);
             _sumSlowK.Update(input.Time, stochK);
             return stochK * 100;
@@ -156,16 +150,14 @@ package com.quantconnect.lean.Indicators
         /// <param name="constantK">The constant k.</param>
         /// <param name="constantD">The constant d.</param>
         /// <returns>The Slow Stochastics %D value.</returns>
-        private BigDecimal ComputeStochD(int period, int constantK, int constantD)
-        {
+        private BigDecimal ComputeStochD(int period, int constantK, int constantD) {
             stochD = _maximum.Samples >= (period + constantK + constantD - 2) ? _sumSlowK / constantD : new decimal(0.0);
             return stochD * 100;
         }
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             FastStoch.Reset();
             StochK.Reset();
             StochD.Reset();

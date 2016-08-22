@@ -47,8 +47,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="name">The name of this indicator</param>
         public InvertedHammer( String name) 
             : base(name, Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod),
-                CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod) + 1 + 1)
-        {
+                CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod) + 1 + 1) {
             _bodyShortAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
             _shadowLongAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod;
             _shadowVeryShortAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod;
@@ -58,14 +57,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Initializes a new instance of the <see cref="InvertedHammer"/> class.
         /// </summary>
         public InvertedHammer()
-            : this("INVERTEDHAMMER")
-        {
+            : this( "INVERTEDHAMMER") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -76,22 +74,17 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
-                if (Samples >= Period - _bodyShortAveragePeriod)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
+                if( Samples >= Period - _bodyShortAveragePeriod) {
                     _bodyShortPeriodTotal += GetCandleRange(CandleSettingType.BodyShort, input);
                 }
 
-                if (Samples >= Period - _shadowLongAveragePeriod)
-                {
+                if( Samples >= Period - _shadowLongAveragePeriod) {
                     _shadowLongPeriodTotal += GetCandleRange(CandleSettingType.ShadowLong, input);
                 }
 
-                if (Samples >= Period - _shadowVeryShortAveragePeriod)
-                {
+                if( Samples >= Period - _shadowVeryShortAveragePeriod) {
                     _shadowVeryShortPeriodTotal += GetCandleRange(CandleSettingType.ShadowVeryShort, input);
                 }
 
@@ -99,7 +92,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             }
 
             BigDecimal value;
-            if (
+            if( 
                 // small rb
                 GetRealBody(input) < GetCandleAverage(CandleSettingType.BodyShort, _bodyShortPeriodTotal, input) &&
                 // long upper shadow
@@ -131,8 +124,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _bodyShortPeriodTotal = 0m;
             _shadowLongPeriodTotal = 0m;
             _shadowVeryShortPeriodTotal = 0m;

@@ -48,15 +48,12 @@ package com.quantconnect.lean.ToolBox
         /// </summary>
         /// <param name="extension">The file extension</param>
         /// <returns>A new stream provider capable of reading files with the specified extension</returns>
-        public static IStreamProvider ForExtension( String extension)
-        {
+        public static IStreamProvider ForExtension( String extension) {
             ext = Path.GetExtension(extension);
-            if (ext == ".zip")
-            {
+            if( ext == ".zip") {
                 return new ZipStreamProvider();
             }
-            if (ext == ".bz2")
-            {
+            if( ext == ".bz2") {
                 return new Bz2StreamProvider();
             }
 

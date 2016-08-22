@@ -64,8 +64,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="security">The security whose data is held in this packet</param>
         /// <param name="configuration">The subscription configuration that produced this data</param>
-        public DataFeedPacket(Security security, SubscriptionDataConfig configuration)
-        {
+        public DataFeedPacket(Security security, SubscriptionDataConfig configuration) {
             Security = security;
             Configuration = configuration;
             _data = new List<BaseData>();
@@ -78,8 +77,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// <param name="configuration">The subscription configuration that produced this data</param>
         /// <param name="data">The data to add to this packet. The list reference is reused
         /// internally and NOT copied.</param>
-        public DataFeedPacket(Security security, SubscriptionDataConfig configuration, List<BaseData> data)
-        {
+        public DataFeedPacket(Security security, SubscriptionDataConfig configuration, List<BaseData> data) {
             Security = security;
             Configuration = configuration;
             _data = data;
@@ -89,8 +87,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// Adds the specified data to this packet
         /// </summary>
         /// <param name="data">The data to be added to this packet</param>
-        public void Add(BaseData data)
-        {
+        public void Add(BaseData data) {
             _data.Add(data);
         }
     }

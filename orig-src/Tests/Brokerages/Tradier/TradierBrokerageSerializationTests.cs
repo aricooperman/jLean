@@ -24,8 +24,7 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
     public class TradierBrokerageSerializationTests
     {
         [Test]
-        public void ProperlyHandlesNullStringValues()
-        {
+        public void ProperlyHandlesNullStringValues() {
             static final String rawResponse = @"{'orders':{'order':
         {'id':69183,
         'type':'limit',
@@ -55,8 +54,7 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
             orders = JsonConvert.DeserializeObject<TradierOrdersContainer>(rawNullResponse2);
         }
         [Test]
-        public void QuotesHandles_null_OHLC()
-        {
+        public void QuotesHandles_null_OHLC() {
             // response received from tradier pre-market
             static final String rawResponse = @"{'quotes':
 	{'quote':

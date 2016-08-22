@@ -30,8 +30,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         private static readonly TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), new[] { TimeZones.NewYork });
 
         [Test]
-        public void PerformsMarketFillBuy()
-        {
+        public void PerformsMarketFillBuy() {
             model = new SecurityTransactionModel();
             order = new MarketOrder(Symbols.SPY, 100, Noon);
             config = CreateTradeBarConfig(Symbols.SPY);
@@ -45,8 +44,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.AreEqual(OrderStatus.Filled, fill.Status);
         }
         [Test]
-        public void PerformsMarketFillSell()
-        {
+        public void PerformsMarketFillSell() {
             model = new SecurityTransactionModel();
             order = new MarketOrder(Symbols.SPY, -100, Noon);
             config = CreateTradeBarConfig(Symbols.SPY);
@@ -61,8 +59,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void PerformsLimitFillBuy()
-        {
+        public void PerformsLimitFillBuy() {
             model = new SecurityTransactionModel();
             order = new LimitOrder(Symbols.SPY, 100, 101.5m, Noon);
             config = CreateTradeBarConfig(Symbols.SPY);
@@ -87,8 +84,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void PerformsLimitFillSell()
-        {
+        public void PerformsLimitFillSell() {
             model = new SecurityTransactionModel();
             order = new LimitOrder(Symbols.SPY, -100, 101.5m, Noon);
             config = CreateTradeBarConfig(Symbols.SPY);
@@ -113,8 +109,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void PerformsStopLimitFillBuy()
-        {
+        public void PerformsStopLimitFillBuy() {
             model = new SecurityTransactionModel();
             order = new StopLimitOrder(Symbols.SPY, 100, 101.5m, 101.75m, Noon);
             config = CreateTradeBarConfig(Symbols.SPY);
@@ -147,8 +142,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void PerformsStopLimitFillSell()
-        {
+        public void PerformsStopLimitFillSell() {
             model = new SecurityTransactionModel();
             order = new StopLimitOrder(Symbols.SPY, -100, 101.75m, 101.50m, Noon);
             config = CreateTradeBarConfig(Symbols.SPY);
@@ -181,8 +175,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void PerformsStopMarketFillBuy()
-        {
+        public void PerformsStopMarketFillBuy() {
             model = new SecurityTransactionModel();
             order = new StopMarketOrder(Symbols.SPY, 100, 101.5m, Noon);
             config = CreateTradeBarConfig(Symbols.SPY);
@@ -207,8 +200,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void PerformsStopMarketFillSell()
-        {
+        public void PerformsStopMarketFillSell() {
             model = new SecurityTransactionModel();
             order = new StopMarketOrder(Symbols.SPY, -100, 101.5m, Noon);
             config = CreateTradeBarConfig(Symbols.SPY);
@@ -233,8 +225,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void PerformsMarketOnOpenUsingOpenPrice()
-        {
+        public void PerformsMarketOnOpenUsingOpenPrice() {
             reference = new DateTime(2015, 06, 05, 9, 0, 0); // before market open
             model = new SecurityTransactionModel();
             order = new MarketOnOpenOrder(Symbols.SPY, 100, reference);
@@ -267,8 +258,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void PerformsMarketOnCloseUsingClosingPrice()
-        {
+        public void PerformsMarketOnCloseUsingClosingPrice() {
             reference = new DateTime(2015, 06, 05, 15, 0, 0); // before market close
             model = new SecurityTransactionModel();
             order = new MarketOnCloseOrder(Symbols.SPY, 100, reference);
@@ -300,8 +290,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.AreEqual(security.Close, fill.FillPrice);
         }
 
-        private SubscriptionDataConfig CreateTradeBarConfig(Symbol symbol)
-        {
+        private SubscriptionDataConfig CreateTradeBarConfig(Symbol symbol) {
             return new SubscriptionDataConfig(typeof(TradeBar), symbol, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, false);
         }
     }

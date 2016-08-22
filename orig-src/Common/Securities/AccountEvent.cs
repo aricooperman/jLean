@@ -35,8 +35,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="currencySymbol">The currency's symbol</param>
         /// <param name="cashBalance">The total cash balance of the account</param>
-        public AccountEvent( String currencySymbol, BigDecimal cashBalance)
-        {
+        public AccountEvent( String currencySymbol, BigDecimal cashBalance) {
             CashBalance = cashBalance;
             CurrencySymbol = currencySymbol;
         }
@@ -48,9 +47,8 @@ package com.quantconnect.lean.Securities
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
-            return String.format("Account {0} Balance: {1}", CurrencySymbol, CashBalance.toString("0.00"));
+        public @Override String toString() {
+            return String.format( "Account %1$s Balance: %2$s", CurrencySymbol, CashBalance.toString( "0.00"));
         }
     }
 }

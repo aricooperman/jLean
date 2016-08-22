@@ -37,8 +37,7 @@ package com.quantconnect.lean.Packets
         /// Initializes a new instance of the <see cref="CommandResultPacket"/> class
         /// </summary>
         public CommandResultPacket(ICommand command, boolean success)
-            : base(PacketType.CommandResult)
-        {
+            : base(PacketType.CommandResult) {
             Success = success;
             CommandName = command.GetType().Name;
         }

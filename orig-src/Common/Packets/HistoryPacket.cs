@@ -26,8 +26,7 @@ package com.quantconnect.lean.Packets
         /// Initializes a new instance of the <see cref="HistoryPacket"/> class
         /// </summary>
         public HistoryPacket()
-            : base(PacketType.History)
-        {
+            : base(PacketType.History) {
         }
     }
 
@@ -110,8 +109,7 @@ package com.quantconnect.lean.Packets
         /// Initializes a new instance of the <see cref="HistoryResult"/> class
         /// </summary>
         /// <param name="type">The type of history result</param>
-        protected HistoryResult(HistoryResultType type)
-        {
+        protected HistoryResult(HistoryResultType type) {
             Type = type;
         }
     }
@@ -135,8 +133,7 @@ package com.quantconnect.lean.Packets
         /// Default constructor for serializers
         /// </summary>
         public FileHistoryResult()
-            : base(HistoryResultType.File)
-        {
+            : base(HistoryResultType.File) {
         }
 
         /// <summary>
@@ -145,8 +142,7 @@ package com.quantconnect.lean.Packets
         /// <param name="filepath">The relative file path where the file should be written, rooted in /Data, so for example ./forex/fxcm/daily/eurusd.zip</param>
         /// <param name="file">The zipped csv file content in bytes</param>
         public FileHistoryResult( String filepath, byte[] file)
-            : this()
-        {
+            : this() {
             Filepath = filepath;
             File = file;
         }
@@ -161,8 +157,7 @@ package com.quantconnect.lean.Packets
         /// Initializes a new instance of <see cref="CompletedHistoryResult"/> class
         /// </summary>
         public CompletedHistoryResult()
-            : base(HistoryResultType.Completed)
-        {
+            : base(HistoryResultType.Completed) {
         }
     }
 
@@ -180,8 +175,7 @@ package com.quantconnect.lean.Packets
         /// Default constructor for serializers
         /// </summary>
         public ErrorHistoryResult()
-            : base(HistoryResultType.Error)
-        {
+            : base(HistoryResultType.Error) {
         }
 
         /// <summary>
@@ -189,8 +183,7 @@ package com.quantconnect.lean.Packets
         /// </summary>
         /// <param name="message">The error message</param>
         public ErrorHistoryResult( String message)
-            : this()
-        {
+            : this() {
             Message = message;
         }
     }
@@ -209,8 +202,7 @@ package com.quantconnect.lean.Packets
         /// Default constructor for serializers
         /// </summary>
         public StatusHistoryResult()
-            : base(HistoryResultType.Status)
-        {
+            : base(HistoryResultType.Status) {
         }
 
         /// <summary>
@@ -218,8 +210,7 @@ package com.quantconnect.lean.Packets
         /// </summary>
         /// <param name="progress">The progress, from 0 to 100</param>
         public StatusHistoryResult(int progress)
-            : this()
-        {
+            : this() {
             Progress = progress;
         }
     }

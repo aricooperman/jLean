@@ -73,8 +73,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="delta"></param>
         /// <param name="tool"></param>
         public SwissArmyKnife(int period, double delta, SwissArmyKnifeTool tool)
-            : this("Swiss" + period, period, delta, tool)
-        {
+            : this( "Swiss" + period, period, delta, tool) {
         }
 
         /// <summary>
@@ -85,8 +84,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="delta"></param>
         /// <param name="tool"></param>
         public SwissArmyKnife( String name, int period, double delta, SwissArmyKnifeTool tool)
-            : base(name)
-        {
+            : base(name) {
             _period = period;
             _tool = tool;
             _delta = delta;
@@ -96,8 +94,7 @@ package com.quantconnect.lean.Indicators
             double beta;
             double gamma;
 
-            if (_tool == SwissArmyKnifeTool.Gauss)
-            {
+            if( _tool == SwissArmyKnifeTool.Gauss) {
                 beta = 2.415 * (1 - Math.Cos(2 * Math.PI / _period));
                 alpha = -beta + Math.Sqrt(Math.Pow(beta, 2) + 2d * beta);
                 _c0 = alpha * alpha;
@@ -105,8 +102,7 @@ package com.quantconnect.lean.Indicators
                 _a2 = -(1 - alpha) * (1 - alpha);
             }
 
-            if (_tool == SwissArmyKnifeTool.Butter)
-            {
+            if( _tool == SwissArmyKnifeTool.Butter) {
                 beta = 2.415 * (1 - Math.Cos(2 * Math.PI / _period));
                 alpha = -beta + Math.Sqrt(Math.Pow(beta, 2) + 2d * beta);
                 _c0 = alpha * alpha / 4d;
@@ -116,16 +112,14 @@ package com.quantconnect.lean.Indicators
                 _a2 = -(1 - alpha) * (1 - alpha);
             }
 
-            if (_tool == SwissArmyKnifeTool.HighPass)
-            {
+            if( _tool == SwissArmyKnifeTool.HighPass) {
                 alpha = (Math.Cos(2 * Math.PI / _period) + Math.Sin(2 * Math.PI / _period) - 1) / Math.Cos(2 * Math.PI / _period);
                 _c0 = (1 + alpha) / 2;
                 _b1 = -1;
                 _a1 = 1 - alpha;
             }
 
-            if (_tool == SwissArmyKnifeTool.TwoPoleHighPass)
-            {
+            if( _tool == SwissArmyKnifeTool.TwoPoleHighPass) {
                 beta = 2.415 * (1 - Math.Cos(2 * Math.PI / _period));
                 alpha = -beta + Math.Sqrt(Math.Pow(beta, 2) + 2d * beta);
                 _c0 = (1 + alpha) * (1 + alpha) / 4;
@@ -135,8 +129,7 @@ package com.quantconnect.lean.Indicators
                 _a2 = -(1 - alpha) * (1 - alpha);
             }
 
-            if (_tool == SwissArmyKnifeTool.BandPass)
-            {
+            if( _tool == SwissArmyKnifeTool.BandPass) {
                 beta = Math.Cos(2 * Math.PI / _period);
                 gamma = (1 / Math.Cos(4 * Math.PI * _delta / _period));
                 alpha = gamma - Math.Sqrt(Math.Pow(gamma, 2) - 1);
@@ -153,7 +146,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
@@ -163,13 +156,11 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
 
             _price.Add((double)input.Price);
 
-            if (_price.Samples == 1)
-            {
+            if( _price.Samples == 1) {
                 _price.Add(_price[0]);
                 _price.Add(_price[0]);           
             }
@@ -184,8 +175,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets to the initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _period = 20;
             _delta = 0.1;
             _filt = new RollingWindow<double>(2) { 0.0, 0.0 };

@@ -28,8 +28,7 @@ package com.quantconnect.lean.Securities
         /// Initializes a new instance of the <see cref="CompositeSecurityInitializer"/> class
         /// </summary>
         /// <param name="initializers">The initializers to execute in order</param>
-        public CompositeSecurityInitializer(params ISecurityInitializer[] initializers)
-        {
+        public CompositeSecurityInitializer(params ISecurityInitializer[] initializers) {
             _initializers = initializers;
         }
 
@@ -37,10 +36,8 @@ package com.quantconnect.lean.Securities
         /// Execute each of the internally held initializers in sequence
         /// </summary>
         /// <param name="security">The security to be initialized</param>
-        public void Initialize(Security security)
-        {
-            foreach (initializer in _initializers)
-            {
+        public void Initialize(Security security) {
+            foreach (initializer in _initializers) {
                 initializer.Initialize(security);
             }
         }

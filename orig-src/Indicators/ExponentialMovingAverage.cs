@@ -29,8 +29,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the EMA</param>
         public ExponentialMovingAverage( String name, int period)
-            : base(name)
-        {
+            : base(name) {
             _period = period;
             _k = ExponentialMovingAverage.SmoothingFactorDefault(period);
         }
@@ -41,8 +40,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period of the EMA</param>
         /// <param name="smoothingFactor">The percentage of data from the previous value to be carried into the next value</param>
         public ExponentialMovingAverage( String name, int period, BigDecimal smoothingFactor)
-            : base(name)
-        {
+            : base(name) {
             _period = period;
             _k = smoothingFactor;
         }
@@ -52,8 +50,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period of the EMA</param>
         public ExponentialMovingAverage(int period)
-            : this("EMA" + period, period)
-        {
+            : this( "EMA" + period, period) {
         }
 
         /// <summary>Initializes a new instance of the ExponentialMovingAverage class with the default name and period
@@ -61,23 +58,21 @@ package com.quantconnect.lean.Indicators
         /// <param name="period">The period of the EMA</param>
         /// <param name="smoothingFactor">The percentage of data from the previous value to be carried into the next value</param>
         public ExponentialMovingAverage(int period, BigDecimal smoothingFactor)
-            : this("EMA" + period, period, smoothingFactor)
-        {
+            : this( "EMA" + period, period, smoothingFactor) {
         }
 
         /// <summary>Calculates the default smoothing factor for an ExponentialMovingAverage indicator
         /// </summary>
         /// <param name="period">The period of the EMA</param>
         /// <returns>The default smoothing factor</returns>
-        public static BigDecimal SmoothingFactorDefault(int period)
-        {
+        public static BigDecimal SmoothingFactorDefault(int period) {
             return 2.0m / ((decimal) period + 1.0m);
         }
 
         /// <summary>
         ///     Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
@@ -87,11 +82,9 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             // our first data point just return identity
-            if (Samples == 1)
-            {
+            if( Samples == 1) {
                 return input;
             }
             return input*_k + Current*(1 - _k);

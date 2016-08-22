@@ -29,8 +29,7 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class SecurityTests
     {
         [Test]
-        public void SimplePropertiesTests()
-        {
+        public void SimplePropertiesTests() {
             exchangeHours = SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork);
             config = CreateTradeBarConfig();
             security = new Security(exchangeHours, config, new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
@@ -44,8 +43,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void ConstructorTests()
-        {
+        public void ConstructorTests() {
             security = GetSecurity();
 
             Assert.IsNotNull(security.Exchange);
@@ -69,8 +67,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void HoldingsTests()
-        {
+        public void HoldingsTests() {
             security = GetSecurity();
             
             // Long 100 stocks test
@@ -106,8 +103,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void UpdatingSecurityPriceTests()
-        {
+        public void UpdatingSecurityPriceTests() {
             security = GetSecurity();
 
             // Update securuty price with a TradeBar
@@ -133,8 +129,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void SetLeverageTest()
-        {
+        public void SetLeverageTest() {
             security = GetSecurity();
 
             security.SetLeverage(4m);
@@ -144,15 +139,13 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.AreEqual(5m, security.Leverage);
 
             Assert.That(() => security.SetLeverage(0.1m),
-                Throws.TypeOf<ArgumentException>().With.Message.EqualTo("Leverage must be greater than or equal to 1."));
+                Throws.TypeOf<ArgumentException>().With.Message.EqualTo( "Leverage must be greater than or equal to 1."));
         }
-        private Security GetSecurity()
-        {
+        private Security GetSecurity() {
             return new Security(SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork), CreateTradeBarConfig(), new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
         }
 
-        private static SubscriptionDataConfig CreateTradeBarConfig()
-        {
+        private static SubscriptionDataConfig CreateTradeBarConfig() {
             return new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, false);
         }
     }

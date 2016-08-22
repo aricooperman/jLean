@@ -26,11 +26,10 @@ package com.quantconnect.lean.Tests.Common
     public class TimeTests
     {
         [Test]
-        public void GetStartTimeForTradeBarsRoundsDown()
-        {
+        public void GetStartTimeForTradeBarsRoundsDown() {
             // 2015.09.01 @ noon
             end = new DateTime(2015, 09, 01, 12, 0, 1);
-            barSize = TimeSpan.FromMinutes(1);
+            barSize = Duration.ofMinutes(1);
             hours = SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork);
             start = Time.GetStartTimeForTradeBars(hours, end, barSize, 1, false);
             // round down and back up a single bar
@@ -38,11 +37,10 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void GetStartTimeForTradeBarsHandlesOverNight()
-        {
+        public void GetStartTimeForTradeBarsHandlesOverNight() {
             // 2015.09.01 @ noon
             end = new DateTime(2015, 09, 01, 12, 0, 0);
-            barSize = TimeSpan.FromHours(1);
+            barSize = Duration.ofHours(1);
             hours = SecurityExchangeHoursTests.CreateUsEquitySecurityExchangeHours();
             start = Time.GetStartTimeForTradeBars(hours, end, barSize, 7, false);
             // from noon, back up to 9am (3 hours) then skip night, so from 4pm, back up to noon, 4 more hours
@@ -50,12 +48,11 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void GetStartTimeForTradeBarsHandlesWeekends()
-        {
+        public void GetStartTimeForTradeBarsHandlesWeekends() {
             // 2015.09.01 @ noon
             end = new DateTime(2015, 09, 01, 12, 0, 0);
             expectedStart = new DateTime(2015, 08, 21);
-            barSize = TimeSpan.FromDays(1);
+            barSize = Duration.ofDays(1);
             hours = SecurityExchangeHoursTests.CreateUsEquitySecurityExchangeHours();
             start = Time.GetStartTimeForTradeBars(hours, end, barSize, 7, false);
             // from noon, back up to 9am (3 hours) then skip night, so from 4pm, back up to noon, 4 more hours
@@ -63,8 +60,7 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void EachTradeableDayInTimeZoneIsSameForEqualTimeZones()
-        {
+        public void EachTradeableDayInTimeZoneIsSameForEqualTimeZones() {
             start = new DateTime(2010, 01, 01);
             end = new DateTime(2016, 02, 12);
             entry = MarketHoursDatabase.FromDataFolder().ExchangeHoursListing.First().Value;
@@ -74,8 +70,7 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void EachTradeableDayInTimeZoneWithOffsetPlus12()
-        {
+        public void EachTradeableDayInTimeZoneWithOffsetPlus12() {
             start = new DateTime(2016, 2, 11);
             end = new DateTime(2016, 2, 12);
             equityExchange = SecurityExchangeHours.AlwaysOpen(ZoneId.ForOffset(Offset.FromHours(-5)));
@@ -88,8 +83,7 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void EachTradeableDayInTimeZoneWithOffsetMinus12()
-        {
+        public void EachTradeableDayInTimeZoneWithOffsetMinus12() {
             start = new DateTime(2016, 2, 11);
             end = new DateTime(2016, 2, 12);
             exchange = SecurityExchangeHours.AlwaysOpen(ZoneId.ForOffset(Offset.FromHours(5)));
@@ -102,8 +96,7 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void EachTradeableDayInTimeZoneWithOffset25()
-        {
+        public void EachTradeableDayInTimeZoneWithOffset25() {
             start = new DateTime(2016, 2, 11);
             end = new DateTime(2016, 2, 12);
             exchange = SecurityExchangeHours.AlwaysOpen(ZoneId.ForOffset(Offset.FromHours(12)));

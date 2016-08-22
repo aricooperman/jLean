@@ -42,8 +42,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="barSize">The constant value size of each bar</param>
         /// <param name="evenBars">When true bar open/close will be a multiple of the barSize</param>
-        public RenkoConsolidator( BigDecimal barSize, boolean evenBars = true)
-        {
+        public RenkoConsolidator( BigDecimal barSize, boolean evenBars = true) {
             _barSize = barSize;
             _selector = x => x.Value;
             _volumeSelector = x => 0;
@@ -59,11 +58,9 @@ package com.quantconnect.lean.Data.Consolidators
         /// <param name="volumeSelector">Extracts the volume from a data instance. The default value is null which does 
         /// not aggregate volume per bar.</param>
         /// <param name="evenBars">When true bar open/close will be a multiple of the barSize</param>
-        public RenkoConsolidator( BigDecimal barSize, Func<IBaseData, decimal> selector, Func<IBaseData, long> volumeSelector = null, boolean evenBars = true)
-        {
-            if (barSize < Extensions.GetDecimalEpsilon())
-            {
-                throw new ArgumentOutOfRangeException("barSize", "RenkoConsolidator bar size must be positve and greater than 1e-28");
+        public RenkoConsolidator( BigDecimal barSize, Func<IBaseData, decimal> selector, Func<IBaseData, long> volumeSelector = null, boolean evenBars = true) {
+            if( barSize < Extensions.GetDecimalEpsilon()) {
+                throw new ArgumentOutOfRangeException( "barSize", "RenkoConsolidator bar size must be positve and greater than 1e-28");
             }
 
             _barSize = barSize;
@@ -83,7 +80,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <summary>
         /// Gets a clone of the data being currently consolidated
         /// </summary>
-        public override BaseData WorkingData
+        public @Override BaseData WorkingData
         {
             get { return _currentBar == null ? null : _currentBar.Clone(); }
         }
@@ -91,7 +88,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <summary>
         /// Gets <see cref="RenkoBar"/> which is the type emitted in the <see cref="IDataConsolidator.DataConsolidated"/> event.
         /// </summary>
-        public override Type OutputType
+        public @Override Type OutputType
         {
             get { return typeof(RenkoBar); }
         }
@@ -101,32 +98,27 @@ package com.quantconnect.lean.Data.Consolidators
         /// responsible for raising the DataConsolidated event
         /// </summary>
         /// <param name="data">The new data for the consolidator</param>
-        public override void Update(IBaseData data)
-        {
+        public @Override void Update(IBaseData data) {
             currentValue = _selector(data);
             volume = _volumeSelector(data);
 
             decimal? close = null;
             
             // if we're already in a bar then update it
-            if (_currentBar != null)
-            {
+            if( _currentBar != null ) {
                 _currentBar.Update(data.Time, currentValue, volume);
 
                 // if the update caused this bar to close, fire the event and reset the bar
-                if (_currentBar.IsClosed)
-                {
+                if( _currentBar.IsClosed) {
                     close = _currentBar.Close;
                     OnDataConsolidated(_currentBar);
                     _currentBar = null;
                 }
             }
 
-            if (_currentBar == null)
-            {
+            if( _currentBar == null ) {
                 open = close ?? currentValue;
-                if (_evenBars && !close.HasValue)
-                {
+                if( _evenBars && !close.HasValue) {
                     open = Math.Ceiling(open/_barSize)*_barSize;
                 }
                 _currentBar = new RenkoBar(data.Symbol, data.Time, _barSize, open, volume);
@@ -137,8 +129,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// Scans this consolidator to see if it should emit a bar due to time passing
         /// </summary>
         /// <param name="currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)</param>
-        public override void Scan(DateTime currentLocalTime)
-        {
+        public @Override void Scan(DateTime currentLocalTime) {
         }
 
         /// <summary>
@@ -146,10 +137,9 @@ package com.quantconnect.lean.Data.Consolidators
         /// by derived classes when they have consolidated a new piece of data.
         /// </summary>
         /// <param name="consolidated">The newly consolidated data</param>
-        protected virtual void OnDataConsolidated(RenkoBar consolidated)
-        {
+        protected virtual void OnDataConsolidated(RenkoBar consolidated) {
             handler = DataConsolidated;
-            if (handler != null) handler(this, consolidated);
+            if( handler != null ) handler(this, consolidated);
 
             base.OnDataConsolidated(consolidated);
         }
@@ -172,8 +162,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// not aggregate volume per bar.</param>
         /// <param name="evenBars">When true bar open/close will be a multiple of the barSize</param>
         public RenkoConsolidator( BigDecimal barSize, Func<TInput, decimal> selector, Func<TInput, long> volumeSelector = null, boolean evenBars = true)
-            : base(barSize, x => selector((TInput)x), volumeSelector == null ? (Func<IBaseData, long>) null : x => volumeSelector((TInput)x), evenBars)
-        {
+            : base(barSize, x => selector((TInput)x), volumeSelector == null ? (Func<IBaseData, long>) null : x => volumeSelector((TInput)x), evenBars) {
         }
 
         /// <summary>
@@ -184,8 +173,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <param name="barSize">The constant value size of each bar</param>
         /// <param name="evenBars">When true bar open/close will be a multiple of the barSize</param>
         public RenkoConsolidator( BigDecimal barSize, boolean evenBars = true)
-            : base(barSize, evenBars)
-        {
+            : base(barSize, evenBars) {
         }
 
         /// <summary>
@@ -195,8 +183,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// Type safe shim method.
         /// </remarks>
         /// <param name="data">The new data for the consolidator</param>
-        public void Update(TInput data)
-        {
+        public void Update(TInput data) {
             base.Update(data);
         }
     }

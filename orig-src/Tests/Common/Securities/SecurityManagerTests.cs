@@ -27,17 +27,15 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class SecurityManagerTests
     {
         [Test]
-        public void NotifiesWhenSecurityAdded()
-        {
+        public void NotifiesWhenSecurityAdded() {
             timeKeeper = new TimeKeeper(new DateTime(2015, 12, 07));
             manager = new SecurityManager(timeKeeper);
 
             security = new Security(SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork), CreateTradeBarConfig(), new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
             manager.CollectionChanged += (sender, args) =>
             {
-                if (args.NewItems.OfType<object>().Single() != security)
-                {
-                    Assert.Fail("Expected args.NewItems to have exactly one element equal to security");
+                if( args.NewItems.OfType<object>().Single() != security) {
+                    Assert.Fail( "Expected args.NewItems to have exactly one element equal to security");
                 }
                 else
                 {
@@ -50,17 +48,15 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void NotifiesWhenSecurityAddedViaIndexer()
-        {
+        public void NotifiesWhenSecurityAddedViaIndexer() {
             timeKeeper = new TimeKeeper(new DateTime(2015, 12, 07));
             manager = new SecurityManager(timeKeeper);
 
             security = new Security(SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork), CreateTradeBarConfig(), new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
             manager.CollectionChanged += (sender, args) =>
             {
-                if (args.NewItems.OfType<object>().Single() != security)
-                {
-                    Assert.Fail("Expected args.NewItems to have exactly one element equal to security");
+                if( args.NewItems.OfType<object>().Single() != security) {
+                    Assert.Fail( "Expected args.NewItems to have exactly one element equal to security");
                 }
                 else
                 {
@@ -73,8 +69,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void NotifiesWhenSecurityRemoved()
-        {
+        public void NotifiesWhenSecurityRemoved() {
             timeKeeper = new TimeKeeper(new DateTime(2015, 12, 07));
             manager = new SecurityManager(timeKeeper);
 
@@ -82,9 +77,8 @@ package com.quantconnect.lean.Tests.Common.Securities
             manager.Add(security.Symbol, security);
             manager.CollectionChanged += (sender, args) =>
             {
-                if (args.OldItems.OfType<object>().Single() != security)
-                {
-                    Assert.Fail("Expected args.NewItems to have exactly one element equal to security");
+                if( args.OldItems.OfType<object>().Single() != security) {
+                    Assert.Fail( "Expected args.NewItems to have exactly one element equal to security");
                 }
                 else
                 {
@@ -96,8 +90,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             manager.Remove(security.Symbol);
         }
 
-        private SubscriptionDataConfig CreateTradeBarConfig()
-        {
+        private SubscriptionDataConfig CreateTradeBarConfig() {
             return new SubscriptionDataConfig(typeof (TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, false);
         }
     }

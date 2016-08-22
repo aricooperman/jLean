@@ -25,29 +25,24 @@ package com.quantconnect.lean.Tests.Brokerages
         private readonly BigDecimal _lowLimit;
 
         public LimitOrderTestParameters(Symbol symbol, BigDecimal highLimit, BigDecimal lowLimit)
-            : base(symbol)
-        {
+            : base(symbol) {
             _highLimit = highLimit;
             _lowLimit = lowLimit;
         }
 
-        public override Order CreateShortOrder(int quantity)
-        {
+        public @Override Order CreateShortOrder(int quantity) {
             return new LimitOrder(Symbol, -Math.Abs(quantity), _highLimit, DateTime.Now);
         }
 
-        public override Order CreateLongOrder(int quantity)
-        {
+        public @Override Order CreateLongOrder(int quantity) {
             return new LimitOrder(Symbol, Math.Abs(quantity), _lowLimit, DateTime.Now);
         }
 
-        public override boolean ModifyOrderToFill(IBrokerage brokerage, Order order, BigDecimal lastMarketPrice)
-        {
+        public @Override boolean ModifyOrderToFill(IBrokerage brokerage, Order order, BigDecimal lastMarketPrice) {
             // limit orders will process even if they go beyond the market price
 
             limit = (LimitOrder) order;
-            if (order.Quantity > 0)
-            {
+            if( order.Quantity > 0) {
                 // for limit buys we need to increase the limit price
                 limit.LimitPrice *= 2;
             }
@@ -59,7 +54,7 @@ package com.quantconnect.lean.Tests.Brokerages
             return true;
         }
 
-        public override OrderStatus ExpectedStatus
+        public @Override OrderStatus ExpectedStatus
         {
             // default limit orders will only be submitted, not filled
             get { return OrderStatus.Submitted; }

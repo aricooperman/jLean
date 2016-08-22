@@ -32,8 +32,7 @@ package com.quantconnect.lean.Securities
         /// <param name="portfolio">The algorithm's portfolio</param>
         /// <param name="security">The fill's security</param>
         /// <param name="fill">The order event fill object to be applied</param>
-        public virtual void ProcessFill(SecurityPortfolioManager portfolio, Security security, OrderEvent fill)
-        {
+        public virtual void ProcessFill(SecurityPortfolioManager portfolio, Security security, OrderEvent fill) {
             quoteCash = security.QuoteCurrency;
 
             //Get the required information from the vehicle this order will affect
@@ -48,7 +47,7 @@ package com.quantconnect.lean.Securities
             try
             {
                 // apply sales value to holdings in the account currency
-                saleValueInQuoteCurrency = fill.FillPrice * Convert.ToDecimal(fill.AbsoluteFillQuantity) * security.SymbolProperties.ContractMultiplier;
+                saleValueInQuoteCurrency = fill.FillPrice * new BigDecimal( fill.AbsoluteFillQuantity) * security.SymbolProperties.ContractMultiplier;
                 saleValue = saleValueInQuoteCurrency * quoteCash.ConversionRate;
                 security.Holdings.AddNewSale(saleValue);
 
@@ -59,8 +58,7 @@ package com.quantconnect.lean.Securities
 
                 // apply the funds using the current settlement model
                 security.SettlementModel.ApplyFunds(portfolio, security, fill.UtcTime, quoteCash.Symbol, -fill.FillQuantity * fill.FillPrice * security.SymbolProperties.ContractMultiplier);
-                if (security.Type == SecurityType.Forex)
-                {
+                if( security.Type == SecurityType.Forex) {
                     // model forex fills as currency swaps
                     forex = (Forex.Forex) security;
                     security.SettlementModel.ApplyFunds(portfolio, security, fill.UtcTime, forex.BaseCurrencySymbol, fill.FillQuantity);
@@ -71,8 +69,7 @@ package com.quantconnect.lean.Securities
                              || isShort && fill.Direction == OrderDirection.Buy;
 
                 // calculate the last trade profit
-                if (closedPosition)
-                {
+                if( closedPosition) {
                     // profit = (closed sale value - cost)*conversion to account currency
                     // closed sale value = quantity closed * fill price       BUYs are deemed negative cash flow
                     // cost = quantity closed * average holdings price        SELLS are deemed positive cash flow
@@ -90,17 +87,14 @@ package com.quantconnect.lean.Securities
 
                 //UPDATE HOLDINGS QUANTITY, AVG PRICE:
                 //Currently NO holdings. The order is ALL our holdings.
-                if (quantityHoldings == 0)
-                {
+                if( quantityHoldings == 0) {
                     //First transaction just subtract order from cash and set our holdings:
                     averageHoldingsPrice = fill.FillPrice;
                     quantityHoldings = fill.FillQuantity;
                 }
-                else if (isLong)
-                {
+                else if( isLong) {
                     //If we're currently LONG on the stock.
-                    switch (fill.Direction)
-                    {
+                    switch (fill.Direction) {
                         case OrderDirection.Buy:
                             //Update the Holding Average Price: Total Value / Total Quantity:
                             averageHoldingsPrice = ((averageHoldingsPrice*quantityHoldings) + (fill.FillQuantity*fill.FillPrice))/(quantityHoldings + fill.FillQuantity);
@@ -110,33 +104,27 @@ package com.quantconnect.lean.Securities
 
                         case OrderDirection.Sell:
                             quantityHoldings += fill.FillQuantity; //+ a short = a subtraction
-                            if (quantityHoldings < 0)
-                            {
+                            if( quantityHoldings < 0) {
                                 //If we've now passed through zero from selling stock: new avg price:
                                 averageHoldingsPrice = fill.FillPrice;
                             }
-                            else if (quantityHoldings == 0)
-                            {
+                            else if( quantityHoldings == 0) {
                                 averageHoldingsPrice = 0;
                             }
                             break;
                     }
                 }
-                else if (isShort)
-                {
+                else if( isShort) {
                     //We're currently SHORTING the stock: What is the new position now?
-                    switch (fill.Direction)
-                    {
+                    switch (fill.Direction) {
                         case OrderDirection.Buy:
                             //Buying when we're shorting moves to close position:
                             quantityHoldings += fill.FillQuantity;
-                            if (quantityHoldings > 0)
-                            {
+                            if( quantityHoldings > 0) {
                                 //If we were short but passed through zero, new average price is what we paid. The short position was closed.
                                 averageHoldingsPrice = fill.FillPrice;
                             }
-                            else if (quantityHoldings == 0)
-                            {
+                            else if( quantityHoldings == 0) {
                                 averageHoldingsPrice = 0;
                             }
                             break;
@@ -151,13 +139,12 @@ package com.quantconnect.lean.Securities
                     }
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
 
             //Set the results back to the vehicle.
-            security.Holdings.SetHoldings(averageHoldingsPrice, Convert.ToInt32(quantityHoldings));
+            security.Holdings.SetHoldings(averageHoldingsPrice,  Integer.parseInt( quantityHoldings));
         }
     }
 }

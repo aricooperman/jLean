@@ -19,17 +19,15 @@ using System.Linq;
 
 package com.quantconnect.lean.Tests
 {
-    [TestFixture, Category("TravisExclude")]
+    [TestFixture, Category( "TravisExclude")]
     public class RegressionTests
     {
-        [Test, TestCaseSource("GetRegressionTestParameters")]
-        public void AlgorithmStatisticsRegression(AlgorithmStatisticsTestParameters parameters)
-        {
+        [Test, TestCaseSource( "GetRegressionTestParameters")]
+        public void AlgorithmStatisticsRegression(AlgorithmStatisticsTestParameters parameters) {
             AlgorithmRunner.RunLocalBacktest(parameters.Algorithm, parameters.Statistics, parameters.Language);
         }
 
-        private static TestCaseData[] GetRegressionTestParameters()
-        {
+        private static TestCaseData[] GetRegressionTestParameters() {
             basicTemplateStatistics = new Map<String,String>
             {
                 {"Total Trades", "1"},
@@ -332,25 +330,25 @@ package com.quantconnect.lean.Tests
             return new List<AlgorithmStatisticsTestParameters>
             {
                 // CSharp
-                new AlgorithmStatisticsTestParameters("AddRemoveSecurityRegressionAlgorithm", addRemoveSecurityRegressionStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("BasicTemplateAlgorithm", basicTemplateStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("BasicTemplateOptionsAlgorithm", basicTemplateOptionsStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("CustomDataRegressionAlgorithm", customDataRegressionStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("DropboxBaseDataUniverseSelectionAlgorithm", dropboxBaseDataUniverseSelectionStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("DropboxUniverseSelectionAlgorithm", dropboxUniverseSelectionStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("LimitFillRegressionAlgorithm", limitFillRegressionStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("ParameterizedAlgorithm", parameterizedStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("RegressionAlgorithm", regressionStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("UniverseSelectionRegressionAlgorithm", universeSelectionRegressionStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("UpdateOrderRegressionAlgorithm", updateOrderRegressionStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("HistoryAlgorithm", historyAlgorithmStatistics, Language.CSharp),
-                new AlgorithmStatisticsTestParameters("CoarseFundamentalTop5Algorithm", coarseFundamentalTop5AlgorithmStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "AddRemoveSecurityRegressionAlgorithm", addRemoveSecurityRegressionStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "BasicTemplateAlgorithm", basicTemplateStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "BasicTemplateOptionsAlgorithm", basicTemplateOptionsStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "CustomDataRegressionAlgorithm", customDataRegressionStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "DropboxBaseDataUniverseSelectionAlgorithm", dropboxBaseDataUniverseSelectionStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "DropboxUniverseSelectionAlgorithm", dropboxUniverseSelectionStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "LimitFillRegressionAlgorithm", limitFillRegressionStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "ParameterizedAlgorithm", parameterizedStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "RegressionAlgorithm", regressionStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "UniverseSelectionRegressionAlgorithm", universeSelectionRegressionStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "UpdateOrderRegressionAlgorithm", updateOrderRegressionStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "HistoryAlgorithm", historyAlgorithmStatistics, Language.CSharp),
+                new AlgorithmStatisticsTestParameters( "CoarseFundamentalTop5Algorithm", coarseFundamentalTop5AlgorithmStatistics, Language.CSharp),
 
                 // FSharp
-                // new AlgorithmStatisticsTestParameters("BasicTemplateAlgorithm", basicTemplateStatistics, Language.FSharp),
+                // new AlgorithmStatisticsTestParameters( "BasicTemplateAlgorithm", basicTemplateStatistics, Language.FSharp),
 
                 // VisualBasic
-                // new AlgorithmStatisticsTestParameters("BasicTemplateAlgorithm", basicTemplateStatistics, Language.VisualBasic),
+                // new AlgorithmStatisticsTestParameters( "BasicTemplateAlgorithm", basicTemplateStatistics, Language.VisualBasic),
             }.Select(x => new TestCaseData(x).SetName(x.Language + "/" + x.Algorithm)).ToArray();
         }
 
@@ -360,8 +358,7 @@ package com.quantconnect.lean.Tests
             public readonly Map<String,String> Statistics;
             public readonly Language Language;
 
-            public AlgorithmStatisticsTestParameters( String algorithm, Map<String,String> statistics, Language language)
-            {
+            public AlgorithmStatisticsTestParameters( String algorithm, Map<String,String> statistics, Language language) {
                 Algorithm = algorithm;
                 Statistics = statistics;
                 Language = language;

@@ -33,8 +33,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="slowPeriod">The slow moving average period</param>
         /// <param name="movingAverageType">The type of moving average to use</param>
         public AbsolutePriceOscillator( String name, int fastPeriod, int slowPeriod, MovingAverageType movingAverageType = MovingAverageType.Simple)
-            : base(name, fastPeriod, slowPeriod, slowPeriod, movingAverageType)
-        {
+            : base(name, fastPeriod, slowPeriod, slowPeriod, movingAverageType) {
         }
 
         /// <summary>
@@ -44,8 +43,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="slowPeriod">The slow moving average period</param>
         /// <param name="movingAverageType">The type of moving average to use</param>
         public AbsolutePriceOscillator(int fastPeriod, int slowPeriod, MovingAverageType movingAverageType = MovingAverageType.Simple)
-            : this( String.format("APO({0},{1})", fastPeriod, slowPeriod), fastPeriod, slowPeriod, movingAverageType)
-        {
+            : this( String.format( "APO(%1$s,%2$s)", fastPeriod, slowPeriod), fastPeriod, slowPeriod, movingAverageType) {
         }
     }
 }

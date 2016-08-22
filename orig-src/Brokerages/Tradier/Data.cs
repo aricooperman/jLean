@@ -216,8 +216,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         private TradierOptionType Options_OptionType = TradierOptionType.Call;
 
         /// Empty Constructor
-        public TradierQuote()
-        { }
+        public TradierQuote() { }
     }
 
     /// <summary>

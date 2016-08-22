@@ -23,16 +23,14 @@ package com.quantconnect.lean.Tests.Indicators
     public class FisherTransformTests
     {
         [Test]
-        public void ComparesAgainstExternalData()
-        {
-            fisher = new FisherTransform("fisher", 10);
+        public void ComparesAgainstExternalData() {
+            fisher = new FisherTransform( "fisher", 10);
             TestHelper.TestIndicator(fisher, "spy_with_fisher.txt", "Fisher Transform 10",
                 (ind, expected) => Assert.AreEqual(expected, (double)((FisherTransform)ind).Current.Value, 1e-3));
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             fisher = new FisherTransform(10);
             //fisher.Update(DateTime.Today, 1m);
             //fisher.Update(DateTime.Today.AddSeconds(1), 2m);

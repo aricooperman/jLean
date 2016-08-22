@@ -31,8 +31,7 @@ package com.quantconnect.lean.Securities
         /// Initializes a new instance of the <see cref="FuncSecurityDerivativeFilter"/> class
         /// </summary>
         /// <param name="filter">The functional implementation of the <see cref="Filter"/> method</param>
-        public FuncSecurityDerivativeFilter(Func<IEnumerable<Symbol>, BaseData, IEnumerable<Symbol>> filter)
-        {
+        public FuncSecurityDerivativeFilter(Func<IEnumerable<Symbol>, BaseData, IEnumerable<Symbol>> filter) {
             _filter = filter;
         }
 
@@ -42,8 +41,7 @@ package com.quantconnect.lean.Securities
         /// <param name="symbols">The derivative symbols to be filtered</param>
         /// <param name="underlying">The underlying price data</param>
         /// <returns>The filtered set of symbols</returns>
-        public IEnumerable<Symbol> Filter(IEnumerable<Symbol> symbols, BaseData underlying)
-        {
+        public IEnumerable<Symbol> Filter(IEnumerable<Symbol> symbols, BaseData underlying) {
             return _filter(symbols, underlying);
         }
     }

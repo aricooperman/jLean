@@ -24,24 +24,22 @@ package com.quantconnect.lean.Tests.Common.Util
     public class FuncTextWriterTests
     {
         [Test]
-        public void RedirectsWriteAndWriteLine()
-        {
+        public void RedirectsWriteAndWriteLine() {
             messages = new List<String>();
             Action<String> redirector = s => messages.Add(s);
             writer = new FuncTextWriter(redirector);
 
-            writer.Write("message");
+            writer.Write( "message");
             Assert.AreEqual(1, messages.Count);
-            Assert.AreEqual("message", messages[0]);
+            Assert.AreEqual( "message", messages[0]);
 
-            writer.WriteLine("message2");
+            writer.WriteLine( "message2");
             Assert.AreEqual(2, messages.Count);
-            Assert.AreEqual("message2", messages[1]);
+            Assert.AreEqual( "message2", messages[1]);
         }
 
         [Test]
-        public void RedirectsConsoleOutAndError()
-        {
+        public void RedirectsConsoleOutAndError() {
             messages = new List<String>();
             Action<String> redirector = s => messages.Add(s);
             writer = new FuncTextWriter(redirector);
@@ -49,13 +47,13 @@ package com.quantconnect.lean.Tests.Common.Util
             Console.SetOut(writer);
             Console.SetError(writer);
 
-            Console.WriteLine("message");
+            Console.WriteLine( "message");
             Assert.AreEqual(1, messages.Count);
-            Assert.AreEqual("message", messages[0]);
+            Assert.AreEqual( "message", messages[0]);
 
-            Console.Error.WriteLine("message2");
+            Console.Error.WriteLine( "message2");
             Assert.AreEqual(2, messages.Count);
-            Assert.AreEqual("message2", messages[1]);
+            Assert.AreEqual( "message2", messages[1]);
         }
     }
 }

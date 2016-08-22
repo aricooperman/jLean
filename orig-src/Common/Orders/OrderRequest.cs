@@ -77,8 +77,7 @@ package com.quantconnect.lean.Orders
         /// <param name="time">The time this request was created</param>
         /// <param name="orderId">The order id this request acts on, specify zero for <see cref="SubmitOrderRequest"/></param>
         /// <param name="tag">A custom tag for the request</param>
-        protected OrderRequest(DateTime time, int orderId, String tag)
-        {
+        protected OrderRequest(DateTime time, int orderId, String tag) {
             Time = time;
             OrderId = orderId;
             Tag = tag;
@@ -91,11 +90,9 @@ package com.quantconnect.lean.Orders
         /// </summary>
         /// <param name="response">The response to this request</param>
         /// <param name="status">The current status of this request</param>
-        public void SetResponse(OrderResponse response, OrderRequestStatus status = OrderRequestStatus.Error)
-        {
-            if (response == null)
-            {
-                throw new ArgumentNullException("response", "Response can not be null");
+        public void SetResponse(OrderResponse response, OrderRequestStatus status = OrderRequestStatus.Error) {
+            if( response == null ) {
+                throw new ArgumentNullException( "response", "Response can not be null");
             }
 
             // if the response is an error, ignore the input status
@@ -110,9 +107,8 @@ package com.quantconnect.lean.Orders
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
-            return String.format("{0} UTC: Order: ({1}) - {2} Status: {3}", Time, OrderId, Tag, Status);
+        public @Override String toString() {
+            return String.format( "%1$s UTC: Order: (%2$s) - %3$s Status: {3}", Time, OrderId, Tag, Status);
         }
     }
 }

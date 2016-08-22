@@ -22,24 +22,21 @@ package com.quantconnect.lean.Tests.Indicators
     public class OnBalanceVolumeTests
     {
         [Test]
-        public void ComparesAgainstExternalData()
-        {
-            onBalanceVolumeIndicator = new OnBalanceVolume("OBV");
+        public void ComparesAgainstExternalData() {
+            onBalanceVolumeIndicator = new OnBalanceVolume( "OBV");
 
             TestHelper.TestIndicator(onBalanceVolumeIndicator, "spy_with_obv.txt", "OBV",
                 (ind, expected) => Assert.AreEqual(
-                    expected.toString("0.##E-00"),
-                    (onBalanceVolumeIndicator.Current.Value).toString("0.##E-00")
+                    expected.toString( "0.##E-00"),
+                    (onBalanceVolumeIndicator.Current.Value).toString( "0.##E-00")
                     )
                 );
         }
 
         [Test]
-        public void ResetsProperly()
-        {
-            onBalanceVolumeIndicator = new OnBalanceVolume("OBV");
-            foreach (data in TestHelper.GetTradeBarStream("spy_with_obv.txt", false))
-            {
+        public void ResetsProperly() {
+            onBalanceVolumeIndicator = new OnBalanceVolume( "OBV");
+            foreach (data in TestHelper.GetTradeBarStream( "spy_with_obv.txt", false)) {
                 onBalanceVolumeIndicator.Update(data);
             }
 

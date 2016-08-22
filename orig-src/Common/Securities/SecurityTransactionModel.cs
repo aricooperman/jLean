@@ -35,8 +35,7 @@ package com.quantconnect.lean.Securities
         /// Initializes a new default instance of the <see cref="SecurityTransactionModel"/> class.
         /// This will use default slippage and fill models.
         /// </summary>
-        public SecurityTransactionModel()
-        {
+        public SecurityTransactionModel() {
             _slippageModel = new SpreadSlippageModel();
             _fillModel = new ImmediateFillModel();
             _feeModel = new ConstantFeeModel(0);
@@ -48,8 +47,7 @@ package com.quantconnect.lean.Securities
         /// <param name="fillModel">The fill model to use</param>
         /// <param name="feeModel">The order fee model to use</param>
         /// <param name="slippageModel">The slippage model to use</param>
-        public SecurityTransactionModel(IFillModel fillModel, IFeeModel feeModel, ISlippageModel slippageModel)
-        {
+        public SecurityTransactionModel(IFillModel fillModel, IFeeModel feeModel, ISlippageModel slippageModel) {
             _fillModel = fillModel;
             _feeModel = feeModel;
             _slippageModel = slippageModel;
@@ -63,8 +61,7 @@ package com.quantconnect.lean.Securities
         /// <returns>Order fill information detailing the average price and quantity filled.</returns>
         /// <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
         /// <seealso cref="LimitFill(Security, LimitOrder)"/>
-        public virtual OrderEvent MarketFill(Security asset, MarketOrder order)
-        {
+        public virtual OrderEvent MarketFill(Security asset, MarketOrder order) {
             return _fillModel.MarketFill(asset, order);
         }
 
@@ -76,8 +73,7 @@ package com.quantconnect.lean.Securities
         /// <returns>Order fill information detailing the average price and quantity filled.</returns>
         /// <seealso cref="MarketFill(Security, MarketOrder)"/>
         /// <seealso cref="LimitFill(Security, LimitOrder)"/>
-        public virtual OrderEvent StopMarketFill(Security asset, StopMarketOrder order)
-        {
+        public virtual OrderEvent StopMarketFill(Security asset, StopMarketOrder order) {
             return _fillModel.StopMarketFill(asset, order);
         }
 
@@ -96,8 +92,7 @@ package com.quantconnect.lean.Securities
         ///     Stop limit orders we also can't be sure of the order of the H - L values for the limit fill. The assumption
         ///     was made the limit fill will be done with closing price of the bar after the stop has been triggered..
         /// </remarks>
-        public virtual OrderEvent StopLimitFill(Security asset, StopLimitOrder order)
-        {
+        public virtual OrderEvent StopLimitFill(Security asset, StopLimitOrder order) {
             return _fillModel.StopLimitFill(asset, order);
         }
 
@@ -109,8 +104,7 @@ package com.quantconnect.lean.Securities
         /// <returns>Order fill information detailing the average price and quantity filled.</returns>
         /// <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
         /// <seealso cref="MarketFill(Security, MarketOrder)"/>
-        public virtual OrderEvent LimitFill(Security asset, LimitOrder order)
-        {
+        public virtual OrderEvent LimitFill(Security asset, LimitOrder order) {
             return _fillModel.LimitFill(asset, order);
         }
 
@@ -120,8 +114,7 @@ package com.quantconnect.lean.Securities
         /// <param name="asset">Asset we're trading with this order</param>
         /// <param name="order">Order to be filled</param>
         /// <returns>Order fill information detailing the average price and quantity filled.</returns>
-        public OrderEvent MarketOnOpenFill(Security asset, MarketOnOpenOrder order)
-        {
+        public OrderEvent MarketOnOpenFill(Security asset, MarketOnOpenOrder order) {
             return _fillModel.MarketOnOpenFill(asset, order);
         }
 
@@ -131,8 +124,7 @@ package com.quantconnect.lean.Securities
         /// <param name="asset">Asset we're trading with this order</param>
         /// <param name="order">Order to be filled</param>
         /// <returns>Order fill information detailing the average price and quantity filled.</returns>
-        public OrderEvent MarketOnCloseFill(Security asset, MarketOnCloseOrder order)
-        {
+        public OrderEvent MarketOnCloseFill(Security asset, MarketOnCloseOrder order) {
             return _fillModel.MarketOnCloseFill(asset, order);
         }
 
@@ -142,8 +134,7 @@ package com.quantconnect.lean.Securities
         /// <param name="security">Security asset we're filling</param>
         /// <param name="order">Order packet to model</param>
         /// <returns>decimal approximation for slippage</returns>
-        public virtual BigDecimal GetSlippageApproximation(Security security, Order order)
-        {
+        public virtual BigDecimal GetSlippageApproximation(Security security, Order order) {
             return _slippageModel.GetSlippageApproximation(security, order);
         }
 
@@ -153,8 +144,7 @@ package com.quantconnect.lean.Securities
         /// <param name="security">The security matching the order</param>
         /// <param name="order">The order to compute fees for</param>
         /// <returns>The cost of the order in units of the account currency</returns>
-        public virtual BigDecimal GetOrderFee(Security security, Order order)
-        {
+        public virtual BigDecimal GetOrderFee(Security security, Order order) {
             return Math.Abs(_feeModel.GetOrderFee(security, order));
         }
     }

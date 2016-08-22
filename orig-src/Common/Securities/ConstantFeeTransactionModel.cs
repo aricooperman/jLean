@@ -29,8 +29,7 @@ package com.quantconnect.lean.Securities
         /// Initializes a new instance of the <see cref="ConstantFeeTransactionModel"/> class with the specified <paramref name="fee"/>
         /// </summary>
         /// <param name="fee">The constant order fee used by the model</param>
-        public ConstantFeeTransactionModel( BigDecimal fee)
-        {
+        public ConstantFeeTransactionModel( BigDecimal fee) {
             _fee = Math.Abs(fee);
         }
 
@@ -40,8 +39,7 @@ package com.quantconnect.lean.Securities
         /// <param name="security">The security matching the order</param>
         /// <param name="order">The order to compute fees for</param>
         /// <returns>The cost of the order in units of the account currency</returns>
-        public override BigDecimal GetOrderFee(Security security, Order order)
-        {
+        public @Override BigDecimal GetOrderFee(Security security, Order order) {
             return _fee;
         }
     }

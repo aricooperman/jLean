@@ -12,8 +12,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         private static final int SlowPeriod = 3600;
         private ExponentialMovingAverage fast, slow;
 
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2013, 10, 08);  //Set Start Date
             SetEndDate(2013, 10, 11);    //Set End Date
             SetCash(100000);             //Set Strategy Cash
@@ -29,16 +28,13 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">Slice object keyed by symbol containing the stock data</param>
-        public override void OnData(Slice data)
-        {
-            if (first && !IsWarmingUp)
-            {
+        public @Override void OnData(Slice data) {
+            if( first && !IsWarmingUp) {
                 first = false;
-                Console.WriteLine("Fast: " + fast.Samples);
-                Console.WriteLine("Slow: " + slow.Samples);
+                Console.WriteLine( "Fast: " + fast.Samples);
+                Console.WriteLine( "Slow: " + slow.Samples);
             }
-            if (fast > slow)
-            {
+            if( fast > slow) {
                 SetHoldings(Symbol, 1);
             }
             else

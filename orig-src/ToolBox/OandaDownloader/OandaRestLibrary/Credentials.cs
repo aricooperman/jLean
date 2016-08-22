@@ -39,15 +39,12 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 
 	public class Credentials
 	{
-		public boolean HasServer(EServer server)
-		{
+		public boolean HasServer(EServer server) {
 			return Servers[Environment].ContainsKey(server);
 		}
 
-		public String GetServer(EServer server)
-		{
-			if (HasServer(server))
-			{
+		public String GetServer(EServer server) {
+			if( HasServer(server)) {
 				return Servers[Environment][server];
 			}
 			return null;
@@ -89,13 +86,11 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 		public EEnvironment Environment;
 		public String Username;
 
-		public static Credentials GetDefaultCredentials()
-		{
+		public static Credentials GetDefaultCredentials() {
 			return _instance;
 		}
 
-		public static void SetCredentials(EEnvironment environment, String accessToken, int defaultAccount = 0)
-		{
+		public static void SetCredentials(EEnvironment environment, String accessToken, int defaultAccount = 0) {
 			_instance = new Credentials
 				{
 					Environment = environment,

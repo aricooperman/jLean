@@ -61,8 +61,7 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="name">The name of this indicator</param>
         public HeikinAshi( String name)
-            : base(name)
-        {
+            : base(name) {
             Open = new Identity(name + "_Open");
             High = new Identity(name + "_High");
             Low = new Identity(name + "_Low");
@@ -73,14 +72,13 @@ package com.quantconnect.lean.Indicators
         /// Initializes a new instance of the <see cref="HeikinAshi"/> class.
         /// </summary> 
         public HeikinAshi()
-            : this("HA")
-        {
+            : this( "HA") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples > 1; }
         }
@@ -90,10 +88,8 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns> A new value for this indicator </returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
-            if (!IsReady)
-            {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
+            if( !IsReady) {
                 Open.Update(new IndicatorDataPoint(input.Time, (input.Open + input.Close) / 2));
                 Close.Update(new IndicatorDataPoint(input.Time, (input.Open + input.High + input.Low + input.Close) / 4));
                 High.Update(new IndicatorDataPoint(input.Time, input.High));
@@ -113,8 +109,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             Open.Reset();
             High.Reset();
             Low.Reset();

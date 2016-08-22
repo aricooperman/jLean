@@ -23,15 +23,14 @@ package com.quantconnect.lean.Util
     /// </summary>
     public static class VersionHelper
     {
-        private static readonly boolean IgnoreVersionChecks = Configuration.Config.GetBool("ignore-version-checks");
+        private static readonly boolean IgnoreVersionChecks = Configuration.Config.GetBool( "ignore-version-checks");
 
         /// <summary>
         /// Determines whether or not the specified version is older than this instance
         /// </summary>
         /// <param name="version">The version to compare</param>
         /// <returns>True if the specified version is older, false otherwise</returns>
-        public static boolean IsOlderVersion( String version)
-        {
+        public static boolean IsOlderVersion( String version) {
             return CompareVersions(version, Globals.Version) < 0;
         }
 
@@ -40,8 +39,7 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="version">The version to compare</param>
         /// <returns>True if the specified version is newer, false otherwise</returns>
-        public static boolean IsNewerVersion( String version)
-        {
+        public static boolean IsNewerVersion( String version) {
             return CompareVersions(version, Globals.Version) > 0;
         }
 
@@ -50,8 +48,7 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="version">The version to compare</param>
         /// <returns>True if the specified version is equal, false otherwise</returns>
-        public static boolean IsEqualVersion( String version)
-        {
+        public static boolean IsEqualVersion( String version) {
             return CompareVersions(version, Globals.Version) == 0;
         }
 
@@ -60,8 +57,7 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="version">The version to compare</param>
         /// <returns>True if the specified version is not equal, false otherwise</returns>
-        public static boolean IsNotEqualVersion( String version)
-        {
+        public static boolean IsNotEqualVersion( String version) {
             return !IsEqualVersion(version);
         }
 
@@ -69,28 +65,24 @@ package com.quantconnect.lean.Util
         /// Compares two versions
         /// </summary>
         /// <returns>1 if the left version is after the right, 0 if they're the same, -1 if the left is before the right</returns>
-        public static int CompareVersions( String left, String right)
-        {
-            if (IgnoreVersionChecks || left == right) return 0;
+        public static int CompareVersions( String left, String right) {
+            if( IgnoreVersionChecks || left == right) return 0;
 
             // we actually need to parse the ints here, made up of 4 parts separated by '.'
             // sample: 123.45.67.90123
             leftv = ParseVersion(left);
             rightv = ParseVersion(right);
-            for (int i = 0; i < leftv.Length; i++)
-            {
+            for (int i = 0; i < leftv.Length; i++) {
                 int comparison = leftv[i].CompareTo(rightv[i]);
-                if (comparison != 0)
-                {
+                if( comparison != 0) {
                     return comparison;
                 }
             }
             return 0;
         }
 
-        private static int[] ParseVersion( String version)
-        {
-            parts = version.Split('.');
+        private static int[] ParseVersion( String version) {
+            parts = version.split('.');
             return parts.Select(x => int.Parse(x, CultureInfo.InvariantCulture)).ToArray();
         }
     }

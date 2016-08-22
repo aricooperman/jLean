@@ -22,18 +22,15 @@ package com.quantconnect.lean.Tests.Indicators
     public class WilliamsPercentRTests
     {
         [Test]
-        public void ComputesCorrectly()
-        {
+        public void ComputesCorrectly() {
             wilr = new WilliamsPercentR(14);
             TestHelper.TestIndicator(wilr, "spy_with_williamsR14.txt", "Williams %R 14", (ind, expected) => Assert.AreEqual(expected, (double) ind.Current.Value, 1e-3));
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             wilr = new WilliamsPercentR(14);
-            foreach (data in TestHelper.GetTradeBarStream("spy_with_williamsR14.txt", false))
-            {
+            foreach (data in TestHelper.GetTradeBarStream( "spy_with_williamsR14.txt", false)) {
                 wilr.Update(data);
             }
             Assert.IsTrue(wilr.IsReady);

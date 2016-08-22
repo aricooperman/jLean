@@ -22,16 +22,14 @@ package com.quantconnect.lean.Tests.Indicators
     public class T3MovingAverageTests
     {
         [Test]
-        public void ComparesAgainstExternalData()
-        {
+        public void ComparesAgainstExternalData() {
             indicator = new T3MovingAverage(5);
 
             RunTestIndicator(indicator);
         }
 
         [Test]
-        public void ComparesAgainstExternalDataAfterReset()
-        {
+        public void ComparesAgainstExternalDataAfterReset() {
             indicator = new T3MovingAverage(5);
 
             RunTestIndicator(indicator);
@@ -40,15 +38,13 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             indicator = new T3MovingAverage(5, 1);
 
             TestHelper.TestIndicatorReset(indicator, "spy_t3.txt");
         }
 
-        private static void RunTestIndicator(IndicatorBase<IndicatorDataPoint> indicator)
-        {
+        private static void RunTestIndicator(IndicatorBase<IndicatorDataPoint> indicator) {
             TestHelper.TestIndicator(indicator, "spy_t3.txt", "T3_5", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value, 2e-2));
         }
     }

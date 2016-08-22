@@ -43,8 +43,7 @@ package com.quantconnect.lean.Algorithm
         /// Initializes a new instance of the <see cref="UniverseDefinitions"/> class
         /// </summary>
         /// <param name="algorithm">The algorithm instance, used for obtaining the default <see cref="UniverseSettings"/></param>
-        public UniverseDefinitions(QCAlgorithm algorithm)
-        {
+        public UniverseDefinitions(QCAlgorithm algorithm) {
             DollarVolume = new DollarVolumeUniverseDefinitions(algorithm);
         }
     }

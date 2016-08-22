@@ -25,14 +25,12 @@ package com.quantconnect.lean.Tests.Indicators
     public class WindowIdentityTests
     {
         [Test]
-        public void WindowIdentityComputesCorrectly()
-        {
+        public void WindowIdentityComputesCorrectly() {
             indicator = new WindowIdentity(4);
             data = new[] {1m, 10m, 100m, 1000m, 10000m, 1234m, 56789m};
 
             seen = new List<decimal>();
-            for (int i = 0; i < data.Length; i++)
-            {
+            for (int i = 0; i < data.Length; i++) {
                 datum = data[i];
                 seen.Add(datum);
                 indicator.Update(new IndicatorDataPoint(DateTime.Now.AddSeconds(i), datum));
@@ -41,8 +39,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void IsReadyAfterPeriodUpdates()
-        {
+        public void IsReadyAfterPeriodUpdates() {
             indicator = new WindowIdentity(3);
 
             indicator.Update(DateTime.UtcNow, 1m);
@@ -53,12 +50,10 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             indicator = new WindowIdentity(3);
 
-            foreach (data in TestHelper.GetDataStream(4))
-            {
+            foreach (data in TestHelper.GetDataStream(4)) {
                 indicator.Update(data);
             }
             Assert.IsTrue(indicator.IsReady);
@@ -71,8 +66,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void CompareAgainstExternalData()
-        {
+        public void CompareAgainstExternalData() {
             indicator = new WindowIdentity(14);
             TestHelper.TestIndicator(indicator, "Close", 1e-2); // test file only has
         }

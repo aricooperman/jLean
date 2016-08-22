@@ -33,8 +33,7 @@ package com.quantconnect.lean.Data
         /// <summary>
         /// Get the metaObject required for Dynamism.
         /// </summary>
-        public DynamicMetaObject GetMetaObject(Expression parameter)
-        {
+        public DynamicMetaObject GetMetaObject(Expression parameter) {
             return new DynamicDataMetaObject(parameter, this);
         }
 
@@ -44,22 +43,17 @@ package com.quantconnect.lean.Data
         /// <param name="name">The property name to set</param>
         /// <param name="value">The new property value</param>
         /// <returns>Returns the input value back to the caller</returns>
-        public object SetProperty( String name, object value)
-        {
+        public object SetProperty( String name, object value) {
             name = name.toLowerCase();
 
-            if (name == "time")
-            {
+            if( name == "time") {
                 Time = (DateTime)value;
             }
-            if (name == "value")
-            {
+            if( name == "value") {
                 Value = (decimal)value;
             }
-            if (name == "symbol")
-            {
-                if (value is string)
-                {
+            if( name == "symbol") {
+                if( value is string) {
                     Symbol = SymbolCache.GetSymbol(( String) value);
                 }
                 else
@@ -68,7 +62,7 @@ package com.quantconnect.lean.Data
                 }
             }
             // reaodnly
-            //if (name == "Price")
+            //if( name == "Price")
             //{
             //    return Price = (decimal) value;
             //}
@@ -81,33 +75,27 @@ package com.quantconnect.lean.Data
         /// </summary>
         /// <param name="name">The property name to access</param>
         /// <returns>object value of BaseData</returns>
-        public object GetProperty( String name)
-        {
+        public object GetProperty( String name) {
             name = name.toLowerCase();
 
             // redirect these calls to the base types properties
-            if (name == "time")
-            {
+            if( name == "time") {
                 return Time;
             }
-            if (name == "value")
-            {
+            if( name == "value") {
                 return Value;
             }
-            if (name == "symbol")
-            {
+            if( name == "symbol") {
                 return Symbol;
             }
-            if (name == "price")
-            {
+            if( name == "price") {
                 return Price;
             }
 
             object value;
-            if (!_storage.TryGetValue(name, out value))
-            {
+            if( !_storage.TryGetValue(name, out value)) {
                 // let the user know the property name that we couldn't find
-                throw new Exception("Property with name '" + name + "' does not exist. Properties: Time, Symbol, Value " + string.Join(", ", _storage.Keys));
+                throw new Exception( "Property with name '" + name + "' does not exist. Properties: Time, Symbol, Value " + String.join( ", ", _storage.Keys));
             }
 
             return value;
@@ -119,8 +107,7 @@ package com.quantconnect.lean.Data
         /// </summary>
         /// <param name="name">The property name to check for</param>
         /// <returns>True if the property exists, false otherwise</returns>
-        public boolean HasProperty( String name)
-        {
+        public boolean HasProperty( String name) {
             return _storage.ContainsKey(name.toLowerCase());
         }
 
@@ -131,11 +118,9 @@ package com.quantconnect.lean.Data
         /// This base implementation uses reflection to copy all public fields and properties
         /// </remarks>
         /// <returns>A clone of the current object</returns>
-        public override BaseData Clone()
-        {
+        public @Override BaseData Clone() {
             clone = ObjectActivator.Clone(this);
-            foreach (kvp in _storage)
-            {
+            foreach (kvp in _storage) {
                 // don't forget to add the dynamic members!
                 clone._storage.Add(kvp);
             }
@@ -147,16 +132,14 @@ package com.quantconnect.lean.Data
         /// </summary>
         private class DynamicDataMetaObject : DynamicMetaObject
         {
-            private static readonly MethodInfo SetPropertyMethodInfo = typeof(DynamicData).GetMethod("SetProperty");
-            private static readonly MethodInfo GetPropertyMethodInfo = typeof(DynamicData).GetMethod("GetProperty");
+            private static readonly MethodInfo SetPropertyMethodInfo = typeof(DynamicData).GetMethod( "SetProperty");
+            private static readonly MethodInfo GetPropertyMethodInfo = typeof(DynamicData).GetMethod( "GetProperty");
 
             public DynamicDataMetaObject(Expression expression, DynamicData instance)
-                : base(expression, BindingRestrictions.Empty, instance)
-            {
+                : base(expression, BindingRestrictions.Empty, instance) {
             }
 
-            public override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value)
-            {
+            public @Override DynamicMetaObject BindSetMember(SetMemberBinder binder, DynamicMetaObject value) {
                 // we need to build up an expression tree that represents accessing our instance
                 restrictions = BindingRestrictions.GetTypeRestriction(Expression, LimitType);
 
@@ -177,8 +160,7 @@ package com.quantconnect.lean.Data
                 return new DynamicMetaObject(call, restrictions);
             }
 
-            public override DynamicMetaObject BindGetMember(GetMemberBinder binder)
-            {
+            public @Override DynamicMetaObject BindGetMember(GetMemberBinder binder) {
                 // we need to build up an expression tree that represents accessing our instance
                 restrictions = BindingRestrictions.GetTypeRestriction(Expression, LimitType);
 

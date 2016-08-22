@@ -62,19 +62,15 @@ public class LeanEngineSystemHandlers implements Closeable {
     /// <param name="jobQueue">The job queue used to acquire algorithm jobs</param>
     /// <param name="api">The api instance used for communicating limits and status</param>
     /// <param name="notify">The messaging handler user for passing messages from the algorithm to listeners</param>
-    public LeanEngineSystemHandlers(IJobQueueHandler jobQueue, IApi api, IMessagingHandler notify)
-    {
-        if (jobQueue == null)
-        {
-            throw new ArgumentNullException("jobQueue");
+    public LeanEngineSystemHandlers(IJobQueueHandler jobQueue, IApi api, IMessagingHandler notify) {
+        if( jobQueue == null ) {
+            throw new ArgumentNullException( "jobQueue");
         }
-        if (api == null)
-        {
-            throw new ArgumentNullException("api");
+        if( api == null ) {
+            throw new ArgumentNullException( "api");
         }
-        if (notify == null)
-        {
-            throw new ArgumentNullException("notify");
+        if( notify == null ) {
+            throw new ArgumentNullException( "notify");
         }
         _api = api;
         _jobQueue = jobQueue;
@@ -87,18 +83,17 @@ public class LeanEngineSystemHandlers implements Closeable {
     /// <param name="composer">The composer instance to obtain implementations from</param>
     /// <returns>A fully hydrates <see cref="LeanEngineSystemHandlers"/> instance.</returns>
     /// <exception cref="CompositionException">Throws a CompositionException during failure to load</exception>
-    public static LeanEngineSystemHandlers FromConfiguration(Composer composer)
-    {
+    public static LeanEngineSystemHandlers FromConfiguration(Composer composer) {
         return new LeanEngineSystemHandlers(
-            composer.GetExportedValueByTypeName<IJobQueueHandler>(Config.Get("job-queue-handler")),
-            composer.GetExportedValueByTypeName<IApi>(Config.Get("api-handler")),
-            composer.GetExportedValueByTypeName<IMessagingHandler>(Config.Get("messaging-handler"))
+            composer.GetExportedValueByTypeName<IJobQueueHandler>(Config.Get( "job-queue-handler")),
+            composer.GetExportedValueByTypeName<IApi>(Config.Get( "api-handler")),
+            composer.GetExportedValueByTypeName<IMessagingHandler>(Config.Get( "messaging-handler"))
             );
     }
 
     /// Initializes the Api, Messaging, and JobQueue components
     public void initialize() {
-        Api.Initialize(Config.GetInt("job-user-id", 0), Config.Get("api-access-token", ""));
+        Api.Initialize(Config.GetInt( "job-user-id", 0), Config.Get( "api-access-token", ""));
         Notify.Initialize();
         JobQueue.Initialize();
     }
@@ -158,19 +153,15 @@ package com.quantconnect.lean.Lean.Engine
         /// <param name="jobQueue">The job queue used to acquire algorithm jobs</param>
         /// <param name="api">The api instance used for communicating limits and status</param>
         /// <param name="notify">The messaging handler user for passing messages from the algorithm to listeners</param>
-        public LeanEngineSystemHandlers(IJobQueueHandler jobQueue, IApi api, IMessagingHandler notify)
-        {
-            if (jobQueue == null)
-            {
-                throw new ArgumentNullException("jobQueue");
+        public LeanEngineSystemHandlers(IJobQueueHandler jobQueue, IApi api, IMessagingHandler notify) {
+            if( jobQueue == null ) {
+                throw new ArgumentNullException( "jobQueue");
             }
-            if (api == null)
-            {
-                throw new ArgumentNullException("api");
+            if( api == null ) {
+                throw new ArgumentNullException( "api");
             }
-            if (notify == null)
-            {
-                throw new ArgumentNullException("notify");
+            if( notify == null ) {
+                throw new ArgumentNullException( "notify");
             }
             _api = api;
             _jobQueue = jobQueue;
@@ -183,21 +174,19 @@ package com.quantconnect.lean.Lean.Engine
         /// <param name="composer">The composer instance to obtain implementations from</param>
         /// <returns>A fully hydrates <see cref="LeanEngineSystemHandlers"/> instance.</returns>
         /// <exception cref="CompositionException">Throws a CompositionException during failure to load</exception>
-        public static LeanEngineSystemHandlers FromConfiguration(Composer composer)
-        {
+        public static LeanEngineSystemHandlers FromConfiguration(Composer composer) {
             return new LeanEngineSystemHandlers(
-                composer.GetExportedValueByTypeName<IJobQueueHandler>(Config.Get("job-queue-handler")),
-                composer.GetExportedValueByTypeName<IApi>(Config.Get("api-handler")),
-                composer.GetExportedValueByTypeName<IMessagingHandler>(Config.Get("messaging-handler"))
+                composer.GetExportedValueByTypeName<IJobQueueHandler>(Config.Get( "job-queue-handler")),
+                composer.GetExportedValueByTypeName<IApi>(Config.Get( "api-handler")),
+                composer.GetExportedValueByTypeName<IMessagingHandler>(Config.Get( "messaging-handler"))
                 );
         }
 
         /// <summary>
         /// Initializes the Api, Messaging, and JobQueue components
         /// </summary>
-        public void Initialize()
-        {
-            Api.Initialize(Config.GetInt("job-user-id", 0), Config.Get("api-access-token", ""));
+        public void Initialize() {
+            Api.Initialize(Config.GetInt( "job-user-id", 0), Config.Get( "api-access-token", ""));
             Notify.Initialize();
             JobQueue.Initialize();
         }
@@ -206,8 +195,7 @@ package com.quantconnect.lean.Lean.Engine
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             Api.Dispose();
         }
     }

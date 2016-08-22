@@ -42,22 +42,20 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// </summary>
         /// <param name="name">The name of this indicator</param>
         public Hikkake( String name) 
-            : base(name, 5 + 1)
-        {
+            : base(name, 5 + 1) {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Hikkake"/> class.
         /// </summary>
         public Hikkake()
-            : this("HIKKAKE")
-        {
+            : this( "HIKKAKE") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -68,29 +66,25 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
-                if (Samples >= 3)
-                {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
+                if( Samples >= 3) {
                     // copy here the pattern recognition code below
                     // 1st + 2nd: lower high and higher low
-                    if (window[1].High < window[2].High && window[1].Low > window[2].Low &&
+                    if( window[1].High < window[2].High && window[1].Low > window[2].Low &&
                         // (bull) 3rd: lower high and lower low
                         ((input.High < window[1].High && input.Low < window[1].Low)
                           ||
                           // (bear) 3rd: higher high and higher low
                           (input.High > window[1].High && input.Low > window[1].Low)
                         )
-                    )
-                    {
+                    ) {
                         _patternResult = (input.High < window[1].High ? 1 : -1);
                         _patternIndex = (int)Samples - 1;
                     }
                     else
                         // search for confirmation if hikkake was no more than 3 bars ago
-                        if (Samples <= _patternIndex + 4 &&
+                        if( Samples <= _patternIndex + 4 &&
                             // close higher than the high of 2nd
                             ((_patternResult > 0 && input.Close > window[(int)Samples - _patternIndex].High)
                               ||
@@ -106,15 +100,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
 
             BigDecimal value;
             // 1st + 2nd: lower high and higher low
-            if (window[1].High < window[2].High && window[1].Low > window[2].Low &&
+            if( window[1].High < window[2].High && window[1].Low > window[2].Low &&
                 // (bull) 3rd: lower high and lower low
                 ((input.High < window[1].High && input.Low < window[1].Low)
                  ||
                  // (bear) 3rd: higher high and higher low
                  (input.High > window[1].High && input.Low > window[1].Low)
                     )
-                )
-            {
+                ) {
                 _patternResult = (input.High < window[1].High ? 1 : -1);
                 _patternIndex = (int) Samples - 1;
                 value = _patternResult;
@@ -122,15 +115,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             else
             {
                 // search for confirmation if hikkake was no more than 3 bars ago
-                if (Samples <= _patternIndex + 4 &&
+                if( Samples <= _patternIndex + 4 &&
                     // close higher than the high of 2nd
                     ((_patternResult > 0 && input.Close > window[(int) Samples - _patternIndex].High)
                      ||
                      // close lower than the low of 2nd
                      (_patternResult < 0 && input.Close < window[(int) Samples - _patternIndex].Low)
                         )
-                    )
-                {
+                    ) {
                     value = _patternResult + (_patternResult > 0 ? 1 : -1);
                     _patternIndex = 0;
                 }
@@ -144,8 +136,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _patternIndex = 0;
             _patternResult = 0;
             base.Reset();

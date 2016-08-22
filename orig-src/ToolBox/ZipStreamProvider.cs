@@ -33,14 +33,11 @@ package com.quantconnect.lean.ToolBox
         /// </summary>
         /// <param name="source">The source file to be opened</param>
         /// <returns>The stream representing the specified source</returns>
-        public IEnumerable<Stream> Open( String source)
-        {
-            lock (_sync)
-            {
+        public IEnumerable<Stream> Open( String source) {
+            lock (_sync) {
                 archive = new ZipFile(source);
                 _zipFiles.Add(source, archive);
-                foreach (entry in archive)
-                {
+                foreach (entry in archive) {
                     yield return entry.OpenReader();
                 }
             }
@@ -50,13 +47,10 @@ package com.quantconnect.lean.ToolBox
         /// Closes the specified source file stream
         /// </summary>
         /// <param name="source">The source file to be closed</param>
-        public void Close( String source)
-        {
-            lock (_sync)
-            {
+        public void Close( String source) {
+            lock (_sync) {
                 ZipFile archive;
-                if (_zipFiles.TryGetValue(source, out archive))
-                {
+                if( _zipFiles.TryGetValue(source, out archive)) {
                     _zipFiles.Remove(source);
                     archive.Dispose();
                 }
@@ -66,12 +60,9 @@ package com.quantconnect.lean.ToolBox
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
-            lock (_sync)
-            {
-                foreach (zipFile in _zipFiles.Values)
-                {
+        public void Dispose() {
+            lock (_sync) {
+                foreach (zipFile in _zipFiles.Values) {
                     zipFile.Dispose();
                 }
                 _zipFiles.Clear();

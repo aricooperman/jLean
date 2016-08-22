@@ -28,13 +28,12 @@ package com.quantconnect.lean.Tests.Common.Securities
         private static readonly TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), new[] { TimeZones.NewYork });
 
         [Test]
-        public void SellOnMondaySettleOnThursday()
-        {
+        public void SellOnMondaySettleOnThursday() {
             securities = new SecurityManager(TimeKeeper);
             transactions = new SecurityTransactionManager(securities);
             portfolio = new SecurityPortfolioManager(securities, transactions);
             // settlement at T+3, 8:00 AM
-            model = new DelayedSettlementModel(3, TimeSpan.FromHours(8));
+            model = new DelayedSettlementModel(3, Duration.ofHours(8));
             config = CreateTradeBarConfig(Symbols.SPY);
             security = new Security(SecurityExchangeHoursTests.CreateUsEquitySecurityExchangeHours(), config, new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
 
@@ -75,13 +74,12 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void SellOnThursdaySettleOnTuesday()
-        {
+        public void SellOnThursdaySettleOnTuesday() {
             securities = new SecurityManager(TimeKeeper);
             transactions = new SecurityTransactionManager(securities);
             portfolio = new SecurityPortfolioManager(securities, transactions);
             // settlement at T+3, 8:00 AM
-            model = new DelayedSettlementModel(3, TimeSpan.FromHours(8));
+            model = new DelayedSettlementModel(3, Duration.ofHours(8));
             config = CreateTradeBarConfig(Symbols.SPY);
             security = new Security(SecurityExchangeHoursTests.CreateUsEquitySecurityExchangeHours(), config, new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
 
@@ -133,8 +131,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.AreEqual(0, portfolio.UnsettledCash);
         }
 
-        private SubscriptionDataConfig CreateTradeBarConfig(Symbol symbol)
-        {
+        private SubscriptionDataConfig CreateTradeBarConfig(Symbol symbol) {
             return new SubscriptionDataConfig(typeof(TradeBar), symbol, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, false);
         }
 

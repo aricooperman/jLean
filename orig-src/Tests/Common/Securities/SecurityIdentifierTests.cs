@@ -33,15 +33,13 @@ package com.quantconnect.lean.Tests.Common.Securities
         private readonly SecurityIdentifier SPY_Put_19550 = SecurityIdentifier.GenerateOption(new DateTime(2015, 09, 18), "SPY", Market.USA, 195.50m, OptionRight.Put, OptionStyle.European);
 
         [Test]
-        public void GenerateEquityProperlyResolvesFirstDate()
-        {
-            spy = SecurityIdentifier.GenerateEquity("SPY", Market.USA);
+        public void GenerateEquityProperlyResolvesFirstDate() {
+            spy = SecurityIdentifier.GenerateEquity( "SPY", Market.USA);
             Assert.AreEqual(new DateTime(1998, 01, 02), spy.Date);
         }
 
         [Test]
-        public void GeneratesIdentifiersDeterministically()
-        {
+        public void GeneratesIdentifiersDeterministically() {
             sid1 = SPY;
             sid2 = SPY;
             Assert.AreEqual(sid1, sid2);
@@ -49,8 +47,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void GeneratesOptionSecurityIdentifier()
-        {
+        public void GeneratesOptionSecurityIdentifier() {
             spyPut = SPY_Put_19550;
 
             // verify various values
@@ -60,50 +57,46 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.AreEqual(195.5m, spyPut.StrikePrice); // strike/scale
             Assert.AreEqual(Market.USA, spyPut.Market); // market
             Assert.AreEqual(SecurityType.Option, spyPut.SecurityType); // security type
-            Assert.AreEqual("SPY", spyPut.Symbol); // SPY in base36
+            Assert.AreEqual( "SPY", spyPut.Symbol); // SPY in base36
 
             Console.WriteLine(SPY_Put_19550);
         }
 
         [Test]
-        public void GeneratesEquitySecurityIdentifier()
-        {
+        public void GeneratesEquitySecurityIdentifier() {
             sid1 = SecurityIdentifier.GenerateEquity(new DateTime(1998, 01, 02), "SPY", Market.USA);
 
             // verify various values
             Assert.AreEqual(new DateTime(1998, 01, 02), sid1.Date);
             Assert.AreEqual(Market.USA, sid1.Market);
             Assert.AreEqual(SecurityType.Equity, sid1.SecurityType);
-            Assert.AreEqual("SPY", sid1.Symbol);
+            Assert.AreEqual( "SPY", sid1.Symbol);
 
             Console.WriteLine(sid1);
         }
 
         [Test]
-        public void GeneratesForexSecurityIdentifier()
-        {
-            eurusd = SecurityIdentifier.GenerateForex("EURUSD", Market.FXCM);
+        public void GeneratesForexSecurityIdentifier() {
+            eurusd = SecurityIdentifier.GenerateForex( "EURUSD", Market.FXCM);
 
             // verify various values
             Assert.Throws<InvalidOperationException>(() => { x = eurusd.Date; });
             Assert.AreEqual(Market.FXCM, eurusd.Market);
             Assert.AreEqual(SecurityType.Forex, eurusd.SecurityType);
-            Assert.AreEqual("EURUSD", eurusd.Symbol);
+            Assert.AreEqual( "EURUSD", eurusd.Symbol);
 
             Console.WriteLine(eurusd);
         }
 
         [Test]
-        public void Generates12Character()
-        {
-            sid1 = SecurityIdentifier.GenerateBase("123456789012", Market.USA);
-            Assert.AreEqual("123456789012", sid1.Symbol);
+        public void Generates12Character() {
+            sid1 = SecurityIdentifier.GenerateBase( "123456789012", Market.USA);
+            Assert.AreEqual( "123456789012", sid1.Symbol);
             Console.WriteLine(sid1);
         }
 
         [Test]
-        public void ParsedtoStringEqualsValue()
-        {
+        public void ParsedtoStringEqualsValue() {
             value = SPY_Put_19550.toString();
             Console.WriteLine(value);
             sid2 = SecurityIdentifier.Parse(value);
@@ -111,104 +104,89 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void ReturnsCorrectMarket()
-        {
+        public void ReturnsCorrectMarket() {
             Assert.AreEqual(Market.USA, SPY.Market);
         }
 
         [Test]
-        public void ReturnsCorrectMarketWhenNotFound()
-        {
-            sid = new SecurityIdentifier("some symbol", 0357960000000009901);
-            Assert.AreEqual("99", sid.Market);
+        public void ReturnsCorrectMarketWhenNotFound() {
+            sid = new SecurityIdentifier( "some symbol", 0357960000000009901);
+            Assert.AreEqual( "99", sid.Market);
         }
 
         [Test]
-        public void ReturnsCorrectOptionRight()
-        {
+        public void ReturnsCorrectOptionRight() {
             Assert.AreEqual(OptionRight.Put, SPY_Put_19550.OptionRight);
         }
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException), MatchType = MessageMatch.Contains,
             ExpectedMessage = "OptionRight is only defined for SecurityType.Option")]
-        public void OptionRightThrowsOnNonOptionSecurityType()
-        {
+        public void OptionRightThrowsOnNonOptionSecurityType() {
             OptionRight = SPY.OptionRight;
         }
 
         [Test]
-        public void ReturnsCorrectSecurityType()
-        {
+        public void ReturnsCorrectSecurityType() {
             Assert.AreEqual(SecurityType.Equity, SPY.SecurityType);
             Assert.AreEqual(SecurityType.Option, SPY_Put_19550.SecurityType);
         }
 
         [Test]
-        public void ReturnsCorrectSymbol()
-        {
-            Assert.AreEqual("SPY", SPY.Symbol);
+        public void ReturnsCorrectSymbol() {
+            Assert.AreEqual( "SPY", SPY.Symbol);
         }
 
         [Test]
-        public void ReturnsCorrectStrikePrice()
-        {
+        public void ReturnsCorrectStrikePrice() {
             Assert.AreEqual(195.50m, SPY_Put_19550.StrikePrice);
         }
 
         [Test]
-        public void ReturnsCorrectDate()
-        {
+        public void ReturnsCorrectDate() {
             Assert.AreEqual(new DateTime(1998, 01, 02), SPY.Date);
             Assert.AreEqual(new DateTime(2015, 09, 18), SPY_Put_19550.Date);
         }
 
         [Test]
-        public void ReturnsCorrectOptionStyle()
-        {
+        public void ReturnsCorrectOptionStyle() {
             Assert.AreEqual(OptionStyle.European, SPY_Put_19550.OptionStyle);
         }
 
         [Test]
         [ExpectedException(typeof(InvalidOperationException), MatchType = MessageMatch.Contains,
             ExpectedMessage = "OptionStyle is only defined for SecurityType.Option")]
-        public void OptionStyleThrowsOnNonOptionSecurityType()
-        {
+        public void OptionStyleThrowsOnNonOptionSecurityType() {
             optionStyle = SPY.OptionStyle;
         }
 
         [Test]
-        public void EmptyUsesEmptySymbol()
-        {
+        public void EmptyUsesEmptySymbol() {
             Assert.AreEqual( String.Empty, SecurityIdentifier.Empty.Symbol);
         }
 
         [Test]
-        public void RoundTripEmptyParse()
-        {
+        public void RoundTripEmptyParse() {
             Assert.AreEqual(SecurityIdentifier.Empty, SecurityIdentifier.Parse(SecurityIdentifier.Empty.toString()));
         }
 
         [Test]
-        public void UsedAsDictionaryKey()
-        {
+        public void UsedAsDictionaryKey() {
             hash = new HashSet<SecurityIdentifier>();
             Assert.IsTrue(hash.Add(SPY));
             Assert.IsFalse(hash.Add(SPY));
         }
 
         [Test]
-        public void SerializesToSimpleString()
-        {
+        public void SerializesToSimpleString() {
             sid = SPY;
             str = sid.toString();
             serialized = JsonConvert.SerializeObject(sid);
-            Assert.AreEqual("\"" + str + "\"", serialized);
+            Assert.AreEqual( "\"" + str + "\"", serialized);
         }
 
         [Test]
-        public void DeserializesFromSimpleString()
-        {
+        public void DeserializesFromSimpleString() {
             sid = SPY;
             str = "\"" + sid + "\"";
             deserialized = JsonConvert.DeserializeObject<SecurityIdentifier>(str);
@@ -216,8 +194,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void DeserializesFromSimpleStringWithinContainerClass()
-        {
+        public void DeserializesFromSimpleStringWithinContainerClass() {
             sid = new Container{sid =SPY};
             str = 
 @"
@@ -229,8 +206,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void SupportsSpecialCharactersInSymbol()
-        {
+        public void SupportsSpecialCharactersInSymbol() {
             static final String symbol = "~!@#$%^&*()_+¼»`ÆÜCⁿª▓G";
             sid = new SecurityIdentifier(symbol, 0);
             Assert.AreEqual(sid.Symbol, symbol);

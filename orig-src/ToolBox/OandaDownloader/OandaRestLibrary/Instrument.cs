@@ -23,8 +23,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 {
 	public class IsOptionalAttribute : Attribute
 	{
-		public override String toString()
-		{
+		public @Override String toString() {
 			return "Is Optional";
 		}
 	}
@@ -32,8 +31,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 	public class MaxValueAttribute : Attribute
 	{
 		public object Value { get; set; }
-		public MaxValueAttribute(int i)
-		{
+		public MaxValueAttribute(int i) {
 			Value = i;
 		}
 	}
@@ -41,8 +39,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 	public class MinValueAttribute : Attribute
 	{
 		public object Value { get; set; }
-		public MinValueAttribute(int i)
-		{
+		public MinValueAttribute(int i) {
 			Value = i;
 		}
 	}

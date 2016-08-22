@@ -33,14 +33,13 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="name">The name of this indicator</param>
         public OnBalanceVolume( String name)
-            : base(name)
-        {
+            : base(name) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return _previousInput != null; }
         }
@@ -50,19 +49,15 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns> A new value for this indicator </returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             obv = Current.Value;
 
-            if (_previousInput != null)
-            {
-                if (input.Value > _previousInput.Value)
-                {
+            if( _previousInput != null ) {
+                if( input.Value > _previousInput.Value) {
                     obv += input.Volume;
                     Update(input);
                 }
-                else if (input.Value < _previousInput.Value)
-                {
+                else if( input.Value < _previousInput.Value) {
                     obv -= input.Volume;
                     Update(input);
                 }
@@ -80,8 +75,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _previousInput = null;
             base.Reset();
         }

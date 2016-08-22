@@ -38,7 +38,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
     /// </summary>
     public class BacktestingSetupHandler : ISetupHandler
     {
-        private TimeSpan _maxRuntime = TimeSpan.FromSeconds(300);
+        private TimeSpan _maxRuntime = Duration.ofSeconds(300);
         private BigDecimal _startingCaptial = 0;
         private int _maxOrders = 0;
         private DateTime _startingDate = new DateTime(1998, 01, 01);
@@ -104,8 +104,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <summary>
         /// Initialize the backtest setup handler.
         /// </summary>
-        public BacktestingSetupHandler() 
-        {
+        public BacktestingSetupHandler() {
             Errors = new List<String>();
         }
 
@@ -116,15 +115,14 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <param name="assemblyPath">Physical location of the assembly.</param>
         /// <param name="language">Language of the DLL</param>
         /// <returns>Algorithm instance.</returns>
-        public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language)
-        {
+        public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language) {
             String error;
             IAlgorithm algorithm;
 
             // limit load times to 10 seconds and force the assembly to have exactly one derived type
-            loader = new Loader(language, TimeSpan.FromSeconds(15), names => names.SingleOrDefault());
+            loader = new Loader(language, Duration.ofSeconds(15), names => names.SingleOrDefault());
             complete = loader.TryCreateAlgorithmInstanceWithIsolator(assemblyPath, out algorithm, out error);
-            if (!complete) throw new Exception(error + " Try re-building algorithm.");
+            if( !complete) throw new Exception(error + " Try re-building algorithm.");
 
             return algorithm;
         }
@@ -135,8 +133,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <param name="algorithmNodePacket">Job packet</param>
         /// <param name="uninitializedAlgorithm">The algorithm instance before Initialize has been called</param>
         /// <returns>The brokerage instance, or throws if error creating instance</returns>
-        public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm)
-        {
+        public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm) {
             return new BacktestingBrokerage(uninitializedAlgorithm);
         }
 
@@ -150,32 +147,28 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <param name="transactionHandler">The configurated transaction handler</param>
         /// <param name="realTimeHandler">The configured real time handler</param>
         /// <returns>Boolean true on successfully initializing the algorithm</returns>
-        public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket baseJob, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler)
-        {
+        public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket baseJob, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler) {
             job = baseJob as BacktestNodePacket;
-            if (job == null)
-            {
-                throw new ArgumentException("Expected BacktestNodePacket but received " + baseJob.GetType().Name);
+            if( job == null ) {
+                throw new ArgumentException( "Expected BacktestNodePacket but received " + baseJob.GetType().Name);
             }
 
-            Log.Trace( String.format("BacktestingSetupHandler.Setup(): Setting up job: Plan: {0}, UID: {1}, PID: {2}, Version: {3}, Source: {4}", job.UserPlan, job.UserId, job.ProjectId, job.Version, job.RequestSource));
+            Log.Trace( String.format( "BacktestingSetupHandler.Setup(): Setting up job: Plan: %1$s, UID: %2$s, PID: %3$s, Version: {3}, Source: {4}", job.UserPlan, job.UserId, job.ProjectId, job.Version, job.RequestSource));
 
-            if (algorithm == null)
-            {
-                Errors.Add("Could not create instance of algorithm");
+            if( algorithm == null ) {
+                Errors.Add( "Could not create instance of algorithm");
                 return false;
             }
 
             //Make sure the algorithm start date ok.
-            if (job.PeriodStart == default(DateTime))
-            {
-                Errors.Add("Algorithm start date was never set");
+            if( job.PeriodStart == default(DateTime)) {
+                Errors.Add( "Algorithm start date was never set");
                 return false;
             }
 
             controls = job.Controls;
             isolator = new Isolator();
-            initializeComplete = isolator.ExecuteWithTimeLimit(TimeSpan.FromMinutes(5), () =>
+            initializeComplete = isolator.ExecuteWithTimeLimit(Duration.ofMinutes(5), () =>
             {
                 try
                 {
@@ -190,14 +183,13 @@ package com.quantconnect.lean.Lean.Engine.Setup
                     //Initialise the algorithm, get the required data:
                     algorithm.Initialize();
                 }
-                catch (Exception err)
-                {
-                    Errors.Add("Failed to initialize algorithm: Initialize(): " + err.Message);
+                catch (Exception err) {
+                    Errors.Add( "Failed to initialize algorithm: Initialize(): " + err.Message);
                 }
             });
 
             //Before continuing, detect if this is ready:
-            if (!initializeComplete) return false;
+            if( !initializeComplete) return false;
 
             algorithm.Transactions.SetOrderProcessor(transactionHandler);
             algorithm.PostInitialize();
@@ -209,8 +201,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
             _startingCaptial = algorithm.Portfolio.Cash;
 
             //Max Orders: 10k per backtest:
-            if (job.UserPlan == UserPlan.Free)
-            {
+            if( job.UserPlan == UserPlan.Free) {
                 _maxOrders = 10000;
             }
             else
@@ -226,11 +217,10 @@ package com.quantconnect.lean.Lean.Engine.Setup
             _startingDate = job.PeriodStart;
 
             //Put into log for debugging:
-            Log.Trace("SetUp Backtesting: User: " + job.UserId + " ProjectId: " + job.ProjectId + " AlgoId: " + job.AlgorithmId);
-            Log.Trace("Dates: Start: " + job.PeriodStart.ToShortDateString() + " End: " + job.PeriodFinish.ToShortDateString() + " Cash: " + _startingCaptial.toString("C"));
+            Log.Trace( "SetUp Backtesting: User: " + job.UserId + " ProjectId: " + job.ProjectId + " AlgoId: " + job.AlgorithmId);
+            Log.Trace( "Dates: Start: " + job.PeriodStart.ToShortDateString() + " End: " + job.PeriodFinish.ToShortDateString() + " Cash: " + _startingCaptial.toString( "C"));
 
-            if (Errors.Count > 0)
-            {
+            if( Errors.Count > 0) {
                 initializeComplete = false;
             }
             return initializeComplete;
@@ -243,42 +233,37 @@ package com.quantconnect.lean.Lean.Engine.Setup
         /// <param name="finish">End date of the algorithm</param>
         /// <param name="subscriptionCount">Number of data feeds the user has requested</param>
         /// <returns>Timespan maximum run period</returns>
-        private TimeSpan GetMaximumRuntime(DateTime start, DateTime finish, int subscriptionCount)
-        {
+        private TimeSpan GetMaximumRuntime(DateTime start, DateTime finish, int subscriptionCount) {
             double maxRunTime = 0;
             jobDays = (finish - start).TotalDays;
 
             maxRunTime = 10 * subscriptionCount * jobDays;
 
             //Rationalize:
-            if ((maxRunTime / 3600) > 12)
-            {
+            if( (maxRunTime / 3600) > 12) {
                 //12 hours maximum
                 maxRunTime = 3600 * 12;
             }
-            else if (maxRunTime < 60)
-            {
+            else if( maxRunTime < 60) {
                 //If less than 60 seconds.
                 maxRunTime = 60;
             }
 
-            Log.Trace("BacktestingSetupHandler.GetMaxRunTime(): Job Days: " + jobDays + " Max Runtime: " + Math.Round(maxRunTime / 60) + " min");
+            Log.Trace( "BacktestingSetupHandler.GetMaxRunTime(): Job Days: " + jobDays + " Max Runtime: " + Math.Round(maxRunTime / 60) + " min");
 
             //Override for windows:
-            if (OS.IsWindows)
-            {
+            if( OS.IsWindows) {
                 maxRunTime = 24 * 60 * 60;
             }
 
-            return TimeSpan.FromSeconds(maxRunTime);
+            return Duration.ofSeconds(maxRunTime);
         }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             // nothing to clean up
         }
     } // End Result Handler Thread:

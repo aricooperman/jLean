@@ -41,8 +41,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="timeProvider">A time provider used to determine age of data</param>
         /// <param name="timeZone">The data's time zone</param>
         /// <param name="maximumDataAge">The maximum age of data allowed</param>
-        public FastForwardEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, ZoneId timeZone, TimeSpan maximumDataAge)
-        {
+        public FastForwardEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, ZoneId timeZone, TimeSpan maximumDataAge) {
             _enumerator = enumerator;
             _timeProvider = timeProvider;
             _timeZone = timeZone;
@@ -55,28 +54,23 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <returns>
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
         /// </returns>
-        public boolean MoveNext()
-        {
+        public boolean MoveNext() {
             // keep churning until recent data or null
-            while (_enumerator.MoveNext())
-            {
+            while (_enumerator.MoveNext()) {
                 // we can't fast forward nulls or bad times
-                if (_enumerator.Current == null || _enumerator.Current.Time == DateTime.MinValue)
-                {
+                if( _enumerator.Current == null || _enumerator.Current.Time == DateTime.MinValue) {
                     _current = null;
                     return true;
                 }
 
                 // make sure we never emit past data
-                if (_current != null && _current.EndTime > _enumerator.Current.EndTime)
-                {
+                if( _current != null && _current.EndTime > _enumerator.Current.EndTime) {
                     continue;
                 }
 
                 // comute the age of the data, if within limits we're done
                 age = _timeProvider.GetUtcNow().ConvertFromUtc(_timeZone) - _enumerator.Current.EndTime;
-                if (age <= _maximumDataAge)
-                {
+                if( age <= _maximumDataAge) {
                     _current = _enumerator.Current;
                     return true;
                 }
@@ -91,8 +85,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public void Reset()
-        {
+        public void Reset() {
             _enumerator.Reset();
         }
 
@@ -123,8 +116,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             _enumerator.Dispose();
         }
 

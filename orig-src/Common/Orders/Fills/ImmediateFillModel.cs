@@ -32,16 +32,15 @@ package com.quantconnect.lean.Orders.Fills
         /// <returns>Order fill information detailing the average price and quantity filled.</returns>
         /// <seealso cref="SecurityTransactionModel.StopMarketFill"/>
         /// <seealso cref="SecurityTransactionModel.LimitFill"/>
-        public virtual OrderEvent MarketFill(Security asset, MarketOrder order)
-        {
+        public virtual OrderEvent MarketFill(Security asset, MarketOrder order) {
             //Default order event to return.
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
             fill = new OrderEvent(order, utcTime, 0);
 
-            if (order.Status == OrderStatus.Canceled) return fill;
+            if( order.Status == OrderStatus.Canceled) return fill;
 
             // make sure the exchange is open before filling
-            if (!IsExchangeOpen(asset)) return fill;
+            if( !IsExchangeOpen(asset)) return fill;
 
             //Order [fill]price for a market order model is the current security price
             fill.FillPrice = GetPrices(asset, order.Direction).Current;
@@ -51,8 +50,7 @@ package com.quantconnect.lean.Orders.Fills
             slip = asset.SlippageModel.GetSlippageApproximation(asset, order);
 
             //Apply slippage
-            switch (order.Direction)
-            {
+            switch (order.Direction) {
                 case OrderDirection.Buy:
                     fill.FillPrice += slip;
                     break;
@@ -62,8 +60,7 @@ package com.quantconnect.lean.Orders.Fills
             }
 
             // assume the order completely filled
-            if (fill.Status == OrderStatus.Filled)
-            {
+            if( fill.Status == OrderStatus.Filled) {
                 fill.FillQuantity = order.Quantity;
                 fill.OrderFee = asset.FeeModel.GetOrderFee(asset, order);
             }
@@ -79,17 +76,16 @@ package com.quantconnect.lean.Orders.Fills
         /// <returns>Order fill information detailing the average price and quantity filled.</returns>
         /// <seealso cref="MarketFill(Security, MarketOrder)"/>
         /// <seealso cref="SecurityTransactionModel.LimitFill"/>
-        public virtual OrderEvent StopMarketFill(Security asset, StopMarketOrder order)
-        {
+        public virtual OrderEvent StopMarketFill(Security asset, StopMarketOrder order) {
             //Default order event to return.
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
             fill = new OrderEvent(order, utcTime, 0);
 
             // make sure the exchange is open before filling
-            if (!IsExchangeOpen(asset)) return fill;
+            if( !IsExchangeOpen(asset)) return fill;
 
             //If its cancelled don't need anymore checks:
-            if (order.Status == OrderStatus.Canceled) return fill;
+            if( order.Status == OrderStatus.Canceled) return fill;
 
             //Get the range of prices in the last bar:
             prices = GetPrices(asset, order.Direction);
@@ -98,12 +94,10 @@ package com.quantconnect.lean.Orders.Fills
             slip = asset.SlippageModel.GetSlippageApproximation(asset, order);
 
             //Check if the Stop Order was filled: opposite to a limit order
-            switch (order.Direction)
-            {
+            switch (order.Direction) {
                 case OrderDirection.Sell:
                     //-> 1.1 Sell Stop: If Price below setpoint, Sell:
-                    if (prices.Low < order.StopPrice)
-                    {
+                    if( prices.Low < order.StopPrice) {
                         fill.Status = OrderStatus.Filled;
                         // Assuming worse case scenario fill - fill at lowest of the stop & asset price.
                         fill.FillPrice = Math.Min(order.StopPrice, prices.Current - slip); 
@@ -112,8 +106,7 @@ package com.quantconnect.lean.Orders.Fills
 
                 case OrderDirection.Buy:
                     //-> 1.2 Buy Stop: If Price Above Setpoint, Buy:
-                    if (prices.High > order.StopPrice)
-                    {
+                    if( prices.High > order.StopPrice) {
                         fill.Status = OrderStatus.Filled;
                         // Assuming worse case scenario fill - fill at highest of the stop & asset price.
                         fill.FillPrice = Math.Max(order.StopPrice, prices.Current + slip);
@@ -122,8 +115,7 @@ package com.quantconnect.lean.Orders.Fills
             }
 
             // assume the order completely filled
-            if (fill.Status == OrderStatus.Filled)
-            {
+            if( fill.Status == OrderStatus.Filled) {
                 fill.FillQuantity = order.Quantity;
                 fill.OrderFee = asset.FeeModel.GetOrderFee(asset, order);
             }
@@ -146,31 +138,27 @@ package com.quantconnect.lean.Orders.Fills
         ///     Stop limit orders we also can't be sure of the order of the H - L values for the limit fill. The assumption
         ///     was made the limit fill will be done with closing price of the bar after the stop has been triggered..
         /// </remarks>
-        public virtual OrderEvent StopLimitFill(Security asset, StopLimitOrder order)
-        {
+        public virtual OrderEvent StopLimitFill(Security asset, StopLimitOrder order) {
             //Default order event to return.
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
             fill = new OrderEvent(order, utcTime, 0);
 
             //If its cancelled don't need anymore checks:
-            if (order.Status == OrderStatus.Canceled) return fill;
+            if( order.Status == OrderStatus.Canceled) return fill;
 
             //Get the range of prices in the last bar:
             prices = GetPrices(asset, order.Direction);
 
             //Check if the Stop Order was filled: opposite to a limit order
-            switch (order.Direction)
-            {
+            switch (order.Direction) {
                 case OrderDirection.Buy:
                     //-> 1.2 Buy Stop: If Price Above Setpoint, Buy:
-                    if (prices.High > order.StopPrice || order.StopTriggered)
-                    {
+                    if( prices.High > order.StopPrice || order.StopTriggered) {
                         order.StopTriggered = true;
 
                         // Fill the limit order, using closing price of bar:
                         // Note > Can't use minimum price, because no way to be sure minimum wasn't before the stop triggered.
-                        if (asset.Price < order.LimitPrice)
-                        {
+                        if( asset.Price < order.LimitPrice) {
                             fill.Status = OrderStatus.Filled;
                             fill.FillPrice = order.LimitPrice;
                         }
@@ -179,14 +167,12 @@ package com.quantconnect.lean.Orders.Fills
 
                 case OrderDirection.Sell:
                     //-> 1.1 Sell Stop: If Price below setpoint, Sell:
-                    if (prices.Low < order.StopPrice || order.StopTriggered)
-                    {
+                    if( prices.Low < order.StopPrice || order.StopTriggered) {
                         order.StopTriggered = true;
 
                         // Fill the limit order, using minimum price of the bar
                         // Note > Can't use minimum price, because no way to be sure minimum wasn't before the stop triggered.
-                        if (asset.Price > order.LimitPrice)
-                        {
+                        if( asset.Price > order.LimitPrice) {
                             fill.Status = OrderStatus.Filled;
                             fill.FillPrice = order.LimitPrice; // Fill at limit price not asset price.
                         }
@@ -195,8 +181,7 @@ package com.quantconnect.lean.Orders.Fills
             }
 
             // assume the order completely filled
-            if (fill.Status == OrderStatus.Filled)
-            {
+            if( fill.Status == OrderStatus.Filled) {
                 fill.FillQuantity = order.Quantity;
                 fill.OrderFee = asset.FeeModel.GetOrderFee(asset, order);
             }
@@ -212,25 +197,22 @@ package com.quantconnect.lean.Orders.Fills
         /// <returns>Order fill information detailing the average price and quantity filled.</returns>
         /// <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
         /// <seealso cref="MarketFill(Security, MarketOrder)"/>
-        public virtual OrderEvent LimitFill(Security asset, LimitOrder order)
-        {
+        public virtual OrderEvent LimitFill(Security asset, LimitOrder order) {
             //Initialise;
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
             fill = new OrderEvent(order, utcTime, 0);
 
             //If its cancelled don't need anymore checks:
-            if (order.Status == OrderStatus.Canceled) return fill;
+            if( order.Status == OrderStatus.Canceled) return fill;
 
             //Get the range of prices in the last bar:
             prices = GetPrices(asset, order.Direction);
 
             //-> Valid Live/Model Order: 
-            switch (order.Direction)
-            {
+            switch (order.Direction) {
                 case OrderDirection.Buy:
                     //Buy limit seeks lowest price
-                    if (prices.Low < order.LimitPrice)
-                    {
+                    if( prices.Low < order.LimitPrice) {
                         //Set order fill:
                         fill.Status = OrderStatus.Filled;
                         // fill at the worse price this bar or the limit price, this allows far out of the money limits
@@ -240,8 +222,7 @@ package com.quantconnect.lean.Orders.Fills
                     break;
                 case OrderDirection.Sell:
                     //Sell limit seeks highest price possible
-                    if (prices.High > order.LimitPrice)
-                    {
+                    if( prices.High > order.LimitPrice) {
                         fill.Status = OrderStatus.Filled;
                         // fill at the worse price this bar or the limit price, this allows far out of the money limits
                         // to be executed properly
@@ -251,8 +232,7 @@ package com.quantconnect.lean.Orders.Fills
             }
 
             // assume the order completely filled
-            if (fill.Status == OrderStatus.Filled)
-            {
+            if( fill.Status == OrderStatus.Filled) {
                 fill.FillQuantity = order.Quantity;
                 fill.OrderFee = asset.FeeModel.GetOrderFee(asset, order);
             }
@@ -266,12 +246,11 @@ package com.quantconnect.lean.Orders.Fills
         /// <param name="asset">Asset we're trading with this order</param>
         /// <param name="order">Order to be filled</param>
         /// <returns>Order fill information detailing the average price and quantity filled.</returns>
-        public OrderEvent MarketOnOpenFill(Security asset, MarketOnOpenOrder order)
-        {
+        public OrderEvent MarketOnOpenFill(Security asset, MarketOnOpenOrder order) {
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
             fill = new OrderEvent(order, utcTime, 0);
 
-            if (order.Status == OrderStatus.Canceled) return fill;
+            if( order.Status == OrderStatus.Canceled) return fill;
 
             // MOO should never fill on the same bar or on stale data
             // Imagine the case where we have a thinly traded equity, ASUR, and another liquid
@@ -281,17 +260,16 @@ package com.quantconnect.lean.Orders.Fills
             //  SPY  | | | | | | | | | | | | | | | | | | | |
             currentBar = asset.GetLastData();
             localOrderTime = order.Time.ConvertFromUtc(asset.Exchange.TimeZone);
-            if (currentBar == null || localOrderTime >= currentBar.EndTime) return fill;
+            if( currentBar == null || localOrderTime >= currentBar.EndTime) return fill;
 
             // if the MOO was submitted during market the previous day, wait for a day to turn over
-            if (asset.Exchange.DateTimeIsOpen(localOrderTime) && localOrderTime.Date == asset.LocalTime.Date)
-            {
+            if( asset.Exchange.DateTimeIsOpen(localOrderTime) && localOrderTime.Date == asset.LocalTime.Date) {
                 return fill;
             }
 
             // wait until market open
             // make sure the exchange is open before filling
-            if (!IsExchangeOpen(asset)) return fill;
+            if( !IsExchangeOpen(asset)) return fill;
 
             fill.FillPrice = GetPrices(asset, order.Direction).Open;
             fill.Status = OrderStatus.Filled;
@@ -300,8 +278,7 @@ package com.quantconnect.lean.Orders.Fills
             slip = asset.SlippageModel.GetSlippageApproximation(asset, order);
 
             //Apply slippage
-            switch (order.Direction)
-            {
+            switch (order.Direction) {
                 case OrderDirection.Buy:
                     fill.FillPrice += slip;
                     break;
@@ -311,8 +288,7 @@ package com.quantconnect.lean.Orders.Fills
             }
 
             // assume the order completely filled
-            if (fill.Status == OrderStatus.Filled)
-            {
+            if( fill.Status == OrderStatus.Filled) {
                 fill.FillQuantity = order.Quantity;
                 fill.OrderFee = asset.FeeModel.GetOrderFee(asset, order);
             }
@@ -326,19 +302,17 @@ package com.quantconnect.lean.Orders.Fills
         /// <param name="asset">Asset we're trading with this order</param>
         /// <param name="order">Order to be filled</param>
         /// <returns>Order fill information detailing the average price and quantity filled.</returns>
-        public OrderEvent MarketOnCloseFill(Security asset, MarketOnCloseOrder order)
-        {
+        public OrderEvent MarketOnCloseFill(Security asset, MarketOnCloseOrder order) {
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
             fill = new OrderEvent(order, utcTime, 0);
 
-            if (order.Status == OrderStatus.Canceled) return fill;
+            if( order.Status == OrderStatus.Canceled) return fill;
 
             localOrderTime = order.Time.ConvertFromUtc(asset.Exchange.TimeZone);
             nextMarketClose = asset.Exchange.Hours.GetNextMarketClose(localOrderTime, false);
                 
             // wait until market closes after the order time 
-            if (asset.LocalTime < nextMarketClose)
-            {
+            if( asset.LocalTime < nextMarketClose) {
                 return fill;
             }
 
@@ -349,8 +323,7 @@ package com.quantconnect.lean.Orders.Fills
             slip = asset.SlippageModel.GetSlippageApproximation(asset, order);
 
             //Apply slippage
-            switch (order.Direction)
-            {
+            switch (order.Direction) {
                 case OrderDirection.Buy:
                     fill.FillPrice += slip;
                     break;
@@ -360,8 +333,7 @@ package com.quantconnect.lean.Orders.Fills
             }
 
             // assume the order completely filled
-            if (fill.Status == OrderStatus.Filled)
-            {
+            if( fill.Status == OrderStatus.Filled) {
                 fill.FillQuantity = order.Quantity;
                 fill.OrderFee = asset.FeeModel.GetOrderFee(asset, order);
             }
@@ -374,45 +346,38 @@ package com.quantconnect.lean.Orders.Fills
         /// </summary>
         /// <param name="asset">Security asset we're checking</param>
         /// <param name="direction">The order direction, decides whether to pick bid or ask</param>
-        private Prices GetPrices(Security asset, OrderDirection direction)
-        {
+        private Prices GetPrices(Security asset, OrderDirection direction) {
             low = asset.Low;
             high = asset.High;
             open = asset.Open;
             close = asset.Close;
             current = asset.Price;
 
-            if (direction == OrderDirection.Hold)
-            {
+            if( direction == OrderDirection.Hold) {
                 return new Prices(current, open, high, low, close);
             }
 
             tick = asset.Cache.GetData<Tick>();
-            if (tick != null)
-            {
+            if( tick != null ) {
                 return new Prices(current, open, high, low, close);
             }
 
             quoteBar = asset.Cache.GetData<QuoteBar>();
-            if (quoteBar != null)
-            {
+            if( quoteBar != null ) {
                 bar = direction == OrderDirection.Sell ? quoteBar.Bid : quoteBar.Ask;
-                if (bar != null)
-                {
+                if( bar != null ) {
                     return new Prices(bar);
                 }
             }
 
             tradeBar = asset.Cache.GetData<TradeBar>();
-            if (tradeBar != null)
-            {
+            if( tradeBar != null ) {
                 return new Prices(tradeBar);
             }
 
             lastData = asset.GetLastData();
             lastBar = lastData as IBar;
-            if (lastBar != null)
-            {
+            if( lastBar != null ) {
                 return new Prices(lastBar);
             }
 
@@ -422,14 +387,11 @@ package com.quantconnect.lean.Orders.Fills
         /// <summary>
         /// Determines if the exchange is open using the current time of the asset
         /// </summary>
-        private static boolean IsExchangeOpen(Security asset)
-        {
-            if (!asset.Exchange.DateTimeIsOpen(asset.LocalTime))
-            {
+        private static boolean IsExchangeOpen(Security asset) {
+            if( !asset.Exchange.DateTimeIsOpen(asset.LocalTime)) {
                 // if we're not open at the current time exactly, check the bar size, this handle large sized bars (hours/days)
                 currentBar = asset.GetLastData();
-                if (asset.LocalTime.Date != currentBar.EndTime.Date || !asset.Exchange.IsOpenDuringBar(currentBar.Time, currentBar.EndTime, false))
-                {
+                if( asset.LocalTime.Date != currentBar.EndTime.Date || !asset.Exchange.IsOpenDuringBar(currentBar.Time, currentBar.EndTime, false)) {
                     return false;
                 }
             }
@@ -445,12 +407,10 @@ package com.quantconnect.lean.Orders.Fills
             public readonly BigDecimal Close;
 
             public Prices(IBar bar)
-                : this(bar.Close, bar.Open, bar.High, bar.Low, bar.Close)
-            {
+                : this(bar.Close, bar.Open, bar.High, bar.Low, bar.Close) {
             }
 
-            public Prices( BigDecimal current, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close)
-            {
+            public Prices( BigDecimal current, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close) {
                 Current = current;
                 Open = open == 0 ? current : open;
                 High = high == 0 ? current : high;

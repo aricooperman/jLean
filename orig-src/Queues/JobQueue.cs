@@ -33,12 +33,12 @@ package com.quantconnect.lean.Queues
         // The type name of the QuantConnect.Brokerages.Paper.PaperBrokerage
         private static readonly TextWriter Console = System.Console.Out;
         private static final String PaperBrokerageTypeName = "PaperBrokerage";
-        private boolean _liveMode = Config.GetBool("live-mode");
-        private static readonly String AccessToken = Config.Get("api-access-token");
-        private static readonly int UserId = Config.GetInt("job-user-id", 0);
-        private static readonly int ProjectId = Config.GetInt("job-project-id", 0);
-        private static readonly String AlgorithmTypeName = Config.Get("algorithm-type-name");
-        private readonly Language Language = (Language)Enum.Parse(typeof(Language), Config.Get("algorithm-language"));
+        private boolean _liveMode = Config.GetBool( "live-mode");
+        private static readonly String AccessToken = Config.Get( "api-access-token");
+        private static readonly int UserId = Config.GetInt( "job-user-id", 0);
+        private static readonly int ProjectId = Config.GetInt( "job-project-id", 0);
+        private static readonly String AlgorithmTypeName = Config.Get( "algorithm-type-name");
+        private readonly Language Language = (Language)Enum.Parse(typeof(Language), Config.Get( "algorithm-language"));
 
         /// <summary>
         /// Physical location of Algorithm DLL.
@@ -48,15 +48,14 @@ package com.quantconnect.lean.Queues
             get
             {
                 // we expect this dll to be copied into the output directory
-                return Config.Get("algorithm-location", "QuantConnect.Algorithm.CSharp.dll"); 
+                return Config.Get( "algorithm-location", "QuantConnect.Algorithm.CSharp.dll"); 
             }
         }
 
         /// <summary>
         /// Initialize the job queue:
         /// </summary>
-        public void Initialize()
-        {
+        public void Initialize() {
             //
         }
         
@@ -64,27 +63,24 @@ package com.quantconnect.lean.Queues
         /// Desktop/Local Get Next Task - Get task from the Algorithm folder of VS Solution.
         /// </summary>
         /// <returns></returns>
-        public AlgorithmNodePacket NextJob(out String location)
-        {
+        public AlgorithmNodePacket NextJob(out String location) {
             location = AlgorithmLocation;
-            Log.Trace("JobQueue.NextJob(): Selected " + location);
+            Log.Trace( "JobQueue.NextJob(): Selected " + location);
 
             // check for parameters in the config
             parameters = new Map<String,String>();
-            parametersConfigString = Config.Get("parameters");
-            if (parametersConfigString != string.Empty)
-            {
+            parametersConfigString = Config.Get( "parameters");
+            if( parametersConfigString != string.Empty) {
                 parameters = JsonConvert.DeserializeObject<Map<String,String>>(parametersConfigString);
             }
 
             //If this isn't a backtesting mode/request, attempt a live job.
-            if (_liveMode)
-            {
+            if( _liveMode) {
                 liveJob = new LiveNodePacket
                 {
                     Type = PacketType.LiveNode,
                     Algorithm = File.ReadAllBytes(AlgorithmLocation),
-                    Brokerage = Config.Get("live-mode-brokerage", PaperBrokerageTypeName),
+                    Brokerage = Config.Get( "live-mode-brokerage", PaperBrokerageTypeName),
                     Channel = AccessToken,
                     UserId = UserId,
                     ProjectId = ProjectId,
@@ -101,17 +97,15 @@ package com.quantconnect.lean.Queues
                     brokerageFactory = Composer.Instance.Single<IBrokerageFactory>(factory => factory.BrokerageType.MatchesTypeName(liveJob.Brokerage));
                     liveJob.BrokerageData = brokerageFactory.BrokerageData;
                 }
-                catch (Exception err)
-                {
-                    Log.Error(err, String.format("Error resolving BrokerageData for live job for brokerage {0}:", liveJob.Brokerage));
+                catch (Exception err) {
+                    Log.Error(err, String.format( "Error resolving BrokerageData for live job for brokerage %1$s:", liveJob.Brokerage));
                 }
 
                 return liveJob;
             }
 
             //Default run a backtesting job.
-            backtestJob = new BacktestNodePacket(0, 0, "", new byte[] {}, 10000, "local")
-            {
+            backtestJob = new BacktestNodePacket(0, 0, "", new byte[] {}, 10000, "local") {
                 Type = PacketType.BacktestNode,
                 Algorithm = File.ReadAllBytes(AlgorithmLocation),
                 Channel = AccessToken,
@@ -131,10 +125,9 @@ package com.quantconnect.lean.Queues
         /// Desktop/Local acknowledge the task processed. Nothing to do.
         /// </summary>
         /// <param name="job"></param>
-        public void AcknowledgeJob(AlgorithmNodePacket job)
-        {
+        public void AcknowledgeJob(AlgorithmNodePacket job) {
             // Make the console window pause so we can read log output before exiting and killing the application completely
-            Console.WriteLine("Engine.Main(): Analysis Complete. Press any key to continue.");
+            Console.WriteLine( "Engine.Main(): Analysis Complete. Press any key to continue.");
             System.Console.Read();
         }
     }

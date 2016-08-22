@@ -23,43 +23,40 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
     class InteractiveBrokersSymbolMapperTests
     {
         [Test]
-        public void ReturnsCorrectLeanSymbol()
-        {
+        public void ReturnsCorrectLeanSymbol() {
             mapper = new InteractiveBrokersSymbolMapper();
 
-            symbol = mapper.GetLeanSymbol("EURUSD", SecurityType.Forex, Market.FXCM);
-            Assert.AreEqual("EURUSD", symbol.Value);
+            symbol = mapper.GetLeanSymbol( "EURUSD", SecurityType.Forex, Market.FXCM);
+            Assert.AreEqual( "EURUSD", symbol.Value);
             Assert.AreEqual(SecurityType.Forex, symbol.ID.SecurityType);
             Assert.AreEqual(Market.FXCM, symbol.ID.Market);
 
-            symbol = mapper.GetLeanSymbol("AAPL", SecurityType.Equity, Market.USA);
-            Assert.AreEqual("AAPL", symbol.Value);
+            symbol = mapper.GetLeanSymbol( "AAPL", SecurityType.Equity, Market.USA);
+            Assert.AreEqual( "AAPL", symbol.Value);
             Assert.AreEqual(SecurityType.Equity, symbol.ID.SecurityType);
             Assert.AreEqual(Market.USA, symbol.ID.Market);
         }
 
         [Test]
-        public void ReturnsCorrectBrokerageSymbol()
-        {
+        public void ReturnsCorrectBrokerageSymbol() {
             mapper = new InteractiveBrokersSymbolMapper();
 
-            symbol = Symbol.Create("EURUSD", SecurityType.Forex, Market.FXCM);
+            symbol = Symbol.Create( "EURUSD", SecurityType.Forex, Market.FXCM);
             brokerageSymbol = mapper.GetBrokerageSymbol(symbol);
-            Assert.AreEqual("EURUSD", brokerageSymbol);
+            Assert.AreEqual( "EURUSD", brokerageSymbol);
 
-            symbol = Symbol.Create("AAPL", SecurityType.Equity, Market.USA);
+            symbol = Symbol.Create( "AAPL", SecurityType.Equity, Market.USA);
             brokerageSymbol = mapper.GetBrokerageSymbol(symbol);
-            Assert.AreEqual("AAPL", brokerageSymbol);
+            Assert.AreEqual( "AAPL", brokerageSymbol);
         }
 
         [Test]
-        public void ThrowsOnNullOrEmptyOrInvalidSymbol()
-        {
+        public void ThrowsOnNullOrEmptyOrInvalidSymbol() {
             mapper = new InteractiveBrokersSymbolMapper();
 
             Assert.Throws<ArgumentException>(() => mapper.GetLeanSymbol(null, SecurityType.Forex, Market.FXCM));
 
-            Assert.Throws<ArgumentException>(() => mapper.GetLeanSymbol("", SecurityType.Forex, Market.FXCM));
+            Assert.Throws<ArgumentException>(() => mapper.GetLeanSymbol( "", SecurityType.Forex, Market.FXCM));
 
             symbol = Symbol.Empty;
             Assert.Throws<ArgumentException>(() => mapper.GetBrokerageSymbol(symbol));
@@ -67,10 +64,10 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             symbol = null;
             Assert.Throws<ArgumentException>(() => mapper.GetBrokerageSymbol(symbol));
 
-            symbol = Symbol.Create("", SecurityType.Forex, Market.FXCM);
+            symbol = Symbol.Create( "", SecurityType.Forex, Market.FXCM);
             Assert.Throws<ArgumentException>(() => mapper.GetBrokerageSymbol(symbol));
 
-            symbol = Symbol.Create("ABC_XYZ", SecurityType.Forex, Market.FXCM);
+            symbol = Symbol.Create( "ABC_XYZ", SecurityType.Forex, Market.FXCM);
             Assert.Throws<ArgumentException>(() => mapper.GetBrokerageSymbol(symbol));
         }
 

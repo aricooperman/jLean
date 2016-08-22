@@ -34,11 +34,11 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class SecurityPortfolioManagerTests
     {
         private static readonly SecurityExchangeHours SecurityExchangeHours = SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork);
-        private static readonly Symbol CASH = new Symbol(SecurityIdentifier.GenerateBase("CASH", Market.USA), "CASH");
-        private static readonly Symbol MCHJWB = new Symbol(SecurityIdentifier.GenerateForex("MCHJWB", Market.FXCM), "MCHJWB");
-        private static readonly Symbol MCHUSD = new Symbol(SecurityIdentifier.GenerateForex("MCHUSD", Market.FXCM), "MCHUSD");
-        private static readonly Symbol USDJWB = new Symbol(SecurityIdentifier.GenerateForex("USDJWB", Market.FXCM), "USDJWB");
-        private static readonly Symbol JWBUSD = new Symbol(SecurityIdentifier.GenerateForex("JWBUSD", Market.FXCM), "JWBUSD");
+        private static readonly Symbol CASH = new Symbol(SecurityIdentifier.GenerateBase( "CASH", Market.USA), "CASH");
+        private static readonly Symbol MCHJWB = new Symbol(SecurityIdentifier.GenerateForex( "MCHJWB", Market.FXCM), "MCHJWB");
+        private static readonly Symbol MCHUSD = new Symbol(SecurityIdentifier.GenerateForex( "MCHUSD", Market.FXCM), "MCHUSD");
+        private static readonly Symbol USDJWB = new Symbol(SecurityIdentifier.GenerateForex( "USDJWB", Market.FXCM), "USDJWB");
+        private static readonly Symbol JWBUSD = new Symbol(SecurityIdentifier.GenerateForex( "JWBUSD", Market.FXCM), "JWBUSD");
 
         private static readonly Map<String, Symbol> SymbolMap = new Map<String, Symbol>
         {
@@ -50,28 +50,27 @@ package com.quantconnect.lean.Tests.Common.Securities
         };
 
         [Test]
-        public void TestCashFills()
-        {
+        public void TestCashFills() {
             // this test asserts the portfolio behaves according to the Test_Cash algo, see TestData\CashTestingStrategy.csv
             // also "https://www.dropbox.com/s/oiliumoyqqj1ovl/2013-cash.csv?dl=1"
 
             static final String fillsFile = "TestData\\test_cash_fills.xml";
             static final String equityFile = "TestData\\test_cash_equity.xml";
 
-            fills = XDocument.Load(fillsFile).Descendants("OrderEvent").Select(x => new OrderEvent(
-                x.Get<Integer>("OrderId"),
-                SymbolMap[x.Get<String>("Symbol")],
+            fills = XDocument.Load(fillsFile).Descendants( "OrderEvent").Select(x => new OrderEvent(
+                x.Get<Integer>( "OrderId"),
+                SymbolMap[x.Get<String>( "Symbol")],
                 DateTime.MinValue, 
-                x.Get<OrderStatus>("Status"),
-                x.Get<Integer>("FillQuantity") < 0 ? OrderDirection.Sell 
-              : x.Get<Integer>("FillQuantity") > 0 ? OrderDirection.Buy 
+                x.Get<OrderStatus>( "Status"),
+                x.Get<Integer>( "FillQuantity") < 0 ? OrderDirection.Sell 
+              : x.Get<Integer>( "FillQuantity") > 0 ? OrderDirection.Buy 
                                                : OrderDirection.Hold,
-                x.Get<decimal>("FillPrice"),
-                x.Get<Integer>("FillQuantity"),
+                x.Get<decimal>( "FillPrice"),
+                x.Get<Integer>( "FillQuantity"),
                 0m)
                 ).ToList();
 
-            equity = XDocument.Load(equityFile).Descendants("decimal")
+            equity = XDocument.Load(equityFile).Descendants( "decimal")
                 .Select(x => decimal.Parse(x.Value, CultureInfo.InvariantCulture))
                 .ToList();
 
@@ -87,8 +86,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             portfolio = new SecurityPortfolioManager(securities, transactions);
             portfolio.SetCash(equity[0]);
 
-            for (int i = 0; i < fills.Count; i++)
-            {
+            for (int i = 0; i < fills.Count; i++) {
                 // before processing the fill we must deduct the cost
                 fill = fills[i];
                 time = DateTime.Today.AddDays(i);
@@ -103,8 +101,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void ForexCashFills()
-        {
+        public void ForexCashFills() {
             // this test asserts the portfolio behaves according to the Test_Cash algo, but for a Forex security, 
             // see TestData\CashTestingStrategy.csv; also "https://www.dropbox.com/s/oiliumoyqqj1ovl/2013-cash.csv?dl=1"
 
@@ -113,28 +110,28 @@ package com.quantconnect.lean.Tests.Common.Securities
             static final String mchQuantityFile = "TestData\\test_forex_fills_mch_quantity.xml";
             static final String jwbQuantityFile = "TestData\\test_forex_fills_jwb_quantity.xml";
 
-            fills = XDocument.Load(fillsFile).Descendants("OrderEvent").Select(x => new OrderEvent(
-                x.Get<Integer>("OrderId"),
-                SymbolMap[x.Get<String>("Symbol")],
+            fills = XDocument.Load(fillsFile).Descendants( "OrderEvent").Select(x => new OrderEvent(
+                x.Get<Integer>( "OrderId"),
+                SymbolMap[x.Get<String>( "Symbol")],
                 DateTime.MinValue,
-                x.Get<OrderStatus>("Status"),
-                x.Get<Integer>("FillQuantity") < 0 ? OrderDirection.Sell 
-              : x.Get<Integer>("FillQuantity") > 0 ? OrderDirection.Buy 
+                x.Get<OrderStatus>( "Status"),
+                x.Get<Integer>( "FillQuantity") < 0 ? OrderDirection.Sell 
+              : x.Get<Integer>( "FillQuantity") > 0 ? OrderDirection.Buy 
                                                : OrderDirection.Hold,
-                x.Get<decimal>("FillPrice"),
-                x.Get<Integer>("FillQuantity"),
+                x.Get<decimal>( "FillPrice"),
+                x.Get<Integer>( "FillQuantity"),
                 0)
                 ).ToList();
 
-            equity = XDocument.Load(equityFile).Descendants("decimal")
+            equity = XDocument.Load(equityFile).Descendants( "decimal")
                 .Select(x => decimal.Parse(x.Value, CultureInfo.InvariantCulture))
                 .ToList();
 
-            mchQuantity = XDocument.Load(mchQuantityFile).Descendants("decimal")
+            mchQuantity = XDocument.Load(mchQuantityFile).Descendants( "decimal")
                 .Select(x => decimal.Parse(x.Value, CultureInfo.InvariantCulture))
                 .ToList();
 
-            jwbQuantity = XDocument.Load(jwbQuantityFile).Descendants("decimal")
+            jwbQuantity = XDocument.Load(jwbQuantityFile).Descendants( "decimal")
                 .Select(x => decimal.Parse(x.Value, CultureInfo.InvariantCulture))
                 .ToList();
 
@@ -146,8 +143,8 @@ package com.quantconnect.lean.Tests.Common.Securities
             transactions = new SecurityTransactionManager(securities);
             portfolio = new SecurityPortfolioManager(securities, transactions);
             portfolio.SetCash(equity[0]);
-            portfolio.CashBook.Add("MCH", mchQuantity[0], 0);
-            portfolio.CashBook.Add("JWB", jwbQuantity[0], 0);
+            portfolio.CashBook.Add( "MCH", mchQuantity[0], 0);
+            portfolio.CashBook.Add( "JWB", jwbQuantity[0], 0);
 
             jwbCash = portfolio.CashBook["JWB"];
             mchCash = portfolio.CashBook["MCH"];
@@ -171,8 +168,7 @@ package com.quantconnect.lean.Tests.Common.Securities
 
             portfolio.CashBook.EnsureCurrencyDataFeeds(securities, subscriptions, MarketHoursDatabase.FromDataFolder(), SymbolPropertiesDatabase.FromDataFolder(), DefaultBrokerageModel.DefaultMarketMap);
 
-            for (int i = 0; i < fills.Count; i++)
-            {
+            for (int i = 0; i < fills.Count; i++) {
                 // before processing the fill we must deduct the cost
                 fill = fills[i];
                 time = DateTime.Today.AddDays(i);
@@ -183,7 +179,7 @@ package com.quantconnect.lean.Tests.Common.Securities
                 BigDecimal mchUsd = (i + 1)/(i + 2m);
                 BigDecimal usdJwb = i + 2;
                 Assert.AreEqual((double)mchJwb, (double)(mchUsd*usdJwb), 1e-10);
-                //Console.WriteLine("Step: " + i + " -- MCHJWB: " + mchJwb);
+                //Console.WriteLine( "Step: " + i + " -- MCHJWB: " + mchJwb);
 
 
                 jwbCash.Update(new IndicatorDataPoint(MCHJWB, time, mchJwb));
@@ -197,23 +193,22 @@ package com.quantconnect.lean.Tests.Common.Securities
                     {usdJwbSecurity, new IndicatorDataPoint(JWBUSD, time, usdJwb)}
                 };
 
-                foreach (kvp in updateData)
-                {
+                foreach (kvp in updateData) {
                     kvp.Key.SetMarketPrice(kvp.Value);
                 }
 
                 portfolio.ProcessFill(fill);
-                //Console.WriteLine("-----------------------");
+                //Console.WriteLine( "-----------------------");
                 //Console.WriteLine(fill);
 
-                //Console.WriteLine("Post step: " + i);
+                //Console.WriteLine( "Post step: " + i);
                 //foreach (cash in portfolio.CashBook)
                 //{
                 //    Console.WriteLine(cash.Value);
                 //}
-                //Console.WriteLine("CashValue: " + portfolio.CashBook.TotalValueInAccountCurrency);
+                //Console.WriteLine( "CashValue: " + portfolio.CashBook.TotalValueInAccountCurrency);
 
-                Console.WriteLine(i + 1 + "   " + portfolio.TotalPortfolioValue.toString("C"));
+                Console.WriteLine(i + 1 + "   " + portfolio.TotalPortfolioValue.toString( "C"));
                 //Assert.AreEqual((double) equity[i + 1], (double)portfolio.TotalPortfolioValue, 2e-2);
                 Assert.AreEqual((double) mchQuantity[i + 1], (double)portfolio.CashBook["MCH"].Amount);
                 Assert.AreEqual((double) jwbQuantity[i + 1], (double)portfolio.CashBook["JWB"].Amount);
@@ -224,8 +219,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void ComputeMarginProperlyAsSecurityPriceFluctuates()
-        {
+        public void ComputeMarginProperlyAsSecurityPriceFluctuates() {
             static final BigDecimal leverage = 1m;
             static final int quantity = (int) (1000*leverage);
             securities = new SecurityManager(TimeKeeper);
@@ -247,7 +241,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             order = new MarketOrder(Symbols.AAPL, quantity, time) {Price = buyPrice};
             fill = new OrderEvent(order, DateTime.UtcNow, 0) { FillPrice = buyPrice, FillQuantity = quantity };
             orderProcessor.AddOrder(order);
-            request = new SubmitOrderRequest(OrderType.Market, security.Type, security.Symbol, order.Quantity, 0, 0, order.Time, null);
+            request = new SubmitOrderRequest(OrderType.Market, security.Type, security.Symbol, order.Quantity, 0, 0, order.Time, null );
             request.SetOrderId(0);
             orderProcessor.AddTicket(new OrderTicket(null, request));
             Assert.AreEqual(portfolio.CashBook["USD"].Amount, fill.FillPrice*fill.FillQuantity);
@@ -311,16 +305,15 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void MarginComputesProperlyWithMultipleSecurities()
-        {
+        public void MarginComputesProperlyWithMultipleSecurities() {
             securities = new SecurityManager(TimeKeeper);
             transactions = new SecurityTransactionManager(securities);
             orderProcessor = new OrderProcessor();
             transactions.SetOrderProcessor(orderProcessor);
             portfolio = new SecurityPortfolioManager(securities, transactions);
             portfolio.CashBook["USD"].SetAmount(1000);
-            portfolio.CashBook.Add("EUR",  1000, 1.1m);
-            portfolio.CashBook.Add("GBP", -1000, 2.0m);
+            portfolio.CashBook.Add( "EUR",  1000, 1.1m);
+            portfolio.CashBook.Add( "GBP", -1000, 2.0m);
 
             eurCash = portfolio.CashBook["EUR"];
             gbpCash = portfolio.CashBook["GBP"];
@@ -332,8 +325,8 @@ package com.quantconnect.lean.Tests.Common.Securities
             securities[Symbols.AAPL].SetLeverage(2m);
             securities[Symbols.AAPL].Holdings.SetHoldings(100, 100);
             securities[Symbols.AAPL].SetMarketPrice(new TradeBar{Time = time, Value = 100});
-            //Console.WriteLine("AAPL TMU: " + securities[Symbols.AAPL].MarginModel.GetMaintenanceMargin(securities[Symbols.AAPL]));
-            //Console.WriteLine("AAPL Value: " + securities[Symbols.AAPL].Holdings.HoldingsValue);
+            //Console.WriteLine( "AAPL TMU: " + securities[Symbols.AAPL].MarginModel.GetMaintenanceMargin(securities[Symbols.AAPL]));
+            //Console.WriteLine( "AAPL Value: " + securities[Symbols.AAPL].Holdings.HoldingsValue);
 
             //Console.WriteLine();
 
@@ -342,8 +335,8 @@ package com.quantconnect.lean.Tests.Common.Securities
             securities[Symbols.EURUSD].SetLeverage(100m);
             securities[Symbols.EURUSD].Holdings.SetHoldings(1.1m, 1000);
             securities[Symbols.EURUSD].SetMarketPrice(new TradeBar { Time = time, Value = 1.1m });
-            //Console.WriteLine("EURUSD TMU: " + securities[Symbols.EURUSD].MarginModel.GetMaintenanceMargin(securities[Symbols.EURUSD]));
-            //Console.WriteLine("EURUSD Value: " + securities[Symbols.EURUSD].Holdings.HoldingsValue);
+            //Console.WriteLine( "EURUSD TMU: " + securities[Symbols.EURUSD].MarginModel.GetMaintenanceMargin(securities[Symbols.EURUSD]));
+            //Console.WriteLine( "EURUSD Value: " + securities[Symbols.EURUSD].Holdings.HoldingsValue);
 
             //Console.WriteLine();
 
@@ -352,26 +345,26 @@ package com.quantconnect.lean.Tests.Common.Securities
             securities[Symbols.EURGBP].SetLeverage(100m);
             securities[Symbols.EURGBP].Holdings.SetHoldings(1m, 1000);
             securities[Symbols.EURGBP].SetMarketPrice(new TradeBar { Time = time, Value = 1m });
-            //Console.WriteLine("EURGBP TMU: " + securities[Symbols.EURGBP].MarginModel.GetMaintenanceMargin(securities[Symbols.EURGBP]));
-            //Console.WriteLine("EURGBP Value: " + securities[Symbols.EURGBP].Holdings.HoldingsValue);
+            //Console.WriteLine( "EURGBP TMU: " + securities[Symbols.EURGBP].MarginModel.GetMaintenanceMargin(securities[Symbols.EURGBP]));
+            //Console.WriteLine( "EURGBP Value: " + securities[Symbols.EURGBP].Holdings.HoldingsValue);
 
             //Console.WriteLine();
 
             //Console.WriteLine(portfolio.CashBook["USD"]);
             //Console.WriteLine(portfolio.CashBook["EUR"]);
             //Console.WriteLine(portfolio.CashBook["GBP"]);
-            //Console.WriteLine("CashBook: " + portfolio.CashBook.TotalValueInAccountCurrency);
+            //Console.WriteLine( "CashBook: " + portfolio.CashBook.TotalValueInAccountCurrency);
 
             //Console.WriteLine();
 
-            //Console.WriteLine("Total Margin Used: " + portfolio.TotalMarginUsed);
-            //Console.WriteLine("Total Free Margin: " + portfolio.MarginRemaining);
-            //Console.WriteLine("Total Portfolio Value: " + portfolio.TotalPortfolioValue);
+            //Console.WriteLine( "Total Margin Used: " + portfolio.TotalMarginUsed);
+            //Console.WriteLine( "Total Free Margin: " + portfolio.MarginRemaining);
+            //Console.WriteLine( "Total Portfolio Value: " + portfolio.TotalPortfolioValue);
 
 
             acceptedOrder = new MarketOrder(Symbols.AAPL, 101, DateTime.Now) { Price = 100 };
             orderProcessor.AddOrder(acceptedOrder);
-            request = new SubmitOrderRequest(OrderType.Market, acceptedOrder.SecurityType, acceptedOrder.Symbol, acceptedOrder.Quantity, 0, 0, acceptedOrder.Time, null);
+            request = new SubmitOrderRequest(OrderType.Market, acceptedOrder.SecurityType, acceptedOrder.Symbol, acceptedOrder.Quantity, 0, 0, acceptedOrder.Time, null );
             request.SetOrderId(0);
             orderProcessor.AddTicket(new OrderTicket(null, request));
             sufficientCapital = transactions.GetSufficientCapitalForOrder(portfolio, acceptedOrder);
@@ -383,8 +376,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void SellingShortFromZeroAddsToCash()
-        {
+        public void SellingShortFromZeroAddsToCash() {
             securities = new SecurityManager(TimeKeeper);
             transactions = new SecurityTransactionManager(securities);
             portfolio = new SecurityPortfolioManager(securities, transactions);
@@ -400,8 +392,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void SellingShortFromLongAddsToCash()
-        {
+        public void SellingShortFromLongAddsToCash() {
             securities = new SecurityManager(TimeKeeper);
             transactions = new SecurityTransactionManager(securities);
             portfolio = new SecurityPortfolioManager(securities, transactions);
@@ -418,8 +409,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void SellingShortFromShortAddsToCash()
-        {
+        public void SellingShortFromShortAddsToCash() {
             securities = new SecurityManager(TimeKeeper);
             transactions = new SecurityTransactionManager(securities);
             portfolio = new SecurityPortfolioManager(securities, transactions);
@@ -437,13 +427,12 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void ForexFillUpdatesCashCorrectly()
-        {
+        public void ForexFillUpdatesCashCorrectly() {
             securities = new SecurityManager(TimeKeeper);
             transactions = new SecurityTransactionManager(securities);
             portfolio = new SecurityPortfolioManager(securities, transactions);
             portfolio.SetCash(1000);
-            portfolio.CashBook.Add("EUR", 0, 1.1000m);
+            portfolio.CashBook.Add( "EUR", 0, 1.1000m);
 
             securities.Add(Symbols.EURUSD, new QuantConnect.Securities.Forex.Forex(SecurityExchangeHours, portfolio.CashBook["USD"], CreateTradeBarDataConfig(SecurityType.Forex, Symbols.EURUSD), SymbolProperties.GetDefault(CashBook.AccountCurrency)));
             security = securities[Symbols.EURUSD];
@@ -460,8 +449,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void EquitySellAppliesSettlementCorrectly()
-        {
+        public void EquitySellAppliesSettlementCorrectly() {
             securityExchangeHours = SecurityExchangeHoursTests.CreateUsEquitySecurityExchangeHours();
             securities = new SecurityManager(TimeKeeper);
             transactions = new SecurityTransactionManager(securities);
@@ -469,7 +457,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             portfolio.SetCash(1000);
             securities.Add(Symbols.AAPL, new QuantConnect.Securities.Equity.Equity(securityExchangeHours, CreateTradeBarDataConfig(SecurityType.Equity, Symbols.AAPL), new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency)));
             security = securities[Symbols.AAPL];
-            security.SettlementModel = new DelayedSettlementModel(3, TimeSpan.FromHours(8));
+            security.SettlementModel = new DelayedSettlementModel(3, Duration.ofHours(8));
             Assert.AreEqual(0, security.Holdings.Quantity);
             Assert.AreEqual(1000, portfolio.Cash);
             Assert.AreEqual(0, portfolio.UnsettledCash);
@@ -508,8 +496,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void ComputeMarginProperlyLongSellZeroShort()
-        {
+        public void ComputeMarginProperlyLongSellZeroShort() {
             static final BigDecimal leverage = 2m;
             static final int amount = 1000;
             static final int quantity = (int)(amount * leverage);
@@ -532,7 +519,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             order = new MarketOrder(Symbols.AAPL, quantity, time) { Price = buyPrice };
             fill = new OrderEvent(order, DateTime.UtcNow, 0) { FillPrice = buyPrice, FillQuantity = quantity };
             orderProcessor.AddOrder(order);
-            request = new SubmitOrderRequest(OrderType.Market, security.Type, security.Symbol, order.Quantity, 0, 0, order.Time, null);
+            request = new SubmitOrderRequest(OrderType.Market, security.Type, security.Symbol, order.Quantity, 0, 0, order.Time, null );
             request.SetOrderId(0);
             orderProcessor.AddTicket(new OrderTicket(null, request));
 
@@ -565,8 +552,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void ComputeMarginProperlyShortCoverZeroLong()
-        {
+        public void ComputeMarginProperlyShortCoverZeroLong() {
             static final BigDecimal leverage = 2m;
             static final int amount = 1000;
             static final int quantity = (int)(amount * leverage);
@@ -589,7 +575,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             order = new MarketOrder(Symbols.AAPL, -quantity, time) { Price = sellPrice };
             fill = new OrderEvent(order, DateTime.UtcNow, 0) { FillPrice = sellPrice, FillQuantity = -quantity };
             orderProcessor.AddOrder(order);
-            request = new SubmitOrderRequest(OrderType.Market, security.Type, security.Symbol, order.Quantity, 0, 0, order.Time, null);
+            request = new SubmitOrderRequest(OrderType.Market, security.Type, security.Symbol, order.Quantity, 0, 0, order.Time, null );
             request.SetOrderId(0);
             orderProcessor.AddTicket(new OrderTicket(null, request));
 
@@ -621,11 +607,10 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.IsFalse(sufficientCapital);
         }
 
-        private SubscriptionDataConfig CreateTradeBarDataConfig(SecurityType type, Symbol symbol)
-        {
-            if (type == SecurityType.Equity)
+        private SubscriptionDataConfig CreateTradeBarDataConfig(SecurityType type, Symbol symbol) {
+            if( type == SecurityType.Equity)
                 return new SubscriptionDataConfig(typeof (TradeBar), symbol, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, true);
-            if (type == SecurityType.Forex)
+            if( type == SecurityType.Forex)
                 return new SubscriptionDataConfig(typeof (TradeBar), symbol, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, true);
             throw new NotImplementedException(type.toString());
         }
@@ -639,47 +624,39 @@ package com.quantconnect.lean.Tests.Common.Securities
         {
             private readonly ConcurrentMap<Integer, Order> _orders = new ConcurrentMap<Integer, Order>();
             private readonly ConcurrentMap<Integer, OrderTicket> _tickets = new ConcurrentMap<Integer, OrderTicket>();
-            public void AddOrder(Order order)
-            {
+            public void AddOrder(Order order) {
                 _orders[order.Id] = order;
             }
 
-            public void AddTicket(OrderTicket ticket)
-            {
+            public void AddTicket(OrderTicket ticket) {
                 _tickets[ticket.OrderId] = ticket;
             }
             public int OrdersCount { get; private set; }
-            public Order GetOrderById(int orderId)
-            {
+            public Order GetOrderById(int orderId) {
                 Order order;
                 _orders.TryGetValue(orderId, out order);
                 return order;
             }
 
-            public Order GetOrderByBrokerageId( String brokerageId)
-            {
+            public Order GetOrderByBrokerageId( String brokerageId) {
                 return _orders.Values.FirstOrDefault(x => x.BrokerId.Contains(brokerageId));
             }
 
-            public IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null)
-            {
+            public IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null ) {
                 return _tickets.Values.Where(filter ?? (x => true));
             }
 
-            public OrderTicket GetOrderTicket(int orderId)
-            {
+            public OrderTicket GetOrderTicket(int orderId) {
                 OrderTicket ticket;
                 _tickets.TryGetValue(orderId, out ticket);
                 return ticket;
             }
 
-            public IEnumerable<Order> GetOrders(Func<Order, bool> filter = null)
-            {
+            public IEnumerable<Order> GetOrders(Func<Order, bool> filter = null ) {
                 return _orders.Values.Where(filter ?? (x => true));
             }
 
-            public OrderTicket Process(OrderRequest request)
-            {
+            public OrderTicket Process(OrderRequest request) {
                 throw new NotImplementedException();
             }
         }

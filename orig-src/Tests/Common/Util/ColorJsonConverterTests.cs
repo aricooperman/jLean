@@ -24,23 +24,20 @@ package com.quantconnect.lean.Tests.Common.Util
     public class ColorJsonConverterTests
     {
         [Test]
-        public void ConvertsKnownColorToJson()
-        {
+        public void ConvertsKnownColorToJson() {
             container = new ColorContainer { Color = Color.Blue };
             json = JsonConvert.SerializeObject(container);
-            Assert.AreEqual("{\"Color\":\"#0000FF\"}", json);
+            Assert.AreEqual( "{\"Color\":\"#0000FF\"}", json);
         }
         [Test]
-        public void ConvertsEmptyColorToJson()
-        {
+        public void ConvertsEmptyColorToJson() {
             container = new ColorContainer { Color = Color.Empty };
             json = JsonConvert.SerializeObject(container);
-            Assert.AreEqual("{\"Color\":\"\"}", json);
+            Assert.AreEqual( "{\"Color\":\"\"}", json);
         }
 
         [Test]
-        public void ConvertJsonToColorTest()
-        {
+        public void ConvertJsonToColorTest() {
             static final String jsonValue = "{ 'Color': '#FFFFFF' }";
             converted = JsonConvert.DeserializeObject<ColorContainer>(jsonValue).Color;
             Assert.AreEqual(Color.White.ToArgb(), converted.ToArgb());

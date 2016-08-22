@@ -25,8 +25,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period to delay input, must be greater than zero</param>
         public Delay(int period)
-            : this("DELAY" + period, period)
-        {
+            : this( "DELAY" + period, period) {
             
         }
 
@@ -36,8 +35,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">Name of the delay window indicator</param>
         /// <param name="period">The period to delay input, must be greater than zero</param>
         public Delay( String name, int period) 
-            : base(name, period)
-        {
+            : base(name, period) {
         }
 
         /// <summary>
@@ -46,10 +44,8 @@ package com.quantconnect.lean.Indicators
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input value to this indicator on this time step</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
-            if (!window.IsReady)
-            {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
+            if( !window.IsReady) {
                 // grab the initial value until we're ready
                 return window[window.Count - 1];
             }

@@ -34,9 +34,8 @@ package com.quantconnect.lean.Tests.Queues
         private static final String MultiCommandFilePath = "commands.json";
 
         [Test]
-        public void ReadsSingleCommandFromFile()
-        {
-            if (File.Exists(SingleCommandFilePath)) File.Delete(SingleCommandFilePath);
+        public void ReadsSingleCommandFromFile() {
+            if( File.Exists(SingleCommandFilePath)) File.Delete(SingleCommandFilePath);
             queue = new FileCommandQueueHandler(SingleCommandFilePath);
             Assert.IsEmpty(queue.GetCommands());
             File.WriteAllText(SingleCommandFilePath, JsonConvert.SerializeObject(new LiquidateCommand(), new JsonSerializerSettings{TypeNameHandling = TypeNameHandling.All}));
@@ -44,9 +43,8 @@ package com.quantconnect.lean.Tests.Queues
         }
 
         [Test]
-        public void ReadsMultipleCommandsFromFile()
-        {
-            if (File.Exists(MultiCommandFilePath)) File.Delete(MultiCommandFilePath);
+        public void ReadsMultipleCommandsFromFile() {
+            if( File.Exists(MultiCommandFilePath)) File.Delete(MultiCommandFilePath);
             queue = new FileCommandQueueHandler(MultiCommandFilePath);
             Assert.IsEmpty(queue.GetCommands());
             File.WriteAllText(MultiCommandFilePath, JsonConvert.SerializeObject(new List<ICommand>
@@ -61,17 +59,15 @@ package com.quantconnect.lean.Tests.Queues
         }
 
         [Test]
-        public void thingus()
-        {
+        public void thingus() {
             color = Color.FromArgb(123, 231, 067);
             serialzied = JsonConvert.SerializeObject(color);
         }
 
         private sealed class SpecialCommand : ICommand
         {
-            public CommandResultPacket Run(IAlgorithm algorithm)
-            {
-                Console.WriteLine("This is a special command!");
+            public CommandResultPacket Run(IAlgorithm algorithm) {
+                Console.WriteLine( "This is a special command!");
                 return new CommandResultPacket(this, true);
             }
         }

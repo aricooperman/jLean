@@ -135,21 +135,18 @@ package com.quantconnect.lean.Statistics
             List<double> listPerformance, 
             List<double> listBenchmark, 
             BigDecimal startingCapital, 
-            int tradingDaysPerYear = 252)
-        {
-            if (startingCapital == 0) return;
+            int tradingDaysPerYear = 252) {
+            if( startingCapital == 0) return;
 
             runningCapital = startingCapital;
             totalProfit = 0m;
             totalLoss = 0m;
             totalWins = 0;
             totalLosses = 0;
-            foreach (pair in profitLoss)
-            {
+            foreach (pair in profitLoss) {
                 tradeProfitLoss = pair.Value;
 
-                if (tradeProfitLoss > 0)
-                {
+                if( tradeProfitLoss > 0) {
                     totalProfit += tradeProfitLoss / runningCapital;
                     totalWins++;
                 }
@@ -170,8 +167,7 @@ package com.quantconnect.lean.Statistics
             LossRate = profitLoss.Count == 0 ? 0 : (decimal)totalLosses / profitLoss.Count;
             Expectancy = WinRate * ProfitLossRatio - LossRate;
 
-            if (profitLoss.Count > 0)
-            {
+            if( profitLoss.Count > 0) {
                 TotalNetProfit = (equity.Values.LastOrDefault() / startingCapital) - 1;
             }
 
@@ -204,8 +200,7 @@ package com.quantconnect.lean.Statistics
         /// <summary>
         /// Initializes a new instance of the <see cref="PortfolioStatistics"/> class
         /// </summary>
-        public PortfolioStatistics()
-        {
+        public PortfolioStatistics() {
         }
 
         /// <summary>
@@ -215,8 +210,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="finalCapital">Algorithm final capital</param>
         /// <param name="years">Years trading</param>
         /// <returns>Decimal fraction for annual compounding performance</returns>
-        private static BigDecimal CompoundingAnnualPerformance( BigDecimal startingCapital, BigDecimal finalCapital, BigDecimal years)
-        {
+        private static BigDecimal CompoundingAnnualPerformance( BigDecimal startingCapital, BigDecimal finalCapital, BigDecimal years) {
             return (years == 0 ? 0d : Math.Pow((double)finalCapital / (double)startingCapital, 1 / (double)years) - 1).SafeDecimalCast();
         }
 
@@ -226,17 +220,15 @@ package com.quantconnect.lean.Statistics
         /// <param name="equityOverTime">The list of daily equity values</param>
         /// <param name="rounding">The number of BigDecimal places to round the result</param>
         /// <returns>The drawdown percentage</returns>
-        private static BigDecimal DrawdownPercent(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2)
-        {
+        private static BigDecimal DrawdownPercent(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2) {
             prices = equityOverTime.Values.ToList();
-            if (prices.Count == 0) return 0;
+            if( prices.Count == 0) return 0;
 
             drawdowns = new List<decimal>();
             high = prices[0];
-            foreach (price in prices)
-            {
-                if (price > high) high = price;
-                if (high > 0) drawdowns.Add(price / high - 1);
+            foreach (price in prices) {
+                if( price > high) high = price;
+                if( high > 0) drawdowns.Add(price / high - 1);
             }
 
             return Math.Round(Math.Abs(drawdowns.Min()), rounding);
@@ -249,8 +241,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="tradingDaysPerYear">Trading days per year for the assets in portfolio</param>
         /// <remarks>May be unaccurate for forex algorithms with more trading days in a year</remarks>
         /// <returns>Double annual performance percentage</returns>
-        private static BigDecimal GetAnnualPerformance(List<double> performance, int tradingDaysPerYear = 252)
-        {
+        private static BigDecimal GetAnnualPerformance(List<double> performance, int tradingDaysPerYear = 252) {
             return (decimal)performance.Average() * tradingDaysPerYear;
         }
 
@@ -261,8 +252,7 @@ package com.quantconnect.lean.Statistics
         /// <param name="tradingDaysPerYear"></param>
         /// <remarks>Invokes the variance extension in the MathNet Statistics class</remarks>
         /// <returns>Annual variance value</returns>
-        private static BigDecimal GetAnnualVariance(List<double> performance, int tradingDaysPerYear = 252)
-        {
+        private static BigDecimal GetAnnualVariance(List<double> performance, int tradingDaysPerYear = 252) {
             variance = performance.Variance();
             return variance.IsNaNOrZero() ? 0 : (decimal)variance * tradingDaysPerYear;
         }

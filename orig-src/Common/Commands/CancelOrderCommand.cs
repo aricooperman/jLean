@@ -32,8 +32,7 @@ package com.quantconnect.lean.Commands
         /// Runs this command against the specified algorithm instance
         /// </summary>
         /// <param name="algorithm">The algorithm to run this command against</param>
-        public CommandResultPacket Run(IAlgorithm algorithm)
-        {
+        public CommandResultPacket Run(IAlgorithm algorithm) {
             ticket = algorithm.Transactions.CancelOrder(OrderId);
             return ticket.CancelRequest != null 
                 ? new Result(this, true, ticket.QuantityFilled) 
@@ -54,8 +53,7 @@ package com.quantconnect.lean.Commands
             /// Initializes a new instance of the <see cref="Result"/> class
             /// </summary>
             public Result(ICommand command, boolean success, BigDecimal quantityFilled)
-                : base(command, success)
-            {
+                : base(command, success) {
                 QuantityFilled = quantityFilled;
             }
         }

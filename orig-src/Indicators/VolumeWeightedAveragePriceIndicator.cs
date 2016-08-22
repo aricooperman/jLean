@@ -37,8 +37,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period of the VWAP</param>
         public VolumeWeightedAveragePriceIndicator(int period)
-            : this("VWAP_" + period, period)
-        {
+            : this( "VWAP_" + period, period) {
         }
 
         /// <summary>
@@ -47,10 +46,9 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">string - the name of the indicator</param>
         /// <param name="period">The period of the VWAP</param>
         public VolumeWeightedAveragePriceIndicator( String name, int period)
-            : base(name)
-        {
-            _price = new Identity("Price");
-            _volume = new Identity("Volume");
+            : base(name) {
+            _price = new Identity( "Price");
+            _volume = new Identity( "Volume");
             
             // This class will be using WeightedBy indicator extension 
             _vwap = _price.WeightedBy(_volume, period);
@@ -59,7 +57,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return _vwap.IsReady; }
         }
@@ -67,8 +65,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _price.Reset();
             _volume.Reset();
             _vwap.Reset();
@@ -80,8 +77,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _price.Update(input.EndTime, (input.Open + input.High + input.Low + input.Value) / 4);
             _volume.Update(input.EndTime, input.Volume);
             return _vwap.Current.Value;

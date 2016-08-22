@@ -15,6 +15,11 @@
 
 package com.quantconnect.lean;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 
 //using System.Collections.Concurrent;
@@ -32,6 +37,15 @@ import java.util.List;
 
 /// Extensions function collections - group all static extensions functions here.
 public class Extensions {
+    
+    private static final BigDecimal TWO = BigDecimal.valueOf( 2 );
+
+    
+    private Extensions() { }
+
+    public static BigDecimal midPrice( BigDecimal price1, BigDecimal price2 ) {
+        return (price1.add( price2 )).divide( TWO, RoundingMode.HALF_UP );
+    }
     
     /// Extension to move one element from list from A to position B.
     /// <typeparam name="T">Type of list</typeparam>
@@ -91,7 +105,7 @@ public class Extensions {
 //        using (md5Hash = MD5.Create())
 //        {
 //            data = md5Hash.ComputeHash(Encoding.UTF8.GetBytes(str));
-//            foreach (t in data) builder.Append(t.toString("x2"));
+//            foreach (t in data) builder.Append(t.toString( "x2"));
 //        }
 //        return builder.toString();
 //    }
@@ -124,7 +138,7 @@ public class Extensions {
 //        where TCollection : ICollection<TElement>, new()
 //    {
 //        TCollection list;
-//        if (!dictionary.TryGetValue(key, out list))
+//        if( !dictionary.TryGetValue(key, out list))
 //        {
 //            list = new TCollection();
 //            dictionary.Add(key, list);
@@ -140,7 +154,7 @@ public class Extensions {
 //    /// <returns>New double rounded to digits-significant figures</returns>
 //    public static double RoundToSignificantDigits(this double d, int digits)
 //    {
-//        if (d == 0) return 0;
+//        if( d == 0) return 0;
 //        scale = Math.Pow(10, Math.Floor(Math.Log10(Math.Abs(d))) + 1);
 //        return scale * Math.Round(d / scale, digits);
 //    }
@@ -153,7 +167,7 @@ public class Extensions {
 //    /// <returns>New double rounded to digits-significant figures</returns>
 //    public static BigDecimal RoundToSignificantDigits(this BigDecimal d, int digits)
 //    {
-//        if (d == 0) return 0;
+//        if( d == 0) return 0;
 //        scale = (decimal)Math.Pow(10, Math.Floor(Math.Log10((double) Math.Abs(d))) + 1);
 //        return scale * Math.Round(d / scale, digits);
 //    }
@@ -167,7 +181,7 @@ public class Extensions {
 //        input = Normalize(input);
 //
 //        // any larger numbers we still want some BigDecimal places
-//        if (input > 1000)
+//        if( input > 1000)
 //        {
 //            return Math.Round(input, 4);
 //        }
@@ -185,8 +199,8 @@ public class Extensions {
 //    /// as a decimal, then the closest BigDecimal value will be returned</returns>
 //    public static BigDecimal SafeDecimalCast(this double input)
 //    {
-//        if (input <= (double) decimal.MinValue) return decimal.MinValue;
-//        if (input >= (double) decimal.MaxValue) return decimal.MaxValue;
+//        if( input <= (double) decimal.MinValue) return decimal.MinValue;
+//        if( input >= (double) decimal.MaxValue) return decimal.MaxValue;
 //        return (decimal) input;
 //    }
 //
@@ -211,7 +225,7 @@ public class Extensions {
 //        for (i = 0; i < str.Length; i++)
 //        {
 //            ch = str[i];
-//            if (ch == '.')
+//            if( ch == '.')
 //            {
 //                hasDecimals = true;
 //                decimalPlaces = 0;
@@ -259,31 +273,37 @@ public class Extensions {
 //        }
 //        return value;
 //    }
-//
-//    /// <summary>
-//    /// Breaks the specified String into csv components, all commas are considered separators
-//    /// </summary>
-//    /// <param name="str">The String to be broken into csv</param>
-//    /// <param name="size">The expected size of the output list</param>
-//    /// <returns>A list of the csv pieces</returns>
-//    public static List<String> ToCsv(this String str, int size = 4)
-//    {
-//        int last = 0;
-//        csv = new List<String>(size);
-//        for (int i = 0; i < str.Length; i++)
-//        {
-//            if (str[i] == ',')
-//            {
-//                if (last != 0) last = last + 1;
-//                csv.Add(str.Substring(last, i - last));
-//                last = i;
-//            }
-//        }
-//        if (last != 0) last = last + 1;
-//        csv.Add(str.Substring(last));
-//        return csv;
-//    }
-//
+
+    /// Breaks the specified String into csv components, all commas are considered separators
+    /// <param name="str">The String to be broken into csv</param>
+    /// <param name="size">The expected size of the output list</param>
+    /// <returns>A list of the csv pieces</returns>
+    public static String[] toCsv( String str ) {
+        return toCsv( str, 4 );
+    }
+    
+    public static String[] toCsv( String str, int size ) {
+        int last = 0;
+        
+        final List<String> csv = new ArrayList<String>( size );
+        final char[] chars = str.toCharArray();
+        for( int i = 0; i < chars.length; i++ ) {
+            if( chars[i] == ',' ) {
+                if( last != 0 ) 
+                    last++;
+
+                csv.add( new String( chars, last, i - last ) );
+                last = i;
+            }
+        }
+        
+        if( last != 0 ) 
+            last++;
+        
+        csv.add( new String( chars, last, chars.length - last - 1 ) );
+        return csv.toArray( new String[csv.size()] );
+    }
+
 //    /// <summary>
 //    /// Check if a number is NaN or equal to zero
 //    /// </summary>
@@ -310,7 +330,7 @@ public class Extensions {
 //    public static String GetExtension(this String str) {
 //        ext = str.Substring(Math.Max(0, str.Length - 4));
 //        allowedExt = new List<String>() { ".zip", ".csv", ".json" };
-//        if (!allowedExt.Contains(ext))
+//        if( !allowedExt.Contains(ext))
 //        {
 //            ext = ".custom";
 //        }
@@ -341,7 +361,7 @@ public class Extensions {
 //    /// <returns>Rounded timespan</returns>
 //    public static TimeSpan Round(this TimeSpan time, TimeSpan roundingInterval, MidpointRounding roundingType) 
 //    {
-//        if (roundingInterval == TimeSpan.Zero)
+//        if( roundingInterval == TimeSpan.Zero)
 //        {
 //            // divide by zero exception
 //            return time;
@@ -375,7 +395,7 @@ public class Extensions {
 //    /// <returns>Rounded datetime</returns>
 //    public static DateTime RoundDown(this DateTime dateTime, TimeSpan interval)
 //    {
-//        if (interval == TimeSpan.Zero)
+//        if( interval == TimeSpan.Zero)
 //        {
 //            // divide by zero exception
 //            return dateTime;
@@ -398,7 +418,7 @@ public class Extensions {
 //    public static DateTime ExchangeRoundDown(this DateTime dateTime, TimeSpan interval, SecurityExchangeHours exchangeHours, boolean extendedMarket)
 //    {
 //        // can't round against a zero interval
-//        if (interval == TimeSpan.Zero) return dateTime;
+//        if( interval == TimeSpan.Zero) return dateTime;
 //
 //        rounded = dateTime.RoundDown(interval);
 //        while (!exchangeHours.IsOpen(rounded, rounded + interval, extendedMarket))
@@ -427,61 +447,63 @@ public class Extensions {
 //    /// <returns>Rounded datetime</returns>
 //    public static DateTime RoundUp(this DateTime time, TimeSpan d)
 //    {
-//        if (d == TimeSpan.Zero)
+//        if( d == TimeSpan.Zero)
 //        {
 //            // divide by zero exception
 //            return time;
 //        }
 //        return new DateTime(((time.Ticks + d.Ticks - 1) / d.Ticks) * d.Ticks);
 //    }
-//
-//    /// Converts the specified time from the <paramref name="from"/> time zone to the <paramref name="to"/> time zone
-//    /// <param name="time">The time to be converted in terms of the <paramref name="from"/> time zone</param>
-//    /// <param name="from">The time zone the specified <paramref name="time"/> is in</param>
-//    /// <param name="to">The time zone to be converted to</param>
-//    /// <param name="strict">True for strict conversion, this will throw during ambiguitities, false for lenient conversion</param>
-//    /// <returns>The time in terms of the to time zone</returns>
-//    public static DateTime ConvertTo( this DateTime time, ZoneId from, ZoneId to, boolean strict = false)
-//    {
-//        if (ReferenceEquals(from, to)) return time;
-//
-//        if (strict)
+
+    /// Converts the specified time from the <paramref name="from"/> time zone to the <paramref name="to"/> time zone
+    /// <param name="time">The time to be converted in terms of the <paramref name="from"/> time zone</param>
+    /// <param name="from">The time zone the specified <paramref name="time"/> is in</param>
+    /// <param name="to">The time zone to be converted to</param>
+    /// <param name="strict">True for strict conversion, this will throw during ambiguitities, false for lenient conversion</param>
+    /// <returns>The time in terms of the to time zone</returns>
+    public static LocalDateTime convertTo( LocalDateTime time, ZoneId from, ZoneId to/*, boolean strict = false*/ ) {
+        if( from.equals( to ) )
+            return time;
+
+//        if( strict)
 //        {
 //            return from.AtStrictly(LocalDateTime.FromDateTime(time)).WithZone(to).ToDateTimeUnspecified();
 //        }
-//        
+        
 //        return from.AtLeniently(LocalDateTime.FromDateTime(time)).WithZone(to).ToDateTimeUnspecified();
-//    }
-//
-//    /// <summary>
-//    /// Converts the specified time from UTC to the <paramref name="to"/> time zone
-//    /// </summary>
-//    /// <param name="time">The time to be converted expressed in UTC</param>
-//    /// <param name="to">The destinatio time zone</param>
-//    /// <param name="strict">True for strict conversion, this will throw during ambiguitities, false for lenient conversion</param>
-//    /// <returns>The time in terms of the <paramref name="to"/> time zone</returns>
-//    public static DateTime ConvertFromUtc(this DateTime time, ZoneId to, boolean strict = false)
-//    {
-//        return time.ConvertTo(TimeZones.Utc, to, strict);
-//    }
-//
-//    /// <summary>
-//    /// Converts the specified time from the <paramref name="from"/> time zone to <see cref="TimeZones.Utc"/>
-//    /// </summary>
-//    /// <param name="time">The time to be converted in terms of the <paramref name="from"/> time zone</param>
-//    /// <param name="from">The time zone the specified <paramref name="time"/> is in</param>
-//    /// <param name="strict">True for strict conversion, this will throw during ambiguitities, false for lenient conversion</param>
-//    /// <returns>The time in terms of the to time zone</returns>
-//    public static DateTime ConvertToUtc(this DateTime time, ZoneId from, boolean strict = false)
-//    {
-//        if (strict)
+            
+        return time.atZone( from ).withZoneSameInstant( to ).toLocalDateTime();
+    }
+
+    /// <summary>
+    /// Converts the specified time from UTC to the <paramref name="to"/> time zone
+    /// </summary>
+    /// <param name="time">The time to be converted expressed in UTC</param>
+    /// <param name="to">The destinatio time zone</param>
+    /// <param name="strict">True for strict conversion, this will throw during ambiguitities, false for lenient conversion</param>
+    /// <returns>The time in terms of the <paramref name="to"/> time zone</returns>
+    public static LocalDateTime convertFromUtc( LocalDateTime time, ZoneId to/*, boolean strict = false*/ ) {
+        return convertTo( time, Global.UTC_ZONE_ID, to/*, strict*/ );
+    }
+
+    /// <summary>
+    /// Converts the specified time from the <paramref name="from"/> time zone to <see cref="TimeZones.Utc"/>
+    /// </summary>
+    /// <param name="time">The time to be converted in terms of the <paramref name="from"/> time zone</param>
+    /// <param name="from">The time zone the specified <paramref name="time"/> is in</param>
+    /// <param name="strict">True for strict conversion, this will throw during ambiguitities, false for lenient conversion</param>
+    /// <returns>The time in terms of the to time zone</returns>
+    public static LocalDateTime convertToUtc( LocalDateTime time, ZoneId from/*, boolean strict = false*/ ) {
+//        if( strict)
 //        {
 //            return from.AtStrictly(LocalDateTime.FromDateTime(time)).ToDateTimeUtc();
 //        }
 //
 //        return from.AtLeniently(LocalDateTime.FromDateTime(time)).ToDateTimeUtc();
-//    }
-//
+        
+        return convertTo( time, from, Global.UTC_ZONE_ID );
+    }
+
 //    /// <summary>
 //    /// Add the reset method to the System.Timer class.
 //    /// </summary>
@@ -501,15 +523,15 @@ public class Extensions {
 //    /// <returns>True if the specified type matches the type name, false otherwise</returns>
 //    public static boolean MatchesTypeName(this Type type, String typeName)
 //    {
-//        if (type.AssemblyQualifiedName == typeName)
+//        if( type.AssemblyQualifiedName == typeName)
 //        {
 //            return true;
 //        }
-//        if (type.FullName == typeName)
+//        if( type.FullName == typeName)
 //        {
 //            return true;
 //        }
-//        if (type.Name == typeName)
+//        if( type.Name == typeName)
 //        {
 //            return true;
 //        }
@@ -528,7 +550,7 @@ public class Extensions {
 //        while (type != null && type != typeof(object))
 //        {
 //            Type cur;
-//            if (type.IsGenericType && possibleSuperType.IsGenericTypeDefinition)
+//            if( type.IsGenericType && possibleSuperType.IsGenericTypeDefinition)
 //            {
 //                cur = type.GetGenericTypeDefinition();
 //            }
@@ -536,7 +558,7 @@ public class Extensions {
 //            {
 //                cur = type;
 //            }
-//            if (possibleSuperType == cur)
+//            if( possibleSuperType == cur)
 //            {
 //                return true;
 //            }
@@ -554,11 +576,11 @@ public class Extensions {
 //    public static String GetBetterTypeName(this Type type)
 //    {
 //        String name = type.Name;
-//        if (type.IsGenericType)
+//        if( type.IsGenericType)
 //        {
 //            genericArguments = type.GetGenericArguments();
 //            toBeReplaced = "`" + (genericArguments.Length);
-//            name = name.Replace(toBeReplaced, "<" + string.Join(", ", genericArguments.Select(x => x.GetBetterTypeName())) + ">");
+//            name = name.Replace(toBeReplaced, "<" + String.join( ", ", genericArguments.Select(x => x.GetBetterTypeName())) + ">");
 //        }
 //        return name;
 //    }
@@ -574,17 +596,17 @@ public class Extensions {
 //        {
 //            case Resolution.Tick:
 //                // ticks can be instantaneous
-//                return TimeSpan.FromTicks(0);
+//                return Duration.ofTicks(0);
 //            case Resolution.Second:
-//                return TimeSpan.FromSeconds(1);
+//                return Duration.ofSeconds(1);
 //            case Resolution.Minute:
-//                return TimeSpan.FromMinutes(1);
+//                return Duration.ofMinutes(1);
 //            case Resolution.Hour:
-//                return TimeSpan.FromHours(1);
+//                return Duration.ofHours(1);
 //            case Resolution.Daily:
-//                return TimeSpan.FromDays(1);
+//                return Duration.ofDays(1);
 //            default:
-//                throw new ArgumentOutOfRangeException("resolution");
+//                throw new ArgumentOutOfRangeException( "resolution");
 //        }
 //    }
 //
@@ -596,7 +618,7 @@ public class Extensions {
 //    /// <returns>The converted value</returns>
 //    public static T ConvertTo<T>(this String value)
 //    {
-//        return (T) value.ConvertTo(typeof (T));
+//        return (T) value Extensions.convertTo(  )typeof (T));
 //    }
 //
 //    /// <summary>
@@ -607,19 +629,19 @@ public class Extensions {
 //    /// <returns>The converted value</returns>
 //    public static object ConvertTo(this String value, Type type)
 //    {
-//        if (type.IsEnum)
+//        if( type.IsEnum)
 //        {
 //            return Enum.Parse(type, value);
 //        }
 //
-//        if (typeof (IConvertible).IsAssignableFrom(type))
+//        if( typeof (IConvertible).IsAssignableFrom(type))
 //        {
 //            return Convert.ChangeType(value, type, CultureInfo.InvariantCulture);
 //        }
 //
 //        // try and find a static parse method
-//        parse = type.GetMethod("Parse", new[] {typeof ( String)});
-//        if (parse != null)
+//        parse = type.GetMethod( "Parse", new[] {typeof ( String)});
+//        if( parse != null )
 //        {
 //            result = parse.Invoke(null, new object[] {value});
 //            return result;
@@ -698,7 +720,7 @@ public class Extensions {
 //    /// <returns>The same source String but with anchor tags around substrings matching a link regex</returns>
 //    public static String WithEmbeddedHtmlAnchors(this String source)
 //    {
-//        regx = new Regex("http(s)?://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*([a-zA-Z0-9\\?\\#\\=\\/]){1})?", RegexOptions.IgnoreCase);
+//        regx = new Regex( "http(s)?://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*([a-zA-Z0-9\\?\\#\\=\\/])%2$s)?", RegexOptions.IgnoreCase);
 //        matches = regx.Matches(source);
 //        foreach (Match match in matches)
 //        {

@@ -28,8 +28,7 @@ package com.quantconnect.lean
     public class TestLiveAlgorithm : QCAlgorithm
     {
         //Initialize the data and resolution you require for your strategy:
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             res = Resolution.Second;
 
             AddSecurity(SecurityType.Equity, "AAPL", res, fillDataForward: false, extendedMarketHours: false);
@@ -37,32 +36,28 @@ package com.quantconnect.lean
             AddSecurity(SecurityType.Equity, "BQR", res, fillDataForward: true, extendedMarketHours: false);
             //AddSecurity(SecurityType.Equity, "GOOG", res, fillDataForward: false, extendedMarketHours: false);
             //AddSecurity(SecurityType.Equity, "TSLA", res, fillDataForward: false, extendedMarketHours: false);
-            //AddData<Bitcoin>("BTC", res);
+            //AddData<Bitcoin>( "BTC", res);
         }
 
         //Data Event Handler: New data arrives here. Upload Data "TradeBars" type is a dictionary of strings so you can access it by symbol.
-        public void OnData(TradeBars data)
-        {
+        public void OnData(TradeBars data) {
             String display = "";
-            foreach (bar in data.Values)
-            {
-                display += ">> " + bar.Symbol + ": " + bar.Value.toString("C");
+            foreach (bar in data.Values) {
+                display += ">> " + bar.Symbol + ": " + bar.Value.toString( "C");
             }
-            Debug("ALGO>> OnData(TradeBar) >> " + Time.toString() + " >> " + data.Count + " >> " + display);
+            Debug( "ALGO>> OnData(TradeBar) >> " + Time.toString() + " >> " + data.Count + " >> " + display);
         }
 
         //Bitcoin Handler:
-        public void OnData(Bitcoin data)
-        {
+        public void OnData(Bitcoin data) {
             Debug(Time.ToLongTimeString() + " >> ALGO >> OnData(BTC) >> BTC: " + data.Close);
         }
 
         /// <summary>
         /// Send the end of day event:
         /// </summary>
-        public override void OnEndOfDay( String symbol)
-        {
-            Debug("ALGO>> OnEndOfDay() >> " + symbol);
+        public @Override void OnEndOfDay( String symbol) {
+            Debug( "ALGO>> OnEndOfDay() >> " + symbol);
         }
     }
 
@@ -82,20 +77,17 @@ package com.quantconnect.lean
         /// <summary>
         /// Default Constructor Required.
         /// </summary>
-        public Bitcoin()
-        {
+        public Bitcoin() {
             this.Symbol = "BTC";
         }
 
         /// <summary>
         /// Source URL's of Backtesting and Live Streams:
         /// </summary>
-        public override String GetSource(SubscriptionDataConfig config, DateTime date, DataFeedEndpoint datafeed)
-        {
+        public @Override String GetSource(SubscriptionDataConfig config, DateTime date, DataFeedEndpoint datafeed) {
             source = "";
 
-            switch (datafeed)
-            {
+            switch (datafeed) {
                 //Historical backtesting data:
                 case DataFeedEndpoint.Backtesting:
                     source = "http://www.quandl.com/api/v1/datasets/BITCOIN/BITSTAMPUSD.csv?sort_order=asc";
@@ -116,8 +108,7 @@ package com.quantconnect.lean
         /// Clone the bitcoin object, required for live data.
         /// </summary>
         /// <returns></returns>
-        public override BaseData Clone()
-        {
+        public @Override BaseData Clone() {
             Bitcoin coin = new Bitcoin();
             coin.Close = this.Close;
             coin.High = this.High;
@@ -134,25 +125,23 @@ package com.quantconnect.lean
         /// <summary>
         /// Backtesting & Live Bitcoin Decoder:
         /// </summary>
-        public override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, DataFeedEndpoint datafeed)
-        {
+        public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, DataFeedEndpoint datafeed) {
             Bitcoin coin = new Bitcoin();
-            switch (datafeed)
-            {
+            switch (datafeed) {
                 //Example Line Format:
                 //Date      Open   High    Low     Close   Volume (BTC)    Volume (Currency)   Weighted Price
                 //2011-09-13 5.8    6.0     5.65    5.97    58.37138238,    346.0973893944      5.929230648356
                 case DataFeedEndpoint.Backtesting:
                     try
                     {
-                        string[] data = line.Split(',');
+                        string[] data = line.split(',');
                         coin.Time = DateTime.Parse(data[0], CultureInfo.InvariantCulture);
-                        coin.Open = Convert.ToDecimal(data[1], CultureInfo.InvariantCulture);
-                        coin.High = Convert.ToDecimal(data[2], CultureInfo.InvariantCulture);
-                        coin.Low = Convert.ToDecimal(data[3], CultureInfo.InvariantCulture);
-                        coin.Close = Convert.ToDecimal(data[4], CultureInfo.InvariantCulture);
-                        coin.VolumeBTC = Convert.ToDecimal(data[5]);
-                        coin.WeightedPrice = Convert.ToDecimal(data[7]);
+                        coin.Open = new BigDecimal( data[1], CultureInfo.InvariantCulture);
+                        coin.High = new BigDecimal( data[2], CultureInfo.InvariantCulture);
+                        coin.Low = new BigDecimal( data[3], CultureInfo.InvariantCulture);
+                        coin.Close = new BigDecimal( data[4], CultureInfo.InvariantCulture);
+                        coin.VolumeBTC = new BigDecimal( data[5]);
+                        coin.WeightedPrice = new BigDecimal( data[7]);
                         coin.Symbol = "BTC";
                         coin.Value = coin.Close;
                     }

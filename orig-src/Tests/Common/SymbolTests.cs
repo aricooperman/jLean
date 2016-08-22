@@ -34,25 +34,22 @@ package com.quantconnect.lean.Tests.Common
         };
 
         [Test]
-        public void OptionSymbolAliasMatchesOSI()
-        {
+        public void OptionSymbolAliasMatchesOSI() {
             static final String expected = @"MSFT  060318C00047500";
-            symbol = Symbol.CreateOption("MSFT", Market.USA, OptionStyle.American, OptionRight.Call, 47.50m, new DateTime(2006, 03, 18));
+            symbol = Symbol.CreateOption( "MSFT", Market.USA, OptionStyle.American, OptionRight.Call, 47.50m, new DateTime(2006, 03, 18));
             Assert.AreEqual(expected, symbol.Value);
         }
 
         [Test]
-        public void OptionSymbolAliasAddsPaddingSpaceForSixOrMoreCharacterSymbols()
-        {
+        public void OptionSymbolAliasAddsPaddingSpaceForSixOrMoreCharacterSymbols() {
             static final String expected = @"ABCDEF 060318C00047500";
-            symbol = Symbol.CreateOption("ABCDEF", Market.USA, OptionStyle.American, OptionRight.Call, 47.50m, new DateTime(2006, 03, 18));
+            symbol = Symbol.CreateOption( "ABCDEF", Market.USA, OptionStyle.American, OptionRight.Call, 47.50m, new DateTime(2006, 03, 18));
             Assert.AreEqual(expected, symbol.Value);
         }
 
         [Test]
-        public void SymbolCreateWithOptionSecurityTypeCreatesCanonicalOptionSymbol()
-        {
-            symbol = Symbol.Create("SPY", SecurityType.Option, Market.USA);
+        public void SymbolCreateWithOptionSecurityTypeCreatesCanonicalOptionSymbol() {
+            symbol = Symbol.Create( "SPY", SecurityType.Option, Market.USA);
             sid = symbol.ID;
             Assert.AreEqual(SecurityIdentifier.DefaultDate, sid.Date);
             Assert.AreEqual(0m, sid.StrikePrice);
@@ -61,16 +58,14 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void CanonicalOptionSymbolAliasHasQuestionMark()
-        {
-            symbol = Symbol.Create("SPY", SecurityType.Option, Market.USA);
-            Assert.AreEqual("?SPY", symbol.Value);
+        public void CanonicalOptionSymbolAliasHasQuestionMark() {
+            symbol = Symbol.Create( "SPY", SecurityType.Option, Market.USA);
+            Assert.AreEqual( "?SPY", symbol.Value);
         }
 
         [Test]
-        public void UsesSidForDictionaryKey()
-        {
-            sid = SecurityIdentifier.GenerateEquity("SPY", Market.USA);
+        public void UsesSidForDictionaryKey() {
+            sid = SecurityIdentifier.GenerateEquity( "SPY", Market.USA);
             dictionary = new Map<Symbol,Integer>
             {
                 {new Symbol(sid, "value"), 1}
@@ -81,9 +76,8 @@ package com.quantconnect.lean.Tests.Common
         }
         
         [Test]
-        public void SurvivesRoundtripSerialization()
-        {
-            sid = SecurityIdentifier.GenerateEquity("SPY", Market.USA);
+        public void SurvivesRoundtripSerialization() {
+            sid = SecurityIdentifier.GenerateEquity( "SPY", Market.USA);
             expected = new Symbol(sid, "value");
             json = JsonConvert.SerializeObject(expected, Settings);
             actual = JsonConvert.DeserializeObject<Symbol>(json, Settings);
@@ -91,9 +85,8 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void SurvivesRoundtripSerializationWithTypeNameHandling()
-        {
-            sid = SecurityIdentifier.GenerateEquity("SPY", Market.USA);
+        public void SurvivesRoundtripSerializationWithTypeNameHandling() {
+            sid = SecurityIdentifier.GenerateEquity( "SPY", Market.USA);
             expected = new Symbol(sid, "value");
             json = JsonConvert.SerializeObject(expected, Settings);
             actual = JsonConvert.DeserializeObject<Symbol>(json);
@@ -101,8 +94,7 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void HandlesListTicks()
-        {
+        public void HandlesListTicks() {
             static final String json = @"{'$type':'System.Collections.Generic.List`1[[QuantConnect.Data.BaseData, QuantConnect.Common]], mscorlib',
 '$values':[{'$type':'QuantConnect.Data.Market.Tick, QuantConnect.Common',
 'TickType':0,'Quantity':1,'Exchange':'',
@@ -113,15 +105,14 @@ package com.quantconnect.lean.Tests.Common
 'Value':'EURGBP',
 'ID':'EURGBP 5O'},'Value':0.72722,'Price':0.72722}]}";
 
-            expected = new Symbol(SecurityIdentifier.GenerateForex("EURGBP", Market.FXCM),  "EURGBP");
+            expected = new Symbol(SecurityIdentifier.GenerateForex( "EURGBP", Market.FXCM),  "EURGBP");
             settings = Settings;
             actual = JsonConvert.DeserializeObject<List<BaseData>>(json, settings);
             Assert.AreEqual(expected, actual[0].Symbol);
         }
 
         [Test]
-        public void HandlesListTicksWithDifferentSymbols()
-        {
+        public void HandlesListTicksWithDifferentSymbols() {
             // the first serialized Tick object has a Symbol of EURGBP and the second has EURUSD, but the output
             static final String json =
                 "{'$type':'System.Collections.Generic.List`1[[QuantConnect.Data.BaseData, QuantConnect.Common]], mscorlib','$values':[" +
@@ -143,21 +134,19 @@ package com.quantconnect.lean.Tests.Common
                     "]}";
             
             actual = JsonConvert.DeserializeObject<List<BaseData>>(json, Settings);
-            Assert.IsFalse(actual.All(x => x.Symbol == new Symbol(SecurityIdentifier.GenerateForex("EURUSD", Market.FXCM), "EURUSD")));
+            Assert.IsFalse(actual.All(x => x.Symbol == new Symbol(SecurityIdentifier.GenerateForex( "EURUSD", Market.FXCM), "EURUSD")));
         }
 
         [Test]
-        public void SymbolTypeNameHandling()
-        {
+        public void SymbolTypeNameHandling() {
             static final String json = @"{'$type':'QuantConnect.Symbol, QuantConnect.Common', 'Value':'EURGBP', 'ID': 'EURGBP 5O'}";
-            expected = new Symbol(SecurityIdentifier.GenerateForex("EURGBP", Market.FXCM), "EURGBP");
+            expected = new Symbol(SecurityIdentifier.GenerateForex( "EURGBP", Market.FXCM), "EURGBP");
             actual = JsonConvert.DeserializeObject<Symbol>(json, Settings);
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void TickRoundTrip()
-        {
+        public void TickRoundTrip() {
             tick = new Tick
             {
                 Symbol = Symbols.EURGBP,
@@ -180,61 +169,54 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void CompareToItselfReturnsZero()
-        {
-            sym = new Symbol(SecurityIdentifier.GenerateForex("sym", Market.FXCM), "sym");
+        public void CompareToItselfReturnsZero() {
+            sym = new Symbol(SecurityIdentifier.GenerateForex( "sym", Market.FXCM), "sym");
             Assert.AreEqual(0, sym.CompareTo(sym));
         }
 
         [Test]
-        public void ComparesTheSameAsStringCompare()
-        {
-            a = new Symbol(SecurityIdentifier.GenerateForex("a", Market.FXCM), "a");
-            z = new Symbol(SecurityIdentifier.GenerateForex("z", Market.FXCM), "z");
+        public void ComparesTheSameAsStringCompare() {
+            a = new Symbol(SecurityIdentifier.GenerateForex( "a", Market.FXCM), "a");
+            z = new Symbol(SecurityIdentifier.GenerateForex( "z", Market.FXCM), "z");
 
-            Assert.AreEqual( String.Compare("a", "z", StringComparison.Ordinal), a.CompareTo(z));
-            Assert.AreEqual( String.Compare("z", "a", StringComparison.Ordinal), z.CompareTo(a));
+            Assert.AreEqual( String.Compare( "a", "z", StringComparison.Ordinal), a.CompareTo(z));
+            Assert.AreEqual( String.Compare( "z", "a", StringComparison.Ordinal), z.CompareTo(a));
         }
 
         [Test]
-        public void ComparesTheSameAsStringCompareAndIgnoresCase()
-        {
-            a = new Symbol(SecurityIdentifier.GenerateForex("a", Market.FXCM), "a");
-            z = new Symbol(SecurityIdentifier.GenerateForex("z", Market.FXCM), "z");
+        public void ComparesTheSameAsStringCompareAndIgnoresCase() {
+            a = new Symbol(SecurityIdentifier.GenerateForex( "a", Market.FXCM), "a");
+            z = new Symbol(SecurityIdentifier.GenerateForex( "z", Market.FXCM), "z");
 
-            Assert.AreEqual( String.Compare("a", "Z", StringComparison.OrdinalIgnoreCase), a.CompareTo(z));
-            Assert.AreEqual( String.Compare("z", "A", StringComparison.OrdinalIgnoreCase), z.CompareTo(a));
+            Assert.AreEqual( String.Compare( "a", "Z", StringComparison.OrdinalIgnoreCase), a.CompareTo(z));
+            Assert.AreEqual( String.Compare( "z", "A", StringComparison.OrdinalIgnoreCase), z.CompareTo(a));
         }
 
         [Test]
-        public void ComparesAgainstStringWithoutException()
-        {
-            a = new Symbol(SecurityIdentifier.GenerateForex("a", Market.FXCM), "a");
-            Assert.AreEqual(0, a.CompareTo("a"));
+        public void ComparesAgainstStringWithoutException() {
+            a = new Symbol(SecurityIdentifier.GenerateForex( "a", Market.FXCM), "a");
+            Assert.AreEqual(0, a.CompareTo( "a"));
         }
 
         [Test]
-        public void ComparesAgainstStringIgnoringCase()
-        {
-            a = new Symbol(SecurityIdentifier.GenerateForex("a", Market.FXCM), "a");
-            Assert.AreEqual(0, a.CompareTo("A"));
+        public void ComparesAgainstStringIgnoringCase() {
+            a = new Symbol(SecurityIdentifier.GenerateForex( "a", Market.FXCM), "a");
+            Assert.AreEqual(0, a.CompareTo( "A"));
         }
 
         [Test]
-        public void BackwardsCompatibleJson()
-        {
-            symbol = new Symbol(SecurityIdentifier.GenerateForex("a", Market.FXCM), "a");
+        public void BackwardsCompatibleJson() {
+            symbol = new Symbol(SecurityIdentifier.GenerateForex( "a", Market.FXCM), "a");
             json = JsonConvert.SerializeObject(symbol, new JsonSerializerSettings{Formatting = Formatting.Indented, TypeNameHandling = TypeNameHandling.All});
             oldSymbol = JsonConvert.DeserializeObject<OldSymbol>(json);
-            Assert.AreEqual("A", oldSymbol.Value);
-            Assert.AreEqual("A", oldSymbol.Permtick);
+            Assert.AreEqual( "A", oldSymbol.Value);
+            Assert.AreEqual( "A", oldSymbol.Permtick);
         }
 
         [Test]
-        public void ImplicitOperatorsAreInverseFunctions()
-        {
+        public void ImplicitOperatorsAreInverseFunctions() {
 #pragma warning disable 0618 // This test requires implicit operators
-            eurusd = new Symbol(SecurityIdentifier.GenerateForex("EURUSD", Market.FXCM), "EURUSD");
+            eurusd = new Symbol(SecurityIdentifier.GenerateForex( "EURUSD", Market.FXCM), "EURUSD");
             String stringEurusd = eurusd;
             Symbol symbolEurusd = stringEurusd;
             Assert.AreEqual(eurusd, symbolEurusd);
@@ -242,11 +224,10 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void ImplicitOperatorsReturnSIDOnFailure()
-        {
+        public void ImplicitOperatorsReturnSIDOnFailure() {
 #pragma warning disable 0618 // This test requires implicit operators
             // this doesn't exist in the symbol cache
-            eurusd = new Symbol(SecurityIdentifier.GenerateForex("NOT A SECURITY", Market.FXCM), "EURUSD");
+            eurusd = new Symbol(SecurityIdentifier.GenerateForex( "NOT A SECURITY", Market.FXCM), "EURUSD");
             String stringEurusd = eurusd;
             Assert.AreEqual(eurusd.ID.toString(), stringEurusd);
 
@@ -256,10 +237,9 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void ImplicitFromStringChecksSymbolCache()
-        {
+        public void ImplicitFromStringChecksSymbolCache() {
 #pragma warning disable 0618 // This test requires implicit operators
-            SymbolCache.Set("EURUSD", Symbol.Create("EURUSD", SecurityType.Forex, Market.FXCM));
+            SymbolCache.Set( "EURUSD", Symbol.Create( "EURUSD", SecurityType.Forex, Market.FXCM));
             String ticker = "EURUSD";
             Symbol actual = ticker;
             expected = SymbolCache.GetSymbol(ticker);
@@ -269,11 +249,10 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void ImplicitFromStringParsesSid()
-        {
+        public void ImplicitFromStringParsesSid() {
 #pragma warning disable 0618 // This test requires implicit operators
-            SymbolCache.Set("EURUSD", Symbol.Create("EURUSD", SecurityType.Forex, Market.FXCM));
-            expected = SymbolCache.GetSymbol("EURUSD");
+            SymbolCache.Set( "EURUSD", Symbol.Create( "EURUSD", SecurityType.Forex, Market.FXCM));
+            expected = SymbolCache.GetSymbol( "EURUSD");
             String sid = expected.ID.toString();
             Symbol actual = sid;
             Assert.AreEqual(expected, actual);
@@ -282,32 +261,27 @@ package com.quantconnect.lean.Tests.Common
         }
 
         [Test]
-        public void ImplicitFromWithinStringLiftsSecondArgument()
-        {
+        public void ImplicitFromWithinStringLiftsSecondArgument() {
 #pragma warning disable 0618 // This test requires implicit operators
             SymbolCache.Clear();
-            SymbolCache.Set("EURUSD", Symbols.EURUSD);
-            expected = SymbolCache.GetSymbol("EURUSD");
+            SymbolCache.Set( "EURUSD", Symbols.EURUSD);
+            expected = SymbolCache.GetSymbol( "EURUSD");
             String stringValue = expected;
             String notFound = "EURGBP 5O";
             expectedNotFoundSymbol = Symbols.EURGBP;
             String sid = expected.ID.toString();
             Symbol actual = sid;
-            if (!(expected == stringValue))
-            {
-                Assert.Fail("Failed expected == string");
+            if( !(expected == stringValue)) {
+                Assert.Fail( "Failed expected == string");
             }
-            else if (!( StringValue == expected))
-            {
-                Assert.Fail("Failed String == expected");
+            else if( !( StringValue == expected)) {
+                Assert.Fail( "Failed String == expected");
             }
-            else if (expected != stringValue)
-            {
-                Assert.Fail("Failed expected != string");
+            else if( expected != stringValue) {
+                Assert.Fail( "Failed expected != string");
             }
-            else if ( StringValue != expected)
-            {
-                Assert.Fail("Failed String != expected");
+            else if(  StringValue != expected) {
+                Assert.Fail( "Failed String != expected");
             }
 
             Symbol notFoundSymbol = notFound;

@@ -87,7 +87,7 @@ public class SymbolJsonConverter {
 //    /// <returns>
 //    /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
 //    /// </returns>
-//    public override boolean CanConvert(Type objectType)
+//    public @Override boolean CanConvert(Type objectType)
 //    {
 //        return objectType == typeof (Symbol);
 //    }

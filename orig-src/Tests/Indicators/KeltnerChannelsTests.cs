@@ -22,35 +22,30 @@ package com.quantconnect.lean.Tests.Indicators
     public class KeltnerChannelsTests
     {
         [Test]
-        public void ComparesWithExtenralDataMiddleBand()
-        {
+        public void ComparesWithExtenralDataMiddleBand() {
             kch = new KeltnerChannels(20, 1.5m, MovingAverageType.Simple);
             TestHelper.TestIndicator(kch, "spy_with_keltner.csv", "Middle Band",
                 (ind, expected) => Assert.AreEqual(expected, (double)((KeltnerChannels)ind).MiddleBand.Current.Value, 1e-3));
         }
 
         [Test]
-        public void ComparesWithExternalDataUpperBand()
-        {
+        public void ComparesWithExternalDataUpperBand() {
             kch = new KeltnerChannels(20, 1.5m, MovingAverageType.Simple);
             TestHelper.TestIndicator(kch, "spy_with_keltner.csv", "Keltner Channels 20 Top",
                 (ind, expected) => Assert.AreEqual(expected, (double)((KeltnerChannels)ind).UpperBand.Current.Value, 1e-3));
         }
 
         [Test]
-        public void ComparesWithExternalDataLowerBand()
-        {
+        public void ComparesWithExternalDataLowerBand() {
             kch = new KeltnerChannels(20, 1.5m, MovingAverageType.Simple);
             TestHelper.TestIndicator(kch, "spy_with_keltner.csv", "Keltner Channels 20 Bottom",
                 (ind, expected) => Assert.AreEqual(expected, (double)((KeltnerChannels)ind).LowerBand.Current.Value, 1e-3));
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             kch = new KeltnerChannels(20, 1.5m, MovingAverageType.Simple);
-            foreach (data in TestHelper.GetTradeBarStream("spy_with_keltner.csv", false))
-            {
+            foreach (data in TestHelper.GetTradeBarStream( "spy_with_keltner.csv", false)) {
                kch.Update(data);
             }
 

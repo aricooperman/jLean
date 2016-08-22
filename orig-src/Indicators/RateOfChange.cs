@@ -26,8 +26,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period over which to perform to computation</param>
         public RateOfChange(int period)
-            : base("ROC" + period, period)
-        {
+            : base( "ROC" + period, period) {
         }
 
         /// <summary>
@@ -36,8 +35,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period over which to perform to computation</param>
         public RateOfChange( String name, int period)
-            : base(name, period)
-        {
+            : base(name, period) {
         }
 
         /// <summary>
@@ -46,13 +44,11 @@ package com.quantconnect.lean.Indicators
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input value to this indicator on this time step</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             // if we're not ready just grab the first input point in the window
             BigDecimal denominator = !window.IsReady ? window[window.Count - 1] : window.MostRecentlyRemoved;
 
-            if (denominator == 0)
-            {
+            if( denominator == 0) {
                 return 0;
             }
 

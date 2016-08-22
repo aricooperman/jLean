@@ -29,8 +29,7 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="readerWriterLockSlim">The lock to open for read</param>
         /// <returns>A disposable reference which will release the lock upon disposal</returns>
-        public static IDisposable Read(this ReaderWriterLockSlim readerWriterLockSlim)
-        {
+        public static IDisposable Read(this ReaderWriterLockSlim readerWriterLockSlim) {
             return new ReaderLockToken(readerWriterLockSlim);
         }
 
@@ -39,25 +38,21 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="readerWriterLockSlim">The lock to open for write</param>
         /// <returns>A disposale reference which will release thelock upon disposal</returns>
-        public static IDisposable Write(this ReaderWriterLockSlim readerWriterLockSlim)
-        {
+        public static IDisposable Write(this ReaderWriterLockSlim readerWriterLockSlim) {
             return new WriteLockToken(readerWriterLockSlim);
         }
 
         private sealed class ReaderLockToken : ReaderWriterLockSlimToken
         {
             public ReaderLockToken(ReaderWriterLockSlim readerWriterLockSlim)
-                : base(readerWriterLockSlim)
-            {
+                : base(readerWriterLockSlim) {
             }
 
-            protected override void EnterLock(ReaderWriterLockSlim readerWriterLockSlim)
-            {
+            protected @Override void EnterLock(ReaderWriterLockSlim readerWriterLockSlim) {
                 readerWriterLockSlim.EnterReadLock();
             }
 
-            protected override void ExitLock(ReaderWriterLockSlim readerWriterLockSlim)
-            {
+            protected @Override void ExitLock(ReaderWriterLockSlim readerWriterLockSlim) {
                 readerWriterLockSlim.ExitReadLock();
             }
         }
@@ -65,17 +60,14 @@ package com.quantconnect.lean.Util
         private sealed class WriteLockToken : ReaderWriterLockSlimToken
         {
             public WriteLockToken(ReaderWriterLockSlim readerWriterLockSlim)
-                : base(readerWriterLockSlim)
-            {
+                : base(readerWriterLockSlim) {
             }
 
-            protected override void EnterLock(ReaderWriterLockSlim readerWriterLockSlim)
-            {
+            protected @Override void EnterLock(ReaderWriterLockSlim readerWriterLockSlim) {
                 readerWriterLockSlim.EnterWriteLock();
             }
 
-            protected override void ExitLock(ReaderWriterLockSlim readerWriterLockSlim)
-            {
+            protected @Override void ExitLock(ReaderWriterLockSlim readerWriterLockSlim) {
                 readerWriterLockSlim.ExitWriteLock();
             }
         }
@@ -84,8 +76,7 @@ package com.quantconnect.lean.Util
         {
             private ReaderWriterLockSlim _readerWriterLockSlim;
 
-            public ReaderWriterLockSlimToken(ReaderWriterLockSlim readerWriterLockSlim)
-            {
+            public ReaderWriterLockSlimToken(ReaderWriterLockSlim readerWriterLockSlim) {
                 _readerWriterLockSlim = readerWriterLockSlim;
                 // ReSharper disable once DoNotCallOverridableMethodsInConstructor -- we control the subclasses, this is fine
                 EnterLock(_readerWriterLockSlim);
@@ -94,10 +85,8 @@ package com.quantconnect.lean.Util
             protected abstract void EnterLock(ReaderWriterLockSlim readerWriterLockSlim);
             protected abstract void ExitLock(ReaderWriterLockSlim readerWriterLockSlim);
 
-            public void Dispose()
-            {
-                if (_readerWriterLockSlim != null)
-                {
+            public void Dispose() {
+                if( _readerWriterLockSlim != null ) {
                     ExitLock(_readerWriterLockSlim);
                     _readerWriterLockSlim = null;
                 }

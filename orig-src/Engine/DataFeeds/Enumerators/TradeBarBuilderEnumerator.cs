@@ -40,8 +40,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="timeZone">The time zone the raw data is time stamped in</param>
         /// <param name="timeProvider">The time provider instance used to determine when bars are completed and
         /// can be emitted</param>
-        public TradeBarBuilderEnumerator(TimeSpan barSize, ZoneId timeZone, ITimeProvider timeProvider)
-        {
+        public TradeBarBuilderEnumerator(TimeSpan barSize, ZoneId timeZone, ITimeProvider timeProvider) {
             _barSize = barSize;
             _timeZone = timeZone;
             _timeProvider = timeProvider;
@@ -52,13 +51,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// and emitted after the alotted time has passed
         /// </summary>
         /// <param name="data">The new data to be aggregated</param>
-        public void ProcessData(BaseData data)
-        {
+        public void ProcessData(BaseData data) {
             TradeBar working;
             tick = data as Tick;
             qty = tick == null ? 0 : tick.Quantity;
-            if (!_queue.TryPeek(out working))
-            {
+            if( !_queue.TryPeek(out working)) {
                 // the consumer took the working bar, or time ticked over into next bar
                 marketPrice = data.Value;
                 currentLocalTime = _timeProvider.GetUtcNow().ConvertFromUtc(_timeZone);
@@ -83,13 +80,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <returns>
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
         /// </returns>
-        public boolean MoveNext()
-        {
+        public boolean MoveNext() {
             TradeBar working;
 
             // check if there's a bar there and if its time to pull it off (i.e, done aggregation)
-            if (_queue.TryPeek(out working) && working.EndTime.ConvertToUtc(_timeZone) <= _timeProvider.GetUtcNow())
-            {
+            if( _queue.TryPeek(out working) && working.EndTime.ConvertToUtc(_timeZone) <= _timeProvider.GetUtcNow()) {
                 // working is good to go, set it to current
                 Current = working;
                 // remove working from the queue so we can start aggregating the next bar
@@ -108,8 +103,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <summary>
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
-        public void Reset()
-        {
+        public void Reset() {
             _queue.Clear();
         }
 
@@ -140,8 +134,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
         }
     }
 }

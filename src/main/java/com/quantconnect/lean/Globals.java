@@ -26,7 +26,7 @@ import com.quantconnect.lean.configuration.Config;
 /// Provides application level constant values
 public class Globals {
     /// The directory used for storing downloaded remote files
-    public static final String Cache = "./cache/data";
+    public static final String CACHE = "./cache/data";
     /// The root directory of the data folder for this application
     private static String dataFolder;
     /// The version of lean
@@ -51,52 +51,3 @@ public class Globals {
         return version;
     }
 }
-
-/*
-using System.Reflection;
-using QuantConnect.Configuration;
-
-package com.quantconnect.lean
-{
-    /// <summary>
-    /// Provides application level constant values
-    /// </summary>
-    public static class Globals
-    {
-        static Globals()
-        {
-            Reset();
-        }
-
-        /// <summary>
-        /// The root directory of the data folder for this application
-        /// </summary>
-        public static String DataFolder { get; private set; }
-
-        /// <summary>
-        /// Resets global values with the Config data.
-        /// </summary>
-        public static void Reset ()
-        {
-            DataFolder = Config.Get("data-folder", Config.Get("data-directory", @"../../../Data/"));
-
-            Version = Assembly.GetExecutingAssembly().GetName().Version.toString();
-            versionid = Config.Get("version-id");
-            if (!string.IsNullOrWhiteSpace(versionid))
-            {
-                Version += "." + versionid;
-            }
-        }
-
-        /// <summary>
-        /// The directory used for storing downloaded remote files
-        /// </summary>
-        public static final String Cache = "./cache/data";
-
-        /// <summary>
-        /// The version of lean
-        /// </summary>
-        public static String Version { get; private set; }
-    }
-}
-*/

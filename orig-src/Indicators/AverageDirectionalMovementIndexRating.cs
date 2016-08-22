@@ -35,8 +35,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the ADXR</param>
         public AverageDirectionalMovementIndexRating( String name, int period) 
-            : base(name)
-        {
+            : base(name) {
             _period = period;
             _adx = new AverageDirectionalIndex(name + "_ADX", period);
             _adxHistory = new RollingWindow<decimal>(period);
@@ -47,14 +46,13 @@ package com.quantconnect.lean.Indicators
         /// </summary> 
         /// <param name="period">The period of the ADXR</param>
         public AverageDirectionalMovementIndexRating(int period)
-            : this("ADXR" + period, period)
-        {
+            : this( "ADXR" + period, period) {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
@@ -64,8 +62,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _adx.Update(input);
             _adxHistory.Add(_adx);
 
@@ -75,8 +72,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             _adx.Reset();
             _adxHistory.Reset();
             base.Reset();

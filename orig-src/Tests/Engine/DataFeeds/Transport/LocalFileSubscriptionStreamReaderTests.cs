@@ -24,14 +24,12 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Transport
     public class LocalFileSubscriptionStreamReaderTests
     {
         [Test]
-        public void ReadsFromSpecificZipEntry()
-        {
-            source = Path.Combine("TestData", "multizip.zip");
+        public void ReadsFromSpecificZipEntry() {
+            source = Path.Combine( "TestData", "multizip.zip");
             static final String entryName = "multizip/three.txt";
-            using (reader = new LocalFileSubscriptionStreamReader(source, entryName))
-            {
+            using (reader = new LocalFileSubscriptionStreamReader(source, entryName)) {
                 line = reader.ReadLine();
-                Assert.AreEqual("3", line);
+                Assert.AreEqual( "3", line);
             }
         }
     }

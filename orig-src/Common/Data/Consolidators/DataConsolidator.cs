@@ -30,12 +30,10 @@ package com.quantconnect.lean.Data.Consolidators
         /// Updates this consolidator with the specified data
         /// </summary>
         /// <param name="data">The new data for the consolidator</param>
-        public void Update(BaseData data)
-        {
+        public void Update(BaseData data) {
             typedData = data as TInput;
-            if (typedData == null)
-            {
-                throw new ArgumentNullException("data", "Received type of " + data.GetType().Name + " but expected " + typeof(TInput).Name);
+            if( typedData == null ) {
+                throw new ArgumentNullException( "data", "Received type of " + data.GetType().Name + " but expected " + typeof(TInput).Name);
             }
             Update(typedData);
         }
@@ -96,10 +94,9 @@ package com.quantconnect.lean.Data.Consolidators
         /// by derived classes when they have consolidated a new piece of data.
         /// </summary>
         /// <param name="consolidated">The newly consolidated data</param>
-        protected virtual void OnDataConsolidated(BaseData consolidated)
-        {
+        protected virtual void OnDataConsolidated(BaseData consolidated) {
             handler = DataConsolidated;
-            if (handler != null) handler(this, consolidated);
+            if( handler != null ) handler(this, consolidated);
 
             // assign the Consolidated property after the event handlers are fired,
             // this allows the event handlers to look at the new consolidated data

@@ -32,8 +32,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierPositions TradierPositions;
 
         /// Default Constructor:
-        public TradierPositionsContainer()
-        { }
+        public TradierPositionsContainer() { }
     }
 
     /// <summary>
@@ -47,8 +46,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierPosition> Positions;
 
         /// Default Constructor for JSON
-        public TradierPositions()
-        { }
+        public TradierPositions() { }
     }
 
 

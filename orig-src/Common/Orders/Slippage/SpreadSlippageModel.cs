@@ -27,14 +27,12 @@ package com.quantconnect.lean.Orders.Slippage
         /// <summary>
         /// Slippage Model. Return a BigDecimal cash slippage approximation on the order.
         /// </summary>
-        public virtual BigDecimal GetSlippageApproximation(Security asset, Order order)
-        {
+        public virtual BigDecimal GetSlippageApproximation(Security asset, Order order) {
             lastData = asset.GetLastData();
             lastTick = lastData as Tick;
 
             // if we have tick data use the spread
-            if (lastTick != null)
-            {
+            if( lastTick != null ) {
                 return (lastTick.AskPrice - lastTick.BidPrice) / 2;
             }
 

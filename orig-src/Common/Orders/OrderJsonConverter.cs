@@ -29,7 +29,7 @@ package com.quantconnect.lean.Orders
     public class OrderJsonConverter : JsonConverter
     {
         private static readonly Lazy<IMapFileProvider> MapFileProvider = new Lazy<IMapFileProvider>(() =>
-            Composer.Instance.GetExportedValueByTypeName<IMapFileProvider>(Config.Get("map-file-provider", "LocalDiskMapFileProvider"))
+            Composer.Instance.GetExportedValueByTypeName<IMapFileProvider>(Config.Get( "map-file-provider", "LocalDiskMapFileProvider"))
             );
 
         /// <summary>
@@ -38,7 +38,7 @@ package com.quantconnect.lean.Orders
         /// <value>
         /// <c>true</c> if this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON; otherwise, <c>false</c>.
         /// </value>
-        public override boolean CanWrite
+        public @Override boolean CanWrite
         {
             get { return false; }
         }
@@ -50,8 +50,7 @@ package com.quantconnect.lean.Orders
         /// <returns>
         /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
         /// </returns>
-        public override boolean CanConvert(Type objectType)
-        {
+        public @Override boolean CanConvert(Type objectType) {
             return typeof(Order).IsAssignableFrom(objectType);
         }
 
@@ -59,9 +58,8 @@ package com.quantconnect.lean.Orders
         /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException("The OrderJsonConverter does not implement a WriteJson method;.");
+        public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+            throw new NotImplementedException( "The OrderJsonConverter does not implement a WriteJson method;.");
         }
 
         /// <summary>
@@ -71,8 +69,7 @@ package com.quantconnect.lean.Orders
         /// <returns>
         /// The object value.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
+        public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
             jObject = JObject.Load(reader);
 
             order = CreateOrderFromJObject(jObject);
@@ -85,8 +82,7 @@ package com.quantconnect.lean.Orders
         /// </summary>
         /// <param name="jObject"></param>
         /// <returns>Order Object</returns>
-        public static Order CreateOrderFromJObject(JObject jObject)
-        {
+        public static Order CreateOrderFromJObject(JObject jObject) {
             // create order instance based on order type field
             orderType = (OrderType) jObject["Type"].Value<Integer>();
             order = CreateOrder(orderType, jObject);
@@ -104,18 +100,16 @@ package com.quantconnect.lean.Orders
             order.ContingentId = jObject["ContingentId"].Value<Integer>();
 
             market = Market.USA;
-            if (securityType == SecurityType.Forex) market = Market.FXCM;
+            if( securityType == SecurityType.Forex) market = Market.FXCM;
 
-            if (jObject.SelectTokens("Symbol.ID").Any())
-            {
-                sid = SecurityIdentifier.Parse(jObject.SelectTokens("Symbol.ID").Single().Value<String>());
-                ticker = jObject.SelectTokens("Symbol.Value").Single().Value<String>();
+            if( jObject.SelectTokens( "Symbol.ID").Any()) {
+                sid = SecurityIdentifier.Parse(jObject.SelectTokens( "Symbol.ID").Single().Value<String>());
+                ticker = jObject.SelectTokens( "Symbol.Value").Single().Value<String>();
                 order.Symbol = new Symbol(sid, ticker);
             }
-            else if (jObject.SelectTokens("Symbol.Value").Any())
-            {
+            else if( jObject.SelectTokens( "Symbol.Value").Any()) {
                 // provide for backwards compatibility
-                ticker = jObject.SelectTokens("Symbol.Value").Single().Value<String>();
+                ticker = jObject.SelectTokens( "Symbol.Value").Single().Value<String>();
                 order.Symbol = Symbol.Create(ticker, securityType, market);
             }
             else
@@ -129,11 +123,9 @@ package com.quantconnect.lean.Orders
         /// <summary>
         /// Creates an order of the correct type
         /// </summary>
-        private static Order CreateOrder(OrderType orderType, JObject jObject)
-        {
+        private static Order CreateOrder(OrderType orderType, JObject jObject) {
             Order order;
-            switch (orderType)
-            {
+            switch (orderType) {
                 case OrderType.Market:
                     order = new MarketOrder();
                     break;

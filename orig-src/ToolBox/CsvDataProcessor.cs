@@ -42,8 +42,7 @@ package com.quantconnect.lean.ToolBox
         /// <param name="dataDirectory">The root data directory, /Data</param>
         /// <param name="resolution">The resolution being sent into the Process method</param>
         /// <param name="tickType">The tick type, trade or quote</param>
-        public CsvDataProcessor( String dataDirectory, Resolution resolution, TickType tickType)
-        {
+        public CsvDataProcessor( String dataDirectory, Resolution resolution, TickType tickType) {
             _dataDirectory = dataDirectory;
             _resolution = resolution;
             _tickType = tickType;
@@ -54,18 +53,15 @@ package com.quantconnect.lean.ToolBox
         /// Invoked for each piece of data from the source file
         /// </summary>
         /// <param name="data">The data to be processed</param>
-        public void Process(BaseData data)
-        {
+        public void Process(BaseData data) {
             Writer writer;
-            if (!_writers.TryGetValue(data.Symbol, out writer))
-            {
+            if( !_writers.TryGetValue(data.Symbol, out writer)) {
                 writer = CreateTextWriter(data);
                 _writers[data.Symbol] = writer;
             }
 
             // flush every so often
-            if (++writer.ProcessCount%TicksPerFlush == 0)
-            {
+            if( ++writer.ProcessCount%TicksPerFlush == 0) {
                 writer.TextWriter.Flush();
             }
 
@@ -76,10 +72,8 @@ package com.quantconnect.lean.ToolBox
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
-            foreach (kvp in _writers)
-            {
+        public void Dispose() {
+            foreach (kvp in _writers) {
                 kvp.Value.TextWriter.Dispose();
             }
         }
@@ -87,17 +81,15 @@ package com.quantconnect.lean.ToolBox
         /// <summary>
         /// Creates the <see cref="TextWriter"/> that writes data to csv files
         /// </summary>
-        private Writer CreateTextWriter(BaseData data)
-        {
+        private Writer CreateTextWriter(BaseData data) {
             entry = LeanData.GenerateZipEntryName(data.Symbol, data.Time.Date, _resolution, _tickType);
             relativePath = LeanData.GenerateRelativeZipFilePath(data.Symbol, data.Time.Date, _resolution, _tickType)
-                .Replace(".zip", string.Empty);
+                .Replace( ".zip", string.Empty);
             path = Path.Combine(Path.Combine(_dataDirectory, relativePath), entry);
             directory = new FileInfo(path).Directory.FullName;
-            if (!Directory.Exists(directory))
-            {
+            if( !Directory.Exists(directory)) {
                 // lock before checking again
-                lock (DirectoryCreateSync) if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
+                lock (DirectoryCreateSync) if( !Directory.Exists(directory)) Directory.CreateDirectory(directory);
             }
 
             return new Writer(path, new StreamWriter(path));
@@ -109,8 +101,7 @@ package com.quantconnect.lean.ToolBox
             public readonly String Path;
             public readonly TextWriter TextWriter;
             public int ProcessCount;
-            public Writer( String path, TextWriter textWriter)
-            {
+            public Writer( String path, TextWriter textWriter) {
                 Path = path;
                 TextWriter = textWriter;
             }

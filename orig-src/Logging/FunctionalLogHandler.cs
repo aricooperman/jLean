@@ -32,16 +32,14 @@ package com.quantconnect.lean.Logging
         /// <summary>
         /// Default constructor to handle MEF.
         /// </summary>
-        public FunctionalLogHandler()
-        {
+        public FunctionalLogHandler() {
 
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="QuantConnect.Logging.FunctionalLogHandler"/> class.
         /// </summary>
-        public FunctionalLogHandler(Action<String> debug, Action<String> trace, Action<String> error)
-        {
+        public FunctionalLogHandler(Action<String> debug, Action<String> trace, Action<String> error) {
             // saves references to the real console text writer since in a deployed state we may overwrite this in order
             // to redirect messages from algorithm to result handler
             _debug = debug;
@@ -53,10 +51,8 @@ package com.quantconnect.lean.Logging
         /// Write error message to log
         /// </summary>
         /// <param name="text">The error text to log</param>
-        public void Error( String text)
-        {
-            if (_error != null)
-            {
+        public void Error( String text) {
+            if( _error != null ) {
                 _error(DateTime.Now.toString(DateFormat) + " ERROR " + text);
             }
         }
@@ -65,10 +61,8 @@ package com.quantconnect.lean.Logging
         /// Write debug message to log
         /// </summary>
         /// <param name="text">The debug text to log</param>
-        public void Debug( String text)
-        {
-            if (_debug != null)
-            {
+        public void Debug( String text) {
+            if( _debug != null ) {
                 _debug(DateTime.Now.toString(DateFormat) + " DEBUG " + text);
             }
         }
@@ -77,10 +71,8 @@ package com.quantconnect.lean.Logging
         /// Write debug message to log
         /// </summary>
         /// <param name="text">The trace text to log</param>
-        public void Trace( String text)
-        {
-            if (_trace != null)
-            {
+        public void Trace( String text) {
+            if( _trace != null ) {
                 _trace(DateTime.Now.toString(DateFormat) + " TRACE " + text);
             }
         }
@@ -89,8 +81,7 @@ package com.quantconnect.lean.Logging
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
         }
     }
 }

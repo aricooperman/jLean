@@ -45,34 +45,30 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Initialize the messaging system
         /// </summary>
-        public void Initialize()
-        {
+        public void Initialize() {
             //
         }
 
         /// <summary>
         /// Set the messaging channel
         /// </summary>
-        public void SetAuthentication(AlgorithmNodePacket job)
-        {
+        public void SetAuthentication(AlgorithmNodePacket job) {
             _job = job;
         }
 
         /// <summary>
         /// Send a generic base packet without processing
         /// </summary>
-        public void Send(Packet packet)
-        {
-            switch (packet.Type)
-            {
+        public void Send(Packet packet) {
+            switch (packet.Type) {
                 case PacketType.Debug:
                     debug = (DebugPacket) packet;
-                    Log.Trace("Debug: " + debug.Message);
+                    Log.Trace( "Debug: " + debug.Message);
                     break;
 
                 case PacketType.Log:
                     log = (LogPacket) packet;
-                    Log.Trace("Log: " + log.Message);
+                    Log.Trace( "Log: " + log.Message);
                     break;
 
                 case PacketType.RuntimeError:
@@ -90,29 +86,26 @@ package com.quantconnect.lean.Messaging
                 case PacketType.BacktestResult:
                     result = (BacktestResultPacket) packet;
 
-                    if (result.Progress == 1)
-                    {
+                    if( result.Progress == 1) {
                         // uncomment these code traces to help write regression tests
-                        //Console.WriteLine("new Map<String,String>");
-                        //Console.WriteLine("\t\t\t{");
-                        foreach (pair in result.Results.Statistics)
-                        {
-                            Log.Trace("STATISTICS:: " + pair.Key + " " + pair.Value);
-                            //Console.WriteLine("\t\t\t\t{{\"{0}\",\"{1}\"}},", pair.Key, pair.Value);
+                        //Console.WriteLine( "new Map<String,String>");
+                        //Console.WriteLine( "\t\t\t{");
+                        foreach (pair in result.Results.Statistics) {
+                            Log.Trace( "STATISTICS:: " + pair.Key + " " + pair.Value);
+                            //Console.WriteLine( "\t\t\t\t{{\"%1$s\",\"%2$s\"}},", pair.Key, pair.Value);
                         }
-                        //Console.WriteLine("\t\t\t};");
+                        //Console.WriteLine( "\t\t\t};");
 
                         //foreach (pair in statisticsResults.RollingPerformances)
                         //{
-                        //    Log.Trace("ROLLINGSTATS:: " + pair.Key + " SharpeRatio: " + Math.Round(pair.Value.PortfolioStatistics.SharpeRatio, 3));
+                        //    Log.Trace( "ROLLINGSTATS:: " + pair.Key + " SharpeRatio: " + Math.Round(pair.Value.PortfolioStatistics.SharpeRatio, 3));
                         //}
                     }
                     break;
             }
 
 
-            if (StreamingApi.IsEnabled)
-            {
+            if( StreamingApi.IsEnabled) {
                 StreamingApi.Transmit(_job.UserId, _job.Channel, packet);
             }
         }
@@ -120,14 +113,12 @@ package com.quantconnect.lean.Messaging
         /// <summary>
         /// Send any notification with a base type of Notification.
         /// </summary>
-        public void SendNotification(Notification notification)
-        {
+        public void SendNotification(Notification notification) {
             type = notification.GetType();
-            if (type == typeof (NotificationEmail)
+            if( type == typeof (NotificationEmail)
              || type == typeof (NotificationWeb)
-             || type == typeof (NotificationSms))
-            {
-                Log.Error("Messaging.SendNotification(): Send not implemented for notification of type: " + type.Name);
+             || type == typeof (NotificationSms)) {
+                Log.Error( "Messaging.SendNotification(): Send not implemented for notification of type: " + type.Name);
                 return;
             }
             notification.Send();

@@ -22,28 +22,25 @@ package com.quantconnect.lean.Tests.Common.Data
     public class SubscriptionDataSourceTests
     {
         [Test]
-        public void ComparesEqualWithIdenticalSourceAndTransportMedium()
-        {
-            one = new SubscriptionDataSource("source", SubscriptionTransportMedium.LocalFile);
-            two = new SubscriptionDataSource("source", SubscriptionTransportMedium.LocalFile);
+        public void ComparesEqualWithIdenticalSourceAndTransportMedium() {
+            one = new SubscriptionDataSource( "source", SubscriptionTransportMedium.LocalFile);
+            two = new SubscriptionDataSource( "source", SubscriptionTransportMedium.LocalFile);
             Assert.IsTrue(one == two);
             Assert.IsTrue(one.Equals(two));
         }
 
         [Test]
-        public void ComparesNotEqualWithDifferentSource()
-        {
-            one = new SubscriptionDataSource("source1", SubscriptionTransportMedium.LocalFile);
-            two = new SubscriptionDataSource("source2", SubscriptionTransportMedium.LocalFile);
+        public void ComparesNotEqualWithDifferentSource() {
+            one = new SubscriptionDataSource( "source1", SubscriptionTransportMedium.LocalFile);
+            two = new SubscriptionDataSource( "source2", SubscriptionTransportMedium.LocalFile);
             Assert.IsTrue(one != two);
             Assert.IsTrue(!one.Equals(two));
         }
 
         [Test]
-        public void ComparesNotEqualWithDifferentTransportMedium()
-        {
-            one = new SubscriptionDataSource("source", SubscriptionTransportMedium.LocalFile);
-            two = new SubscriptionDataSource("source", SubscriptionTransportMedium.RemoteFile);
+        public void ComparesNotEqualWithDifferentTransportMedium() {
+            one = new SubscriptionDataSource( "source", SubscriptionTransportMedium.LocalFile);
+            two = new SubscriptionDataSource( "source", SubscriptionTransportMedium.RemoteFile);
             Assert.IsTrue(one != two);
             Assert.IsTrue(!one.Equals(two));
         }

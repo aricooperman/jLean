@@ -53,8 +53,7 @@ package com.quantconnect.lean
         /// <summary>
         /// Initializes a new instance of the <see cref="Isolator"/> class
         /// </summary>
-        public Isolator()
-        {
+        public Isolator() {
             CancellationTokenSource = new CancellationTokenSource();
         }
 
@@ -67,14 +66,13 @@ package com.quantconnect.lean
         /// <param name="codeBlock">Action codeblock to execute</param>
         /// <param name="memoryCap">Maximum memory allocation, default 1024Mb</param>
         /// <returns>True if algorithm exited successfully, false if cancelled because it exceeded limits.</returns>
-        public boolean ExecuteWithTimeLimit(TimeSpan timeSpan, Func<String> withinCustomLimits, Action codeBlock, long memoryCap = 1024)
-        {
+        public boolean ExecuteWithTimeLimit(TimeSpan timeSpan, Func<String> withinCustomLimits, Action codeBlock, long memoryCap = 1024) {
             // default to always within custom limits
-            withinCustomLimits = withinCustomLimits ?? (() => null);
+            withinCustomLimits = withinCustomLimits ?? (() => null );
 
             message = "";
             end = DateTime.Now + timeSpan;
-            memoryLogger = DateTime.Now + TimeSpan.FromMinutes(1);
+            memoryLogger = DateTime.Now + Duration.ofMinutes(1);
 
             //Convert to bytes
             memoryCap *= 1024 * 1024;
@@ -82,34 +80,28 @@ package com.quantconnect.lean
             //Launch task
             task = Task.Factory.StartNew(codeBlock, CancellationTokenSource.Token);
 
-            while (!task.IsCompleted && DateTime.Now < end)
-            {
+            while (!task.IsCompleted && DateTime.Now < end) {
                 memoryUsed = GC.GetTotalMemory(false);
 
-                if (memoryUsed > memoryCap)
-                {
-                    if (GC.GetTotalMemory(true) > memoryCap)
-                    {
+                if( memoryUsed > memoryCap) {
+                    if( GC.GetTotalMemory(true) > memoryCap) {
                         message = "Execution Security Error: Memory Usage Maxed Out - " + Math.Round(Convert.ToDouble(memoryCap / (1024 * 1024))) + "MB max.";
                         break;
                     }
                 }
 
-                if (DateTime.Now > memoryLogger)
-                {
-                    if (memoryUsed > (memoryCap * 0.8))
-                    {
+                if( DateTime.Now > memoryLogger) {
+                    if( memoryUsed > (memoryCap * 0.8)) {
                         memoryUsed = GC.GetTotalMemory(true);
-                        Log.Error("Execution Security Error: Memory usage over 80% capacity.");
+                        Log.Error( "Execution Security Error: Memory usage over 80% capacity.");
                     }
-                    Log.Trace(DateTime.Now.toString("u") + " Isolator.ExecuteWithTimeLimit(): Used: " + Math.Round(Convert.ToDouble(memoryUsed / (1024 * 1024))));
+                    Log.Trace(DateTime.Now.toString( "u") + " Isolator.ExecuteWithTimeLimit(): Used: " + Math.Round(Convert.ToDouble(memoryUsed / (1024 * 1024))));
                     memoryLogger = DateTime.Now.AddMinutes(1);
                 }
 
                 // check to see if we're within other custom limits defined by the caller
                 possibleMessage = withinCustomLimits();
-                if (!string.IsNullOrEmpty(possibleMessage))
-                {
+                if( !string.IsNullOrEmpty(possibleMessage)) {
                     message = possibleMessage;
                     break;
                 }
@@ -117,16 +109,14 @@ package com.quantconnect.lean
                 Thread.Sleep(100);
             }
 
-            if (task.IsCompleted == false && message == "")
-            {
+            if( task.IsCompleted == false && message == "") {
                 message = "Execution Security Error: Operation timed out - " + timeSpan.TotalMinutes + " minutes max. Check for recursive loops.";
-                Log.Trace("Isolator.ExecuteWithTimeLimit(): " + message);
+                Log.Trace( "Isolator.ExecuteWithTimeLimit(): " + message);
             }
 
-            if (message != "")
-            {
+            if( message != "") {
                 CancellationTokenSource.Cancel();
-                Log.Error("Security.ExecuteWithTimeLimit(): " + message);
+                Log.Error( "Security.ExecuteWithTimeLimit(): " + message);
                 throw new Exception(message);
             }
             return task.IsCompleted;
@@ -139,8 +129,7 @@ package com.quantconnect.lean
         /// <param name="codeBlock">Action codeblock to execute</param>
         /// <param name="memoryCap">Maximum memory allocation, default 1024Mb</param>
         /// <returns>True if algorithm exited successfully, false if cancelled because it exceeded limits.</returns>
-        public boolean ExecuteWithTimeLimit(TimeSpan timeSpan, Action codeBlock, long memoryCap = 1024)
-        {
+        public boolean ExecuteWithTimeLimit(TimeSpan timeSpan, Action codeBlock, long memoryCap = 1024) {
             return ExecuteWithTimeLimit(timeSpan, null, codeBlock, memoryCap);
         }
     }

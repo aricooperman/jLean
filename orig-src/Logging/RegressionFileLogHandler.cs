@@ -29,8 +29,7 @@ package com.quantconnect.lean.Logging
         /// that will write to a 'regression.log' file in the executing directory
         /// </summary>
         public RegressionFileLogHandler()
-            : base("regression.log", false)
-        {
+            : base( "regression.log", false) {
         }
     }
 }

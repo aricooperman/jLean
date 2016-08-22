@@ -23,8 +23,7 @@ package com.quantconnect.lean.Algorithm.CSharp
     /// </summary>
     public class RegressionAlgorithm : QCAlgorithm
     {
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2013, 10, 07);
             SetEndDate(2013, 10, 11);
             
@@ -39,26 +38,22 @@ package com.quantconnect.lean.Algorithm.CSharp
 
         private DateTime lastTradeTradeBars;
         private DateTime lastTradeTicks;
-        private TimeSpan tradeEvery = TimeSpan.FromMinutes(1);
-        public void OnData(TradeBars data)
-        {
-            if (Time - lastTradeTradeBars < tradeEvery) return;
+        private TimeSpan tradeEvery = Duration.ofMinutes(1);
+        public void OnData(TradeBars data) {
+            if( Time - lastTradeTradeBars < tradeEvery) return;
             lastTradeTradeBars = Time;
 
-            foreach (kvp in data)
-            {
+            foreach (kvp in data) {
                 symbol = kvp.Key;
                 bar = kvp.Value;
 
-                if (bar.Time.RoundDown(bar.Period) != bar.Time)
-                {
+                if( bar.Time.RoundDown(bar.Period) != bar.Time) {
                     // only trade on new data
                     continue;
                 }
 
                 holdings = Portfolio[symbol];
-                if (!holdings.Invested)
-                {
+                if( !holdings.Invested) {
                     MarketOrder(symbol, 10);
                 }
                 else

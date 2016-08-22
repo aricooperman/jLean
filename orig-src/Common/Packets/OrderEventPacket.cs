@@ -41,15 +41,13 @@ package com.quantconnect.lean.Packets
         /// Default constructor for JSON
         /// </summary>
         public OrderEventPacket()
-            : base (PacketType.OrderEvent)
-        { }
+            : base (PacketType.OrderEvent) { }
 
         /// <summary>
         /// Create a new instance of the order event packet
         /// </summary>
         public OrderEventPacket( String algorithmId, OrderEvent eventOrder)
-            : base(PacketType.OrderEvent)
-        {
+            : base(PacketType.OrderEvent) {
             AlgorithmId = algorithmId;
             Event = eventOrder;
         }

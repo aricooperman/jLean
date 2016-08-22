@@ -98,8 +98,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="senkouADelayPeriod">The Senkou A Span delay</param>
         /// <param name="senkouBDelayPeriod">The Senkou B Span delay</param>
         public IchimokuKinkoHyo( String name, int tenkanPeriod = 9, int kijunPeriod = 26, int senkouAPeriod = 26, int senkouBPeriod = 52, int senkouADelayPeriod = 26, int senkouBDelayPeriod = 26)
-            : base(name)
-        {
+            : base(name) {
             TenkanMaximum = new Maximum(name + "_TenkanMax", tenkanPeriod);
             TenkanMinimum = new Minimum(name + "_TenkanMin", tenkanPeriod);
             KijunMaximum = new Maximum(name + "_KijunMax", kijunPeriod);
@@ -154,27 +153,23 @@ package com.quantconnect.lean.Indicators
                 });
         }
 
-        private BigDecimal computeSenkouB(int period, TradeBar input)
-        {
+        private BigDecimal computeSenkouB(int period, TradeBar input) {
             senkouB = DelayedMaximumSenkouB.Samples >= period ? (DelayedMaximumSenkouB + DelayedMinimumSenkouB) / 2 : new decimal(0.0);
             return senkouB;
         }
 
-        private BigDecimal computeSenkouA(int period, TradeBar input)
-        {
+        private BigDecimal computeSenkouA(int period, TradeBar input) {
             senkouA = DelayedKijunSenkouA.Samples >= period ? (DelayedTenkanSenkouA + DelayedKijunSenkouA) / 2 : new decimal(0.0);
             return senkouA;
         }
 
-        private BigDecimal ComputeTenkan(int period, TradeBar input)
-        {
+        private BigDecimal ComputeTenkan(int period, TradeBar input) {
             tenkan = TenkanMaximum.Samples >= period ? (TenkanMaximum.Current.Value + TenkanMinimum.Current.Value) / 2 : new decimal(0.0);
 
             return tenkan;
         }
 
-        private BigDecimal ComputeKijun(int period, TradeBar input)
-        {
+        private BigDecimal ComputeKijun(int period, TradeBar input) {
             kijun = KijunMaximum.Samples >= period ? (KijunMaximum + KijunMinimum) / 2 : new decimal(0.0);
             return kijun;
         }
@@ -182,7 +177,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Returns true if all of the sub-components of the Ichimoku indicator is ready
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
 
             get { return Tenkan.IsReady && Kijun.IsReady && SenkouA.IsReady && SenkouB.IsReady; }
@@ -192,8 +187,7 @@ package com.quantconnect.lean.Indicators
         /// Computes the next value of this indicator from the given state
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
 
 
             TenkanMaximum.Update(input.Time, input.High);
@@ -216,8 +210,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             base.Reset();
             TenkanMaximum.Reset();
             TenkanMinimum.Reset();

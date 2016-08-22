@@ -22,10 +22,8 @@ package com.quantconnect.lean.Tests.Common
     public class CurrenciesTests
     {
         [Test]
-        public void HasCurrencySymbolForEachPair()
-        {
-            foreach (currencyPair in Currencies.CurrencyPairs)
-            {
+        public void HasCurrencySymbolForEachPair() {
+            foreach (currencyPair in Currencies.CurrencyPairs) {
                 String quotec, basec;
                 Forex.DecomposeCurrencyPair(currencyPair, out basec, out quotec);
                 Assert.IsTrue(Currencies.CurrencySymbols.ContainsKey(basec), "Missing currency symbol for: " + basec);

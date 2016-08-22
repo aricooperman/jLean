@@ -116,10 +116,8 @@ package com.quantconnect.lean.Data.Custom
         /// <summary>
         /// Create a new basic FxDaily object.
         /// </summary>
-        public DailyFx()
-        {
-            _jsonSerializerSettings = new JsonSerializerSettings()
-            {
+        public DailyFx() {
+            _jsonSerializerSettings = new JsonSerializerSettings() {
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
                 DateParseHandling = DateParseHandling.DateTimeOffset,
                 ZoneIdHandling = ZoneIdHandling.RoundtripKind
@@ -137,14 +135,12 @@ package com.quantconnect.lean.Data.Custom
         /// <param name="date">Date we're seeking.</param>
         /// <param name="isLiveMode">Live mode flag</param>
         /// <returns>Subscription source.</returns>
-        public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-        {
+        public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             // Live mode just always get today's results, backtesting get all the results for the quarter.
             url = "https://content.dailyfx.com/getData?contenttype=calendarEvent&description=true&format=json_pretty";
 
             // If we're backtesting append the quarters.
-            if (!isLiveMode)
-            {
+            if( !isLiveMode) {
                 url += GetQuarter(date);
             }
             
@@ -159,12 +155,10 @@ package com.quantconnect.lean.Data.Custom
         /// <param name="date">Date of the request</param>
         /// <param name="isLiveMode">Live mode</param>
         /// <returns></returns>
-        public override BaseData Reader(SubscriptionDataConfig config, String content, DateTime date, boolean isLiveMode)
-        {
+        public @Override BaseData Reader(SubscriptionDataConfig config, String content, DateTime date, boolean isLiveMode) {
             dailyfxList = JsonConvert.DeserializeObject<List<DailyFx>>(content, _jsonSerializerSettings);
 
-            foreach (dailyfx in dailyfxList)
-            {
+            foreach (dailyfx in dailyfxList) {
                 // Custom data format without settings in market hours are assumed UTC.
                 dailyfx.Time = dailyfx.DisplayDate.Date.AddHours(dailyfx.DisplayTime.TimeOfDay.TotalHours);
 
@@ -173,9 +167,8 @@ package com.quantconnect.lean.Data.Custom
                 dailyfx.Value = 0;
                 try
                 {
-                    if (!string.IsNullOrEmpty(Actual))
-                    {
-                        dailyfx.Value = Convert.ToDecimal(RemoveSpecialCharacters(Actual));
+                    if( !string.IsNullOrEmpty(Actual)) {
+                        dailyfx.Value = new BigDecimal( RemoveSpecialCharacters(Actual));
                     }
                 }
                 catch
@@ -189,8 +182,7 @@ package com.quantconnect.lean.Data.Custom
         /// <summary>
         /// Actual values from the API have lots of units, strip these to generate a "value" for the basedata.
         /// </summary>
-        private static String RemoveSpecialCharacters( String str)
-        {
+        private static String RemoveSpecialCharacters( String str) {
             return Regex.Replace(str, "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled);
         }
 
@@ -199,23 +191,19 @@ package com.quantconnect.lean.Data.Custom
         /// </summary>
         /// <param name="date"></param>
         /// <returns></returns>
-        private String GetQuarter(DateTime date)
-        {
-            start = date.toString("yyyy", CultureInfo.InvariantCulture);
+        private String GetQuarter(DateTime date) {
+            start = date.toString( "yyyy", CultureInfo.InvariantCulture);
             end = start;
 
-            if (date.Month < 4)
-            {
+            if( date.Month < 4) {
                 start += "0101";
                 end += "03312359"; 
             }
-            else if (date.Month < 7)
-            {
+            else if( date.Month < 7) {
                 start += "0401";
                 end += "06302359";
             }
-            else if (date.Month < 10)
-            {
+            else if( date.Month < 10) {
                 start += "0701";
                 end += "09302359";
             }
@@ -224,16 +212,15 @@ package com.quantconnect.lean.Data.Custom
                 start += "1001";
                 end += "12312359";
             }
-            return String.format("&startdate={0}&enddate={1}", start, end);
+            return String.format( "&startdate=%1$s&enddate=%2$s", start, end);
         }
 
         /// <summary>
         /// Pretty format output String for the DailyFx.
         /// </summary>
         /// <returns></returns>
-        public override String toString()
-        {
-            return String.format("DailyFx [{0} {1} {2} {3} {4}]", Time.toString("u"), Title, Currency, Importance, Meaning);
+        public @Override String toString() {
+            return String.format( "DailyFx [%1$s %2$s %3$s {3} {4}]", Time.toString( "u"), Title, Currency, Importance, Meaning);
         }
     }
 
@@ -293,13 +280,11 @@ package com.quantconnect.lean.Data.Custom
         /// <summary>
         /// Parse DailyFx API enum
         /// </summary>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
+        public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
             enumString = ( String)reader.Value;
             FxDailyMeaning? meaning = null;
 
-            switch (enumString)
-            {
+            switch (enumString) {
                 case "TRUE":
                     meaning = FxDailyMeaning.Better;
                     break;
@@ -317,16 +302,14 @@ package com.quantconnect.lean.Data.Custom
         /// <summary>
         /// Write DailyFxEnum objects to JSON
         /// </summary>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
-            throw new NotImplementedException("DailyFx Enum Converter is ReadOnly");
+        public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
+            throw new NotImplementedException( "DailyFx Enum Converter is ReadOnly");
         }
 
         /// <summary>
         /// Indicate if we can convert this object.
         /// </summary>
-        public override boolean CanConvert(Type objectType)
-        {
+        public @Override boolean CanConvert(Type objectType) {
             return objectType == typeof( String);
         }
     }

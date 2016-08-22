@@ -38,14 +38,11 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 	    public String status;
         public State state = State.Default;
 
-	    public void update( Price update )
-        {
-            if ( this.bid > update.bid )
-            {
+	    public void update( Price update ) {
+            if(  this.bid > update.bid ) {
                 state = State.Decreasing;
             }
-            else if ( this.bid < update.bid )
-            {
+            else if(  this.bid < update.bid ) {
                 state = State.Increasing;
             }
             else

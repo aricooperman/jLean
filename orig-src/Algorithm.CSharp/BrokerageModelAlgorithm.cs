@@ -31,8 +31,7 @@ package com.quantconnect.lean.Algorithm.Examples
         /// <summary>
         /// Initialize the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must be initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2013, 10, 07);  //Set Start Date
             SetEndDate(2013, 10, 11);    //Set End Date
             SetCash(100000);             //Set Strategy Cash
@@ -59,14 +58,11 @@ package com.quantconnect.lean.Algorithm.Examples
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">TradeBars IDictionary object with your stock data</param>
-        public void OnData(TradeBars data)
-        {
-            if (!Portfolio.Invested)
-            {
+        public void OnData(TradeBars data) {
+            if( !Portfolio.Invested) {
                 //fails first several times, we'll keep decrementing until it succeeds
-                SetHoldings("SPY", last);
-                if (Portfolio["SPY"].Quantity == 0)
-                {
+                SetHoldings( "SPY", last);
+                if( Portfolio["SPY"].Quantity == 0) {
                     // each time we fail to purchase we'll decrease our set holdings percentage
                     Debug(Time + " - Failed to purchase stock"); 
                     last *= 0.95m;
@@ -86,8 +82,7 @@ package com.quantconnect.lean.Algorithm.Examples
             private readonly QCAlgorithm _algorithm;
             private readonly BigDecimal _minimumAccountBalance;
 
-            public MinimumAccountBalanceBrokerageModel(QCAlgorithm algorithm, BigDecimal minimumAccountBalance)
-            {
+            public MinimumAccountBalanceBrokerageModel(QCAlgorithm algorithm, BigDecimal minimumAccountBalance) {
                 _algorithm = algorithm;
                 _minimumAccountBalance = minimumAccountBalance;
             }
@@ -95,8 +90,7 @@ package com.quantconnect.lean.Algorithm.Examples
             /// <summary>
             /// Prevent orders which would bring the account below a minimum cash balance
             /// </summary>
-            public override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message)
-            {
+            public @Override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
                 message = null;
                 
                 // we want to model brokerage requirement of _minimumAccountBalance cash value in account
@@ -104,11 +98,10 @@ package com.quantconnect.lean.Algorithm.Examples
                 orderCost = order.GetValue(security);
                 cash = _algorithm.Portfolio.Cash;
                 cashAfterOrder = cash - orderCost;
-                if (cashAfterOrder < _minimumAccountBalance)
-                {
+                if( cashAfterOrder < _minimumAccountBalance) {
                     // return a message describing why we're not allowing this order
                     message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "InsufficientRemainingCapital", 
-                        String.format("Account must maintain a minimum of ${0} USD at all times. Order ID: {1}", _minimumAccountBalance, order.Id)
+                        String.format( "Account must maintain a minimum of $%1$s USD at all times. Order ID: %2$s", _minimumAccountBalance, order.Id)
                         );
                     return false;
                 }

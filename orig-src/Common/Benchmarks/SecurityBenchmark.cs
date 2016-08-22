@@ -29,8 +29,7 @@ package com.quantconnect.lean.Benchmarks
         /// Initializes a new instance of the <see cref="SecurityBenchmark"/> class
         /// </summary>
         /// <param name="security">The security to use as the benchmark</param>
-        public SecurityBenchmark(Security security)
-        {
+        public SecurityBenchmark(Security security) {
             _security = security;
         }
 
@@ -39,8 +38,7 @@ package com.quantconnect.lean.Benchmarks
         /// </summary>
         /// <param name="time">The time to evaluate the benchmark at</param>
         /// <returns>The value of the benchmark at the specified time</returns>
-        public BigDecimal Evaluate(DateTime time)
-        {
+        public BigDecimal Evaluate(DateTime time) {
             return _security.Close;
         }
     }

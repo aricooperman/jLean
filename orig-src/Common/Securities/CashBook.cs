@@ -47,8 +47,7 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Initializes a new instance of the <see cref="CashBook"/> class.
         /// </summary>
-        public CashBook()
-        {
+        public CashBook() {
             _currencies = new Map<String, Cash>();
             _currencies.Add(AccountCurrency, new Cash(AccountCurrency, 0, 1.0m));
         }
@@ -60,8 +59,7 @@ package com.quantconnect.lean.Securities
         /// <param name="quantity">The amount of new cash to start</param>
         /// <param name="conversionRate">The conversion rate used to determine the initial
         /// portfolio value/starting capital impact caused by this currency position.</param>
-        public void Add( String symbol, BigDecimal quantity, BigDecimal conversionRate)
-        {
+        public void Add( String symbol, BigDecimal quantity, BigDecimal conversionRate) {
             cash = new Cash(symbol, quantity, conversionRate);
             _currencies.Add(symbol, cash);
         }
@@ -75,14 +73,11 @@ package com.quantconnect.lean.Securities
         /// <param name="symbolPropertiesDatabase">A symbol properties database instance</param>
         /// <param name="marketMap">The market map that decides which market the new security should be in</param>
         /// <returns>Returns a list of added currency securities</returns>
-        public List<Security> EnsureCurrencyDataFeeds(SecurityManager securities, SubscriptionManager subscriptions, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase, IReadOnlyMap<SecurityType,String> marketMap)
-        {
+        public List<Security> EnsureCurrencyDataFeeds(SecurityManager securities, SubscriptionManager subscriptions, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase, IReadOnlyMap<SecurityType,String> marketMap) {
             addedSecurities = new List<Security>();
-            foreach (cash in _currencies.Values)
-            {
+            foreach (cash in _currencies.Values) {
                 security = cash.EnsureCurrencyDataFeed(securities, subscriptions, marketHoursDatabase, symbolPropertiesDatabase, marketMap, this);
-                if (security != null)
-                {
+                if( security != null ) {
                     addedSecurities.Add(security);
                 }
             }
@@ -96,8 +91,7 @@ package com.quantconnect.lean.Securities
         /// <param name="sourceCurrency">The source currency symbol</param>
         /// <param name="destinationCurrency">The destination currency symbol</param>
         /// <returns>The converted value</returns>
-        public BigDecimal Convert( BigDecimal sourceQuantity, String sourceCurrency, String destinationCurrency)
-        {
+        public BigDecimal Convert( BigDecimal sourceQuantity, String sourceCurrency, String destinationCurrency) {
             source = this[sourceCurrency];
             destination = this[destinationCurrency];
             conversionRate = source.ConversionRate*destination.ConversionRate;
@@ -110,8 +104,7 @@ package com.quantconnect.lean.Securities
         /// <param name="sourceQuantity">The quantity of source currency to be converted</param>
         /// <param name="sourceCurrency">The source currency symbol</param>
         /// <returns>The converted value</returns>
-        public BigDecimal ConvertToAccountCurrency( BigDecimal sourceQuantity, String sourceCurrency)
-        {
+        public BigDecimal ConvertToAccountCurrency( BigDecimal sourceQuantity, String sourceCurrency) {
             return Convert(sourceQuantity, sourceCurrency, AccountCurrency);
         }
 
@@ -122,16 +115,14 @@ package com.quantconnect.lean.Securities
         /// A String that represents the current object.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        public override String toString()
-        {
+        public @Override String toString() {
             sb = new StringBuilder();
-            sb.AppendLine( String.format("{0} {1,13}    {2,10} = {3}", "Symbol", "Quantity", "Conversion", "Value in " + AccountCurrency));
-            foreach (value in Values)
-            {
+            sb.AppendLine( String.format( "%1$s {1,13}    {2,10} = {3}", "Symbol", "Quantity", "Conversion", "Value in " + AccountCurrency));
+            foreach (value in Values) {
                 sb.AppendLine(value.toString());
             }
-            sb.AppendLine("-------------------------------------------------");
-            sb.AppendLine( String.format("CashBook Total Value:                {0}{1}", 
+            sb.AppendLine( "-------------------------------------------------");
+            sb.AppendLine( String.format( "CashBook Total Value:                %1$s%2$s", 
                 Currencies.CurrencySymbols[AccountCurrency], 
                 Math.Round(TotalValueInAccountCurrency, 2))
                 );
@@ -163,8 +154,7 @@ package com.quantconnect.lean.Securities
         /// Add the specified item to this CashBook.
         /// </summary>
         /// <param name="item">KeyValuePair of symbol -> Cash item</param>
-        public void Add(KeyValuePair<String, Cash> item)
-        {
+        public void Add(KeyValuePair<String, Cash> item) {
             _currencies.Add(item.Key, item.Value);
         }
 
@@ -173,16 +163,14 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="symbol">The symbol of the Cash value.</param>
         /// <param name="value">Value.</param>
-        public void Add( String symbol, Cash value)
-        {
+        public void Add( String symbol, Cash value) {
             _currencies.Add(symbol, value);
         }
 
         /// <summary>
         /// Clear this instance of all Cash entries.
         /// </summary>
-        public void Clear()
-        {
+        public void Clear() {
             _currencies.Clear();
         }
 
@@ -190,8 +178,7 @@ package com.quantconnect.lean.Securities
         /// Remove the Cash item corresponding to the specified symbol
         /// </summary>
         /// <param name="symbol">The symbolto be removed</param>
-        public boolean Remove( String symbol)
-        {
+        public boolean Remove( String symbol) {
             return _currencies.Remove (symbol);
         }
 
@@ -199,8 +186,7 @@ package com.quantconnect.lean.Securities
         /// Remove the specified item.
         /// </summary>
         /// <param name="item">Item.</param>
-        public boolean Remove(KeyValuePair<String, Cash> item)
-        {
+        public boolean Remove(KeyValuePair<String, Cash> item) {
             return _currencies.Remove(item.Key);
         }
 
@@ -209,8 +195,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <returns><c>true</c>, if key was contained, <c>false</c> otherwise.</returns>
         /// <param name="symbol">Key.</param>
-        public boolean ContainsKey( String symbol)
-        {
+        public boolean ContainsKey( String symbol) {
             return _currencies.ContainsKey(symbol);
         }
 
@@ -221,8 +206,7 @@ package com.quantconnect.lean.Securities
         /// <returns><c>true</c>, if get value was tryed, <c>false</c> otherwise.</returns>
         /// <param name="symbol">The symbol.</param>
         /// <param name="value">Value.</param>
-        public boolean TryGetValue( String symbol, out Cash value)
-        {
+        public boolean TryGetValue( String symbol, out Cash value) {
             return _currencies.TryGetValue(symbol, out value);
         }
 
@@ -230,8 +214,7 @@ package com.quantconnect.lean.Securities
         /// Determines whether the current collection contains the specified value.
         /// </summary>
         /// <param name="item">Item.</param>
-        public boolean Contains(KeyValuePair<String, Cash> item)
-        {
+        public boolean Contains(KeyValuePair<String, Cash> item) {
             return _currencies.Contains(item);
         }
 
@@ -240,8 +223,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="array">Array.</param>
         /// <param name="arrayIndex">Array index.</param>
-        public void CopyTo(KeyValuePair<String, Cash>[] array, int arrayIndex)
-        {
+        public void CopyTo(KeyValuePair<String, Cash>[] array, int arrayIndex) {
             ((Map<String, Cash>) _currencies).CopyTo(array, arrayIndex);
         }
 
@@ -254,9 +236,8 @@ package com.quantconnect.lean.Securities
             get
             {
                 Cash cash;
-                if (!_currencies.TryGetValue(symbol, out cash))
-                {
-                    throw new Exception("This cash symbol (" + symbol + ") was not found in your cash book.");
+                if( !_currencies.TryGetValue(symbol, out cash)) {
+                    throw new Exception( "This cash symbol ( " + symbol + ") was not found in your cash book.");
                 }
                 return cash;
             }
@@ -285,13 +266,11 @@ package com.quantconnect.lean.Securities
         /// Gets the enumerator.
         /// </summary>
         /// <returns>The enumerator.</returns>
-        public IEnumerator<KeyValuePair<String, Cash>> GetEnumerator()
-        {
+        public IEnumerator<KeyValuePair<String, Cash>> GetEnumerator() {
             return _currencies.GetEnumerator();
         }
 
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+        IEnumerator IEnumerable.GetEnumerator() {
             return ((IEnumerable) _currencies).GetEnumerator();
         }
 

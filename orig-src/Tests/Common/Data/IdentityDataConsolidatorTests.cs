@@ -25,15 +25,13 @@ package com.quantconnect.lean.Tests.Common.Data
     {
         [Test]
         [ExpectedException(typeof (ArgumentNullException))]
-        public void ThrowsOnDataOfWrongType()
-        {
+        public void ThrowsOnDataOfWrongType() {
             identity = new IdentityDataConsolidator<Tick>();
             identity.Update(new TradeBar());
         }
 
         [Test]
-        public void ReturnsTheSameObjectReference()
-        {
+        public void ReturnsTheSameObjectReference() {
             identity = new IdentityDataConsolidator<Tick>();
 
             tick = new Tick();
@@ -50,8 +48,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void IgnoresNonTickDataWithSameTimestamps()
-        {
+        public void IgnoresNonTickDataWithSameTimestamps() {
             reference = new DateTime(2015, 09, 23);
             identity = new IdentityDataConsolidator<TradeBar>();
 
@@ -71,8 +68,7 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         [Test]
-        public void AcceptsTickDataWithSameTimestamps()
-        {
+        public void AcceptsTickDataWithSameTimestamps() {
             reference = new DateTime(2015, 09, 23);
             identity = new IdentityDataConsolidator<Tick>();
 

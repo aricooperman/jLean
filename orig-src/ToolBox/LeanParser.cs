@@ -33,10 +33,9 @@ package com.quantconnect.lean.ToolBox
         /// <param name="source">The source file corresponding the the stream</param>
         /// <param name="stream">The input stream to be parsed</param>
         /// <returns>An enumerable of base data</returns>
-        public IEnumerable<BaseData> Parse( String source, Stream stream)
-        {
+        public IEnumerable<BaseData> Parse( String source, Stream stream) {
             pathComponents = LeanDataPathComponents.Parse(source);
-            tickType = pathComponents.Filename.toLowerCase().Contains("_trade")
+            tickType = pathComponents.Filename.toLowerCase().Contains( "_trade")
                 ? TickType.Trade
                 : TickType.Quote;
 
@@ -45,11 +44,9 @@ package com.quantconnect.lean.ToolBox
             
             // ignore time zones here, i.e, we're going to emit data in the data time zone
             config = new SubscriptionDataConfig(dataType, pathComponents.Symbol, pathComponents.Resolution, TimeZones.Utc, TimeZones.Utc, false, true, false);
-            using (reader = new StreamReader(stream))
-            {
+            using (reader = new StreamReader(stream)) {
                 String line;
-                while ((line = reader.ReadLine()) != null)
-                {
+                while ((line = reader.ReadLine()) != null ) {
                     yield return factory.Reader(config, line, pathComponents.Date, false);
                 }
             }
@@ -58,19 +55,15 @@ package com.quantconnect.lean.ToolBox
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
         }
 
-        private Type GetDataType(SecurityType securityType, Resolution resolution, TickType tickType)
-        {
-            if (resolution == Resolution.Tick)
-            {
+        private Type GetDataType(SecurityType securityType, Resolution resolution, TickType tickType) {
+            if( resolution == Resolution.Tick) {
                 return typeof (Tick);
             }
 
-            switch (securityType)
-            {
+            switch (securityType) {
                 case SecurityType.Base:
                 case SecurityType.Equity:
                 case SecurityType.Cfd:
@@ -78,12 +71,12 @@ package com.quantconnect.lean.ToolBox
                     return typeof (TradeBar);
 
                 case SecurityType.Option:
-                    if (tickType == TickType.Trade) return typeof (TradeBar);
-                    if (tickType == TickType.Quote) return typeof (QuoteBar);
+                    if( tickType == TickType.Trade) return typeof (TradeBar);
+                    if( tickType == TickType.Quote) return typeof (QuoteBar);
                     break;
             }
-            parameters = string.Join(" | ", securityType, resolution, tickType);
-            throw new NotImplementedException("LeanParser.GetDataType does has not yet implemented: " + parameters);
+            parameters = String.join( " | ", securityType, resolution, tickType);
+            throw new NotImplementedException( "LeanParser.GetDataType does has not yet implemented: " + parameters);
         }
     }
 }

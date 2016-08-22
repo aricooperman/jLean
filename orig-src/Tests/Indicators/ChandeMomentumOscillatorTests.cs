@@ -22,17 +22,15 @@ package com.quantconnect.lean.Tests.Indicators
     public class ChandeMomentumOscillatorTests
     {
         [Test]
-        public void ComparesAgainstExternalData()
-        {
-            cmo = new ChandeMomentumOscillator("CMO", 5);
+        public void ComparesAgainstExternalData() {
+            cmo = new ChandeMomentumOscillator( "CMO", 5);
 
             TestIndicator(cmo);
         }
 
         [Test]
-        public void ComparesAgainstExternalDataAfterReset()
-        {
-            cmo = new ChandeMomentumOscillator("CMO", 5);
+        public void ComparesAgainstExternalDataAfterReset() {
+            cmo = new ChandeMomentumOscillator( "CMO", 5);
 
             TestIndicator(cmo);
             cmo.Reset();
@@ -40,15 +38,13 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
-            cmo = new ChandeMomentumOscillator("CMO", 5);
+        public void ResetsProperly() {
+            cmo = new ChandeMomentumOscillator( "CMO", 5);
 
             TestHelper.TestIndicatorReset(cmo, "spy_cmo.txt");
         }
 
-        private static void TestIndicator(ChandeMomentumOscillator cmo)
-        {
+        private static void TestIndicator(ChandeMomentumOscillator cmo) {
             TestHelper.TestIndicator(cmo, "spy_cmo.txt", "CMO_5", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value, 1e-3));
         }
     }

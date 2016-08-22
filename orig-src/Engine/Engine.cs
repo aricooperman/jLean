@@ -63,8 +63,7 @@ package com.quantconnect.lean.Lean.Engine
         /// <param name="systemHandlers">The system handlers for controlling acquisition of jobs, messaging, and api calls</param>
         /// <param name="algorithmHandlers">The algorithm handlers for managing algorithm initialization, data, results, transaction, and real time events</param>
         /// <param name="liveMode">True when running in live mode, false otherwises</param>
-        public Engine(LeanEngineSystemHandlers systemHandlers, LeanEngineAlgorithmHandlers algorithmHandlers, boolean liveMode)
-        {
+        public Engine(LeanEngineSystemHandlers systemHandlers, LeanEngineAlgorithmHandlers algorithmHandlers, boolean liveMode) {
             _liveMode = liveMode;
             _systemHandlers = systemHandlers;
             _algorithmHandlers = algorithmHandlers;
@@ -75,8 +74,7 @@ package com.quantconnect.lean.Lean.Engine
         /// </summary>
         /// <param name="job">The algorithm job to be processed</param>
         /// <param name="assemblyPath">The path to the algorithm's assembly</param>
-        public void Run(AlgorithmNodePacket job, String assemblyPath)
-        {
+        public void Run(AlgorithmNodePacket job, String assemblyPath) {
             algorithm = default(IAlgorithm);
             algorithmManager = new AlgorithmManager(_liveMode);
 
@@ -122,10 +120,9 @@ package com.quantconnect.lean.Lean.Engine
                     _algorithmHandlers.HistoryProvider.Initialize(job, _algorithmHandlers.MapFileProvider, _algorithmHandlers.FactorFileProvider, progress =>
                     {
                         // send progress updates to the result handler only during initialization
-                        if (!algorithm.GetLocked() || algorithm.IsWarmingUp)
-                        {
+                        if( !algorithm.GetLocked() || algorithm.IsWarmingUp) {
                             _algorithmHandlers.Results.SendStatusUpdate(AlgorithmStatus.History, 
-                                String.format("Processing history {0}%...", progress));
+                                String.format( "Processing history %1$s%...", progress));
                         }
                     });
                     algorithm.HistoryProvider = _algorithmHandlers.HistoryProvider;
@@ -140,19 +137,17 @@ package com.quantconnect.lean.Lean.Engine
                     _algorithmHandlers.Results.SetAlgorithm(algorithm);
 
                     //If there are any reasons it failed, pass these back to the IDE.
-                    if (!initializeComplete || algorithm.ErrorMessages.Count > 0 || _algorithmHandlers.Setup.Errors.Count > 0)
-                    {
+                    if( !initializeComplete || algorithm.ErrorMessages.Count > 0 || _algorithmHandlers.Setup.Errors.Count > 0) {
                         initializeComplete = false;
                         //Get all the error messages: internal in algorithm and external in setup handler.
-                        errorMessage = String.Join(",", algorithm.ErrorMessages);
-                        errorMessage += String.Join(",", _algorithmHandlers.Setup.Errors);
-                        Log.Error("Engine.Run(): " + errorMessage);
+                        errorMessage = String.Join( ",", algorithm.ErrorMessages);
+                        errorMessage += String.Join( ",", _algorithmHandlers.Setup.Errors);
+                        Log.Error( "Engine.Run(): " + errorMessage);
                         _algorithmHandlers.Results.RuntimeError(errorMessage);
                         _systemHandlers.Api.SetAlgorithmStatus(job.AlgorithmId, AlgorithmStatus.RuntimeError, errorMessage);
                     }
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     Log.Error(err);
                     runtimeMessage = "Algorithm.Initialize() Error: " + err.Message + " Stack Trace: " + err.StackTrace;
                     _algorithmHandlers.Results.RuntimeError(runtimeMessage, err.StackTrace);
@@ -160,8 +155,7 @@ package com.quantconnect.lean.Lean.Engine
                 }
 
                 //-> Using the job + initialization: load the designated handlers:
-                if (initializeComplete)
-                {
+                if( initializeComplete) {
                     //-> Reset the backtest stopwatch; we're now running the algorithm.
                     startTime = DateTime.Now;
 
@@ -180,8 +174,7 @@ package com.quantconnect.lean.Lean.Engine
 
                         // fire brokerage message events
                         algorithm.OnBrokerageMessage(message);
-                        switch (message.Type)
-                        {
+                        switch (message.Type) {
                             case BrokerageMessageType.Disconnect:
                                 algorithm.OnBrokerageDisconnect();
                                 break;
@@ -205,7 +198,7 @@ package com.quantconnect.lean.Lean.Engine
                     threadRealTime.Start(); // RealTime scan time for time based events:
 
                     // Result manager scanning message queue: (started earlier)
-                    _algorithmHandlers.Results.DebugMessage( String.format("Launching analysis for {0} with LEAN Engine v{1}", job.AlgorithmId, Globals.Version));
+                    _algorithmHandlers.Results.DebugMessage( String.format( "Launching analysis for %1$s with LEAN Engine v%2$s", job.AlgorithmId, Globals.Version));
 
                     try
                     {
@@ -223,8 +216,7 @@ package com.quantconnect.lean.Lean.Engine
                                 // -> Send Results to ResultHandler.
                                 algorithmManager.Run(job, algorithm, _algorithmHandlers.DataFeed, _algorithmHandlers.Transactions, _algorithmHandlers.Results, _algorithmHandlers.RealTime, _algorithmHandlers.CommandQueue, isolator.CancellationToken);
                             }
-                            catch (Exception err)
-                            {
+                            catch (Exception err) {
                                 //Debugging at this level is difficult, stack trace needed.
                                 Log.Error(err);
                                 algorithm.RunTimeError = err;
@@ -232,31 +224,27 @@ package com.quantconnect.lean.Lean.Engine
                                 return;
                             }
 
-                            Log.Trace("Engine.Run(): Exiting Algorithm Manager");
+                            Log.Trace( "Engine.Run(): Exiting Algorithm Manager");
                         }, job.RamAllocation);
 
-                        if (!complete)
-                        {
-                            Log.Error("Engine.Main(): Failed to complete in time: " + _algorithmHandlers.Setup.MaximumRuntime.toString("F"));
-                            throw new Exception("Failed to complete algorithm within " + _algorithmHandlers.Setup.MaximumRuntime.toString("F")
+                        if( !complete) {
+                            Log.Error( "Engine.Main(): Failed to complete in time: " + _algorithmHandlers.Setup.MaximumRuntime.toString( "F"));
+                            throw new Exception( "Failed to complete algorithm within " + _algorithmHandlers.Setup.MaximumRuntime.toString( "F")
                                 + " seconds. Please make it run faster.");
                         }
 
                         // Algorithm runtime error:
-                        if (algorithm.RunTimeError != null)
-                        {
+                        if( algorithm.RunTimeError != null ) {
                             throw algorithm.RunTimeError;
                         }
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         //Error running the user algorithm: purge datafeed, send error messages, set algorithm status to failed.
                         Log.Error(err, "Breaking out of parent try catch:");
-                        if (_algorithmHandlers.DataFeed != null) _algorithmHandlers.DataFeed.Exit();
-                        if (_algorithmHandlers.Results != null)
-                        {
+                        if( _algorithmHandlers.DataFeed != null ) _algorithmHandlers.DataFeed.Exit();
+                        if( _algorithmHandlers.Results != null ) {
                             message = "Runtime Error: " + err.Message;
-                            Log.Trace("Engine.Run(): Sending runtime error to user...");
+                            Log.Trace( "Engine.Run(): Sending runtime error to user...");
                             _algorithmHandlers.Results.LogMessage(message);
                             _algorithmHandlers.Results.RuntimeError(message, err.StackTrace);
                             _systemHandlers.Api.SetAlgorithmStatus(job.AlgorithmId, AlgorithmStatus.RuntimeError, message + " Stack Trace: " + err.StackTrace);
@@ -281,10 +269,9 @@ package com.quantconnect.lean.Lean.Engine
                             static final String benchmarkKey = "Benchmark";
 
                             // make sure we've taken samples for these series before just blindly requesting them
-                            if (charts.ContainsKey(strategyEquityKey) &&
+                            if( charts.ContainsKey(strategyEquityKey) &&
                                 charts[strategyEquityKey].Series.ContainsKey(equityKey) &&
-                                charts[strategyEquityKey].Series.ContainsKey(dailyPerformanceKey))
-                            {
+                                charts[strategyEquityKey].Series.ContainsKey(dailyPerformanceKey)) {
                                 equity = charts[strategyEquityKey].Series[equityKey].Values;
                                 performance = charts[strategyEquityKey].Series[dailyPerformanceKey].Values;
                                 profitLoss = new SortedMap<DateTime, decimal>(algorithm.Transactions.TransactionRecord);
@@ -300,15 +287,14 @@ package com.quantconnect.lean.Lean.Engine
                                                 : 0;
 
                                 //Add other fixed parameters.
-                                banner.Add("Unrealized", "$" + algorithm.Portfolio.TotalUnrealizedProfit.toString("N2"));
-                                banner.Add("Fees", "-$" + algorithm.Portfolio.TotalFees.toString("N2"));
-                                banner.Add("Net Profit", "$" + algorithm.Portfolio.TotalProfit.toString("N2"));
-                                banner.Add("Return", netReturn.toString("P"));
-                                banner.Add("Equity", "$" + algorithm.Portfolio.TotalPortfolioValue.toString("N2"));
+                                banner.Add( "Unrealized", "$" + algorithm.Portfolio.TotalUnrealizedProfit.toString( "N2"));
+                                banner.Add( "Fees", "-$" + algorithm.Portfolio.TotalFees.toString( "N2"));
+                                banner.Add( "Net Profit", "$" + algorithm.Portfolio.TotalProfit.toString( "N2"));
+                                banner.Add( "Return", netReturn.toString( "P"));
+                                banner.Add( "Equity", "$" + algorithm.Portfolio.TotalPortfolioValue.toString( "N2"));
                             }
                         }
-                        catch (Exception err)
-                        {
+                        catch (Exception err) {
                             Log.Error(err, "Error generating statistics packet");
                         }
 
@@ -316,14 +302,13 @@ package com.quantconnect.lean.Lean.Engine
                         totalSeconds = (DateTime.Now - startTime).TotalSeconds;
                         dataPoints = algorithmManager.DataPoints + _algorithmHandlers.HistoryProvider.DataPointCount;
                         _algorithmHandlers.Results.DebugMessage(
-                            String.format("Algorithm Id:({0}) completed in {1} seconds at {2}k data points per second. Processing total of {3} data points.",
-                                job.AlgorithmId, totalSeconds.toString("F2"), ((dataPoints/(double) 1000)/totalSeconds).toString("F0"),
-                                dataPoints.toString("N0")));
+                            String.format( "Algorithm Id:(%1$s) completed in %2$s seconds at %3$sk data points per second. Processing total of {3} data points.",
+                                job.AlgorithmId, totalSeconds.toString( "F2"), ((dataPoints/(double) 1000)/totalSeconds).toString( "F0"),
+                                dataPoints.toString( "N0")));
 
                         _algorithmHandlers.Results.SendFinalResult(job, orders, algorithm.Transactions.TransactionRecord, holdings, statisticsResults, banner);
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         Log.Error(err, "Error sending analysis results");
                     }
 
@@ -343,38 +328,34 @@ package com.quantconnect.lean.Lean.Engine
                     || (_algorithmHandlers.Transactions != null && _algorithmHandlers.Transactions.IsActive) 
                     || (_algorithmHandlers.DataFeed != null && _algorithmHandlers.DataFeed.IsActive)
                     || (_algorithmHandlers.RealTime != null && _algorithmHandlers.RealTime.IsActive))
-                    && ts.ElapsedMilliseconds < 30*1000)
-                {
+                    && ts.ElapsedMilliseconds < 30*1000) {
                     Thread.Sleep(100);
-                    Log.Trace("Waiting for threads to exit...");
+                    Log.Trace( "Waiting for threads to exit...");
                 }
 
                 //Terminate threads still in active state.
-                if (threadFeed != null && threadFeed.IsAlive) threadFeed.Abort();
-                if (threadTransactions != null && threadTransactions.IsAlive) threadTransactions.Abort();
-                if (threadResults != null && threadResults.IsAlive) threadResults.Abort();
-                if (statusPingThread != null && statusPingThread.IsAlive) statusPingThread.Abort();
+                if( threadFeed != null && threadFeed.IsAlive) threadFeed.Abort();
+                if( threadTransactions != null && threadTransactions.IsAlive) threadTransactions.Abort();
+                if( threadResults != null && threadResults.IsAlive) threadResults.Abort();
+                if( statusPingThread != null && statusPingThread.IsAlive) statusPingThread.Abort();
 
-                if (brokerage != null)
-                {
-                    Log.Trace("Engine.Run(): Disconnecting from brokerage...");
+                if( brokerage != null ) {
+                    Log.Trace( "Engine.Run(): Disconnecting from brokerage...");
                     brokerage.Disconnect();
                 }
-                if (_algorithmHandlers.Setup != null)
-                {
-                    Log.Trace("Engine.Run(): Disposing of setup handler...");
+                if( _algorithmHandlers.Setup != null ) {
+                    Log.Trace( "Engine.Run(): Disposing of setup handler...");
                     _algorithmHandlers.Setup.Dispose();
                 }
-                Log.Trace("Engine.Main(): Analysis Completed and Results Posted.");
+                Log.Trace( "Engine.Main(): Analysis Completed and Results Posted.");
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err, "Error running algorithm");
             }
             finally
             {
                 //No matter what for live mode; make sure we've set algorithm status in the API for "not running" conditions:
-                if (_liveMode && algorithmManager.State != AlgorithmStatus.Running && algorithmManager.State != AlgorithmStatus.RuntimeError)
+                if( _liveMode && algorithmManager.State != AlgorithmStatus.Running && algorithmManager.State != AlgorithmStatus.RuntimeError)
                     _systemHandlers.Api.SetAlgorithmStatus(job.AlgorithmId, algorithmManager.State);
 
                 _algorithmHandlers.Results.Exit();

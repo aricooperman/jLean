@@ -33,7 +33,7 @@ package com.quantconnect.lean.Util
     /// </summary>
     public class Composer
     {
-        private static readonly String PluginDirectory = Config.Get("plugin-directory");
+        private static readonly String PluginDirectory = Config.Get( "plugin-directory");
 
         /// <summary>
         /// Gets the singleton instance
@@ -44,8 +44,7 @@ package com.quantconnect.lean.Util
         /// Initializes a new instance of the <see cref="Composer"/> class. This type
         /// is a light wrapper on top of an MEF <see cref="CompositionContainer"/>
         /// </summary>
-        public Composer()
-        {
+        public Composer() {
             Reset();
         }
 
@@ -58,11 +57,9 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="predicate">Function used to pick which imported instance to return, if null the first instance is returned</param>
         /// <returns>The only export matching the specified predicate</returns>
-        public T Single<T>(Func<T, bool> predicate)
-        {
-            if (predicate == null)
-            {
-                throw new ArgumentNullException("predicate");
+        public T Single<T>(Func<T, bool> predicate) {
+            if( predicate == null ) {
+                throw new ArgumentNullException( "predicate");
             }
 
             return GetExportedValues<T>().Single(predicate);
@@ -73,13 +70,10 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <typeparam name="T">The contract type</typeparam>
         /// <param name="instance">The instance to add</param>
-        public void AddPart<T>(T instance)
-        {
-            lock (_exportedValuesLockObject)
-            {
+        public void AddPart<T>(T instance) {
+            lock (_exportedValuesLockObject) {
                 IEnumerable values;
-                if (_exportedValues.TryGetValue(typeof (T), out values))
-                {
+                if( _exportedValues.TryGetValue(typeof (T), out values)) {
                     ((IList<T>) values).Add(instance);
                 }
                 else
@@ -104,17 +98,14 @@ package com.quantconnect.lean.Util
         {
             try
             {
-                lock (_exportedValuesLockObject)
-                {
+                lock (_exportedValuesLockObject) {
                     T instance;
                     IEnumerable values;
                     type = typeof(T);
-                    if (_exportedValues.TryGetValue(type, out values))
-                    {
+                    if( _exportedValues.TryGetValue(type, out values)) {
                         // if we've alread loaded this part, then just return the same one
                         instance = values.OfType<T>().FirstOrDefault(x => x.GetType().MatchesTypeName(typeName));
-                        if (instance != null)
-                        {
+                        if( instance != null ) {
                             return instance;
                         }
                     }
@@ -127,8 +118,7 @@ package com.quantconnect.lean.Util
                         .Select(x => x.part)
                         .FirstOrDefault();
 
-                    if (selectedPart == null)
-                    {
+                    if( selectedPart == null ) {
                         throw new ArgumentException(
                             "Unable to locate any exports matching the requested typeName: " + typeName, "typeName");
                     }
@@ -139,8 +129,7 @@ package com.quantconnect.lean.Util
                     instance = (T)selectedPart.CreatePart().GetExportedValue(exportDefinition);
 
                     // cache the new value for next time
-                    if (values == null)
-                    {
+                    if( values == null ) {
                         values = new List<T> { instance };
                         _exportedValues[type] = values;
                     }
@@ -152,15 +141,13 @@ package com.quantconnect.lean.Util
                     return instance;
                 }
             } 
-            catch (ReflectionTypeLoadException err) 
-            {
-                foreach (exception in err.LoaderExceptions)
-                {
+            catch (ReflectionTypeLoadException err) {
+                foreach (exception in err.LoaderExceptions) {
                     Log.Error(exception);
                     Log.Error(exception.toString());
                 }
 
-                if (err.InnerException != null) Log.Error(err.InnerException);
+                if( err.InnerException != null ) Log.Error(err.InnerException);
 
                 throw;
             }
@@ -168,13 +155,10 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Gets all exports of type T
         /// </summary>
-        public IEnumerable<T> GetExportedValues<T>()
-        {
-            lock (_exportedValuesLockObject)
-            {
+        public IEnumerable<T> GetExportedValues<T>() {
+            lock (_exportedValuesLockObject) {
                 IEnumerable values;
-                if (_exportedValues.TryGetValue(typeof (T), out values))
-                {
+                if( _exportedValues.TryGetValue(typeof (T), out values)) {
                     return values.OfType<T>();
                 }
 
@@ -187,18 +171,15 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Clears the cache of exported values, causing new instances to be created.
         /// </summary>
-        public void Reset()
-        {
-            lock(_exportedValuesLockObject)
-            {
+        public void Reset() {
+            lock(_exportedValuesLockObject) {
                 // grab assemblies from current executing directory
                 catalogs = new List<ComposablePartCatalog>
                 {
                     new DirectoryCatalog(AppDomain.CurrentDomain.BaseDirectory, "*.dll"),
                     new DirectoryCatalog(AppDomain.CurrentDomain.BaseDirectory, "*.exe")
                 };
-                if (!string.IsNullOrWhiteSpace(PluginDirectory) && Directory.Exists(PluginDirectory) && new DirectoryInfo(PluginDirectory).FullName != AppDomain.CurrentDomain.BaseDirectory)
-                {
+                if( !string.IsNullOrWhiteSpace(PluginDirectory) && Directory.Exists(PluginDirectory) && new DirectoryInfo(PluginDirectory).FullName != AppDomain.CurrentDomain.BaseDirectory) {
                     catalogs.Add(new DirectoryCatalog(PluginDirectory, "*.dll"));
                 }
                 aggregate = new AggregateCatalog(catalogs);

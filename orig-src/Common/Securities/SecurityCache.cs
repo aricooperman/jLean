@@ -87,50 +87,43 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Add a new market data point to the local security cache for the current market price.
         /// </summary>
-        public void AddData(BaseData data)
-        {
+        public void AddData(BaseData data) {
             _lastData = data;
             _dataByType[data.GetType()] = data;
 
             tick = data as Tick;
-            if (tick != null)
-            {
-                if (tick.Value != 0) Price = tick.Value;
+            if( tick != null ) {
+                if( tick.Value != 0) Price = tick.Value;
 
-                if (tick.BidPrice != 0) BidPrice = tick.BidPrice;
-                if (tick.BidSize != 0) BidSize = tick.BidSize;
+                if( tick.BidPrice != 0) BidPrice = tick.BidPrice;
+                if( tick.BidSize != 0) BidSize = tick.BidSize;
 
-                if (tick.AskPrice != 0) AskPrice = tick.AskPrice;
-                if (tick.AskSize != 0) AskSize = tick.AskSize;
+                if( tick.AskPrice != 0) AskPrice = tick.AskPrice;
+                if( tick.AskSize != 0) AskSize = tick.AskSize;
             }
             bar = data as IBar;
-            if (bar != null)
-            {
-                if (_lastQuoteBarUpdate != data.EndTime)
-                {
-                    if (bar.Open != 0) Open = bar.Open;
-                    if (bar.High != 0) High = bar.High;
-                    if (bar.Low != 0) Low = bar.Low;
-                    if (bar.Close != 0)
-                    {
+            if( bar != null ) {
+                if( _lastQuoteBarUpdate != data.EndTime) {
+                    if( bar.Open != 0) Open = bar.Open;
+                    if( bar.High != 0) High = bar.High;
+                    if( bar.Low != 0) Low = bar.Low;
+                    if( bar.Close != 0) {
                         Price = bar.Close;
                         Close = bar.Close;
                     }
                 }
 
                 tradeBar = bar as TradeBar;
-                if (tradeBar != null)
-                {
-                    if (tradeBar.Volume != 0) Volume = tradeBar.Volume;
+                if( tradeBar != null ) {
+                    if( tradeBar.Volume != 0) Volume = tradeBar.Volume;
                 }
                 quoteBar = bar as QuoteBar;
-                if (quoteBar != null)
-                {
+                if( quoteBar != null ) {
                     _lastQuoteBarUpdate = quoteBar.EndTime;
-                    if (quoteBar.Ask != null && quoteBar.Ask.Close != 0) AskPrice = quoteBar.Ask.Close;
-                    if (quoteBar.Bid != null && quoteBar.Bid.Close != 0) BidPrice = quoteBar.Bid.Close;
-                    if (quoteBar.LastBidSize != 0) BidSize = quoteBar.LastBidSize;
-                    if (quoteBar.LastAskSize != 0) AskSize = quoteBar.LastAskSize;
+                    if( quoteBar.Ask != null && quoteBar.Ask.Close != 0) AskPrice = quoteBar.Ask.Close;
+                    if( quoteBar.Bid != null && quoteBar.Bid.Close != 0) BidPrice = quoteBar.Bid.Close;
+                    if( quoteBar.LastBidSize != 0) BidSize = quoteBar.LastBidSize;
+                    if( quoteBar.LastAskSize != 0) AskSize = quoteBar.LastAskSize;
                 }
             }
             else
@@ -143,8 +136,7 @@ package com.quantconnect.lean.Securities
         /// Get last data packet recieved for this security
         /// </summary>
         /// <returns>BaseData type of the security</returns>
-        public BaseData GetData()
-        {
+        public BaseData GetData() {
             return _lastData;
         }
 
@@ -164,8 +156,7 @@ package com.quantconnect.lean.Securities
         /// <summary>
         /// Reset cache storage and free memory
         /// </summary>
-        public void Reset()
-        {
+        public void Reset() {
             _dataByType.Clear();
         }
     }

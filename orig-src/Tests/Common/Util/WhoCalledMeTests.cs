@@ -22,8 +22,7 @@ package com.quantconnect.lean.Tests.Common.Util
     public class WhoCalledMeTests
     {
         [Test]
-        public void GetMethodNameTest()
-        {
+        public void GetMethodNameTest() {
             String expected = "WhoCalledMeTests.GetMethodNameTest";
             String actual = WhoCalledMe.GetMethodName(0);
             Assert.AreEqual(expected, actual);

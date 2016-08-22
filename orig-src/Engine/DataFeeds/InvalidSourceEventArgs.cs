@@ -44,8 +44,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="source">The source that was considered invalid</param>
         /// <param name="exception">The exception that was encountered</param>
-        public InvalidSourceEventArgs(SubscriptionDataSource source, Exception exception)
-        {
+        public InvalidSourceEventArgs(SubscriptionDataSource source, Exception exception) {
             Source = source;
             Exception = exception;
         }

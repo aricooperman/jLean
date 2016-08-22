@@ -31,8 +31,7 @@ package com.quantconnect.lean.Data
         /// </summary>
         /// <param name="slices">The enumerable of slice</param>
         /// <returns>An enumerable of TradeBars</returns>
-        public static IEnumerable<TradeBars> TradeBars(this IEnumerable<Slice> slices)
-        {
+        public static IEnumerable<TradeBars> TradeBars(this IEnumerable<Slice> slices) {
             return slices.Where(x => x.Bars.Count > 0).Select(x => x.Bars);
         }
 
@@ -41,8 +40,7 @@ package com.quantconnect.lean.Data
         /// </summary>
         /// <param name="slices">The enumerable of slice</param>
         /// <returns>An enumerable of Ticks</returns>
-        public static IEnumerable<Ticks> Ticks(this IEnumerable<Slice> slices)
-        {
+        public static IEnumerable<Ticks> Ticks(this IEnumerable<Slice> slices) {
             return slices.Where(x => x.Ticks.Count > 0).Select(x => x.Ticks);
         }
 
@@ -53,8 +51,7 @@ package com.quantconnect.lean.Data
         /// <param name="slices">The enumerable of slice</param>
         /// <param name="symbol">The symbol to retrieve</param>
         /// <returns>An enumerable of TradeBar for the matching symbol, of no TradeBar found for symbol, empty enumerable is returned</returns>
-        public static IEnumerable<TradeBar> Get(this IEnumerable<Slice> slices, Symbol symbol)
-        {
+        public static IEnumerable<TradeBar> Get(this IEnumerable<Slice> slices, Symbol symbol) {
             return slices.TradeBars().Where(x => x.ContainsKey(symbol)).Select(x => x[symbol]);
         }
 
@@ -80,19 +77,16 @@ package com.quantconnect.lean.Data
         /// <param name="symbol">The symbol to retrieve</param>
         /// <param name="field">The field to access</param>
         /// <returns>An enumerable of decimals</returns>
-        public static IEnumerable<decimal> Get<T>(this IEnumerable<DataMap<T>> dataDictionaries, Symbol symbol, String field)
-        {
+        public static IEnumerable<decimal> Get<T>(this IEnumerable<DataMap<T>> dataDictionaries, Symbol symbol, String field) {
             Func<T, decimal> selector;
-            if (typeof (DynamicData).IsAssignableFrom(typeof (T)))
-            {
+            if( typeof (DynamicData).IsAssignableFrom(typeof (T))) {
                 selector = data =>
                 {
                     dyn = (DynamicData) (object) data;
                     return (decimal) dyn.GetProperty(field);
                 };
             }
-            else if (typeof (T) == typeof (List<Tick>))
-            {
+            else if( typeof (T) == typeof (List<Tick>)) {
                 // perform the selection on the last tick
                 // NOTE: This is a known bug, should be updated to perform the selection on each item in the list
                 dataSelector = (Func<Tick, decimal>) ExpressionBuilder.MakePropertyOrFieldSelector(typeof (Tick), field).Compile();
@@ -103,11 +97,9 @@ package com.quantconnect.lean.Data
                 selector = (Func<T, decimal>) ExpressionBuilder.MakePropertyOrFieldSelector(typeof (T), field).Compile();
             }
 
-            foreach (dataDictionary in dataDictionaries)
-            {
+            foreach (dataDictionary in dataDictionaries) {
                 T item;
-                if (dataDictionary.TryGetValue(symbol, out item))
-                {
+                if( dataDictionary.TryGetValue(symbol, out item)) {
                     yield return selector(item);
                 }
             }
@@ -146,14 +138,11 @@ package com.quantconnect.lean.Data
         /// <param name="symbol">The symbol to retrieve</param>
         /// <param name="field">The field selector used to access the dats</param>
         /// <returns>An enumerable of decimal</returns>
-        public static IEnumerable<decimal> Get(this IEnumerable<Slice> slices, Symbol symbol, Func<BaseData, decimal> field)
-        {
-            foreach (slice in slices)
-            {
+        public static IEnumerable<decimal> Get(this IEnumerable<Slice> slices, Symbol symbol, Func<BaseData, decimal> field) {
+            foreach (slice in slices) {
                 dynamic item;
-                if (slice.TryGetValue(symbol, out item))
-                {
-                    if (item is List<Tick>) yield return field(item.Last());
+                if( slice.TryGetValue(symbol, out item)) {
+                    if( item is List<Tick>) yield return field(item.Last());
                     else yield return field(item);
                 }
             }
@@ -164,8 +153,7 @@ package com.quantconnect.lean.Data
         /// </summary>
         /// <param name="decimals">The enumerable of decimal</param>
         /// <returns>Double array representing the enumerable of decimal</returns>
-        public static double[] ToDoubleArray(this IEnumerable<decimal> decimals)
-        {
+        public static double[] ToDoubleArray(this IEnumerable<decimal> decimals) {
             return decimals.Select(x => (double) x).ToArray();
         }
     }

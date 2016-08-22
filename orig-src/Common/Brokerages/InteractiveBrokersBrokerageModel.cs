@@ -32,8 +32,7 @@ package com.quantconnect.lean.Brokerages
         /// <param name="accountType">The type of account to be modelled, defaults to 
         /// <see cref="QuantConnect.AccountType.Margin"/></param>
         public InteractiveBrokersBrokerageModel(AccountType accountType = AccountType.Margin)
-            : base(accountType)
-        {
+            : base(accountType) {
         }
 
         /// <summary>
@@ -47,13 +46,11 @@ package com.quantconnect.lean.Brokerages
         /// <param name="order">The order to be processed</param>
         /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be submitted</param>
         /// <returns>True if the brokerage could process the order, false otherwise</returns>
-        public override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message)
-        {
+        public @Override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
             message = null;
 
             //https://www.interactivebrokers.com/en/?f=%2Fen%2Ftrading%2FforexOrderSize.php
-            switch (order.SecurityType)
-            {
+            switch (order.SecurityType) {
                 case SecurityType.Base:
                     return false;
                 case SecurityType.Equity:
@@ -79,12 +76,10 @@ package com.quantconnect.lean.Brokerages
         /// <param name="request">The requested update to be made to the order</param>
         /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be updated</param>
         /// <returns>True if the brokerage would allow updating the order, false otherwise</returns>
-        public override boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message)
-        {
+        public @Override boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message) {
             message = null;
 
-            if (order.SecurityType == SecurityType.Forex && request.Quantity != null)
-            {
+            if( order.SecurityType == SecurityType.Forex && request.Quantity != null ) {
                 return IsForexWithinOrderSizeLimits(order.Symbol.Value, request.Quantity.Value, out message);
             }
 
@@ -101,16 +96,14 @@ package com.quantconnect.lean.Brokerages
         /// <param name="security"></param>
         /// <param name="order">The order to test for execution</param>
         /// <returns>True if the brokerage would be able to perform the execution, false otherwise</returns>
-        public override boolean CanExecuteOrder(Security security, Order order)
-        {
+        public @Override boolean CanExecuteOrder(Security security, Order order) {
             return order.SecurityType != SecurityType.Base;
         }
 
         /// <summary>
         /// Returns true if the specified order is within IB's order size limits
         /// </summary>
-        private boolean IsForexWithinOrderSizeLimits( String currencyPair, int quantity, out BrokerageMessageEvent message)
-        {
+        private boolean IsForexWithinOrderSizeLimits( String currencyPair, int quantity, out BrokerageMessageEvent message) {
             /* https://www.interactivebrokers.com/en/?f=%2Fen%2Ftrading%2FforexOrderSize.php
             Currency    Currency Description	    Minimum Order Size	Maximum Order Size
             USD	        US Dollar	        	    25,000              7,000,000
@@ -146,18 +139,16 @@ package com.quantconnect.lean.Brokerages
             ForexCurrencyLimits.TryGetValue(baseCurrency, out max);
 
             orderIsWithinForexSizeLimits = quantity < max;
-            if (!orderIsWithinForexSizeLimits)
-            {
+            if( !orderIsWithinForexSizeLimits) {
                 message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "OrderSizeLimit",
-                    String.format("The maximum allowable order size is {0}{1}.", max, baseCurrency)
+                    String.format( "The maximum allowable order size is %1$s%2$s.", max, baseCurrency)
                     );
             }
             return orderIsWithinForexSizeLimits;
         }
 
 
-        private static readonly IReadOnlyMap<String, decimal> ForexCurrencyLimits = new Map<String, decimal>()
-        {
+        private static readonly IReadOnlyMap<String, decimal> ForexCurrencyLimits = new Map<String, decimal>() {
             {"USD", 7000000m},
             {"AUD", 6000000m},
             {"CAD", 6000000m},

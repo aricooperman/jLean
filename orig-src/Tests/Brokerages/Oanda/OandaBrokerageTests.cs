@@ -27,18 +27,17 @@ using Environment = QuantConnect.Brokerages.Oanda.Environment;
 
 package com.quantconnect.lean.Tests.Brokerages.Oanda
 {
-    [TestFixture, Ignore("This test requires a configured and testable Oanda practice account")]
+    [TestFixture, Ignore( "This test requires a configured and testable Oanda practice account")]
     public partial class OandaBrokerageTests : BrokerageTests
     {
         /// <summary>
         ///     Creates the brokerage under test and connects it
         /// </summary>
         /// <returns>A connected brokerage instance</returns>
-        protected override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider)
-        {
-            environment = Config.Get("oanda-environment").ConvertTo<Environment>();
-            accessToken = Config.Get("oanda-access-token");
-            accountId = Config.Get("oanda-account-id").ConvertTo<Integer>();
+        protected @Override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider) {
+            environment = Config.Get( "oanda-environment").ConvertTo<Environment>();
+            accessToken = Config.Get( "oanda-access-token");
+            accountId = Config.Get( "oanda-account-id").ConvertTo<Integer>();
 
             return new OandaBrokerage(orderProvider, securityProvider, environment, accessToken, accountId);
         }
@@ -46,15 +45,15 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
         /// <summary>
         ///     Gets the symbol to be traded, must be shortable
         /// </summary>
-        protected override Symbol Symbol
+        protected @Override Symbol Symbol
         {
-            get { return Symbol.Create("EURUSD", SecurityType.Forex, Market.Oanda); }
+            get { return Symbol.Create( "EURUSD", SecurityType.Forex, Market.Oanda); }
         }
 
         /// <summary>
         ///     Gets the security type associated with the <see cref="BrokerageTests.Symbol" />
         /// </summary>
-        protected override SecurityType SecurityType
+        protected @Override SecurityType SecurityType
         {
             get { return SecurityType.Forex; }
         }
@@ -62,7 +61,7 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
         /// <summary>
         ///     Gets a high price for the specified symbol so a limit sell won't fill
         /// </summary>
-        protected override BigDecimal HighPrice
+        protected @Override BigDecimal HighPrice
         {
             get { return 5m; }
         }
@@ -70,7 +69,7 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
         /// <summary>
         ///     Gets a low price for the specified symbol so a limit buy won't fill
         /// </summary>
-        protected override BigDecimal LowPrice
+        protected @Override BigDecimal LowPrice
         {
             get { return 0.32m; }
         }
@@ -78,22 +77,20 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
         /// <summary>
         ///     Gets the current market price of the specified security
         /// </summary>
-        protected override BigDecimal GetAskPrice(Symbol symbol)
-        {
+        protected @Override BigDecimal GetAskPrice(Symbol symbol) {
             oanda = (OandaBrokerage) Brokerage;
             quotes = oanda.GetRates(new List<String> { new OandaSymbolMapper().GetBrokerageSymbol(symbol) });
             return (decimal)quotes[0].ask;
         }
 
         [Test]
-        public void ValidateLimitOrders()
-        {
+        public void ValidateLimitOrders() {
             oanda = (OandaBrokerage)Brokerage;
             symbol = Symbol;
             quotes = oanda.GetRates(new List<String> { new OandaSymbolMapper().GetBrokerageSymbol(symbol) });
 
             // Buy Limit order below market
-            limitPrice = Convert.ToDecimal(quotes[0].bid - 0.5);
+            limitPrice = new BigDecimal( quotes[0].bid - 0.5);
             order = new LimitOrder(symbol, 1, limitPrice, DateTime.Now);
             Assert.IsTrue(oanda.PlaceOrder(order));
 
@@ -101,100 +98,95 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
             Assert.IsTrue(oanda.UpdateOrder(order));
 
             // move Buy Limit order above market
-            order.LimitPrice = Convert.ToDecimal(quotes[0].ask + 0.5);
+            order.LimitPrice = new BigDecimal( quotes[0].ask + 0.5);
             Assert.IsTrue(oanda.UpdateOrder(order));
         }
 
         [Test]
-        public void ValidateStopMarketOrders()
-        {
+        public void ValidateStopMarketOrders() {
             oanda = (OandaBrokerage)Brokerage;
             symbol = Symbol;
             quotes = oanda.GetRates(new List<String> { new OandaSymbolMapper().GetBrokerageSymbol(symbol) });
 
             // Buy StopMarket order below market
-            price = Convert.ToDecimal(quotes[0].bid - 0.5);
+            price = new BigDecimal( quotes[0].bid - 0.5);
             order = new StopMarketOrder(symbol, 1, price, DateTime.Now);
             Assert.IsTrue(oanda.PlaceOrder(order));
 
             // Buy StopMarket order above market
-            price = Convert.ToDecimal(quotes[0].ask + 0.5);
+            price = new BigDecimal( quotes[0].ask + 0.5);
             order = new StopMarketOrder(symbol, 1, price, DateTime.Now);
             Assert.IsTrue(oanda.PlaceOrder(order));
 
             // Sell StopMarket order below market
-            price = Convert.ToDecimal(quotes[0].bid - 0.5);
+            price = new BigDecimal( quotes[0].bid - 0.5);
             order = new StopMarketOrder(symbol, -1, price, DateTime.Now);
             Assert.IsTrue(oanda.PlaceOrder(order));
 
             // Sell StopMarket order above market
-            price = Convert.ToDecimal(quotes[0].ask + 0.5);
+            price = new BigDecimal( quotes[0].ask + 0.5);
             order = new StopMarketOrder(symbol, -1, price, DateTime.Now);
             Assert.IsTrue(oanda.PlaceOrder(order));
         }
 
         [Test]
-        public void ValidateStopLimitOrders()
-        {
+        public void ValidateStopLimitOrders() {
             oanda = (OandaBrokerage) Brokerage;
             symbol = Symbol;
             quotes = oanda.GetRates(new List<String> {new OandaSymbolMapper().GetBrokerageSymbol(symbol)});
 
             // Buy StopLimit order below market (Oanda accepts this order but cancels it immediately)
-            stopPrice = Convert.ToDecimal(quotes[0].bid - 0.5);
+            stopPrice = new BigDecimal( quotes[0].bid - 0.5);
             limitPrice = stopPrice + 0.0005m;
             order = new StopLimitOrder(symbol, 1, stopPrice, limitPrice, DateTime.Now);
             Assert.IsTrue(oanda.PlaceOrder(order));
 
             // Buy StopLimit order above market
-            stopPrice = Convert.ToDecimal(quotes[0].ask + 0.5);
+            stopPrice = new BigDecimal( quotes[0].ask + 0.5);
             limitPrice = stopPrice + 0.0005m;
             order = new StopLimitOrder(symbol, 1, stopPrice, limitPrice, DateTime.Now);
             Assert.IsTrue(oanda.PlaceOrder(order));
 
             // Sell StopLimit order below market
-            stopPrice = Convert.ToDecimal(quotes[0].bid - 0.5);
+            stopPrice = new BigDecimal( quotes[0].bid - 0.5);
             limitPrice = stopPrice - 0.0005m;
             order = new StopLimitOrder(symbol, -1, stopPrice, limitPrice, DateTime.Now);
             Assert.IsTrue(oanda.PlaceOrder(order));
 
             // Sell StopLimit order above market (Oanda accepts this order but cancels it immediately)
-            stopPrice = Convert.ToDecimal(quotes[0].ask + 0.5);
+            stopPrice = new BigDecimal( quotes[0].ask + 0.5);
             limitPrice = stopPrice - 0.0005m;
             order = new StopLimitOrder(symbol, -1, stopPrice, limitPrice, DateTime.Now);
             Assert.IsTrue(oanda.PlaceOrder(order));
         }
 
-        [Test, Ignore("This test requires disconnecting the internet to test for connection resiliency")]
-        public void ClientReconnectsAfterInternetDisconnect()
-        {
+        [Test, Ignore( "This test requires disconnecting the internet to test for connection resiliency")]
+        public void ClientReconnectsAfterInternetDisconnect() {
             brokerage = Brokerage;
             Assert.IsTrue(brokerage.IsConnected);
 
-            tenMinutes = TimeSpan.FromMinutes(10);
+            tenMinutes = Duration.ofMinutes(10);
 
-            Console.WriteLine("------");
-            Console.WriteLine("Waiting for internet disconnection ");
-            Console.WriteLine("------");
+            Console.WriteLine( "------");
+            Console.WriteLine( "Waiting for internet disconnection ");
+            Console.WriteLine( "------");
 
             // spin while we manually disconnect the internet
-            while (brokerage.IsConnected)
-            {
+            while (brokerage.IsConnected) {
                 Thread.Sleep(2500);
-                Console.Write(".");
+                Console.Write( ".");
             }
 
             stopwatch = Stopwatch.StartNew();
 
-            Console.WriteLine("------");
-            Console.WriteLine("Trying to reconnect ");
-            Console.WriteLine("------");
+            Console.WriteLine( "------");
+            Console.WriteLine( "Trying to reconnect ");
+            Console.WriteLine( "------");
 
             // spin until we're reconnected
-            while (!brokerage.IsConnected && stopwatch.Elapsed < tenMinutes)
-            {
+            while (!brokerage.IsConnected && stopwatch.Elapsed < tenMinutes) {
                 Thread.Sleep(2500);
-                Console.Write(".");
+                Console.Write( ".");
             }
 
             Assert.IsTrue(brokerage.IsConnected);

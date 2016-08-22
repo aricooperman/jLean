@@ -37,8 +37,7 @@ package com.quantconnect.lean.Statistics
             internal BigDecimal MaxPrice { get; set; }
             internal BigDecimal MinPrice { get; set; }
 
-            public Position()
-            {
+            public Position() {
                 PendingTrades = new List<Trade>();
                 PendingFills = new List<OrderEvent>();
             }
@@ -58,8 +57,7 @@ package com.quantconnect.lean.Statistics
         /// <summary>
         /// Initializes a new instance of the <see cref="TradeBuilder"/> class
         /// </summary>
-        public TradeBuilder(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod)
-        {
+        public TradeBuilder(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             _groupingMethod = groupingMethod;
             _matchingMethod = matchingMethod;
         }
@@ -68,8 +66,7 @@ package com.quantconnect.lean.Statistics
         /// Sets the live mode flag
         /// </summary>
         /// <param name="live">The live mode flag</param>
-        public void SetLiveMode( boolean live)
-        {
+        public void SetLiveMode( boolean live) {
             _liveMode = live;
         }
 
@@ -86,12 +83,11 @@ package com.quantconnect.lean.Statistics
         /// </summary>
         /// <param name="symbol">The symbol</param>
         /// <returns>true if there is an open position for the symbol</returns>
-        public boolean HasOpenPosition(Symbol symbol)
-        {
+        public boolean HasOpenPosition(Symbol symbol) {
             Position position;
-            if (!_positions.TryGetValue(symbol, out position)) return false;
+            if( !_positions.TryGetValue(symbol, out position)) return false;
 
-            if (_groupingMethod == FillGroupingMethod.FillToFill)
+            if( _groupingMethod == FillGroupingMethod.FillToFill)
                 return position.PendingTrades.Count > 0;
 
             return position.PendingFills.Count > 0;
@@ -102,14 +98,13 @@ package com.quantconnect.lean.Statistics
         /// </summary>
         /// <param name="symbol"></param>
         /// <param name="price"></param>
-        public void SetMarketPrice(Symbol symbol, BigDecimal price)
-        {
+        public void SetMarketPrice(Symbol symbol, BigDecimal price) {
             Position position;
-            if (!_positions.TryGetValue(symbol, out position)) return;
+            if( !_positions.TryGetValue(symbol, out position)) return;
 
-            if (price > position.MaxPrice)
+            if( price > position.MaxPrice)
                 position.MaxPrice = price;
-            else if (price < position.MinPrice)
+            else if( price < position.MinPrice)
                 position.MinPrice = price;
         }
 
@@ -118,19 +113,16 @@ package com.quantconnect.lean.Statistics
         /// </summary>
         /// <param name="fill">The new fill order event</param>
         /// <param name="conversionRate">The current market conversion rate into the account currency</param>
-        public void ProcessFill(OrderEvent fill, BigDecimal conversionRate)
-        {
+        public void ProcessFill(OrderEvent fill, BigDecimal conversionRate) {
             // If we have multiple fills per order, we assign the order fee only to its first fill
             // to avoid counting the same order fee multiple times.
             orderFee = 0m;
-            if (!_ordersWithFeesAssigned.Contains(fill.OrderId))
-            {
+            if( !_ordersWithFeesAssigned.Contains(fill.OrderId)) {
                 orderFee = fill.OrderFee;
                 _ordersWithFeesAssigned.Add(fill.OrderId);
             }
 
-            switch (_groupingMethod)
-            {
+            switch (_groupingMethod) {
                 case FillGroupingMethod.FillToFill:
                     ProcessFillUsingFillToFill(fill.Clone(), orderFee, conversionRate);
                     break;
@@ -145,11 +137,9 @@ package com.quantconnect.lean.Statistics
             }
         }
 
-        private void ProcessFillUsingFillToFill(OrderEvent fill, BigDecimal orderFee, BigDecimal conversionRate)
-        {
+        private void ProcessFillUsingFillToFill(OrderEvent fill, BigDecimal orderFee, BigDecimal conversionRate) {
             Position position;
-            if (!_positions.TryGetValue(fill.Symbol, out position) || position.PendingTrades.Count == 0)
-            {
+            if( !_positions.TryGetValue(fill.Symbol, out position) || position.PendingTrades.Count == 0) {
                 // no pending trades for symbol
                 _positions[fill.Symbol] = new Position
                 {
@@ -175,8 +165,7 @@ package com.quantconnect.lean.Statistics
 
             index = _matchingMethod == FillMatchingMethod.FIFO ? 0 : position.PendingTrades.Count - 1;
 
-            if (Math.Sign(fill.FillQuantity) == (position.PendingTrades[index].Direction == TradeDirection.Long ? +1 : -1))
-            {
+            if( Math.Sign(fill.FillQuantity) == (position.PendingTrades[index].Direction == TradeDirection.Long ? +1 : -1)) {
                 // execution has same direction of trade
                 position.PendingTrades.Add(new Trade
                 {
@@ -193,16 +182,14 @@ package com.quantconnect.lean.Statistics
                 // execution has opposite direction of trade
                 totalExecutedQuantity = 0;
                 orderFeeAssigned = false;
-                while (position.PendingTrades.Count > 0 && Math.Abs(totalExecutedQuantity) < fill.AbsoluteFillQuantity)
-                {
+                while (position.PendingTrades.Count > 0 && Math.Abs(totalExecutedQuantity) < fill.AbsoluteFillQuantity) {
                     trade = position.PendingTrades[index];
 
-                    if (fill.AbsoluteFillQuantity >= trade.Quantity)
-                    {
+                    if( fill.AbsoluteFillQuantity >= trade.Quantity) {
                         totalExecutedQuantity -= trade.Quantity * (trade.Direction == TradeDirection.Long ? +1 : -1);
                         position.PendingTrades.RemoveAt(index);
 
-                        if (index > 0 && _matchingMethod == FillMatchingMethod.LIFO) index--;
+                        if( index > 0 && _matchingMethod == FillMatchingMethod.LIFO) index--;
 
                         trade.ExitTime = fill.UtcTime;
                         trade.ExitPrice = fill.FillPrice;
@@ -240,12 +227,10 @@ package com.quantconnect.lean.Statistics
                     orderFeeAssigned = true;
                 }
 
-                if (Math.Abs(totalExecutedQuantity) == fill.AbsoluteFillQuantity && position.PendingTrades.Count == 0)
-                {
+                if( Math.Abs(totalExecutedQuantity) == fill.AbsoluteFillQuantity && position.PendingTrades.Count == 0) {
                     _positions.Remove(fill.Symbol);
                 }
-                else if (Math.Abs(totalExecutedQuantity) < fill.AbsoluteFillQuantity)
-                {
+                else if( Math.Abs(totalExecutedQuantity) < fill.AbsoluteFillQuantity) {
                     // direction reversal
                     fill.FillQuantity -= totalExecutedQuantity;
                     position.PendingTrades = new List<Trade>
@@ -266,11 +251,9 @@ package com.quantconnect.lean.Statistics
             }
         }
 
-        private void ProcessFillUsingFlatToFlat(OrderEvent fill, BigDecimal orderFee, BigDecimal conversionRate)
-        {
+        private void ProcessFillUsingFlatToFlat(OrderEvent fill, BigDecimal orderFee, BigDecimal conversionRate) {
             Position position;
-            if (!_positions.TryGetValue(fill.Symbol, out position) || position.PendingFills.Count == 0)
-            {
+            if( !_positions.TryGetValue(fill.Symbol, out position) || position.PendingFills.Count == 0) {
                 // no pending executions for symbol
                 _positions[fill.Symbol] = new Position
                 {
@@ -284,8 +267,7 @@ package com.quantconnect.lean.Statistics
 
             SetMarketPrice(fill.Symbol, fill.FillPrice);
 
-            if (Math.Sign(position.PendingFills[0].FillQuantity) == Math.Sign(fill.FillQuantity))
-            {
+            if( Math.Sign(position.PendingFills[0].FillQuantity) == Math.Sign(fill.FillQuantity)) {
                 // execution has same direction of trade
                 position.PendingFills.Add(fill);
                 position.TotalFees += orderFee;
@@ -293,8 +275,7 @@ package com.quantconnect.lean.Statistics
             else
             {
                 // execution has opposite direction of trade
-                if (position.PendingFills.Sum(x => x.FillQuantity) + fill.FillQuantity == 0 || fill.AbsoluteFillQuantity > Math.Abs(position.PendingFills.Sum(x => x.FillQuantity)))
-                {
+                if( position.PendingFills.Sum(x => x.FillQuantity) + fill.FillQuantity == 0 || fill.AbsoluteFillQuantity > Math.Abs(position.PendingFills.Sum(x => x.FillQuantity))) {
                     // trade closed
                     position.PendingFills.Add(fill);
                     position.TotalFees += orderFee;
@@ -309,10 +290,8 @@ package com.quantconnect.lean.Statistics
                     entryAveragePrice = 0m;
                     exitAveragePrice = 0m;
 
-                    while (position.PendingFills.Count > 0)
-                    {
-                        if (Math.Sign(position.PendingFills[index].FillQuantity) != Math.Sign(fill.FillQuantity))
-                        {
+                    while (position.PendingFills.Count > 0) {
+                        if( Math.Sign(position.PendingFills[index].FillQuantity) != Math.Sign(fill.FillQuantity)) {
                             // entry
                             totalEntryQuantity += position.PendingFills[index].FillQuantity;
                             entryAveragePrice += (position.PendingFills[index].FillPrice - entryAveragePrice) * position.PendingFills[index].FillQuantity / totalEntryQuantity;
@@ -325,7 +304,7 @@ package com.quantconnect.lean.Statistics
                         }
                         position.PendingFills.RemoveAt(index);
 
-                        if (_matchingMethod == FillMatchingMethod.LIFO && index > 0) index--;
+                        if( _matchingMethod == FillMatchingMethod.LIFO && index > 0) index--;
                     }
 
                     direction = Math.Sign(fill.FillQuantity) < 0 ? TradeDirection.Long : TradeDirection.Short;
@@ -347,8 +326,7 @@ package com.quantconnect.lean.Statistics
 
                     _positions.Remove(fill.Symbol);
 
-                    if (reverseQuantity != 0)
-                    {
+                    if( reverseQuantity != 0) {
                         // direction reversal
                         fill.FillQuantity = reverseQuantity;
                         _positions[fill.Symbol] = new Position
@@ -369,11 +347,9 @@ package com.quantconnect.lean.Statistics
             }
         }
 
-        private void ProcessFillUsingFlatToReduced(OrderEvent fill, BigDecimal orderFee, BigDecimal conversionRate)
-        {
+        private void ProcessFillUsingFlatToReduced(OrderEvent fill, BigDecimal orderFee, BigDecimal conversionRate) {
             Position position;
-            if (!_positions.TryGetValue(fill.Symbol, out position) || position.PendingFills.Count == 0)
-            {
+            if( !_positions.TryGetValue(fill.Symbol, out position) || position.PendingFills.Count == 0) {
                 // no pending executions for symbol
                 _positions[fill.Symbol] = new Position
                 {
@@ -389,8 +365,7 @@ package com.quantconnect.lean.Statistics
 
             index = _matchingMethod == FillMatchingMethod.FIFO ? 0 : position.PendingFills.Count - 1;
 
-            if (Math.Sign(fill.FillQuantity) == Math.Sign(position.PendingFills[index].FillQuantity))
-            {
+            if( Math.Sign(fill.FillQuantity) == Math.Sign(position.PendingFills[index].FillQuantity)) {
                 // execution has same direction of trade
                 position.PendingFills.Add(fill);
                 position.TotalFees += orderFee;
@@ -403,18 +378,16 @@ package com.quantconnect.lean.Statistics
                 entryPrice = 0m;
                 position.TotalFees += orderFee;
 
-                while (position.PendingFills.Count > 0 && Math.Abs(totalExecutedQuantity) < fill.AbsoluteFillQuantity)
-                {
-                    if (fill.AbsoluteFillQuantity >= Math.Abs(position.PendingFills[index].FillQuantity))
-                    {
-                        if (_matchingMethod == FillMatchingMethod.LIFO)
+                while (position.PendingFills.Count > 0 && Math.Abs(totalExecutedQuantity) < fill.AbsoluteFillQuantity) {
+                    if( fill.AbsoluteFillQuantity >= Math.Abs(position.PendingFills[index].FillQuantity)) {
+                        if( _matchingMethod == FillMatchingMethod.LIFO)
                             entryTime = position.PendingFills[index].UtcTime;
 
                         totalExecutedQuantity -= position.PendingFills[index].FillQuantity;
                         entryPrice -= (position.PendingFills[index].FillPrice - entryPrice) * position.PendingFills[index].FillQuantity / totalExecutedQuantity;
                         position.PendingFills.RemoveAt(index);
 
-                        if (_matchingMethod == FillMatchingMethod.LIFO && index > 0) index--;
+                        if( _matchingMethod == FillMatchingMethod.LIFO && index > 0) index--;
                     }
                     else
                     {
@@ -441,8 +414,7 @@ package com.quantconnect.lean.Statistics
                     MFE = Math.Round((direction == TradeDirection.Long ? position.MaxPrice - entryPrice : entryPrice - position.MinPrice) * Math.Abs(totalExecutedQuantity) * conversionRate, 2)
                 });
 
-                if (Math.Abs(totalExecutedQuantity) < fill.AbsoluteFillQuantity)
-                {
+                if( Math.Abs(totalExecutedQuantity) < fill.AbsoluteFillQuantity) {
                     // direction reversal
                     fill.FillQuantity -= totalExecutedQuantity;
                     position.PendingFills = new List<OrderEvent> { fill };
@@ -450,9 +422,8 @@ package com.quantconnect.lean.Statistics
                     position.MinPrice = fill.FillPrice;
                     position.MaxPrice = fill.FillPrice;
                 }
-                else if (Math.Abs(totalExecutedQuantity) == fill.AbsoluteFillQuantity)
-                {
-                    if (position.PendingFills.Count == 0)
+                else if( Math.Abs(totalExecutedQuantity) == fill.AbsoluteFillQuantity) {
+                    if( position.PendingFills.Count == 0)
                         _positions.Remove(fill.Symbol);
                     else
                         position.TotalFees = 0;
@@ -463,23 +434,20 @@ package com.quantconnect.lean.Statistics
         /// <summary>
         /// Adds a trade to the list of closed trades, capping the total number only in live mode
         /// </summary>
-        private void AddNewTrade(Trade trade)
-        {
+        private void AddNewTrade(Trade trade) {
             _closedTrades.Add(trade);
 
             // Due to memory constraints in live mode, we cap the number of trades
-            if (!_liveMode) 
+            if( !_liveMode) 
                 return;
 
             // maximum number of trades
-            if (_closedTrades.Count > LiveModeMaxTradeCount)
-            {
+            if( _closedTrades.Count > LiveModeMaxTradeCount) {
                 _closedTrades.RemoveRange(0, _closedTrades.Count - LiveModeMaxTradeCount);
             }
 
             // maximum age of trades
-            while (_closedTrades.Count > 0 && _closedTrades[0].ExitTime.Date.AddMonths(LiveModeMaxTradeAgeMonths) < DateTime.Today)
-            {
+            while (_closedTrades.Count > 0 && _closedTrades[0].ExitTime.Date.AddMonths(LiveModeMaxTradeAgeMonths) < DateTime.Today) {
                 _closedTrades.RemoveAt(0);
             }
         }

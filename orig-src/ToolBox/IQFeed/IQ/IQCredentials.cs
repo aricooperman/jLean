@@ -18,8 +18,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
 {
     public class IQCredentials
     {
-        public IQCredentials( String loginId = "", String password = "", boolean autoConnect = false, boolean saveCredentials = true)
-        {
+        public IQCredentials( String loginId = "", String password = "", boolean autoConnect = false, boolean saveCredentials = true) {
             _loginId = loginId;
             _password = password;
             _autoConnect = autoConnect;

@@ -25,14 +25,12 @@ package com.quantconnect.lean.Tests.Indicators
     public class SimpleMovingAverageTests
     {
         [Test]
-        public void SMAComputesCorrectly()
-        {
+        public void SMAComputesCorrectly() {
             sma = new SimpleMovingAverage(4);
             data = new[] {1m, 10m, 100m, 1000m, 10000m, 1234m, 56789m};
 
             seen = new List<decimal>();
-            for (int i = 0; i < data.Length; i++)
-            {
+            for (int i = 0; i < data.Length; i++) {
                 datum = data[i];
                 seen.Add(datum);
                 sma.Update(new IndicatorDataPoint(DateTime.Now.AddSeconds(i), datum));
@@ -41,8 +39,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void IsReadyAfterPeriodUpdates()
-        {
+        public void IsReadyAfterPeriodUpdates() {
             sma = new SimpleMovingAverage(3);
 
             sma.Update(DateTime.UtcNow, 1m);
@@ -53,12 +50,10 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             sma = new SimpleMovingAverage(3);
 
-            foreach (data in TestHelper.GetDataStream(4))
-            {
+            foreach (data in TestHelper.GetDataStream(4)) {
                 sma.Update(data);
             }
             Assert.IsTrue(sma.IsReady);
@@ -72,8 +67,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void CompareAgainstExternalData()
-        {
+        public void CompareAgainstExternalData() {
             sma = new SimpleMovingAverage(14);
             TestHelper.TestIndicator(sma, "SMA14", 1e-2); // test file only has
         }

@@ -27,8 +27,7 @@ package com.quantconnect.lean.Brokerages
         /// </summary>
         /// <param name="message">The error message that explains the reason for the exception.</param>
         public BrokerageException( String message)
-            : base(message)
-        {
+            : base(message) {
         }
 
         /// <summary>
@@ -37,8 +36,7 @@ package com.quantconnect.lean.Brokerages
         /// <param name="message">The error message that explains the reason for the exception.</param>
         /// <param name="inner">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.</param>
         public BrokerageException( String message, Exception inner)
-            : base(message, inner)
-        {
+            : base(message, inner) {
         }
     }
 }

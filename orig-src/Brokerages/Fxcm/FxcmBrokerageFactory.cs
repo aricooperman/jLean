@@ -34,8 +34,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// Initializes a new instance of the <see cref="FxcmBrokerageFactory"/> class
         /// </summary>
         public FxcmBrokerageFactory()
-            : base(typeof(FxcmBrokerage))
-        {
+            : base(typeof(FxcmBrokerage)) {
         }
 
         /// <summary>
@@ -45,17 +44,17 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
         /// </remarks>
-        public override Map<String,String> BrokerageData
+        public @Override Map<String,String> BrokerageData
         {
             get
             {
                 return new Map<String,String>
                 {
-                    { "fxcm-server", Config.Get("fxcm-server", DefaultServer) },
-                    { "fxcm-terminal", Config.Get("fxcm-terminal", DefaultTerminal) },
-                    { "fxcm-user-name", Config.Get("fxcm-user-name") },
-                    { "fxcm-password", Config.Get("fxcm-password") },
-                    { "fxcm-account-id", Config.Get("fxcm-account-id") }
+                    { "fxcm-server", Config.Get( "fxcm-server", DefaultServer) },
+                    { "fxcm-terminal", Config.Get( "fxcm-terminal", DefaultTerminal) },
+                    { "fxcm-user-name", Config.Get( "fxcm-user-name") },
+                    { "fxcm-password", Config.Get( "fxcm-password") },
+                    { "fxcm-account-id", Config.Get( "fxcm-account-id") }
                 };
             }
         }
@@ -63,7 +62,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// Gets a new instance of the <see cref="FxcmBrokerageModel"/>
         /// </summary>
-        public override IBrokerageModel BrokerageModel
+        public @Override IBrokerageModel BrokerageModel
         {
             get { return new FxcmBrokerageModel(); }
         }
@@ -74,8 +73,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <param name="job">The job packet to create the brokerage for</param>
         /// <param name="algorithm">The algorithm instance</param>
         /// <returns>A new brokerage instance</returns>
-        public override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm)
-        {
+        public @Override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm) {
             errors = new List<String>();
 
             // read values from the brokerage data
@@ -85,8 +83,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
             password = Read<String>(job.BrokerageData, "fxcm-password", errors);
             accountId = Read<String>(job.BrokerageData, "fxcm-account-id", errors);
 
-            if (errors.Count != 0)
-            {
+            if( errors.Count != 0) {
                 // if we had errors then we can't create the instance
                 throw new Exception( String.Join(Environment.NewLine, errors));
             }
@@ -101,8 +98,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public override void Dispose()
-        {
+        public @Override void Dispose() {
         }
 
     }

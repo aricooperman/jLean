@@ -41,23 +41,20 @@ package com.quantconnect.lean.Brokerages.Oanda.Session
         private boolean _shutdown;
         private Task _runningTask;
 
-        protected StreamSession(int accountId)
-        {
+        protected StreamSession(int accountId) {
             _accountId = accountId;
         }
 
         public event DataHandler DataReceived;
 
-        public void OnDataReceived(T data)
-        {
+        public void OnDataReceived(T data) {
             handler = DataReceived;
-            if (handler != null) handler(data);
+            if( handler != null ) handler(data);
         }
 
         protected abstract WebResponse GetSession();
 
-        public void StartSession()
-        {
+        public void StartSession() {
             _shutdown = false;
             _response = GetSession();
 
@@ -65,8 +62,7 @@ package com.quantconnect.lean.Brokerages.Oanda.Session
             {
                 serializer = new DataContractJsonSerializer(typeof(T));
                 reader = new StreamReader(_response.GetResponseStream());
-                while (!_shutdown)
-                {
+                while (!_shutdown) {
                     memStream = new MemoryStream();
 
                     line = reader.ReadLine();
@@ -80,20 +76,17 @@ package com.quantconnect.lean.Brokerages.Oanda.Session
             });
         }
 
-        public void StopSession()
-        {
+        public void StopSession() {
             _shutdown = true;
 
             try
             {
                 // wait for task to finish
-                if (_runningTask != null)
-                {
+                if( _runningTask != null ) {
                     _runningTask.Wait();
                 }
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 // we can get here if the socket has been closed (i.e. after a long disconnection)
             }
 
@@ -101,14 +94,12 @@ package com.quantconnect.lean.Brokerages.Oanda.Session
             {
                 // close and dispose of previous session
                 httpResponse = _response as HttpWebResponse;
-                if (httpResponse != null)
-                {
+                if( httpResponse != null ) {
                     httpResponse.Close();
                     httpResponse.Dispose();
                 }
             }
-            catch (Exception)
-            {
+            catch (Exception) {
                 // we can get here if the socket has been closed (i.e. after a long disconnection)
             }
         }

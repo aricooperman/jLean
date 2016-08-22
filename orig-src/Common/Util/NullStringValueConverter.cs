@@ -24,16 +24,14 @@ package com.quantconnect.lean.Util
     /// </summary>
     /// <typeparam name="T">The output type of the converter</typeparam>
     public class NullStringValueConverter<T> : JsonConverter
-        where T : new()
-    {
+        where T : new() {
         /// <summary>
         /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param>
         /// <param name="value">The value.</param>
         /// <param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
+        public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
             throw new NotImplementedException();
         }
 
@@ -47,10 +45,8 @@ package com.quantconnect.lean.Util
         /// <returns>
         /// The object value.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            if (reader.TokenType == JsonToken.Null || (reader.TokenType == JsonToken.String && ( String)reader.Value == "null"))
-            {
+        public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+            if( reader.TokenType == JsonToken.Null || (reader.TokenType == JsonToken.String && ( String)reader.Value == "null")) {
                 return new T();
             }
             return serializer.Deserialize<T>(reader);
@@ -63,8 +59,7 @@ package com.quantconnect.lean.Util
         /// <returns>
         /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
         /// </returns>
-        public override boolean CanConvert(Type objectType)
-        {
+        public @Override boolean CanConvert(Type objectType) {
             throw new NotImplementedException();
         }
     }

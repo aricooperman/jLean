@@ -38,10 +38,8 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// Get the next ticks from the live trading data queue
         /// </summary>
         /// <returns>IEnumerable list of ticks since the last update.</returns>
-        public IEnumerable<BaseData> GetNextTicks()
-        {
-            lock (_ticks)
-            {
+        public IEnumerable<BaseData> GetNextTicks() {
+            lock (_ticks) {
                 copy = _ticks.ToArray();
                 _ticks.Clear();
                 return copy;
@@ -53,31 +51,27 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// </summary>
         /// <param name="job">Job we're subscribing for:</param>
         /// <param name="symbols">The symbols to be added keyed by SecurityType</param>
-        public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols)
-        {
+        public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             symbolsToSubscribe = (from symbol in symbols 
                                       where !_subscribedSymbols.Contains(symbol) 
                                       select symbol).ToList();
-            if (symbolsToSubscribe.Count == 0)
+            if( symbolsToSubscribe.Count == 0)
                 return;
 
-            Log.Trace("FxcmBrokerage.Subscribe(): {0}", string.Join(",", symbolsToSubscribe));
+            Log.Trace( "FxcmBrokerage.Subscribe(): %1$s", String.join( ",", symbolsToSubscribe));
 
             request = new MarketDataRequest();
-            foreach (symbol in symbolsToSubscribe)
-            {
+            foreach (symbol in symbolsToSubscribe) {
                 request.addRelatedSymbol(_fxcmInstruments[_symbolMapper.GetBrokerageSymbol(symbol)]);
             }
             request.setSubscriptionRequestType(SubscriptionRequestTypeFactory.SUBSCRIBE);
             request.setMDEntryTypeSet(MarketDataRequest.MDENTRYTYPESET_ALL);
 
-            lock (_locker)
-            {
+            lock (_locker) {
                 _gateway.sendMessage(request);
             }
 
-            foreach (symbol in symbolsToSubscribe)
-            {
+            foreach (symbol in symbolsToSubscribe) {
                 _subscribedSymbols.Add(symbol);
             }
         }
@@ -87,31 +81,27 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// </summary>
         /// <param name="job">Job we're processing.</param>
         /// <param name="symbols">The symbols to be removed keyed by SecurityType</param>
-        public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols)
-        {
+        public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             symbolsToUnsubscribe = (from symbol in symbols 
                                         where _subscribedSymbols.Contains(symbol) 
                                         select symbol).ToList();
-            if (symbolsToUnsubscribe.Count == 0)
+            if( symbolsToUnsubscribe.Count == 0)
                 return;
 
-            Log.Trace("FxcmBrokerage.Unsubscribe(): {0}", string.Join(",", symbolsToUnsubscribe));
+            Log.Trace( "FxcmBrokerage.Unsubscribe(): %1$s", String.join( ",", symbolsToUnsubscribe));
 
             request = new MarketDataRequest();
-            foreach (symbol in symbolsToUnsubscribe)
-            {
+            foreach (symbol in symbolsToUnsubscribe) {
                 request.addRelatedSymbol(_fxcmInstruments[_symbolMapper.GetBrokerageSymbol(symbol)]);
             }
             request.setSubscriptionRequestType(SubscriptionRequestTypeFactory.UNSUBSCRIBE);
             request.setMDEntryTypeSet(MarketDataRequest.MDENTRYTYPESET_ALL);
 
-            lock (_locker)
-            {
+            lock (_locker) {
                 _gateway.sendMessage(request);
             }
 
-            foreach (symbol in symbolsToUnsubscribe)
-            {
+            foreach (symbol in symbolsToUnsubscribe) {
                 _subscribedSymbols.Remove(symbol);
             }
         }

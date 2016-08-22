@@ -33,14 +33,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         /// </summary>
         /// <param name="source">The remote url to be downloaded via web client</param>
         /// <param name="downloadDirectory">The local directory and destination of the download</param>
-        public RemoteFileSubscriptionStreamReader( String source, String downloadDirectory)
-        {
+        public RemoteFileSubscriptionStreamReader( String source, String downloadDirectory) {
             // create a hash for a new filename
             filename = Guid.NewGuid() + source.GetExtension();
             destination = Path.Combine(downloadDirectory, filename);
 
-            using (client = new WebClient())
-            {
+            using (client = new WebClient()) {
                 client.Proxy = WebRequest.GetSystemWebProxy();
                 client.DownloadFile(source, destination);
             }
@@ -68,16 +66,14 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         /// <summary>
         /// Gets the next line/batch of content from the stream 
         /// </summary>
-        public String ReadLine()
-        {
+        public String ReadLine() {
             return _streamReader.ReadLine();
         }
 
         /// <summary>
         /// Disposes of the stream
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
             _streamReader.Dispose();
         }
     }

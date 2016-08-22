@@ -28,8 +28,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// Gets the current time in UTC
         /// </summary>
         /// <returns>The current time in UTC</returns>
-        public DateTime GetUtcNow()
-        {
+        public DateTime GetUtcNow() {
             return DateTime.UtcNow;
         }
     }

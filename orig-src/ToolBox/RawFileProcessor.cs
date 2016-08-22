@@ -39,8 +39,7 @@ package com.quantconnect.lean.ToolBox
         /// <summary>
         /// Initializes a new instance of the <see cref="RawFileProcessor"/> class
         /// </summary>
-        public RawFileProcessor(IStreamProvider streamProvider, IStreamParser parser, params IDataProcessor[] processors)
-        {
+        public RawFileProcessor(IStreamProvider streamProvider, IStreamParser parser, params IDataProcessor[] processors) {
             _streamProvider = streamProvider;
             _parser = parser;
             _processors = processors;
@@ -55,18 +54,14 @@ package com.quantconnect.lean.ToolBox
         /// <param name="streamParser">Instance capable of parsing the provided stream</param>
         /// <param name="processors">The data processors to process the parsed data</param>
         /// <returns>True if the operation completed without error, otherwise false</returns>
-        public static boolean Run( String name, IEnumerable<String> sources, IStreamProvider streamProvider, IStreamParser streamParser, params IDataProcessor[] processors)
-        {
-            using (processor = new RawFileProcessor(streamProvider, streamParser, processors) { Name = name })
-            {
-                foreach (zip in sources)
-                {
+        public static boolean Run( String name, IEnumerable<String> sources, IStreamProvider streamProvider, IStreamParser streamParser, params IDataProcessor[] processors) {
+            using (processor = new RawFileProcessor(streamProvider, streamParser, processors) { Name = name }) {
+                foreach (zip in sources) {
                     try
                     {
                         processor.Process(zip);
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         Log.Error(err);
                         return false;
                     }
@@ -79,45 +74,37 @@ package com.quantconnect.lean.ToolBox
         /// Perform processing on the specified source file
         /// </summary>
         /// <param name="source">The source file to be processed</param>
-        public void Process( String source)
-        {
+        public void Process( String source) {
             _start = _start ?? DateTime.UtcNow;
 
             // process the source file
-            foreach (stream in _streamProvider.Open(source))
-            {
-                using (stream)
-                {
-                    foreach (data in _parser.Parse(source, stream))
-                    {
-                        foreach (processor in _processors)
-                        {
+            foreach (stream in _streamProvider.Open(source)) {
+                using (stream) {
+                    foreach (data in _parser.Parse(source, stream)) {
+                        foreach (processor in _processors) {
                             processor.Process(data);
                         }
                     }
                 }
             }
 
-            Log.Trace("RawFileProcessor.Process({0}): Finished.", source);
+            Log.Trace( "RawFileProcessor.Process(%1$s): Finished.", source);
             _streamProvider.Close(source);
         }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
+        public void Dispose() {
             _streamProvider.Dispose();
             _parser.Dispose();
-            foreach (processor in _processors)
-            {
+            foreach (processor in _processors) {
                 processor.Dispose();
             }
 
-            if (_start.HasValue)
-            {
+            if( _start.HasValue) {
                 stop = DateTime.UtcNow;
-                Log.Trace("RawFileProcessor.Dispose({0}): Elapsed {1}", Name, stop - _start);
+                Log.Trace( "RawFileProcessor.Dispose(%1$s): Elapsed %2$s", Name, stop - _start);
             }
         }
     }

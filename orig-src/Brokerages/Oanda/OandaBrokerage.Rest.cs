@@ -41,36 +41,29 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// Gets the list of available tradable instruments/products from Oanda
         /// </summary>
         /// <returns></returns>
-        private List<Instrument> GetInstruments(List<String> instrumentNames = null)
-        {
+        private List<Instrument> GetInstruments(List<String> instrumentNames = null ) {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Rates) + "instruments?accountId=" + _accountId;
-            if (instrumentNames != null)
-            {
-                requestString += "&instruments=" + Uri.EscapeDataString( String.Join(",", instrumentNames));
+            if( instrumentNames != null ) {
+                requestString += "&instruments=" + Uri.EscapeDataString( String.Join( ",", instrumentNames));
             }
             return MakeRequest<InstrumentsResponse>(requestString).instruments;
         }
 
-        private static void PopulateOrderRequestParameters(Order order, Map<String,String> requestParams)
-        {
-            if (order.Direction != OrderDirection.Buy && order.Direction != OrderDirection.Sell)
-            {
-                throw new Exception("Invalid Order Direction");
+        private static void PopulateOrderRequestParameters(Order order, Map<String,String> requestParams) {
+            if( order.Direction != OrderDirection.Buy && order.Direction != OrderDirection.Sell) {
+                throw new Exception( "Invalid Order Direction");
             }
 
-            requestParams.Add("side", order.Direction == OrderDirection.Buy ? "buy" : "sell");
+            requestParams.Add( "side", order.Direction == OrderDirection.Buy ? "buy" : "sell");
 
-            if (order.Type == OrderType.Market)
-            {
-                requestParams.Add("type", "market");
+            if( order.Type == OrderType.Market) {
+                requestParams.Add( "type", "market");
             }
 
-            if (order.Type == OrderType.Limit)
-            {
-                requestParams.Add("type", "limit");
-                requestParams.Add("price", ((LimitOrder)order).LimitPrice.toString(CultureInfo.InvariantCulture));
-                switch (order.Direction)
-                {
+            if( order.Type == OrderType.Limit) {
+                requestParams.Add( "type", "limit");
+                requestParams.Add( "price", ((LimitOrder)order).LimitPrice.toString(CultureInfo.InvariantCulture));
+                switch (order.Direction) {
                     case OrderDirection.Buy:
                         //Limit Order Does not like Lower Bound Values == Limit Price value
                         //Don't set bounds when placing limit orders. 
@@ -85,35 +78,32 @@ package com.quantconnect.lean.Brokerages.Oanda
                 }
 
                 //3 months is the max expiry for Oanda, and OrderDuration.GTC is only currently available
-                requestParams.Add("expiry", XmlConvert.toString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
+                requestParams.Add( "expiry", XmlConvert.toString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
             }
 
             //this type should contain a stop and a limit to that stop.
-            if (order.Type == OrderType.StopLimit)
-            {
-                requestParams.Add("type", "stop");
-                requestParams.Add("price", ((StopLimitOrder)order).StopPrice.toString(CultureInfo.InvariantCulture));
-                switch (order.Direction)
-                {
+            if( order.Type == OrderType.StopLimit) {
+                requestParams.Add( "type", "stop");
+                requestParams.Add( "price", ((StopLimitOrder)order).StopPrice.toString(CultureInfo.InvariantCulture));
+                switch (order.Direction) {
                     case OrderDirection.Buy:
-                        requestParams.Add("upperBound", ((StopLimitOrder)order).LimitPrice.toString(CultureInfo.InvariantCulture));
+                        requestParams.Add( "upperBound", ((StopLimitOrder)order).LimitPrice.toString(CultureInfo.InvariantCulture));
                         break;
                     case OrderDirection.Sell:
-                        requestParams.Add("lowerBound", ((StopLimitOrder)order).LimitPrice.toString(CultureInfo.InvariantCulture));
+                        requestParams.Add( "lowerBound", ((StopLimitOrder)order).LimitPrice.toString(CultureInfo.InvariantCulture));
                         break;
                 }
 
                 //3 months is the max expiry for Oanda, and OrderDuration.GTC is only currently available
-                requestParams.Add("expiry", XmlConvert.toString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
+                requestParams.Add( "expiry", XmlConvert.toString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
             }
 
-            if (order.Type == OrderType.StopMarket)
-            {
-                requestParams.Add("type", "marketIfTouched");
-                requestParams.Add("price", ((StopMarketOrder)order).StopPrice.toString(CultureInfo.InvariantCulture));
+            if( order.Type == OrderType.StopMarket) {
+                requestParams.Add( "type", "marketIfTouched");
+                requestParams.Add( "price", ((StopMarketOrder)order).StopPrice.toString(CultureInfo.InvariantCulture));
 
                 //3 months is the max expiry for Oanda, and OrderDuration.GTC is only currently available
-                requestParams.Add("expiry", XmlConvert.toString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
+                requestParams.Add( "expiry", XmlConvert.toString(DateTime.Now.AddMonths(3), XmlDateTimeSerializationMode.Utc));
             }
         }
 
@@ -121,35 +111,28 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// Event handler for streaming events
         /// </summary>
         /// <param name="data">The event object</param>
-        private void OnEventReceived(Event data)
-        {
-            if (data.IsHeartbeat())
-            {
-                lock (_lockerConnectionMonitor)
-                {
+        private void OnEventReceived(Event data) {
+            if( data.IsHeartbeat()) {
+                lock (_lockerConnectionMonitor) {
                     _lastHeartbeatUtcTime = DateTime.UtcNow;
                 }
                 return;
             }
 
-            if (data.transaction != null)
-            {
-                if (data.transaction.type == "ORDER_FILLED")
-                {
+            if( data.transaction != null ) {
+                if( data.transaction.type == "ORDER_FILLED") {
                     qcOrder = _orderProvider.GetOrderByBrokerageId(data.transaction.orderId);
                     qcOrder.PriceCurrency = _securityProvider.GetSecurity(qcOrder.Symbol).SymbolProperties.QuoteCurrency;
 
                     static final int orderFee = 0;
-                    fill = new OrderEvent(qcOrder, DateTime.UtcNow, orderFee, "Oanda Fill Event")
-                    {
+                    fill = new OrderEvent(qcOrder, DateTime.UtcNow, orderFee, "Oanda Fill Event") {
                         Status = OrderStatus.Filled,
                         FillPrice = (decimal)data.transaction.price,
                         FillQuantity = data.transaction.units
                     };
 
                     // flip the quantity on sell actions
-                    if (qcOrder.Direction == OrderDirection.Sell)
-                    {
+                    if( qcOrder.Direction == OrderDirection.Sell) {
                         fill.FillQuantity *= -1;
                     }
                     OnOrderEvent(fill);
@@ -162,23 +145,20 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// </summary>
         /// <param name="orderId">the identifier of the order to update</param>
         /// <param name="requestParams">the parameters to update (name, value pairs)</param>
-        private void UpdateOrder(long orderId, Map<String,String> requestParams)
-        {
+        private void UpdateOrder(long orderId, Map<String,String> requestParams) {
             orderRequest = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId + "/orders/" + orderId;
 
             order = MakeRequest<DataType.Order>(orderRequest);
-            if (order != null && order.id > 0)
-            {
+            if( order != null && order.id > 0) {
                 requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId + "/orders/" + orderId;
                 MakeRequestWithBody<DataType.Order>(requestString, "PATCH", requestParams);
             }
             else
             {
                 OnMessage(new BrokerageMessageEvent(BrokerageMessageType.Warning, "UpdateFailed", "Failed to update Oanda order id: " + orderId + "."));
-                OnOrderEvent(new OrderEvent(ConvertOrder(order), DateTime.UtcNow, 0)
-                {
+                OnOrderEvent(new OrderEvent(ConvertOrder(order), DateTime.UtcNow, 0) {
                     Status = OrderStatus.Invalid,
-                    Message = String.format("Order currently does not exist with order id: {0}.", orderId)
+                    Message = String.format( "Order currently does not exist with order id: %1$s.", orderId)
                 });
             }
         }
@@ -188,11 +168,10 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// </summary>
         /// <param name="instruments">the list of instruments to check</param>
         /// <returns>List of Price objects with the current price for each instrument</returns>
-        public List<Price> GetRates(List<String> instruments)
-        {
+        public List<Price> GetRates(List<String> instruments) {
             requestBuilder = new StringBuilder(EndpointResolver.ResolveEndpoint(_environment, Server.Rates) + "prices?instruments=");
-            requestBuilder.Append( String.Join(",", instruments));
-            requestString = requestBuilder.toString().Replace(",", "%2C");
+            requestBuilder.Append( String.Join( ",", instruments));
+            requestString = requestBuilder.toString().Replace( ",", "%2C");
 
             return MakeRequest<PricesResponse>(requestString).prices;
         }
@@ -202,8 +181,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// </summary>
         /// <param name="requestParams">the parameters to use in the request</param>
         /// <returns>PostOrderResponse with details of the results (throws if if fails)</returns>
-        private PostOrderResponse PostOrderAsync(Map<String,String> requestParams)
-        {
+        private PostOrderResponse PostOrderAsync(Map<String,String> requestParams) {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId + "/orders";
             return MakeRequestWithBody<PostOrderResponse>(requestString, "POST", requestParams);
         }
@@ -213,8 +191,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// </summary>
         /// <param name="requestParams">optional additional parameters for the request (name, value pairs)</param>
         /// <returns>List of Order objects (or empty list, if no orders)</returns>
-        private List<DataType.Order> GetOrderList(Map<String,String> requestParams = null)
-        {
+        private List<DataType.Order> GetOrderList(Map<String,String> requestParams = null ) {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId + "/orders";
             ordersResponse = MakeRequest<OrdersResponse>(requestString, "GET", requestParams);
             orders = new List<DataType.Order>();
@@ -222,18 +199,15 @@ package com.quantconnect.lean.Brokerages.Oanda
             return orders;
         }
 
-        private void CancelOrder(long orderId)
-        {
+        private void CancelOrder(long orderId) {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId + "/orders/" + orderId;
             MakeRequest<DataType.Order>(requestString, "DELETE");
         }
 
-        private static Stream GetResponseStream(WebResponse response)
-        {
+        private static Stream GetResponseStream(WebResponse response) {
             stream = response.GetResponseStream();
-            if (response.Headers["Content-Encoding"] == "gzip")
-            {	// if we received a gzipped response, handle that
-                if (stream != null) stream = new GZipStream(stream, CompressionMode.Decompress);
+            if( response.Headers["Content-Encoding"] == "gzip") {	// if we received a gzipped response, handle that
+                if( stream != null ) stream = new GZipStream(stream, CompressionMode.Decompress);
             }
             return stream;
         }
@@ -244,9 +218,8 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// <param name="instruments">list of instruments to stream rates for</param>
         /// <param name="accountId">the account ID you want to stream on</param>
         /// <returns>the WebResponse object that can be used to retrieve the rates as they stream</returns>
-        public WebResponse StartRatesSession(List<Instrument> instruments, int accountId)
-        {
-            instrumentList = string.Join(",", instruments.Select(x => x.instrument));
+        public WebResponse StartRatesSession(List<Instrument> instruments, int accountId) {
+            instrumentList = String.join( ",", instruments.Select(x => x.instrument));
 
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.StreamingRates) + 
                 "prices?accountId=" + accountId + "&instruments=" + Uri.EscapeDataString(instrumentList);
@@ -260,8 +233,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                 response = request.GetResponse();
                 return response;
             }
-            catch (WebException ex)
-            {
+            catch (WebException ex) {
                 response = (HttpWebResponse)ex.Response;
                 stream = new StreamReader(response.GetResponseStream());
                 result = stream.ReadToEnd();
@@ -274,13 +246,11 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// </summary>
         /// <param name="accountId">the account IDs you want to stream on</param>
         /// <returns>the WebResponse object that can be used to retrieve the events as they stream</returns>
-        public WebResponse StartEventsSession(List<Integer> accountId = null)
-        {
+        public WebResponse StartEventsSession(List<Integer> accountId = null ) {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.StreamingEvents) + "events";
 
-            if (accountId != null && accountId.Count > 0)
-            {
-                accountIds = string.Join(",", accountId);
+            if( accountId != null && accountId.Count > 0) {
+                accountIds = String.join( ",", accountId);
                 requestString += "?accountIds=" + WebUtility.UrlEncode(accountIds);
             }
 
@@ -293,8 +263,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                 response = request.GetResponse();
                 return response;
             }
-            catch (WebException ex)
-            {
+            catch (WebException ex) {
                 response = (HttpWebResponse)ex.Response;
                 stream = new StreamReader(response.GetResponseStream());
                 result = stream.ReadToEnd();
@@ -310,10 +279,8 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// <param name="method">method for the request (defaults to GET)</param>
         /// <param name="requestParams">optional parameters (note that if provided, it's assumed the requestString doesn't contain any)</param>
         /// <returns>response via type T</returns>
-        private T MakeRequest<T>( String requestString, String method = "GET", Map<String,String> requestParams = null)
-        {
-            if (requestParams != null && requestParams.Count > 0)
-            {
+        private T MakeRequest<T>( String requestString, String method = "GET", Map<String,String> requestParams = null ) {
+            if( requestParams != null && requestParams.Count > 0) {
                 parameters = CreateParamString(requestParams);
                 requestString = requestString + "?" + parameters;
             }
@@ -324,15 +291,13 @@ package com.quantconnect.lean.Brokerages.Oanda
 
             try
             {
-                using (response = request.GetResponse())
-                {
+                using (response = request.GetResponse()) {
                     serializer = new DataContractJsonSerializer(typeof(T));
                     stream = GetResponseStream(response);
                     return (T)serializer.ReadObject(stream);
                 }
             }
-            catch (WebException ex)
-            {
+            catch (WebException ex) {
                 stream = GetResponseStream(ex.Response);
                 reader = new StreamReader(stream);
                 result = reader.ReadToEnd();
@@ -348,8 +313,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// <param name="requestParams">the parameters to pass in the request body</param>
         /// <param name="requestString">the request to make</param>
         /// <returns>response, via type T</returns>
-        private T MakeRequestWithBody<T>( String requestString, String method, Map<String,String> requestParams)
-        {
+        private T MakeRequestWithBody<T>( String requestString, String method, Map<String,String> requestParams) {
             // Create the body
             requestBody = CreateParamString(requestParams);
             request = WebRequest.CreateHttp(requestString);
@@ -357,8 +321,7 @@ package com.quantconnect.lean.Brokerages.Oanda
             request.Method = method;
             request.ContentType = "application/x-www-form-urlencoded";
 
-            using (writer = new StreamWriter(request.GetRequestStream()))
-            {
+            using (writer = new StreamWriter(request.GetRequestStream())) {
                 // Write the body
                 writer.WriteAsync(requestBody);
             }
@@ -366,14 +329,12 @@ package com.quantconnect.lean.Brokerages.Oanda
             // Handle the response
             try
             {
-                using (response = request.GetResponse())
-                {
+                using (response = request.GetResponse()) {
                     serializer = new DataContractJsonSerializer(typeof(T));
                     return (T)serializer.ReadObject(response.GetResponseStream());
                 }
             }
-            catch (WebException ex)
-            {
+            catch (WebException ex) {
                 response = (HttpWebResponse)ex.Response;
                 stream = new StreamReader(response.GetResponseStream());
                 result = stream.ReadToEnd();
@@ -386,8 +347,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// </summary>
         /// <param name="accountId">positions will be retrieved for this account id</param>
         /// <returns>List of Position objects with the details for each position (or empty list iff no positions)</returns>
-        private List<Position> GetPositions(int accountId)
-        {
+        private List<Position> GetPositions(int accountId) {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + accountId + "/positions";
             positionResponse = MakeRequest<PositionsResponse>(requestString);
             positions = new List<Position>();
@@ -400,55 +360,48 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// </summary>
         /// <param name="requestParams">the parameters to convert</param>
         /// <returns>string containing all the parameters for use in requests</returns>
-        private static String CreateParamString(Map<String,String> requestParams)
-        {
-            return string.Join("&", requestParams.Select(x => WebUtility.UrlEncode(x.Key) + "=" + WebUtility.UrlEncode(x.Value)));
+        private static String CreateParamString(Map<String,String> requestParams) {
+            return String.join( "&", requestParams.Select(x => WebUtility.UrlEncode(x.Key) + "=" + WebUtility.UrlEncode(x.Value)));
         }
 
         /// <summary>
         /// Converts the specified Oanda order into a qc order.
         /// The 'task' will have a value if we needed to issue a rest call for the stop price, otherwise it will be null
         /// </summary>
-        private Order ConvertOrder(DataType.Order order)
-        {
+        private Order ConvertOrder(DataType.Order order) {
             Order qcOrder;
-            switch (order.type)
-            {
+            switch (order.type) {
                 case "limit":
                     qcOrder = new LimitOrder();
-                    if (order.side == "buy")
-                    {
-                        ((LimitOrder)qcOrder).LimitPrice = Convert.ToDecimal(order.lowerBound);
+                    if( order.side == "buy") {
+                        ((LimitOrder)qcOrder).LimitPrice = new BigDecimal( order.lowerBound);
                     }
 
-                    if (order.side == "sell")
-                    {
-                        ((LimitOrder)qcOrder).LimitPrice = Convert.ToDecimal(order.upperBound);
+                    if( order.side == "sell") {
+                        ((LimitOrder)qcOrder).LimitPrice = new BigDecimal( order.upperBound);
                     }
 
                     break;
                 case "stop":
                     qcOrder = new StopLimitOrder();
-                    if (order.side == "buy")
-                    {
-                        ((StopLimitOrder)qcOrder).LimitPrice = Convert.ToDecimal(order.lowerBound);
+                    if( order.side == "buy") {
+                        ((StopLimitOrder)qcOrder).LimitPrice = new BigDecimal( order.lowerBound);
                     }
 
-                    if (order.side == "sell")
-                    {
-                        ((StopLimitOrder)qcOrder).LimitPrice = Convert.ToDecimal(order.upperBound);
+                    if( order.side == "sell") {
+                        ((StopLimitOrder)qcOrder).LimitPrice = new BigDecimal( order.upperBound);
                     }
                     break;
                 case "marketIfTouched":
                     //when market reaches the price sell at market.
-                    qcOrder = new StopMarketOrder { Price = Convert.ToDecimal(order.price), StopPrice = Convert.ToDecimal(order.price) };
+                    qcOrder = new StopMarketOrder { Price = new BigDecimal( order.price), StopPrice = new BigDecimal( order.price) };
                     break;
                 case "market":
                     qcOrder = new MarketOrder();
                     break;
 
                 default:
-                    throw new NotSupportedException("The Oanda order type " + order.type + " is not supported.");
+                    throw new NotSupportedException( "The Oanda order type " + order.type + " is not supported.");
             }
             securityType = _symbolMapper.GetBrokerageSecurityType(order.instrument);
             qcOrder.Symbol = _symbolMapper.GetLeanSymbol(order.instrument, securityType, Market.Oanda);
@@ -456,8 +409,7 @@ package com.quantconnect.lean.Brokerages.Oanda
             qcOrder.Status = OrderStatus.None;
             qcOrder.BrokerId.Add(order.id.toString());
             orderByBrokerageId = _orderProvider.GetOrderByBrokerageId(order.id);
-            if (orderByBrokerageId != null)
-            {
+            if( orderByBrokerageId != null ) {
                 qcOrder.Id = orderByBrokerageId.Id;
             }
             qcOrder.Duration = OrderDuration.Custom;
@@ -474,10 +426,8 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// Oanda quantities are always positive and use the direction to denote +/-, where as qc
         /// order quantities determine the direction
         /// </remarks>
-        private int ConvertQuantity(DataType.Order order)
-        {
-            switch (order.side)
-            {
+        private int ConvertQuantity(DataType.Order order) {
+            switch (order.side) {
                 case "buy":
                     return order.units;
 
@@ -494,8 +444,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// </summary>
         /// <param name="position">The position.</param>
         /// <returns></returns>
-        private Holding ConvertHolding(Position position)
-        {
+        private Holding ConvertHolding(Position position) {
             securityType = _symbolMapper.GetBrokerageSecurityType(position.instrument);
 
             return new Holding
@@ -513,9 +462,8 @@ package com.quantconnect.lean.Brokerages.Oanda
         /// Gets the current conversion rate into USD
         /// </summary>
         /// <remarks>Synchronous, blocking</remarks>
-        private BigDecimal GetUsdConversion( String currency)
-        {
-            if (currency == "USD")
+        private BigDecimal GetUsdConversion( String currency) {
+            if( currency == "USD")
                 return 1m;
 
             // determine the correct symbol to choose

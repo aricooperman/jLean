@@ -24,8 +24,7 @@ package com.quantconnect.lean.Tests.Indicators
     public class IndicatorExtensionsTests
     {
         [Test]
-        public void PipesDataUsingOfFromFirstToSecond()
-        {
+        public void PipesDataUsingOfFromFirstToSecond() {
             first = new SimpleMovingAverage(2);
             second = new Delay(1);
             
@@ -59,11 +58,10 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void PipesDataFirstWeightedBySecond()
-        {
+        public void PipesDataFirstWeightedBySecond() {
             static final int period = 4;
-            value = new Identity("Value");
-            weight = new Identity("Weight");
+            value = new Identity( "Value");
+            weight = new Identity( "Weight");
      
             third = value.WeightedBy(weight, period);
 
@@ -71,19 +69,17 @@ package com.quantconnect.lean.Tests.Indicators
             window = Enumerable.Reverse(data).Take(period);
             current = window.Sum(x => 2 * x * x) / (decimal)window.Sum(x => x);
 
-            foreach (item in data)
-            {
-                value.Update(new IndicatorDataPoint(DateTime.UtcNow, Convert.ToDecimal(2 * item)));
-                weight.Update(new IndicatorDataPoint(DateTime.UtcNow, Convert.ToDecimal(item)));
+            foreach (item in data) {
+                value.Update(new IndicatorDataPoint(DateTime.UtcNow, new BigDecimal( 2 * item)));
+                weight.Update(new IndicatorDataPoint(DateTime.UtcNow, new BigDecimal( item)));
             }
 
             Assert.AreEqual(current, third.Current.Value);
         }
 
         [Test]
-        public void NewDataPushesToDerivedIndicators()
-        {
-            identity = new Identity("identity");
+        public void NewDataPushesToDerivedIndicators() {
+            identity = new Identity( "identity");
             sma = new SimpleMovingAverage(3);
 
             identity.Updated += (sender, consolidated) =>
@@ -101,9 +97,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void MultiChainSMA()
-        {
-            identity = new Identity("identity");
+        public void MultiChainSMA() {
+            identity = new Identity( "identity");
             delay = new Delay(2);
 
             // create the SMA of the delay of the identity
@@ -133,9 +128,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void MultiChainEMA()
-        {
-            identity = new Identity("identity");
+        public void MultiChainEMA() {
+            identity = new Identity( "identity");
             delay = new Delay(2);
 
             // create the EMA of chained methods
@@ -164,9 +158,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void MultiChainMAX()
-        {
-            identity = new Identity("identity");
+        public void MultiChainMAX() {
+            identity = new Identity( "identity");
             delay = new Delay(2);
 
             // create the MAX of the delay of the identity
@@ -194,9 +187,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void MultiChainMIN()
-        {
-            identity = new Identity("identity");
+        public void MultiChainMIN() {
+            identity = new Identity( "identity");
             delay = new Delay(2);
 
             // create the MIN of the delay of the identity
@@ -224,10 +216,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void PlusAddsLeftAndRightAfterBothUpdated()
-        {
-            left = new Identity("left");
-            right = new Identity("right");
+        public void PlusAddsLeftAndRightAfterBothUpdated() {
+            left = new Identity( "left");
+            right = new Identity( "right");
             composite = left.Plus(right);
 
             left.Update(DateTime.Today, 1m);
@@ -245,10 +236,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void MinusSubtractsLeftAndRightAfterBothUpdated()
-        {
-            left = new Identity("left");
-            right = new Identity("right");
+        public void MinusSubtractsLeftAndRightAfterBothUpdated() {
+            left = new Identity( "left");
+            right = new Identity( "right");
             composite = left.Minus(right);
 
             left.Update(DateTime.Today, 1m);
@@ -266,10 +256,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void OverDivdesLeftAndRightAfterBothUpdated()
-        {
-            left = new Identity("left");
-            right = new Identity("right");
+        public void OverDivdesLeftAndRightAfterBothUpdated() {
+            left = new Identity( "left");
+            right = new Identity( "right");
             composite = left.Over(right);
 
             left.Update(DateTime.Today, 1m);
@@ -287,10 +276,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void OverHandlesDivideByZero()
-        {
-            left = new Identity("left");
-            right = new Identity("right");
+        public void OverHandlesDivideByZero() {
+            left = new Identity( "left");
+            right = new Identity( "right");
             composite = left.Over(right);
             updatedEventFired = false;
             composite.Updated += delegate { updatedEventFired = true; };
@@ -308,10 +296,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void TimesMultipliesLeftAndRightAfterBothUpdated()
-        {
-            left = new Identity("left");
-            right = new Identity("right");
+        public void TimesMultipliesLeftAndRightAfterBothUpdated() {
+            left = new Identity( "left");
+            right = new Identity( "right");
             composite = left.Times(right);
 
             left.Update(DateTime.Today, 1m);

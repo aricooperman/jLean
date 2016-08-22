@@ -41,8 +41,7 @@ package com.quantconnect.lean.Tests.Indicators
         #endregion Array input
 
         [Test]
-        public void LSMAComputesCorrectly()
-        {
+        public void LSMAComputesCorrectly() {
             int LSMAPeriod = 20;
             LeastSquaresMovingAverage LSMA = new LeastSquaresMovingAverage(LSMAPeriod);
             DateTime time = DateTime.Now;
@@ -61,28 +60,25 @@ package com.quantconnect.lean.Tests.Indicators
 
             decimal[] actual = new decimal[prices.Length];
 
-            for (int i = 0; i < prices.Length; i++)
-            {
+            for (int i = 0; i < prices.Length; i++) {
                 LSMA.Update(new IndicatorDataPoint(time, prices[i]));
                 BigDecimal LSMAValue = Math.Round(LSMA.Current.Value, 4);
                 actual[i] = LSMAValue;
 
-                //Console.WriteLine( String.format("Bar : {0} | {1}, Is ready? {2}", i, LSMA.toString(), LSMA.IsReady));
+                //Console.WriteLine( String.format( "Bar : %1$s | %2$s, Is ready? %3$s", i, LSMA.toString(), LSMA.IsReady));
                 time = time.AddMinutes(1);
             }
             Assert.AreEqual(expected, actual);
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             int LSMAPeriod = 10;
             DateTime time = DateTime.Now;
 
             LeastSquaresMovingAverage LSMA = new LeastSquaresMovingAverage(LSMAPeriod);
 
-            for (int i = 0; i < LSMAPeriod + 1; i++)
-            {
+            for (int i = 0; i < LSMAPeriod + 1; i++) {
                 LSMA.Update(new IndicatorDataPoint(time, 1m));
                 time.AddMinutes(1);
             }

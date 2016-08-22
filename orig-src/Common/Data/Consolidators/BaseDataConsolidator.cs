@@ -28,8 +28,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="resolution">The resoluton desired</param>
         /// <returns>A consolidator that produces data on the resolution interval</returns>
-        public static BaseDataConsolidator FromResolution(Resolution resolution)
-        {
+        public static BaseDataConsolidator FromResolution(Resolution resolution) {
             return new BaseDataConsolidator(resolution.ToTimeSpan());
         }
 
@@ -38,8 +37,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         public BaseDataConsolidator(TimeSpan period)
-            : base(period)
-        {
+            : base(period) {
         }
 
         /// <summary>
@@ -47,8 +45,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         public BaseDataConsolidator(int maxCount)
-            : base(maxCount)
-        {
+            : base(maxCount) {
         }
 
         /// <summary>
@@ -57,8 +54,7 @@ package com.quantconnect.lean.Data.Consolidators
         /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
         /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
         public BaseDataConsolidator(int maxCount, TimeSpan period)
-            : base(maxCount, period)
-        {
+            : base(maxCount, period) {
         }
 
         /// <summary>
@@ -67,10 +63,8 @@ package com.quantconnect.lean.Data.Consolidators
         /// </summary>
         /// <param name="workingBar">The bar we're building, null if the event was just fired and we're starting a new trade bar</param>
         /// <param name="data">The new data</param>
-        protected override void AggregateBar(ref TradeBar workingBar, BaseData data)
-        {
-            if (workingBar == null)
-            {
+        protected @Override void AggregateBar(ref TradeBar workingBar, BaseData data) {
+            if( workingBar == null ) {
                 workingBar = new TradeBar
                 {
                     Symbol = data.Symbol,
@@ -87,8 +81,8 @@ package com.quantconnect.lean.Data.Consolidators
             {
                 //Aggregate the working bar
                 workingBar.Close = data.Value;
-                if (data.Value < workingBar.Low) workingBar.Low = data.Value;
-                if (data.Value > workingBar.High) workingBar.High = data.Value;
+                if( data.Value < workingBar.Low) workingBar.Low = data.Value;
+                if( data.Value > workingBar.High) workingBar.High = data.Value;
             }
         }
     }

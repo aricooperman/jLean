@@ -27,8 +27,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
     /// data packet
     /// </summary>
     public class BaseDataCollectionAggregatorEnumerator<T> : IEnumerator<T>
-        where T : BaseDataCollection, new()
-    {
+        where T : BaseDataCollection, new() {
         private boolean _endOfStream;
         private boolean _needsMoveNext;
         private readonly Symbol _symbol;
@@ -41,8 +40,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// </summary>
         /// <param name="enumerator">The underlying enumerator to aggregate</param>
         /// <param name="symbol">The symbol to place on the aggregated collection</param>
-        public BaseDataCollectionAggregatorEnumerator(IEnumerator<BaseData> enumerator, Symbol symbol)
-        {
+        public BaseDataCollectionAggregatorEnumerator(IEnumerator<BaseData> enumerator, Symbol symbol) {
             _symbol = symbol;
             _enumerator = enumerator;
 
@@ -56,42 +54,34 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
         /// </returns>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public boolean MoveNext()
-        {
-            if (_endOfStream)
-            {
+        public boolean MoveNext() {
+            if( _endOfStream) {
                 return false;
             }
 
             T collection = null;
-            while (true)
-            {
-                if (_needsMoveNext)
-                {
+            while (true) {
+                if( _needsMoveNext) {
                     // move next if we dequeued the last item last time we were invoked
-                    if (!_enumerator.MoveNext())
-                    {
+                    if( !_enumerator.MoveNext()) {
                         _endOfStream = true;
                         break;
                     }
                 }
 
-                if (_enumerator.Current == null)
-                {
+                if( _enumerator.Current == null ) {
                     // the underlying returned null, stop here and start again on the next call
                     _needsMoveNext = true;
                     break;
                 }
 
-                if (collection == null)
-                {
+                if( collection == null ) {
                     // we have new data, set the collection's symbol/times
                     current = _enumerator.Current;
                     collection = CreateCollection(_symbol, current.Time, current.EndTime);
                 }
 
-                if (collection.EndTime != _enumerator.Current.EndTime)
-                {
+                if( collection.EndTime != _enumerator.Current.EndTime) {
                     // the data from the underlying is at a different time, stop here
                     _needsMoveNext = false;
                     break;
@@ -110,8 +100,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public void Reset()
-        {
+        public void Reset() {
             _enumerator.Reset();
         }
 
@@ -142,8 +131,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             _enumerator.Dispose();
         }
 
@@ -154,8 +142,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="time">The start time of the collection</param>
         /// <param name="endTime">The end time of the collection</param>
         /// <returns>A new, empty <see cref="BaseDataCollection"/></returns>
-        protected virtual T CreateCollection(Symbol symbol, DateTime time, DateTime endTime)
-        {
+        protected virtual T CreateCollection(Symbol symbol, DateTime time, DateTime endTime) {
             return new T
             {
                 Symbol = symbol,
@@ -169,8 +156,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// </summary>
         /// <param name="collection">The collection to be added to</param>
         /// <param name="current">The data to be added</param>
-        protected virtual void Add(T collection, BaseData current)
-        {
+        protected virtual void Add(T collection, BaseData current) {
             collection.Data.Add(current);
         }
     }
@@ -186,8 +172,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="enumerator">The enumerator to aggregate</param>
         /// <param name="symbol">The output data's symbol</param>
         public BaseDataCollectionAggregatorEnumerator(IEnumerator<BaseData> enumerator, Symbol symbol)
-            : base(enumerator, symbol)
-        {
+            : base(enumerator, symbol) {
         }
     }
 }

@@ -42,34 +42,29 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
         /// The files are generated from LEAN formatted daily trade bar equity files
         /// </summary>
         /// <param name="args">Unused argument</param>
-        public static void Main( String[] args)
-        {
+        public static void Main( String[] args) {
             // read out the configuration file
             JToken jtoken;
-            config = JObject.Parse(File.ReadAllText("CoarseUniverseGenerator/config.json"));
+            config = JObject.Parse(File.ReadAllText( "CoarseUniverseGenerator/config.json"));
 
             ignoreMaplessSymbols = false;
             updateMode = false;
             updateTime = TimeSpan.Zero;
-            if (config.TryGetValue("update-mode", out jtoken))
-            {
+            if( config.TryGetValue( "update-mode", out jtoken)) {
                 updateMode = jtoken.Value<bool>();
-                if (config.TryGetValue("update-time-of-day", out jtoken))
-                {
+                if( config.TryGetValue( "update-time-of-day", out jtoken)) {
                     updateTime = TimeSpan.Parse(jtoken.Value<String>());
                 }
             }
 
             dataDirectory = Globals.DataFolder;
-            if (config.TryGetValue("data-directory", out jtoken))
-            {
+            if( config.TryGetValue( "data-directory", out jtoken)) {
                 dataDirectory = jtoken.Value<String>();
             }
 
             //Ignore symbols without a map file:
             // Typically these are nothing symbols (NASDAQ test symbols, or symbols listed for a few days who aren't actually ever traded).
-            if (config.TryGetValue("ignore-mapless", out jtoken))
-            {
+            if( config.TryGetValue( "ignore-mapless", out jtoken)) {
                 ignoreMaplessSymbols = jtoken.Value<bool>();
             }
 
@@ -86,9 +81,8 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
         /// <param name="updateMode">True for update mode, false for run-once</param>
         /// <param name="updateTime">The time of day updates should be performed</param>
         /// <returns>True if in update mode, otherwise false</returns>
-        private static boolean WaitUntilTimeInUpdateMode( boolean updateMode, TimeSpan updateTime)
-        {
-            if (!updateMode) return false;
+        private static boolean WaitUntilTimeInUpdateMode( boolean updateMode, TimeSpan updateTime) {
+            if( !updateMode) return false;
 
             now = DateTime.Now;
             timeUntilNextProcess = (now.Date.AddDays(1).Add(updateTime) - now);
@@ -101,18 +95,15 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
         /// </summary>
         /// <param name="dataDirectory">The Lean /Data directory</param>
         /// <param name="ignoreMaplessSymbols">Ignore symbols without a QuantQuote map file.</param>
-        public static void ProcessEquityDirectories( String dataDirectory, boolean ignoreMaplessSymbols)
-        {
+        public static void ProcessEquityDirectories( String dataDirectory, boolean ignoreMaplessSymbols) {
             exclusions = ReadExclusionsFile(ExclusionsFile);
 
             equity = Path.Combine(dataDirectory, "equity");
-            foreach (directory in Directory.EnumerateDirectories(equity))
-            {
+            foreach (directory in Directory.EnumerateDirectories(equity)) {
                 dailyFolder = Path.Combine(directory, "daily");
                 mapFileFolder = Path.Combine(directory, "map_files");
                 coarseFolder = Path.Combine(directory, "fundamental", "coarse");
-                if (!Directory.Exists(coarseFolder))
-                {
+                if( !Directory.Exists(coarseFolder)) {
                     Directory.CreateDirectory(coarseFolder);
                 }
 
@@ -133,11 +124,10 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
         /// <param name="symbolResolver">Function used to provide symbol resolution. Default resolution uses the zip file name to resolve
         /// the symbol, specify null for this behavior.</param>
         /// <returns>A collection of the generated coarse files</returns>
-        public static ICollection<String> ProcessDailyFolder( String dailyFolder, String coarseFolder, MapFileResolver mapFileResolver, HashSet<String> exclusions, boolean ignoreMapless, DateTime startDate, Func<String,String> symbolResolver = null)
-        {
+        public static ICollection<String> ProcessDailyFolder( String dailyFolder, String coarseFolder, MapFileResolver mapFileResolver, HashSet<String> exclusions, boolean ignoreMapless, DateTime startDate, Func<String,String> symbolResolver = null ) {
             static final BigDecimal scaleFactor = 10000m;
 
-            Log.Trace("Processing: {0}", dailyFolder);
+            Log.Trace( "Processing: %1$s", dailyFolder);
 
             start = DateTime.UtcNow;
 
@@ -151,40 +141,34 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
             writers = new Map<String, StreamWriter>();
 
             dailyFolderDirectoryInfo = new DirectoryInfo(dailyFolder).Parent;
-            if (dailyFolderDirectoryInfo == null)
-            {
-                throw new Exception("Unable to resolve market for daily folder: " + dailyFolder);
+            if( dailyFolderDirectoryInfo == null ) {
+                throw new Exception( "Unable to resolve market for daily folder: " + dailyFolder);
             }
             market = dailyFolderDirectoryInfo.Name.toLowerCase();
 
             // open up each daily file to get the values and append to the daily coarse files
-            foreach (file in Directory.EnumerateFiles(dailyFolder))
-            {
+            foreach (file in Directory.EnumerateFiles(dailyFolder)) {
                 try
                 {
                     symbol = Path.GetFileNameWithoutExtension(file);
-                    if (symbol == null)
-                    {
-                        Log.Trace("CoarseGenerator.ProcessDailyFolder(): Unable to resolve symbol from file: {0}", file);
+                    if( symbol == null ) {
+                        Log.Trace( "CoarseGenerator.ProcessDailyFolder(): Unable to resolve symbol from file: %1$s", file);
                         continue;
                     }
 
-                    if (symbolResolver != null)
-                    {
+                    if( symbolResolver != null ) {
                         symbol = symbolResolver(symbol);
                     }
 
                     symbol = symbol.toUpperCase();
 
-                    if (exclusions.Contains(symbol))
-                    {
-                        Log.Trace("Excluded symbol: {0}", symbol);
+                    if( exclusions.Contains(symbol)) {
+                        Log.Trace( "Excluded symbol: %1$s", symbol);
                         continue;
                     }
 
                     ZipFile zip;
-                    using (reader = Compression.Unzip(file, out zip))
-                    {
+                    using (reader = Compression.Unzip(file, out zip)) {
                         // 30 period EMA constant
                         static final BigDecimal k = 2m / (30 + 1);
 
@@ -195,20 +179,17 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
 
                         symbols++;
                         String line;
-                        while ((line = reader.ReadLine()) != null)
-                        {
+                        while ((line = reader.ReadLine()) != null ) {
                             //20150625.csv
-                            csv = line.Split(',');
+                            csv = line.split(',');
                             date = DateTime.ParseExact(csv[0], DateFormat.TwelveCharacter, CultureInfo.InvariantCulture);
                             
                             // spin past old data
-                            if (date < startDate) continue;
+                            if( date < startDate) continue;
 
-                            if (ignoreMapless && !checkedForMapFile)
-                            {
+                            if( ignoreMapless && !checkedForMapFile) {
                                 checkedForMapFile = true;
-                                if (!mapFileResolver.ResolveMapFile(symbol, date).Any())
-                                {
+                                if( !mapFileResolver.ResolveMapFile(symbol, date).Any()) {
                                     // if the resolved map file has zero entries then it's a mapless symbol
                                     maplessCount++;
                                     break;
@@ -227,22 +208,20 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
 
                             dollarVolume = close * runningAverageVolume;
 
-                            coarseFile = Path.Combine(coarseFolder, date.toString("yyyyMMdd") + ".csv");
+                            coarseFile = Path.Combine(coarseFolder, date.toString( "yyyyMMdd") + ".csv");
                             dates.Add(date);
 
                             // try to resolve a map file and if found, regen the sid
                             sid = SecurityIdentifier.GenerateEquity(SecurityIdentifier.DefaultDate, symbol, market);
                             mapFile = mapFileResolver.ResolveMapFile(symbol, date);
-                            if (!mapFile.IsNullOrEmpty())
-                            {
+                            if( !mapFile.IsNullOrEmpty()) {
                                 // if available, us the permtick in the coarse files, because of this, we need
                                 // to update the coarse files each time new map files are added/permticks change
                                 sid = SecurityIdentifier.GenerateEquity(mapFile.FirstDate, mapFile.OrderBy(x => x.Date).First().MappedSymbol, market);
                             }
-                            if (mapFile == null && ignoreMapless)
-                            {
+                            if( mapFile == null && ignoreMapless) {
                                 // if we're ignoring mapless files then we should always be able to resolve this
-                                Log.Error( String.format("CoarseGenerator.ProcessDailyFolder(): Unable to resolve map file for {0} as of {1}", symbol, date.ToShortDateString()));
+                                Log.Error( String.format( "CoarseGenerator.ProcessDailyFolder(): Unable to resolve map file for %1$s as of %2$s", symbol, date.ToShortDateString()));
                                 continue;
                             }
 
@@ -250,8 +229,7 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
                             coarseFileLine = sid + "," + symbol + "," + close + "," + volume + "," + Math.Truncate(dollarVolume);
 
                             StreamWriter writer;
-                            if (!writers.TryGetValue(coarseFile, out writer))
-                            {
+                            if( !writers.TryGetValue(coarseFile, out writer)) {
                                 writer = new StreamWriter(new FileStream(coarseFile, FileMode.Create, FileAccess.Write, FileShare.Write));
                                 writers[coarseFile] = writer;
                             }
@@ -259,30 +237,27 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
                         }
                     }
 
-                    if (symbols%1000 == 0)
-                    {
-                        Log.Trace("CoarseGenerator.ProcessDailyFolder(): Completed processing {0} symbols. Current elapsed: {1} seconds", symbols, (DateTime.UtcNow - start).TotalSeconds.toString("0.00"));
+                    if( symbols%1000 == 0) {
+                        Log.Trace( "CoarseGenerator.ProcessDailyFolder(): Completed processing %1$s symbols. Current elapsed: %2$s seconds", symbols, (DateTime.UtcNow - start).TotalSeconds.toString( "0.00"));
                     }
                 }
-                catch (Exception err)
-                {
+                catch (Exception err) {
                     // log the error and continue with the process
                     Log.Error(err.toString());
                 }
             }
 
-            Log.Trace("CoarseGenerator.ProcessDailyFolder(): Saving {0} coarse files to disk", dates.Count);
+            Log.Trace( "CoarseGenerator.ProcessDailyFolder(): Saving %1$s coarse files to disk", dates.Count);
 
             // dispose all the writers at the end of processing
-            foreach (writer in writers)
-            {
+            foreach (writer in writers) {
                 writer.Value.Dispose();
             }
 
             stop = DateTime.UtcNow;
 
-            Log.Trace("CoarseGenerator.ProcessDailyFolder(): Processed {0} symbols into {1} coarse files in {2} seconds", symbols, dates.Count, (stop - start).TotalSeconds.toString("0.00"));
-            Log.Trace("CoarseGenerator.ProcessDailyFolder(): Excluded {0} mapless symbols.", maplessCount);
+            Log.Trace( "CoarseGenerator.ProcessDailyFolder(): Processed %1$s symbols into %2$s coarse files in %3$s seconds", symbols, dates.Count, (stop - start).TotalSeconds.toString( "0.00"));
+            Log.Trace( "CoarseGenerator.ProcessDailyFolder(): Excluded %1$s mapless symbols.", maplessCount);
 
             return writers.Keys;
         }
@@ -291,14 +266,12 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
         /// Reads the specified exclusions file into a new hash set.
         /// Returns an empty set if the file does not exist
         /// </summary>
-        public static HashSet<String> ReadExclusionsFile( String exclusionsFile)
-        {
+        public static HashSet<String> ReadExclusionsFile( String exclusionsFile) {
             exclusions = new HashSet<String>();
-            if (File.Exists(exclusionsFile))
-            {
-                excludedSymbols = File.ReadLines(exclusionsFile).Select(x => x.Trim()).Where(x => !x.StartsWith("#"));
+            if( File.Exists(exclusionsFile)) {
+                excludedSymbols = File.ReadLines(exclusionsFile).Select(x => x.Trim()).Where(x => !x.StartsWith( "#"));
                 exclusions = new HashSet<String>(excludedSymbols, StringComparer.InvariantCultureIgnoreCase);
-                Log.Trace("CoarseGenerator.ReadExclusionsFile(): Loaded {0} symbols into the exclusion set", exclusions.Count);
+                Log.Trace( "CoarseGenerator.ReadExclusionsFile(): Loaded %1$s symbols into the exclusion set", exclusions.Count);
             }
             return exclusions;
         }
@@ -309,8 +282,7 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
         /// </summary>
         /// <param name="coarseDirectory">The directory containing the coarse files</param>
         /// <returns>The last coarse file date plus one day if exists, else DateTime.MinValue</returns>
-        public static DateTime GetStartDate( String coarseDirectory)
-        {
+        public static DateTime GetStartDate( String coarseDirectory) {
             lastProcessedDate = (
                 from coarseFile in Directory.EnumerateFiles(coarseDirectory)
                 let date = TryParseCoarseFileDate(coarseFile)
@@ -322,12 +294,11 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
             return lastProcessedDate;
         }
 
-        private static DateTime? TryParseCoarseFileDate( String coarseFile)
-        {
+        private static DateTime? TryParseCoarseFileDate( String coarseFile) {
             try
             {
                 dateString = Path.GetFileNameWithoutExtension(coarseFile);
-                return DateTime.ParseExact(dateString, "yyyyMMdd", null);
+                return DateTime.ParseExact(dateString, "yyyyMMdd", null );
             }
             catch
             {

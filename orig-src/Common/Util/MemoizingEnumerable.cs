@@ -39,16 +39,14 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="enumerable">The source enumerable to be memoized</param>
         public MemoizingEnumerable(IEnumerable<T> enumerable)
-            : this(enumerable.GetEnumerator())
-        {
+            : this(enumerable.GetEnumerator()) {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MemoizingEnumerable{T}"/> class
         /// </summary>
         /// <param name="enumerator">The source enumerator to be memoized</param>
-        public MemoizingEnumerable(IEnumerator<T> enumerator)
-        {
+        public MemoizingEnumerable(IEnumerator<T> enumerator) {
             _buffer = new List<T>();
             _enumerator = enumerator;
         }
@@ -60,22 +58,17 @@ package com.quantconnect.lean.Util
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>1</filterpriority>
-        public IEnumerator<T> GetEnumerator()
-        {
+        public IEnumerator<T> GetEnumerator() {
             int i = 0;
-            while (true)
-            {
+            while (true) {
                 boolean hasValue;
                 
                 // sync for multiple threads access to _enumerator and _buffer
-                lock (_lock)
-                {
+                lock (_lock) {
                     // check to see if we need to move next
-                    if (!_finished && i >= _buffer.Count)
-                    {
+                    if( !_finished && i >= _buffer.Count) {
                         hasValue = _enumerator.MoveNext();
-                        if (hasValue)
-                        {
+                        if( hasValue) {
                             _buffer.Add(_enumerator.Current);
                         }
                         else
@@ -91,8 +84,7 @@ package com.quantconnect.lean.Util
                 }
 
                 // yield the i'th element if we have it, otherwise stop enumeration
-                if (hasValue)
-                {
+                if( hasValue) {
                     yield return _buffer[i];
                 }
                 else
@@ -112,8 +104,7 @@ package com.quantconnect.lean.Util
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
         /// </returns>
         /// <filterpriority>2</filterpriority>
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+        IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
     }

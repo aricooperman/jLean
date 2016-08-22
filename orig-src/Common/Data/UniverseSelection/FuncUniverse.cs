@@ -30,7 +30,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <summary>
         /// Gets the settings used for subscriptons added for this universe
         /// </summary>
-        public override UniverseSettings UniverseSettings
+        public @Override UniverseSettings UniverseSettings
         {
             get { return _universeSettings; }
         }
@@ -43,8 +43,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="securityInitializer">Initializes securities when they're added to the universe</param>
         /// <param name="universeSelector">Returns the symbols that should be included in the universe</param>
         public FuncUniverse(SubscriptionDataConfig configuration, UniverseSettings universeSettings, ISecurityInitializer securityInitializer, Func<IEnumerable<BaseData>, IEnumerable<Symbol>> universeSelector)
-            : base(configuration, securityInitializer)
-        {
+            : base(configuration, securityInitializer) {
             _universeSelector = universeSelector;
             _universeSettings = universeSettings;
         }
@@ -55,8 +54,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /// <param name="utcTime">The current utc time</param>
         /// <param name="data">The coarse fundamental data</param>
         /// <returns>The data that passes the filter</returns>
-        public override IEnumerable<Symbol> SelectSymbols(DateTime utcTime, BaseDataCollection data)
-        {
+        public @Override IEnumerable<Symbol> SelectSymbols(DateTime utcTime, BaseDataCollection data) {
             return _universeSelector(data.Data);
         }
     }

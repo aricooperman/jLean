@@ -37,21 +37,17 @@ package com.quantconnect.lean.Data.Auxiliary
         /// </summary>
         /// <param name="market">The equity market, for example, 'usa'</param>
         /// <returns>A <see cref="MapFileRow"/> containing all map files for the specified market</returns>
-        public MapFileResolver Get( String market)
-        {
+        public MapFileResolver Get( String market) {
             market = market.toLowerCase();
             return _cache.GetOrAdd(market, GetMapFileResolver);
         }
 
-        private static MapFileResolver GetMapFileResolver( String market)
-        {
+        private static MapFileResolver GetMapFileResolver( String market) {
             mapFileDirectory = Path.Combine(Globals.DataFolder, "equity", market.toLowerCase(), "map_files");
-            if (!Directory.Exists(mapFileDirectory))
-            {
+            if( !Directory.Exists(mapFileDirectory)) {
                 // only write this message once per application instance
-                if (Interlocked.CompareExchange(ref _wroteTraceStatement, 1, 0) == 0)
-                {
-                    Log.Error("LocalDiskMapFileProvider.GetMapFileResolver({0}): The specified directory does not exist: {1}", market, mapFileDirectory);
+                if( Interlocked.CompareExchange(ref _wroteTraceStatement, 1, 0) == 0) {
+                    Log.Error( "LocalDiskMapFileProvider.GetMapFileResolver(%1$s): The specified directory does not exist: %2$s", market, mapFileDirectory);
                 }
                 return MapFileResolver.Empty;
             }

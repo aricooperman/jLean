@@ -46,15 +46,13 @@ package com.quantconnect.lean.Packets
         /// Default constructor for JSON
         /// </summary>
         public RuntimeErrorPacket()
-            : base (PacketType.RuntimeError)
-        { }
+            : base (PacketType.RuntimeError) { }
 
         /// <summary>
         /// Create a new runtime error packet
         /// </summary>
         public RuntimeErrorPacket( String algorithmId, String message, String stacktrace = "")
-            : base(PacketType.RuntimeError)
-        {
+            : base(PacketType.RuntimeError) {
             Message = message;
             AlgorithmId = algorithmId;
             StackTrace = stacktrace;

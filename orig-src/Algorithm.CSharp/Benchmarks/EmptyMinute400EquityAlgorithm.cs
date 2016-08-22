@@ -6,18 +6,15 @@ package com.quantconnect.lean.Algorithm.CSharp.Benchmarks
 {
     public class EmptyMinute400EquityAlgorithm : QCAlgorithm
     {
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2015, 09, 28);
             SetEndDate(2015, 11, 13);
-            foreach (symbol in Symbols.Equity.All.Take(400))
-            {
+            foreach (symbol in Symbols.Equity.All.Take(400)) {
                 AddSecurity(SecurityType.Equity, symbol);
             }
         }
 
-        public override void OnData(Slice slice)
-        {
+        public @Override void OnData(Slice slice) {
         }
     }
 }

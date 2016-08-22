@@ -22,22 +22,18 @@ package com.quantconnect.lean.Tests.Indicators
     public class MomentumTests
     {
         [Test]
-        public void ComputesCorrectly()
-        {
+        public void ComputesCorrectly() {
             mom =  new Momentum(5);
-            foreach (data in TestHelper.GetDataStream(5))
-            {
+            foreach (data in TestHelper.GetDataStream(5)) {
                 mom.Update(data);
                 Assert.AreEqual(data.Value, mom.Current.Value);
             }
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             mom = new Momentum(5);
-            foreach (data in TestHelper.GetDataStream(6))
-            {
+            foreach (data in TestHelper.GetDataStream(6)) {
                 mom.Update(data);
             }
             Assert.IsTrue(mom.IsReady);

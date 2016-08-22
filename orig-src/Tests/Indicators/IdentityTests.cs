@@ -26,13 +26,12 @@ package com.quantconnect.lean.Tests.Indicators
     public class IdentityTests
     {
         [Test]
-        public void TestIdentityInvariants()
-        {
+        public void TestIdentityInvariants() {
             // the invariants of the identity indicator is to be ready after
             // a single sample has been added, and always produce the same value
             // as the last ingested value
 
-            identity = new Identity("test");
+            identity = new Identity( "test");
             Assert.IsFalse(identity.IsReady);
 
             static final BigDecimal value = 1m;
@@ -42,14 +41,12 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
-            identity = new Identity("test");
+        public void ResetsProperly() {
+            identity = new Identity( "test");
             Assert.IsFalse(identity.IsReady);
             Assert.AreEqual(0m, identity.Current.Value);
 
-            foreach (data in TestHelper.GetDataStream(2))
-            {
+            foreach (data in TestHelper.GetDataStream(2)) {
                 identity.Update(data);
             }
             Assert.IsTrue(identity.IsReady);

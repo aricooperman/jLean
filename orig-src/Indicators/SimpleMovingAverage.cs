@@ -27,14 +27,14 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         ///     Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady{
+        public @Override boolean IsReady{
             get { return RollingSum.IsReady; }
         }
 
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset() {
+        public @Override void Reset() {
             RollingSum.Reset();
             base.Reset();
         }
@@ -45,8 +45,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the SMA</param>
         public SimpleMovingAverage( String name, int period)
-            : base(name, period)
-        {
+            : base(name, period) {
             RollingSum = new Sum(name + "_Sum", period);
         }
 
@@ -55,8 +54,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period of the SMA</param>
         public SimpleMovingAverage(int period)
-            : this("SMA" + period, period)
-        {
+            : this( "SMA" + period, period) {
         }
 
         /// <summary>
@@ -65,8 +63,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input value to this indicator on this time step</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             RollingSum.Update(input.Time, input.Value);
             return RollingSum.Current.Value / window.Count;
         }

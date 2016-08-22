@@ -28,11 +28,9 @@ package com.quantconnect.lean.Logging
         /// <param name="logHandler"></param>
         /// <param name="text">Message</param>
         /// <param name="args">Arguments to format.</param>
-        public static void Error(this ILogHandler logHandler, String text, params object[] args)
-        {
-            if (logHandler == null)
-            {
-                throw new ArgumentNullException("logHandler", "Log Handler cannot be null");
+        public static void Error(this ILogHandler logHandler, String text, params object[] args) {
+            if( logHandler == null ) {
+                throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");
             }
 
             logHandler.Error( String.format(text, args));
@@ -44,11 +42,9 @@ package com.quantconnect.lean.Logging
         /// <param name="logHandler"></param>
         /// <param name="text">Message</param>
         /// <param name="args">Arguments to format.</param>
-        public static void Debug(this ILogHandler logHandler, String text, params object[] args)
-        {
-            if (logHandler == null)
-            {
-                throw new ArgumentNullException("logHandler", "Log Handler cannot be null");
+        public static void Debug(this ILogHandler logHandler, String text, params object[] args) {
+            if( logHandler == null ) {
+                throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");
             }
 
             logHandler.Debug( String.format(text, args));
@@ -60,11 +56,9 @@ package com.quantconnect.lean.Logging
         /// <param name="logHandler"></param>
         /// <param name="text">Message</param>
         /// <param name="args">Arguments to format.</param>
-        public static void Trace(this ILogHandler logHandler, String text, params object[] args)
-        {
-            if (logHandler == null)
-            {
-                throw new ArgumentNullException("logHandler", "Log Handler cannot be null");
+        public static void Trace(this ILogHandler logHandler, String text, params object[] args) {
+            if( logHandler == null ) {
+                throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");
             }
 
             logHandler.Trace( String.format(text, args));

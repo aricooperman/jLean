@@ -70,7 +70,7 @@ public final class Symbol implements Comparable<Object> {
                 break;
             case Option:
                 alias = alias != null ? alias : "?" + ticker.toUpperCase();
-                sid = SecurityIdentifier.generateOption( SecurityIdentifier.DefaultDate, ticker, market, BigDecimal.ZERO, OptionRight.Call, OptionStyle.American );
+                sid = SecurityIdentifier.generateOption( SecurityIdentifier.DefaultDate, ticker, market, BigDecimal.ZERO, OptionRight.CALL, OptionStyle.AMERICAN );
                 break;
             case Commodity:
             case Future:
@@ -104,8 +104,8 @@ public final class Symbol implements Comparable<Object> {
         // format spec: http://www.optionsclearing.com/components/docs/initiatives/symbology/symbology_initiative_v1_8.pdf
         if( alias == null ) {
             alias = String.format( "%-6s%02d%02d%02d%s%08d", sym, expiry.getYear() - 2000, expiry.getMonth().getValue(), expiry.getDayOfMonth(), 
-                    sid.getOptionRight() == OptionRight.Call ? "C" : "P", strike.setScale( 3, RoundingMode.HALF_UP ).movePointRight( 3 ) );
-//            alias = String.format( "%-6s{1}{2}{3:00000000}", sym, sid.Date.toString(DateFormat.SixCharacter), sid.getOptionRight().toString().charAt( 0 ), sid.StrikePrice * 1000m);
+                    sid.getOptionRight() == OptionRight.CALL ? "C" : "P", strike.setScale( 3, RoundingMode.HALF_UP ).movePointRight( 3 ) );
+//            alias = String.format( "%-6s%2$s%3$s{3:00000000}", sym, sid.Date.toString(DateFormat.SixCharacter), sid.getOptionRight().toString().charAt( 0 ), sid.StrikePrice * 1000m);
         }
         
         return new Symbol( sid, alias );
@@ -186,7 +186,7 @@ public final class Symbol implements Comparable<Object> {
             return value.compareToIgnoreCase( sym.value );
         }
         
-        throw new IllegalArgumentException("Object must be of type Symbol or string.");
+        throw new IllegalArgumentException( "Object must be of type Symbol or string.");
     }
     
     /// Returns a String that represents the current object.
@@ -216,7 +216,7 @@ public final class Symbol implements Comparable<Object> {
 //    /// <returns>True if both symbols are equal, otherwise false</returns>
 //    public static boolean operator ==(Symbol left, Symbol right)
 //    {
-//        if (ReferenceEquals(left, null)) return ReferenceEquals(right, null);
+//        if( ReferenceEquals(left, null )) return ReferenceEquals(right, null );
 //        return left.Equals(right);
 //    }
 //    
@@ -228,14 +228,14 @@ public final class Symbol implements Comparable<Object> {
 //    /// <returns>True if both symbols are not equal, otherwise false</returns>
 //    public static boolean operator !=(Symbol left, Symbol right)
 //    {
-//        if (ReferenceEquals(left, null)) return ReferenceEquals(right, null);
+//        if( ReferenceEquals(left, null )) return ReferenceEquals(right, null );
 //        return !left.Equals(right);
 //    }
 //    
 //    /// Returns the symbol's String ticker
 //    /// <param name="symbol">The symbol</param>
 //    /// <returns>The String ticker</returns>
-//    [Obsolete("Symbol implicit operator to String is provided for algorithm use only.")]
+//    [Obsolete( "Symbol implicit operator to String is provided for algorithm use only.")]
 //    public static implicit operator string(Symbol symbol)
 //    {
 //        return symbol.toString();
@@ -244,17 +244,17 @@ public final class Symbol implements Comparable<Object> {
 //    /// Creates symbol using String as sid
 //    /// <param name="ticker">The string</param>
 //    /// <returns>The symbol</returns>
-//    [Obsolete("Symbol implicit operator from String is provided for algorithm use only.")]
+//    [Obsolete( "Symbol implicit operator from String is provided for algorithm use only.")]
 //    public static implicit operator Symbol( String ticker)
 //    {
 //        Symbol symbol;
-//        if (SymbolCache.TryGetSymbol(ticker, out symbol))
+//        if( SymbolCache.TryGetSymbol(ticker, out symbol))
 //        {
 //            return symbol;
 //        }
 //    
 //        SecurityIdentifier sid;
-//        if (SecurityIdentifier.TryParse(ticker, out sid))
+//        if( SecurityIdentifier.TryParse(ticker, out sid))
 //        {
 //            return new Symbol(sid, sid.Symbol);
 //        }
@@ -265,15 +265,15 @@ public final class Symbol implements Comparable<Object> {
 //    // in order to maintain better compile time backwards compatibility,
 //    // we'll redirect a few common String methods to Value, but mark obsolete
 //    #pragma warning disable 1591
-//            [Obsolete("Symbol.Contains is a pass-through for Symbol.Value.Contains")]
+//            [Obsolete( "Symbol.Contains is a pass-through for Symbol.Value.Contains")]
 //    public boolean Contains( String value) { return Value.Contains(value); }
-//    [Obsolete("Symbol.EndsWith is a pass-through for Symbol.Value.EndsWith")]
+//    [Obsolete( "Symbol.EndsWith is a pass-through for Symbol.Value.EndsWith")]
 //    public boolean EndsWith( String value) { return Value.EndsWith(value); }
-//    [Obsolete("Symbol.StartsWith is a pass-through for Symbol.Value.StartsWith")]
+//    [Obsolete( "Symbol.StartsWith is a pass-through for Symbol.Value.StartsWith")]
 //    public boolean StartsWith( String value) { return Value.StartsWith(value); }
-//    [Obsolete("Symbol.ToLower is a pass-through for Symbol.Value.ToLower")]
+//    [Obsolete( "Symbol.ToLower is a pass-through for Symbol.Value.ToLower")]
 //    public String toLowerCase() { return Value.toLowerCase(); }
-//    [Obsolete("Symbol.ToUpper is a pass-through for Symbol.Value.ToUpper")]
+//    [Obsolete( "Symbol.ToUpper is a pass-through for Symbol.Value.ToUpper")]
 //            public String toUpperCase() { return Value.toUpperCase(); }
 //    #pragma warning restore 1591
 }

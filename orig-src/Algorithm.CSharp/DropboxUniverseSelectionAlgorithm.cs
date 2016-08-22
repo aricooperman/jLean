@@ -40,8 +40,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             // this sets the resolution for data subscriptions added by our universe
             UniverseSettings.Resolution = Resolution.Daily;
 
@@ -50,35 +49,31 @@ package com.quantconnect.lean.Algorithm.CSharp
             SetEndDate(2013, 12, 31);
 
             // define a new custom universe that will trigger each day at midnight
-            AddUniverse("my-dropbox-universe", Resolution.Daily, dateTime =>
+            AddUniverse( "my-dropbox-universe", Resolution.Daily, dateTime =>
             {
                 static final String liveUrl = @"https://www.dropbox.com/s/2az14r5xbx4w5j6/daily-stock-picker-live.csv?dl=1";
                 static final String backtestUrl = @"https://www.dropbox.com/s/rmiiktz0ntpff3a/daily-stock-picker-backtest.csv?dl=1";
                 url = LiveMode ? liveUrl : backtestUrl;
-                using (client = new WebClient())
-                {
+                using (client = new WebClient()) {
                     // handle live mode file format
-                    if (LiveMode)
-                    {
+                    if( LiveMode) {
                         // fetch the file from dropbox
                         file = client.DownloadString(url);
                         // if we have a file for today, break apart by commas and return symbols
-                        if (file.Length > 0) return file.ToCsv();
+                        if( file.Length > 0) return file Extensions.toCsv( );
                         // no symbol today, leave universe unchanged
                         return Universe.Unchanged;
                     }
 
                     // backtest - first cache the entire file
-                    if (_backtestSymbolsPerDay.Count == 0)
-                    {
+                    if( _backtestSymbolsPerDay.Count == 0) {
                         // fetch the file from dropbox only if we haven't cached the result already
                         file = client.DownloadString(url);
 
                         // split the file into lines and add to our cache
-                        foreach (line in file.Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries))
-                        {
-                            csv = line.ToCsv();
-                            date = DateTime.ParseExact(csv[0], "yyyyMMdd", null);
+                        foreach (line in file.split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries)) {
+                            csv = line Extensions.toCsv( );
+                            date = DateTime.ParseExact(csv[0], "yyyyMMdd", null );
                             symbols = csv.Skip(1).ToList();
                             _backtestSymbolsPerDay[date] = symbols;
                         }
@@ -86,8 +81,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
                     // if we have symbols for this date return them, else specify Universe.Unchanged
                     List<String> result;
-                    if (_backtestSymbolsPerDay.TryGetValue(dateTime.Date, out result))
-                    {
+                    if( _backtestSymbolsPerDay.TryGetValue(dateTime.Date, out result)) {
                         return result;
                     }
                     return Universe.Unchanged;
@@ -96,7 +90,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /// <summary>
-        /// Event - v3.0 DATA EVENT HANDLER: (Pattern) Basic template for user to override for receiving all subscription data in a single event
+        /// Event - v3.0 DATA EVENT HANDLER: (Pattern) Basic template for user to @Override for receiving all subscription data in a single event
         /// </summary>
         /// <code>
         /// TradeBars bars = slice.Bars;
@@ -106,20 +100,18 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// Quandl oil = slice["OIL"]
         /// dynamic anySymbol = slice[symbol];
         /// DataDictionary{Quandl} allQuandlData = slice.Get{Quand}
-        /// Quandl oil = slice.Get{Quandl}("OIL")
+        /// Quandl oil = slice.Get{Quandl}( "OIL")
         /// </code>
         /// <param name="slice">The current slice of data keyed by symbol string</param>
-        public override void OnData(Slice slice)
-        {
-            if (slice.Bars.Count == 0) return;
-            if (_changes == SecurityChanges.None) return;
+        public @Override void OnData(Slice slice) {
+            if( slice.Bars.Count == 0) return;
+            if( _changes == SecurityChanges.None) return;
 
             // start fresh
             Liquidate();
 
             percentage = 1m/slice.Bars.Count;
-            foreach (tradeBar in slice.Bars.Values)
-            {
+            foreach (tradeBar in slice.Bars.Values) {
                 SetHoldings(tradeBar.Symbol, percentage);
             }
 
@@ -131,8 +123,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// Event fired each time the we add/remove securities from the data feed
         /// </summary>
         /// <param name="changes"></param>
-        public override void OnSecuritiesChanged(SecurityChanges changes)
-        {
+        public @Override void OnSecuritiesChanged(SecurityChanges changes) {
             // each time our securities change we'll be notified here
             _changes = changes;
         }

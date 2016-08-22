@@ -39,22 +39,20 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// </summary>
         /// <param name="name">The name of this indicator</param>
         public UpDownGapThreeMethods( String name) 
-            : base(name, 2 + 1)
-        {
+            : base(name, 2 + 1) {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="UpDownGapThreeMethods"/> class.
         /// </summary>
         public UpDownGapThreeMethods()
-            : this("UPDOWNGAPTHREEMETHODS")
-        {
+            : this( "UPDOWNGAPTHREEMETHODS") {
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -65,15 +63,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="window">The window of data held in this indicator</param>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input)
-        {
-            if (!IsReady)
-            {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
+            if( !IsReady) {
                 return 0m;
             }
 
             BigDecimal value;
-            if (
+            if( 
                 // 1st and 2nd of same color
                 GetCandleColor(window[2]) == GetCandleColor(window[1]) &&
                 // 3rd opposite color

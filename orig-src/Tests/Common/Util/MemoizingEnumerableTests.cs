@@ -24,16 +24,14 @@ package com.quantconnect.lean.Tests.Common.Util
     public class MemoizingEnumerableTests
     {
         [Test]
-        public void EnumeratesList()
-        {
+        public void EnumeratesList() {
             list = new List<Integer> {1, 2, 3, 4, 5};
             memoized = new MemoizingEnumerable<Integer>(list);
             CollectionAssert.AreEqual(list, memoized);
         }
 
         [Test]
-        public void EnumeratesOnce()
-        {
+        public void EnumeratesOnce() {
             int i = 0;
             enumerable = Enumerable.Range(0, 10).Select(x => i++);
             memoized = new MemoizingEnumerable<Integer>(enumerable);

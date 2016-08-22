@@ -24,17 +24,14 @@ package com.quantconnect.lean.ToolBox.CryptoiqDownloader
         /// <summary>
         /// Cryptoiq Downloader Toolbox Project For LEAN Algorithmic Trading Engine.
         /// </summary>
-        static void Main( String[] args)
-        {
-            if (args.Length == 3)
-            {
-                args = new [] { args[0], DateTime.UtcNow.toString("yyyyMMdd"), args[1], args[2] };
+        static void Main( String[] args) {
+            if( args.Length == 3) {
+                args = new [] { args[0], DateTime.UtcNow.toString( "yyyyMMdd"), args[1], args[2] };
             }
-            else if (args.Length < 4)
-            {
-                Console.WriteLine("Usage: CryptoiqDownloader FROMDATE TODATE EXCHANGE SYMBOL");
-                Console.WriteLine("FROMDATE = yyyymmdd");
-                Console.WriteLine("TODATE = yyyymmdd");
+            else if( args.Length < 4) {
+                Console.WriteLine( "Usage: CryptoiqDownloader FROMDATE TODATE EXCHANGE SYMBOL");
+                Console.WriteLine( "FROMDATE = yyyymmdd");
+                Console.WriteLine( "TODATE = yyyymmdd");
                 Environment.Exit(1);
             }
 
@@ -45,8 +42,8 @@ package com.quantconnect.lean.ToolBox.CryptoiqDownloader
                 endDate = DateTime.ParseExact(args[1], "yyyyMMdd", CultureInfo.InvariantCulture);
 
                 // Load settings from config.json
-                dataDirectory = Config.Get("data-directory", "../../../Data");
-                scaleFactor = Config.GetValue("bitfinex-scale-factor", 1m);
+                dataDirectory = Config.Get( "data-directory", "../../../Data");
+                scaleFactor = Config.GetValue( "bitfinex-scale-factor", 1m);
 
                 // Create an instance of the downloader
                 static final String market = Market.Bitfinex;
@@ -60,8 +57,7 @@ package com.quantconnect.lean.ToolBox.CryptoiqDownloader
                 writer = new LeanDataWriter(Resolution.Tick, symbolObject, dataDirectory, TickType.Quote);
                 writer.Write(data);
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }

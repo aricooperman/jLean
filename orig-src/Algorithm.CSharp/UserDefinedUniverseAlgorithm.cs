@@ -31,14 +31,13 @@ package com.quantconnect.lean.Algorithm.CSharp
             "SPY", "GOOG", "IBM", "AAPL", "MSFT", "CSCO", "ADBE", "WMT",
         };
 
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             UniverseSettings.Resolution = Resolution.Hour;
 
             SetStartDate(2015, 01, 01);
             SetEndDate(2015, 12, 01);
 
-            AddUniverse("my-universe-name", Resolution.Hour, time =>
+            AddUniverse( "my-universe-name", Resolution.Hour, time =>
             {
                 hour = time.Hour;
                 index = hour%Symbols.Count;
@@ -46,22 +45,17 @@ package com.quantconnect.lean.Algorithm.CSharp
             });
         }
 
-        public override void OnData(Slice slice)
-        {
+        public @Override void OnData(Slice slice) {
         }
 
-        public override void OnSecuritiesChanged(SecurityChanges changes)
-        {
-            foreach (removed in changes.RemovedSecurities)
-            {
-                if (removed.Invested)
-                {
+        public @Override void OnSecuritiesChanged(SecurityChanges changes) {
+            foreach (removed in changes.RemovedSecurities) {
+                if( removed.Invested) {
                     Liquidate(removed.Symbol);
                 }
             }
 
-            foreach (added in changes.AddedSecurities)
-            {
+            foreach (added in changes.AddedSecurities) {
                 SetHoldings(added.Symbol, 1/(decimal)changes.AddedSecurities.Count);
             }
         }

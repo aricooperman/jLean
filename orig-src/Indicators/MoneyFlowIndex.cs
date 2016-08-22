@@ -46,7 +46,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return PositiveMoneyFlow.IsReady && NegativeMoneyFlow.IsReady; }
         }
@@ -54,8 +54,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator to its initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             PreviousTypicalPrice = 0.0m;
             PositiveMoneyFlow.Reset();
             NegativeMoneyFlow.Reset();
@@ -67,8 +66,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period of the negative and postive money flow</param>
         public MoneyFlowIndex(int period)
-            : this("MFI" + period, period)
-        {
+            : this( "MFI" + period, period) {
         }
 
         /// <summary>
@@ -77,8 +75,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period of the negative and postive money flow</param>
         public MoneyFlowIndex( String name, int period)
-            : base(name)
-        {
+            : base(name) {
             PositiveMoneyFlow = new Sum(name + "_PositiveMoneyFlow", period);
             NegativeMoneyFlow = new Sum(name + "_NegativeMoneyFlow", period);
         }
@@ -88,8 +85,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             BigDecimal typicalPrice = (input.High + input.Low + input.Close)/3.0m;
             BigDecimal moneyFlow = typicalPrice*input.Volume;
 
@@ -98,8 +94,7 @@ package com.quantconnect.lean.Indicators
             PreviousTypicalPrice = typicalPrice;
 
             BigDecimal totalMoneyFlow = PositiveMoneyFlow.Current.Value + NegativeMoneyFlow.Current.Value;
-            if (totalMoneyFlow == 0.0m)
-            {
+            if( totalMoneyFlow == 0.0m) {
                 return 100.0m;
             }
 

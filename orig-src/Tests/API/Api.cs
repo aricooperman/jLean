@@ -24,7 +24,7 @@ using QuantConnect.Interfaces;
 
 package com.quantconnect.lean.Tests.API
 {
-    [TestFixture, Category("TravisExclude")]
+    [TestFixture, Category( "TravisExclude")]
     class RestApiTests
     {
         //Test Authentication Credentials
@@ -35,8 +35,7 @@ package com.quantconnect.lean.Tests.API
         /// Test successfully authenticates with the API using valid credentials.
         /// </summary>
         [Test]
-        public void AuthenticatesSuccessfully()
-        {
+        public void AuthenticatesSuccessfully() {
             connection = new ApiConnection(_testAccount, _testToken);
             Assert.IsTrue(connection.Connected);
         }
@@ -45,8 +44,7 @@ package com.quantconnect.lean.Tests.API
         /// Rejects invalid credentials
         /// </summary>
         [Test]
-        public void RejectsInvalidCredentials()
-        {
+        public void RejectsInvalidCredentials() {
             connection = new ApiConnection(_testAccount, "");
             Assert.IsFalse(connection.Connected);
         }
@@ -59,39 +57,36 @@ package com.quantconnect.lean.Tests.API
         ///  - Builds the project, 
         /// </summary>
         [Test]
-        public void CreatesProjectCompilesAndBacktestsProject()
-        {
+        public void CreatesProjectCompilesAndBacktestsProject() {
             // Initialize the test:
             api = CreateApiAccessor();
-            sources = new List<TestAlgorithm>()
-            {
-                new TestAlgorithm(Language.CSharp, "main.cs", File.ReadAllText("../../../Algorithm.CSharp/BasicTemplateAlgorithm.cs")),
-                new TestAlgorithm(Language.FSharp, "main.fs", File.ReadAllText("../../../Algorithm.FSharp/BasicTemplateAlgorithm.fs")),
-                new TestAlgorithm(Language.Python, "main.py", File.ReadAllText("../../../Algorithm.Python/BasicTemplateAlgorithm.py"))
+            sources = new List<TestAlgorithm>() {
+                new TestAlgorithm(Language.CSharp, "main.cs", File.ReadAllText( "../../../Algorithm.CSharp/BasicTemplateAlgorithm.cs")),
+                new TestAlgorithm(Language.FSharp, "main.fs", File.ReadAllText( "../../../Algorithm.FSharp/BasicTemplateAlgorithm.fs")),
+                new TestAlgorithm(Language.Python, "main.py", File.ReadAllText( "../../../Algorithm.Python/BasicTemplateAlgorithm.py"))
             };
 
-            foreach (source in sources)
-            {
+            foreach (source in sources) {
                 // Test create a new project successfully
-                name = DateTime.UtcNow.toString("u") + " Test " + _testAccount + " Lang " + source.Language;
+                name = DateTime.UtcNow.toString( "u") + " Test " + _testAccount + " Lang " + source.Language;
                 project = api.CreateProject(name, source.Language);
                 Assert.IsTrue(project.Success);
                 Assert.IsTrue(project.ProjectId > 0);
-                Console.WriteLine("API Test: {0} Project created successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Project created successfully", source.Language);
 
                 // Gets the list of projects from the account. 
                 // Should at least be the one we created.
                 projects = api.ProjectList();
                 Assert.IsTrue(projects.Success);
                 Assert.IsTrue(projects.Projects.Count >= 1);
-                Console.WriteLine("API Test: All Projects listed successfully");
+                Console.WriteLine( "API Test: All Projects listed successfully");
 
                 // Test read back the project we just created
                 readProject = api.ReadProject(project.ProjectId);
                 Assert.IsTrue(readProject.Success);
                 Assert.IsTrue(readProject.Files.Count == 0);
                 Assert.IsTrue(readProject.Name == name);
-                Console.WriteLine("API Test: {0} Project read successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Project read successfully", source.Language);
 
                 // Test set a project file for the project
                 files = new List<ProjectFile>
@@ -100,25 +95,25 @@ package com.quantconnect.lean.Tests.API
                 };
                 updateProject = api.UpdateProject(project.ProjectId, files);
                 Assert.IsTrue(updateProject.Success);
-                Console.WriteLine("API Test: {0} Project updated successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Project updated successfully", source.Language);
 
                 // Download the project again to validate its got the new file
                 verifyRead = api.ReadProject(project.ProjectId);
                 Assert.IsTrue(verifyRead.Files.Count == 1);
                 Assert.IsTrue(verifyRead.Files.First().Name == source.Name);
-                Console.WriteLine("API Test: {0} Project read back successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Project read back successfully", source.Language);
 
                 // Test successfully compile the project we've created
                 compileCreate = api.CreateCompile(project.ProjectId);
                 Assert.IsTrue(compileCreate.Success);
                 Assert.IsTrue(compileCreate.State == CompileState.InQueue);
-                Console.WriteLine("API Test: {0} Compile created successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Compile created successfully", source.Language);
 
                 //Read out the compile; wait for it to be completed for 10 seconds
                 compileSuccess = WaitForCompilerResponse(api, project.ProjectId, compileCreate.CompileId);
                 Assert.IsTrue(compileSuccess.Success);
                 Assert.IsTrue(compileSuccess.State == CompileState.BuildSuccess);
-                Console.WriteLine("API Test: {0} Project built successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Project built successfully", source.Language);
 
                 // Update the file, create a build error, test we get build error
                 files[0].Code += "[Jibberish at end of the file to cause a build error]";
@@ -127,13 +122,13 @@ package com.quantconnect.lean.Tests.API
                 compileError = WaitForCompilerResponse(api, project.ProjectId, compileError.CompileId);
                 Assert.IsTrue(compileError.Success); // Successfully processed rest request.
                 Assert.IsTrue(compileError.State == CompileState.BuildError); //Resulting in build fail.
-                Console.WriteLine("API Test: {0} Project errored successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Project errored successfully", source.Language);
 
                 // Using our successful compile; launch a backtest! 
-                backtestName = DateTime.Now.toString("u") + " API Backtest";
+                backtestName = DateTime.Now.toString( "u") + " API Backtest";
                 backtest = api.CreateBacktest(project.ProjectId, compileSuccess.CompileId, backtestName);
                 Assert.IsTrue(backtest.Success);
-                Console.WriteLine("API Test: {0} Backtest created successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Backtest created successfully", source.Language);
 
                 // Now read the backtest and wait for it to complete
                 backtestRead = WaitForBacktestCompletion(api, project.ProjectId, backtest.BacktestId);
@@ -141,14 +136,14 @@ package com.quantconnect.lean.Tests.API
                 Assert.IsTrue(backtestRead.Progress == 1);
                 Assert.IsTrue(backtestRead.Name == backtestName);
                 Assert.IsTrue(backtestRead.Result.Statistics["Total Trades"] == "1");
-                Console.WriteLine("API Test: {0} Backtest completed successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Backtest completed successfully", source.Language);
 
                 // Verify we have the backtest in our project
                 listBacktests = api.BacktestList(project.ProjectId);
                 Assert.IsTrue(listBacktests.Success);
                 Assert.IsTrue(listBacktests.Backtests.Count >= 1);
                 Assert.IsTrue(listBacktests.Backtests[0].Name == backtestName);
-                Console.WriteLine("API Test: {0} Backtests listed successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Backtests listed successfully", source.Language);
 
                 // Update the backtest name and test its been updated
                 backtestName += "-Amendment";
@@ -156,25 +151,25 @@ package com.quantconnect.lean.Tests.API
                 Assert.IsTrue(renameBacktest.Success);
                 backtestRead = api.ReadBacktest(project.ProjectId, backtest.BacktestId);
                 Assert.IsTrue(backtestRead.Name == backtestName);
-                Console.WriteLine("API Test: {0} Backtest renamed successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Backtest renamed successfully", source.Language);
 
                 //Update the note and make sure its been updated:
-                newNote = DateTime.Now.toString("u");
+                newNote = DateTime.Now.toString( "u");
                 noteBacktest = api.UpdateBacktest(project.ProjectId, backtest.BacktestId, backtestNote: newNote);
                 Assert.IsTrue(noteBacktest.Success);
                 backtestRead = api.ReadBacktest(project.ProjectId, backtest.BacktestId);
                 Assert.IsTrue(backtestRead.Note == newNote);
-                Console.WriteLine("API Test: {0} Backtest note added successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Backtest note added successfully", source.Language);
 
                 // Delete the backtest we just created
                 deleteBacktest = api.DeleteBacktest(project.ProjectId, backtest.BacktestId);
                 Assert.IsTrue(deleteBacktest.Success);
-                Console.WriteLine("API Test: {0} Backtest deleted successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Backtest deleted successfully", source.Language);
 
                 // Test delete the project we just created
                 deleteProject = api.Delete(project.ProjectId);
                 Assert.IsTrue(deleteProject.Success);
-                Console.WriteLine("API Test: {0} Project deleted successfully", source.Language);
+                Console.WriteLine( "API Test: %1$s Project deleted successfully", source.Language);
             }
         }
 
@@ -183,8 +178,7 @@ package com.quantconnect.lean.Tests.API
         /// Live algorithm tests
         /// </summary>
         [Test]
-        public void ListAccountLiveAlgorithms()
-        {
+        public void ListAccountLiveAlgorithms() {
             api = CreateApiAccessor();
 
             // List all previously deployed algorithms
@@ -198,8 +192,7 @@ package com.quantconnect.lean.Tests.API
         /// Create an authenticated API accessor object.
         /// </summary>
         /// <returns></returns>
-        private IApi CreateApiAccessor()
-        {
+        private IApi CreateApiAccessor() {
             return CreateApiAccessor(_testAccount, _testToken);
         }
 
@@ -209,8 +202,7 @@ package com.quantconnect.lean.Tests.API
         /// <param name="uid">User id</param>
         /// <param name="token">Token string</param>
         /// <returns>API class for placing calls</returns>
-        private IApi CreateApiAccessor(int uid, String token)
-        {
+        private IApi CreateApiAccessor(int uid, String token) {
             api = new Api.Api();
             api.Initialize(uid, token);
             return api;
@@ -223,14 +215,12 @@ package com.quantconnect.lean.Tests.API
         /// <param name="projectId"></param>
         /// <param name="compileId"></param>
         /// <returns></returns>
-        private Compile WaitForCompilerResponse(IApi api, int projectId, String compileId)
-        {
+        private Compile WaitForCompilerResponse(IApi api, int projectId, String compileId) {
             compile = new Compile();
             finish = DateTime.Now.AddSeconds(30);
-            while (DateTime.Now < finish)
-            {
+            while (DateTime.Now < finish) {
                 compile = api.ReadCompile(projectId, compileId);
-                if (compile.State != CompileState.InQueue) break;
+                if( compile.State != CompileState.InQueue) break;
                 Thread.Sleep(500);
             }
             return compile;
@@ -243,15 +233,13 @@ package com.quantconnect.lean.Tests.API
         /// <param name="projectId">Project id to scan</param>
         /// <param name="backtestId">Backtest id previously started</param>
         /// <returns>Completed backtest object</returns>
-        private Backtest WaitForBacktestCompletion(IApi api, int projectId, String backtestId)
-        {
+        private Backtest WaitForBacktestCompletion(IApi api, int projectId, String backtestId) {
             result = new Backtest();
             finish = DateTime.Now.AddSeconds(60);
-            while (DateTime.Now < finish)
-            {
+            while (DateTime.Now < finish) {
                 result = api.ReadBacktest(projectId, backtestId);
-                if (result.Progress == 1) break;
-                if (!result.Success) break;
+                if( result.Progress == 1) break;
+                if( !result.Success) break;
                 Thread.Sleep(500);
             }
             return result;
@@ -263,8 +251,7 @@ package com.quantconnect.lean.Tests.API
             public String Code;
             public String Name;
 
-            public TestAlgorithm(Language language, String name, String code)
-            {
+            public TestAlgorithm(Language language, String name, String code) {
                 Language = language;
                 Code = code;
                 Name = name;

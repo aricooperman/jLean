@@ -33,16 +33,14 @@ package com.quantconnect.lean.Queues
         /// </summary>
         /// <param name="job">unused</param>
         /// <param name="algorithm">The algorithm instance</param>
-        public void Initialize(AlgorithmNodePacket job, IAlgorithm algorithm)
-        {
+        public void Initialize(AlgorithmNodePacket job, IAlgorithm algorithm) {
         }
 
         /// <summary>
         /// Return empty enumerable.
         /// </summary>
         /// <returns>null</returns>
-        public IEnumerable<ICommand> GetCommands()
-        {
+        public IEnumerable<ICommand> GetCommands() {
             return Enumerable.Empty<ICommand>();
         }
 
@@ -50,8 +48,7 @@ package com.quantconnect.lean.Queues
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
         }
     }
 }

@@ -28,12 +28,11 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
     {
         [TestCase(OrderDirection.Buy)]
         [TestCase(OrderDirection.Sell)]
-        public void MarketOrderFillsAtBidAsk(OrderDirection direction)
-        {
-            symbol = Symbol.Create("EURUSD", SecurityType.Forex, "fxcm");
+        public void MarketOrderFillsAtBidAsk(OrderDirection direction) {
+            symbol = Symbol.Create( "EURUSD", SecurityType.Forex, "fxcm");
             exchangeHours = SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork);
-            quoteCash = new Cash("USD", 1000, 1);
-            symbolProperties = SymbolProperties.GetDefault("USD");
+            quoteCash = new Cash( "USD", 1000, 1);
+            symbolProperties = SymbolProperties.GetDefault( "USD");
             security = new Forex(symbol, exchangeHours, quoteCash, symbolProperties);
 
             reference = DateTime.Now;

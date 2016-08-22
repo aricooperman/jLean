@@ -33,8 +33,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         /// <param name="source">The local file to be read</param>
         /// <param name="entryName">Specifies the zip entry to be opened. Leave null if not applicable,
         /// or to open the first zip entry found regardless of name</param>
-        public LocalFileSubscriptionStreamReader( String source, String entryName = null)
-        {
+        public LocalFileSubscriptionStreamReader( String source, String entryName = null ) {
             // unzip if necessary
             _streamReader = source.GetExtension() == ".zip"
                 ? Compression.Unzip(source, entryName, out _zipFile)
@@ -60,23 +59,19 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         /// <summary>
         /// Gets the next line/batch of content from the stream 
         /// </summary>
-        public String ReadLine()
-        {
+        public String ReadLine() {
             return _streamReader.ReadLine();
         }
 
         /// <summary>
         /// Disposes of the stream
         /// </summary>
-        public void Dispose()
-        {
-            if (_streamReader != null)
-            {
+        public void Dispose() {
+            if( _streamReader != null ) {
                 _streamReader.Dispose();
                 _streamReader = null;
             }
-            if (_zipFile != null)
-            {
+            if( _zipFile != null ) {
                 _zipFile.Dispose();
             }
         }

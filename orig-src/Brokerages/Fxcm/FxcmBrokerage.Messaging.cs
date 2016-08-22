@@ -56,77 +56,67 @@ package com.quantconnect.lean.Brokerages.Fxcm
 
         private String _fxcmAccountCurrency = "USD";
 
-        private void LoadInstruments()
-        {
+        private void LoadInstruments() {
             // Note: requestTradingSessionStatus() MUST be called just after login
 
             AutoResetEvent autoResetEvent;
-            lock (_locker)
-            {
+            lock (_locker) {
                 _currentRequest = _gateway.requestTradingSessionStatus();
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
-            if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.format("FxcmBrokerage.LoadInstruments(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+            if( !autoResetEvent.WaitOne(ResponseTimeout))
+                throw new TimeoutException( String.format( "FxcmBrokerage.LoadInstruments(): Operation took longer than %1$s seconds.", (decimal)ResponseTimeout / 1000));
         }
 
-        private void LoadAccounts()
-        {
+        private void LoadAccounts() {
             AutoResetEvent autoResetEvent;
-            lock (_locker)
-            {
+            lock (_locker) {
                 _currentRequest = _gateway.requestAccounts();
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
-            if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.format("FxcmBrokerage.LoadAccounts(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+            if( !autoResetEvent.WaitOne(ResponseTimeout))
+                throw new TimeoutException( String.format( "FxcmBrokerage.LoadAccounts(): Operation took longer than %1$s seconds.", (decimal)ResponseTimeout / 1000));
 
-            if (!_accounts.ContainsKey(_accountId))
-                throw new ArgumentException("FxcmBrokerage.LoadAccounts(): The account id is invalid: " + _accountId);
+            if( !_accounts.ContainsKey(_accountId))
+                throw new ArgumentException( "FxcmBrokerage.LoadAccounts(): The account id is invalid: " + _accountId);
 
             // Hedging MUST be disabled on the account
-            if (_accounts[_accountId].getParties().getFXCMPositionMaintenance() == "Y")
-            {
-                throw new NotSupportedException("FxcmBrokerage.LoadAccounts(): The Lean engine does not support accounts with Hedging enabled. Please contact FXCM support to disable Hedging.");
+            if( _accounts[_accountId].getParties().getFXCMPositionMaintenance() == "Y") {
+                throw new NotSupportedException( "FxcmBrokerage.LoadAccounts(): The Lean engine does not support accounts with Hedging enabled. Please contact FXCM support to disable Hedging.");
             }
         }
 
-        private void LoadOpenOrders()
-        {
+        private void LoadOpenOrders() {
             AutoResetEvent autoResetEvent;
-            lock (_locker)
-            {
+            lock (_locker) {
                 _currentRequest = _gateway.requestOpenOrders(_accountId);
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
-            if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.format("FxcmBrokerage.LoadOpenOrders(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+            if( !autoResetEvent.WaitOne(ResponseTimeout))
+                throw new TimeoutException( String.format( "FxcmBrokerage.LoadOpenOrders(): Operation took longer than %1$s seconds.", (decimal)ResponseTimeout / 1000));
         }
 
-        private void LoadOpenPositions()
-        {
+        private void LoadOpenPositions() {
             AutoResetEvent autoResetEvent;
-            lock (_locker)
-            {
-                _currentRequest = _terminal.Equals("Demo") ?
+            lock (_locker) {
+                _currentRequest = _terminal.Equals( "Demo") ?
                     _gateway.requestOpenPositions(Convert.ToInt64(_accountId)) :
                     _gateway.requestOpenPositions(_accountId);
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
-            if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.format("FxcmBrokerage.LoadOpenPositions(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+            if( !autoResetEvent.WaitOne(ResponseTimeout))
+                throw new TimeoutException( String.format( "FxcmBrokerage.LoadOpenPositions(): Operation took longer than %1$s seconds.", (decimal)ResponseTimeout / 1000));
         }
 
         /// <summary>
         /// Provides as public access to this data without requiring consumers to reference
         /// IKVM libraries
         /// </summary>
-        public List<Tick> GetBidAndAsk(List<String> fxcmSymbols)
-        {
+        public List<Tick> GetBidAndAsk(List<String> fxcmSymbols) {
             return GetQuotes(fxcmSymbols).Select(x => new Tick
             {
                 Symbol = _symbolMapper.GetLeanSymbol(
@@ -141,26 +131,23 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// Gets the quotes for the symbol
         /// </summary>
-        private List<MarketDataSnapshot> GetQuotes(List<String> fxcmSymbols)
-        {
+        private List<MarketDataSnapshot> GetQuotes(List<String> fxcmSymbols) {
             // get current quotes for the instrument
             request = new MarketDataRequest();
             request.setMDEntryTypeSet(MarketDataRequest.MDENTRYTYPESET_ALL);
             request.setSubscriptionRequestType(SubscriptionRequestTypeFactory.SNAPSHOT);
-            foreach (fxcmSymbol in fxcmSymbols)
-            {
+            foreach (fxcmSymbol in fxcmSymbols) {
                 request.addRelatedSymbol(_fxcmInstruments[fxcmSymbol]);
             }
 
             AutoResetEvent autoResetEvent;
-            lock (_locker)
-            {
+            lock (_locker) {
                 _currentRequest = _gateway.sendMessage(request);
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
             }
-            if (!autoResetEvent.WaitOne(ResponseTimeout))
-                throw new TimeoutException( String.format("FxcmBrokerage.GetQuotes(): Operation took longer than {0} seconds.", (decimal)ResponseTimeout / 1000));
+            if( !autoResetEvent.WaitOne(ResponseTimeout))
+                throw new TimeoutException( String.format( "FxcmBrokerage.GetQuotes(): Operation took longer than %1$s seconds.", (decimal)ResponseTimeout / 1000));
 
             return _rates.Where(x => fxcmSymbols.Contains(x.Key)).Select(x => x.Value).ToList();
         }
@@ -169,9 +156,8 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// Gets the current conversion rate into USD
         /// </summary>
         /// <remarks>Synchronous, blocking</remarks>
-        private BigDecimal GetUsdConversion( String currency)
-        {
-            if (currency == "USD")
+        private BigDecimal GetUsdConversion( String currency) {
+            if( currency == "USD")
                 return 1m;
 
             // determine the correct symbol to choose
@@ -194,36 +180,33 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// Receives generic messages from the FXCM API
         /// </summary>
         /// <param name="message">Generic message received</param>
-        public void messageArrived(ITransportable message)
-        {
+        public void messageArrived(ITransportable message) {
             // Dispatch message to specific handler
 
-            lock (_locker)
-            {
-                if (message is TradingSessionStatus)
+            lock (_locker) {
+                if( message is TradingSessionStatus)
                     OnTradingSessionStatus((TradingSessionStatus)message);
 
-                else if (message is CollateralReport)
+                else if( message is CollateralReport)
                     OnCollateralReport((CollateralReport)message);
 
-                else if (message is MarketDataSnapshot)
+                else if( message is MarketDataSnapshot)
                     OnMarketDataSnapshot((MarketDataSnapshot)message);
 
-                else if (message is ExecutionReport)
+                else if( message is ExecutionReport)
                     OnExecutionReport((ExecutionReport)message);
 
-                else if (message is RequestForPositionsAck)
+                else if( message is RequestForPositionsAck)
                     OnRequestForPositionsAck((RequestForPositionsAck)message);
 
-                else if (message is PositionReport)
+                else if( message is PositionReport)
                     OnPositionReport((PositionReport)message);
 
-                else if (message is OrderCancelReject)
+                else if( message is OrderCancelReject)
                     OnOrderCancelReject((OrderCancelReject)message);
 
-                else if (message is UserResponse || message is CollateralInquiryAck ||
-                    message is MarketDataRequestReject || message is BusinessMessageReject || message is SecurityStatus)
-                {
+                else if( message is UserResponse || message is CollateralInquiryAck ||
+                    message is MarketDataRequestReject || message is BusinessMessageReject || message is SecurityStatus) {
                     // Unused messages, no handler needed
                 }
 
@@ -231,7 +214,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 {
                     // Should never get here, if it does log and ignore message
                     // New messages added in future api updates should be added to the unused list above
-                    Log.Trace("FxcmBrokerage.messageArrived(): Unknown message: {0}", message);
+                    Log.Trace( "FxcmBrokerage.messageArrived(): Unknown message: %1$s", message);
                 }
             }
         }
@@ -239,20 +222,17 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// TradingSessionStatus message handler
         /// </summary>
-        private void OnTradingSessionStatus(TradingSessionStatus message)
-        {
-            if (message.getRequestID() == _currentRequest)
-            {
+        private void OnTradingSessionStatus(TradingSessionStatus message) {
+            if( message.getRequestID() == _currentRequest) {
                 // load instrument list into a dictionary
                 securities = message.getSecurities();
-                while (securities.hasMoreElements())
-                {
+                while (securities.hasMoreElements()) {
                     security = (TradingSecurity)securities.nextElement();
                     _fxcmInstruments[security.getSymbol()] = security;
                 }
 
                 // get account base currency
-                _fxcmAccountCurrency = message.getParameter("BASE_CRNCY").getValue();
+                _fxcmAccountCurrency = message.getParameter( "BASE_CRNCY").getValue();
 
                 _mapRequestsToAutoResetEvents[_currentRequest].Set();
                 _mapRequestsToAutoResetEvents.Remove(_currentRequest);
@@ -262,16 +242,13 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// CollateralReport message handler
         /// </summary>
-        private void OnCollateralReport(CollateralReport message)
-        {
+        private void OnCollateralReport(CollateralReport message) {
             // add the trading account to the account list
             _accounts[message.getAccount()] = message;
 
-            if (message.getRequestID() == _currentRequest)
-            {
+            if( message.getRequestID() == _currentRequest) {
                 // set the state of the request to be completed only if this is the last collateral report requested
-                if (message.isLastRptRequested())
-                {
+                if( message.isLastRptRequested()) {
                     _mapRequestsToAutoResetEvents[_currentRequest].Set();
                     _mapRequestsToAutoResetEvents.Remove(_currentRequest);
                 }
@@ -281,8 +258,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// MarketDataSnapshot message handler
         /// </summary>
-        private void OnMarketDataSnapshot(MarketDataSnapshot message)
-        {
+        private void OnMarketDataSnapshot(MarketDataSnapshot message) {
             // update the current prices for the instrument
             instrument = message.getInstrument();
             _rates[instrument.getSymbol()] = message;
@@ -291,23 +267,19 @@ package com.quantconnect.lean.Brokerages.Fxcm
             securityType = _symbolMapper.GetBrokerageSecurityType(instrument.getSymbol());
             symbol = _symbolMapper.GetLeanSymbol(instrument.getSymbol(), securityType, Market.FXCM);
 
-            if (_subscribedSymbols.Contains(symbol))
-            {
+            if( _subscribedSymbols.Contains(symbol)) {
                 time = FromJavaDate(message.getDate().toDate());
-                bidPrice = Convert.ToDecimal(message.getBidClose());
-                askPrice = Convert.ToDecimal(message.getAskClose());
+                bidPrice = new BigDecimal( message.getBidClose());
+                askPrice = new BigDecimal( message.getAskClose());
                 tick = new Tick(time, symbol, bidPrice, askPrice);
 
-                lock (_ticks)
-                {
+                lock (_ticks) {
                     _ticks.Add(tick);
                 }
             }
 
-            if (message.getRequestID() == _currentRequest)
-            {
-                if (message.getFXCMContinuousFlag() == IFixValueDefs.__Fields.FXCMCONTINUOUS_END)
-                {
+            if( message.getRequestID() == _currentRequest) {
+                if( message.getFXCMContinuousFlag() == IFixValueDefs.__Fields.FXCMCONTINUOUS_END) {
                     _mapRequestsToAutoResetEvents[_currentRequest].Set();
                     _mapRequestsToAutoResetEvents.Remove(_currentRequest);
                 }
@@ -317,15 +289,12 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// ExecutionReport message handler
         /// </summary>
-        private void OnExecutionReport(ExecutionReport message)
-        {
+        private void OnExecutionReport(ExecutionReport message) {
             orderId = message.getOrderID();
             orderStatus = message.getFXCMOrdStatus();
 
-            if (orderId != "NONE" && message.getAccount() == _accountId)
-            {
-                if (_openOrders.ContainsKey(orderId) && OrderIsClosed(orderStatus.getCode()))
-                {
+            if( orderId != "NONE" && message.getAccount() == _accountId) {
+                if( _openOrders.ContainsKey(orderId) && OrderIsClosed(orderStatus.getCode())) {
                     _openOrders.Remove(orderId);
                 }
                 else
@@ -334,23 +303,19 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 }
 
                 Order order;
-                if (_mapFxcmOrderIdsToOrders.TryGetValue(orderId, out order))
-                {
+                if( _mapFxcmOrderIdsToOrders.TryGetValue(orderId, out order)) {
                     // existing order
-                    if (!OrderIsBeingProcessed(orderStatus.getCode()))
-                    {
+                    if( !OrderIsBeingProcessed(orderStatus.getCode())) {
                         order.PriceCurrency = message.getCurrency();
 
-                        orderEvent = new OrderEvent(order, DateTime.UtcNow, 0)
-                        {
+                        orderEvent = new OrderEvent(order, DateTime.UtcNow, 0) {
                             Status = ConvertOrderStatus(orderStatus),
-                            FillPrice = Convert.ToDecimal(message.getPrice()),
-                            FillQuantity = Convert.ToInt32(message.getSide() == SideFactory.BUY ? message.getLastQty() : -message.getLastQty())
+                            FillPrice = new BigDecimal( message.getPrice()),
+                            FillQuantity =  Integer.parseInt( message.getSide() == SideFactory.BUY ? message.getLastQty() : -message.getLastQty())
                         };
 
                         // we're catching the first fill so we apply the fees only once
-                        if ((int)message.getCumQty() == (int)message.getLastQty() && message.getLastQty() > 0)
-                        {
+                        if( (int)message.getCumQty() == (int)message.getLastQty() && message.getLastQty() > 0) {
                             security = _securityProvider.GetSecurity(order.Symbol);
                             orderEvent.OrderFee = security.FeeModel.GetOrderFee(security, order);
                         }
@@ -358,15 +323,13 @@ package com.quantconnect.lean.Brokerages.Fxcm
                         _orderEventQueue.Enqueue(orderEvent);
                     }
                 }
-                else if (_mapRequestsToOrders.TryGetValue(message.getRequestID(), out order))
-                {
+                else if( _mapRequestsToOrders.TryGetValue(message.getRequestID(), out order)) {
                     _mapFxcmOrderIdsToOrders[orderId] = order;
                     order.BrokerId.Add(orderId);
                     order.PriceCurrency = message.getCurrency();
 
                     // new order
-                    orderEvent = new OrderEvent(order, DateTime.UtcNow, 0)
-                    {
+                    orderEvent = new OrderEvent(order, DateTime.UtcNow, 0) {
                         Status = ConvertOrderStatus(orderStatus)
                     };
 
@@ -374,16 +337,12 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 }
             }
 
-            if (message.getRequestID() == _currentRequest)
-            {
-                if (message.isLastRptRequested())
-                {
-                    if (orderId == "NONE" && orderStatus.getCode() == IFixValueDefs.__Fields.FXCMORDSTATUS_REJECTED)
-                    {
-                        if (message.getSide() != SideFactory.UNDISCLOSED)
-                        {
-                            messageText = message.getFXCMErrorDetails().Replace("\n", "");
-                            Log.Trace("FxcmBrokerage.OnExecutionReport(): " + messageText);
+            if( message.getRequestID() == _currentRequest) {
+                if( message.isLastRptRequested()) {
+                    if( orderId == "NONE" && orderStatus.getCode() == IFixValueDefs.__Fields.FXCMORDSTATUS_REJECTED) {
+                        if( message.getSide() != SideFactory.UNDISCLOSED) {
+                            messageText = message.getFXCMErrorDetails().Replace( "\n", "");
+                            Log.Trace( "FxcmBrokerage.OnExecutionReport(): " + messageText);
                             OnMessage(new BrokerageMessageEvent(BrokerageMessageType.Warning, "OrderSubmitReject", messageText));
                         }
 
@@ -391,8 +350,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                     }
 
                     AutoResetEvent autoResetEvent = null;
-                    if (_mapRequestsToAutoResetEvents.TryGetValue(_currentRequest, out autoResetEvent))
-                    {
+                    if( _mapRequestsToAutoResetEvents.TryGetValue(_currentRequest, out autoResetEvent)) {
                         autoResetEvent.Set();
                         _mapRequestsToAutoResetEvents.Remove(_currentRequest);
                     }
@@ -403,12 +361,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// RequestForPositionsAck message handler
         /// </summary>
-        private void OnRequestForPositionsAck(RequestForPositionsAck message)
-        {
-            if (message.getRequestID() == _currentRequest)
-            {
-                if (message.getTotalNumPosReports() == 0)
-                {
+        private void OnRequestForPositionsAck(RequestForPositionsAck message) {
+            if( message.getRequestID() == _currentRequest) {
+                if( message.getTotalNumPosReports() == 0) {
                     _mapRequestsToAutoResetEvents[_currentRequest].Set();
                     _mapRequestsToAutoResetEvents.Remove(_currentRequest);
                 }
@@ -418,12 +373,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// PositionReport message handler
         /// </summary>
-        private void OnPositionReport(PositionReport message)
-        {
-            if (message.getAccount() == _accountId)
-            {
-                if (_openPositions.ContainsKey(message.getCurrency()) && message is ClosedPositionReport)
-                {
+        private void OnPositionReport(PositionReport message) {
+            if( message.getAccount() == _accountId) {
+                if( _openPositions.ContainsKey(message.getCurrency()) && message is ClosedPositionReport) {
                     _openPositions.Remove(message.getCurrency());
                 }
                 else
@@ -432,11 +384,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 }
             }
 
-            if (message.getRequestID() == _currentRequest)
-            {
+            if( message.getRequestID() == _currentRequest) {
                 AutoResetEvent autoResetEvent = null;
-                if (message.isLastRptRequested() && _mapRequestsToAutoResetEvents.TryGetValue(_currentRequest, out autoResetEvent))
-                {
+                if( message.isLastRptRequested() && _mapRequestsToAutoResetEvents.TryGetValue(_currentRequest, out autoResetEvent)) {
                     autoResetEvent.Set();
                     _mapRequestsToAutoResetEvents.Remove(_currentRequest);
                 }
@@ -446,12 +396,10 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// <summary>
         /// OrderCancelReject message handler
         /// </summary>
-        private void OnOrderCancelReject(OrderCancelReject message)
-        {
-            if (message.getRequestID() == _currentRequest)
-            {
-                messageText = message.getFXCMErrorDetails().Replace("\n", "");
-                Log.Trace("FxcmBrokerage.OnOrderCancelReject(): " + messageText);
+        private void OnOrderCancelReject(OrderCancelReject message) {
+            if( message.getRequestID() == _currentRequest) {
+                messageText = message.getFXCMErrorDetails().Replace( "\n", "");
+                Log.Trace( "FxcmBrokerage.OnOrderCancelReject(): " + messageText);
                 OnMessage(new BrokerageMessageEvent(BrokerageMessageType.Warning, "OrderUpdateOrCancelReject", messageText));
 
                 _isOrderUpdateOrCancelRejected = true;
@@ -469,13 +417,10 @@ package com.quantconnect.lean.Brokerages.Fxcm
         /// Receives status messages from the FXCM API
         /// </summary>
         /// <param name="message">Status message received</param>
-        public void messageArrived(ISessionStatus message)
-        {
-            switch (message.getStatusCode())
-            {
+        public void messageArrived(ISessionStatus message) {
+            switch (message.getStatusCode()) {
                 case ISessionStatus.__Fields.STATUSCODE_READY:
-                    lock (_lockerConnectionMonitor)
-                    {
+                    lock (_lockerConnectionMonitor) {
                         _lastReadyMessageTime = DateTime.UtcNow;
                     }
                     _connectionError = false;

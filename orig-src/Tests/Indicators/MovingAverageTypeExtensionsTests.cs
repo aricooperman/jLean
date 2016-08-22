@@ -22,8 +22,7 @@ package com.quantconnect.lean.Tests.Indicators
     public class MovingAverageTypeExtensionsTests
     {
         [Test]
-        public void CreatesCorrectAveragingIndicator()
-        {
+        public void CreatesCorrectAveragingIndicator() {
             indicator = MovingAverageType.Simple.AsIndicator(1);
             Assert.IsInstanceOf(typeof(SimpleMovingAverage), indicator);
 

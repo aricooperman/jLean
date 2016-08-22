@@ -39,8 +39,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The number of data points to hold in the window</param>
         public LeastSquaresMovingAverage( String name, int period)
-            : base(name, period)
-        {
+            : base(name, period) {
             t = Vector<double>.Build.Dense(period, i => i + 1).ToArray();
         }
 
@@ -49,8 +48,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The number of data points to hold in the window.</param>
         public LeastSquaresMovingAverage(int period)
-            : this("LSMA" + period, period)
-        {
+            : this( "LSMA" + period, period) {
         }
 
         /// <summary>
@@ -61,12 +59,10 @@ package com.quantconnect.lean.Indicators
         /// <returns>
         /// A new value for this indicator
         /// </returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             // Until the windows is ready, the indicator returns the input value.
             BigDecimal output = input;
-            if (IsReady)
-            {
+            if( IsReady) {
                 // Sort the windows by time, convert the observations ton double and transform it to a double array
                 double[] series = window
                     .OrderBy(i => i.Time)

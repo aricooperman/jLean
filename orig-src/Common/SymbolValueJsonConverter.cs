@@ -30,11 +30,9 @@ package com.quantconnect.lean
         /// Writes the JSON representation of the object.
         /// </summary>
         /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
-        public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
-        {
+        public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
             symbol = value as Symbol;
-            if (symbol != null)
-            {
+            if( symbol != null ) {
                 writer.WriteValue(symbol.Value);
             }
             else
@@ -50,9 +48,8 @@ package com.quantconnect.lean
         /// <returns>
         /// The object value.
         /// </returns>
-        public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
-        {
-            throw new NotImplementedException("The SymbolValueJsonConverter is write-only.");
+        public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+            throw new NotImplementedException( "The SymbolValueJsonConverter is write-only.");
         }
 
         /// <summary>
@@ -62,9 +59,8 @@ package com.quantconnect.lean
         /// <returns>
         /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
         /// </returns>
-        public override boolean CanConvert(Type objectType)
-        {
-            throw new NotImplementedException("The SymbolValueJsonConverter is intended to be decorated on the appropriate member directly.");
+        public @Override boolean CanConvert(Type objectType) {
+            throw new NotImplementedException( "The SymbolValueJsonConverter is intended to be decorated on the appropriate member directly.");
         }
     }
 }

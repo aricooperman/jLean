@@ -28,12 +28,11 @@ package com.quantconnect.lean.Algorithm.CSharp
     {
         private SecurityChanges _changes = SecurityChanges.None;
 
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             // subscriptions added via universe selection will have this resolution
             UniverseSettings.Resolution = Resolution.Hour;
             // force securities to remain in the universe for a minimm of 30 minutes
-            UniverseSettings.MinimumTimeInUniverse = TimeSpan.FromMinutes(30);
+            UniverseSettings.MinimumTimeInUniverse = Duration.ofMinutes(30);
 
             SetStartDate(2013, 10, 07);
             SetEndDate(2013, 10, 11);
@@ -52,24 +51,19 @@ package com.quantconnect.lean.Algorithm.CSharp
             AddUniverse(Universe.DollarVolume.Percentile(70, 80));
         }
 
-        public void OnData(TradeBars data)
-        {
-            if (_changes == SecurityChanges.None) return;
+        public void OnData(TradeBars data) {
+            if( _changes == SecurityChanges.None) return;
 
             // liquidate securities that fell out of our universe
-            foreach (security in _changes.RemovedSecurities)
-            {
-                if (security.Invested)
-                {
+            foreach (security in _changes.RemovedSecurities) {
+                if( security.Invested) {
                     Liquidate(security.Symbol);
                 }
             }
 
             // invest in securities just added to our universe
-            foreach (security in _changes.AddedSecurities)
-            {
-                if (!security.Invested)
-                {
+            foreach (security in _changes.AddedSecurities) {
+                if( !security.Invested) {
                     MarketOrder(security.Symbol, 10);
                 }
             }
@@ -77,8 +71,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             _changes = SecurityChanges.None;
         }
 
-        public override void OnSecuritiesChanged(SecurityChanges changes)
-        {
+        public @Override void OnSecuritiesChanged(SecurityChanges changes) {
             _changes = changes;
         }
     }

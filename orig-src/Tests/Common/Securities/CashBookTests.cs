@@ -23,8 +23,7 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class CashBookTests
     {
         [Test]
-        public void InitializesWithAccountCurrencyAdded()
-        {
+        public void InitializesWithAccountCurrencyAdded() {
             book = new CashBook();
             Assert.AreEqual(1, book.Count);
             cash = book.Single().Value;
@@ -34,23 +33,21 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void ComputesValueInAccountCurrency()
-        {
+        public void ComputesValueInAccountCurrency() {
             book = new CashBook();
             book["USD"].SetAmount(1000);
-            book.Add("JPY", 1000, 1/100m);
-            book.Add("GBP", 1000, 2m);
+            book.Add( "JPY", 1000, 1/100m);
+            book.Add( "GBP", 1000, 2m);
 
             BigDecimal expected = book["USD"].ValueInAccountCurrency + book["JPY"].ValueInAccountCurrency + book["GBP"].ValueInAccountCurrency;
             Assert.AreEqual(expected, book.TotalValueInAccountCurrency);
         }
 
         [Test]
-        public void ConvertsProperly()
-        {
+        public void ConvertsProperly() {
             book = new CashBook();
-            book.Add("EUR", 0, 1.10m);
-            book.Add("GBP", 0, 0.71m);
+            book.Add( "EUR", 0, 1.10m);
+            book.Add( "GBP", 0, 0.71m);
 
             expected = 781m;
             actual = book.Convert(1000, "EUR", "GBP");
@@ -58,10 +55,9 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void ConvertsToAccountCurrencyProperly()
-        {
+        public void ConvertsToAccountCurrencyProperly() {
             book = new CashBook();
-            book.Add("EUR", 0, 1.10m);
+            book.Add( "EUR", 0, 1.10m);
 
             expected = 1100m;
             actual = book.ConvertToAccountCurrency(1000, "EUR");

@@ -23,8 +23,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 {
 	public class CandlesRequest : Request
 	{
-		public CandlesRequest()
-		{
+		public CandlesRequest() {
 		}
 
 		public SmartProperty<String> instrument;
@@ -57,13 +56,12 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 		[IsOptional]
 		public SmartProperty<String> weeklyAlignment;
 
-		public override String EndPoint
+		public @Override String EndPoint
 		{
 			get { return "candles"; }
 		}
 
-		public override EServer GetServer()
-		{
+		public @Override EServer GetServer() {
 			return EServer.Rates;
 		}
 	}

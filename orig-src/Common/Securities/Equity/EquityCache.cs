@@ -16,7 +16,7 @@
 package com.quantconnect.lean.Securities.Equity
 {
     /// <summary>
-    /// Equity cache override.
+    /// Equity cache @Override.
     /// </summary>
     /// <remarks>Scheduled for obsolesence</remarks>
     /// <seealso cref="SecurityCache"/>
@@ -26,8 +26,7 @@ package com.quantconnect.lean.Securities.Equity
         /// Start a new Cache for the set Index Code
         /// </summary>
         public EquityCache()
-            : base()
-        {
+            : base() {
         }
     }
 }

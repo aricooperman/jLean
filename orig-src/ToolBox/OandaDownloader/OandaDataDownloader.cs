@@ -39,8 +39,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
         /// <summary>
         /// Initializes a new instance of the <see cref="OandaDataDownloader"/> class
         /// </summary>
-        public OandaDataDownloader( String accessToken, int accountId)
-        {
+        public OandaDataDownloader( String accessToken, int accountId) {
             // Set Oanda account credentials
             Credentials.SetCredentials(EEnvironment.Practice, accessToken, accountId);
         }
@@ -50,8 +49,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
         /// </summary>
         /// <param name="symbol">The Lean symbol</param>
         /// <returns>Returns true if the symbol is available</returns>
-        public boolean HasSymbol( String symbol)
-        {
+        public boolean HasSymbol( String symbol) {
             return _symbolMapper.IsKnownLeanSymbol(Symbol.Create(symbol, GetSecurityType(symbol), Market.Oanda));
         }
 
@@ -60,8 +58,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
         /// </summary>
         /// <param name="symbol">The Lean symbol</param>
         /// <returns>The security type</returns>
-        public SecurityType GetSecurityType( String symbol)
-        {
+        public SecurityType GetSecurityType( String symbol) {
             return _symbolMapper.GetLeanSecurityType(symbol);
         }
 
@@ -73,19 +70,18 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
         /// <param name="startUtc">Start time of the data in UTC</param>
         /// <param name="endUtc">End time of the data in UTC</param>
         /// <returns>Enumerable of base data for this symbol</returns>
-        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc)
-        {
-            if (!_symbolMapper.IsKnownLeanSymbol(symbol))
-                throw new ArgumentException("Invalid symbol requested: " + symbol.Value);
+        public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
+            if( !_symbolMapper.IsKnownLeanSymbol(symbol))
+                throw new ArgumentException( "Invalid symbol requested: " + symbol.Value);
 
-            if (resolution == Resolution.Tick)
-                throw new NotSupportedException("Resolution not available: " + resolution);
+            if( resolution == Resolution.Tick)
+                throw new NotSupportedException( "Resolution not available: " + resolution);
 
-            if (symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
-                throw new NotSupportedException("SecurityType not available: " + symbol.ID.SecurityType);
+            if( symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
+                throw new NotSupportedException( "SecurityType not available: " + symbol.ID.SecurityType);
 
-            if (endUtc < startUtc)
-                throw new ArgumentException("The end date must be greater or equal than the start date.");
+            if( endUtc < startUtc)
+                throw new ArgumentException( "The end date must be greater or equal than the start date.");
 
             barsTotalInPeriod = new List<Candle>();
             barsToSave = new List<Candle>();
@@ -95,25 +91,22 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
             DateTime startDateTime = date;
 
             // loop until last date
-            while (startDateTime <= endUtc.AddDays(1))
-            {
-                String start = startDateTime.toString("yyyy-MM-ddTHH:mm:ssZ");
+            while (startDateTime <= endUtc.AddDays(1)) {
+                String start = startDateTime.toString( "yyyy-MM-ddTHH:mm:ssZ");
 
                 // request blocks of 5-second bars with a starting date/time
                 oandaSymbol = _symbolMapper.GetBrokerageSymbol(symbol);
                 bars = DownloadBars(oandaSymbol, start, BarsPerRequest);
-                if (bars.Count == 0)
+                if( bars.Count == 0)
                     break;
 
                 groupedBars = GroupBarsByDate(bars);
 
-                if (groupedBars.Count > 1)
-                {
+                if( groupedBars.Count > 1) {
                     // we received more than one day, so we save the completed days and continue
-                    while (groupedBars.Count > 1)
-                    {
+                    while (groupedBars.Count > 1) {
                         currentDate = groupedBars.Keys.First();
-                        if (currentDate > endUtc)
+                        if( currentDate > endUtc)
                             break;
 
                         barsToSave.AddRange(groupedBars[currentDate]);
@@ -129,15 +122,14 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
                     // update the current date
                     date = groupedBars.Keys.First();
 
-                    if (date <= endUtc)
-                    {
+                    if( date <= endUtc) {
                         barsToSave.AddRange(groupedBars[date]);
                     }
                 }
                 else
                 {
                     currentDate = groupedBars.Keys.First();
-                    if (currentDate > endUtc)
+                    if( currentDate > endUtc)
                         break;
 
                     // update the current date
@@ -150,19 +142,16 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
                 startDateTime = GetDateTimeFromString(bars[bars.Count - 1].time).AddSeconds(5);
             }
 
-            if (barsToSave.Count > 0)
-            {
+            if( barsToSave.Count > 0) {
                 barsTotalInPeriod.AddRange(barsToSave);
             }
 
-            switch (resolution)
-            {
+            switch (resolution) {
                 case Resolution.Second:
                 case Resolution.Minute:
                 case Resolution.Hour:
                 case Resolution.Daily:
-                    foreach (bar in AggregateBars(symbol, barsTotalInPeriod, resolution.ToTimeSpan()))
-                    {
+                    foreach (bar in AggregateBars(symbol, barsTotalInPeriod, resolution.ToTimeSpan())) {
                         yield return bar;
                     }
                     break;
@@ -176,8 +165,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
         /// <param name="bars"></param>
         /// <param name="resolution"></param>
         /// <returns></returns>
-        private static IEnumerable<TradeBar> AggregateBars(Symbol symbol, List<Candle> bars, TimeSpan resolution)
-        {
+        private static IEnumerable<TradeBar> AggregateBars(Symbol symbol, List<Candle> bars, TimeSpan resolution) {
             return
                 (from b in bars
                  group b by GetDateTimeFromString(b.time).RoundDown(resolution)
@@ -186,10 +174,10 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
                      {
                          Symbol = symbol,
                          Time = g.Key,
-                         Open = Convert.ToDecimal(g.First().openMid),
-                         High = Convert.ToDecimal(g.Max(b => b.highMid)),
-                         Low = Convert.ToDecimal(g.Min(b => b.lowMid)),
-                         Close = Convert.ToDecimal(g.Last().closeMid)
+                         Open = new BigDecimal( g.First().openMid),
+                         High = new BigDecimal( g.Max(b => b.highMid)),
+                         Low = new BigDecimal( g.Min(b => b.lowMid)),
+                         Close = new BigDecimal( g.Last().closeMid)
                      });
         }
 
@@ -198,15 +186,13 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
         /// </summary>
         /// <param name="bars"></param>
         /// <returns></returns>
-        private static SortedMap<DateTime, List<Candle>> GroupBarsByDate(List<Candle> bars)
-        {
+        private static SortedMap<DateTime, List<Candle>> GroupBarsByDate(List<Candle> bars) {
             groupedBars = new SortedMap<DateTime, List<Candle>>();
 
-            foreach (bar in bars)
-            {
+            foreach (bar in bars) {
                 date = GetDateTimeFromString(bar.time).Date;
 
-                if (!groupedBars.ContainsKey(date))
+                if( !groupedBars.ContainsKey(date))
                     groupedBars[date] = new List<Candle>();
 
                 groupedBars[date].Add(bar);
@@ -219,8 +205,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
         /// Returns a DateTime from an RFC3339 String (with microsecond resolution)
         /// </summary>
         /// <param name="time"></param>
-        private static DateTime GetDateTimeFromString( String time)
-        {
+        private static DateTime GetDateTimeFromString( String time) {
             return DateTime.ParseExact(time, "yyyy-MM-dd'T'HH:mm:ss.000000'Z'", CultureInfo.InvariantCulture);
         }
 
@@ -231,8 +216,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
         /// <param name="start"></param>
         /// <param name="barsPerRequest"></param>
         /// <returns></returns>
-        private static List<Candle> DownloadBars( String oandaSymbol, String start, int barsPerRequest)
-        {
+        private static List<Candle> DownloadBars( String oandaSymbol, String start, int barsPerRequest) {
             request = new CandlesRequest
             {
                 instrument = oandaSymbol,
@@ -249,14 +233,12 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
         /// </summary>
         /// <param name="request">the request data to use when retrieving the candles</param>
         /// <returns>List of Candles received (or empty list)</returns>
-        public static List<Candle> GetCandles(CandlesRequest request)
-        {
+        public static List<Candle> GetCandles(CandlesRequest request) {
             String requestString = Credentials.GetDefaultCredentials().GetServer(EServer.Rates) + request.GetRequestString();
 
             CandlesResponse candlesResponse = MakeRequest<CandlesResponse>(requestString);
             List<Candle> candles = new List<Candle>();
-            if (candlesResponse != null)
-            {
+            if( candlesResponse != null ) {
                 candles.AddRange(candlesResponse.candles);
             }
             return candles;
@@ -270,10 +252,8 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
         /// <param name="method">method for the request (defaults to GET)</param>
         /// <param name="requestParams">optional parameters (note that if provided, it's assumed the requestString doesn't contain any)</param>
         /// <returns>response via type T</returns>
-        private static T MakeRequest<T>( String requestString, String method = "GET", Map<String,String> requestParams = null)
-        {
-            if (requestParams != null && requestParams.Count > 0)
-            {
+        private static T MakeRequest<T>( String requestString, String method = "GET", Map<String,String> requestParams = null ) {
+            if( requestParams != null && requestParams.Count > 0) {
                 parameters = CreateParamString(requestParams);
                 requestString = requestString + "?" + parameters;
             }
@@ -284,16 +264,14 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
 
             try
             {
-                using (WebResponse response = request.GetResponse())
-                {
+                using (WebResponse response = request.GetResponse()) {
                     stream = GetResponseStream(response);
                     reader = new StreamReader(stream);
                     result = reader.ReadToEnd();
                     return JsonConvert.DeserializeObject<T>(result);
                 }
             }
-            catch (WebException ex)
-            {
+            catch (WebException ex) {
                 stream = GetResponseStream(ex.Response);
                 reader = new StreamReader(stream);
                 result = reader.ReadToEnd();
@@ -301,11 +279,9 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
             }
         }
 
-        private static Stream GetResponseStream(WebResponse response)
-        {
+        private static Stream GetResponseStream(WebResponse response) {
             stream = response.GetResponseStream();
-            if (response.Headers["Content-Encoding"] == "gzip")
-            {	// if we received a gzipped response, handle that
+            if( response.Headers["Content-Encoding"] == "gzip") {	// if we received a gzipped response, handle that
                 stream = new GZipStream(stream, CompressionMode.Decompress);
             }
             return stream;
@@ -316,9 +292,8 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
         /// </summary>
         /// <param name="requestParams">the parameters to convert</param>
         /// <returns>string containing all the parameters for use in requests</returns>
-        private static String CreateParamString(Map<String,String> requestParams)
-        {
-            return string.Join(",", requestParams.Select(x => x.Key + "=" + x.Value).Select(WebUtility.UrlEncode));
+        private static String CreateParamString(Map<String,String> requestParams) {
+            return String.join( ",", requestParams.Select(x => x.Key + "=" + x.Value).Select(WebUtility.UrlEncode));
         }
 
 

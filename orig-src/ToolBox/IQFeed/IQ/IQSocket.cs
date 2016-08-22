@@ -46,8 +46,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
     // Lookup super event
     public class LookupEventArgs : System.EventArgs
     {
-        public LookupEventArgs( String requestId, LookupType lookupType, LookupSequence lookupSequence)
-        {
+        public LookupEventArgs( String requestId, LookupType lookupType, LookupSequence lookupSequence) {
             _requestId = requestId;
             _lookupType = lookupType;
             _lookupSequence = lookupSequence;
@@ -71,11 +70,9 @@ package com.quantconnect.lean.ToolBox.IQFeed
     public enum PortType { Level1 = 1, Lookup = 3, Level2 = 2, Admin = 0 }
     public static class IQSocket
     {
-        public static int GetPort(PortType portType)
-        {
+        public static int GetPort(PortType portType) {
             port = 0;
-            switch (portType)
-            {
+            switch (portType) {
                 case PortType.Level1:
                     port = 5009;
                     break;
@@ -91,16 +88,13 @@ package com.quantconnect.lean.ToolBox.IQFeed
             }
             return port;
         }
-        public static IPAddress GetIp()
-        {
-            return IPAddress.Parse("127.0.0.1");
+        public static IPAddress GetIp() {
+            return IPAddress.Parse( "127.0.0.1");
         }
-        public static IPEndPoint GetEndPoint(PortType portType)
-        {
+        public static IPEndPoint GetEndPoint(PortType portType) {
             return new IPEndPoint(GetIp(), GetPort(portType));
         }
-        public static Socket GetSocket()
-        {
+        public static Socket GetSocket() {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
 
             // performance improvements on the socket connection
@@ -114,34 +108,31 @@ package com.quantconnect.lean.ToolBox.IQFeed
 
     public class Status
     {
-        internal Status()
-        {
+        internal Status() {
         }
-        internal void Update( String line)
-        {
-            fields = line.Split(',');
-            lock (this)
-            {
+        internal void Update( String line) {
+            fields = line.split(',');
+            lock (this) {
                 _serverIp = fields[2];
-                if (!int.TryParse(fields[3], out _serverPort)) _serverPort = 0;
-                if (!int.TryParse(fields[4], out _maxSymbols)) _maxSymbols = 0;
-                if (!int.TryParse(fields[5], out _numberOfSymbols)) _numberOfSymbols = 0;
-                if (!int.TryParse(fields[6], out _clientsConnected)) _clientsConnected = 0;
-                if (!int.TryParse(fields[7], out _secondsSinceLastUpdate)) _secondsSinceLastUpdate = 0;
-                if (!int.TryParse(fields[8], out _reconnections)) _reconnections = 0;
-                if (!int.TryParse(fields[9], out _attemptedReconnections)) _attemptedReconnections = 0;
-                if (!DateTime.TryParseExact(fields[10], "MMM dd hh':'mmtt", _enUS, DateTimeStyles.None, out _startTime)) _startTime = DateTime.MinValue;
-                if (!DateTime.TryParseExact(fields[11], "MMM dd hh':'mmtt", _enUS, DateTimeStyles.None, out _marketTime)) _marketTime = DateTime.MinValue;
+                if( !int.TryParse(fields[3], out _serverPort)) _serverPort = 0;
+                if( !int.TryParse(fields[4], out _maxSymbols)) _maxSymbols = 0;
+                if( !int.TryParse(fields[5], out _numberOfSymbols)) _numberOfSymbols = 0;
+                if( !int.TryParse(fields[6], out _clientsConnected)) _clientsConnected = 0;
+                if( !int.TryParse(fields[7], out _secondsSinceLastUpdate)) _secondsSinceLastUpdate = 0;
+                if( !int.TryParse(fields[8], out _reconnections)) _reconnections = 0;
+                if( !int.TryParse(fields[9], out _attemptedReconnections)) _attemptedReconnections = 0;
+                if( !DateTime.TryParseExact(fields[10], "MMM dd hh':'mmtt", _enUS, DateTimeStyles.None, out _startTime)) _startTime = DateTime.MinValue;
+                if( !DateTime.TryParseExact(fields[11], "MMM dd hh':'mmtt", _enUS, DateTimeStyles.None, out _marketTime)) _marketTime = DateTime.MinValue;
                 _connected = false;
-                if (fields[12] == "Connected") { _connected = true; }
+                if( fields[12] == "Connected") { _connected = true; }
                 _iqFeedVersion = fields[13];
                 _loginId = fields[14];
-                if (!double.TryParse(fields[15], out _totalKbsRecv)) _totalKbsRecv = 0;
-                if (!double.TryParse(fields[16], out _kbsPerSecRecv)) _kbsPerSecRecv = 0;
-                if (!double.TryParse(fields[17], out _avgKbsPerSecRecv)) _avgKbsPerSecRecv = 0;
-                if (!double.TryParse(fields[18], out _totalKbsSent)) _totalKbsSent = 0;
-                if (!double.TryParse(fields[19], out _kbsPerSecSent)) _kbsPerSecSent = 0;
-                if (!double.TryParse(fields[20], out _avgKbsPerSecSent)) _avgKbsPerSecSent = 0;
+                if( !double.TryParse(fields[15], out _totalKbsRecv)) _totalKbsRecv = 0;
+                if( !double.TryParse(fields[16], out _kbsPerSecRecv)) _kbsPerSecRecv = 0;
+                if( !double.TryParse(fields[17], out _avgKbsPerSecRecv)) _avgKbsPerSecRecv = 0;
+                if( !double.TryParse(fields[18], out _totalKbsSent)) _totalKbsSent = 0;
+                if( !double.TryParse(fields[19], out _kbsPerSecSent)) _kbsPerSecSent = 0;
+                if( !double.TryParse(fields[20], out _avgKbsPerSecSent)) _avgKbsPerSecSent = 0;
             }
         }
 
@@ -185,7 +176,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
         private double _totalKbsSent;
         private double _kbsPerSecSent;
         private double _avgKbsPerSecSent;
-        private CultureInfo _enUS = new CultureInfo("en-US");
+        private CultureInfo _enUS = new CultureInfo( "en-US");
         #endregion
     }
  

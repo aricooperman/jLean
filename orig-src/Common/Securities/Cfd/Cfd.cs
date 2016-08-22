@@ -48,8 +48,7 @@ package com.quantconnect.lean.Securities.Cfd
                 Securities.VolatilityModel.Null,
                 new SecurityMarginModel(50m),
                 new CfdDataFilter()
-                )
-        {
+                ) {
             Holdings = new CfdHolding(this);
         }
 
@@ -74,8 +73,7 @@ package com.quantconnect.lean.Securities.Cfd
                 Securities.VolatilityModel.Null,
                 new SecurityMarginModel(50m),
                 new CfdDataFilter()
-                )
-        {
+                ) {
             Holdings = new CfdHolding(this);
         }
 

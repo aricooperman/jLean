@@ -22,17 +22,15 @@ package com.quantconnect.lean.Tests.Indicators
     public class DoubleExponentialMovingAverageTests
     {
         [Test]
-        public void ComparesAgainstExternalData()
-        {
-            dema = new DoubleExponentialMovingAverage("DEMA", 5);
+        public void ComparesAgainstExternalData() {
+            dema = new DoubleExponentialMovingAverage( "DEMA", 5);
 
             RunTestIndicator(dema);
         }
 
         [Test]
-        public void ComparesAgainstExternalDataAfterReset()
-        {
-            dema = new DoubleExponentialMovingAverage("DEMA", 5);
+        public void ComparesAgainstExternalDataAfterReset() {
+            dema = new DoubleExponentialMovingAverage( "DEMA", 5);
 
             RunTestIndicator(dema);
             dema.Reset();
@@ -40,15 +38,13 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
-            dema = new DoubleExponentialMovingAverage("DEMA", 5);
+        public void ResetsProperly() {
+            dema = new DoubleExponentialMovingAverage( "DEMA", 5);
 
             TestHelper.TestIndicatorReset(dema, "spy_dema.txt");
         }
 
-        private static void RunTestIndicator(DoubleExponentialMovingAverage dema)
-        {
+        private static void RunTestIndicator(DoubleExponentialMovingAverage dema) {
             TestHelper.TestIndicator(dema, "spy_dema.txt", "DEMA_5", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value, 1e-2));
         }
     }

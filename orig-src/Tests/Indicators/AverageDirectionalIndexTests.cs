@@ -22,9 +22,8 @@ package com.quantconnect.lean.Tests.Indicators
     public class AverageDirectionalIndexTests
     {
         [Test]
-        public void ComparesAgainstExternalData()
-        {
-            adx = new AverageDirectionalIndex("adx", 14);
+        public void ComparesAgainstExternalData() {
+            adx = new AverageDirectionalIndex( "adx", 14);
 
             static final double epsilon = 1;
 
@@ -34,9 +33,8 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ComparesAgainstExternalDataAfterReset()
-        {
-            adx = new AverageDirectionalIndex("adx", 14);
+        public void ComparesAgainstExternalDataAfterReset() {
+            adx = new AverageDirectionalIndex( "adx", 14);
 
             static final double epsilon = 1;
 
@@ -48,11 +46,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
-            adxIndicator = new AverageDirectionalIndex("ADX", 14);
-            foreach (data in TestHelper.GetTradeBarStream("spy_with_adx.txt", false))
-            {
+        public void ResetsProperly() {
+            adxIndicator = new AverageDirectionalIndex( "ADX", 14);
+            foreach (data in TestHelper.GetTradeBarStream( "spy_with_adx.txt", false)) {
                 adxIndicator.Update(data);
             }
 

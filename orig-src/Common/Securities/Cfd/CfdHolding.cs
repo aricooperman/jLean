@@ -26,8 +26,7 @@ package com.quantconnect.lean.Securities.Cfd
         /// </summary>
         /// <param name="security">The CFD security being held</param>
         public CfdHolding(Cfd security)
-            : base(security)
-        {
+            : base(security) {
         }
     }
 }

@@ -44,8 +44,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// Returns the candle setting for the requested type
         /// </summary>
         /// <param name="type">The candle setting type</param>
-        public static CandleSetting Get(CandleSettingType type)
-        {
+        public static CandleSetting Get(CandleSettingType type) {
             CandleSetting setting;
             DefaultSettings.TryGetValue(type, out setting);
             return setting;
@@ -56,8 +55,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// </summary>
         /// <param name="type">The candle setting type</param>
         /// <param name="setting">The candle setting</param>
-        public static void Set(CandleSettingType type, CandleSetting setting)
-        {
+        public static void Set(CandleSettingType type, CandleSetting setting) {
             DefaultSettings[type] = setting;
         }
     }
@@ -100,8 +98,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         /// <param name="rangeType">The range type</param>
         /// <param name="averagePeriod">The average period</param>
         /// <param name="factor">The factor</param>
-        public CandleSetting(CandleRangeType rangeType, int averagePeriod, BigDecimal factor)
-        {
+        public CandleSetting(CandleRangeType rangeType, int averagePeriod, BigDecimal factor) {
             RangeType = rangeType;
             AveragePeriod = averagePeriod;
             Factor = factor;

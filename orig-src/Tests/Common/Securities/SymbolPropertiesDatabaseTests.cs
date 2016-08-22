@@ -26,8 +26,7 @@ package com.quantconnect.lean.Tests.Common.Securities
     class SymbolPropertiesDatabaseTests
     {
         [Test]
-        public void LoadsLotSize()
-        {
+        public void LoadsLotSize() {
             db = SymbolPropertiesDatabase.FromDataFolder();
 
             symbolProperties = db.GetSymbolProperties(Market.FXCM, "EURGBP", SecurityType.Forex, "GBP");
@@ -36,8 +35,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void LoadsQuoteCurrency()
-        {
+        public void LoadsQuoteCurrency() {
             db = SymbolPropertiesDatabase.FromDataFolder();
 
             symbolProperties = db.GetSymbolProperties(Market.FXCM, "EURGBP", SecurityType.Forex, "GBP");
@@ -46,9 +44,8 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void LoadsDefaultLotSize()
-        {
-            defaultSymbolProperties = SymbolProperties.GetDefault("USD");
+        public void LoadsDefaultLotSize() {
+            defaultSymbolProperties = SymbolProperties.GetDefault( "USD");
 
             Assert.AreEqual(defaultSymbolProperties.LotSize, 1);
         }

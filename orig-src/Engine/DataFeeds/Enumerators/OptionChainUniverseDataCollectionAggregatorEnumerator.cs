@@ -31,8 +31,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="enumerator">The enumerator to aggregate</param>
         /// <param name="symbol">The output data's symbol</param>
         public OptionChainUniverseDataCollectionAggregatorEnumerator(IEnumerator<BaseData> enumerator, Symbol symbol)
-            : base(enumerator, symbol)
-        {
+            : base(enumerator, symbol) {
         }
 
         /// <summary>
@@ -40,25 +39,20 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// </summary>
         /// <param name="collection">The collection to be added to</param>
         /// <param name="current">The data to be added</param>
-        protected override void Add(OptionChainUniverseDataCollection collection, BaseData current)
-        {
+        protected @Override void Add(OptionChainUniverseDataCollection collection, BaseData current) {
             AddSingleItem(collection, current);
         }
 
-        private static void AddSingleItem(OptionChainUniverseDataCollection collection, BaseData current)
-        {
+        private static void AddSingleItem(OptionChainUniverseDataCollection collection, BaseData current) {
             baseDataCollection = current as BaseDataCollection;
-            if (baseDataCollection != null)
-            {
-                foreach (data in baseDataCollection.Data)
-                {
+            if( baseDataCollection != null ) {
+                foreach (data in baseDataCollection.Data) {
                     AddSingleItem(collection, data);
                 }
                 return;
             }
 
-            if (current is ZipEntryName)
-            {
+            if( current is ZipEntryName) {
                 collection.Data.Add(current);
                 return;
             }

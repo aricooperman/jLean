@@ -32,13 +32,11 @@ package com.quantconnect.lean.Brokerages.Oanda.Session
         private readonly OandaBrokerage _brokerage;
 
         public EventsSession(OandaBrokerage brokerage, int accountId)
-            : base(accountId)
-        {
+            : base(accountId) {
             _brokerage = brokerage;
         }
 
-        protected override WebResponse GetSession()
-        {
+        protected @Override WebResponse GetSession() {
             return _brokerage.StartEventsSession(new List<Integer> {_accountId});
         }
     }

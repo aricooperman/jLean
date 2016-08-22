@@ -32,8 +32,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             UniverseSettings.Resolution = Resolution.Daily;
 
             SetStartDate(2014, 03, 22);  //Set Start Date
@@ -60,36 +59,28 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">Slice object keyed by symbol containing the stock data</param>
-        public override void OnData(Slice data)
-        {
-            if (Transactions.OrdersCount == 0)
-            {
-                MarketOrder("SPY", 100);
+        public @Override void OnData(Slice data) {
+            if( Transactions.OrdersCount == 0) {
+                MarketOrder( "SPY", 100);
             }
 
-            foreach (kvp in data.Delistings)
-            {
+            foreach (kvp in data.Delistings) {
                 _delistedSymbols.Add(kvp.Key);
             }
 
-            if (Time.Date == new DateTime(2014, 04, 07))
-            {
+            if( Time.Date == new DateTime(2014, 04, 07)) {
                 Liquidate();
                 return;
             }
 
-            if (_changes != null && _changes.AddedSecurities.All(x => data.Bars.ContainsKey(x.Symbol)))
-            {
-                foreach (security in _changes.AddedSecurities)
-                {
+            if( _changes != null && _changes.AddedSecurities.All(x => data.Bars.ContainsKey(x.Symbol))) {
+                foreach (security in _changes.AddedSecurities) {
                     Console.WriteLine(Time + ": Added Security: " + security.Symbol);
                     MarketOnOpenOrder(security.Symbol, 100);
                 }
-                foreach (security in _changes.RemovedSecurities)
-                {
+                foreach (security in _changes.RemovedSecurities) {
                     Console.WriteLine(Time + ": Removed Security: " + security.Symbol);
-                    if (!_delistedSymbols.Contains(security.Symbol))
-                    {
+                    if( !_delistedSymbols.Contains(security.Symbol)) {
                         MarketOnOpenOrder(security.Symbol, -100);
                     }
                 }
@@ -99,19 +90,15 @@ package com.quantconnect.lean.Algorithm.CSharp
 
         #region Overrides of QCAlgorithm
 
-        public override void OnSecuritiesChanged(SecurityChanges changes)
-        {
+        public @Override void OnSecuritiesChanged(SecurityChanges changes) {
             _changes = changes;
         }
 
-        public override void OnOrderEvent(OrderEvent orderEvent)
-        {
-            if (orderEvent.Status == OrderStatus.Submitted)
-            {
+        public @Override void OnOrderEvent(OrderEvent orderEvent) {
+            if( orderEvent.Status == OrderStatus.Submitted) {
                 Console.WriteLine(Time + ": Submitted: " + Transactions.GetOrderById(orderEvent.OrderId));
             }
-            if (orderEvent.Status.IsFill())
-            {
+            if( orderEvent.Status.IsFill()) {
                 Console.WriteLine(Time + ": Filled: " + Transactions.GetOrderById(orderEvent.OrderId));
             }
         }

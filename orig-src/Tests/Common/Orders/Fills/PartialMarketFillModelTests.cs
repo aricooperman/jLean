@@ -32,9 +32,8 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
     [TestFixture, Ignore]
     public class PartialMarketFillModelTests
     {
-        [Test, Category("TravisExclude")]
-        public void CreatesSpecificNumberOfFills()
-        {
+        [Test, Category( "TravisExclude")]
+        public void CreatesSpecificNumberOfFills() {
             Security security;
             MarketOrder order;
             OrderTicket ticket;
@@ -58,8 +57,7 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
         }
 
         [Test]
-        public void RequiresAdvancingTime()
-        {
+        public void RequiresAdvancingTime() {
             Security security;
             MarketOrder order;
             OrderTicket ticket;
@@ -85,8 +83,7 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
             Assert.AreEqual(OrderStatus.Filled, fill3.Status);
         }
 
-        private static DateTime InitializeTest(out BasicTemplateAlgorithm algorithm, out Security security, out PartialMarketFillModel model, out MarketOrder order, out OrderTicket ticket)
-        {
+        private static DateTime InitializeTest(out BasicTemplateAlgorithm algorithm, out Security security, out PartialMarketFillModel model, out MarketOrder order, out OrderTicket ticket) {
             referenceTimeNY = new DateTime(2015, 12, 21, 13, 0, 0);
             referenceTimeUtc = referenceTimeNY.ConvertToUtc(TimeZones.NewYork);
             algorithm = new BasicTemplateAlgorithm();
@@ -110,7 +107,7 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
 
             order = new MarketOrder(Symbols.SPY, 100, referenceTimeUtc) { Id = 1 };
 
-            request = new SubmitOrderRequest(OrderType.Market, security.Type, security.Symbol, order.Quantity, 0, 0, algorithm.UtcTime, null);
+            request = new SubmitOrderRequest(OrderType.Market, security.Type, security.Symbol, order.Quantity, 0, 0, algorithm.UtcTime, null );
             ticket = algorithm.Transactions.ProcessRequest(request);
             return referenceTimeUtc;
         }
@@ -141,8 +138,7 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
             /// </code>
             /// <param name="orderProvider">The order provider used for getting order tickets</param>
             /// <param name="numberOfFills"></param>
-            public PartialMarketFillModel(IOrderProvider orderProvider, int numberOfFills = 1)
-            {
+            public PartialMarketFillModel(IOrderProvider orderProvider, int numberOfFills = 1) {
                 _orderProvider = orderProvider;
                 _percent = 1m / numberOfFills;
             }
@@ -153,22 +149,19 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
             /// <param name="asset">The security being ordered</param>
             /// <param name="order">The order</param>
             /// <returns>The order fill</returns>
-            public override OrderEvent MarketFill(Security asset, MarketOrder order)
-            {
+            public @Override OrderEvent MarketFill(Security asset, MarketOrder order) {
                 currentUtcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
 
                 ticket = _orderProvider.GetOrderTickets(x => x.OrderId == order.Id).FirstOrDefault();
-                if (ticket == null)
-                {
+                if( ticket == null ) {
                     // if we can't find the ticket issue empty fills
                     return new OrderEvent(order, currentUtcTime, 0);
                 }
 
                 // make sure some time has passed
                 lastOrderEvent = ticket.OrderEvents.LastOrDefault();
-                increment = TimeSpan.FromTicks(Math.Max(asset.Resolution.ToTimeSpan().Ticks, 1));
-                if (lastOrderEvent != null && currentUtcTime - lastOrderEvent.UtcTime < increment)
-                {
+                increment = Duration.ofTicks(Math.Max(asset.Resolution.ToTimeSpan().Ticks, 1));
+                if( lastOrderEvent != null && currentUtcTime - lastOrderEvent.UtcTime < increment) {
                     // wait a minute between fills
                     return new OrderEvent(order, currentUtcTime, 0);
                 }

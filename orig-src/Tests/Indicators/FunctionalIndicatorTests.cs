@@ -23,9 +23,8 @@ package com.quantconnect.lean.Tests.Indicators
     public class FunctionalIndicatorTests
     {
         [Test]
-        public void ComputesDelegateCorrectly()
-        {
-            func = new FunctionalIndicator<IndicatorDataPoint>("f", data => data.Value, @this => @this.Samples > 1, () => {/*no reset action required*/});
+        public void ComputesDelegateCorrectly() {
+            func = new FunctionalIndicator<IndicatorDataPoint>( "f", data => data.Value, @this => @this.Samples > 1, () => {/*no reset action required*/});
             func.Update(DateTime.Today, 1m);
             Assert.IsFalse(func.IsReady);
             Assert.AreEqual(1m, func.Current.Value);
@@ -36,10 +35,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             inner = new SimpleMovingAverage(2);
-            func = new FunctionalIndicator<IndicatorDataPoint>("f", data =>
+            func = new FunctionalIndicator<IndicatorDataPoint>( "f", data =>
             {
                 inner.Update(data);
                 return inner.Current.Value*2;

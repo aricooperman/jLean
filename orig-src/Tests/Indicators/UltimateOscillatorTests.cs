@@ -22,17 +22,16 @@ package com.quantconnect.lean.Tests.Indicators
     [TestFixture]
     public class UltimateOscillatorTests : CommonIndicatorTests<TradeBar>
     {
-        protected override IndicatorBase<TradeBar> CreateIndicator()
-        {
+        protected @Override IndicatorBase<TradeBar> CreateIndicator() {
             return new UltimateOscillator(7, 14, 28);
         }
 
-        protected override String TestFileName
+        protected @Override String TestFileName
         {
             get { return "spy_ultosc.txt"; }
         }
 
-        protected override String TestColumnName
+        protected @Override String TestColumnName
         {
             get { return "ULTOSC_7_14_28"; }
         }

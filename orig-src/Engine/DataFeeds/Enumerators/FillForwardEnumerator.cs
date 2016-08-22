@@ -63,8 +63,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             boolean isExtendedMarketHours,
             DateTime subscriptionEndTime,
             TimeSpan dataResolution
-            )
-        {
+            ) {
             _subscriptionEndTime = subscriptionEndTime;
             Exchange = exchange;
             _enumerator = enumerator;
@@ -104,19 +103,15 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
         /// </returns>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public boolean MoveNext()
-        {
-            if (_delistedTime.HasValue)
-            {
+        public boolean MoveNext() {
+            if( _delistedTime.HasValue) {
                 // don't fill forward after data after the delisted date
-                if (_previous == null || _previous.EndTime >= _delistedTime.Value)
-                {
+                if( _previous == null || _previous.EndTime >= _delistedTime.Value) {
                     return false;
                 }
             }
 
-            if (!_emittedAuxilliaryData && Current != null)
-            {
+            if( !_emittedAuxilliaryData && Current != null ) {
                 // only set the _previous if the last item we emitted was NOT auxilliary data,
                 // since _previous is used for fill forward behavior
                 _previous = Current;
@@ -124,20 +119,16 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 
             BaseData fillForward;
 
-            if (!_isFillingForward)
-            {
+            if( !_isFillingForward) {
                 // if we're filling forward we don't need to move next since we haven't emitted _enumerator.Current yet
-                if (!_enumerator.MoveNext())
-                {
-                    if (_delistedTime.HasValue)
-                    {
+                if( !_enumerator.MoveNext()) {
+                    if( _delistedTime.HasValue) {
                         // don't fill forward delisted data
                         return false;
                     }
 
                     // check to see if we ran out of data before the end of the subscription
-                    if (_previous == null || _previous.EndTime >= _subscriptionEndTime)
-                    {
+                    if( _previous == null || _previous.EndTime >= _subscriptionEndTime) {
                         // we passed the end of subscription, we're finished
                         return false;
                     }
@@ -146,8 +137,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
                     endOfSubscription = (Current ?? _previous).Clone(true);
                     endOfSubscription.Time = _subscriptionEndTime.RoundDown(_dataResolution);
                     endOfSubscription.EndTime = endOfSubscription.Time + _dataResolution;
-                    if (RequiresFillForwardData(_fillForwardResolution.Value, _previous, endOfSubscription, out fillForward))
-                    {
+                    if( RequiresFillForwardData(_fillForwardResolution.Value, _previous, endOfSubscription, out fillForward)) {
                         // don't mark as filling forward so we come back into this block, subscription is done
                         //_isFillingForward = true;
                         Current = fillForward;
@@ -156,8 +146,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
                     }
 
                     // don't emit the last bar if the market isn't considered open!
-                    if (!Exchange.IsOpenDuringBar(endOfSubscription.Time, endOfSubscription.EndTime, _isExtendedMarketHours))
-                    {
+                    if( !Exchange.IsOpenDuringBar(endOfSubscription.Time, endOfSubscription.EndTime, _isExtendedMarketHours)) {
                         return false;
                     }
                     
@@ -168,28 +157,24 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             }
 
             underlyingCurrent = _enumerator.Current;
-            if (_previous == null)
-            {
+            if( _previous == null ) {
                 // first data point we dutifully emit without modification
                 Current = underlyingCurrent;
                 return true;
             }
 
-            if (underlyingCurrent != null && underlyingCurrent.DataType == MarketDataType.Auxiliary)
-            {
+            if( underlyingCurrent != null && underlyingCurrent.DataType == MarketDataType.Auxiliary) {
                 _emittedAuxilliaryData = true;
                 Current = underlyingCurrent;
                 delisting = Current as Delisting;
-                if (delisting != null && delisting.Type == DelistingType.Delisted)
-                {
+                if( delisting != null && delisting.Type == DelistingType.Delisted) {
                     _delistedTime = delisting.EndTime;
                 }
                 return true;
             }
             
             _emittedAuxilliaryData = false;
-            if (RequiresFillForwardData(_fillForwardResolution.Value, _previous, underlyingCurrent, out fillForward))
-            {
+            if( RequiresFillForwardData(_fillForwardResolution.Value, _previous, underlyingCurrent, out fillForward)) {
                 // we require fill forward data because the _enumerator.Current is too far in future
                 _isFillingForward = true;
                 Current = fillForward;
@@ -205,8 +190,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
+        public void Dispose() {
             _enumerator.Dispose();
         }
 
@@ -214,8 +198,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
         /// </summary>
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public void Reset()
-        {
+        public void Reset() {
             _enumerator.Reset();
         }
 
@@ -227,24 +210,20 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <param name="next">The next piece of data on the source enumerator</param>
         /// <param name="fillForward">When this function returns true, this will have a non-null value, null when the function returns false</param>
         /// <returns>True when a new fill forward piece of data was produced and should be emitted by this enumerator</returns>
-        protected virtual boolean RequiresFillForwardData(TimeSpan fillForwardResolution, BaseData previous, BaseData next, out BaseData fillForward)
-        {
-            if (next.EndTime < previous.Time)
-            {
-                throw new ArgumentException("FillForwardEnumerator received data out of order. Symbol: " + previous.Symbol.ID);
+        protected virtual boolean RequiresFillForwardData(TimeSpan fillForwardResolution, BaseData previous, BaseData next, out BaseData fillForward) {
+            if( next.EndTime < previous.Time) {
+                throw new ArgumentException( "FillForwardEnumerator received data out of order. Symbol: " + previous.Symbol.ID);
             }
 
             // check to see if the gap between previous and next warrants fill forward behavior
-            if (next.Time - previous.Time <= fillForwardResolution)
-            {
+            if( next.Time - previous.Time <= fillForwardResolution) {
                 fillForward = null;
                 return false;
             }
 
             // is the bar after previous in market hours?
             barAfterPreviousEndTime = previous.EndTime + fillForwardResolution;
-            if (Exchange.IsOpenDuringBar(previous.EndTime, barAfterPreviousEndTime, _isExtendedMarketHours))
-            {
+            if( Exchange.IsOpenDuringBar(previous.EndTime, barAfterPreviousEndTime, _isExtendedMarketHours)) {
                 // this is the normal case where we had a hole in the middle of the day
                 fillForward = previous.Clone(true);
                 fillForward.Time = (previous.Time + fillForwardResolution).RoundDown(fillForwardResolution);
@@ -255,19 +234,16 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             // find the next fill forward time after the next market open
             nextFillForwardTime = Exchange.Hours.GetNextMarketOpen(previous.EndTime, _isExtendedMarketHours) + fillForwardResolution;
 
-            if (_dataResolution == Time.OneDay)
-            {
+            if( _dataResolution == Time.OneDay) {
                 // special case for daily, we need to emit a midnight bar even though markets are closed
                 dailyBarEnd = GetNextOpenDateAfter(previous.Time.Date) + Time.OneDay;
-                if (dailyBarEnd < nextFillForwardTime)
-                {
+                if( dailyBarEnd < nextFillForwardTime) {
                     // only emit the midnight bar if it's the next bar to be emitted
                     nextFillForwardTime = dailyBarEnd;
                 }
             }
 
-            if (nextFillForwardTime < next.EndTime)
-            {
+            if( nextFillForwardTime < next.EndTime) {
                 // if next is still in the future then we need to emit a fill forward for market open
                 fillForward = previous.Clone(true);
                 fillForward.Time = (nextFillForwardTime - _dataResolution).RoundDown(fillForwardResolution);
@@ -283,8 +259,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         /// <summary>
         /// Finds the next open date that follows the specified date, this functions expects a date, not a date time
         /// </summary>
-        private DateTime GetNextOpenDateAfter(DateTime date)
-        {
+        private DateTime GetNextOpenDateAfter(DateTime date) {
             do
             {
                 date = date + Time.OneDay;

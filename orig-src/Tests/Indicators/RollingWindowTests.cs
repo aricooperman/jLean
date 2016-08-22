@@ -23,8 +23,7 @@ package com.quantconnect.lean.Tests.Indicators
     public class RollingWindowTests
     {
         [Test]
-        public void NewWindowIsEmpty()
-        {
+        public void NewWindowIsEmpty() {
             window = new RollingWindow<Integer>(1);
             Assert.AreEqual(1, window.Size);
             Assert.AreEqual(0, window.Count);
@@ -33,8 +32,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void AddsData()
-        {
+        public void AddsData() {
             window = new RollingWindow<Integer>(1);
             window.Add(1);
             Assert.AreEqual(1, window.Count);
@@ -51,8 +49,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void OldDataFallsOffBackOfWindow()
-        {
+        public void OldDataFallsOffBackOfWindow() {
             window = new RollingWindow<Integer>(1);
             window.Add(0);
             Assert.IsFalse(window.IsReady);
@@ -66,8 +63,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void IndexingBasedOnReverseInsertedOrder()
-        {
+        public void IndexingBasedOnReverseInsertedOrder() {
             window = new RollingWindow<Integer>(3);
             Assert.AreEqual(3, window.Size);
 
@@ -94,8 +90,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void EnumeratesAsExpected()
-        {
+        public void EnumeratesAsExpected() {
             window = new RollingWindow<Integer>(3) { 0, 1, 2 };
             inOrder = window.ToList();
             Assert.AreEqual(2, inOrder[0]);
@@ -104,15 +99,13 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             window = new RollingWindow<Integer>(3) { 0, 1, 2 };
             window.Reset();
             Assert.AreEqual(0, window.Samples);
         }
         [Test]
-        public void RetievesNonZeroIndexProperlyAfterReset()
-        {
+        public void RetievesNonZeroIndexProperlyAfterReset() {
             window = new RollingWindow<Integer>(3);
             window.Add(0);
             Assert.AreEqual(1, window.Count);

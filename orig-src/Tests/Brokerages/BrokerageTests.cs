@@ -45,10 +45,10 @@ package com.quantconnect.lean.Tests.Brokerages
             {
                 return new []
                 {
-                    new TestCaseData(new MarketOrderTestParameters(Symbol)).SetName("MarketOrder"),
-                    new TestCaseData(new LimitOrderTestParameters(Symbol, HighPrice, LowPrice)).SetName("LimitOrder"),
-                    new TestCaseData(new StopMarketOrderTestParameters(Symbol, HighPrice, LowPrice)).SetName("StopMarketOrder"),
-                    new TestCaseData(new StopLimitOrderTestParameters(Symbol, HighPrice, LowPrice)).SetName("StopLimitOrder")
+                    new TestCaseData(new MarketOrderTestParameters(Symbol)).SetName( "MarketOrder"),
+                    new TestCaseData(new LimitOrderTestParameters(Symbol, HighPrice, LowPrice)).SetName( "LimitOrder"),
+                    new TestCaseData(new StopMarketOrderTestParameters(Symbol, HighPrice, LowPrice)).SetName( "StopMarketOrder"),
+                    new TestCaseData(new StopLimitOrderTestParameters(Symbol, HighPrice, LowPrice)).SetName( "StopLimitOrder")
                 };
             }
         }
@@ -56,13 +56,12 @@ package com.quantconnect.lean.Tests.Brokerages
         #region Test initialization and cleanup
 
         [SetUp]
-        public void Setup()
-        {
-            Log.Trace("");
-            Log.Trace("");
-            Log.Trace("--- SETUP ---");
-            Log.Trace("");
-            Log.Trace("");
+        public void Setup() {
+            Log.Trace( "");
+            Log.Trace( "");
+            Log.Trace( "--- SETUP ---");
+            Log.Trace( "");
+            Log.Trace( "");
             // we want to regenerate these for each test
             _brokerage = null;
             _orderProvider = null;
@@ -74,15 +73,14 @@ package com.quantconnect.lean.Tests.Brokerages
         }
 
         [TearDown]
-        public void Teardown()
-        {
+        public void Teardown() {
             try
             {
-                Log.Trace("");
-                Log.Trace("");
-                Log.Trace("--- TEARDOWN ---");
-                Log.Trace("");
-                Log.Trace("");
+                Log.Trace( "");
+                Log.Trace( "");
+                Log.Trace( "--- TEARDOWN ---");
+                Log.Trace( "");
+                Log.Trace( "");
                 Thread.Sleep(1000);
                 CancelOpenOrders();
                 LiquidateHoldings();
@@ -90,8 +88,7 @@ package com.quantconnect.lean.Tests.Brokerages
             }
             finally
             {
-                if (_brokerage != null)
-                {
+                if( _brokerage != null ) {
                     DisposeBrokerage(_brokerage);
                 }
             }
@@ -101,41 +98,36 @@ package com.quantconnect.lean.Tests.Brokerages
         {
             get
             {
-                if (_brokerage == null)
-                {
+                if( _brokerage == null ) {
                     _brokerage = InitializeBrokerage();
                 }
                 return _brokerage;
             }
         }
 
-        private IBrokerage InitializeBrokerage()
-        {
-            Log.Trace("");
-            Log.Trace("- INITIALIZING BROKERAGE -");
-            Log.Trace("");
+        private IBrokerage InitializeBrokerage() {
+            Log.Trace( "");
+            Log.Trace( "- INITIALIZING BROKERAGE -");
+            Log.Trace( "");
 
             brokerage = CreateBrokerage(OrderProvider, SecurityProvider);
             brokerage.Connect();
 
-            if (!brokerage.IsConnected)
-            {
-                Assert.Fail("Failed to connect to brokerage");
+            if( !brokerage.IsConnected) {
+                Assert.Fail( "Failed to connect to brokerage");
             }
 
-            Log.Trace("");
-            Log.Trace("GET OPEN ORDERS");
-            Log.Trace("");
-            foreach (openOrder in brokerage.GetOpenOrders())
-            {
+            Log.Trace( "");
+            Log.Trace( "GET OPEN ORDERS");
+            Log.Trace( "");
+            foreach (openOrder in brokerage.GetOpenOrders()) {
                 OrderProvider.Add(openOrder);
             }
 
-            Log.Trace("");
-            Log.Trace("GET ACCOUNT HOLDINGS");
-            Log.Trace("");
-            foreach (accountHolding in brokerage.GetAccountHoldings())
-            {
+            Log.Trace( "");
+            Log.Trace( "GET ACCOUNT HOLDINGS");
+            Log.Trace( "");
+            foreach (accountHolding in brokerage.GetAccountHoldings()) {
                 // these securities don't need to be real, just used for the ISecurityProvider impl, required
                 // by brokerages to track holdings
                 SecurityProvider[accountHolding.Symbol] = new Security(SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork),
@@ -144,26 +136,23 @@ package com.quantconnect.lean.Tests.Brokerages
             }
             brokerage.OrderStatusChanged += (sender, args) =>
             {
-                Log.Trace("");
-                Log.Trace("ORDER STATUS CHANGED: " + args);
-                Log.Trace("");
+                Log.Trace( "");
+                Log.Trace( "ORDER STATUS CHANGED: " + args);
+                Log.Trace( "");
 
                 // we need to keep this maintained properly
-                if (args.Status == OrderStatus.Filled || args.Status == OrderStatus.PartiallyFilled)
-                {
-                    Log.Trace("FILL EVENT: " + args.FillQuantity + " units of " + args.Symbol.toString());
+                if( args.Status == OrderStatus.Filled || args.Status == OrderStatus.PartiallyFilled) {
+                    Log.Trace( "FILL EVENT: " + args.FillQuantity + " units of " + args.Symbol.toString());
 
                     Security security;
-                    if (_securityProvider.TryGetValue(args.Symbol, out security))
-                    {
+                    if( _securityProvider.TryGetValue(args.Symbol, out security)) {
                         holding = _securityProvider[args.Symbol].Holdings;
                         holding.SetHoldings(args.FillPrice, holding.Quantity + args.FillQuantity);
                     }
                     else
                     {
                         accountHoldings = brokerage.GetAccountHoldings().ToDictionary(x => x.Symbol);
-                        if (accountHoldings.ContainsKey(args.Symbol))
-                        {
+                        if( accountHoldings.ContainsKey(args.Symbol)) {
                             _securityProvider[args.Symbol].Holdings.SetHoldings(args.FillPrice, args.FillQuantity);
                         }
                         else
@@ -175,7 +164,7 @@ package com.quantconnect.lean.Tests.Brokerages
                         }
                     }
 
-                    Log.Trace("--HOLDINGS: " + _securityProvider[args.Symbol]);
+                    Log.Trace( "--HOLDINGS: " + _securityProvider[args.Symbol]);
 
                     // update order mapping
                     order = _orderProvider.GetOrderById(args.OrderId);
@@ -205,40 +194,35 @@ package com.quantconnect.lean.Tests.Brokerages
         /// Disposes of the brokerage and any external resources started in order to create it
         /// </summary>
         /// <param name="brokerage">The brokerage instance to be disposed of</param>
-        protected virtual void DisposeBrokerage(IBrokerage brokerage)
-        {
+        protected virtual void DisposeBrokerage(IBrokerage brokerage) {
         }
 
         /// <summary>
         /// This is used to ensure each test starts with a clean, known state.
         /// </summary>
-        protected void LiquidateHoldings()
-        {
-            Log.Trace("");
-            Log.Trace("LIQUIDATE HOLDINGS");
-            Log.Trace("");
+        protected void LiquidateHoldings() {
+            Log.Trace( "");
+            Log.Trace( "LIQUIDATE HOLDINGS");
+            Log.Trace( "");
 
             holdings = Brokerage.GetAccountHoldings();
 
-            foreach (holding in holdings)
-            {
-                if (holding.Quantity == 0) continue;
-                Log.Trace("Liquidating: " + holding);
+            foreach (holding in holdings) {
+                if( holding.Quantity == 0) continue;
+                Log.Trace( "Liquidating: " + holding);
                 order = new MarketOrder(holding.Symbol, (int)-holding.Quantity, DateTime.Now);
                 _orderProvider.Add(order);
                 PlaceOrderWaitForStatus(order, OrderStatus.Filled);
             }
         }
 
-        protected void CancelOpenOrders()
-        {
-            Log.Trace("");
-            Log.Trace("CANCEL OPEN ORDERS");
-            Log.Trace("");
+        protected void CancelOpenOrders() {
+            Log.Trace( "");
+            Log.Trace( "CANCEL OPEN ORDERS");
+            Log.Trace( "");
             openOrders = Brokerage.GetOpenOrders();
-            foreach (openOrder in openOrders)
-            {
-                Log.Trace("Canceling: " + openOrder);
+            foreach (openOrder in openOrders) {
+                Log.Trace( "Canceling: " + openOrder);
                 Brokerage.CancelOrder(openOrder);
             }
         }
@@ -273,32 +257,28 @@ package com.quantconnect.lean.Tests.Brokerages
         /// <summary>
         /// Gets the default order quantity
         /// </summary>
-        protected virtual int GetDefaultQuantity()
-        {
+        protected virtual int GetDefaultQuantity() {
             return 1; 
         }
 
         [Test]
-        public void IsConnected()
-        {
+        public void IsConnected() {
             Assert.IsTrue(Brokerage.IsConnected);
         }
 
-        [Test, TestCaseSource("OrderParameters")]
-        public void LongFromZero(OrderTestParameters parameters)
-        {
-            Log.Trace("");
-            Log.Trace("LONG FROM ZERO");
-            Log.Trace("");
+        [Test, TestCaseSource( "OrderParameters")]
+        public void LongFromZero(OrderTestParameters parameters) {
+            Log.Trace( "");
+            Log.Trace( "LONG FROM ZERO");
+            Log.Trace( "");
             PlaceOrderWaitForStatus(parameters.CreateLongOrder(GetDefaultQuantity()), parameters.ExpectedStatus);
         }
 
-        [Test, TestCaseSource("OrderParameters")]
-        public void CloseFromLong(OrderTestParameters parameters)
-        {
-            Log.Trace("");
-            Log.Trace("CLOSE FROM LONG");
-            Log.Trace("");
+        [Test, TestCaseSource( "OrderParameters")]
+        public void CloseFromLong(OrderTestParameters parameters) {
+            Log.Trace( "");
+            Log.Trace( "CLOSE FROM LONG");
+            Log.Trace( "");
             // first go long
             PlaceOrderWaitForStatus(parameters.CreateLongMarketOrder(GetDefaultQuantity()), OrderStatus.Filled);
 
@@ -306,21 +286,19 @@ package com.quantconnect.lean.Tests.Brokerages
             PlaceOrderWaitForStatus(parameters.CreateShortOrder(GetDefaultQuantity()), parameters.ExpectedStatus);
         }
 
-        [Test, TestCaseSource("OrderParameters")]
-        public void ShortFromZero(OrderTestParameters parameters)
-        {
-            Log.Trace("");
-            Log.Trace("SHORT FROM ZERO");
-            Log.Trace("");
+        [Test, TestCaseSource( "OrderParameters")]
+        public void ShortFromZero(OrderTestParameters parameters) {
+            Log.Trace( "");
+            Log.Trace( "SHORT FROM ZERO");
+            Log.Trace( "");
             PlaceOrderWaitForStatus(parameters.CreateShortOrder(GetDefaultQuantity()), parameters.ExpectedStatus);
         }
 
-        [Test, TestCaseSource("OrderParameters")]
-        public void CloseFromShort(OrderTestParameters parameters)
-        {
-            Log.Trace("");
-            Log.Trace("CLOSE FROM SHORT");
-            Log.Trace("");
+        [Test, TestCaseSource( "OrderParameters")]
+        public void CloseFromShort(OrderTestParameters parameters) {
+            Log.Trace( "");
+            Log.Trace( "CLOSE FROM SHORT");
+            Log.Trace( "");
             // first go short
             PlaceOrderWaitForStatus(parameters.CreateShortMarketOrder(GetDefaultQuantity()), OrderStatus.Filled);
 
@@ -328,58 +306,52 @@ package com.quantconnect.lean.Tests.Brokerages
             PlaceOrderWaitForStatus(parameters.CreateLongOrder(GetDefaultQuantity()), parameters.ExpectedStatus);
         }
 
-        [Test, TestCaseSource("OrderParameters")]
-        public void ShortFromLong(OrderTestParameters parameters)
-        {
-            Log.Trace("");
-            Log.Trace("SHORT FROM LONG");
-            Log.Trace("");
+        [Test, TestCaseSource( "OrderParameters")]
+        public void ShortFromLong(OrderTestParameters parameters) {
+            Log.Trace( "");
+            Log.Trace( "SHORT FROM LONG");
+            Log.Trace( "");
             // first go long
             PlaceOrderWaitForStatus(parameters.CreateLongMarketOrder(GetDefaultQuantity()));
 
             // now go net short
             order = PlaceOrderWaitForStatus(parameters.CreateShortOrder(2 * GetDefaultQuantity()), parameters.ExpectedStatus);
 
-            if (parameters.ModifyUntilFilled)
-            {
+            if( parameters.ModifyUntilFilled) {
                 ModifyOrderUntilFilled(order, parameters);
             }
         }
 
-        [Test, TestCaseSource("OrderParameters")]
-        public void LongFromShort(OrderTestParameters parameters)
-        {
-            Log.Trace("");
-            Log.Trace("LONG FROM SHORT");
-            Log.Trace("");
+        [Test, TestCaseSource( "OrderParameters")]
+        public void LongFromShort(OrderTestParameters parameters) {
+            Log.Trace( "");
+            Log.Trace( "LONG FROM SHORT");
+            Log.Trace( "");
             // first fo short
             PlaceOrderWaitForStatus(parameters.CreateShortMarketOrder(-GetDefaultQuantity()), OrderStatus.Filled);
 
             // now go long
             order = PlaceOrderWaitForStatus(parameters.CreateLongOrder(2 * GetDefaultQuantity()), parameters.ExpectedStatus);
 
-            if (parameters.ModifyUntilFilled)
-            {
+            if( parameters.ModifyUntilFilled) {
                 ModifyOrderUntilFilled(order, parameters);
             }
         }
 
         [Test]
-        public void GetCashBalanceContainsUSD()
-        {
-            Log.Trace("");
-            Log.Trace("GET CASH BALANCE");
-            Log.Trace("");
+        public void GetCashBalanceContainsUSD() {
+            Log.Trace( "");
+            Log.Trace( "GET CASH BALANCE");
+            Log.Trace( "");
             balance = Brokerage.GetCashBalance();
             Assert.AreEqual(1, balance.Count(x => x.Symbol == "USD"));
         }
 
         [Test]
-        public void GetAccountHoldings()
-        {
-            Log.Trace("");
-            Log.Trace("GET ACCOUNT HOLDINGS");
-            Log.Trace("");
+        public void GetAccountHoldings() {
+            Log.Trace( "");
+            Log.Trace( "GET ACCOUNT HOLDINGS");
+            Log.Trace( "");
             before = Brokerage.GetAccountHoldings();
 
             PlaceOrderWaitForStatus(new MarketOrder(Symbol, GetDefaultQuantity(), DateTime.Now));
@@ -395,9 +367,8 @@ package com.quantconnect.lean.Tests.Brokerages
             Assert.AreEqual(GetDefaultQuantity(), afterQuantity - beforeQuantity);
         }
 
-        [Test, Ignore("This test requires reading the output and selection of a low volume security for the Brokerageage")]
-        public void PartialFills()
-        {
+        [Test, Ignore( "This test requires reading the output and selection of a low volume security for the Brokerageage")]
+        public void PartialFills() {
             boolean orderFilled = false;
             manualResetEvent = new ManualResetEvent(false);
 
@@ -406,12 +377,10 @@ package com.quantconnect.lean.Tests.Brokerages
             sync = new object();
             Brokerage.OrderStatusChanged += (sender, orderEvent) =>
             {
-                lock (sync)
-                {
+                lock (sync) {
                     remaining -= orderEvent.FillQuantity;
-                    Console.WriteLine("Remaining: " + remaining + " FillQuantity: " + orderEvent.FillQuantity);
-                    if (orderEvent.Status == OrderStatus.Filled)
-                    {
+                    Console.WriteLine( "Remaining: " + remaining + " FillQuantity: " + orderEvent.FillQuantity);
+                    if( orderEvent.Status == OrderStatus.Filled) {
                         orderFilled = true;
                         manualResetEvent.Set();
                     }
@@ -428,7 +397,7 @@ package com.quantconnect.lean.Tests.Brokerages
             manualResetEvent.WaitOne(2500);
             manualResetEvent.WaitOne(2500);
 
-            Console.WriteLine("Remaining: " + remaining);
+            Console.WriteLine( "Remaining: " + remaining);
             Assert.AreEqual(0, remaining);
         }
 
@@ -438,50 +407,43 @@ package com.quantconnect.lean.Tests.Brokerages
         /// <param name="order">The order to be modified</param>
         /// <param name="parameters">The order test parameters that define how to modify the order</param>
         /// <param name="secondsTimeout">Maximum amount of time to wait until the order fills</param>
-        protected void ModifyOrderUntilFilled(Order order, OrderTestParameters parameters, double secondsTimeout = 90)
-        {
-            if (order.Status == OrderStatus.Filled)
-            {
+        protected void ModifyOrderUntilFilled(Order order, OrderTestParameters parameters, double secondsTimeout = 90) {
+            if( order.Status == OrderStatus.Filled) {
                 return;
             }
 
             filledResetEvent = new ManualResetEvent(false);
             EventHandler<OrderEvent> brokerageOnOrderStatusChanged = (sender, args) =>
             {
-                if (args.Status == OrderStatus.Filled)
-                {
+                if( args.Status == OrderStatus.Filled) {
                     filledResetEvent.Set();
                 }
-                if (args.Status == OrderStatus.Canceled || args.Status == OrderStatus.Invalid)
-                {
-                    Log.Trace("ModifyOrderUntilFilled(): " + order);
-                    Assert.Fail("Unexpected order status: " + args.Status);
+                if( args.Status == OrderStatus.Canceled || args.Status == OrderStatus.Invalid) {
+                    Log.Trace( "ModifyOrderUntilFilled(): " + order);
+                    Assert.Fail( "Unexpected order status: " + args.Status);
                 }
             };
 
             Brokerage.OrderStatusChanged += brokerageOnOrderStatusChanged;
 
-            Log.Trace("");
-            Log.Trace("MODIFY UNTIL FILLED: " + order);
-            Log.Trace("");
+            Log.Trace( "");
+            Log.Trace( "MODIFY UNTIL FILLED: " + order);
+            Log.Trace( "");
             stopwatch = Stopwatch.StartNew();
-            while (!filledResetEvent.WaitOne(3000) && stopwatch.Elapsed.TotalSeconds < secondsTimeout)
-            {
+            while (!filledResetEvent.WaitOne(3000) && stopwatch.Elapsed.TotalSeconds < secondsTimeout) {
                 filledResetEvent.Reset();
-                if (order.Status == OrderStatus.PartiallyFilled) continue;
+                if( order.Status == OrderStatus.PartiallyFilled) continue;
 
                 marketPrice = GetAskPrice(order.Symbol);
-                Log.Trace("BrokerageTests.ModifyOrderUntilFilled(): Ask: " + marketPrice);
+                Log.Trace( "BrokerageTests.ModifyOrderUntilFilled(): Ask: " + marketPrice);
 
                 updateOrder = parameters.ModifyOrderToFill(Brokerage, order, marketPrice);
-                if (updateOrder)
-                {
-                    if (order.Status == OrderStatus.Filled) break;
+                if( updateOrder) {
+                    if( order.Status == OrderStatus.Filled) break;
 
-                    Log.Trace("BrokerageTests.ModifyOrderUntilFilled(): " + order);
-                    if (!Brokerage.UpdateOrder(order))
-                    {
-                        Assert.Fail("Brokerage failed to update the order");
+                    Log.Trace( "BrokerageTests.ModifyOrderUntilFilled(): " + order);
+                    if( !Brokerage.UpdateOrder(order)) {
+                        Assert.Fail( "Brokerage failed to update the order");
                     }
                 }
             }
@@ -497,26 +459,23 @@ package com.quantconnect.lean.Tests.Brokerages
         /// <param name="expectedStatus">The status to wait for</param>
         /// <param name="secondsTimeout">Maximum amount of time to wait for <paramref name="expectedStatus"/></param>
         /// <returns>The same order that was submitted.</returns>
-        protected Order PlaceOrderWaitForStatus(Order order, OrderStatus expectedStatus = OrderStatus.Filled, double secondsTimeout = 10.0, boolean allowFailedSubmission = false)
-        {
+        protected Order PlaceOrderWaitForStatus(Order order, OrderStatus expectedStatus = OrderStatus.Filled, double secondsTimeout = 10.0, boolean allowFailedSubmission = false) {
             requiredStatusEvent = new ManualResetEvent(false);
             desiredStatusEvent = new ManualResetEvent(false);
             EventHandler<OrderEvent> brokerageOnOrderStatusChanged = (sender, args) =>
             {
                 // no matter what, every order should fire at least one of these
-                if (args.Status == OrderStatus.Submitted || args.Status == OrderStatus.Invalid)
-                {
-                    Log.Trace("");
-                    Log.Trace("SUBMITTED: " + args);
-                    Log.Trace("");
+                if( args.Status == OrderStatus.Submitted || args.Status == OrderStatus.Invalid) {
+                    Log.Trace( "");
+                    Log.Trace( "SUBMITTED: " + args);
+                    Log.Trace( "");
                     requiredStatusEvent.Set();
                 }
                 // make sure we fire the status we're expecting
-                if (args.Status == expectedStatus)
-                {
-                    Log.Trace("");
-                    Log.Trace("EXPECTED: " + args);
-                    Log.Trace("");
+                if( args.Status == expectedStatus) {
+                    Log.Trace( "");
+                    Log.Trace( "EXPECTED: " + args);
+                    Log.Trace( "");
                     desiredStatusEvent.Set();
                 }
             };
@@ -524,9 +483,8 @@ package com.quantconnect.lean.Tests.Brokerages
             Brokerage.OrderStatusChanged += brokerageOnOrderStatusChanged;
             
             OrderProvider.Add(order);
-            if (!Brokerage.PlaceOrder(order) && !allowFailedSubmission)
-            {
-                Assert.Fail("Brokerage failed to place the order: " + order);
+            if( !Brokerage.PlaceOrder(order) && !allowFailedSubmission) {
+                Assert.Fail( "Brokerage failed to place the order: " + order);
             }
             requiredStatusEvent.WaitOneAssertFail((int) (1000*secondsTimeout), "Expected every order to fire a submitted or invalid status event");
             desiredStatusEvent.WaitOneAssertFail((int) (1000*secondsTimeout), "OrderStatus " + expectedStatus + " was not encountered within the timeout.");

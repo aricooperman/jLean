@@ -31,8 +31,7 @@ package com.quantconnect.lean.Scheduling
         /// </summary>
         /// <param name="name">The name of this rule</param>
         /// <param name="getDatesFuntion">The time applicator function</param>
-        public FuncDateRule( String name, Func<DateTime, DateTime, IEnumerable<DateTime>> getDatesFuntion)
-        {
+        public FuncDateRule( String name, Func<DateTime, DateTime, IEnumerable<DateTime>> getDatesFuntion) {
             Name = name;
             _getDatesFuntion = getDatesFuntion;
         }
@@ -51,8 +50,7 @@ package com.quantconnect.lean.Scheduling
         /// <param name="start">The start of the interval to produce dates for</param>
         /// <param name="end">The end of the interval to produce dates for</param>
         /// <returns>All dates in the interval matching this date rule</returns>
-        public IEnumerable<DateTime> GetDates(DateTime start, DateTime end)
-        {
+        public IEnumerable<DateTime> GetDates(DateTime start, DateTime end) {
             return _getDatesFuntion(start, end);
         }
     }

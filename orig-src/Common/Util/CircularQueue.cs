@@ -36,23 +36,19 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="items">The items in the queue</param>
         public CircularQueue(params T[] items)
-            : this((IEnumerable<T>)items)
-        {
+            : this((IEnumerable<T>)items) {
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CircularQueue{T}"/> class
         /// </summary>
         /// <param name="items">The items in the queue</param>
-        public CircularQueue(IEnumerable<T> items)
-        {
+        public CircularQueue(IEnumerable<T> items) {
             _queue = new Queue<T>();
 
             first = true;
-            foreach (item in items)
-            {
-                if (first)
-                {
+            foreach (item in items) {
+                if( first) {
                     first = false;
                     _head = item;
                 }
@@ -64,11 +60,9 @@ package com.quantconnect.lean.Util
         /// Dequeues the next item
         /// </summary>
         /// <returns>The next item</returns>
-        public T Dequeue()
-        {
+        public T Dequeue() {
             item = _queue.Dequeue();
-            if (item.Equals(_head))
-            {
+            if( item.Equals(_head)) {
                 OnCircleCompleted();
             }
             _queue.Enqueue(item);
@@ -78,10 +72,9 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Event invocator for the <see cref="CircleCompleted"/> evet
         /// </summary>
-        protected virtual void OnCircleCompleted()
-        {
+        protected virtual void OnCircleCompleted() {
             handler = CircleCompleted;
-            if (handler != null) handler(this, EventArgs.Empty);
+            if( handler != null ) handler(this, EventArgs.Empty);
         }
     }
 }

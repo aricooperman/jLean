@@ -32,8 +32,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <summary>
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         /// </summary>
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2007, 05, 16);  //Set Start Date
             SetEndDate(2007, 05, 25);    //Set End Date
             SetCash(100000);             //Set Strategy Cash
@@ -46,44 +45,36 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         /// </summary>
         /// <param name="data">Slice object keyed by symbol containing the stock data</param>
-        public override void OnData(Slice data)
-        {
-            if (Transactions.OrdersCount == 0)
-            {
-                SetHoldings("AAA", 1);
-                Debug("Purchased Stock");
+        public @Override void OnData(Slice data) {
+            if( Transactions.OrdersCount == 0) {
+                SetHoldings( "AAA", 1);
+                Debug( "Purchased Stock");
             }
 
-            foreach (kvp in data.Bars)
-            {
+            foreach (kvp in data.Bars) {
                 symbol = kvp.Key;
                 tradeBar = kvp.Value;
-                Console.WriteLine("OnData(Slice): {0}: {1}: {2}", Time, symbol, tradeBar.Close.toString("0.00"));
+                Console.WriteLine( "OnData(Slice): %1$s: %2$s: %3$s", Time, symbol, tradeBar.Close.toString( "0.00"));
             }
 
             // the slice can also contain delisting data: data.Delistings in a dictionary string->Delisting
         }
 
-        public void OnData(Delistings data)
-        {
-            foreach (kvp in data)
-            {
+        public void OnData(Delistings data) {
+            foreach (kvp in data) {
                 symbol = kvp.Key;
                 delisting = kvp.Value;
-                if (delisting.Type == DelistingType.Warning)
-                {
-                    Console.WriteLine("OnData(Delistings): {0}: {1} will be delisted at end of day today.", Time, symbol);
+                if( delisting.Type == DelistingType.Warning) {
+                    Console.WriteLine( "OnData(Delistings): %1$s: %2$s will be delisted at end of day today.", Time, symbol);
                 }
-                if (delisting.Type == DelistingType.Delisted)
-                {
-                    Console.WriteLine("OnData(Delistings): {0}: {1} has been delisted.", Time, symbol);
+                if( delisting.Type == DelistingType.Delisted) {
+                    Console.WriteLine( "OnData(Delistings): %1$s: %2$s has been delisted.", Time, symbol);
                 }
             }
         }
 
-        public override void OnOrderEvent(OrderEvent orderEvent)
-        {
-            Console.WriteLine("OnOrderEvent(OrderEvent): {0}: {1}", Time, orderEvent);
+        public @Override void OnOrderEvent(OrderEvent orderEvent) {
+            Console.WriteLine( "OnOrderEvent(OrderEvent): %1$s: %2$s", Time, orderEvent);
         }
     }
 }

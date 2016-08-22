@@ -59,12 +59,12 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Gets the end time of this renko bar or the most recent update time if it <see cref="IsClosed"/>
         /// </summary>
-        public override DateTime EndTime { get; set; }
+        public @Override DateTime EndTime { get; set; }
 
         /// <summary>
         /// Gets the end time of this renko bar or the most recent update time if it <see cref="IsClosed"/>
         /// </summary>
-        [Obsolete("RenkoBar.End is obsolete. Please use RenkoBar.EndTime property instead.")]
+        [Obsolete( "RenkoBar.End is obsolete. Please use RenkoBar.EndTime property instead.")]
         public DateTime End
         {
             get { return EndTime; }
@@ -88,8 +88,7 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Initializes a new default instance of the <see cref="RenkoBar"/> class.
         /// </summary>
-        public RenkoBar()
-        {
+        public RenkoBar() {
         }
 
         /// <summary>
@@ -100,8 +99,7 @@ package com.quantconnect.lean.Data.Market
         /// <param name="brickSize">The size of each renko brick</param>
         /// <param name="open">The opening price for the new bar</param>
         /// <param name="volume">Any initial volume associated with the data</param>
-        public RenkoBar(Symbol symbol, DateTime time, BigDecimal brickSize, BigDecimal open, long volume)
-        {
+        public RenkoBar(Symbol symbol, DateTime time, BigDecimal brickSize, BigDecimal open, long volume) {
             Symbol = symbol;
             Start = time;
             EndTime = time;
@@ -120,11 +118,10 @@ package com.quantconnect.lean.Data.Market
         /// <param name="currentValue">The current value</param>
         /// <param name="volumeSinceLastUpdate">The volume since the last update called on this instance</param>
         /// <returns>True if this bar <see cref="IsClosed"/></returns>
-        public boolean Update(DateTime time, BigDecimal currentValue, long volumeSinceLastUpdate)
-        {
+        public boolean Update(DateTime time, BigDecimal currentValue, long volumeSinceLastUpdate) {
             // can't update a closed renko bar
-            if (IsClosed) return true;
-            if (Start == DateTime.MinValue) Start = time;
+            if( IsClosed) return true;
+            if( Start == DateTime.MinValue) Start = time;
             EndTime = time;
 
             // compute the min/max closes this renko bar can have
@@ -135,13 +132,12 @@ package com.quantconnect.lean.Data.Market
             Volume += volumeSinceLastUpdate;
 
             // determine if this data caused the bar to close
-            if (currentValue <= lowClose  || currentValue >= highClose)
-            {
+            if( currentValue <= lowClose  || currentValue >= highClose) {
                 IsClosed = true;
             }
 
-            if (Close > High) High = Close;
-            if (Close < Low) Low = Close;
+            if( Close > High) High = Close;
+            if( Close < Low) Low = Close;
 
             return IsClosed;
         }
@@ -156,9 +152,8 @@ package com.quantconnect.lean.Data.Market
         /// <param name="line">Line.</param>
         /// <param name="date">Date.</param>
         /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-        public override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode)
-        {
-            throw new NotSupportedException("RenkoBar does not support the Reader function. This function should never be called on this type.");
+        public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
+            throw new NotSupportedException( "RenkoBar does not support the Reader function. This function should never be called on this type.");
         }
 
         /// <summary>
@@ -168,9 +163,8 @@ package com.quantconnect.lean.Data.Market
         /// <param name="date">Date of this source file</param>
         /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
         /// <returns>String URL of source file.</returns>
-        public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-        {
-            throw new NotSupportedException("RenkoBar does not support the GetSource function. This function should never be called on this type.");
+        public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
+            throw new NotSupportedException( "RenkoBar does not support the GetSource function. This function should never be called on this type.");
         }
 
         /// <summary>
@@ -180,8 +174,7 @@ package com.quantconnect.lean.Data.Market
         /// This base implementation uses reflection to copy all public fields and properties
         /// </remarks>
         /// <returns>A clone of the current object</returns>
-        public override BaseData Clone()
-        {
+        public @Override BaseData Clone() {
             return new RenkoBar
             {
                 BrickSize = BrickSize,

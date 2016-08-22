@@ -25,7 +25,7 @@ package com.quantconnect.lean.Securities.Option
         /// Number of trading days per year for this security, 252.
         /// </summary>
         /// <remarks>Used for performance statistics to calculate sharpe ratio accurately</remarks>
-        public override int TradingDaysPerYear
+        public @Override int TradingDaysPerYear
         {
             get { return 252; }
         }
@@ -36,8 +36,7 @@ package com.quantconnect.lean.Securities.Option
         /// </summary>
         /// <param name="exchangeHours">Contains the weekly exchange schedule plus holidays</param>
         public OptionExchange(SecurityExchangeHours exchangeHours)
-            : base(exchangeHours)
-        {
+            : base(exchangeHours) {
         }
     }
 }

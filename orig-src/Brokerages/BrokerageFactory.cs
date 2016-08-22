@@ -68,8 +68,7 @@ package com.quantconnect.lean.Brokerages
         /// Initializes a new instance of the <see cref="BrokerageFactory"/> class for the specified <paramref name="brokerageType"/>
         /// </summary>
         /// <param name="brokerageType">The type of brokerage created by this factory</param>
-        protected BrokerageFactory(Type brokerageType)
-        {
+        protected BrokerageFactory(Type brokerageType) {
             _brokerageType = brokerageType;
         }
         
@@ -80,9 +79,8 @@ package com.quantconnect.lean.Brokerages
             where T : IConvertible
         {
             String value;
-            if (!brokerageData.TryGetValue(key, out value))
-            {
-                errors.Add("BrokerageFactory.CreateBrokerage(): Missing key: " + key);
+            if( !brokerageData.TryGetValue(key, out value)) {
+                errors.Add( "BrokerageFactory.CreateBrokerage(): Missing key: " + key);
                 return default(T);
             }
 
@@ -90,9 +88,8 @@ package com.quantconnect.lean.Brokerages
             {
                 return value.ConvertTo<T>();
             }
-            catch (Exception err)
-            {
-                errors.Add( String.format("BrokerageFactory.CreateBrokerage(): Error converting key '{0}' with value '{1}'. {2}", key, value, err.Message));
+            catch (Exception err) {
+                errors.Add( String.format( "BrokerageFactory.CreateBrokerage(): Error converting key '%1$s' with value '%2$s'. %3$s", key, value, err.Message));
                 return default(T);
             }
         }

@@ -31,13 +31,10 @@ package com.quantconnect.lean.Brokerages.Oanda.Framework
         /// <param name="environment">The environment.</param>
         /// <param name="server">The server.</param>
         /// <returns></returns>
-        public static String ResolveEndpoint(Environment environment, Server server)
-        {
-            switch (environment)
-            {
+        public static String ResolveEndpoint(Environment environment, Server server) {
+            switch (environment) {
                 case Environment.Sandbox:
-                    switch (server)
-                    {
+                    switch (server) {
                         case Server.Account:
                             return "http://api-sandbox.oanda.com/v1/";
                         case Server.Rates:
@@ -51,8 +48,7 @@ package com.quantconnect.lean.Brokerages.Oanda.Framework
                     }
 
                 case Environment.Practice:
-                    switch (server)
-                    {
+                    switch (server) {
                         case Server.Account:
                             return "https://api-fxpractice.oanda.com/v1/";
                         case Server.Rates:
@@ -66,8 +62,7 @@ package com.quantconnect.lean.Brokerages.Oanda.Framework
                     }
 
                 case Environment.Trade:
-                    switch (server)
-                    {
+                    switch (server) {
                         case Server.Account:
                             return "https://api-fxtrade.oanda.com/v1/";
                         case Server.Rates:
@@ -82,7 +77,7 @@ package com.quantconnect.lean.Brokerages.Oanda.Framework
             }
 
             EnvironmentServerConfigurationNotFound:
-                throw new ArgumentException( String.Concat("Unexpected or unexpected Oanda Environment: ", environment , "; Server: ", server));
+                throw new ArgumentException( String.Concat( "Unexpected or unexpected Oanda Environment: ", environment , "; Server: ", server));
         }
     }
 }

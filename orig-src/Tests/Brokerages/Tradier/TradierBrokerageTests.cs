@@ -27,21 +27,20 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Tests.Brokerages.Tradier
 {
-    [TestFixture, Ignore("This test requires a configured and active Tradier account")]
+    [TestFixture, Ignore( "This test requires a configured and active Tradier account")]
     public class TradierBrokerageTests : BrokerageTests
     {
         /// <summary>
         /// Creates the brokerage under test
         /// </summary>
         /// <returns>A connected brokerage instance</returns>
-        protected override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider)
-        {
+        protected @Override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider) {
             accountID = TradierBrokerageFactory.Configuration.AccountID;
             tradier = new TradierBrokerage(orderProvider, securityProvider, accountID);
 
             qcUserID = TradierBrokerageFactory.Configuration.QuantConnectUserID;
             tokens = TradierBrokerageFactory.GetTokens();
-            tradier.SetTokens(qcUserID, tokens.AccessToken, tokens.RefreshToken, tokens.IssuedAt, TimeSpan.FromSeconds(tokens.ExpiresIn));
+            tradier.SetTokens(qcUserID, tokens.AccessToken, tokens.RefreshToken, tokens.IssuedAt, Duration.ofSeconds(tokens.ExpiresIn));
 
             // keep the tokens up to date in the event of a refresh
             tradier.SessionRefreshed += (sender, args) =>
@@ -55,7 +54,7 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
         /// <summary>
         /// Gets the symbol to be traded, must be shortable
         /// </summary>
-        protected override Symbol Symbol
+        protected @Override Symbol Symbol
         {
             get { return Symbols.AAPL; }
         }
@@ -63,7 +62,7 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
         /// <summary>
         /// Gets the security type associated with the <see cref="BrokerageTests.Symbol"/>
         /// </summary>
-        protected override SecurityType SecurityType
+        protected @Override SecurityType SecurityType
         {
             get { return SecurityType.Equity; }
         }
@@ -71,7 +70,7 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
         /// <summary>
         /// Gets a high price for the specified symbol so a limit sell won't fill
         /// </summary>
-        protected override BigDecimal HighPrice
+        protected @Override BigDecimal HighPrice
         {
             get { return 1000m; }
         }
@@ -79,7 +78,7 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
         /// <summary>
         /// Gets a low price for the specified symbol so a limit buy won't fill
         /// </summary>
-        protected override BigDecimal LowPrice
+        protected @Override BigDecimal LowPrice
         {
             get { return 0.01m; }
         }
@@ -87,16 +86,14 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
         /// <summary>
         /// Gets the current market price of the specified security
         /// </summary>
-        protected override BigDecimal GetAskPrice(Symbol symbol)
-        {
+        protected @Override BigDecimal GetAskPrice(Symbol symbol) {
             tradier = (TradierBrokerage) Brokerage;
             quotes = tradier.GetQuotes(new List<String> {symbol.Value});
             return quotes.Single().Ask;
         }
 
-        [Test, TestCaseSource("OrderParameters")]
-        public void AllowsOneActiveOrderPerSymbol(OrderTestParameters parameters)
-        {
+        [Test, TestCaseSource( "OrderParameters")]
+        public void AllowsOneActiveOrderPerSymbol(OrderTestParameters parameters) {
             // tradier's api gets special with zero holdings crossing in that they need to fill the order
             // before the next can be submitted, so we just limit this impl to only having on active order
             // by symbol at a time, new orders will issue cancel commands for the existing order
@@ -106,8 +103,7 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
             EventHandler<OrderEvent> brokerageOnOrderStatusChanged = (sender, args) =>
             {
                 // we expect all orders to be cancelled except for market orders, they may fill before the next order is submitted
-                if (args.OrderId == order.Id && args.Status == OrderStatus.Canceled || (order is MarketOrder && args.Status == OrderStatus.Filled))
-                {
+                if( args.OrderId == order.Id && args.Status == OrderStatus.Canceled || (order is MarketOrder && args.Status == OrderStatus.Filled)) {
                     orderFilledOrCanceled = true;
                 }
             };
@@ -123,9 +119,8 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
             Assert.IsTrue(orderFilledOrCanceled);
         }
 
-        [Test, Ignore("This test exists to manually verify how rejected orders are handled when we don't receive an order ID back from Tradier.")]
-        public void ShortZnga()
-        {
+        [Test, Ignore( "This test exists to manually verify how rejected orders are handled when we don't receive an order ID back from Tradier.")]
+        public void ShortZnga() {
             PlaceOrderWaitForStatus(new MarketOrder(Symbols.ZNGA, -1, DateTime.Now), OrderStatus.Invalid, allowFailedSubmission: true);
 
             // wait for output to be generated

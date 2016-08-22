@@ -26,35 +26,32 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
         /// QuantConnect Google Downloader For LEAN Algorithmic Trading Engine.
         /// Original by @chrisdk2015, tidied by @jaredbroad
         /// </summary>
-        public static void Main( String[] args)
-        {
-            if (args.Length != 4)
-            {
-                Console.WriteLine("Usage: GoogleDownloader SYMBOLS RESOLUTION FROMDATE TODATE");
-                Console.WriteLine("SYMBOLS = eg SPY,AAPL");
-                Console.WriteLine("RESOLUTION = Minute/Hour");
-                Console.WriteLine("FROMDATE = yyyymmdd");
-                Console.WriteLine("TODATE = yyyymmdd");
+        public static void Main( String[] args) {
+            if( args.Length != 4) {
+                Console.WriteLine( "Usage: GoogleDownloader SYMBOLS RESOLUTION FROMDATE TODATE");
+                Console.WriteLine( "SYMBOLS = eg SPY,AAPL");
+                Console.WriteLine( "RESOLUTION = Minute/Hour");
+                Console.WriteLine( "FROMDATE = yyyymmdd");
+                Console.WriteLine( "TODATE = yyyymmdd");
                 Environment.Exit(1);
             }
 
             try
             {
                 // Load settings from command line
-                symbols = args[0].Split(',');
+                symbols = args[0].split(',');
                 resolution = (Resolution)Enum.Parse(typeof(Resolution), args[1]);
                 startDate = DateTime.ParseExact(args[2], "yyyyMMdd", CultureInfo.InvariantCulture);
                 endDate = DateTime.ParseExact(args[3], "yyyyMMdd", CultureInfo.InvariantCulture);
 
                 // Load settings from config.json
-                dataDirectory = Config.Get("data-directory", "../../../Data");
+                dataDirectory = Config.Get( "data-directory", "../../../Data");
 
                 // Create an instance of the downloader
                 static final String market = Market.USA;
                 downloader = new GoogleDataDownloader();
 
-                foreach (symbol in symbols)
-                {
+                foreach (symbol in symbols) {
                     // Download the data
                     symbolObject = Symbol.Create(symbol, SecurityType.Equity, market);
                     data = downloader.Get(symbolObject, resolution, startDate, endDate);
@@ -64,8 +61,7 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
                     writer.Write(data);
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
         }

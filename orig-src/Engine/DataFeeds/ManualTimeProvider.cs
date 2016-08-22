@@ -33,8 +33,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="setCurrentTimeTimeZone">Specify to use this time zone when calling <see cref="SetCurrentTime"/>,
         /// leave null for the deault of <see cref="TimeZones.Utc"/></param>
-        public ManualTimeProvider(ZoneId setCurrentTimeTimeZone = null)
-        {
+        public ManualTimeProvider(ZoneId setCurrentTimeTimeZone = null ) {
             _setCurrentTimeTimeZone = setCurrentTimeTimeZone ?? TimeZones.Utc;
         }
 
@@ -45,8 +44,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// null then the time is interpreted as being in <see cref="TimeZones.Utc"/></param>
         /// <param name="setCurrentTimeTimeZone">Specify to use this time zone when calling <see cref="SetCurrentTime"/>,
         /// leave null for the deault of <see cref="TimeZones.Utc"/></param>
-        public ManualTimeProvider(DateTime currentTime, ZoneId setCurrentTimeTimeZone = null)
-        {
+        public ManualTimeProvider(DateTime currentTime, ZoneId setCurrentTimeTimeZone = null ) {
             _setCurrentTimeTimeZone = setCurrentTimeTimeZone ?? TimeZones.Utc;
             _currentTime = currentTime.ConvertToUtc(_setCurrentTimeTimeZone);
         }
@@ -55,8 +53,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// Gets the current time in UTC
         /// </summary>
         /// <returns>The current time in UTC</returns>
-        public DateTime GetUtcNow()
-        {
+        public DateTime GetUtcNow() {
             return _currentTime;
         }
 
@@ -64,8 +61,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// Sets the current time interpreting the specified time as a UTC time
         /// </summary>
         /// <param name="time">The current time in UTC</param>
-        public void SetCurrentTimeUtc(DateTime time)
-        {
+        public void SetCurrentTimeUtc(DateTime time) {
             _currentTime = time;
         }
 
@@ -75,8 +71,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// </summary>
         /// <param name="time">The local time to set the current time time, will be
         /// converted into UTC</param>
-        public void SetCurrentTime(DateTime time)
-        {
+        public void SetCurrentTime(DateTime time) {
             _currentTime = time.ConvertToUtc(_setCurrentTimeTimeZone);
         }
 
@@ -84,8 +79,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// Advances the current time by the specified span
         /// </summary>
         /// <param name="span">The amount of time to advance the current time by</param>
-        public void Advance(TimeSpan span)
-        {
+        public void Advance(TimeSpan span) {
             _currentTime += span;
         }
 
@@ -93,9 +87,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         /// Advances the current time by the specified number of seconds
         /// </summary>
         /// <param name="seconds">The number of seconds to advance the current time by</param>
-        public void AdvanceSeconds(double seconds)
-        {
-            Advance(TimeSpan.FromSeconds(seconds));
+        public void AdvanceSeconds(double seconds) {
+            Advance(Duration.ofSeconds(seconds));
         }
     }
 }

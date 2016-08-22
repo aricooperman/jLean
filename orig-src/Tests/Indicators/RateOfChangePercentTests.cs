@@ -22,19 +22,16 @@ package com.quantconnect.lean.Tests.Indicators
     public class RateOfChangePercentTests
     {
         [Test]
-        public void ComputesCorrectly()
-        {
+        public void ComputesCorrectly() {
             rocp = new RateOfChangePercent(50); 
             double epsilon = 1e-3;
             TestHelper.TestIndicator(rocp, "spy_with_rocp50.txt", "Rate of Change % 50", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value, epsilon));
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             rocp = new RateOfChangePercent(50);
-            foreach (data in TestHelper.GetDataStream(51))
-            {
+            foreach (data in TestHelper.GetDataStream(51)) {
                 rocp.Update(data);
             }
             Assert.IsTrue(rocp.IsReady);

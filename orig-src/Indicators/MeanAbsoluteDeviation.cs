@@ -35,8 +35,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The sample size of the standard deviation</param>
         public MeanAbsoluteDeviation(int period)
-            : this("MAD" + period, period)
-        {
+            : this( "MAD" + period, period) {
         }
 
         /// <summary>
@@ -47,15 +46,14 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The sample size of the mean absoluate deviation</param>
         public MeanAbsoluteDeviation( String name, int period)
-            : base(name, period)
-        {
-            Mean = MovingAverageType.Simple.AsIndicator( String.format("{0}_{1}", name, "Mean"), period);
+            : base(name, period) {
+            Mean = MovingAverageType.Simple.AsIndicator( String.format( "%1$s_%2$s", name, "Mean"), period);
         }
 
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
@@ -66,11 +64,9 @@ package com.quantconnect.lean.Indicators
         /// <param name="input">The input given to the indicator</param>
         /// <param name="window">The window for the input history</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input)
-        {
+        protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             Mean.Update(input);
-            if (Samples < 2)
-            {
+            if( Samples < 2) {
                 return 0m;
             }
             return window.Average(v => Math.Abs(v - Mean.Current.Value));
@@ -79,8 +75,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator and its sub-indicator Mean to their initial state
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             Mean.Reset();
             base.Reset();
         }

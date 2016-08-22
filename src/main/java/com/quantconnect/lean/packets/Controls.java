@@ -77,8 +77,7 @@ package com.quantconnect.lean.Packets
         /// <summary>
         /// Initializes a new default instance of the <see cref="Controls"/> class
         /// </summary>
-        public Controls()
-        {
+        public Controls() {
             MinuteLimit = 500;
             SecondLimit = 100;
             TickLimit = 30;

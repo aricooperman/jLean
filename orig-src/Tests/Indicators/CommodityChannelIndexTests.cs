@@ -23,15 +23,13 @@ package com.quantconnect.lean.Tests.Indicators {
     public class CommodityChannelIndexTests
     {
         [Test]
-        public void ComparesAgainstExternalData()
-        {
+        public void ComparesAgainstExternalData() {
             cci = new CommodityChannelIndex(14);
             TestHelper.TestIndicator(cci, "spy_with_cci.txt", "Commodity Channel Index (CCI) 14", 1e-2);
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             cci = new CommodityChannelIndex(2);
             cci.Update(new TradeBar
             {

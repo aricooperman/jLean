@@ -28,8 +28,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
     public class TradeBarBuilderEnumeratorTests
     {
         [Test]
-        public void AggregatesTicksIntoSecondBars()
-        {
+        public void AggregatesTicksIntoSecondBars() {
             timeProvider = new ManualTimeProvider(TimeZones.NewYork);
             enumerator = new TradeBarBuilderEnumerator(Time.OneSecond, TimeZones.NewYork, timeProvider);
 
@@ -48,8 +47,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
                 new Tick(currentTime, Symbols.SPY, 198.77m, 199.75m) {Quantity = 0},
             };
 
-            foreach (tick in ticks)
-            {
+            foreach (tick in ticks) {
                 enumerator.ProcessData(tick);
             }
 

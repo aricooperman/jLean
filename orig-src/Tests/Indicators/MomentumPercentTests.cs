@@ -22,19 +22,16 @@ package com.quantconnect.lean.Tests.Indicators
     public class MomentumPercentTests
     {
         [Test]
-        public void ComputesCorrectly()
-        {
+        public void ComputesCorrectly() {
             momp = new MomentumPercent(50);
             double epsilon = 1e-3;
             TestHelper.TestIndicator(momp, "spy_with_rocp50.txt", "Rate of Change % 50", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value, epsilon));
         }
 
         [Test]
-        public void ResetsProperly()
-        {
+        public void ResetsProperly() {
             momp = new MomentumPercent(50);
-            foreach (data in TestHelper.GetDataStream(51))
-            {
+            foreach (data in TestHelper.GetDataStream(51)) {
                 momp.Update(data);
             }
             Assert.IsTrue(momp.IsReady);

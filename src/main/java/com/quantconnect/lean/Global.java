@@ -17,6 +17,8 @@
 package com.quantconnect.lean;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
@@ -35,7 +37,9 @@ import com.google.common.eventbus.EventBus;
 
 public class Global {
     
-    public static EventBus APP_EVENT_BUS = new EventBus( "Main Bus" );
+    public static final ZoneId UTC_ZONE_ID = ZoneId.of( "UTC" );
+    
+    public static final EventBus APP_EVENT_BUS = new EventBus( "Main Bus" );
     
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .registerModule( new GuavaModule() )
@@ -47,11 +51,11 @@ public class Global {
     /// Shortcut date format strings
     public static class DateFormat {
         /// Year-Month-Date 6 Character Date Representation
-        public static final String SixCharacter = "yyMMdd";
+        public static final DateTimeFormatter SixCharacter = DateTimeFormatter.ofPattern( "yyMMdd" );
         /// YYYY-MM-DD Eight Character Date Representation
-        public static final String EightCharacter = "yyyyMMdd";
+        public static final DateTimeFormatter EightCharacter = DateTimeFormatter.ofPattern( "yyyyMMdd" );
         /// Daily and hourly time format
-        public static final String TwelveCharacter = "yyyyMMdd HH:mm";
+        public static final DateTimeFormatter TwelveCharacter = DateTimeFormatter.ofPattern( "yyyyMMdd HH:mm" );
         /// JSON Format Date Representation
         public static String JsonFormat = "yyyy-MM-ddThh:mm:ss";
         /// MySQL Format Date Representation
@@ -61,7 +65,7 @@ public class Global {
         /// en-US format
         public static final String US = "M/d/yyyy h:mm:ss tt";
         /// Date format of QC forex data
-        public static final String Forex = "yyyyMMdd HH:mm:ss.ffff";
+        public static final DateTimeFormatter Forex = DateTimeFormatter.ofPattern( "yyyyMMdd HH:mm:ss.SSSS" );
     }
 
     /// Singular holding of assets from backend live nodes:
@@ -111,7 +115,7 @@ public class Global {
 //            ConversionRate = security.QuoteCurrency.ConversionRate;
 //
 //            rounding = 2;
-//            if (holding.Type == SecurityType.Forex || holding.Type == SecurityType.Cfd)
+//            if( holding.Type == SecurityType.Forex || holding.Type == SecurityType.Cfd)
 //            {
 //                rounding = 5;
 //            }
@@ -141,13 +145,13 @@ public class Global {
 //        /// <summary>
 //        /// Writes out the properties of this instance to string
 //        /// </summary>
-//        public override String toString()
+//        public @Override String toString()
 //        {
-//            if (ConversionRate == 1.0m)
+//            if( ConversionRate == 1.0m)
 //            {
-//                return String.format("{0}: {1} @ {2}{3} - Market: {2}{4}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice);
+//                return String.format( "%1$s: %2$s @ %3$s{3} - Market: %3$s{4}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice);
 //            }
-//            return String.format("{0}: {1} @ {2}{3} - Market: {2}{4} - Conversion: {5}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice, ConversionRate);
+//            return String.format( "%1$s: %2$s @ %3$s{3} - Market: %3$s{4} - Conversion: {5}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice, ConversionRate);
 //        }
 //    }
 
@@ -313,10 +317,10 @@ public class Global {
     /// Specifies the different types of options
     public enum OptionRight {
         /// A call option, the right to buy at the strike price
-        Call,
+        CALL,
 
         /// A put option, the right to sell at the strike price
-        Put;
+        PUT;
 
         private static final ImmutableMap<Integer,OptionRight> ordinalToTypeMap = ImmutableMap.<Integer,OptionRight>builder()
                 .putAll( Arrays.stream( OptionRight.values() ).collect( Collectors.toMap( or -> or.ordinal(), Function.identity() ) ) )
@@ -330,10 +334,10 @@ public class Global {
     /// Specifies the style of an option
     public enum OptionStyle {
         /// American style options are able to be exercised at any time on or before the expiration date
-        American,
+        AMERICAN,
 
         /// European style options are able to be exercised on the expiration date only.
-        European;
+        EUROPEAN;
 
         private static final ImmutableMap<Integer,OptionStyle> ordinalToTypeMap = ImmutableMap.<Integer,OptionStyle>builder()
                 .putAll( Arrays.stream( OptionStyle.values() ).collect( Collectors.toMap( os -> os.ordinal(), Function.identity() ) ) )
@@ -348,7 +352,7 @@ public class Global {
     public class AlgorithmControl {
         /// Default initializer for algorithm control class.
         public AlgorithmControl() {
-            // default to true, API can override
+            // default to true, API can @Override
             hasSubscribers = true;
             status = AlgorithmStatus.Running;
             chartSubscription = "Strategy Equity";
@@ -763,8 +767,7 @@ package com.quantconnect.lean
         public BigDecimal ConversionRate;
 
         /// Create a new default holding:
-        public Holding()
-        {
+        public Holding() {
             CurrencySymbol = "$";
             ConversionRate = 1m;
         }
@@ -774,8 +777,7 @@ package com.quantconnect.lean
         /// </summary>
         /// <param name="security">The security instance</param>
         public Holding(Security security)
-             : this()
-        {
+             : this() {
             holding = security.Holdings;
 
             Symbol = holding.Symbol;
@@ -785,8 +787,7 @@ package com.quantconnect.lean
             ConversionRate = security.QuoteCurrency.ConversionRate;
 
             rounding = 2;
-            if (holding.Type == SecurityType.Forex || holding.Type == SecurityType.Cfd)
-            {
+            if( holding.Type == SecurityType.Forex || holding.Type == SecurityType.Cfd) {
                 rounding = 5;
             }
 
@@ -798,8 +799,7 @@ package com.quantconnect.lean
         /// Clones this instance
         /// </summary>
         /// <returns>A new Holding object with the same values as this one</returns>
-        public Holding Clone()
-        {
+        public Holding Clone() {
             return new Holding
             {
                 AveragePrice = AveragePrice,
@@ -815,13 +815,11 @@ package com.quantconnect.lean
         /// <summary>
         /// Writes out the properties of this instance to string
         /// </summary>
-        public override String toString()
-        {
-            if (ConversionRate == 1.0m)
-            {
-                return String.format("{0}: {1} @ {2}{3} - Market: {2}{4}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice);
+        public @Override String toString() {
+            if( ConversionRate == 1.0m) {
+                return String.format( "%1$s: %2$s @ %3$s{3} - Market: %3$s{4}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice);
             }
-            return String.format("{0}: {1} @ {2}{3} - Market: {2}{4} - Conversion: {5}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice, ConversionRate);
+            return String.format( "%1$s: %2$s @ %3$s{3} - Market: %3$s{4} - Conversion: {5}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice, ConversionRate);
         }
     }
 
@@ -1106,9 +1104,8 @@ package com.quantconnect.lean
         /// <summary>
         /// Default initializer for algorithm control class.
         /// </summary>
-        public AlgorithmControl()
-        {
-            // default to true, API can override
+        public AlgorithmControl() {
+            // default to true, API can @Override
             HasSubscribers = true;
             Status = AlgorithmStatus.Running;
             ChartSubscription = "Strategy Equity";
@@ -1246,8 +1243,7 @@ package com.quantconnect.lean
     public static class MarketCodes
     {
         /// US Market Codes
-        public static Map<String,String> US = new Map<String,String>()
-        {
+        public static Map<String,String> US = new Map<String,String>() {
             {"A", "American Stock Exchange"},
             {"B", "Boston Stock Exchange"},
             {"C", "National Stock Exchange"},
@@ -1269,8 +1265,7 @@ package com.quantconnect.lean
         };
 
         /// Canada Market Short Codes:
-        public static Map<String,String> Canada = new Map<String,String>()
-        {
+        public static Map<String,String> Canada = new Map<String,String>() {
             {"T", "Toronto"},
             {"V", "Venture"}
         };

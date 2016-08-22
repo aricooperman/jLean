@@ -27,8 +27,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The period over which to perform to computation</param>
         public MomentumPercent(int period)
-            : this("MOMP" + period, period)
-        {
+            : this( "MOMP" + period, period) {
         }
 
         /// <summary>
@@ -37,8 +36,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The period over which to perform to computation</param>
         public MomentumPercent( String name, int period)
-            : base(name, period)
-        {
+            : base(name, period) {
         }
     }
 }

@@ -24,11 +24,9 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
     /// </summary>
     public class RemoteFileBaseData : BaseData
     {
-        public override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode)
-        {
-            csv = line.Split(',');
-            if (csv[1].toLowerCase() != config.Symbol.toString().toLowerCase())
-            {
+        public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
+            csv = line.split(',');
+            if( csv[1].toLowerCase() != config.Symbol.toString().toLowerCase()) {
                 // this row isn't for me
                 return null;
             }
@@ -44,8 +42,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             };
         }
 
-        public override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode)
-        {
+        public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             // this file is only a few seconds worth of data, so it's quick to download
             remoteFileSource = @"http://www.quantconnect.com/live-test?type=file&symbols=" + config.Symbol.Value;
             remoteFileSource = @"http://beta.quantconnect.com/live-test?type=file&symbols=" + config.Symbol.Value;

@@ -46,8 +46,7 @@ package com.quantconnect.lean.Util
         /// </summary>
         /// <param name="controller">The controller instance used to reschedule work items</param>
         /// <param name="queue">The work queue where this worker will source the work items</param>
-        public ParallelRunnerWorker(ParallelRunnerController controller, BlockingCollection<IParallelRunnerWorkItem> queue)
-        {
+        public ParallelRunnerWorker(ParallelRunnerController controller, BlockingCollection<IParallelRunnerWorkItem> queue) {
             _queue = queue;
             _controller = controller;
             _waitHandle = new ManualResetEvent(false);
@@ -58,11 +57,9 @@ package com.quantconnect.lean.Util
         /// This method is indempotent.
         /// </summary>
         /// <param name="token">The cancellation token</param>
-        public void Start(CancellationToken token)
-        {
-            lock (_sync)
-            {
-                if (_thread != null) return;
+        public void Start(CancellationToken token) {
+            lock (_sync) {
+                if( _thread != null ) return;
                 _thread = new Thread(() => ThreadEntry(token));
                 _thread.Start();
             }
@@ -71,31 +68,25 @@ package com.quantconnect.lean.Util
         /// <summary>
         /// Main entry point for the worker thread
         /// </summary>
-        private void ThreadEntry(CancellationToken token)
-        {
+        private void ThreadEntry(CancellationToken token) {
             try
             {
-                foreach (workItem in _queue.GetConsumingEnumerable(token))
-                {
+                foreach (workItem in _queue.GetConsumingEnumerable(token)) {
                     try
                     {
                         workItem.Execute();
                     }
-                    catch (Exception err)
-                    {
+                    catch (Exception err) {
                         Log.Error(err);
                     }
                 }
             }
-            catch (OperationCanceledException err)
-            {
-                if (!token.IsCancellationRequested)
-                {
+            catch (OperationCanceledException err) {
+                if( !token.IsCancellationRequested) {
                     Log.Error(err);
                 }
             }
-            catch (Exception err)
-            {
+            catch (Exception err) {
                 Log.Error(err);
             }
             finally
@@ -108,12 +99,10 @@ package com.quantconnect.lean.Util
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
         /// <filterpriority>2</filterpriority>
-        public void Dispose()
-        {
-            lock (_sync)
-            {
-                if (_waitHandle != null) _waitHandle.Dispose();
-                if (_thread != null && _thread.IsAlive) _thread.Abort();
+        public void Dispose() {
+            lock (_sync) {
+                if( _waitHandle != null ) _waitHandle.Dispose();
+                if( _thread != null && _thread.IsAlive) _thread.Abort();
             }
         }
     }

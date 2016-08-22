@@ -30,8 +30,7 @@ package com.quantconnect.lean.ToolBox
         /// </summary>
         /// <param name="source">The source file to be opened</param>
         /// <returns>The stream representing the specified source</returns>
-        public IEnumerable<Stream> Open( String source)
-        {
+        public IEnumerable<Stream> Open( String source) {
             yield return File.OpenRead(source);
         }
 
@@ -39,8 +38,7 @@ package com.quantconnect.lean.ToolBox
         /// Closes the specified source file stream
         /// </summary>
         /// <param name="source">The source file to be closed</param>
-        public void Close( String source)
-        {
+        public void Close( String source) {
             // it's expected that users will dispose the stream
             // from the open call, this is used to clean up any
             // other resources, for example a ZipFile stream
@@ -51,10 +49,8 @@ package com.quantconnect.lean.ToolBox
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
-        public void Dispose()
-        {
-            foreach (kvp in _files)
-            {
+        public void Dispose() {
+            foreach (kvp in _files) {
                 kvp.Value.Dispose();
             }
         }

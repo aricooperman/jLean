@@ -37,8 +37,7 @@ package com.quantconnect.lean.Data.Auxiliary
         /// <summary>
         /// Initializes a new instance of the <see cref="FactorFile"/> class.
         /// </summary>
-        public FactorFile( String permtick, IEnumerable<FactorFileRow> data)
-        {
+        public FactorFile( String permtick, IEnumerable<FactorFileRow> data) {
             Permtick = permtick.toUpperCase();
             _data = new SortedList<DateTime, FactorFileRow>(data.ToDictionary(x => x.Date));
         }
@@ -46,21 +45,18 @@ package com.quantconnect.lean.Data.Auxiliary
         /// <summary>
         /// Reads a FactorFile in from the <see cref="Globals.DataFolder"/>.
         /// </summary>
-        public static FactorFile Read( String permtick, String market)
-        {
+        public static FactorFile Read( String permtick, String market) {
             return new FactorFile(permtick, FactorFileRow.Read(permtick, market));
         }
 
         /// <summary>
         /// Gets the price scale factor that includes dividend and split adjustments for the specified search date
         /// </summary>
-        public BigDecimal GetPriceScaleFactor(DateTime searchDate)
-        {
+        public BigDecimal GetPriceScaleFactor(DateTime searchDate) {
             BigDecimal factor = 1;
             //Iterate backwards to find the most recent factor:
-            foreach (splitDate in _data.Keys.Reverse())
-            {
-                if (splitDate.Date < searchDate.Date) break;
+            foreach (splitDate in _data.Keys.Reverse()) {
+                if( splitDate.Date < searchDate.Date) break;
                 factor = _data[splitDate].PriceScaleFactor;
             }
             return factor;
@@ -69,14 +65,12 @@ package com.quantconnect.lean.Data.Auxiliary
         /// <summary>
         /// Gets the split factor to be applied at the specified date
         /// </summary>
-        public BigDecimal GetSplitFactor(DateTime searchDate)
-        {
+        public BigDecimal GetSplitFactor(DateTime searchDate) {
             BigDecimal factor = 1;
             //Iterate backwards to find the most recent factor:
-            foreach (splitDate in _data.Keys.Reverse())
-            {
-                if (splitDate.Date < searchDate.Date) break;
-                factor = _data[splitDate].SplitFactor;
+            foreach (splitDate in _data.Keys.Reverse()) {
+                if( splitDate.Date < searchDate.Date) break;
+                factor = _data[splitDate].splitFactor;
             }
             return factor;
         }
@@ -84,15 +78,13 @@ package com.quantconnect.lean.Data.Auxiliary
         /// <summary>
         /// Checks whether or not a symbol has scaling factors
         /// </summary>
-        public static boolean HasScalingFactors( String permtick, String market)
-        {
+        public static boolean HasScalingFactors( String permtick, String market) {
             // check for factor files
             path = Path.Combine(Globals.DataFolder, "equity", market, "factor_files", permtick.toLowerCase() + ".csv");
-            if (File.Exists(path))
-            {
+            if( File.Exists(path)) {
                 return true;
             }
-            Log.Trace("FactorFile.HasScalingFactors(): Factor file not found: " + permtick);
+            Log.Trace( "FactorFile.HasScalingFactors(): Factor file not found: " + permtick);
             return false;
         }
 
@@ -109,19 +101,16 @@ package com.quantconnect.lean.Data.Auxiliary
         /// <param name="date">The date to check the factor file for a dividend event</param>
         /// <param name="priceFactorRatio">When this function returns true, this value will be populated
         /// with the price factor ratio required to scale the closing value (pf_i/pf_i+1)</param>
-        public boolean HasDividendEventOnNextTradingDay(DateTime date, out BigDecimal priceFactorRatio)
-        {
+        public boolean HasDividendEventOnNextTradingDay(DateTime date, out BigDecimal priceFactorRatio) {
             priceFactorRatio = 0;
             index = _data.IndexOfKey(date);
-            if (index > -1 && index < _data.Count - 1)
-            {
+            if( index > -1 && index < _data.Count - 1) {
                 // grab the next key to ensure it's a dividend event
                 thisRow = _data.Values[index];
                 nextRow = _data.Values[index + 1];
 
                 // if the price factors have changed then it's a dividend event
-                if (thisRow.PriceFactor != nextRow.PriceFactor)
-                {
+                if( thisRow.PriceFactor != nextRow.PriceFactor) {
                     priceFactorRatio = thisRow.PriceFactor/nextRow.PriceFactor;
                     return true;
                 }
@@ -139,20 +128,17 @@ package com.quantconnect.lean.Data.Auxiliary
         /// has a split on 1999.03.29, but in the factor file the split factor is applied on
         /// 1999.03.26, which is the first trading day BEFORE the actual split date.
         /// </remarks>
-        public boolean HasSplitEventOnNextTradingDay(DateTime date, out BigDecimal splitFactor)
-        {
+        public boolean HasSplitEventOnNextTradingDay(DateTime date, out BigDecimal splitFactor) {
             splitFactor = 1;
             index = _data.IndexOfKey(date);
-            if (index > -1 && index < _data.Count - 1)
-            {
+            if( index > -1 && index < _data.Count - 1) {
                 // grab the next key to ensure it's a split event
                 thisRow = _data.Values[index];
                 nextRow = _data.Values[index + 1];
 
                 // if the split factors have changed then it's a split event
-                if (thisRow.SplitFactor != nextRow.SplitFactor)
-                {
-                    splitFactor = thisRow.SplitFactor/nextRow.SplitFactor;
+                if( thisRow.splitFactor != nextRow.splitFactor) {
+                    splitFactor = thisRow.splitFactor/nextRow.splitFactor;
                     return true;
                 }
             }

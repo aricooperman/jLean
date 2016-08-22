@@ -53,8 +53,7 @@ package com.quantconnect.lean.Securities
         /// Initialise the algorithm security manager with two empty dictionaries
         /// </summary>
         /// <param name="timeKeeper"></param>
-        public SecurityManager(TimeKeeper timeKeeper)
-        {
+        public SecurityManager(TimeKeeper timeKeeper) {
             _timeKeeper = timeKeeper;
             _securityManager = new ConcurrentMap<Symbol, Security>();
         }
@@ -66,10 +65,8 @@ package com.quantconnect.lean.Securities
         /// <param name="symbol">symbol for security we're trading</param>
         /// <param name="security">security object</param>
         /// <seealso cref="Add(Security)"/>
-        public void Add(Symbol symbol, Security security)
-        {
-            if (_securityManager.TryAdd(symbol, security))
-            {
+        public void Add(Symbol symbol, Security security) {
+            if( _securityManager.TryAdd(symbol, security)) {
                 security.SetLocalTimeKeeper(_timeKeeper.GetLocalTimeKeeper(security.Exchange.TimeZone));
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, security));
             }
@@ -79,8 +76,7 @@ package com.quantconnect.lean.Securities
         /// Add a new security with this symbol to the collection.
         /// </summary>
         /// <param name="security">security object</param>
-        public void Add(Security security)
-        {
+        public void Add(Security security) {
             Add(security.Symbol, security);
         }
 
@@ -89,8 +85,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <remarks>IDictionary implementation</remarks>
         /// <param name="pair"></param>
-        public void Add(KeyValuePair<Symbol, Security> pair)
-        {
+        public void Add(KeyValuePair<Symbol, Security> pair) {
             Add(pair.Key, pair.Value);
         }
 
@@ -98,8 +93,7 @@ package com.quantconnect.lean.Securities
         /// Clear the securities array to delete all the portfolio and asset information.
         /// </summary>
         /// <remarks>IDictionary implementation</remarks>
-        public void Clear()
-        {
+        public void Clear() {
             _securityManager.Clear();
         }
 
@@ -109,8 +103,7 @@ package com.quantconnect.lean.Securities
         /// <param name="pair">Search key-value pair</param>
         /// <remarks>IDictionary implementation</remarks>
         /// <returns>Bool true if contains this key-value pair</returns>
-        public boolean Contains(KeyValuePair<Symbol, Security> pair)
-        {
+        public boolean Contains(KeyValuePair<Symbol, Security> pair) {
             return _securityManager.Contains(pair);
         }
 
@@ -120,8 +113,7 @@ package com.quantconnect.lean.Securities
         /// <param name="symbol">Symbol we're checking for.</param>
         /// <remarks>IDictionary implementation</remarks>
         /// <returns>Bool true if contains this symbol pair</returns>
-        public boolean ContainsKey(Symbol symbol)
-        {
+        public boolean ContainsKey(Symbol symbol) {
             return _securityManager.ContainsKey(symbol);
         }
 
@@ -131,8 +123,7 @@ package com.quantconnect.lean.Securities
         /// <param name="array">Array we're outputting to</param>
         /// <param name="number">Starting index of array</param>
         /// <remarks>IDictionary implementation</remarks>
-        public void CopyTo(KeyValuePair<Symbol, Security>[] array, int number)
-        {
+        public void CopyTo(KeyValuePair<Symbol, Security>[] array, int number) {
             ((Map<Symbol, Security>)_securityManager).CopyTo(array, number);
         }
 
@@ -160,8 +151,7 @@ package com.quantconnect.lean.Securities
         /// <remarks>IDictionary implementation</remarks>
         /// <param name="pair">Key Value pair of symbol-security to remove</param>
         /// <returns>Boolean true on success</returns>
-        public boolean Remove(KeyValuePair<Symbol, Security> pair)
-        {
+        public boolean Remove(KeyValuePair<Symbol, Security> pair) {
             return Remove(pair.Key);
         }
 
@@ -170,11 +160,9 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <param name="symbol">Symbol we're searching for</param>
         /// <returns>true success</returns>
-        public boolean Remove(Symbol symbol)
-        {
+        public boolean Remove(Symbol symbol) {
             Security security;
-            if (_securityManager.TryRemove(symbol, out security))
-            {
+            if( _securityManager.TryRemove(symbol, out security)) {
                 OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, security));
                 return true;
             }
@@ -197,8 +185,7 @@ package com.quantconnect.lean.Securities
         /// <param name="security">Output Security object</param>
         /// <remarks>IDictionary implementation</remarks>
         /// <returns>True on successfully locating the security object</returns>
-        public boolean TryGetValue(Symbol symbol, out Security security)
-        {
+        public boolean TryGetValue(Symbol symbol, out Security security) {
             return _securityManager.TryGetValue(symbol, out security);
         }
 
@@ -216,8 +203,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <remarks>IDictionary implementation</remarks>
         /// <returns>Enumerable key value pair</returns>
-        IEnumerator<KeyValuePair<Symbol, Security>> IEnumerable<KeyValuePair<Symbol, Security>>.GetEnumerator() 
-        {
+        IEnumerator<KeyValuePair<Symbol, Security>> IEnumerable<KeyValuePair<Symbol, Security>>.GetEnumerator() {
             return _securityManager.GetEnumerator();
         }
 
@@ -226,8 +212,7 @@ package com.quantconnect.lean.Securities
         /// </summary>
         /// <remarks>IDictionary implementation</remarks>
         /// <returns>Enumerator.</returns>
-        IEnumerator IEnumerable.GetEnumerator() 
-        {
+        IEnumerator IEnumerable.GetEnumerator() {
             return _securityManager.GetEnumerator();
         }
 
@@ -241,23 +226,20 @@ package com.quantconnect.lean.Securities
         {
             get 
             {
-                if (!_securityManager.ContainsKey(symbol))
-                {
-                    throw new Exception( String.format("This asset symbol ({0}) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"{1}\")'", symbol, SymbolCache.GetTicker(symbol)));
+                if( !_securityManager.ContainsKey(symbol)) {
+                    throw new Exception( String.format( "This asset symbol (%1$s) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"%2$s\")'", symbol, SymbolCache.GetTicker(symbol)));
                 } 
                 return _securityManager[symbol];
             }
             set
             {
                 Security existing;
-                if (_securityManager.TryGetValue(symbol, out existing) && existing != value)
-                {
-                    throw new ArgumentException("Unable to over write existing Security: " + symbol.toString());
+                if( _securityManager.TryGetValue(symbol, out existing) && existing != value) {
+                    throw new ArgumentException( "Unable to over write existing Security: " + symbol.toString());
                 }
 
                 // no security exists for the specified symbol key, add it now
-                if (existing == null)
-                {
+                if( existing == null ) {
                     Add(symbol, value);
                 }
             }
@@ -274,18 +256,16 @@ package com.quantconnect.lean.Securities
             get
             {
                 Symbol symbol;
-                if (!SymbolCache.TryGetSymbol(ticker, out symbol))
-                {
-                    throw new Exception( String.format("This asset symbol ({0}) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"{0}\")'", ticker));
+                if( !SymbolCache.TryGetSymbol(ticker, out symbol)) {
+                    throw new Exception( String.format( "This asset symbol (%1$s) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"%1$s\")'", ticker));
                 }
                 return this[symbol];
             }
             set
             {
                 Symbol symbol;
-                if (!SymbolCache.TryGetSymbol(ticker, out symbol))
-                {
-                    throw new Exception( String.format("This asset symbol ({0}) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"{0}\")'", ticker));
+                if( !SymbolCache.TryGetSymbol(ticker, out symbol)) {
+                    throw new Exception( String.format( "This asset symbol (%1$s) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"%1$s\")'", ticker));
                 }
                 this[symbol] = value;
             }
@@ -295,10 +275,9 @@ package com.quantconnect.lean.Securities
         /// Event invocator for the <see cref="CollectionChanged"/> event
         /// </summary>
         /// <param name="changedEventArgs">Event arguments for the <see cref="CollectionChanged"/> event</param>
-        protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs changedEventArgs)
-        {
+        protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs changedEventArgs) {
             handler = CollectionChanged;
-            if (handler != null) handler(this, changedEventArgs);
+            if( handler != null ) handler(this, changedEventArgs);
         }
 
         /// <summary>
@@ -321,10 +300,9 @@ package com.quantconnect.lean.Securities
             boolean isInternalFeed,
             boolean isCustomData,
             boolean addToSymbolCache = true,
-            boolean isFilteredSubscription = true)
-        {
+            boolean isFilteredSubscription = true) {
             // add the symbol to our cache
-            if (addToSymbolCache) SymbolCache.Set(symbol.Value, symbol);
+            if( addToSymbolCache) SymbolCache.Set(symbol.Value, symbol);
 
             //Add the symbol to Data Manager -- generate unified data streams for algorithm events
             config = subscriptionManager.Add(factoryType, symbol, resolution, dataTimeZone, exchangeHours.TimeZone, isCustomData, fillDataForward,
@@ -332,24 +310,20 @@ package com.quantconnect.lean.Securities
 
             // verify the cash book is in a ready state
             quoteCurrency = symbolProperties.QuoteCurrency;
-            if (!securityPortfolioManager.CashBook.ContainsKey(quoteCurrency))
-            {
+            if( !securityPortfolioManager.CashBook.ContainsKey(quoteCurrency)) {
                 // since we have none it's safe to say the conversion is zero
                 securityPortfolioManager.CashBook.Add(quoteCurrency, 0, 0);
             }
-            if (symbol.ID.SecurityType == SecurityType.Forex)
-            {
+            if( symbol.ID.SecurityType == SecurityType.Forex) {
                 // decompose the symbol into each currency pair
                 String baseCurrency;
                 Forex.Forex.DecomposeCurrencyPair(symbol.Value, out baseCurrency, out quoteCurrency);
 
-                if (!securityPortfolioManager.CashBook.ContainsKey(baseCurrency))
-                {
+                if( !securityPortfolioManager.CashBook.ContainsKey(baseCurrency)) {
                     // since we have none it's safe to say the conversion is zero
                     securityPortfolioManager.CashBook.Add(baseCurrency, 0, 0);
                 }
-                if (!securityPortfolioManager.CashBook.ContainsKey(quoteCurrency))
-                {
+                if( !securityPortfolioManager.CashBook.ContainsKey(quoteCurrency)) {
                     // since we have none it's safe to say the conversion is zero
                     securityPortfolioManager.CashBook.Add(quoteCurrency, 0, 0);
                 }
@@ -358,8 +332,7 @@ package com.quantconnect.lean.Securities
             quoteCash = securityPortfolioManager.CashBook[symbolProperties.QuoteCurrency];
 
             Security security;
-            switch (config.SecurityType)
-            {
+            switch (config.SecurityType) {
                 case SecurityType.Equity:
                     security = new Equity.Equity(symbol, exchangeHours, quoteCash, symbolProperties);
                     break;
@@ -384,8 +357,7 @@ package com.quantconnect.lean.Securities
 
             // if we're just creating this security and it only has an internal
             // feed, mark it as non-tradable since the user didn't request this data
-            if (!config.IsInternalFeed)
-            {
+            if( !config.IsInternalFeed) {
                 security.IsTradable = true;
             }
 
@@ -396,8 +368,7 @@ package com.quantconnect.lean.Securities
 
             // if leverage was specified then apply to security after the initializer has run, parameters of this
             // method take precedence over the intializer
-            if (leverage > 0)
-            {
+            if( leverage > 0) {
                 security.SetLeverage(leverage);
             }
 
@@ -421,18 +392,16 @@ package com.quantconnect.lean.Securities
             boolean extendedMarketHours,
             boolean isInternalFeed,
             boolean isCustomData,
-            boolean addToSymbolCache = true)
-        {
+            boolean addToSymbolCache = true) {
             marketHoursDbEntry = marketHoursDatabase.GetEntry(symbol.ID.Market, symbol.Value, symbol.ID.SecurityType);
             exchangeHours = marketHoursDbEntry.ExchangeHours;
 
             defaultQuoteCurrency = CashBook.AccountCurrency;
-            if (symbol.ID.SecurityType == SecurityType.Forex) defaultQuoteCurrency = symbol.Value.Substring(3);
+            if( symbol.ID.SecurityType == SecurityType.Forex) defaultQuoteCurrency = symbol.Value.Substring(3);
             symbolProperties = symbolPropertiesDatabase.GetSymbolProperties(symbol.ID.Market, symbol.Value, symbol.ID.SecurityType, defaultQuoteCurrency);
 
             type = resolution == Resolution.Tick ? typeof(Tick) : typeof(TradeBar);
-            if (symbol.ID.SecurityType == SecurityType.Option && resolution != Resolution.Tick)
-            {
+            if( symbol.ID.SecurityType == SecurityType.Option && resolution != Resolution.Tick) {
                 type = typeof(QuoteBar);
             }
             return CreateSecurity(type, securityPortfolioManager, subscriptionManager, exchangeHours, marketHoursDbEntry.DataTimeZone, symbolProperties, securityInitializer, symbol, resolution,

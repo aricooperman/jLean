@@ -25,8 +25,7 @@ package com.quantconnect.lean.Orders
         /// </summary>
         /// <param name="status">The status to check</param>
         /// <returns>True if the status is <see cref="OrderStatus.Filled"/>, <see cref="OrderStatus.Canceled"/>, or <see cref="OrderStatus.Invalid"/></returns>
-        public static boolean IsClosed(this OrderStatus status)
-        {
+        public static boolean IsClosed(this OrderStatus status) {
             return status == OrderStatus.Filled
                 || status == OrderStatus.Canceled
                 || status == OrderStatus.Invalid;
@@ -37,8 +36,7 @@ package com.quantconnect.lean.Orders
         /// </summary>
         /// <param name="status">The status to check</param>
         /// <returns>True if the status is not <see cref="OrderStatus.Filled"/>, <see cref="OrderStatus.Canceled"/>, or <see cref="OrderStatus.Invalid"/></returns>
-        public static boolean IsOpen(this OrderStatus status)
-        {
+        public static boolean IsOpen(this OrderStatus status) {
             return !status.IsClosed();
         }
 
@@ -48,8 +46,7 @@ package com.quantconnect.lean.Orders
         /// </summary>
         /// <param name="status">The status to check</param>
         /// <returns>True if the status is <see cref="OrderStatus.Filled"/> or <see cref="OrderStatus.PartiallyFilled"/>, false otherwise</returns>
-        public static boolean IsFill(this OrderStatus status)
-        {
+        public static boolean IsFill(this OrderStatus status) {
             return status == OrderStatus.Filled || status == OrderStatus.PartiallyFilled;
         }
 
@@ -58,8 +55,7 @@ package com.quantconnect.lean.Orders
         /// </summary>
         /// <param name="orderType">The order to check</param>
         /// <returns>True if the order is a limit order, false otherwise</returns>
-        public static boolean IsLimitOrder(this OrderType orderType)
-        {
+        public static boolean IsLimitOrder(this OrderType orderType) {
             return orderType == OrderType.Limit || orderType == OrderType.StopLimit;
         }
 
@@ -68,8 +64,7 @@ package com.quantconnect.lean.Orders
         /// </summary>
         /// <param name="orderType">The order to check</param>
         /// <returns>True if the order is a stop order, false otherwise</returns>
-        public static boolean IsStopOrder(this OrderType orderType)
-        {
+        public static boolean IsStopOrder(this OrderType orderType) {
             return orderType == OrderType.StopMarket || orderType == OrderType.StopLimit;
         }
     }

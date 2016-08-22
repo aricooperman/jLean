@@ -38,7 +38,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Gets a flag indicating when this indicator is ready and fully initialized
         /// </summary>
-        public override boolean IsReady
+        public @Override boolean IsReady
         {
             get { return Maximum.IsReady && Minimum.IsReady; }
         }
@@ -48,8 +48,7 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="period">The lookback period to determine the highest high for the AroonDown</param>
         public WilliamsPercentR(int period)
-            : this("WILR"+period, period)
-        {
+            : this( "WILR"+period, period) {
         }
 
         /// <summary>
@@ -58,8 +57,7 @@ package com.quantconnect.lean.Indicators
         /// <param name="name">The name of this indicator</param>
         /// <param name="period">The lookback period to determine the highest high for the AroonDown</param>
         public WilliamsPercentR( String name, int period)
-            : base(name)
-        {
+            : base(name) {
             Maximum = new Maximum(name + "_Max", period);
             Minimum = new Minimum(name + "_Min", period);
         }
@@ -67,8 +65,7 @@ package com.quantconnect.lean.Indicators
         /// <summary>
         /// Resets this indicator and both sub-indicators (Max and Min)
         /// </summary>
-        public override void Reset()
-        {
+        public @Override void Reset() {
             Maximum.Reset();
             Minimum.Reset();
             base.Reset();
@@ -79,12 +76,11 @@ package com.quantconnect.lean.Indicators
         /// </summary>
         /// <param name="input">The input given to the indicator</param>
         /// <returns>A new value for this indicator</returns>
-        protected override BigDecimal ComputeNextValue(TradeBar input)
-        {
+        protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             Minimum.Update(input.Time, input.Low);
             Maximum.Update(input.Time, input.High);
 
-            if (!this.IsReady) return 0;
+            if( !this.IsReady) return 0;
            
             range = (Maximum.Current.Value - Minimum.Current.Value);
 

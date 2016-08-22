@@ -24,8 +24,7 @@ package com.quantconnect.lean.Tests.Common.Data
     public class QuoteBarConsolidatorTests
     {
         [Test]
-        public void AggregatesNewQuoteBarProperly()
-        {
+        public void AggregatesNewQuoteBarProperly() {
             QuoteBar quoteBar = null;
             creator = new QuoteBarConsolidator(4);
             creator.DataConsolidated += (sender, args) =>

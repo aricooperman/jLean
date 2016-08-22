@@ -37,8 +37,7 @@ package com.quantconnect.lean.Data.Market
         /// <summary>
         /// Initializes a new default instance of the <see cref="SymbolChangedEvent"/> class
         /// </summary>
-        public SymbolChangedEvent()
-        {
+        public SymbolChangedEvent() {
             DataType = MarketDataType.Auxiliary;
         }
 
@@ -50,8 +49,7 @@ package com.quantconnect.lean.Data.Market
         /// <param name="oldSymbol">The old symbol mapping</param>
         /// <param name="newSymbol">The new symbol mapping</param>
         public SymbolChangedEvent(Symbol requestedSymbol, DateTime date, String oldSymbol, String newSymbol)
-            : this()
-        {
+            : this() {
             Time = date;
             Symbol = requestedSymbol;
             OldSymbol = oldSymbol;
@@ -65,8 +63,7 @@ package com.quantconnect.lean.Data.Market
         /// This base implementation uses reflection to copy all public fields and properties
         /// </remarks>
         /// <returns>A clone of the current object</returns>
-        public override BaseData Clone()
-        {
+        public @Override BaseData Clone() {
             return new SymbolChangedEvent(Symbol, Time, OldSymbol, NewSymbol);
         }
     }

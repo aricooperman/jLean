@@ -33,8 +33,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         public readonly Symbol Underlying = QuantConnect.Symbol.Create(UnderlyingTicker, SecurityType.Equity, Market.USA);
         public readonly Symbol OptionSymbol = QuantConnect.Symbol.Create(UnderlyingTicker, SecurityType.Option, Market.USA);
 
-        public override void Initialize()
-        {
+        public @Override void Initialize() {
             SetStartDate(2015, 12, 24);
             SetEndDate(2015, 12, 24);
             SetCash(10000);
@@ -43,23 +42,20 @@ package com.quantconnect.lean.Algorithm.CSharp
             option = AddOption(UnderlyingTicker);
 
             // set our strike/expiry filter for this option chain
-            option.SetFilter(-2, +2, TimeSpan.Zero, TimeSpan.FromDays(10));
+            option.SetFilter(-2, +2, TimeSpan.Zero, Duration.ofDays(10));
 
             // use the underlying equity as the benchmark
             SetBenchmark(equity.Symbol);
         }
 
         /// <summary>
-        /// Event - v3.0 DATA EVENT HANDLER: (Pattern) Basic template for user to override for receiving all subscription data in a single event
+        /// Event - v3.0 DATA EVENT HANDLER: (Pattern) Basic template for user to @Override for receiving all subscription data in a single event
         /// </summary>
         /// <param name="slice">The current slice of data keyed by symbol string</param>
-        public override void OnData(Slice slice)
-        {
-            if (!Portfolio.Invested)
-            {
+        public @Override void OnData(Slice slice) {
+            if( !Portfolio.Invested) {
                 OptionChain chain;
-                if (slice.OptionChains.TryGetValue(OptionSymbol, out chain))
-                {
+                if( slice.OptionChains.TryGetValue(OptionSymbol, out chain)) {
                     // find the second call strike under market price expiring today
                     contract = (
                         from optionContract in chain.OrderByDescending(x => x.Strike)
@@ -69,8 +65,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                         select optionContract
                         ).Skip(2).FirstOrDefault();
 
-                    if (contract != null)
-                    {
+                    if( contract != null ) {
                         quantity = CalculateOrderQuantity(contract.Symbol, -1m);
                         MarketOrder(contract.Symbol, quantity);
                         MarketOnCloseOrder(contract.Symbol, -quantity);
@@ -84,8 +79,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// </summary>
         /// <param name="orderEvent">Order event details containing details of the evemts</param>
         /// <remarks>This method can be called asynchronously and so should only be used by seasoned C# experts. Ensure you use proper locks on thread-unsafe objects</remarks>
-        public override void OnOrderEvent(OrderEvent orderEvent)
-        {
+        public @Override void OnOrderEvent(OrderEvent orderEvent) {
             Log(orderEvent.toString());
         }
     }

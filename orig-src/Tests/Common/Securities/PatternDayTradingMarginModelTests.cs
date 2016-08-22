@@ -34,8 +34,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         private static readonly TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), TimeZones.NewYork);
 
         [Test]
-        public void InitializationTests()
-        {
+        public void InitializationTests() {
             // No parameters initialization, used default PDT 4x leverage open market and 2x leverage otherwise
             model = new PatternDayTradingMarginModel();
             leverage = model.GetLeverage(CreateSecurity(Noon));
@@ -49,8 +48,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void SetLeverageTest()
-        {
+        public void SetLeverageTest() {
             model = new PatternDayTradingMarginModel();
 
             // Open market
@@ -71,8 +69,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void VerifyOpenMarketLeverage()
-        {
+        public void VerifyOpenMarketLeverage() {
             // Market is Open on Tuesday, Feb, 16th 2016 at Noon
 
             leverage = 4m;
@@ -87,8 +84,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void VerifyOpenMarketLeverageAltVersion()
-        {
+        public void VerifyOpenMarketLeverageAltVersion() {
             // Market is Open on Tuesday, Feb, 16th 2016 at Noon
 
             leverage = 5m;
@@ -103,8 +99,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void VerifyClosedMarketLeverage()
-        {
+        public void VerifyClosedMarketLeverage() {
             leverage = 2m;
             expected = 100 * 100m / leverage + 1;
 
@@ -133,8 +128,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void VerifyClosedMarketLeverageAltVersion()
-        {
+        public void VerifyClosedMarketLeverageAltVersion() {
             leverage = 3m;
             expected = 100 * 100m / leverage + 1;
 
@@ -163,8 +157,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void VerifyMaintenaceMargin()
-        {
+        public void VerifyMaintenaceMargin() {
             model = new PatternDayTradingMarginModel();
 
             // Open Market
@@ -181,8 +174,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void VerifyMarginCallOrderLong()
-        {
+        public void VerifyMarginCallOrderLong() {
             netLiquidationValue = 5000m;
             totalMargin = 10000m;
             securityPrice = 100m;
@@ -210,8 +202,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         [Test]
-        public void VerifyMarginCallOrderShort()
-        {
+        public void VerifyMarginCallOrderShort() {
             netLiquidationValue = 5000m;
             totalMargin = 10000m;
             securityPrice = 100m;
@@ -238,8 +229,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.AreEqual(expected, actual);
         }
 
-        private static Security CreateSecurity(DateTime newLocalTime)
-        {
+        private static Security CreateSecurity(DateTime newLocalTime) {
             security = new Security(CreateUsEquitySecurityExchangeHours(), CreateTradeBarConfig(), new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
             TimeKeeper.SetUtcDateTime(newLocalTime.ConvertToUtc(security.Exchange.TimeZone));
             security.Exchange.SetLocalDateTimeFrontier(newLocalTime);
@@ -248,8 +238,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             return security;
         }
 
-        private static SecurityExchangeHours CreateUsEquitySecurityExchangeHours()
-        {
+        private static SecurityExchangeHours CreateUsEquitySecurityExchangeHours() {
             sunday = LocalMarketHours.ClosedAllDay(DayOfWeek.Sunday);
             monday = new LocalMarketHours(DayOfWeek.Monday, new TimeSpan(9, 30, 0), new TimeSpan(16, 0, 0));
             tuesday = new LocalMarketHours(DayOfWeek.Tuesday, new TimeSpan(9, 30, 0), new TimeSpan(16, 0, 0));
@@ -264,8 +253,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             }.ToDictionary(x => x.DayOfWeek));
         }
 
-        private static SubscriptionDataConfig CreateTradeBarConfig()
-        {
+        private static SubscriptionDataConfig CreateTradeBarConfig() {
             return new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork,
                 TimeZones.NewYork, true, true, false);
         }

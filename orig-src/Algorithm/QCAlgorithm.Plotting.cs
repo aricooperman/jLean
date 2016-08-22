@@ -43,10 +43,8 @@ package com.quantconnect.lean.Algorithm
         /// </summary>
         /// <param name="chart">Chart object to add to collection.</param>
         /// <seealso cref="Plot( String,string,decimal)"/>
-        public void AddChart(Chart chart)
-        {
-            if (!_charts.ContainsKey(chart.Name))
-            {
+        public void AddChart(Chart chart) {
+            if( !_charts.ContainsKey(chart.Name)) {
                 _charts.Add(chart.Name, chart);
             }
         }
@@ -57,10 +55,9 @@ package com.quantconnect.lean.Algorithm
         /// <param name="series">Name of the plot series</param>
         /// <param name="value">Value to plot</param>
         /// <seealso cref="Plot( String,string,decimal)"/>
-        public void Plot( String series, BigDecimal value)
-        {
+        public void Plot( String series, BigDecimal value) {
             //By default plot to the primary chart:
-            Plot("Strategy Equity", series, value);
+            Plot( "Strategy Equity", series, value);
         }
 
 
@@ -69,8 +66,7 @@ package com.quantconnect.lean.Algorithm
         /// </summary>
         /// <remarks> Record( String series, int value)</remarks>
         /// <seealso cref="Plot( String,string,decimal)"/>
-        public void Record( String series, int value)
-        {
+        public void Record( String series, int value) {
             Plot(series, value);
         }
 
@@ -78,8 +74,7 @@ package com.quantconnect.lean.Algorithm
         /// Plot a chart using String series name, with double value. Alias of Plot();
         /// </summary>
         /// <seealso cref="Plot( String,string,decimal)"/>
-        public void Record( String series, double value)
-        {
+        public void Record( String series, double value) {
             Plot(series, value);
         }
 
@@ -89,8 +84,7 @@ package com.quantconnect.lean.Algorithm
         /// <param name="series"></param>
         /// <param name="value"></param>
         /// <seealso cref="Plot( String,string,decimal)"/>
-        public void Record( String series, BigDecimal value)
-        {
+        public void Record( String series, BigDecimal value) {
             //By default plot to the primary chart:
             Plot(series, value);
         }
@@ -107,8 +101,7 @@ package com.quantconnect.lean.Algorithm
         /// Plot a chart using String series name, with int value.
         /// </summary>
         /// <seealso cref="Plot( String,string,decimal)"/>
-        public void Plot( String series, int value)
-        {
+        public void Plot( String series, int value) {
             Plot(series, (decimal)value);
         }
 
@@ -116,8 +109,7 @@ package com.quantconnect.lean.Algorithm
         ///Plot a chart using String series name, with float value.
         /// </summary>
         /// <seealso cref="Plot( String,string,decimal)"/>
-        public void Plot( String series, float value)
-        {
+        public void Plot( String series, float value) {
             Plot(series, (decimal)value);
         }
 
@@ -125,8 +117,7 @@ package com.quantconnect.lean.Algorithm
         /// Plot a chart to String chart name, using String series name, with double value.
         /// </summary>
         /// <seealso cref="Plot( String,string,decimal)"/>
-        public void Plot( String chart, String series, double value)
-        {
+        public void Plot( String chart, String series, double value) {
             Plot(chart, series, (decimal)value);
         }
 
@@ -134,8 +125,7 @@ package com.quantconnect.lean.Algorithm
         /// Plot a chart to String chart name, using String series name, with int value
         /// </summary>
         /// <seealso cref="Plot( String,string,decimal)"/>
-        public void Plot( String chart, String series, int value)
-        {
+        public void Plot( String chart, String series, int value) {
             Plot(chart, series, (decimal)value);
         }
 
@@ -143,8 +133,7 @@ package com.quantconnect.lean.Algorithm
         /// Plot a chart to String chart name, using String series name, with float value
         /// </summary>
         /// <seealso cref="Plot( String,string,decimal)"/>
-        public void Plot( String chart, String series, float value)
-        {
+        public void Plot( String chart, String series, float value) {
             Plot(chart, series, (decimal)value);
         }
 
@@ -154,29 +143,24 @@ package com.quantconnect.lean.Algorithm
         /// <param name="chart">Chart name</param>
         /// <param name="series">Series name</param>
         /// <param name="value">Value of the point</param>
-        public void Plot( String chart, String series, BigDecimal value) 
-        {
+        public void Plot( String chart, String series, BigDecimal value) {
             //Ignore the reserved chart names:
-            if ((chart == "Strategy Equity" && series == "Equity") || (chart == "Daily Performance") || (chart == "Meta"))
-            {
-                throw new Exception("Algorithm.Plot(): 'Equity', 'Daily Performance' and 'Meta' are reserved chart names created for all charts.");
+            if( (chart == "Strategy Equity" && series == "Equity") || (chart == "Daily Performance") || (chart == "Meta")) {
+                throw new Exception( "Algorithm.Plot(): 'Equity', 'Daily Performance' and 'Meta' are reserved chart names created for all charts.");
             }
 
             // If we don't have the chart, create it:
-            if (!_charts.ContainsKey(chart))
-            {
+            if( !_charts.ContainsKey(chart)) {
                 _charts.Add(chart, new Chart(chart)); 
             }
 
             thisChart = _charts[chart];
-            if (!thisChart.Series.ContainsKey(series)) 
-            {
+            if( !thisChart.Series.ContainsKey(series)) {
                 //Number of series in total.
                 seriesCount = (from x in _charts.Values select x.Series.Count).Sum();
 
-                if (seriesCount > 10)
-                {
-                    Error("Exceeded maximum series count: Each backtest can have up to 10 series in total.");
+                if( seriesCount > 10) {
+                    Error( "Exceeded maximum series count: Each backtest can have up to 10 series in total.");
                     return;
                 }
 
@@ -185,13 +169,12 @@ package com.quantconnect.lean.Algorithm
             }
 
             thisSeries = thisChart.Series[series];
-            if (thisSeries.Values.Count < 4000 || _liveMode)
-            {
+            if( thisSeries.Values.Count < 4000 || _liveMode) {
                 thisSeries.AddPoint(Time, value, _liveMode);
             }
             else 
             {
-                Debug("Exceeded maximum points per chart, data skipped.");
+                Debug( "Exceeded maximum points per chart, data skipped.");
             }
         }
 
@@ -204,8 +187,7 @@ package com.quantconnect.lean.Algorithm
         public void Plot<T>( String chart, params IndicatorBase<T>[] indicators)
             where T : BaseData
         {
-            foreach (indicator in indicators)
-            {
+            foreach (indicator in indicators) {
                 Plot(chart, indicator.Name, indicator);
             }
         }
@@ -216,8 +198,7 @@ package com.quantconnect.lean.Algorithm
         public void PlotIndicator<T>( String chart, params IndicatorBase<T>[] indicators)
             where T : BaseData
         {
-            foreach (i in indicators)
-            {
+            foreach (i in indicators) {
                 // copy loop variable for usage in closure
                 ilocal = i;
                 i.Updated += (sender, args) =>
@@ -233,14 +214,12 @@ package com.quantconnect.lean.Algorithm
         public void PlotIndicator<T>( String chart, boolean waitForReady, params IndicatorBase<T>[] indicators)
             where T : BaseData
         {
-            foreach (i in indicators)
-            {
+            foreach (i in indicators) {
                 // copy loop variable for usage in closure
                 ilocal = i;
                 i.Updated += (sender, args) =>
                 {
-                    if (!waitForReady || ilocal.IsReady)
-                    {
+                    if( !waitForReady || ilocal.IsReady) {
                         Plot(chart, ilocal);
                     }
                 };
@@ -253,11 +232,9 @@ package com.quantconnect.lean.Algorithm
         /// <param name="name">Name of your runtime statistic</param>
         /// <param name="value">String value of your runtime statistic</param>
         /// <seealso cref="LiveMode"/>
-        public void SetRuntimeStatistic( String name, String value)
-        {
+        public void SetRuntimeStatistic( String name, String value) {
             //If not set, add it to the dictionary:
-            if (!_runtimeStatistics.ContainsKey(name))
-            {
+            if( !_runtimeStatistics.ContainsKey(name)) {
                 _runtimeStatistics.Add(name, value);
             }
 
@@ -270,8 +247,7 @@ package com.quantconnect.lean.Algorithm
         /// </summary>
         /// <param name="name">Name of your runtime statistic</param>
         /// <param name="value">Decimal value of your runtime statistic</param>
-        public void SetRuntimeStatistic( String name, BigDecimal value)
-        {
+        public void SetRuntimeStatistic( String name, BigDecimal value) {
             SetRuntimeStatistic(name, value.toString());
         }
 
@@ -280,8 +256,7 @@ package com.quantconnect.lean.Algorithm
         /// </summary>
         /// <param name="name">Name of your runtime statistic</param>
         /// <param name="value">Int value of your runtime statistic</param>
-        public void SetRuntimeStatistic( String name, int value)
-        {
+        public void SetRuntimeStatistic( String name, int value) {
             SetRuntimeStatistic(name, value.toString());
         }
 
@@ -290,8 +265,7 @@ package com.quantconnect.lean.Algorithm
         /// </summary>
         /// <param name="name">Name of your runtime statistic</param>
         /// <param name="value">Double value of your runtime statistic</param>
-        public void SetRuntimeStatistic( String name, double value)
-        {
+        public void SetRuntimeStatistic( String name, double value) {
             SetRuntimeStatistic(name, value.toString());
         }
 
@@ -301,17 +275,13 @@ package com.quantconnect.lean.Algorithm
         /// <param name="clearChartData"></param>
         /// <returns>List of chart updates since the last request</returns>
         /// <remarks>GetChartUpdates returns the latest updates since previous request.</remarks>
-        public List<Chart> GetChartUpdates( boolean clearChartData = false)
-        {
+        public List<Chart> GetChartUpdates( boolean clearChartData = false) {
             updates = _charts.Values.Select(chart => chart.GetUpdates()).ToList();
 
-            if (clearChartData)
-            {
+            if( clearChartData) {
                 // we can clear this data out after getting updates to prevent unnecessary memory usage
-                foreach (chart in _charts)
-                {
-                    foreach (series in chart.Value.Series)
-                    {
+                foreach (chart in _charts) {
+                    foreach (series in chart.Value.Series) {
                         series.Value.Purge();
                     }
                 }

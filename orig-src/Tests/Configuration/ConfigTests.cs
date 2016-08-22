@@ -26,22 +26,20 @@ package com.quantconnect.lean.Tests.Configuration
     public class ConfigTests
     {
         [Test]
-        public void SetRespectsEnvironment()
-        {
-            boolean betaMode = Config.GetBool("beta-mode");
-            env = Config.Get("environment");
+        public void SetRespectsEnvironment() {
+            boolean betaMode = Config.GetBool( "beta-mode");
+            env = Config.Get( "environment");
             Config.Set(env + ".beta-mode", betaMode ? "false" : "true");
 
 
-            boolean betaMode2 = Config.GetBool("beta-mode");
+            boolean betaMode2 = Config.GetBool( "beta-mode");
             Assert.AreNotEqual(betaMode, betaMode2);
         }
 
         [Test]
-        public void FlattenTest()
-        {
+        public void FlattenTest() {
             // read in and rewrite the environment based on the settings
-            static final String overrideEnvironment = "live-paper.beta";
+            static final String @OverrideEnvironment = "live-paper.beta";
 
             config = JObject.Parse(
 @"{
@@ -60,36 +58,33 @@ package com.quantconnect.lean.Tests.Configuration
 
             configCopy = config.DeepClone();
 
-            clone = Config.Flatten(config, overrideEnvironment);
+            clone = Config.Flatten(config, @OverrideEnvironment);
 
             // remove environments
-            Assert.IsNull(clone.Property("environment"));
-            Assert.IsNull(clone.Property("environments"));
+            Assert.IsNull(clone.Property( "environment"));
+            Assert.IsNull(clone.Property( "environments"));
 
             // properly applied environment
-            Assert.AreEqual("true", clone.Property("some-setting").Value.toString());
-            Assert.AreEqual("true", clone.Property("some-setting2").Value.toString());
+            Assert.AreEqual( "true", clone.Property( "some-setting").Value.toString());
+            Assert.AreEqual( "true", clone.Property( "some-setting2").Value.toString());
 
             Assert.AreEqual(configCopy, config);
         }
 
         [Test]
-        public void GetValueHandlesDateTime()
-        {
+        public void GetValueHandlesDateTime() {
             GetValueHandles(new DateTime(2015, 1, 2, 3, 4, 5));
         }
 
         [Test]
-        public void GetValueHandlesTimeSpan()
-        {
+        public void GetValueHandlesTimeSpan() {
             GetValueHandles(new TimeSpan(1, 2, 3, 4, 5));
         }
 
-        private void GetValueHandles<T>(T value)
-        {
+        private void GetValueHandles<T>(T value) {
             configValue = value.toString();
-            Config.Set("temp-value", configValue);
-            actual = Config.GetValue<T>("temp-value");
+            Config.Set( "temp-value", configValue);
+            actual = Config.GetValue<T>( "temp-value");
             Assert.AreEqual(value, actual);
         }
     }

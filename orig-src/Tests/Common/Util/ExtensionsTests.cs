@@ -25,36 +25,31 @@ package com.quantconnect.lean.Tests.Common.Util
     public class ExtensionsTests
     {
         [Test]
-        public void IsSubclassOfGenericWorksWorksForNonGenericType()
-        {
+        public void IsSubclassOfGenericWorksWorksForNonGenericType() {
             Assert.IsTrue(typeof(Derived2).IsSubclassOfGeneric(typeof(Derived1)));
         }
 
         [Test]
-        public void IsSubclassOfGenericWorksForGenericTypeWithParameter()
-        {
+        public void IsSubclassOfGenericWorksForGenericTypeWithParameter() {
             Assert.IsTrue(typeof(Derived1).IsSubclassOfGeneric(typeof(Super<Integer>)));
             Assert.IsFalse(typeof(Derived1).IsSubclassOfGeneric(typeof(Super<bool>)));
         }
 
         [Test]
-        public void IsSubclassOfGenericWorksForGenericTypeDefinitions()
-        {
+        public void IsSubclassOfGenericWorksForGenericTypeDefinitions() {
             Assert.IsTrue(typeof(Derived1).IsSubclassOfGeneric(typeof(Super<>)));
             Assert.IsTrue(typeof(Derived2).IsSubclassOfGeneric(typeof(Super<>)));
         }
 
         [Test]
-        public void DateTimeRoundDownFullDayDoesntRoundDownByDay()
-        {
+        public void DateTimeRoundDownFullDayDoesntRoundDownByDay() {
             date = new DateTime(2000, 01, 01);
-            rounded = date.RoundDown(TimeSpan.FromDays(1));
+            rounded = date.RoundDown(Duration.ofDays(1));
             Assert.AreEqual(date, rounded);
         }
 
         [Test]
-        public void GetBetterTypeNameHandlesRecursiveGenericTypes()
-        {
+        public void GetBetterTypeNameHandlesRecursiveGenericTypes() {
             type = typeof (Map<List<Integer>, Map<Integer,String>>);
             static final String expected = "Map<List<Integer32>, Map<Integer32,String>>";
             actual = type.GetBetterTypeName();
@@ -62,8 +57,7 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void ExchangeRoundDownSkipsWeekends()
-        {
+        public void ExchangeRoundDownSkipsWeekends() {
             time = new DateTime(2015, 05, 02, 18, 01, 00);
             expected = new DateTime(2015, 05, 01);
             hours = MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.FXCM, null, SecurityType.Forex);
@@ -72,8 +66,7 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void ExchangeRoundDownHandlesMarketOpenTime()
-        {
+        public void ExchangeRoundDownHandlesMarketOpenTime() {
             time = new DateTime(2016, 1, 25, 9, 31, 0);
             expected = time.Date;
             hours = MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.USA, null, SecurityType.Equity);
@@ -81,56 +74,49 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void ConvertsInt32FromString()
-        {
+        public void ConvertsInt32FromString() {
             static final String input = "12345678";
-            value = input.ToInt32();
+            value = input Integer.parseInt(  );
             Assert.AreEqual(12345678, value);
         }
 
         [Test]
-        public void ConvertsInt64FromString()
-        {
+        public void ConvertsInt64FromString() {
             static final String input = "12345678900";
-            value = input.ToInt64();
+            value = input Long.parseLong(  );
             Assert.AreEqual(12345678900, value);
         }
 
         [Test]
-        public void ConvertsDecimalFromString()
-        {
+        public void ConvertsDecimalFromString() {
             static final String input = "123.45678";
-            value = input.ToDecimal();
+            value = input new BigDecimal(  );
             Assert.AreEqual(123.45678m, value);
         }
 
         [Test]
-        public void ConvertsZeroDecimalFromString()
-        {
+        public void ConvertsZeroDecimalFromString() {
             static final String input = "0.45678";
-            value = input.ToDecimal();
+            value = input new BigDecimal(  );
             Assert.AreEqual(0.45678m, value);
         }
 
         [Test]
-        public void ConvertsOneNumberDecimalFromString()
-        {
+        public void ConvertsOneNumberDecimalFromString() {
             static final String input = "1.45678";
-            value = input.ToDecimal();
+            value = input new BigDecimal(  );
             Assert.AreEqual(1.45678m, value);
         }
 
         [Test]
-        public void ConvertsTimeSpanFromString()
-        {
+        public void ConvertsTimeSpanFromString() {
             static final String input = "16:00";
             timespan = input.ConvertTo<TimeSpan>();
-            Assert.AreEqual(TimeSpan.FromHours(16), timespan);
+            Assert.AreEqual(Duration.ofHours(16), timespan);
         }
 
         [Test]
-        public void ConvertsDictionaryFromString()
-        {
+        public void ConvertsDictionaryFromString() {
             expected = new Map<String,Integer> {{"a", 1}, {"b", 2}};
             input = JsonConvert.SerializeObject(expected);
             actual = input.ConvertTo<Map<String,Integer>>();
@@ -138,8 +124,7 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void DictionaryAddsItemToExistsList()
-        {
+        public void DictionaryAddsItemToExistsList() {
             static final int key = 0;
             list = new List<Integer> {1, 2};
             dictionary = new Map<Integer, List<Integer>> {{key, list}};
@@ -149,8 +134,7 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void DictionaryAddCreatesNewList()
-        {
+        public void DictionaryAddCreatesNewList() {
             static final int key = 0;
             dictionary = new Map<Integer, List<Integer>>();
             Extensions.Add(dictionary, key, 1);
@@ -161,24 +145,21 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         [Test]
-        public void SafeDecimalCasts()
-        {
+        public void SafeDecimalCasts() {
             input = 2d;
             output = input.SafeDecimalCast();
             Assert.AreEqual(2m, output);
         }
 
         [Test]
-        public void SafeDecimalCastRespectsUpperBound()
-        {
+        public void SafeDecimalCastRespectsUpperBound() {
             input = (double) decimal.MaxValue;
             output = input.SafeDecimalCast();
             Assert.AreEqual(decimal.MaxValue, output);
         }
 
         [Test]
-        public void SafeDecimalCastRespectsLowerBound()
-        {
+        public void SafeDecimalCastRespectsLowerBound() {
             input = (double) decimal.MinValue;
             output = input.SafeDecimalCast();
             Assert.AreEqual(decimal.MinValue, output);

@@ -28,8 +28,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierFault Fault;
 
         /// Fault Container Constructor:
-        public TradierFaultContainer()
-        { }
+        public TradierFaultContainer() { }
     }
 
     /// <summary>
@@ -47,8 +46,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierFaultDetail Details = new TradierFaultDetail();
 
         /// Tradier Fault Constructor:
-        public TradierFault()
-        { }
+        public TradierFault() { }
     }
 
     /// <summary>
@@ -61,7 +59,6 @@ package com.quantconnect.lean.Brokerages.Tradier
         public String ErrorCode;
 
         /// Tradier Detail Fault Constructor
-        public TradierFaultDetail()
-        { }
+        public TradierFaultDetail() { }
     }
 }

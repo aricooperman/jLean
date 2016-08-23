@@ -20,14 +20,14 @@ using QuantConnect.Orders;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// Basic template algorithm simply initializes the date range and cash
-    /// </summary>
+    */
     public class DividendAlgorithm : QCAlgorithm
     {
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(1998, 01, 01);  //Set Start Date
             SetEndDate(2006, 01, 01);    //Set End Date
@@ -42,10 +42,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             SetBrokerageModel(BrokerageName.TradierBrokerage);
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">TradeBars IDictionary object with your stock data</param>
+        */
+         * @param data">TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             if( Transactions.OrdersCount == 0) {
                 SetHoldings( "MSFT", .5);
@@ -56,20 +56,20 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Raises the data event.
-        /// </summary>
-        /// <param name="data">Data.</param>
+        */
+         * @param data">Data.
         public void OnData(Dividends data) // update this to Dividends dictionary
         {
             dividend = data["MSFT"];
             Console.WriteLine( "%1$s >> DIVIDEND >> %2$s - %3$s - {3} - {4}", dividend.Time.toString( "o"), dividend.Symbol, dividend.Distribution.toString( "C"), Portfolio.Cash, Portfolio["MSFT"].Price.toString( "C"));
         }
 
-        /// <summary>
+        /**
         /// Raises the data event.
-        /// </summary>
-        /// <param name="data">Data.</param>
+        */
+         * @param data">Data.
         public void OnData(Splits data) {
             Debug( "MSFT: " + Securities["MSFT"].Price);
             split = data["MSFT"];

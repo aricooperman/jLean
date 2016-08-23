@@ -18,43 +18,43 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Data.Consolidators
 {    
-    /// <summary>
+    /**
     /// A data consolidator that can make bigger bars from ticks over a given
     /// time span or a count of pieces of data.
-    /// </summary>
+    */
     public class TickConsolidator : TradeBarConsolidatorBase<Tick>
     {
-        /// <summary>
+        /**
         /// Creates a consolidator to produce a new 'TradeBar' representing the period
-        /// </summary>
-        /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
+        */
+         * @param period">The minimum span of time before emitting a consolidated bar
         public TickConsolidator(TimeSpan period)
             : base(period) {
         }
 
-        /// <summary>
+        /**
         /// Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data
-        /// </summary>
-        /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
+        */
+         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
         public TickConsolidator(int maxCount)
             : base(maxCount) {
         }
 
-        /// <summary>
+        /**
         /// Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data or the period, whichever comes first
-        /// </summary>
-        /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
-        /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
-        public TickConsolidator(int maxCount, TimeSpan period)
+        */
+         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
+         * @param period">The minimum span of time before emitting a consolidated bar
+        public TickConsolidator(int maxCount, Duration period)
             : base(maxCount, period) {
         }
 
-        /// <summary>
+        /**
         /// Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
         /// null following the event firing
-        /// </summary>
-        /// <param name="workingBar">The bar we're building</param>
-        /// <param name="data">The new data</param>
+        */
+         * @param workingBar">The bar we're building
+         * @param data">The new data
         protected @Override void AggregateBar(ref TradeBar workingBar, Tick data) {
             if( workingBar == null ) {
                 workingBar = new TradeBar

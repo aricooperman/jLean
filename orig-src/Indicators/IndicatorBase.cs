@@ -19,58 +19,58 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// Provides a base type for all indicators
-    /// </summary>
+    */
     /// <typeparam name="T">The type of data input into this indicator</typeparam>
     [DebuggerDisplay( "{ToDetailedString()}")]
     public abstract partial class IndicatorBase<T> : IIndicator<T>
         where T : BaseData
     {
-        /// <summary>the most recent input that was given to this indicator</summary>
+        /**the most recent input that was given to this indicator</summary>
         private T _previousInput;
 
-        /// <summary>
+        /**
         /// Event handler that fires after this indicator is updated
-        /// </summary>
+        */
         public event IndicatorUpdatedHandler Updated;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the Indicator class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         protected IndicatorBase( String name) {
             Name = name;
             Current = new IndicatorDataPoint(DateTime.MinValue, 0m);
         }
 
-        /// <summary>
+        /**
         /// Gets a name for this indicator
-        /// </summary>
+        */
         public String Name { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public abstract boolean IsReady { get; }
 
-        /// <summary>
+        /**
         /// Gets the current state of this indicator. If the state has not been updated
         /// then the time on the value will equal DateTime.MinValue.
-        /// </summary>
+        */
         public IndicatorDataPoint Current { get; protected set; }
 
-        /// <summary>
+        /**
         /// Gets the number of samples processed by this indicator
-        /// </summary>
+        */
         public long Samples { get; private set; }
 
-        /// <summary>
+        /**
         /// Updates the state of this indicator with the given value and returns true
         /// if this indicator is ready, false otherwise
-        /// </summary>
-        /// <param name="input">The value to use to update this indicator</param>
-        /// <returns>True if this indicator is ready, false otherwise</returns>
+        */
+         * @param input">The value to use to update this indicator
+        @returns True if this indicator is ready, false otherwise
         public boolean Update(T input) {
             if( _previousInput != null && input.Time < _previousInput.Time) {
                 // if we receive a time in the past, throw
@@ -92,22 +92,22 @@ package com.quantconnect.lean.Indicators
             return IsReady;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public virtual void Reset() {
             Samples = 0;
             _previousInput = null;
             Current = new IndicatorDataPoint(DateTime.MinValue, default(decimal));
         }
 
-        /// <summary>
+        /**
         /// Compares the current object with another object of the same type.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A value that indicates the relative order of the objects being compared. The return value has the following meanings: Value Meaning Less than zero This object is less than the <paramref name="other"/> parameter.Zero This object is equal to <paramref name="other"/>. Greater than zero This object is greater than <paramref name="other"/>. 
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
+        /// 
+         * @param other">An object to compare with this object.
         public int CompareTo(IIndicator<T> other) {
             if( ReferenceEquals(other, null )) {
                 // everything is greater than null via MSDN
@@ -117,13 +117,13 @@ package com.quantconnect.lean.Indicators
             return Current.CompareTo(other.Current);
         }
 
-        /// <summary>
+        /**
         /// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the sort order as <paramref name="obj"/>. Greater than zero This instance follows <paramref name="obj"/> in the sort order. 
-        /// </returns>
-        /// <param name="obj">An object to compare with this instance. </param><exception cref="T:System.ArgumentException"><paramref name="obj"/> is not the same type as this instance. </exception><filterpriority>2</filterpriority>
+        /// 
+         * @param obj">An object to compare with this instance. <exception cref="T:System.ArgumentException"><paramref name="obj"/> is not the same type as this instance. </exception><filterpriority>2</filterpriority>
         public int CompareTo(object obj) {
             other = obj as IndicatorBase<T>;
             if( other == null ) {
@@ -133,13 +133,13 @@ package com.quantconnect.lean.Indicators
             return CompareTo(other);
         }
 
-        /// <summary>
+        /**
         /// Determines whether the specified object is equal to the current object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// true if the specified object  is equal to the current object; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
+        /// 
+         * @param obj">The object to compare with the current object. 
         public @Override boolean Equals(object obj) {
             // this implementation acts as a liason to prevent inconsistency between the operators
             // == and != against primitive types. the core impl for equals between two indicators
@@ -156,44 +156,44 @@ package com.quantconnect.lean.Indicators
             return Current.Value == converted;
         }
 
-        /// <summary>
+        /**
         /// toString Overload for Indicator Base
-        /// </summary>
-        /// <returns>String representation of the indicator</returns>
+        */
+        @returns String representation of the indicator
         public @Override String toString() {
             return Current.Value.toString( "#######0.0####");
         }
 
-        /// <summary>
+        /**
         /// Provides a more detailed String of this indicator in the form of {Name} - {Value}
-        /// </summary>
-        /// <returns>A detailed String of this indicator's current state</returns>
+        */
+        @returns A detailed String of this indicator's current state
         public String ToDetailedString() {
             return String.format( "%1$s - %2$s", Name, this);
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected abstract BigDecimal ComputeNextValue(T input);
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
         /// and returns an instance of the <see cref="IndicatorResult"/> class
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>An IndicatorResult object including the status of the indicator</returns>
+        */
+         * @param input">The input given to the indicator
+        @returns An IndicatorResult object including the status of the indicator
         protected virtual IndicatorResult ValidateAndComputeNextValue(T input) {
             // default implementation always returns IndicatorStatus.Success
             return new IndicatorResult(ComputeNextValue(input));
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the Updated event
-        /// </summary>
-        /// <param name="consolidated">This is the new piece of data produced by this indicator</param>
+        */
+         * @param consolidated">This is the new piece of data produced by this indicator
         protected virtual void OnUpdated(IndicatorDataPoint consolidated) {
             handler = Updated;
             if( handler != null ) handler(this, consolidated);

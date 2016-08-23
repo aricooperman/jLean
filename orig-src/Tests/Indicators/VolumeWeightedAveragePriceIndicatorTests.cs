@@ -73,7 +73,7 @@ package com.quantconnect.lean.Tests.Indicators
         public void CompareAgainstExternalData() {
             ind = new VolumeWeightedAveragePriceIndicator(50);
             TestHelper.TestIndicator(ind, "spy_with_vwap.txt", "Moving VWAP 50",
-                (x, expected) => Assert.AreEqual(expected, (double)((VolumeWeightedAveragePriceIndicator)x).Current.Value, 1e-3));
+                (x, expected) -> Assert.AreEqual(expected, (double)((VolumeWeightedAveragePriceIndicator)x).Current.Value, 1e-3));
             
         }
     }

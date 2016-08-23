@@ -24,34 +24,34 @@ using QuantConnect.Logging;
 
 package com.quantconnect.lean.Util
 {
-    /// <summary>
+    /**
     /// Controller type used to schedule <see cref="IParallelRunnerWorkItem"/> instances
     /// to run on dedicated runner threads
-    /// </summary>
+    */
     public class ParallelRunnerController : IDisposable
     {
         private Thread _processQueueThread;
 
-        private readonly int _threadCount;
-        private readonly object _sync = new object();
-        private readonly ManualResetEvent _waitHandle;
-        private readonly ParallelRunnerWorker[] _workers;
-        private readonly BlockingCollection<IParallelRunnerWorkItem> _holdQueue;
-        private readonly BlockingCollection<IParallelRunnerWorkItem> _processQueue;
+        private final int _threadCount;
+        private final object _sync = new object();
+        private final ManualResetEvent _waitHandle;
+        private final ParallelRunnerWorker[] _workers;
+        private final BlockingCollection<IParallelRunnerWorkItem> _holdQueue;
+        private final BlockingCollection<IParallelRunnerWorkItem> _processQueue;
 
-        /// <summary>
+        /**
         /// Gets a wait handle that can be used to wait for this controller
         /// to finish all scheduled work
-        /// </summary>
+        */
         public WaitHandle WaitHandle
         {
             get { return _waitHandle; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ParallelRunnerController"/> class
-        /// </summary>
-        /// <param name="threadCount">The number of dedicated threads to spin up</param>
+        */
+         * @param threadCount">The number of dedicated threads to spin up
         public ParallelRunnerController(int threadCount) {
             _threadCount = threadCount;
             _waitHandle = new ManualResetEvent(false);
@@ -60,20 +60,20 @@ package com.quantconnect.lean.Util
             _processQueue = new BlockingCollection<IParallelRunnerWorkItem>();
         }
 
-        /// <summary>
+        /**
         /// Schedules the specified work item to run
-        /// </summary>
-        /// <param name="workItem">The work item to schedule</param>
+        */
+         * @param workItem">The work item to schedule
         public void Schedule(IParallelRunnerWorkItem workItem) {
             if( workItem.IsReady) _processQueue.Add(workItem);
             else _holdQueue.Add(workItem);
         }
 
-        /// <summary>
+        /**
         /// Starts this instance of <see cref="ParallelRunnerController"/>.
         /// This method is indempotent
-        /// </summary>
-        /// <param name="token">The cancellation token</param>
+        */
+         * @param token">The cancellation token
         public void Start(CancellationToken token) {
             WaitHandle[] waitHandles;
             lock (_sync) {
@@ -84,7 +84,7 @@ package com.quantconnect.lean.Util
                     _workers[i] = worker;
                 }
 
-                waitHandles = _workers.Select(x => x.WaitHandle).ToArray();
+                waitHandles = _workers.Select(x -> x.WaitHandle).ToArray();
             }
 
             Task.Run(() =>
@@ -98,15 +98,15 @@ package com.quantconnect.lean.Util
 
             }, CancellationToken.None);
 
-            _processQueueThread = new Thread(() => ProcessHoldQueue(token));
+            _processQueueThread = new Thread(() -> ProcessHoldQueue(token));
             _processQueueThread.Start();
         }
 
-        /// <summary>
+        /**
         /// Processes the internal hold queue checking to see if work
         /// items are ready to run
-        /// </summary>
-        /// <param name="token">The cancellation token</param>
+        */
+         * @param token">The cancellation token
         private void ProcessHoldQueue(CancellationToken token) {
             try
             {
@@ -130,9 +130,9 @@ package com.quantconnect.lean.Util
             }
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             lock (_sync) {

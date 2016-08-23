@@ -73,7 +73,7 @@ package com.quantconnect.lean.Tests.Indicators
 
         protected @Override Action<IndicatorBase<IndicatorDataPoint>, double> Assertion
         {
-            get { return (indicator, expected) => Assert.AreEqual(Math.Sqrt(expected), (double)indicator.Current.Value, 1e-6); }
+            get { return (indicator, expected) -> Assert.AreEqual(Math.Sqrt(expected), (double)indicator.Current.Value, 1e-6); }
         }
     }
 }

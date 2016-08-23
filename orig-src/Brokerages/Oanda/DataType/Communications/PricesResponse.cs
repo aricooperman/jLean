@@ -21,9 +21,9 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Represent the web response of the current price of active instruments from Oanda.
-    /// </summary>
+    */
     public class PricesResponse
     {
         public long time;

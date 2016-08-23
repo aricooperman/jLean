@@ -21,10 +21,10 @@ package com.quantconnect.lean.ToolBox.YahooDownloader
 {
     class Program
     {
-        /// <summary>
+        /**
         /// Yahoo Downloader Toolbox Project For LEAN Algorithmic Trading Engine.
         /// Original by @chrisdk2015, tidied by @jaredbroad
-        /// </summary>
+        */
         static void Main( String[] args) {
             if( args.Length != 4) {
                 Console.WriteLine( "Usage: YahooDownloader SYMBOLS RESOLUTION FROMDATE TODATE");

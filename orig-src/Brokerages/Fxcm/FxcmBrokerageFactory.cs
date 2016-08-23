@@ -22,28 +22,28 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Brokerages.Fxcm
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IBrokerageFactory"/> that produces a <see cref="FxcmBrokerage"/>
-    /// </summary>
+    */
     public class FxcmBrokerageFactory : BrokerageFactory
     {
         private static final String DefaultServer = "http://www.fxcorporate.com/Hosts.jsp";
         private static final String DefaultTerminal = "Demo";
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FxcmBrokerageFactory"/> class
-        /// </summary>
+        */
         public FxcmBrokerageFactory()
             : base(typeof(FxcmBrokerage)) {
         }
 
-        /// <summary>
+        /**
         /// Gets the brokerage data required to run the brokerage from configuration/disk
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
-        /// </remarks>
+        /// 
         public @Override Map<String,String> BrokerageData
         {
             get
@@ -59,20 +59,20 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// Gets a new instance of the <see cref="FxcmBrokerageModel"/>
-        /// </summary>
+        */
         public @Override IBrokerageModel BrokerageModel
         {
             get { return new FxcmBrokerageModel(); }
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="IBrokerage"/> instance
-        /// </summary>
-        /// <param name="job">The job packet to create the brokerage for</param>
-        /// <param name="algorithm">The algorithm instance</param>
-        /// <returns>A new brokerage instance</returns>
+        */
+         * @param job">The job packet to create the brokerage for
+         * @param algorithm">The algorithm instance
+        @returns A new brokerage instance
         public @Override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm) {
             errors = new List<String>();
 
@@ -94,9 +94,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
             return brokerage;
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public @Override void Dispose() {
         }

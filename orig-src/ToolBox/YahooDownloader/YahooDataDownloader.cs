@@ -20,22 +20,22 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.ToolBox.YahooDownloader
 {
-    /// <summary>
+    /**
     /// Yahoo Data Downloader class 
-    /// </summary>
+    */
     public class YahooDataDownloader : IDataDownloader
     {
         //Initialize
         private String _urlPrototype = @"http://ichart.finance.yahoo.com/table.csv?s=%1$s&a=%2$s&b=%3$s&c={3}&d={4}&e={5}&f={6}&g={7}&ignore=.csv";
 
-        /// <summary>
+        /**
         /// Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
-        /// </summary>
-        /// <param name="symbol">Symbol for the data we're looking for.</param>
-        /// <param name="resolution">Resolution of the data request</param>
-        /// <param name="startUtc">Start time of the data in UTC</param>
-        /// <param name="endUtc">End time of the data in UTC</param>
-        /// <returns>Enumerable of base data for this symbol</returns>
+        */
+         * @param symbol">Symbol for the data we're looking for.
+         * @param resolution">Resolution of the data request
+         * @param startUtc">Start time of the data in UTC
+         * @param endUtc">End time of the data in UTC
+        @returns Enumerable of base data for this symbol
         public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
             if( resolution != Resolution.Daily)
                 throw new ArgumentException( "The YahooDataDownloader can only download daily data.");

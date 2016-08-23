@@ -18,36 +18,36 @@ using System;
 
 package com.quantconnect.lean.Data.Market
 {
-    /// <summary>
+    /**
     /// Symbol changed event of a security. This is generated when a symbol is remapped for a given
     /// security, for example, at EOD 2014.04.02 GOOG turned into GOOGL, but are the same
-    /// </summary>
+    */
     public class SymbolChangedEvent : BaseData
     {
-        /// <summary>
+        /**
         /// Gets the symbol before the change
-        /// </summary>
+        */
         public String OldSymbol { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the symbol after the change
-        /// </summary>
+        */
         public String NewSymbol { get; private set; }
 
-        /// <summary>
+        /**
         /// Initializes a new default instance of the <see cref="SymbolChangedEvent"/> class
-        /// </summary>
+        */
         public SymbolChangedEvent() {
             DataType = MarketDataType.Auxiliary;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="SymbolChangedEvent"/>
-        /// </summary>
-        /// <param name="requestedSymbol">The symbol that was originally requested</param>
-        /// <param name="date">The date/time this symbol remapping took place</param>
-        /// <param name="oldSymbol">The old symbol mapping</param>
-        /// <param name="newSymbol">The new symbol mapping</param>
+        */
+         * @param requestedSymbol">The symbol that was originally requested
+         * @param date">The date/time this symbol remapping took place
+         * @param oldSymbol">The old symbol mapping
+         * @param newSymbol">The new symbol mapping
         public SymbolChangedEvent(Symbol requestedSymbol, DateTime date, String oldSymbol, String newSymbol)
             : this() {
             Time = date;
@@ -56,13 +56,13 @@ package com.quantconnect.lean.Data.Market
             NewSymbol = newSymbol;
         }
 
-        /// <summary>
+        /**
         /// Return a new instance clone of this object, used in fill forward
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// This base implementation uses reflection to copy all public fields and properties
-        /// </remarks>
-        /// <returns>A clone of the current object</returns>
+        /// 
+        @returns A clone of the current object
         public @Override BaseData Clone() {
             return new SymbolChangedEvent(Symbol, Time, OldSymbol, NewSymbol);
         }

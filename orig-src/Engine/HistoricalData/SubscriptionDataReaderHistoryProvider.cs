@@ -38,42 +38,42 @@ using HistoryRequest = QuantConnect.Data.HistoryRequest;
 
 package com.quantconnect.lean.Lean.Engine.HistoricalData
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IHistoryProvider"/> that uses <see cref="BaseData"/>
     /// instances to retrieve historical data
-    /// </summary>
+    */
     public class SubscriptionDataReaderHistoryProvider : IHistoryProvider
     {
         private int _dataPointCount;
         private IMapFileProvider _mapFileProvider;
         private IFactorFileProvider _factorFileProvider;
 
-        /// <summary>
+        /**
         /// Gets the total number of data points emitted by this history provider
-        /// </summary>
+        */
         public int DataPointCount
         {
             get { return _dataPointCount; }
         }
 
-        /// <summary>
+        /**
         /// Initializes this history provider to work for the specified job
-        /// </summary>
-        /// <param name="job">The job</param>
-        /// <param name="mapFileProvider">Provider used to get a map file resolver to handle equity mapping</param>
-        /// <param name="factorFileProvider">Provider used to get factor files to handle equity price scaling</param>
-        /// <param name="statusUpdate">Function used to send status updates</param>
+        */
+         * @param job">The job
+         * @param mapFileProvider">Provider used to get a map file resolver to handle equity mapping
+         * @param factorFileProvider">Provider used to get factor files to handle equity price scaling
+         * @param statusUpdate">Function used to send status updates
         public void Initialize(AlgorithmNodePacket job, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider, Action<Integer> statusUpdate) {
             _mapFileProvider = mapFileProvider;
             _factorFileProvider = factorFileProvider;
         }
 
-        /// <summary>
+        /**
         /// Gets the history for the requested securities
-        /// </summary>
-        /// <param name="requests">The historical data requests</param>
-        /// <param name="sliceTimeZone">The time zone used when time stamping the slice instances</param>
-        /// <returns>An enumerable of the slices of data covering the span specified in each request</returns>
+        */
+         * @param requests">The historical data requests
+         * @param sliceTimeZone">The time zone used when time stamping the slice instances
+        @returns An enumerable of the slices of data covering the span specified in each request
         public IEnumerable<Slice> GetHistory(IEnumerable<HistoryRequest> requests, ZoneId sliceTimeZone) {
             // create subscription objects from the configs
             subscriptions = new List<Subscription>();
@@ -86,9 +86,9 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
             return CreateSliceEnumerableFromSubscriptions(subscriptions, sliceTimeZone);
         }
 
-        /// <summary>
+        /**
         /// Creates a subscription to process the request
-        /// </summary>
+        */
         private Subscription CreateSubscription(HistoryRequest request, DateTime start, DateTime end) {
             // data reader expects these values in local times
             start = start.ConvertFromUtc(request.ExchangeHours.TimeZone);
@@ -120,7 +120,7 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
 
             // optionally apply fill forward behavior
             if( request.FillForwardResolution.HasValue) {
-                readOnlyRef = Ref.CreateReadOnly(() => request.FillForwardResolution.Value.ToTimeSpan());
+                readOnlyRef = Ref.CreateReadOnly(() -> request.FillForwardResolution.Value.ToTimeSpan());
                 reader = new FillForwardEnumerator(reader, security.Exchange, readOnlyRef, security.IsExtendedMarketHours, end, config.Increment);
             }
 
@@ -144,9 +144,9 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
             return new Subscription(null, security, config, reader, timeZoneOffsetProvider, start, end, false);
         }
 
-        /// <summary>
+        /**
         /// Enumerates the subscriptions into slices
-        /// </summary>
+        */
         private IEnumerable<Slice> CreateSliceEnumerableFromSubscriptions(List<Subscription> subscriptions, ZoneId sliceTimeZone) {
             // required by TimeSlice.Create, but we don't need it's behavior
             cashBook = new CashBook();
@@ -204,7 +204,7 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
         // in the future we can refactor the data reader to not use the result handler
         private class ResultHandlerStub : IResultHandler
         {
-            public static readonly IResultHandler Instance = new ResultHandlerStub();
+            public static final IResultHandler Instance = new ResultHandlerStub();
 
             private ResultHandlerStub() { }
 
@@ -212,8 +212,8 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
 
             public ConcurrentQueue<Packet> Messages { get; set; }
             public ConcurrentMap<String, Chart> Charts { get; set; }
-            public TimeSpan ResamplePeriod { get; private set; }
-            public TimeSpan NotificationPeriod { get; private set; }
+            public Duration ResamplePeriod { get; private set; }
+            public Duration NotificationPeriod { get; private set; }
             public boolean IsActive { get; private set; }
 
             public void Initialize(AlgorithmNodePacket job,
@@ -250,8 +250,8 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
 
         private class FilterEnumerator<T> : IEnumerator<T>
         {
-            private readonly IEnumerator<T> _enumerator;
-            private readonly Func<T, bool> _filter;
+            private final IEnumerator<T> _enumerator;
+            private final Func<T, bool> _filter;
 
             public FilterEnumerator(IEnumerator<T> enumerator, Func<T, bool> filter) {
                 _enumerator = enumerator;

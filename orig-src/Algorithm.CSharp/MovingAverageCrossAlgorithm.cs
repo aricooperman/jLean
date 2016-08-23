@@ -20,11 +20,11 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// In this example we look at the canonical 15/30 day moving average cross. This algorithm
     /// will go long when the 15 crosses above the 30 and will liquidate when the 15 crosses
     /// back below the 30.
-    /// </summary>
+    */
     public class MovingAverageCrossAlgorithm : QCAlgorithm
     {
         private static final String Symbol = "SPY";
@@ -33,9 +33,9 @@ package com.quantconnect.lean.Algorithm.Examples
         private ExponentialMovingAverage slow;
         private SimpleMovingAverage[] ribbon;
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             // set up our analysis span
             SetStartDate(2009, 01, 01);
@@ -52,14 +52,14 @@ package com.quantconnect.lean.Algorithm.Examples
 
             int ribbonCount = 8;
             int ribbonInterval = 15;
-            ribbon = Enumerable.Range(0, ribbonCount).Select(x => SMA(Symbol, (x + 1)*ribbonInterval, Resolution.Daily)).ToArray();
+            ribbon = Enumerable.Range(0, ribbonCount).Select(x -> SMA(Symbol, (x + 1)*ribbonInterval, Resolution.Daily)).ToArray();
         }
 
         
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">TradeBars IDictionary object with your stock data</param>
+        */
+         * @param data">TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             // a couple things to notice in this method:
             //  1. We never need to 'update' our indicators with the data, the engine takes care of this for us

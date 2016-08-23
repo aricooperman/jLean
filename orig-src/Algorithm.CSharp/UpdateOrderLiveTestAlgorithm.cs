@@ -23,12 +23,12 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// Provides a regression baseline focused on updating orders
-    /// </summary>
+    */
     public class UpdateOrderLiveTestAlgorithm : QCAlgorithm
     {
-        private static readonly Random Random = new Random();
+        private static final Random Random = new Random();
 
         private static final BigDecimal ImmediateCancelPercentage = 0.05m;
 
@@ -45,7 +45,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         private static final String Symbol = "SPY";
         private static final SecurityType SecType = SecurityType.Equity;
 
-        private readonly CircularQueue<OrderType> _orderTypesQueue = new CircularQueue<OrderType>(new []
+        private final CircularQueue<OrderType> _orderTypesQueue = new CircularQueue<OrderType>(new []
         {
             OrderType.MarketOnOpen,
             OrderType.MarketOnClose,
@@ -55,13 +55,13 @@ package com.quantconnect.lean.Algorithm.CSharp
             OrderType.Market
         });
 
-        private readonly List<OrderTicket> _tickets = new List<OrderTicket>();
+        private final List<OrderTicket> _tickets = new List<OrderTicket>();
 
-        private readonly HashSet<Integer> _immediateCancellations = new HashSet<Integer>();
+        private final HashSet<Integer> _immediateCancellations = new HashSet<Integer>();
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 07);  //Set Start Date
             SetEndDate(2013, 10, 07);    //Set End Date
@@ -77,10 +77,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             };
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">Slice object keyed by symbol containing the stock data</param>
+        */
+         * @param data">Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             if( !Security.HasData) {
                 Log( "::::: NO DATA :::::");

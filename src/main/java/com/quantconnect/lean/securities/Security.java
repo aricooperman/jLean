@@ -18,6 +18,8 @@ package com.quantconnect.lean.securities;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.quantconnect.lean.data.SubscriptionDataConfig;
+import com.quantconnect.lean.Global.Resolution;
+import com.quantconnect.lean.Global.SecurityType;
 import com.quantconnect.lean.LocalTimeKeeper;
 import com.quantconnect.lean.Symbol;
 
@@ -31,10 +33,10 @@ import com.quantconnect.lean.Symbol;
 //using QuantConnect.Securities.Interfaces;
 
 /// A base vehicle properties class for providing a common interface to all assets in QuantConnect.
-/// <remarks>
+/// 
 /// Security object is intended to hold properties of the specific security asset. These properties can include trade start-stop dates, 
 /// price, market hours, resolution of the security, the holdings information for this security and the specific fill model.
-/// </remarks>
+/// 
 public class Security {
     
     private final Symbol _symbol;
@@ -59,99 +61,94 @@ public class Security {
         return QuoteCurrency;
     }
 
-    /// <summary>
-    /// Gets the symbol properties for this security
-    /// </summary>
-    public SymbolProperties SymbolProperties
-    {
-        get; private set;
+    /**
+     * Gets the symbol properties for this security
+     */
+    private SymbolProperties SymbolProperties;
+    
+    private SymbolProperties getSymbolProperties() {
+        return SymbolProperties;
     }
 
-    /// <summary>
-    /// Type of the security.
-    /// </summary>
-    /// <remarks>
-    /// QuantConnect currently only supports Equities and Forex
-    /// </remarks>
-    public SecurityType Type 
-    {
-        get { return _symbol.ID.SecurityType; }
+    /**
+     *  Type of the security.
+     *  QuantConnect currently only supports Equities and Forex
+     */
+    public SecurityType getType() {
+         return _symbol.ID.SecurityType;
     }
 
-    /// <summary>
-    /// Resolution of data requested for this security.
-    /// </summary>
-    /// <remarks>Tick, second or minute resolution for QuantConnect assets.</remarks>
-    public Resolution Resolution 
-    {
-        get { return SubscriptionsBag.Select(x => x.Resolution).DefaultIfEmpty(Resolution.Daily).Min(); }
+    /**
+     *  Resolution of data requested for this security.
+     *  Tick, second or minute resolution for QuantConnect assets.
+     */
+    public Resolution getResolution() {
+         return SubscriptionsBag.stream().map( x -> x.resolution ).min( Resolution::compareTo ).orElse( Resolution.Daily );
     }
 
-    /// <summary>
-    /// Indicates the data will use previous bars when there was no trading in this time period. This was a configurable datastream setting set in initialization.
-    /// </summary>
-    public boolean IsFillDataForward 
-    {
-        get { return SubscriptionsBag.Any(x => x.FillDataForward); }
+    /**
+     *  Indicates the data will use previous bars when there was no trading in this time period. This was a configurable datastream setting set in initialization.
+     */
+    public boolean isFillDataForward() {
+         return SubscriptionsBag.stream().anyMatch( x -> x.fillDataForward );
     }
 
-    /// <summary>
-    /// Indicates the security will continue feeding data after the primary market hours have closed. This was a configurable setting set in initialization.
-    /// </summary>
-    public boolean IsExtendedMarketHours
-    {
-        get { return SubscriptionsBag.Any(x => x.ExtendedMarketHours); }
+    /**
+     *  Indicates the security will continue feeding data after the primary market hours have closed. This was a configurable setting set in initialization.
+     */
+    public boolean isExtendedMarketHours() {
+        return SubscriptionsBag.stream().anyMatch( x -> x.extendedMarketHours );
     }
 
-    /// <summary>
-    /// Gets the data normalization mode used for this security
-    /// </summary>
-    public DataNormalizationMode DataNormalizationMode
-    {
-        get { return SubscriptionsBag.Select(x => x.DataNormalizationMode).DefaultIfEmpty(DataNormalizationMode.Adjusted).FirstOrDefault(); }
+    /**
+     *  Gets the data normalization mode used for this security
+     */
+    public DataNormalizationMode getDataNormalizationMode() {
+         return SubscriptionsBag.stream().map( x -> x.dataNormalizationMode ).findFirst().orElse( DataNormalizationMode.Adjusted );
     }
 
-    /// <summary>
-    /// Gets the subscription configuration for this security
-    /// </summary>
-    [Obsolete( "This property returns only the first subscription. Use the 'Subscriptions' property for all of this security's subscriptions.")]
-    public SubscriptionDataConfig SubscriptionDataConfig
-    {
-        get { return SubscriptionsBag.FirstOrDefault(); }
+//    /**
+//    /// Gets the subscription configuration for this security
+//    */
+//    [Obsolete( "This property returns only the first subscription. Use the 'Subscriptions' property for all of this security's subscriptions.")]
+//    public SubscriptionDataConfig SubscriptionDataConfig
+//    {
+//        get { return SubscriptionsBag.FirstOrDefault(); }
+//    }
+
+    /**
+     *  There has been at least one datapoint since our algorithm started running for us to determine price.
+     */
+    public boolean hasData() {
+        return getLastData() != null; 
     }
 
-    /// <summary>
-    /// There has been at least one datapoint since our algorithm started running for us to determine price.
-    /// </summary>
-    public boolean HasData
-    {
-        get
-        {
-            return GetLastData() != null; 
-        }
+    private boolean tradable;
+
+    /**
+     * Gets or sets whether or not this security should be considered tradable
+     */
+    public boolean isTradable() {
+        return tradable;
     }
 
-    /// <summary>
-    /// Gets or sets whether or not this security should be considered tradable
-    /// </summary>
-    public boolean IsTradable
-    {
-        get; set;
+    public void setTradable( boolean tradable ) {
+        this.tradable = tradable;
     }
 
-    /// <summary>
-    /// Data cache for the security to store previous price information.
-    /// </summary>
+    /**
+     * Data cache for the security to store previous price information.
     /// <seealso cref="EquityCache"/>
     /// <seealso cref="ForexCache"/>
-    public SecurityCache Cache
+     */
+    public SecurityCache Cache;
     {
         get; set;
     }
 
-    /// <summary>
+    /**
     /// Holdings class contains the portfolio, cash and processes order fills.
-    /// </summary>
+    */
     /// <seealso cref="EquityHolding"/>
     /// <seealso cref="ForexHolding"/>
     public SecurityHolding Holdings
@@ -160,9 +157,9 @@ public class Security {
         set;
     }
 
-    /// <summary>
+    /**
     /// Exchange class contains the market opening hours, along with pre-post market hours.
-    /// </summary>
+    */
     /// <seealso cref="EquityExchange"/>
     /// <seealso cref="ForexExchange"/>
     public SecurityExchange Exchange
@@ -171,11 +168,11 @@ public class Security {
         set;
     }
 
-    /// <summary>
+    /**
     /// Transaction model class implements the fill models for the security. If the user does not define a model the default
     /// model is used for this asset class.
-    /// </summary>
-    /// <remarks>This is ignored in live trading and the real fill prices are used instead</remarks>
+    */
+    /// This is ignored in live trading and the real fill prices are used instead
     /// <seealso cref="EquityTransactionModel"/>
     /// <seealso cref="ForexTransactionModel"/>
     [Obsolete( "Security.Model has been made obsolete, use Security.TransactionModel instead.")]
@@ -185,11 +182,11 @@ public class Security {
         set { TransactionModel = value; }
     }
 
-    /// <summary>
+    /**
     /// Transaction model class implements the fill models for the security. If the user does not define a model the default
     /// model is used for this asset class.
-    /// </summary>
-    /// <remarks>This is ignored in live trading and the real fill prices are used instead</remarks>
+    */
+    /// This is ignored in live trading and the real fill prices are used instead
     /// <seealso cref="EquityTransactionModel"/>
     /// <seealso cref="ForexTransactionModel"/>
     public ISecurityTransactionModel TransactionModel
@@ -213,74 +210,74 @@ public class Security {
         }
     }
 
-    /// <summary>
+    /**
     /// Fee model used to compute order fees for this security
-    /// </summary>
+    */
     public IFeeModel FeeModel
     {
         get;
         set;
     }
 
-    /// <summary>
+    /**
     /// Fill model used to produce fill events for this security
-    /// </summary>
+    */
     public IFillModel FillModel
     {
         get;
         set;
     }
 
-    /// <summary>
+    /**
     /// Slippage model use to compute slippage of market orders
-    /// </summary>
+    */
     public ISlippageModel SlippageModel
     {
         get;
         set;
     }
 
-    /// <summary>
+    /**
     /// Gets the portfolio model used by this security
-    /// </summary>
+    */
     public ISecurityPortfolioModel PortfolioModel
     {
         get;
         set;
     }
 
-    /// <summary>
+    /**
     /// Gets the margin model used for this security
-    /// </summary>
+    */
     public ISecurityMarginModel MarginModel
     {
         get;
         set;
     }
 
-    /// <summary>
+    /**
     /// Gets the settlement model used for this security
-    /// </summary>
+    */
     public ISettlementModel SettlementModel
     {
         get; 
         set;
     }
 
-    /// <summary>
+    /**
     /// Gets the volatility model used for this security
-    /// </summary>
+    */
     public IVolatilityModel VolatilityModel
     {
         get;
         set;
     }
 
-    /// <summary>
+    /**
     /// Customizable data filter to filter outlier ticks before they are passed into user event handlers. 
     /// By default all ticks are passed into the user algorithms.
-    /// </summary>
-    /// <remarks>TradeBars (seconds and minute bars) are prefiltered to ensure the ticks which build the bars are realistically tradeable</remarks>
+    */
+    /// TradeBars (seconds and minute bars) are prefiltered to ensure the ticks which build the bars are realistically tradeable
     /// <seealso cref="EquityDataFilter"/>
     /// <seealso cref="ForexDataFilter"/>
     public ISecurityDataFilter DataFilter
@@ -289,9 +286,9 @@ public class Security {
         set;
     }
 
-    /// <summary>
+    /**
     /// Construct a new security vehicle based on the user options.
-    /// </summary>
+    */
     public Security(SecurityExchangeHours exchangeHours, SubscriptionDataConfig config, Cash quoteCurrency, SymbolProperties symbolProperties)
         : this(config,
             quoteCurrency,
@@ -308,9 +305,9 @@ public class Security {
             new SecurityDataFilter()) {
     }
 
-    /// <summary>
+    /**
     /// Construct a new security vehicle based on the user options.
-    /// </summary>
+    */
     public Security(Symbol symbol, SecurityExchangeHours exchangeHours, Cash quoteCurrency, SymbolProperties symbolProperties)
         : this(symbol,
             quoteCurrency,
@@ -328,9 +325,9 @@ public class Security {
             ) {
     }
 
-    /// <summary>
+    /**
     /// Construct a new security vehicle based on the user options.
-    /// </summary>
+    */
     protected Security(Symbol symbol,
         Cash quoteCurrency,
         SymbolProperties symbolProperties,
@@ -373,9 +370,9 @@ public class Security {
     }
 
 
-    /// <summary>
+    /**
     /// Temporary convenience constructor
-    /// </summary>
+    */
     protected Security(SubscriptionDataConfig config,
         Cash quoteCurrency,
         SymbolProperties symbolProperties,
@@ -407,9 +404,9 @@ public class Security {
         SubscriptionsBag.Add(config);
     }
 
-    /// <summary>
+    /**
     /// Read only property that checks if we currently own stock in the company.
-    /// </summary>
+    */
     public virtual boolean HoldStock 
     {
         get
@@ -419,9 +416,9 @@ public class Security {
         }
     }
 
-    /// <summary>
+    /**
     /// Alias for HoldStock - Do we have any of this security
-    /// </summary>
+    */
     public virtual boolean Invested 
     {
         get
@@ -430,9 +427,9 @@ public class Security {
         }
     }
 
-    /// <summary>
+    /**
     /// Local time for this market 
-    /// </summary>
+    */
     public virtual DateTime LocalTime
     {
         get
@@ -444,17 +441,17 @@ public class Security {
         }
     }
 
-    /// <summary>
+    /**
     /// Get the current value of the security.
-    /// </summary>
+    */
     public virtual BigDecimal Price 
     {
         get { return Cache.Price; }
     }
 
-    /// <summary>
+    /**
     /// Leverage for this Security.
-    /// </summary>
+    */
     public virtual BigDecimal Leverage
     {
         get
@@ -463,91 +460,91 @@ public class Security {
         }
     }
 
-    /// <summary>
+    /**
     /// If this uses tradebar data, return the most recent high.
-    /// </summary>
+    */
     public virtual BigDecimal High
     {
         get { return Cache.High == 0 ? Price : Cache.High; }
     }
 
-    /// <summary>
+    /**
     /// If this uses tradebar data, return the most recent low.
-    /// </summary>
+    */
     public virtual BigDecimal Low
     {
         get { return Cache.Low == 0 ? Price : Cache.Low; }
     }
 
-    /// <summary>
+    /**
     /// If this uses tradebar data, return the most recent close.
-    /// </summary>
+    */
     public virtual BigDecimal Close 
     {
         get { return Cache.Close == 0 ? Price : Cache.Close; }
     }
 
-    /// <summary>
+    /**
     /// If this uses tradebar data, return the most recent open.
-    /// </summary>
+    */
     public virtual BigDecimal Open
     {
         get { return Cache.Open == 0 ? Price: Cache.Open; }
     }
 
-    /// <summary>
+    /**
     /// Access to the volume of the equity today
-    /// </summary>
+    */
     public virtual long Volume
     {
         get { return Cache.Volume; }
     }
 
-    /// <summary>
+    /**
     /// Gets the most recent bid price if available
-    /// </summary>
+    */
     public virtual BigDecimal BidPrice
     {
         get { return Cache.BidPrice == 0 ? Price : Cache.BidPrice; }
     }
 
-    /// <summary>
+    /**
     /// Gets the most recent bid size if available
-    /// </summary>
+    */
     public virtual long BidSize
     {
         get { return Cache.BidSize; }
     }
 
-    /// <summary>
+    /**
     /// Gets the most recent ask price if available
-    /// </summary>
+    */
     public virtual BigDecimal AskPrice
     {
         get { return Cache.AskPrice == 0 ? Price : Cache.AskPrice; }
     }
 
-    /// <summary>
+    /**
     /// Gets the most recent ask size if available
-    /// </summary>
+    */
     public virtual long AskSize
     {
         get { return Cache.AskSize; }
     }
 
-    /// <summary>
+    /**
     /// Get the last price update set to the security.
-    /// </summary>
-    /// <returns>BaseData object for this security</returns>
+    */
+    @returns BaseData object for this security
     public BaseData GetLastData() {
         return Cache.GetData();
     }
 
-    /// <summary>
+    /**
     /// Sets the <see cref="LocalTimeKeeper"/> to be used for this <see cref="Security"/>.
     /// This is the source of this instance's time.
-    /// </summary>
-    /// <param name="localTimeKeeper">The source of this <see cref="Security"/>'s time.</param>
+    */
+     * @param localTimeKeeper">The source of this <see cref="Security"/>'s time.
     public void SetLocalTimeKeeper(LocalTimeKeeper localTimeKeeper) {
         _localTimeKeeper = localTimeKeeper;
         Exchange.SetLocalDateTimeFrontier(localTimeKeeper.LocalTime);
@@ -559,10 +556,10 @@ public class Security {
         };
     }
     
-    /// <summary>
+    /**
     /// Update any security properties based on the latest market data and time
-    /// </summary>
-    /// <param name="data">New data packet from LEAN</param>
+    */
+     * @param data">New data packet from LEAN
     public void SetMarketPrice(BaseData data) {
         //Add new point to cache:
         if( data == null ) return;
@@ -571,10 +568,10 @@ public class Security {
         VolatilityModel.Update(this, data);
     }
 
-    /// <summary>
+    /**
     /// Update any security properties based on the latest realtime data and time
-    /// </summary>
-    /// <param name="data">New data packet from LEAN</param>
+    */
+     * @param data">New data packet from LEAN
     public void SetRealTimePrice(BaseData data) {
         //Add new point to cache:
             if( data == null ) return;
@@ -582,38 +579,38 @@ public class Security {
             Holdings.UpdateMarketPrice(Price);
         }
  
-        /// <summary>
+        /**
     /// Set the leverage parameter for this security
-    /// </summary>
-    /// <param name="leverage">Leverage for this asset</param>
+    */
+     * @param leverage">Leverage for this asset
     public void SetLeverage( BigDecimal leverage) {
         MarginModel.SetLeverage(this, leverage);
     }
 
-    /// <summary>
+    /**
     /// Sets the data normalization mode to be used by this security
-    /// </summary>
+    */
     public void SetDataNormalizationMode(DataNormalizationMode mode) {
         foreach (subscription in SubscriptionsBag) {
             subscription.DataNormalizationMode = mode;
         }
     }
 
-    /// <summary>
+    /**
     /// Returns a String that represents the current object.
-    /// </summary>
-    /// <returns>
+    */
+    @returns 
     /// A String that represents the current object.
-    /// </returns>
+    /// 
     /// <filterpriority>2</filterpriority>
     public @Override String toString() {
         return Symbol.toString();
     }
 
-    /// <summary>
+    /**
     /// Adds the specified data subscription to this security.
-    /// </summary>
-    /// <param name="subscription">The subscription configuration to add. The Symbol and ExchangeTimeZone properties must match the existing Security object</param>
+    */
+     * @param subscription">The subscription configuration to add. The Symbol and ExchangeTimeZone properties must match the existing Security object
     internal void AddData(SubscriptionDataConfig subscription) {
         if( subscription.Symbol != _symbol) throw new ArgumentException( "Symbols must match.", "subscription.Symbol");
         if( !subscription.ExchangeTimeZone.Equals(Exchange.TimeZone)) throw new ArgumentException( "ExchangeTimeZones must match.", "subscription.ExchangeTimeZone");

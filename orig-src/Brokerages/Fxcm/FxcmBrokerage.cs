@@ -31,41 +31,41 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Brokerages.Fxcm
 {
-    /// <summary>
+    /**
     /// FXCM brokerage - implementation of IBrokerage interface
-    /// </summary>
+    */
     public partial class FxcmBrokerage : Brokerage, IDataQueueHandler, IGenericMessageListener, IStatusMessageListener
     {
-        private readonly IOrderProvider _orderProvider;
-        private readonly ISecurityProvider _securityProvider;
-        private readonly String _server;
-        private readonly String _terminal;
-        private readonly String _userName;
-        private readonly String _password;
-        private readonly String _accountId;
+        private final IOrderProvider _orderProvider;
+        private final ISecurityProvider _securityProvider;
+        private final String _server;
+        private final String _terminal;
+        private final String _userName;
+        private final String _password;
+        private final String _accountId;
 
         private Thread _orderEventThread;
         private Thread _connectionMonitorThread;
 
-        private readonly object _lockerConnectionMonitor = new object();
+        private final object _lockerConnectionMonitor = new object();
         private DateTime _lastReadyMessageTime;
         private volatile boolean _connectionLost;
         private volatile boolean _connectionError;
 
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
-        private readonly ConcurrentQueue<OrderEvent> _orderEventQueue = new ConcurrentQueue<OrderEvent>();
-        private readonly FxcmSymbolMapper _symbolMapper = new FxcmSymbolMapper();
+        private final ConcurrentQueue<OrderEvent> _orderEventQueue = new ConcurrentQueue<OrderEvent>();
+        private final FxcmSymbolMapper _symbolMapper = new FxcmSymbolMapper();
 
-        /// <summary>
+        /**
         /// Creates a new instance of the <see cref="FxcmBrokerage"/> class
-        /// </summary>
-        /// <param name="orderProvider">The order provider</param>
-        /// <param name="securityProvider">The holdings provider</param>
-        /// <param name="server">The url of the server</param>
-        /// <param name="terminal">The terminal name</param>
-        /// <param name="userName">The user name (login id)</param>
-        /// <param name="password">The user password</param>
-        /// <param name="accountId">The account id</param>
+        */
+         * @param orderProvider">The order provider
+         * @param securityProvider">The holdings provider
+         * @param server">The url of the server
+         * @param terminal">The terminal name
+         * @param userName">The user name (login id)
+         * @param password">The user password
+         * @param accountId">The account id
         public FxcmBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider, String server, String terminal, String userName, String password, String accountId)
             : base( "FXCM Brokerage") {
             _orderProvider = orderProvider;
@@ -79,9 +79,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
 
         #region IBrokerage implementation
 
-        /// <summary>
+        /**
         /// Returns true if we're currently connected to the broker
-        /// </summary>
+        */
         public @Override boolean IsConnected
         {
             get
@@ -90,9 +90,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// Connects the client to the broker's remote servers
-        /// </summary>
+        */
         public @Override void Connect() {
             if( IsConnected) return;
 
@@ -139,7 +139,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 try
                 {
                     while (!_cancellationTokenSource.IsCancellationRequested) {
-                        TimeSpan elapsed;
+                        Duration elapsed;
                         lock (_lockerConnectionMonitor) {
                             elapsed = DateTime.UtcNow - _lastReadyMessageTime;
                         }
@@ -215,9 +215,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
             LoadOpenPositions();
         }
 
-        /// <summary>
+        /**
         /// Disconnects the client from the broker's remote servers
-        /// </summary>
+        */
         public @Override void Disconnect() {
             if( !IsConnected) return;
 
@@ -236,36 +236,36 @@ package com.quantconnect.lean.Brokerages.Fxcm
             _connectionMonitorThread.Join();
         }
 
-        /// <summary>
+        /**
         /// Gets all open orders on the account. 
         /// NOTE: The order objects returned do not have QC order IDs.
-        /// </summary>
-        /// <returns>The open orders returned from FXCM</returns>
+        */
+        @returns The open orders returned from FXCM
         public @Override List<Order> GetOpenOrders() {
             Log.Trace( String.format( "FxcmBrokerage.GetOpenOrders(): Located %1$s orders", _openOrders.Count));
             orders = _openOrders.Values.ToList()
-                .Where(x => OrderIsOpen(x.getFXCMOrdStatus().getCode()))
+                .Where(x -> OrderIsOpen(x.getFXCMOrdStatus().getCode()))
                 .Select(ConvertOrder)
                 .ToList();
             return orders;
         }
 
-        /// <summary>
+        /**
         /// Gets all holdings for the account
-        /// </summary>
-        /// <returns>The current holdings from the account</returns>
+        */
+        @returns The current holdings from the account
         public @Override List<Holding> GetAccountHoldings() {
             Log.Trace( "FxcmBrokerage.GetAccountHoldings()");
 
-            holdings = _openPositions.Values.Select(ConvertHolding).Where(x => x.Quantity != 0).ToList();
+            holdings = _openPositions.Values.Select(ConvertHolding).Where(x -> x.Quantity != 0).ToList();
 
             // Set MarketPrice in each Holding
             fxcmSymbols = holdings
-                .Select(x => _symbolMapper.GetBrokerageSymbol(x.Symbol))
+                .Select(x -> _symbolMapper.GetBrokerageSymbol(x.Symbol))
                 .ToList();
 
             if( fxcmSymbols.Count > 0) {
-                quotes = GetQuotes(fxcmSymbols).ToDictionary(x => x.getInstrument().getSymbol());
+                quotes = GetQuotes(fxcmSymbols).ToDictionary(x -> x.getInstrument().getSymbol());
                 foreach (holding in holdings) {
                     MarketDataSnapshot quote;
                     if( quotes.TryGetValue(_symbolMapper.GetBrokerageSymbol(holding.Symbol), out quote)) {
@@ -277,10 +277,10 @@ package com.quantconnect.lean.Brokerages.Fxcm
             return holdings;
         }
 
-        /// <summary>
+        /**
         /// Gets the current cash balance for each currency held in the brokerage account
-        /// </summary>
-        /// <returns>The current cash balance for each currency available for trading</returns>
+        */
+        @returns The current cash balance for each currency available for trading
         public @Override List<Cash> GetCashBalance() {
             Log.Trace( "FxcmBrokerage.GetCashBalance()");
             cashBook = new List<Cash>();
@@ -332,11 +332,11 @@ package com.quantconnect.lean.Brokerages.Fxcm
             return cashBook;
         }
 
-        /// <summary>
+        /**
         /// Places a new order and assigns a new broker ID to the order
-        /// </summary>
-        /// <param name="order">The order to be placed</param>
-        /// <returns>True if the request for a new order has been placed, false otherwise</returns>
+        */
+         * @param order">The order to be placed
+        @returns True if the request for a new order has been placed, false otherwise
         public @Override boolean PlaceOrder(Order order) {
             Log.Trace( "FxcmBrokerage.PlaceOrder(): %1$s", order);
 
@@ -388,11 +388,11 @@ package com.quantconnect.lean.Brokerages.Fxcm
             return !_isOrderSubmitRejected;
         }
 
-        /// <summary>
+        /**
         /// Updates the order with the same id
-        /// </summary>
-        /// <param name="order">The new order information</param>
-        /// <returns>True if the request was made for the order to be updated, false otherwise</returns>
+        */
+         * @param order">The new order information
+        @returns True if the request was made for the order to be updated, false otherwise
         public @Override boolean UpdateOrder(Order order) {
             Log.Trace( "FxcmBrokerage.UpdateOrder(): %1$s", order);
 
@@ -442,11 +442,11 @@ package com.quantconnect.lean.Brokerages.Fxcm
             return !_isOrderUpdateOrCancelRejected;
         }
 
-        /// <summary>
+        /**
         /// Cancels the order with the specified ID
-        /// </summary>
-        /// <param name="order">The order to cancel</param>
-        /// <returns>True if the request was made for the order to be canceled, false otherwise</returns>
+        */
+         * @param order">The order to cancel
+        @returns True if the request was made for the order to be canceled, false otherwise
         public @Override boolean CancelOrder(Order order) {
             Log.Trace( "FxcmBrokerage.CancelOrder(): %1$s", order);
 

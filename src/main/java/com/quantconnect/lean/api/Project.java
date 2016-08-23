@@ -49,50 +49,50 @@ using Newtonsoft.Json;
 
 package com.quantconnect.lean.Api
 {
-    /// <summary>
+    /**
     /// Response from reading a project by id.
-    /// </summary>
+    */
     public class Project : RestResponse
     {
-        /// <summary>
+        /**
         /// Project id
-        /// </summary>
+        */
         @JsonProperty( "projectId")]
         public int ProjectId;
 
-        /// <summary>
+        /**
         /// Name of the project
-        /// </summary>
+        */
         @JsonProperty( "name")]
         public String Name;
 
-        /// <summary>
+        /**
         /// Date the project was created
-        /// </summary>
+        */
         @JsonProperty( "created")]
         public DateTime Created;
 
-        /// <summary>
+        /**
         /// Modified date for the project
-        /// </summary>
+        */
         @JsonProperty( "modified")]
         public DateTime Modified;
 
-        /// <summary>
+        /**
         /// Files for the project
-        /// </summary>
+        */
         @JsonProperty( "files")]
         public List<ProjectFile> Files;
     }
 
-    /// <summary>
+    /**
     /// Project list response
-    /// </summary>
+    */
     public class ProjectList : RestResponse
     {
-        /// <summary>
+        /**
         /// List of projects for the authenticated user
-        /// </summary>
+        */
         @JsonProperty( "projects")]
         public List<Project> Projects;
     }

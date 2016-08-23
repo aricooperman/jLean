@@ -33,7 +33,7 @@ package com.quantconnect.lean.Tests.Common.Util
         [Test]
         public void EnumeratesOnce() {
             int i = 0;
-            enumerable = Enumerable.Range(0, 10).Select(x => i++);
+            enumerable = Enumerable.Range(0, 10).Select(x -> i++);
             memoized = new MemoizingEnumerable<Integer>(enumerable);
             // enumerating memoized twice shouldn't matter
             CollectionAssert.AreEqual(memoized.ToList(), memoized.ToList());

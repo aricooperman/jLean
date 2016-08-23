@@ -21,104 +21,104 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Base exchange class providing information and helper tools for reading the current exchange situation
-    /// </summary>
+    */
     public class SecurityExchange 
     {
         private DateTime _localFrontier;
         private SecurityExchangeHours _exchangeHours;
 
-        /// <summary>
+        /**
         /// Gets the <see cref="SecurityExchangeHours"/> for this exchange
-        /// </summary>
+        */
         public SecurityExchangeHours Hours
         {
             get { return _exchangeHours; }
         }
 
-        /// <summary>
+        /**
         /// Gets the time zone for this exchange
-        /// </summary>
+        */
         public ZoneId TimeZone 
         {
             get { return _exchangeHours.TimeZone; }
         }
 
-        /// <summary>
+        /**
         /// Number of trading days per year for this security. By default the market is open 365 days per year.
-        /// </summary>
-        /// <remarks>Used for performance statistics to calculate sharpe ratio accurately</remarks>
+        */
+        /// Used for performance statistics to calculate sharpe ratio accurately
         public virtual int TradingDaysPerYear
         {
             get { return 365; }
         }
 
-        /// <summary>
+        /**
         /// Time from the most recent data
-        /// </summary>
+        */
         public DateTime LocalTime
         {
             get { return _localFrontier; }
         }
 
-        /// <summary>
+        /**
         /// Boolean property for quickly testing if the exchange is open.
-        /// </summary>
+        */
         public boolean ExchangeOpen
         {
             get { return _exchangeHours.IsOpen(_localFrontier, false); }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="SecurityExchange"/> class using the specified
         /// exchange hours to determine open/close times
-        /// </summary>
-        /// <param name="exchangeHours">Contains the weekly exchange schedule plus holidays</param>
+        */
+         * @param exchangeHours">Contains the weekly exchange schedule plus holidays
         public SecurityExchange(SecurityExchangeHours exchangeHours) {
             _exchangeHours = exchangeHours;
         }
 
-        /// <summary>
+        /**
         /// Set the current datetime in terms of the exchange's local time zone
-        /// </summary>
-        /// <param name="newLocalTime">Most recent data tick</param>
+        */
+         * @param newLocalTime">Most recent data tick
         public void SetLocalDateTimeFrontier(DateTime newLocalTime) {
             _localFrontier = newLocalTime;
         }
 
-        /// <summary>
+        /**
         /// Check if the *date* is open.
-        /// </summary>
-        /// <remarks>This is useful for first checking the date list, and then the market hours to save CPU cycles</remarks>
-        /// <param name="dateToCheck">Date to check</param>
-        /// <returns>Return true if the exchange is open for this date</returns>
+        */
+        /// This is useful for first checking the date list, and then the market hours to save CPU cycles
+         * @param dateToCheck">Date to check
+        @returns Return true if the exchange is open for this date
         public boolean DateIsOpen(DateTime dateToCheck) {
             return _exchangeHours.IsDateOpen(dateToCheck);
         }
 
-        /// <summary>
+        /**
         /// Check if this DateTime is open.
-        /// </summary>
-        /// <param name="dateTime">DateTime to check</param>
-        /// <returns>Boolean true if the market is open</returns>
+        */
+         * @param dateTime">DateTime to check
+        @returns Boolean true if the market is open
         public boolean DateTimeIsOpen(DateTime dateTime) {
             return _exchangeHours.IsOpen(dateTime, false);
         }
 
-        /// <summary>
+        /**
         /// Determines if the exchange was open at any time between start and stop
-        /// </summary>
+        */
         public boolean IsOpenDuringBar(DateTime barStartTime, DateTime barEndTime, boolean isExtendedMarketHours) {
             return _exchangeHours.IsOpen(barStartTime, barEndTime, isExtendedMarketHours);
         }
 
-        /// <summary>
+        /**
         /// Sets the regular market hours for the specified days If no days are specified then
         /// all days will be updated.
-        /// </summary>
-        /// <param name="marketHoursSegments">Specifies each segment of the market hours, such as premarket/market/postmark</param>
-        /// <param name="days">The days of the week to set these times for</param>
+        */
+         * @param marketHoursSegments">Specifies each segment of the market hours, such as premarket/market/postmark
+         * @param days">The days of the week to set these times for
         public void SetMarketHours(IEnumerable<MarketHoursSegment> marketHoursSegments, params DayOfWeek[] days) {
             if( days.IsNullOrEmpty()) days = Enum.GetValues(typeof(DayOfWeek)).OfType<DayOfWeek>().ToArray();
             

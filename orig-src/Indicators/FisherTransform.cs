@@ -18,7 +18,7 @@ using System;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// The Fisher transform is a mathematical process which is used to convert any data set to a modified
     /// data set whose Probabilty Distrbution Function is approximately Gaussian.  Once the Fisher transform
     /// is computed, the transformed data can then be analyzed in terms of it's deviation from the mean.
@@ -35,27 +35,27 @@ package com.quantconnect.lean.Indicators
     /// We are implementing the lastest version of this indicator found at Fig. 4 of
     /// http://www.mesasoftware.com/papers/UsingTheFisherTransform.pdf
     /// 
-    /// </summary>
+    */
     public class FisherTransform : TradeBarIndicator
     {
         private double _alpha;
         private double _previous;
-        private readonly Minimum _medianMin;
-        private readonly Maximum _medianMax;
+        private final Minimum _medianMin;
+        private final Maximum _medianMax;
 
-        /// <summary>
+        /**
         ///     Initializes a new instance of the FisherTransform class with the default name and period
-        /// </summary>
-        /// <param name="period">The period of the WMA</param>
+        */
+         * @param period">The period of the WMA
         public FisherTransform(int period)
             : this( "FISH_" + period, period) {
         }
 
-        /// <summary>
+        /**
         /// A Fisher Transform of Prices
-        /// </summary>
-        /// <param name="name">string - the name of the indicator</param>
-        /// <param name="period">The number of periods for the indicator</param>
+        */
+         * @param name">string - the name of the indicator
+         * @param period">The number of periods for the indicator
         public FisherTransform( String name, int period)
             : base(name) {
             _alpha = .33;
@@ -65,15 +65,15 @@ package com.quantconnect.lean.Indicators
             _medianMin = new Minimum( "MedianMin", period);
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return _medianMax.IsReady && _medianMax.IsReady; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value in the transform. 
         /// value1 is a function used to normalize price withing the last _period day range.
         /// value1 is centered on its midpoint and then doubled so that value1 wil swing between -1 and +1.  
@@ -81,9 +81,9 @@ package com.quantconnect.lean.Indicators
         /// 
         /// Since the smoothing may allow value1 to exceed the _period day price range, limits are introduced to 
         /// preclude the transform from blowing up by having an input larger than unity.
-        /// </summary>
-        /// <param name="input">IndicatorDataPoint - the time and value of the next price</param>
-        /// <returns></returns>
+        */
+         * @param input">IndicatorDataPoint - the time and value of the next price
+        @returns 
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             x = 0.0;
             y = 0.0;
@@ -105,7 +105,7 @@ package com.quantconnect.lean.Indicators
             return new BigDecimal( y) + .5m * Current.Value;
         }
 
-        /// <summary>
+        /**
         /// The Fisher transform is a mathematical process which is used to convert any data set to a modified
         /// data set whose Probabilty Distrbution Function is approximately Gaussian.  Once the Fisher transform
         /// is computed, the transformed data can then be analyzed in terms of it's deviation from the mean.
@@ -118,9 +118,9 @@ package com.quantconnect.lean.Indicators
         /// The Fisher transform has much sharper turning points than other indicators such as MACD
         /// 
         /// For more info, read chapter 1 of Cybernetic Analysis for Stocks and Futures by John F. Ehlers
-        /// </summary>
-        /// <param name="x">Input</param>
-        /// <returns>Output</returns>
+        */
+         * @param x">Input
+        @returns Output
         private double FisherTransformFunction(double x) {
             if( x > .99) {
                 x = .999;

@@ -19,14 +19,14 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// QuantConnect University: Generic Quandl Data Importer
     /// Using the underlying dynamic data class "Quandl" we take care of the data 
     /// importing and definition for you. Simply point QuantConnect to the Quandl Short Code.
     /// 
     /// The Quandl object has properties which match the spreadsheet headers.
     /// If you have multiple quandl streams look at data.Symbol to distinguish them.
-    /// </summary>
+    */
     public class QuandlImporterAlgorithm : QCAlgorithm
     {
         private SimpleMovingAverage sma;

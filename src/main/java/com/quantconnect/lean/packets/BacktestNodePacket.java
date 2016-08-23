@@ -82,52 +82,52 @@ using Newtonsoft.Json;
 
 package com.quantconnect.lean.Packets
 {
-    /// <summary>
+    /**
     /// Algorithm backtest task information packet.
-    /// </summary>
+    */
     public class BacktestNodePacket : AlgorithmNodePacket
     {
-        /// <summary>
+        /**
         /// Name of the backtest as randomly defined in the IDE.
-        /// </summary>
+        */
         @JsonProperty( "sName")]
         public String Name = "";
 
-        /// <summary>
+        /**
         /// BacktestId / Algorithm Id for this task
-        /// </summary>
+        */
         @JsonProperty( "sBacktestID")]
         public String BacktestId = "";
 
-        /// <summary>
+        /**
         /// Backtest start-date as defined in the Initialize() method.
-        /// </summary>
+        */
         @JsonProperty( "dtPeriodStart")]
         public DateTime PeriodStart = DateTime.Now;
 
-        /// <summary>
+        /**
         /// Backtest end date as defined in the Initialize() method.
-        /// </summary>
+        */
         @JsonProperty( "dtPeriodFinish")]
         public DateTime PeriodFinish = DateTime.Now;
 
-        /// <summary>
+        /**
         /// Estimated number of trading days in this backtest task based on the start-end dates.
-        /// </summary>
+        */
         @JsonProperty( "iTradeableDates")]
         public int TradeableDates = 0;
 
-        /// <summary>
+        /**
         /// Series or parallel runmode for the backtest
-        /// </summary>
+        */
         /// <obsolete>The RunMode property is now obsolete and will always default to Series mode.</obsolete>
         [Obsolete( "This property is no longer in use and will always default to series mode.")]
         @JsonProperty( "eRunMode")]
         public RunMode RunMode = RunMode.Series;
 
-        /// <summary>
+        /**
         /// Default constructor for JSON
-        /// </summary>
+        */
         public BacktestNodePacket() 
             : base(PacketType.BacktestNode) {
             Controls = new Controls
@@ -138,9 +138,9 @@ package com.quantconnect.lean.Packets
             };
         }
 
-        /// <summary>
+        /**
         /// Initialize the backtest task packet.
-        /// </summary>
+        */
         public BacktestNodePacket(int userId, int projectId, String sessionId, byte[] algorithmData, BigDecimal startingCapital, String name, UserPlan userPlan = UserPlan.Free) 
             : base (PacketType.BacktestNode) {
             UserId = userId;

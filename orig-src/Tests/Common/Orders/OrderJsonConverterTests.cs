@@ -132,7 +132,7 @@ package com.quantconnect.lean.Tests.Common.Orders
 
         [Test]
         public void WorksWithJsonConvert() {
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            JsonConvert.DefaultSettings = () -> new JsonSerializerSettings
             {
                 Converters = {new OrderJsonConverter()}
             };

@@ -45,7 +45,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         private static void RunTestIndicator(DoubleExponentialMovingAverage dema) {
-            TestHelper.TestIndicator(dema, "spy_dema.txt", "DEMA_5", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value, 1e-2));
+            TestHelper.TestIndicator(dema, "spy_dema.txt", "DEMA_5", (ind, expected) -> Assert.AreEqual(expected, (double)ind.Current.Value, 1e-2));
         }
     }
 }

@@ -23,42 +23,42 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Provides an implementations of <see cref="ISubscriptionDataSourceReader"/> that uses the 
     /// <see cref="BaseData.Reader(QuantConnect.Data.SubscriptionDataConfig,string,System.DateTime,bool)"/>
     /// method to read lines of text from a <see cref="SubscriptionDataSource"/>
-    /// </summary>
+    */
     public class TextSubscriptionDataSourceReader : ISubscriptionDataSourceReader
     {
-        private readonly boolean _isLiveMode;
-        private readonly BaseData _factory;
-        private readonly DateTime _date;
-        private readonly SubscriptionDataConfig _config;
+        private final boolean _isLiveMode;
+        private final BaseData _factory;
+        private final DateTime _date;
+        private final SubscriptionDataConfig _config;
 
-        /// <summary>
+        /**
         /// Event fired when the specified source is considered invalid, this may
         /// be from a missing file or failure to download a remote source
-        /// </summary>
+        */
         public event EventHandler<InvalidSourceEventArgs> InvalidSource;
 
-        /// <summary>
+        /**
         /// Event fired when an exception is thrown during a call to 
         /// <see cref="BaseData.Reader(QuantConnect.Data.SubscriptionDataConfig,string,System.DateTime,bool)"/>
-        /// </summary>
+        */
         public event EventHandler<ReaderErrorEventArgs> ReaderError;
 
-        /// <summary>
+        /**
         /// Event fired when there's an error creating an <see cref="IStreamReader"/> or the
         /// instantiated <see cref="IStreamReader"/> has no data.
-        /// </summary>
+        */
         public event EventHandler<CreateStreamReaderErrorEventArgs> CreateStreamReaderError;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="TextSubscriptionDataSourceReader"/> class
-        /// </summary>
-        /// <param name="config">The subscription's configuration</param>
-        /// <param name="date">The date this factory was produced to read data for</param>
-        /// <param name="isLiveMode">True if we're in live mode, false for backtesting</param>
+        */
+         * @param config">The subscription's configuration
+         * @param date">The date this factory was produced to read data for
+         * @param isLiveMode">True if we're in live mode, false for backtesting
         public TextSubscriptionDataSourceReader(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             _date = date;
             _config = config;
@@ -66,11 +66,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             _factory = (BaseData) ObjectActivator.GetActivator(config.Type).Invoke(new object[0]);
         }
 
-        /// <summary>
+        /**
         /// Reads the specified <paramref name="source"/>
-        /// </summary>
-        /// <param name="source">The source to be read</param>
-        /// <returns>An <see cref="IEnumerable{BaseData}"/> that contains the data in the source</returns>
+        */
+         * @param source">The source to be read
+        @returns An <see cref="IEnumerable{BaseData}"/> that contains the data in the source
         public IEnumerable<BaseData> Read(SubscriptionDataSource source) {
             using (reader = CreateStreamReader(source)) {
                 // if the reader doesn't have data then we're done with this subscription
@@ -99,11 +99,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="IStreamReader"/> for the specified <paramref name="subscriptionDataSource"/>
-        /// </summary>
-        /// <param name="subscriptionDataSource">The source to produce an <see cref="IStreamReader"/> for</param>
-        /// <returns>A new instance of <see cref="IStreamReader"/> to read the source, or null if there was an error</returns>
+        */
+         * @param subscriptionDataSource">The source to produce an <see cref="IStreamReader"/> for
+        @returns A new instance of <see cref="IStreamReader"/> to read the source, or null if there was an error
         private IStreamReader CreateStreamReader(SubscriptionDataSource subscriptionDataSource) {
             IStreamReader reader;
             switch (subscriptionDataSource.TransportMedium) {
@@ -125,39 +125,39 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return reader;
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the <see cref="InvalidSource"/> event
-        /// </summary>
-        /// <param name="source">The <see cref="SubscriptionDataSource"/> that was invalid</param>
-        /// <param name="exception">The exception if one was raised, otherwise null</param>
+        */
+         * @param source">The <see cref="SubscriptionDataSource"/> that was invalid
+         * @param exception">The exception if one was raised, otherwise null
         private void OnInvalidSource(SubscriptionDataSource source, Exception exception) {
             handler = InvalidSource;
             if( handler != null ) handler(this, new InvalidSourceEventArgs(source, exception));
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the <see cref="ReaderError"/> event
-        /// </summary>
-        /// <param name="line">The line that caused the exception</param>
-        /// <param name="exception">The exception that was caught</param>
+        */
+         * @param line">The line that caused the exception
+         * @param exception">The exception that was caught
         private void OnReaderError( String line, Exception exception) {
             handler = ReaderError;
             if( handler != null ) handler(this, new ReaderErrorEventArgs(line, exception));
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the <see cref="CreateStreamReaderError"/> event
-        /// </summary>
-        /// <param name="date">The date of the source</param>
-        /// <param name="source">The source that caused the error</param>
+        */
+         * @param date">The date of the source
+         * @param source">The source that caused the error
         private void OnCreateStreamReaderError(DateTime date, SubscriptionDataSource source) {
             handler = CreateStreamReaderError;
             if( handler != null ) handler(this, new CreateStreamReaderErrorEventArgs(date, source));
         }
 
-        /// <summary>
+        /**
         /// Opens up an IStreamReader for a local file source
-        /// </summary>
+        */
         private IStreamReader HandleLocalFileSource(SubscriptionDataSource source) {
             String entryName = null; // default to all entries
             file = source.Source;
@@ -176,9 +176,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return new LocalFileSubscriptionStreamReader(file, entryName);
         }
 
-        /// <summary>
+        /**
         /// Opens up an IStreamReader for a remote file source
-        /// </summary>
+        */
         private IStreamReader HandleRemoteSourceFile(SubscriptionDataSource source) {
             // clean old files out of the cache
             if( !Directory.Exists(Globals.Cache)) Directory.CreateDirectory(Globals.Cache);

@@ -167,9 +167,9 @@ public class SecurityIdentifier {
     }
 
     /// Initializes a new instance of the <see cref="SecurityIdentifier"/> class
-    /// <param name="symbol">The base36 String encoded as a long using alpha [0-9A-Z]</param>
-    /// <param name="properties">Other data defining properties of the symbol including market,
-    /// security type, listing or expiry date, strike/call/put/style for options, ect...</param>
+     * @param symbol">The base36 String encoded as a long using alpha [0-9A-Z]
+     * @param properties">Other data defining properties of the symbol including market,
+    /// security type, listing or expiry date, strike/call/put/style for options, ect...
     public SecurityIdentifier( String symbol, BigInteger properties) {
         if( symbol == null )
             throw new IllegalArgumentException( "SecurityIdentifier requires a non-null String 'symbol'" );
@@ -179,13 +179,13 @@ public class SecurityIdentifier {
     }
 
     /// Generates a new <see cref="SecurityIdentifier"/> for an option
-    /// <param name="expiry">The date the option expires</param>
-    /// <param name="underlying">The underlying security's symbol</param>
-    /// <param name="market">The market</param>
-    /// <param name="strike">The strike price</param>
-    /// <param name="optionRight">The option type, call or put</param>
-    /// <param name="optionStyle">The option style, American or European</param>
-    /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified option security</returns>
+     * @param expiry">The date the option expires
+     * @param underlying">The underlying security's symbol
+     * @param market">The market
+     * @param strike">The strike price
+     * @param optionRight">The option type, call or put
+     * @param optionStyle">The option style, American or European
+    @returns A new <see cref="SecurityIdentifier"/> representing the specified option security
     public static SecurityIdentifier generateOption( LocalDate expiry, String underlying, String market,
         BigDecimal strike, OptionRight optionRight, OptionStyle optionStyle ) {
         return generate( expiry, underlying, SecurityType.Option, market, strike, optionRight, optionStyle );
@@ -193,9 +193,9 @@ public class SecurityIdentifier {
 
     /// Helper overload that will search the mapfiles to resolve the first date. This implementation
     /// uses the configured <see cref="IMapFileProvider"/> via the <see cref="Composer.Instance"/>
-    /// <param name="symbol">The symbol as it is known today</param>
-    /// <param name="market">The market</param>
-    /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified symbol today</returns>
+     * @param symbol">The symbol as it is known today
+     * @param market">The market
+    @returns A new <see cref="SecurityIdentifier"/> representing the specified symbol today
     public static SecurityIdentifier generateEquity( String symbol, String market ) {
         IMapFileProvider provider;
         try {
@@ -215,34 +215,34 @@ public class SecurityIdentifier {
     }
 
     /// Generates a new <see cref="SecurityIdentifier"/> for an equity
-    /// <param name="date">The first date this security traded (in LEAN this is the first date in the map_file</param>
-    /// <param name="symbol">The ticker symbol this security traded under on the <paramref name="date"/></param>
-    /// <param name="market">The security's market</param>
-    /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified equity security</returns>
+     * @param date">The first date this security traded (in LEAN this is the first date in the map_file
+     * @param symbol">The ticker symbol this security traded under on the <paramref name="date"/>
+     * @param market">The security's market
+    @returns A new <see cref="SecurityIdentifier"/> representing the specified equity security
     public static SecurityIdentifier generateEquity( LocalDate date, String symbol, String market ) {
         return generate( date, symbol, SecurityType.Equity, market );
     }
 
     /// Generates a new <see cref="SecurityIdentifier"/> for a custom security
-    /// <param name="symbol">The ticker symbol of this security</param>
-    /// <param name="market">The security's market</param>
-    /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified base security</returns>
+     * @param symbol">The ticker symbol of this security
+     * @param market">The security's market
+    @returns A new <see cref="SecurityIdentifier"/> representing the specified base security
     public static SecurityIdentifier generateBase( String symbol, String market ) {
         return generate( DefaultDate, symbol, SecurityType.Base, market );
     }
 
     /// Generates a new <see cref="SecurityIdentifier"/> for a forex pair
-    /// <param name="symbol">The currency pair in the format similar to: 'EURUSD'</param>
-    /// <param name="market">The security's market</param>
-    /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified forex pair</returns>
+     * @param symbol">The currency pair in the format similar to: 'EURUSD'
+     * @param market">The security's market
+    @returns A new <see cref="SecurityIdentifier"/> representing the specified forex pair
     public static SecurityIdentifier generateForex( String symbol, String market ) {
         return generate( DefaultDate, symbol, SecurityType.Forex, market );
     }
 
     /// Generates a new <see cref="SecurityIdentifier"/> for a CFD security
-    /// <param name="symbol">The CFD contract symbol</param>
-    /// <param name="market">The security's market</param>
-    /// <returns>A new <see cref="SecurityIdentifier"/> representing the specified CFD security</returns>
+     * @param symbol">The CFD contract symbol
+     * @param market">The security's market
+    @returns A new <see cref="SecurityIdentifier"/> representing the specified CFD security
     public static SecurityIdentifier generateCfd( String symbol, String market ) {
         return generate( DefaultDate, symbol, SecurityType.Cfd, market );
     }
@@ -358,8 +358,8 @@ public class SecurityIdentifier {
     /// The second 20 digits must also be parseable as a 64 bit unsigned integer and
     /// contain the symbol encoded from base36, this provides for 12 alpha numeric case
     /// insensitive characters.
-    /// <param name="value">The String value to be parsed</param>
-    /// <returns>A new <see cref="SecurityIdentifier"/> instance if the <paramref name="value"/> is able to be parsed.</returns>
+     * @param value">The String value to be parsed
+    @returns A new <see cref="SecurityIdentifier"/> instance if the <paramref name="value"/> is able to be parsed.
     /// <exception cref="FormatException">This exception is thrown if the string's length is not exactly 40 characters, or
     /// if the components are unable to be parsed as 64 bit unsigned integers</exception>
     public static Optional<SecurityIdentifier> parse( String value ) {
@@ -372,11 +372,11 @@ public class SecurityIdentifier {
     }
 
     /// Attempts to parse the specified <see paramref="value"/> as a <see cref="SecurityIdentifier"/>.
-    /// <param name="value">The String value to be parsed</param>
-    /// <param name="identifier">The result of parsing, when this function returns true, <paramref name="identifier"/>
+     * @param value">The String value to be parsed
+     * @param identifier">The result of parsing, when this function returns true, <paramref name="identifier"/>
     /// was properly created and reflects the input string, when this function returns false <paramref name="identifier"/>
-    /// will equal default(SecurityIdentifier)</param>
-    /// <returns>True on success, otherwise false</returns>
+    /// will equal default(SecurityIdentifier)
+    @returns True on success, otherwise false
     /// Helper method impl to be used by parse and tryparse
     private static SecurityIdentifier tryParse( String value ) {
         final Pair<BigInteger,String> parsed = tryParseProperties( value );
@@ -408,19 +408,19 @@ public class SecurityIdentifier {
     }
 
     /// Indicates whether the current object is equal to another object of the same type.
-    /// <returns>
+    @returns 
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-    /// </returns>
-    /// <param name="other">An object to compare with this object.</param>
+    /// 
+     * @param other">An object to compare with this object.
     public boolean equals( SecurityIdentifier other ) {
         return properties.compareTo( other.properties ) == 0 && symbol.equals( other.symbol );
     }
 
     /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-    /// <returns>
+    @returns 
     /// true if the specified object  is equal to the current object; otherwise, false.
-    /// </returns>
-    /// <param name="obj">The object to compare with the current object. </param><filterpriority>2</filterpriority>
+    /// 
+     * @param obj">The object to compare with the current object. <filterpriority>2</filterpriority>
     public boolean equals( Object obj ) {
         if( obj == null ) return false;
         if( !(obj instanceof SecurityIdentifier) ) return false;
@@ -428,9 +428,9 @@ public class SecurityIdentifier {
     }
 
     /// Serves as a hash function for a particular type. 
-    /// <returns>
+    @returns 
     /// A hash code for the current <see cref="T:System.Object"/>.
-    /// </returns>
+    /// 
     /// <filterpriority>2</filterpriority>
     public int hashCode() {
         return (symbol.hashCode()*397) ^ properties.hashCode();
@@ -449,9 +449,9 @@ public class SecurityIdentifier {
 //    }
 
     /// Returns a String that represents the current object.
-    /// <returns>
+    @returns 
     /// A String that represents the current object.
-    /// </returns>
+    /// 
     /// <filterpriority>2</filterpriority>
     public String toString() {
         return symbol + ' ' + encodeBase36( properties );

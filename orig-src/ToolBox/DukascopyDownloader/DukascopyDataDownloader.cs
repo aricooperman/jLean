@@ -25,40 +25,40 @@ using SevenZip;
 
 package com.quantconnect.lean.ToolBox.DukascopyDownloader
 {
-    /// <summary>
+    /**
     /// Dukascopy Data Downloader class
-    /// </summary>
+    */
     public class DukascopyDataDownloader : IDataDownloader
     {
-        private readonly DukascopySymbolMapper _symbolMapper = new DukascopySymbolMapper();
+        private final DukascopySymbolMapper _symbolMapper = new DukascopySymbolMapper();
         private static final int DukascopyTickLength = 20;
 
-        /// <summary>
+        /**
         /// Checks if downloader can get the data for the symbol
-        /// </summary>
-        /// <param name="symbol"></param>
-        /// <returns>Returns true if the symbol is available</returns>
+        */
+         * @param symbol">
+        @returns Returns true if the symbol is available
         public boolean HasSymbol( String symbol) {
             return _symbolMapper.IsKnownLeanSymbol(Symbol.Create(symbol, GetSecurityType(symbol), Market.Dukascopy));
         }
 
-        /// <summary>
+        /**
         /// Gets the security type for the specified symbol
-        /// </summary>
-        /// <param name="symbol">The symbol</param>
-        /// <returns>The security type</returns>
+        */
+         * @param symbol">The symbol
+        @returns The security type
         public SecurityType GetSecurityType( String symbol) {
             return _symbolMapper.GetLeanSecurityType(symbol);
         }
 
-        /// <summary>
+        /**
         /// Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
-        /// </summary>
-        /// <param name="symbol">Symbol for the data we're looking for.</param>
-        /// <param name="resolution">Resolution of the data request</param>
-        /// <param name="startUtc">Start time of the data in UTC</param>
-        /// <param name="endUtc">End time of the data in UTC</param>
-        /// <returns>Enumerable of base data for this symbol</returns>
+        */
+         * @param symbol">Symbol for the data we're looking for.
+         * @param resolution">Resolution of the data request
+         * @param startUtc">Start time of the data in UTC
+         * @param endUtc">End time of the data in UTC
+        @returns Enumerable of base data for this symbol
         public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
             if( !_symbolMapper.IsKnownLeanSymbol(symbol))
                 throw new ArgumentException( "Invalid symbol requested: " + symbol.Value);
@@ -98,14 +98,14 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
             }
         }
 
-        /// <summary>
+        /**
         /// Aggregates a list of ticks at the requested resolution
-        /// </summary>
-        /// <param name="symbol"></param>
-        /// <param name="ticks"></param>
-        /// <param name="resolution"></param>
-        /// <returns></returns>
-        internal static IEnumerable<TradeBar> AggregateTicks(Symbol symbol, IEnumerable<Tick> ticks, TimeSpan resolution) {
+        */
+         * @param symbol">
+         * @param ticks">
+         * @param resolution">
+        @returns 
+        internal static IEnumerable<TradeBar> AggregateTicks(Symbol symbol, IEnumerable<Tick> ticks, Duration resolution) {
             return 
                 (from t in ticks
                  group t by t.Time.RoundDown(resolution)
@@ -115,18 +115,18 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
                          Symbol = symbol,
                          Time = g.Key,
                          Open = g.First().LastPrice,
-                         High = g.Max(t => t.LastPrice),
-                         Low = g.Min(t => t.LastPrice),
+                         High = g.Max(t -> t.LastPrice),
+                         Low = g.Min(t -> t.LastPrice),
                          Close = g.Last().LastPrice
                      });
         }
 
-        /// <summary>
+        /**
         /// Downloads all ticks for the specified date
-        /// </summary>
-        /// <param name="symbol">The requested symbol</param>
-        /// <param name="date">The requested date</param>
-        /// <returns>An enumerable of ticks</returns>
+        */
+         * @param symbol">The requested symbol
+         * @param date">The requested date
+        @returns An enumerable of ticks
         private IEnumerable<Tick> DownloadTicks(Symbol symbol, DateTime date) {
             dukascopySymbol = _symbolMapper.GetBrokerageSymbol(symbol);
             pointValue = _symbolMapper.GetPointValue(symbol);
@@ -157,14 +157,14 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
             }
         }
 
-        /// <summary>
+        /**
         /// Reads ticks from a Dukascopy binary buffer into a list
-        /// </summary>
-        /// <param name="symbol">The symbol</param>
-        /// <param name="bytesBi5">The buffer in binary format</param>
-        /// <param name="date">The date for the ticks</param>
-        /// <param name="timeOffset">The time offset in milliseconds</param>
-        /// <param name="pointValue">The price multiplier</param>
+        */
+         * @param symbol">The symbol
+         * @param bytesBi5">The buffer in binary format
+         * @param date">The date for the ticks
+         * @param timeOffset">The time offset in milliseconds
+         * @param pointValue">The price multiplier
         private static unsafe List<Tick> AppendTicksToList(Symbol symbol, byte[] bytesBi5, DateTime date, int timeOffset, double pointValue) {
             ticks = new List<Tick>();
 
@@ -206,10 +206,10 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
             return ticks;
         }
 
-        /// <summary>
+        /**
         /// Converts a 32-bit unsigned integer from big-endian to little-endian (and vice-versa)
-        /// </summary>
-        /// <param name="p">Pointer to the integer value</param>
+        */
+         * @param p">Pointer to the integer value
         private static unsafe void ReverseBytes(uint* p) {
             *p = (*p & 0x000000FF) << 24 | (*p & 0x0000FF00) << 8 | (*p & 0x00FF0000) >> 8 | (*p & 0xFF000000) >> 24;
         }

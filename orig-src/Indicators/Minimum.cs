@@ -17,37 +17,37 @@ using System.Linq;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// Represents an indictor capable of tracking the minimum value and how many periods ago it occurred
-    /// </summary>
+    */
     public class Minimum : WindowIndicator<IndicatorDataPoint>
     {
-        /// <summary>
+        /**
         /// The number of periods since the minimum value was encountered
-        /// </summary>
+        */
         public int PeriodsSinceMinimum { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Creates a new Minimum indicator with the specified period
-        /// </summary>
-        /// <param name="period">The period over which to look back</param>
+        */
+         * @param period">The period over which to look back
         public Minimum(int period)
             : base( "MIN" + period, period) {
         }
 
-        /// <summary>
+        /**
         /// Creates a new Minimum indicator with the specified period
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="period">The period over which to look back</param>
+        */
+         * @param name">The name of this indicator
+         * @param period">The period over which to look back
         public Minimum( String name, int period)
             : base(name, period) {
         }
@@ -70,11 +70,11 @@ package com.quantconnect.lean.Indicators
                 // minimum, so when one falls off, we have the other... but then we would also need the 'next, next'
                 // minimum, so on and so forth, for now this works.
 
-                minimum = window.Select((v, i) => new
+                minimum = window.Select((v, i) -> new
                 {
                     Value = v,
                     Index = i
-                }).OrderBy(x => x.Value.Value).First();
+                }).OrderBy(x -> x.Value.Value).First();
 
                 PeriodsSinceMinimum = minimum.Index;
                 return minimum.Value;
@@ -86,9 +86,9 @@ package com.quantconnect.lean.Indicators
             return Current;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             PeriodsSinceMinimum = 0;
             base.Reset();

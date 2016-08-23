@@ -19,10 +19,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Rising/Falling Three Methods candlestick pattern
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - first candle: long white (black) candlestick
     /// - then: group of falling(rising) small real body candlesticks(commonly black (white)) that hold within
@@ -32,45 +32,45 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The meaning of "short" and "long" is specified with SetCandleSettings; here only patterns with 3 small candles
     /// are considered;
     /// The returned value is positive(+1) or negative(-1)
-    /// </remarks>
+    /// 
     public class RiseFallThreeMethods : CandlestickPattern
     {
-        private readonly int _bodyShortAveragePeriod;
-        private readonly int _bodyLongAveragePeriod;
+        private final int _bodyShortAveragePeriod;
+        private final int _bodyLongAveragePeriod;
 
         private decimal[] _bodyPeriodTotal = new decimal[5];
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="RiseFallThreeMethods"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public RiseFallThreeMethods( String name)
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 4 + 1) {
             _bodyShortAveragePeriod = CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod;
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="RiseFallThreeMethods"/> class.
-        /// </summary>
+        */
         public RiseFallThreeMethods()
             : this( "RISEFALLTHREEMETHODS") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples > Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples > Period - _bodyShortAveragePeriod) {
@@ -133,9 +133,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _bodyPeriodTotal = new decimal[5];
             base.Reset();

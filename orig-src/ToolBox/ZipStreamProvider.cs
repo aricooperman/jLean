@@ -20,19 +20,19 @@ using Ionic.Zip;
 
 package com.quantconnect.lean.ToolBox
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IStreamProvider"/> that opens zip files
-    /// </summary>
+    */
     public class ZipStreamProvider : IStreamProvider
     {
-        private readonly object _sync = new object();
-        private readonly Map<String, ZipFile> _zipFiles = new Map<String, ZipFile>();
+        private final object _sync = new object();
+        private final Map<String, ZipFile> _zipFiles = new Map<String, ZipFile>();
 
-        /// <summary>
+        /**
         /// Opens the specified source as read to be consumed stream
-        /// </summary>
-        /// <param name="source">The source file to be opened</param>
-        /// <returns>The stream representing the specified source</returns>
+        */
+         * @param source">The source file to be opened
+        @returns The stream representing the specified source
         public IEnumerable<Stream> Open( String source) {
             lock (_sync) {
                 archive = new ZipFile(source);
@@ -43,10 +43,10 @@ package com.quantconnect.lean.ToolBox
             }
         }
 
-        /// <summary>
+        /**
         /// Closes the specified source file stream
-        /// </summary>
-        /// <param name="source">The source file to be closed</param>
+        */
+         * @param source">The source file to be closed
         public void Close( String source) {
             lock (_sync) {
                 ZipFile archive;
@@ -57,9 +57,9 @@ package com.quantconnect.lean.ToolBox
             }
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         public void Dispose() {
             lock (_sync) {
                 foreach (zipFile in _zipFiles.Values) {

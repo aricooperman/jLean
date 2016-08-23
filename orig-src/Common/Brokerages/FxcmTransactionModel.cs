@@ -21,16 +21,16 @@ using QuantConnect.Securities.Interfaces;
 
 package com.quantconnect.lean.Brokerages
 {
-    /// <summary>
+    /**
     /// Fxcm Transaction Model Class: Specific transaction fill models for FXCM orders
-    /// </summary>
+    */
     /// <seealso cref="SecurityTransactionModel"/>
     /// <seealso cref="ISecurityTransactionModel"/>
     public class FxcmTransactionModel : SecurityTransactionModel
     {
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FxcmTransactionModel"/> class
-        /// </summary>
+        */
         public FxcmTransactionModel()
             : base(new ImmediateFillModel(), new FxcmFeeModel(), new SpreadSlippageModel()) {
         }

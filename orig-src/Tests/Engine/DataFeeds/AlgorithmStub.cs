@@ -20,9 +20,9 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// This type allows tests to easily create an algorith that is mostly initialized in one line
-    /// </summary>
+    */
     public class AlgorithmStub : QCAlgorithm
     {
         public AlgorithmStub(Resolution resolution = Resolution.Second, List<String> equities = null, List<String> forex = null ) {

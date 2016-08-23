@@ -18,21 +18,21 @@ using System;
 
 package com.quantconnect.lean.Data.Market
 {
-    /// <summary>
+    /**
     /// Collection of splits keyed by <see cref="Symbol"/>
-    /// </summary>
+    */
     public class Splits : DataMap<Split>
     {
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Splits"/> dictionary
-        /// </summary>
+        */
         public Splits() {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Splits"/> dictionary
-        /// </summary>
-        /// <param name="frontier">The time associated with the data in this Map</param>
+        */
+         * @param frontier">The time associated with the data in this Map
         public Splits(DateTime frontier)
             : base(frontier) {
         }

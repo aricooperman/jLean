@@ -134,7 +134,7 @@ package com.quantconnect.lean.Tests.Common
                     "]}";
             
             actual = JsonConvert.DeserializeObject<List<BaseData>>(json, Settings);
-            Assert.IsFalse(actual.All(x => x.Symbol == new Symbol(SecurityIdentifier.GenerateForex( "EURUSD", Market.FXCM), "EURUSD")));
+            Assert.IsFalse(actual.All(x -> x.Symbol == new Symbol(SecurityIdentifier.GenerateForex( "EURUSD", Market.FXCM), "EURUSD")));
         }
 
         [Test]

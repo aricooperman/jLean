@@ -23,56 +23,56 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IDataQueueHandler"/> that can be specified
     /// via a function
-    /// </summary>
+    */
     public class FuncDataQueueHandler : IDataQueueHandler
     {
-        private readonly object _lock = new object();
-        private readonly HashSet<Symbol> _subscriptions = new HashSet<Symbol>();
-        private readonly Func<FuncDataQueueHandler, IEnumerable<BaseData>> _getNextTicksFunction;
+        private final object _lock = new object();
+        private final HashSet<Symbol> _subscriptions = new HashSet<Symbol>();
+        private final Func<FuncDataQueueHandler, IEnumerable<BaseData>> _getNextTicksFunction;
 
-        /// <summary>
+        /**
         /// Gets the subscriptions currently being managed by the queue handler
-        /// </summary>
+        */
         public List<Symbol> Subscriptions
         {
             get { lock (_lock) return _subscriptions.ToList(); }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FuncDataQueueHandler"/> class
-        /// </summary>
-        /// <param name="getNextTicksFunction">The functional implementation for the <see cref="GetNextTicks"/> function</param>
+        */
+         * @param getNextTicksFunction">The functional implementation for the <see cref="GetNextTicks"/> function
         public FuncDataQueueHandler(Func<FuncDataQueueHandler, IEnumerable<BaseData>> getNextTicksFunction) {
             _getNextTicksFunction = getNextTicksFunction;
         }
 
-        /// <summary>
+        /**
         /// Get the next ticks from the live trading data queue
-        /// </summary>
-        /// <returns>IEnumerable list of ticks since the last update.</returns>
+        */
+        @returns IEnumerable list of ticks since the last update.
         public IEnumerable<BaseData> GetNextTicks() {
             return _getNextTicksFunction(this);
         }
 
-        /// <summary>
+        /**
         /// Adds the specified symbols to the subscription
-        /// </summary>
-        /// <param name="job">Job we're subscribing for:</param>
-        /// <param name="symbols">The symbols to be added keyed by SecurityType</param>
+        */
+         * @param job">Job we're subscribing for:
+         * @param symbols">The symbols to be added keyed by SecurityType
         public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             foreach (symbol in symbols) {
                 lock (_lock) _subscriptions.Add(symbol);
             }
         }
 
-        /// <summary>
+        /**
         /// Removes the specified symbols to the subscription
-        /// </summary>
-        /// <param name="job">Job we're processing.</param>
-        /// <param name="symbols">The symbols to be removed keyed by SecurityType</param>
+        */
+         * @param job">Job we're processing.
+         * @param symbols">The symbols to be removed keyed by SecurityType
         public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             foreach (symbol in symbols) {
                 lock (_lock) _subscriptions.Remove(symbol);

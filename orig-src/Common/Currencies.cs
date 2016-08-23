@@ -18,19 +18,19 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean
 {
-    /// <summary>
+    /**
     /// Provides commonly used currency pairs and symbols
-    /// </summary>
+    */
     public static class Currencies
     {
-        /// <summary>
+        /**
         /// Gets the listing of currently supported currency pairs.
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// This listing should be in sync with the data available at: https://www.quantconnect.com/data/FOREX#2.1.1
         /// It must include all currency pairs needed to resolve quote currencies in <see cref="Cash.EnsureCurrencyDataFeed"/>
-        /// </remarks>
-        public static readonly IReadOnlyList<String> CurrencyPairs = new List<String>
+        /// 
+        public static final IReadOnlyList<String> CurrencyPairs = new List<String>
         {
             // these are listed at the top to ensure they get selected first when resolving
             // currency data feeds. the case that showcases the issue is we would select jpyusd
@@ -223,13 +223,13 @@ package com.quantconnect.lean
             "ZARJPY"
         };
 
-        /// <summary>
+        /**
         /// A mapping of currency codes to their display symbols
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// Now used by Forex and CFD, should probably be moved out into its own class
-        /// </remarks>
-        public static readonly IReadOnlyMap<String,String> CurrencySymbols = new Map<String,String>
+        /// 
+        public static final IReadOnlyMap<String,String> CurrencySymbols = new Map<String,String>
         {
             {"USD", "$"},
             {"GBP", "₤"},

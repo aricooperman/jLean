@@ -18,10 +18,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Tasuki Gap candlestick pattern indicator
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - upside (downside) gap
     /// - first candle after the window: white(black) candlestick
@@ -32,43 +32,43 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The returned value is positive(+1) when bullish or negative(-1) when bearish;
     /// The user should consider that tasuki gap is significant when it appears in a trend, while this function does 
     /// not consider it
-    /// </remarks>
+    /// 
     public class TasukiGap : CandlestickPattern
     {
-        private readonly int _nearAveragePeriod;
+        private final int _nearAveragePeriod;
 
         private BigDecimal _nearPeriodTotal;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="TasukiGap"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public TasukiGap( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.Near).AveragePeriod + 2 + 1) {
             _nearAveragePeriod = CandleSettings.Get(CandleSettingType.Near).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="TasukiGap"/> class.
-        /// </summary>
+        */
         public TasukiGap()
             : this( "TASUKIGAP") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _nearAveragePeriod) {
@@ -126,9 +126,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _nearPeriodTotal = 0m;
             base.Reset();

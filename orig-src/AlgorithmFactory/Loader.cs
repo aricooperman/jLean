@@ -27,61 +27,61 @@ using QuantConnect.Logging;
 
 package com.quantconnect.lean.AlgorithmFactory 
 {
-    /// <summary>
+    /**
     /// Loader creates and manages the memory and exception space of the algorithm, ensuring if it explodes the Lean Engine is intact.
-    /// </summary>
+    */
     [ClassInterface(ClassInterfaceType.AutoDual)]
     public class Loader : MarshalByRefObject
     {
         // Defines the maximum amount of time we will allow for instantiating an instance of IAlgorithm
-        private readonly TimeSpan _loaderTimeLimit;
+        private final Duration _loaderTimeLimit;
 
         // Language of the loader class.
-        private readonly Language _language;
+        private final Language _language;
 
         // Location of the IronPython standard library
-        private readonly String _ironPythonLibrary = Config.Get( "ironpython-location", "../ironpython/Lib");
+        private final String _ironPythonLibrary = Config.Get( "ironpython-location", "../ironpython/Lib");
 
         // Defines how we resolve a list of type names into a single type name to be instantiated
-        private readonly Func<List<String>,String> _multipleTypeNameResolverFunction;
+        private final Func<List<String>,String> _multipleTypeNameResolverFunction;
 
-        /// <summary>
+        /**
         /// Memory space of the user algorithm
-        /// </summary>
+        */
         public AppDomain appDomain;
 
-        /// <summary>
+        /**
         /// The algorithm's interface type that we'll be trying to load
-        /// </summary>
-        private static readonly Type AlgorithmInterfaceType = typeof (IAlgorithm);
+        */
+        private static final Type AlgorithmInterfaceType = typeof (IAlgorithm);
 
-        /// <summary>
+        /**
         /// The full type name of QCAlgorithm, this is so we don't pick him up when querying for types
-        /// </summary>
+        */
         private static final String AlgorithmBaseTypeFullName = "QuantConnect.Algorithm.QCAlgorithm";
 
-        /// <summary>
+        /**
         /// Creates a new loader with a 10 second maximum load time that forces exactly one derived type to be found
-        /// </summary>
+        */
         public Loader()
-            : this(Language.CSharp, Duration.ofSeconds(10), names => names.SingleOrDefault()) {
+            : this(Language.CSharp, Duration.ofSeconds(10), names -> names.SingleOrDefault()) {
         }
 
-        /// <summary>
+        /**
         /// Creates a new loader with the specified configuration
-        /// </summary>
-        /// <param name="language">Which language are we trying to load</param>
-        /// <param name="loaderTimeLimit">
+        */
+         * @param language">Which language are we trying to load
+         * @param loaderTimeLimit">
         /// Used to limit how long it takes to create a new instance
-        /// </param>
-        /// <param name="multipleTypeNameResolverFunction">
-        /// Used to resolve multiple type names found in assembly to a single type name, if null, defaults to names => names.SingleOrDefault()
+        /// 
+         * @param multipleTypeNameResolverFunction">
+        /// Used to resolve multiple type names found in assembly to a single type name, if null, defaults to names -> names.SingleOrDefault()
         /// 
         /// When we search an assembly for derived types of IAlgorithm, sometimes the assembly will contain multiple matching types. This is the case
         /// for the QuantConnect.Algorithm assembly in this solution.  In order to pick the correct type, consumers must specify how to pick the type,
         /// that's what this function does, it picks the correct type from the list of types found within the assembly.
-        /// </param>
-        public Loader(Language language, TimeSpan loaderTimeLimit, Func<List<String>,String> multipleTypeNameResolverFunction) {
+        /// 
+        public Loader(Language language, Duration loaderTimeLimit, Func<List<String>,String> multipleTypeNameResolverFunction) {
             _language = language;
 
             if( multipleTypeNameResolverFunction == null ) {
@@ -93,13 +93,13 @@ package com.quantconnect.lean.AlgorithmFactory
         }
 
 
-        /// <summary>
+        /**
         /// Creates a new instance of the specified class in the library, safely.
-        /// </summary>
-        /// <param name="assemblyPath">Location of the DLL</param>
-        /// <param name="algorithmInstance">Output algorithm instance</param>
-        /// <param name="errorMessage">Output error message on failure</param>
-        /// <returns>Bool true on successfully loading the class.</returns>        
+        */
+         * @param assemblyPath">Location of the DLL
+         * @param algorithmInstance">Output algorithm instance
+         * @param errorMessage">Output error message on failure
+        @returns Bool true on successfully loading the class.        
         public boolean TryCreateAlgorithmInstance( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage) {
             //Default initialisation of Assembly.
             algorithmInstance = null;
@@ -125,13 +125,13 @@ package com.quantconnect.lean.AlgorithmFactory
         }
 
 
-        /// <summary>
+        /**
         /// Create a new instance of a python algorithm
-        /// </summary>
-        /// <param name="assemblyPath"></param>
-        /// <param name="algorithmInstance"></param>
-        /// <param name="errorMessage"></param>
-        /// <returns></returns>
+        */
+         * @param assemblyPath">
+         * @param algorithmInstance">
+         * @param errorMessage">
+        @returns 
         private boolean TryCreatePythonAlgorithm( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage) {
             success = false;
             algorithmInstance = null;
@@ -201,13 +201,13 @@ package com.quantconnect.lean.AlgorithmFactory
         }
 
 
-        /// <summary>
+        /**
         /// Create a generic IL algorithm 
-        /// </summary>
-        /// <param name="assemblyPath"></param>
-        /// <param name="algorithmInstance"></param>
-        /// <param name="errorMessage"></param>
-        /// <returns></returns>
+        */
+         * @param assemblyPath">
+         * @param algorithmInstance">
+         * @param errorMessage">
+        @returns 
         private boolean TryCreateILAlgorithm( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage) {
             errorMessage = "";
             algorithmInstance = null;
@@ -291,11 +291,11 @@ package com.quantconnect.lean.AlgorithmFactory
             return true;
         }
 
-        /// <summary>
+        /**
         /// Get a list of all the matching type names in this DLL assembly:
-        /// </summary>
-        /// <param name="assembly">Assembly dll we're loading.</param>
-        /// <returns>String list of types available.</returns>
+        */
+         * @param assembly">Assembly dll we're loading.
+        @returns String list of types available.
         public static List<String> GetExtendedTypeNames(Assembly assembly) {
             types = new List<String>();
             try
@@ -330,13 +330,13 @@ package com.quantconnect.lean.AlgorithmFactory
             return types;
         }
 
-        /// <summary>
+        /**
         /// Creates a new instance of the class in the library, safely.
-        /// </summary>
-        /// <param name="assemblyPath">Location of the DLL</param>
-        /// <param name="algorithmInstance">Output algorithm instance</param>
-        /// <param name="errorMessage">Output error message on failure</param>
-        /// <returns>bool success</returns>     
+        */
+         * @param assemblyPath">Location of the DLL
+         * @param algorithmInstance">Output algorithm instance
+         * @param errorMessage">Output error message on failure
+        @returns bool success     
         public boolean TryCreateAlgorithmInstanceWithIsolator( String assemblyPath, out IAlgorithm algorithmInstance, out String errorMessage) {
             IAlgorithm instance = null;
             error = string.Empty;
@@ -360,10 +360,10 @@ package com.quantconnect.lean.AlgorithmFactory
         }
 
 
-        /// <summary>
+        /**
         /// Unload this factory's appDomain.
-        /// </summary>
-        /// <remarks>Not used in lean engine. Running the library in an app domain is 10x slower.</remarks>
+        */
+        /// Not used in lean engine. Running the library in an app domain is 10x slower.
         /// <seealso cref="CreateAppDomain"/>
         public void Unload() {
             if( appDomain != null ) {

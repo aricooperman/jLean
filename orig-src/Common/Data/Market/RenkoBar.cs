@@ -17,53 +17,53 @@ using System;
 
 package com.quantconnect.lean.Data.Market
 {
-    /// <summary>
+    /**
     /// Represents a bar sectioned not by time, but by some amount of movement in a value (for example, Closing price moving in $10 bar sizes)
-    /// </summary>
+    */
     public class RenkoBar : BaseData
     {
-        /// <summary>
+        /**
         /// Gets the height of the bar
-        /// </summary>
+        */
         public BigDecimal BrickSize { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the opening value that started this bar.
-        /// </summary>
+        */
         public BigDecimal Open { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the closing value or the current value if the bar has not yet closed.
-        /// </summary>
+        */
         public BigDecimal Close
         {
             get { return Value; }
             private set { Value = value; }
         }
 
-        /// <summary>
+        /**
         /// Gets the highest value encountered during this bar
-        /// </summary>
+        */
         public BigDecimal High { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the lowest value encountered during this bar
-        /// </summary>
+        */
         public BigDecimal Low { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the volume of trades during the bar.
-        /// </summary>
+        */
         public long Volume { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the end time of this renko bar or the most recent update time if it <see cref="IsClosed"/>
-        /// </summary>
+        */
         public @Override DateTime EndTime { get; set; }
 
-        /// <summary>
+        /**
         /// Gets the end time of this renko bar or the most recent update time if it <see cref="IsClosed"/>
-        /// </summary>
+        */
         [Obsolete( "RenkoBar.End is obsolete. Please use RenkoBar.EndTime property instead.")]
         public DateTime End
         {
@@ -71,34 +71,34 @@ package com.quantconnect.lean.Data.Market
             set { EndTime = value; }
         }
 
-        /// <summary>
+        /**
         /// Gets the time this bar started
-        /// </summary>
+        */
         public DateTime Start
         {
             get { return Time; }
             private set { Time = value; }
         }
 
-        /// <summary>
+        /**
         /// Gets whether or not this bar is considered closed.
-        /// </summary>
+        */
         public boolean IsClosed { get; private set; }
 
-        /// <summary>
+        /**
         /// Initializes a new default instance of the <see cref="RenkoBar"/> class.
-        /// </summary>
+        */
         public RenkoBar() {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="RenkoBar"/> class with the specified values
-        /// </summary>
-        /// <param name="symbol">The symbol of this data</param>
-        /// <param name="time">The start time of the bar</param>
-        /// <param name="brickSize">The size of each renko brick</param>
-        /// <param name="open">The opening price for the new bar</param>
-        /// <param name="volume">Any initial volume associated with the data</param>
+        */
+         * @param symbol">The symbol of this data
+         * @param time">The start time of the bar
+         * @param brickSize">The size of each renko brick
+         * @param open">The opening price for the new bar
+         * @param volume">Any initial volume associated with the data
         public RenkoBar(Symbol symbol, DateTime time, BigDecimal brickSize, BigDecimal open, long volume) {
             Symbol = symbol;
             Start = time;
@@ -111,13 +111,13 @@ package com.quantconnect.lean.Data.Market
             Low = open;
         }
 
-        /// <summary>
+        /**
         /// Updates this <see cref="RenkoBar"/> with the specified values and returns whether or not this bar is closed
-        /// </summary>
-        /// <param name="time">The current time</param>
-        /// <param name="currentValue">The current value</param>
-        /// <param name="volumeSinceLastUpdate">The volume since the last update called on this instance</param>
-        /// <returns>True if this bar <see cref="IsClosed"/></returns>
+        */
+         * @param time">The current time
+         * @param currentValue">The current value
+         * @param volumeSinceLastUpdate">The volume since the last update called on this instance
+        @returns True if this bar <see cref="IsClosed"/>
         public boolean Update(DateTime time, BigDecimal currentValue, long volumeSinceLastUpdate) {
             // can't update a closed renko bar
             if( IsClosed) return true;
@@ -142,38 +142,38 @@ package com.quantconnect.lean.Data.Market
             return IsClosed;
         }
 
-        /// <summary>
+        /**
         /// Reader Method :: using set of arguements we specify read out type. Enumerate
         /// until the end of the data stream or file. E.g. Read CSV file line by line and convert
         /// into data types.
-        /// </summary>
-        /// <returns>BaseData type set by Subscription Method.</returns>
-        /// <param name="config">Config.</param>
-        /// <param name="line">Line.</param>
-        /// <param name="date">Date.</param>
-        /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
+        */
+        @returns BaseData type set by Subscription Method.
+         * @param config">Config.
+         * @param line">Line.
+         * @param date">Date.
+         * @param isLiveMode">true if we're in live mode, false for backtesting mode
         public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
             throw new NotSupportedException( "RenkoBar does not support the Reader function. This function should never be called on this type.");
         }
 
-        /// <summary>
+        /**
         /// Return the URL String source of the file. This will be converted to a stream
-        /// </summary>
-        /// <param name="config">Configuration object</param>
-        /// <param name="date">Date of this source file</param>
-        /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-        /// <returns>String URL of source file.</returns>
+        */
+         * @param config">Configuration object
+         * @param date">Date of this source file
+         * @param isLiveMode">true if we're in live mode, false for backtesting mode
+        @returns String URL of source file.
         public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             throw new NotSupportedException( "RenkoBar does not support the GetSource function. This function should never be called on this type.");
         }
 
-        /// <summary>
+        /**
         /// Return a new instance clone of this object, used in fill forward
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// This base implementation uses reflection to copy all public fields and properties
-        /// </remarks>
-        /// <returns>A clone of the current object</returns>
+        /// 
+        @returns A clone of the current object
         public @Override BaseData Clone() {
             return new RenkoBar
             {

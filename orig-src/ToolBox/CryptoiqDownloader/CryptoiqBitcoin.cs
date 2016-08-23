@@ -16,38 +16,38 @@ using System;
 
 package com.quantconnect.lean.ToolBox.CryptoiqDownloader
 {
-    /// <summary>
+    /**
     /// Defines the JSON response structure from the Cryptoiq API
-    /// </summary>
+    */
     public class CryptoiqBitcoin
     {
-        /// <summary>
+        /**
         /// The time of the tick
-        /// </summary>
+        */
         public DateTime Time;
-        /// <summary>
+        /**
         /// The ask price
-        /// </summary>
+        */
         public BigDecimal Ask;
-        /// <summary>
+        /**
         /// The bid price
-        /// </summary>
+        */
         public BigDecimal Bid;
-        /// <summary>
+        /**
         /// The price of the last trade
-        /// </summary>
+        */
         public BigDecimal Last;
-        /// <summary>
+        /**
         /// The daily high
-        /// </summary>
+        */
         public BigDecimal High;
-        /// <summary>
+        /**
         /// The daily low
-        /// </summary>
+        */
         public BigDecimal Low;
-        /// <summary>
+        /**
         /// The daily running volume
-        /// </summary>
+        */
         public BigDecimal Volume;
     }
 

@@ -52,17 +52,17 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             Tick[] rawTicks = Enumerable
                 .Range(0, 10)
-                .Select(i => new Tick(refTime.AddSeconds(i), Symbols.EURUSD, 1.3465m, 1.34652m))
+                .Select(i -> new Tick(refTime.AddSeconds(i), Symbols.EURUSD, 1.3465m, 1.34652m))
                 .ToArray();
 
-            IEnumerable<TimeSlice> timeSlices = rawTicks.Select(t => TimeSlice.Create(
+            IEnumerable<TimeSlice> timeSlices = rawTicks.Select(t -> TimeSlice.Create(
                 t.Time,
                 TimeZones.Utc,
                 new CashBook(),
                 new List<DataFeedPacket> {new DataFeedPacket(security, subscriptionDataConfig, new List<BaseData>() {t})},
                 new SecurityChanges(Enumerable.Empty<Security>(), Enumerable.Empty<Security>())));
 
-            Tick[] timeSliceTicks = timeSlices.SelectMany(ts => ts.Slice.Ticks.Values.SelectMany(x => x)).ToArray();
+            Tick[] timeSliceTicks = timeSlices.SelectMany(ts -> ts.Slice.Ticks.Values.SelectMany(x -> x)).ToArray();
 
             Assert.AreEqual(rawTicks.Length, timeSliceTicks.Length);
             for (int i = 0; i < rawTicks.Length; i++) {

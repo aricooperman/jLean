@@ -25,59 +25,59 @@ using QuantConnect.Securities.Option;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Represents a grouping of data emitted at a certain time.
-    /// </summary>
+    */
     public class TimeSlice
     {
-        /// <summary>
+        /**
         /// Gets the count of data points in this <see cref="TimeSlice"/>
-        /// </summary>
+        */
         public int DataPointCount { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the time this data was emitted
-        /// </summary>
+        */
         public DateTime Time { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the data in the time slice
-        /// </summary>
+        */
         public List<DataFeedPacket> Data { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="Slice"/> that will be used as input for the algorithm
-        /// </summary>
+        */
         public Slice Slice { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the data used to update the cash book
-        /// </summary>
+        */
         public List<UpdateData<Cash>> CashBookUpdateData { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the data used to update securities
-        /// </summary>
+        */
         public List<UpdateData<Security>> SecuritiesUpdateData { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the data used to update the consolidators
-        /// </summary>
+        */
         public List<UpdateData<SubscriptionDataConfig>> ConsolidatorUpdateData { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets all the custom data in this <see cref="TimeSlice"/>
-        /// </summary>
+        */
         public List<UpdateData<Security>> CustomData { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the changes to the data subscriptions as a result of universe selection
-        /// </summary>
+        */
         public SecurityChanges SecurityChanges { get; set; }
 
-        /// <summary>
+        /**
         /// Initializes a new <see cref="TimeSlice"/> containing the specified data
-        /// </summary>
+        */
         public TimeSlice(DateTime time,
             int dataPointCount,
             Slice slice,
@@ -98,15 +98,15 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             SecurityChanges = securityChanges;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="TimeSlice"/> for the specified time using the specified data
-        /// </summary>
-        /// <param name="utcDateTime">The UTC frontier date time</param>
-        /// <param name="algorithmTimeZone">The algorithm's time zone, required for computing algorithm and slice time</param>
-        /// <param name="cashBook">The algorithm's cash book, required for generating cash update pairs</param>
-        /// <param name="data">The data in this <see cref="TimeSlice"/></param>
-        /// <param name="changes">The new changes that are seen in this time slice as a result of universe selection</param>
-        /// <returns>A new <see cref="TimeSlice"/> containing the specified data</returns>
+        */
+         * @param utcDateTime">The UTC frontier date time
+         * @param algorithmTimeZone">The algorithm's time zone, required for computing algorithm and slice time
+         * @param cashBook">The algorithm's cash book, required for generating cash update pairs
+         * @param data">The data in this <see cref="TimeSlice"/>
+         * @param changes">The new changes that are seen in this time slice as a result of universe selection
+        @returns A new <see cref="TimeSlice"/> containing the specified data
         public static TimeSlice Create(DateTime utcDateTime, ZoneId algorithmTimeZone, CashBook cashBook, List<DataFeedPacket> data, SecurityChanges changes) {
             int count = 0;
             security = new List<UpdateData<Security>>();
@@ -129,7 +129,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             // evaluation of option price models, so we define a 'future' that can be referenced
             // in the option price model evaluation delegates for each contract
             Slice slice = null;
-            sliceFuture = new Lazy<Slice>(() => slice);
+            sliceFuture = new Lazy<Slice>(() -> slice);
 
             algorithmTime = utcDateTime.ConvertFromUtc(algorithmTimeZone);
             tradeBars = new TradeBars(algorithmTime);
@@ -237,9 +237,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return new TimeSlice(utcDateTime, count, slice, data, cash, security, consolidator, custom, changes);
         }
 
-        /// <summary>
+        /**
         /// Adds the specified <see cref="BaseData"/> instance to the appropriate <see cref="DataDictionary{T}"/>
-        /// </summary>
+        */
         private static void PopulateDataDictionaries(BaseData baseData, Ticks ticks, TradeBars tradeBars, QuoteBars quoteBars, OptionChains optionChains) {
             symbol = baseData.Symbol;
 
@@ -299,7 +299,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 chain.Contracts[baseData.Symbol] = contract;
                 option = security as Option;
                 if( option != null ) {
-                    contract.SetOptionPriceModel(() => option.PriceModel.Evaluate(option, sliceFuture.Value, contract));
+                    contract.SetOptionPriceModel(() -> option.PriceModel.Evaluate(option, sliceFuture.Value, contract));
                 }
             }
 

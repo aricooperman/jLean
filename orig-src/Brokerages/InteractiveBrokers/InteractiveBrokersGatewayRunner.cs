@@ -24,20 +24,20 @@ using QuantConnect.Logging;
 
 package com.quantconnect.lean.Brokerages.InteractiveBrokers
 {
-    /// <summary>
+    /**
     /// Handles launching and killing the IB Controller script
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Requires TWS or IB Gateway and IBController installed to run
-    /// </remarks>
+    /// 
     public static class InteractiveBrokersGatewayRunner
     {
         // process that's running the IB Controller script
         private static int ScriptProcessID;
 
-        /// <summary>
+        /**
         /// Starts the interactive brokers gateway using values from configuration
-        /// </summary>
+        */
         public static void StartFromConfiguration() {
             Start(Config.Get( "ib-controller-dir"),
                 Config.Get( "ib-tws-dir"),
@@ -47,14 +47,14 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                 );
         }
 
-        /// <summary>
+        /**
         /// Starts the IB Gateway
-        /// </summary>
-        /// <param name="ibControllerDirectory">Directory to the IB controller installation</param>
-        /// <param name="twsDirectory"></param>
-        /// <param name="userID">The log in user id</param>
-        /// <param name="password">The log in password</param>
-        /// <param name="useTws">True to use Trader Work Station, false to just launch the API gateway</param>
+        */
+         * @param ibControllerDirectory">Directory to the IB controller installation
+         * @param twsDirectory">
+         * @param userID">The log in user id
+         * @param password">The log in password
+         * @param useTws">True to use Trader Work Station, false to just launch the API gateway
         public static void Start( String ibControllerDirectory, String twsDirectory, String userID, String password, boolean useTws = false) {
             useTwsSwitch = useTws ? "TWS" : "GATEWAY";
             batchFilename = Path.Combine( "InteractiveBrokers", "run-ib-controller.bat");
@@ -79,9 +79,9 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             }
         }
 
-        /// <summary>
+        /**
         /// Stops the IB Gateway
-        /// </summary>
+        */
         public static void Stop() {
             if( ScriptProcessID == 0) {
                 return;

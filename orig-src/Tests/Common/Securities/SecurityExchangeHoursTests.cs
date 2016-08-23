@@ -29,7 +29,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             exchangeHours = CreateForexSecurityExchangeHours();
 
             date = new DateTime(2015, 6, 21);
-            marketOpen = exchangeHours.MarketHours[DayOfWeek.Sunday].GetMarketOpen(TimeSpan.Zero, false);
+            marketOpen = exchangeHours.MarketHours[DayOfWeek.Sunday].GetMarketOpen(Duration.ZERO, false);
             Assert.IsTrue(marketOpen.HasValue);
             time = (date + marketOpen.Value).AddTicks(-1);
             Assert.IsFalse(exchangeHours.IsOpen(time, false));
@@ -44,7 +44,7 @@ package com.quantconnect.lean.Tests.Common.Securities
 
             date = new DateTime(2015, 6, 19);
             localMarketHours = exchangeHours.MarketHours[DayOfWeek.Friday];
-            marketClose = localMarketHours.GetMarketClose(TimeSpan.Zero, false);
+            marketClose = localMarketHours.GetMarketClose(Duration.ZERO, false);
             Assert.IsTrue(marketClose.HasValue);
             time = (date + marketClose.Value).AddTicks(-1);
             Assert.IsTrue(exchangeHours.IsOpen(time, false));
@@ -58,7 +58,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             exchangeHours = CreateForexSecurityExchangeHours();
 
             date = new DateTime(2015, 6, 21);
-            marketOpen = exchangeHours.MarketHours[DayOfWeek.Sunday].GetMarketOpen(TimeSpan.Zero, false);
+            marketOpen = exchangeHours.MarketHours[DayOfWeek.Sunday].GetMarketOpen(Duration.ZERO, false);
             Assert.IsTrue(marketOpen.HasValue);
             startTime = (date + marketOpen.Value).AddMinutes(-1);
 
@@ -74,7 +74,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             exchangeHours = CreateForexSecurityExchangeHours();
 
             date = new DateTime(2015, 6, 19);
-            marketClose = exchangeHours.MarketHours[DayOfWeek.Friday].GetMarketClose(TimeSpan.Zero, false);
+            marketClose = exchangeHours.MarketHours[DayOfWeek.Friday].GetMarketClose(Duration.ZERO, false);
             Assert.IsTrue(marketClose.HasValue);
             startTime = (date + marketClose.Value).AddMinutes(-1);
 
@@ -90,7 +90,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             exchangeHours = CreateForexSecurityExchangeHours();
 
             date = new DateTime(2015, 6, 19);
-            marketClose = exchangeHours.MarketHours[DayOfWeek.Friday].GetMarketClose(TimeSpan.Zero, false);
+            marketClose = exchangeHours.MarketHours[DayOfWeek.Friday].GetMarketClose(Duration.ZERO, false);
             Assert.IsTrue(marketClose.HasValue);
             startTime = date + marketClose.Value;
 
@@ -164,13 +164,13 @@ package com.quantconnect.lean.Tests.Common.Securities
             tuesday = LocalMarketHours.OpenAllDay(DayOfWeek.Tuesday);
             wednesday = LocalMarketHours.OpenAllDay(DayOfWeek.Wednesday);
             thursday = LocalMarketHours.OpenAllDay(DayOfWeek.Thursday);
-            friday = new LocalMarketHours(DayOfWeek.Friday, TimeSpan.Zero, new TimeSpan(17, 0, 0));
+            friday = new LocalMarketHours(DayOfWeek.Friday, Duration.ZERO, new TimeSpan(17, 0, 0));
             saturday = LocalMarketHours.ClosedAllDay(DayOfWeek.Saturday);
 
-            exchangeHours = new SecurityExchangeHours(TimeZones.NewYork, USHoliday.Dates.Select(x => x.Date), new[]
+            exchangeHours = new SecurityExchangeHours(TimeZones.NewYork, USHoliday.Dates.Select(x -> x.Date), new[]
             {
                 sunday, monday, tuesday, wednesday, thursday, friday//, saturday
-            }.ToDictionary(x => x.DayOfWeek));
+            }.ToDictionary(x -> x.DayOfWeek));
             return exchangeHours;
         }
 
@@ -183,10 +183,10 @@ package com.quantconnect.lean.Tests.Common.Securities
             friday = new LocalMarketHours(DayOfWeek.Friday, new TimeSpan(9, 30, 0), new TimeSpan(16, 0, 0));
             saturday = LocalMarketHours.ClosedAllDay(DayOfWeek.Saturday);
 
-            exchangeHours = new SecurityExchangeHours(TimeZones.NewYork, USHoliday.Dates.Select(x => x.Date), new[]
+            exchangeHours = new SecurityExchangeHours(TimeZones.NewYork, USHoliday.Dates.Select(x -> x.Date), new[]
             {
                 sunday, monday, tuesday, wednesday, thursday, friday, saturday
-            }.ToDictionary(x => x.DayOfWeek));
+            }.ToDictionary(x -> x.DayOfWeek));
             return exchangeHours;
         }
     }

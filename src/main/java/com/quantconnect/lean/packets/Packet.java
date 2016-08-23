@@ -26,10 +26,10 @@ public class Packet {
 //    @JsonProperty( "sChannel")]
     public String channel = "";
 
-    /// <summary>
+    /**
     /// Initialize the base class and setup the packet type.
-    /// </summary>
-    /// <param name="type">PacketType for the class.</param>
+    */
+     * @param type">PacketType for the class.
     public Packet( PacketType type ) {
         this.channel = "";
         this.type = type;
@@ -123,36 +123,36 @@ using Newtonsoft.Json.Converters;
 
 package com.quantconnect.lean.Packets
 {
-    /// <summary>
+    /**
     /// Base class for packet messaging system
-    /// </summary>
+    */
     public class Packet
     {
-        /// <summary>
+        /**
         /// Packet type defined by a String enum
-        /// </summary>
+        */
         @JsonProperty( "eType")]
         public PacketType Type = PacketType.None;
 
-        /// <summary>
+        /**
         /// User unique specific channel endpoint to send the packets
-        /// </summary>
+        */
         @JsonProperty( "sChannel")]
         public String Channel = "";
 
-        /// <summary>
+        /**
         /// Initialize the base class and setup the packet type.
-        /// </summary>
-        /// <param name="type">PacketType for the class.</param>
+        */
+         * @param type">PacketType for the class.
         public Packet(PacketType type) {
             Channel = "";
             Type = type;
         }
     }
 
-    /// <summary>
+    /**
     /// Classifications of internal packet system
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum PacketType
     {

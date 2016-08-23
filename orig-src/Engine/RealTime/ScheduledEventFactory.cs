@@ -25,42 +25,42 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Lean.Engine.RealTime
 {
-    /// <summary>
+    /**
     /// Provides methods for creating common scheduled events
-    /// </summary>
+    */
     public static class ScheduledEventFactory
     {
-        /// <summary>
+        /**
         /// Creates a new <see cref="ScheduledEvent"/> that will fire at the specified <paramref name="timeOfDay"/> for every day in
         /// <paramref name="dates"/>
-        /// </summary>
-        /// <param name="name">An identifier for this event</param>
-        /// <param name="dates">The dates to set events for at the specified time. These act as a base time to which
+        */
+         * @param name">An identifier for this event
+         * @param dates">The dates to set events for at the specified time. These act as a base time to which
         /// the <paramref name="timeOfDay"/> is added to, that is, the implementation does not use .Date before
-        /// the addition</param>
-        /// <param name="timeOfDay">The time each tradeable date to fire the event</param>
-        /// <param name="callback">The delegate to call when an event fires</param>
-        /// <param name="currentUtcTime">Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.</param>
-        /// <returns>A new <see cref="ScheduledEvent"/> instance that fires events each tradeable day from the start to the finish at the specified time</returns>
-        public static ScheduledEvent EveryDayAt( String name, IEnumerable<DateTime> dates, TimeSpan timeOfDay, Action<String, DateTime> callback, DateTime? currentUtcTime = null ) {
-            eventTimes = dates.Select(x => x.Date + timeOfDay);
+        /// the addition
+         * @param timeOfDay">The time each tradeable date to fire the event
+         * @param callback">The delegate to call when an event fires
+         * @param currentUtcTime">Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.
+        @returns A new <see cref="ScheduledEvent"/> instance that fires events each tradeable day from the start to the finish at the specified time
+        public static ScheduledEvent EveryDayAt( String name, IEnumerable<DateTime> dates, Duration timeOfDay, Action<String, DateTime> callback, DateTime? currentUtcTime = null ) {
+            eventTimes = dates.Select(x -> x.Date + timeOfDay);
             if( currentUtcTime.HasValue) {
-                eventTimes = eventTimes.Where(x => x < currentUtcTime.Value);
+                eventTimes = eventTimes.Where(x -> x < currentUtcTime.Value);
             }
             return new ScheduledEvent(name, eventTimes, callback);
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="ScheduledEvent"/> that will fire before market close by the specified time 
-        /// </summary>
-        /// <param name="algorithm">The algorithm instance the event is fo</param>
-        /// <param name="resultHandler">The result handler, used to communicate run time errors</param>
-        /// <param name="start">The date to start the events</param>
-        /// <param name="end">The date to end the events</param>
-        /// <param name="endOfDayDelta">The time difference between the market close and the event, positive time will fire before market close</param>
-        /// <param name="currentUtcTime">Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.</param>
-        /// <returns>The new <see cref="ScheduledEvent"/> that will fire near market close each tradeable dat</returns>
-        public static ScheduledEvent EveryAlgorithmEndOfDay(IAlgorithm algorithm, IResultHandler resultHandler, DateTime start, DateTime end, TimeSpan endOfDayDelta, DateTime? currentUtcTime = null ) {
+        */
+         * @param algorithm">The algorithm instance the event is fo
+         * @param resultHandler">The result handler, used to communicate run time errors
+         * @param start">The date to start the events
+         * @param end">The date to end the events
+         * @param endOfDayDelta">The time difference between the market close and the event, positive time will fire before market close
+         * @param currentUtcTime">Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.
+        @returns The new <see cref="ScheduledEvent"/> that will fire near market close each tradeable dat
+        public static ScheduledEvent EveryAlgorithmEndOfDay(IAlgorithm algorithm, IResultHandler resultHandler, DateTime start, DateTime end, Duration endOfDayDelta, DateTime? currentUtcTime = null ) {
             if( endOfDayDelta >= Time.OneDay) {
                 throw new ArgumentException( "Delta must be less than a day", "endOfDayDelta");
             }
@@ -93,18 +93,18 @@ package com.quantconnect.lean.Lean.Engine.RealTime
             });
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="ScheduledEvent"/> that will fire before market close by the specified time 
-        /// </summary>
-        /// <param name="algorithm">The algorithm instance the event is fo</param>
-        /// <param name="resultHandler">The result handler, used to communicate run time errors</param>
-        /// <param name="security">The security used for defining tradeable dates</param>
-        /// <param name="start">The first date for the events</param>
-        /// <param name="end">The date to end the events</param>
-        /// <param name="endOfDayDelta">The time difference between the market close and the event, positive time will fire before market close</param>
-        /// <param name="currentUtcTime">Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.</param>
-        /// <returns>The new <see cref="ScheduledEvent"/> that will fire near market close each tradeable dat</returns>
-        public static ScheduledEvent EverySecurityEndOfDay(IAlgorithm algorithm, IResultHandler resultHandler, Security security, DateTime start, DateTime end, TimeSpan endOfDayDelta, DateTime? currentUtcTime = null ) {
+        */
+         * @param algorithm">The algorithm instance the event is fo
+         * @param resultHandler">The result handler, used to communicate run time errors
+         * @param security">The security used for defining tradeable dates
+         * @param start">The first date for the events
+         * @param end">The date to end the events
+         * @param endOfDayDelta">The time difference between the market close and the event, positive time will fire before market close
+         * @param currentUtcTime">Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.
+        @returns The new <see cref="ScheduledEvent"/> that will fire near market close each tradeable dat
+        public static ScheduledEvent EverySecurityEndOfDay(IAlgorithm algorithm, IResultHandler resultHandler, Security security, DateTime start, DateTime end, Duration endOfDayDelta, DateTime? currentUtcTime = null ) {
             if( endOfDayDelta >= Time.OneDay) {
                 throw new ArgumentException( "Delta must be less than a day", "endOfDayDelta");
             }
@@ -137,12 +137,12 @@ package com.quantconnect.lean.Lean.Engine.RealTime
             });
         }
 
-        /// <summary>
+        /**
         /// Defines the format of event names generated by this system.
-        /// </summary>
-        /// <param name="scope">The scope of the event, example, 'Algorithm' or 'Security'</param>
-        /// <param name="name">A name for this specified event in this scope, example, 'EndOfDay'</param>
-        /// <returns>A String representing a fully scoped event name</returns>
+        */
+         * @param scope">The scope of the event, example, 'Algorithm' or 'Security'
+         * @param name">A name for this specified event in this scope, example, 'EndOfDay'
+        @returns A String representing a fully scoped event name
         public static String CreateEventName( String scope, String name) {
             return String.format( "%1$s.%2$s", scope, name);
         }

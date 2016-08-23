@@ -62,11 +62,11 @@ public class Tick extends BaseData {
     public boolean suspicious = false;
 
     /// Bid Price for Tick
-    /// <remarks>QuantConnect does not currently have quote data but was designed to handle ticks and quotes</remarks>
+    /// QuantConnect does not currently have quote data but was designed to handle ticks and quotes
     public BigDecimal bidPrice = BigDecimal.ZERO;
 
     /// Asking price for the Tick quote.
-    /// <remarks>QuantConnect does not currently have quote data but was designed to handle ticks and quotes</remarks>
+    /// QuantConnect does not currently have quote data but was designed to handle ticks and quotes
     public BigDecimal askPrice = BigDecimal.ZERO;
 
     /// Alias for "Value" - the last sale for this asset.
@@ -105,7 +105,7 @@ public class Tick extends BaseData {
     }
 
     /// Cloner constructor for fill forward engine implementation. Clone the original tick into this new tick:
-    /// <param name="original">Original tick we're cloning</param>
+     * @param original">Original tick we're cloning
     public Tick( Tick original )  {
         setSymbol( original.getSymbol() );
         setTime( original.getTime() );
@@ -124,10 +124,10 @@ public class Tick extends BaseData {
 
     /// Constructor for a FOREX tick where there is no last sale price. The volume in FX is so high its rare to find FX trade data.
     /// To fake this the tick contains bid-ask prices and the last price is the midpoint.
-    /// <param name="time">Full date and time</param>
-    /// <param name="symbol">Underlying currency pair we're trading</param>
-    /// <param name="bid">FX tick bid value</param>
-    /// <param name="ask">FX tick ask value</param>
+     * @param time">Full date and time
+     * @param symbol">Underlying currency pair we're trading
+     * @param bid">FX tick bid value
+     * @param ask">FX tick ask value
     public Tick( LocalDateTime time, Symbol symbol, BigDecimal bid, BigDecimal ask ) {
         setDataType( MarketDataType.Tick );
         setTime( time );
@@ -140,11 +140,11 @@ public class Tick extends BaseData {
 
 
     /// Initializer for a last-trade equity tick with bid or ask prices. 
-    /// <param name="time">Full date and time</param>
-    /// <param name="symbol">Underlying equity security symbol</param>
-    /// <param name="bid">Bid value</param>
-    /// <param name="ask">Ask value</param>
-    /// <param name="last">Last trade price</param>
+     * @param time">Full date and time
+     * @param symbol">Underlying equity security symbol
+     * @param bid">Bid value
+     * @param ask">Ask value
+     * @param last">Last trade price
     public Tick( LocalDateTime time, Symbol symbol, BigDecimal last, BigDecimal bid, BigDecimal ask ) {
         setDataType( MarketDataType.Tick );
         setTime( time );
@@ -156,8 +156,8 @@ public class Tick extends BaseData {
     }
 
     /// Constructor for QuantConnect FXCM Data source:
-    /// <param name="symbol">Symbol for underlying asset</param>
-    /// <param name="line">CSV line of data from FXCM</param>
+     * @param symbol">Symbol for underlying asset
+     * @param line">CSV line of data from FXCM
     public Tick( Symbol symbol, String line ) {
         final String[] csv = line.split( "," );
         setDataType( MarketDataType.Tick );
@@ -170,9 +170,9 @@ public class Tick extends BaseData {
     }
 
     /// Constructor for QuantConnect tick data
-    /// <param name="symbol">Symbol for underlying asset</param>
-    /// <param name="line">CSV line of data from QC tick csv</param>
-    /// <param name="baseDate">The base date of the tick</param>
+     * @param symbol">Symbol for underlying asset
+     * @param line">CSV line of data from QC tick csv
+     * @param baseDate">The base date of the tick
     public Tick( Symbol symbol, String line, LocalDateTime baseDate ) {
         final String[] csv = line.split( "," );
         setDataType( MarketDataType.Tick );
@@ -187,9 +187,9 @@ public class Tick extends BaseData {
     }
 
     /// Parse a tick data line from quantconnect zip source files.
-    /// <param name="line">CSV source line of the compressed source</param>
-    /// <param name="date">Base date for the tick (ticks date is stored as int milliseconds since midnight)</param>
-    /// <param name="config">Subscription configuration object</param>
+     * @param line">CSV source line of the compressed source
+     * @param date">Base date for the tick (ticks date is stored as int milliseconds since midnight)
+     * @param config">Subscription configuration object
     public Tick( SubscriptionDataConfig config, String line, LocalDateTime date ) {
         try {
             setDataType( MarketDataType.Tick );
@@ -276,11 +276,11 @@ public class Tick extends BaseData {
     }
 
     /// Tick implementation of reader method: read a line of data from the source and convert it to a tick object.
-    /// <param name="config">Subscription configuration object for algorithm</param>
-    /// <param name="line">Line from the datafeed source</param>
-    /// <param name="date">Date of this reader request</param>
-    /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-    /// <returns>New Initialized tick</returns>
+     * @param config">Subscription configuration object for algorithm
+     * @param line">Line from the datafeed source
+     * @param date">Date of this reader request
+     * @param isLiveMode">true if we're in live mode, false for backtesting mode
+    @returns New Initialized tick
     @Override
     public BaseData reader( SubscriptionDataConfig config, String line, LocalDate date, boolean isLiveMode ) {
         if( isLiveMode )
@@ -291,10 +291,10 @@ public class Tick extends BaseData {
     }
     
     /// Get source for tick data feed - not used with QuantConnect data sources implementation.
-    /// <param name="config">Configuration object</param>
-    /// <param name="date">Date of this source request if source spread across multiple files</param>
-    /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-    /// <returns>String source location of the file to be opened with a stream</returns>
+     * @param config">Configuration object
+     * @param date">Date of this source request if source spread across multiple files
+     * @param isLiveMode">true if we're in live mode, false for backtesting mode
+    @returns String source location of the file to be opened with a stream
     @Override
     public SubscriptionDataSource getSource( SubscriptionDataConfig config, LocalDate date, boolean isLiveMode ) {
         if( isLiveMode )
@@ -310,12 +310,12 @@ public class Tick extends BaseData {
 
 
     /// Update the tick price information - not used.
-    /// <param name="lastTrade">This trade price</param>
-    /// <param name="bidPrice">Current bid price</param>
-    /// <param name="askPrice">Current asking price</param>
-    /// <param name="volume">Volume of this trade</param>
-    /// <param name="bidSize">The size of the current bid, if available</param>
-    /// <param name="askSize">The size of the current ask, if available</param>
+     * @param lastTrade">This trade price
+     * @param bidPrice">Current bid price
+     * @param askPrice">Current asking price
+     * @param volume">Volume of this trade
+     * @param bidSize">The size of the current bid, if available
+     * @param askSize">The size of the current ask, if available
    @Override
     public void update( BigDecimal lastTrade, BigDecimal bidPrice, BigDecimal askPrice, BigDecimal volume, BigDecimal bidSize, BigDecimal askSize ) {
         setValue( lastTrade );
@@ -334,7 +334,7 @@ public class Tick extends BaseData {
     }
 
     /// Clone implementation for tick class:
-    /// <returns>New tick object clone of the current class values.</returns>
+    @returns New tick object clone of the current class values.
     @Override
     public BaseData clone() {
         return new Tick( this );

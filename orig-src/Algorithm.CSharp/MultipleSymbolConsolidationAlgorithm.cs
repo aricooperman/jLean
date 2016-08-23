@@ -22,40 +22,40 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// This algorithm provides a structure for defining consolidators and indicators for many different symbols.
-    /// </summary>
+    */
     public class MultipleSymbolConsolidationAlgorithm : QCAlgorithm
     {
-        /// <summary>
+        /**
         /// This is the period of bars we'll be creating
-        /// </summary>
-        public readonly TimeSpan BarPeriod = Duration.ofMinutes(10);
-        /// <summary>
+        */
+        public final Duration BarPeriod = Duration.ofMinutes(10);
+        /**
         /// This is the period of our sma indicators
-        /// </summary>
-        public readonly int SimpleMovingAveragePeriod = 10;
-        /// <summary>
+        */
+        public final int SimpleMovingAveragePeriod = 10;
+        /**
         /// This is the number of consolidated bars we'll hold in symbol data for reference
-        /// </summary>
-        public readonly int RollingWindowSize = 10;
-        /// <summary>
+        */
+        public final int RollingWindowSize = 10;
+        /**
         /// Holds all of our data keyed by each symbol
-        /// </summary>
-        public readonly Map<String, SymbolData> Data = new Map<String, SymbolData>();
-        /// <summary>
+        */
+        public final Map<String, SymbolData> Data = new Map<String, SymbolData>();
+        /**
         /// Contains all of our equity symbols
-        /// </summary>
-        public readonly IReadOnlyList<String> EquitySymbols = new List<String>
+        */
+        public final IReadOnlyList<String> EquitySymbols = new List<String>
         {
             "AAPL", 
             "SPY", 
             "IBM"
         };
-        /// <summary>
+        /**
         /// Contains all of our forex symbols
-        /// </summary>
-        public readonly IReadOnlyList<String> ForexSymbols = new List<String>
+        */
+        public final IReadOnlyList<String> ForexSymbols = new List<String>
         {
             "EURUSD",
             "USDJPY",
@@ -67,9 +67,9 @@ package com.quantconnect.lean.Algorithm.Examples
             "NZDUSD",
         };
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         /// <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
@@ -114,10 +114,10 @@ package com.quantconnect.lean.Algorithm.Examples
             }
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">TradeBars IDictionary object with your stock data</param>
+        */
+         * @param data">TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             // loop through each symbol in our structure
             foreach (symbolData in Data.Values) {
@@ -130,13 +130,13 @@ package com.quantconnect.lean.Algorithm.Examples
             }
         }
 
-        /// <summary>
+        /**
         /// End of a trading day event handler. This method is called at the end of the algorithm day (or multiple times if trading multiple assets).
-        /// </summary>
-        /// <remarks>Method is called 10 minutes before closing to allow user to close out position.</remarks>
+        */
+        /// Method is called 10 minutes before closing to allow user to close out position.
         public @Override void OnEndOfDay() {
             int i = 0;
-            foreach (kvp in Data.OrderBy(x => x.Value.Symbol)) {
+            foreach (kvp in Data.OrderBy(x -> x.Value.Symbol)) {
                 // we have too many symbols to plot them all, so plot ever other
                 if( kvp.Value.IsReady && ++i%2 == 0) {
                     Plot(kvp.Value.Symbol, kvp.Value.SMA);
@@ -144,59 +144,59 @@ package com.quantconnect.lean.Algorithm.Examples
             }
         }
 
-        /// <summary>
+        /**
         /// Contains data pertaining to a symbol in our algorithm
-        /// </summary>
+        */
         public class SymbolData
         {
-            /// <summary>
+            /**
             /// This symbol the other data in this class is associated with
-            /// </summary>
-            public readonly String Symbol;
-            /// <summary>
+            */
+            public final String Symbol;
+            /**
             /// The security type of the symbol
-            /// </summary>
-            public readonly SecurityType SecurityType;
-            /// <summary>
+            */
+            public final SecurityType SecurityType;
+            /**
             /// A rolling window of data, data needs to be pumped into Bars by using Bars.Update( tradeBar ) and
             /// can be accessed like:
             ///  mySymbolData.Bars[0] - most first recent piece of data
             ///  mySymbolData.Bars[5] - the sixth most recent piece of data (zero based indexing)
-            /// </summary>
-            public readonly RollingWindow<TradeBar> Bars;
-            /// <summary>
+            */
+            public final RollingWindow<TradeBar> Bars;
+            /**
             /// The period used when population the Bars rolling window.
-            /// </summary>
-            public readonly TimeSpan BarPeriod;
-            /// <summary>
+            */
+            public final Duration BarPeriod;
+            /**
             /// The simple moving average indicator for our symbol
-            /// </summary>
+            */
             public SimpleMovingAverage SMA;
 
-            /// <summary>
+            /**
             /// Initializes a new instance of SymbolData
-            /// </summary>
-            public SymbolData( String symbol, SecurityType securityType, TimeSpan barPeriod, int windowSize) {
+            */
+            public SymbolData( String symbol, SecurityType securityType, Duration barPeriod, int windowSize) {
                 Symbol = symbol;
                 SecurityType = securityType;
                 BarPeriod = barPeriod;
                 Bars = new RollingWindow<TradeBar>(windowSize);
             }
 
-            /// <summary>
+            /**
             /// Returns true if all the data in this instance is ready (indicators, rolling windows, ect...)
-            /// </summary>
+            */
             public boolean IsReady
             {
                 get { return Bars.IsReady && SMA.IsReady; }
             }
 
-            /// <summary>
+            /**
             /// Returns true if the most recent trade bar time matches the current time minus the bar's period, this
             /// indicates that update was just called on this instance
-            /// </summary>
-            /// <param name="current">The current algorithm time</param>
-            /// <returns>True if this instance was just updated with new data, false otherwise</returns>
+            */
+             * @param current">The current algorithm time
+            @returns True if this instance was just updated with new data, false otherwise
             public boolean WasJustUpdated(DateTime current) {
                 return Bars.Count > 0 && Bars[0].Time == current - BarPeriod;
             }

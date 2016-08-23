@@ -19,10 +19,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Hikkake Modified candlestick pattern
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - first candle
     /// - second candle: candle with range less than first candle and close near the bottom(near the top)
@@ -36,46 +36,46 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// overwrites the confirmation of the old hikkake);
     /// The user should consider that modified hikkake is a reversal pattern, while hikkake could be both a reversal
     /// or a continuation pattern, so bullish(bearish) modified hikkake is significant when appearing in a downtrend(uptrend)
-    /// </remarks>
+    /// 
     public class HikkakeModified : CandlestickPattern
     {
-        private readonly int _nearAveragePeriod;
+        private final int _nearAveragePeriod;
 
         private BigDecimal _nearPeriodTotal;
 
         private int _patternIndex;
         private int _patternResult;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="HikkakeModified"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public HikkakeModified( String name) 
             : base(name, Math.Max(1, CandleSettings.Get(CandleSettingType.Near).AveragePeriod) + 5 + 1) {
             _nearAveragePeriod = CandleSettings.Get(CandleSettingType.Near).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="HikkakeModified"/> class.
-        /// </summary>
+        */
         public HikkakeModified()
             : this( "HIKKAKEMODIFIED") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _nearAveragePeriod - 3 && Samples < Period - 3) {
@@ -175,9 +175,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _nearPeriodTotal = 0;
             _patternIndex = 0;

@@ -17,35 +17,35 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Represents a model that computes the volatility of a security
-    /// </summary>
+    */
     public interface IVolatilityModel
     {
-        /// <summary>
+        /**
         /// Gets the volatility of the security as a percentage
-        /// </summary>
+        */
         BigDecimal Volatility { get; }
 
-        /// <summary>
+        /**
         /// Updates this model using the new price information in
         /// the specified security instance
-        /// </summary>
-        /// <param name="security">The security to calculate volatility for</param>
-        /// <param name="data">The new data used to update the model</param>
+        */
+         * @param security">The security to calculate volatility for
+         * @param data">The new data used to update the model
         void Update(Security security, BaseData data);
     }
 
-    /// <summary>
+    /**
     /// Provides access to a null implementation for <see cref="IVolatilityModel"/>
-    /// </summary>
+    */
     public static class VolatilityModel
     {
-        /// <summary>
+        /**
         /// Gets an instance of <see cref="IVolatilityModel"/> that will always
         /// return 0 for its volatility and does nothing during Update.
-        /// </summary>
-        public static readonly IVolatilityModel Null = new NullVolatilityModel();
+        */
+        public static final IVolatilityModel Null = new NullVolatilityModel();
 
         private sealed class NullVolatilityModel : IVolatilityModel
         {

@@ -21,39 +21,39 @@ using QuantConnect.Logging;
 
 package com.quantconnect.lean.ToolBox
 {
-    /// <summary>
+    /**
     /// Processing harness used to read files in, parse them, and process them.
-    /// </summary>
+    */
     public class RawFileProcessor : IDisposable
     {
         private DateTime? _start;
-        private readonly IStreamProvider _streamProvider;
-        private readonly IStreamParser _parser;
-        private readonly IDataProcessor[] _processors;
+        private final IStreamProvider _streamProvider;
+        private final IStreamParser _parser;
+        private final IDataProcessor[] _processors;
 
-        /// <summary>
+        /**
         /// Gets or sets a name used for logging
-        /// </summary>
+        */
         public String Name { get; set; }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="RawFileProcessor"/> class
-        /// </summary>
+        */
         public RawFileProcessor(IStreamProvider streamProvider, IStreamParser parser, params IDataProcessor[] processors) {
             _streamProvider = streamProvider;
             _parser = parser;
             _processors = processors;
         }
 
-        /// <summary>
+        /**
         /// Runs the raw file processor on the specified files
-        /// </summary>
-        /// <param name="name">A name for the processor used for logging</param>
-        /// <param name="sources">The raw files to be processed</param>
-        /// <param name="streamProvider">Instance capable of reading the sources into a stream</param>
-        /// <param name="streamParser">Instance capable of parsing the provided stream</param>
-        /// <param name="processors">The data processors to process the parsed data</param>
-        /// <returns>True if the operation completed without error, otherwise false</returns>
+        */
+         * @param name">A name for the processor used for logging
+         * @param sources">The raw files to be processed
+         * @param streamProvider">Instance capable of reading the sources into a stream
+         * @param streamParser">Instance capable of parsing the provided stream
+         * @param processors">The data processors to process the parsed data
+        @returns True if the operation completed without error, otherwise false
         public static boolean Run( String name, IEnumerable<String> sources, IStreamProvider streamProvider, IStreamParser streamParser, params IDataProcessor[] processors) {
             using (processor = new RawFileProcessor(streamProvider, streamParser, processors) { Name = name }) {
                 foreach (zip in sources) {
@@ -70,10 +70,10 @@ package com.quantconnect.lean.ToolBox
             return true;
         }
 
-        /// <summary>
+        /**
         /// Perform processing on the specified source file
-        /// </summary>
-        /// <param name="source">The source file to be processed</param>
+        */
+         * @param source">The source file to be processed
         public void Process( String source) {
             _start = _start ?? DateTime.UtcNow;
 
@@ -92,9 +92,9 @@ package com.quantconnect.lean.ToolBox
             _streamProvider.Close(source);
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         public void Dispose() {
             _streamProvider.Dispose();
             _parser.Dispose();

@@ -21,28 +21,28 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="ISubscriptionDataSourceReader"/> that reads zip entry names
-    /// </summary>
+    */
     public class ZipEntryNameSubscriptionDataSourceReader : ISubscriptionDataSourceReader
     {
-        private readonly SubscriptionDataConfig _config;
-        private readonly DateTime _dateTime;
-        private readonly boolean _isLiveMode;
-        private readonly BaseData _factory;
+        private final SubscriptionDataConfig _config;
+        private final DateTime _dateTime;
+        private final boolean _isLiveMode;
+        private final BaseData _factory;
 
-        /// <summary>
+        /**
         /// Event fired when the specified source is considered invalid, this may
         /// be from a missing file or failure to download a remote source
-        /// </summary>
+        */
         public event EventHandler<InvalidSourceEventArgs> InvalidSource;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ZipEntryNameSubscriptionDataSourceReader"/> class
-        /// </summary>
-        /// <param name="config">The subscription's configuration</param>
-        /// <param name="dateTime">The date this factory was produced to read data for</param>
-        /// <param name="isLiveMode">True if we're in live mode, false for backtesting</param>
+        */
+         * @param config">The subscription's configuration
+         * @param dateTime">The date this factory was produced to read data for
+         * @param isLiveMode">True if we're in live mode, false for backtesting
         public ZipEntryNameSubscriptionDataSourceReader(SubscriptionDataConfig config, DateTime dateTime, boolean isLiveMode) {
             _config = config;
             _dateTime = dateTime;
@@ -50,11 +50,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             _factory = (BaseData) Activator.CreateInstance(config.Type);
         }
 
-        /// <summary>
+        /**
         /// Reads the specified <paramref name="source"/>
-        /// </summary>
-        /// <param name="source">The source to be read</param>
-        /// <returns>An <see cref="IEnumerable{BaseData}"/> that contains the data in the source</returns>
+        */
+         * @param source">The source to be read
+        @returns An <see cref="IEnumerable{BaseData}"/> that contains the data in the source
         public IEnumerable<BaseData> Read(SubscriptionDataSource source) {
             if( !File.Exists(source.Source)) {
                 OnInvalidSource(source, new FileNotFoundException( "The specified file was not found", source.Source));
@@ -75,11 +75,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the <see cref="InvalidSource"/> event
-        /// </summary>
-        /// <param name="source">The <see cref="SubscriptionDataSource"/> that was invalid</param>
-        /// <param name="exception">The exception if one was raised, otherwise null</param>
+        */
+         * @param source">The <see cref="SubscriptionDataSource"/> that was invalid
+         * @param exception">The exception if one was raised, otherwise null
         private void OnInvalidSource(SubscriptionDataSource source, Exception exception) {
             handler = InvalidSource;
             if( handler != null ) handler(this, new InvalidSourceEventArgs(source, exception));

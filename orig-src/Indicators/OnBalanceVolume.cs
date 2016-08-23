@@ -17,38 +17,38 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// This indicator computes the On Balance Volume (OBV). 
     /// The On Balance Volume is calculated by determining the price of the current close price and previous close price.
     /// If the current close price is equivalent to the previous price the OBV remains the same,
     /// If the current close price is higher the volume of that day is added to the OBV, while a lower close price will
     /// result in negative value.
-    /// </summary>
+    */
     public class OnBalanceVolume : TradeBarIndicator
     {
         private TradeBar _previousInput;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the Indicator class using the specified name.
-        /// </summary> 
-        /// <param name="name">The name of this indicator</param>
+        */ 
+         * @param name">The name of this indicator
         public OnBalanceVolume( String name)
             : base(name) {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return _previousInput != null; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns> A new value for this indicator </returns>
+        */
+         * @param input">The input given to the indicator
+        @returns  A new value for this indicator 
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             obv = Current.Value;
 
@@ -72,9 +72,9 @@ package com.quantconnect.lean.Indicators
             return obv;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _previousInput = null;
             base.Reset();

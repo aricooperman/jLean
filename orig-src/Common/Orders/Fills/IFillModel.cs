@@ -17,57 +17,57 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Orders.Fills
 {
-    /// <summary>
+    /**
     /// Represents a model that simulates order fill events
-    /// </summary>
+    */
     public interface IFillModel
     {
-        /// <summary>
+        /**
         /// Model the slippage on a market order: fixed percentage of order price
-        /// </summary>
-        /// <param name="asset">Asset we're trading this order</param>
-        /// <param name="order">Order to update</param>
-        /// <returns>Order fill information detailing the average price and quantity filled.</returns>
+        */
+         * @param asset">Asset we're trading this order
+         * @param order">Order to update
+        @returns Order fill information detailing the average price and quantity filled.
         OrderEvent MarketFill(Security asset, MarketOrder order);
 
-        /// <summary>
+        /**
         /// Stop Market Fill Model. Return an order event with the fill details.
-        /// </summary>
-        /// <param name="asset">Asset we're trading this order</param>
-        /// <param name="order">Stop Order to Check, return filled if true</param>
-        /// <returns>Order fill information detailing the average price and quantity filled.</returns>
+        */
+         * @param asset">Asset we're trading this order
+         * @param order">Stop Order to Check, return filled if true
+        @returns Order fill information detailing the average price and quantity filled.
         OrderEvent StopMarketFill(Security asset, StopMarketOrder order);
 
-        /// <summary>
+        /**
         /// Stop Limit Fill Model. Return an order event with the fill details.
-        /// </summary>
-        /// <param name="asset">Asset we're trading this order</param>
-        /// <param name="order">Stop Limit Order to Check, return filled if true</param>
-        /// <returns>Order fill information detailing the average price and quantity filled.</returns>
+        */
+         * @param asset">Asset we're trading this order
+         * @param order">Stop Limit Order to Check, return filled if true
+        @returns Order fill information detailing the average price and quantity filled.
         OrderEvent StopLimitFill(Security asset, StopLimitOrder order);
 
-        /// <summary>
+        /**
         /// Limit Fill Model. Return an order event with the fill details.
-        /// </summary>
-        /// <param name="asset">Stock Object to use to help model limit fill</param>
-        /// <param name="order">Order to fill. Alter the values directly if filled.</param>
-        /// <returns>Order fill information detailing the average price and quantity filled.</returns>
+        */
+         * @param asset">Stock Object to use to help model limit fill
+         * @param order">Order to fill. Alter the values directly if filled.
+        @returns Order fill information detailing the average price and quantity filled.
         OrderEvent LimitFill(Security asset, LimitOrder order);
 
-        /// <summary>
+        /**
         /// Market on Open Fill Model. Return an order event with the fill details
-        /// </summary>
-        /// <param name="asset">Asset we're trading with this order</param>
-        /// <param name="order">Order to be filled</param>
-        /// <returns>Order fill information detailing the average price and quantity filled.</returns>
+        */
+         * @param asset">Asset we're trading with this order
+         * @param order">Order to be filled
+        @returns Order fill information detailing the average price and quantity filled.
         OrderEvent MarketOnOpenFill(Security asset, MarketOnOpenOrder order);
 
-        /// <summary>
+        /**
         /// Market on Close Fill Model. Return an order event with the fill details
-        /// </summary>
-        /// <param name="asset">Asset we're trading with this order</param>
-        /// <param name="order">Order to be filled</param>
-        /// <returns>Order fill information detailing the average price and quantity filled.</returns>
+        */
+         * @param asset">Asset we're trading with this order
+         * @param order">Order to be filled
+        @returns Order fill information detailing the average price and quantity filled.
         OrderEvent MarketOnCloseFill(Security asset, MarketOnCloseOrder order);
     }
 }

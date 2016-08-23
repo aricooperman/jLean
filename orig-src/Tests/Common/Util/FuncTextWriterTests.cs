@@ -26,7 +26,7 @@ package com.quantconnect.lean.Tests.Common.Util
         [Test]
         public void RedirectsWriteAndWriteLine() {
             messages = new List<String>();
-            Action<String> redirector = s => messages.Add(s);
+            Action<String> redirector = s -> messages.Add(s);
             writer = new FuncTextWriter(redirector);
 
             writer.Write( "message");
@@ -41,7 +41,7 @@ package com.quantconnect.lean.Tests.Common.Util
         [Test]
         public void RedirectsConsoleOutAndError() {
             messages = new List<String>();
-            Action<String> redirector = s => messages.Add(s);
+            Action<String> redirector = s -> messages.Add(s);
             writer = new FuncTextWriter(redirector);
 
             Console.SetOut(writer);

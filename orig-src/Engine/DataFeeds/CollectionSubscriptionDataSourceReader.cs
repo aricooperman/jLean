@@ -21,24 +21,24 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Collection Subscription Factory takes a BaseDataCollection from BaseData factories
     /// and yields it one point at a time to the algorithm
-    /// </summary>
+    */
     public class CollectionSubscriptionDataSourceReader : ISubscriptionDataSourceReader
     {
         
-        private readonly DateTime _date;
-        private readonly boolean _isLiveMode;
-        private readonly BaseData _factory;
-        private readonly SubscriptionDataConfig _config;
+        private final DateTime _date;
+        private final boolean _isLiveMode;
+        private final BaseData _factory;
+        private final SubscriptionDataConfig _config;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="CollectionSubscriptionDataSourceReader"/> class
-        /// </summary>
-        /// <param name="config">The subscription's configuration</param>
-        /// <param name="date">The date this factory was produced to read data for</param>
-        /// <param name="isLiveMode">True if we're in live mode, false for backtesting</param>
+        */
+         * @param config">The subscription's configuration
+         * @param date">The date this factory was produced to read data for
+         * @param isLiveMode">True if we're in live mode, false for backtesting
         public CollectionSubscriptionDataSourceReader(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             _date = date;
             _config = config;
@@ -46,23 +46,23 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             _factory = (BaseData)ObjectActivator.GetActivator(config.Type).Invoke(new object[0]);
         }
 
-        /// <summary>
+        /**
         /// Event fired when the specified source is considered invalid, this may
         /// be from a missing file or failure to download a remote source
-        /// </summary>
+        */
         public event EventHandler<InvalidSourceEventArgs> InvalidSource;
 
-        /// <summary>
+        /**
         /// Event fired when an exception is thrown during a call to 
         /// <see cref="BaseData.Reader(SubscriptionDataConfig, string, DateTime, bool)"/>
-        /// </summary>
+        */
         public event EventHandler<ReaderErrorEventArgs> ReaderError;
 
-        /// <summary>
+        /**
         /// Reads the specified <paramref name="source"/>
-        /// </summary>
-        /// <param name="source">The source to be read</param>
-        /// <returns>An <see cref="IEnumerable{BaseData}"/> that contains the data in the source</returns>
+        */
+         * @param source">The source to be read
+        @returns An <see cref="IEnumerable{BaseData}"/> that contains the data in the source
         public IEnumerable<BaseData> Read(SubscriptionDataSource source) {
             IStreamReader reader = null;
             instances = new BaseDataCollection();
@@ -106,21 +106,21 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the <see cref="ReaderError"/> event
-        /// </summary>
-        /// <param name="line">The line that caused the exception</param>
-        /// <param name="exception">The exception that was caught</param>
+        */
+         * @param line">The line that caused the exception
+         * @param exception">The exception that was caught
         private void OnReaderError( String line, Exception exception) {
             handler = ReaderError;
             if( handler != null ) handler(this, new ReaderErrorEventArgs(line, exception));
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the <see cref="InvalidSource"/> event
-        /// </summary>
-        /// <param name="source">The <see cref="SubscriptionDataSource"/> that was invalid</param>
-        /// <param name="exception">The exception if one was raised, otherwise null</param>
+        */
+         * @param source">The <see cref="SubscriptionDataSource"/> that was invalid
+         * @param exception">The exception if one was raised, otherwise null
         private void OnInvalidSource(SubscriptionDataSource source, Exception exception) {
             handler = InvalidSource;
             if( handler != null ) handler(this, new InvalidSourceEventArgs(source, exception));

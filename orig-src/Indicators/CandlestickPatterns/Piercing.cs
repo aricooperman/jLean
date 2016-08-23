@@ -17,10 +17,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Piercing candlestick pattern
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - first candle: long black candle
     /// - second candle: long white candle with open below previous day low and close at least at 50% of previous day
@@ -29,43 +29,43 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The returned value is positive(+1): piercing pattern is always bullish
     /// The user should consider that a piercing pattern is significant when it appears in a downtrend, while 
     /// this function does not consider it
-    /// </remarks>
+    /// 
     public class Piercing : CandlestickPattern
     {
-        private readonly int _bodyLongAveragePeriod;
+        private final int _bodyLongAveragePeriod;
 
         private decimal[] _bodyLongPeriodTotal = new decimal[2];
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Piercing"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public Piercing( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod + 1 + 1) {
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Piercing"/> class.
-        /// </summary>
+        */
         public Piercing()
             : this( "PIERCING") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _bodyLongAveragePeriod) {
@@ -108,9 +108,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _bodyLongPeriodTotal = new decimal[2];
             base.Reset();

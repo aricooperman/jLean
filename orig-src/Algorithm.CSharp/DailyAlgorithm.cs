@@ -19,18 +19,18 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// Uses daily data and a simple moving average cross to place trades and an ema for stop placement
-    /// </summary>
+    */
     public class DailyAlgorithm : QCAlgorithm
     {
         private DateTime lastAction;
         private MovingAverageConvergenceDivergence macd;
         private ExponentialMovingAverage ema;
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2013, 01, 01);  //Set Start Date
             SetEndDate(2014, 01, 01);    //Set End Date
@@ -46,10 +46,10 @@ package com.quantconnect.lean.Algorithm.Examples
             Securities["IBM"].SetLeverage(1.0m);
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">TradeBars IDictionary object with your stock data</param>
+        */
+         * @param data">TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             if( !macd.IsReady) return;
             if( !data.ContainsKey( "IBM")) return;

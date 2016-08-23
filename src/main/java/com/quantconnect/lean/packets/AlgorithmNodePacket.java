@@ -27,7 +27,7 @@ import com.quantconnect.lean.Global.UserPlan;
 public class AlgorithmNodePacket extends Packet {
     
     /// Default constructor for the algorithm node:
-    /// <param name="type"></param>
+     * @param type">
     public AlgorithmNodePacket( PacketType type ) {
         super( type );
     }
@@ -112,33 +112,33 @@ using Newtonsoft.Json;
 
 package com.quantconnect.lean.Packets
 {
-    /// <summary>
+    /**
     /// Algorithm Node Packet is a work task for the Lean Engine
-    /// </summary>
+    */
     public class AlgorithmNodePacket : Packet
     {
-        /// <summary>
+        /**
         /// Default constructor for the algorithm node:
-        /// </summary>
-        /// <param name="type"></param>
+        */
+         * @param type">
         public AlgorithmNodePacket(PacketType type)
             : base(type) { }
 
-        /// <summary>
+        /**
         /// User Id placing request
-        /// </summary>
+        */
         @JsonProperty( "iUserID")]
         public int UserId = 0;
 
-        /// <summary>
+        /**
         /// Project Id of the request
-        /// </summary>
+        */
         @JsonProperty( "iProjectID")]
         public int ProjectId = 0;
 
-        /// <summary>
+        /**
         /// Algorithm Id - BacktestId or DeployId - Common Id property between packets.
-        /// </summary>
+        */
         @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId
         {
@@ -151,76 +151,76 @@ package com.quantconnect.lean.Packets
             }
         }
 
-        /// <summary>
+        /**
         /// User session Id for authentication
-        /// </summary>
+        */
         @JsonProperty( "sSessionID")]
         public String SessionId = "";
 
-        /// <summary>
+        /**
         /// User subscriptions state - free or paid.
-        /// </summary>
+        */
         @JsonProperty( "sUserPlan")]
         public UserPlan UserPlan = UserPlan.Free;
 
-        /// <summary>
+        /**
         /// Language flag: Currently represents IL code or Dynamic Scripted Types.
-        /// </summary>
+        */
         @JsonProperty( "eLanguage")]
         public Language Language = Language.CSharp;
 
-        /// <summary>
+        /**
         /// Server type for the deployment (512, 1024, 2048)
-        /// </summary>
+        */
         @JsonProperty( "sServerType")]
         public ServerType ServerType = ServerType.Server512;
 
-        /// <summary>
+        /**
         /// Unique compile id of this backtest
-        /// </summary>
+        */
         @JsonProperty( "sCompileID")]
         public String CompileId = "";
 
-        /// <summary>
+        /**
         /// Version number identifier for the lean engine.
-        /// </summary>
+        */
         @JsonProperty( "sVersion")]
         public String Version;
 
-        /// <summary>
+        /**
         /// An algorithm packet which has already been run and is being redelivered on this node.
         /// In this event we don't want to relaunch the task as it may result in unexpected behaviour for user.
-        /// </summary>
+        */
         @JsonProperty( "bRedelivered")]
         public boolean Redelivered = false;
 
-        /// <summary>
+        /**
         /// Algorithm binary with zip of contents
-        /// </summary>
+        */
         @JsonProperty( "oAlgorithm")]
         public byte[] Algorithm = new byte[] { };
 
-        /// <summary>
+        /**
         /// Request source - Web IDE or API - for controling result handler behaviour
-        /// </summary>
+        */
         @JsonProperty( "sRequestSource")]
         public String RequestSource = "WebIDE";
 
-        /// <summary>
+        /**
         /// The maximum amount of RAM (in MB) this algorithm is allowed to utilize
-        /// </summary>
+        */
         @JsonProperty( "iMaxRamAllocation")]
         public int RamAllocation;
 
-        /// <summary>
+        /**
         /// Specifies values to control algorithm limits
-        /// </summary>
+        */
         @JsonProperty( "oControls")]
         public Controls Controls;
 
-        /// <summary>
+        /**
         /// The parameter values used to set algorithm parameters
-        /// </summary>
+        */
         @JsonProperty( "aParameters")]
         public Map<String,String> Parameters = new Map<String,String>();
     } // End Node Packet:

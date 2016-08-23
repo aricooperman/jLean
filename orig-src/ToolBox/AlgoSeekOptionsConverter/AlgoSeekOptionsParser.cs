@@ -23,9 +23,9 @@ using QuantConnect.Logging;
 
 package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IStreamParser"/> that parses raw algo seek options data
-    /// </summary>
+    */
     public class AlgoSeekOptionsParser : IStreamParser
     {
         private static final int LogInterval = 1000000;
@@ -34,12 +34,12 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
             Log.Error( "WARNING:: TEST MODE:: AWAITING FINAL FILE NAMING CONVENTION");
         }
 
-        /// <summary>
+        /**
         /// Parses the specified input stream into an enumerable of data
-        /// </summary>
-        /// <param name="source">The source of the stream</param>
-        /// <param name="stream">The input stream to be parsed</param>
-        /// <returns>An enumerable of base data</returns>
+        */
+         * @param source">The source of the stream
+         * @param stream">The input stream to be parsed
+        @returns An enumerable of base data
         public IEnumerable<BaseData> Parse( String source, Stream stream) {
             count = 0L;
             referenceDate = DateTime.ParseExact(new FileInfo(source).Directory.Name, DateFormat.EightCharacter, null );
@@ -149,22 +149,22 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
             }
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         public void Dispose() {
         }
 
-        /// <summary>
+        /**
         /// Specifies the event types to be parsed from the raw data, all other data is ignored
-        /// </summary>
+        */
         class EventType
         {
-            public static readonly EventType Trade = new EventType(false, TickType.Trade);
-            public static readonly EventType Bid = new EventType(false, TickType.Quote);
-            public static readonly EventType Ask = new EventType(true, TickType.Quote);
-            public readonly boolean IsAsk;
-            public readonly TickType TickType;
+            public static final EventType Trade = new EventType(false, TickType.Trade);
+            public static final EventType Bid = new EventType(false, TickType.Quote);
+            public static final EventType Ask = new EventType(true, TickType.Quote);
+            public final boolean IsAsk;
+            public final TickType TickType;
             private EventType( boolean isAsk, TickType tickType) {
                 IsAsk = isAsk;
                 TickType = tickType;

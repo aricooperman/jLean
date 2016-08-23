@@ -19,10 +19,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Advance Block candlestick pattern
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - three white candlesticks with consecutively higher closes
     /// - each candle opens within or near the previous white real body
@@ -33,14 +33,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The returned value is negative(-1): advance block is always bearish;
     /// The user should consider that advance block is significant when it appears in uptrend, while this function
     /// does not consider it
-    /// </remarks>
+    /// 
     public class AdvanceBlock : CandlestickPattern
     {
-        private readonly int _shadowShortAveragePeriod;
-        private readonly int _shadowLongAveragePeriod;
-        private readonly int _nearAveragePeriod;
-        private readonly int _farAveragePeriod;
-        private readonly int _bodyLongAveragePeriod;
+        private final int _shadowShortAveragePeriod;
+        private final int _shadowLongAveragePeriod;
+        private final int _nearAveragePeriod;
+        private final int _farAveragePeriod;
+        private final int _bodyLongAveragePeriod;
 
         private decimal[] _shadowShortPeriodTotal = new decimal[3];
         private decimal[] _shadowLongPeriodTotal = new decimal[2];
@@ -48,10 +48,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private decimal[] _farPeriodTotal = new decimal[3];
         private BigDecimal _bodyLongPeriodTotal;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="AdvanceBlock"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public AdvanceBlock( String name) 
             : base(name, Math.Max(Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowShort).AveragePeriod),
                   Math.Max(CandleSettings.Get(CandleSettingType.Far).AveragePeriod, CandleSettings.Get(CandleSettingType.Near).AveragePeriod)),
@@ -63,27 +63,27 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
         }
 
-    /// <summary>
+    /**
     /// Initializes a new instance of the <see cref="AdvanceBlock"/> class.
-    /// </summary>
+    */
     public AdvanceBlock()
             : this( "ADVANCEBLOCK") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _shadowShortAveragePeriod) {
@@ -194,9 +194,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _shadowShortPeriodTotal = new decimal[3];
             _shadowLongPeriodTotal = new decimal[2];

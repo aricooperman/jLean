@@ -26,7 +26,7 @@ package com.quantconnect.lean.Tests.Common.Util
         [Test]
         public void MakesPropertyOrFieldSelectorThatWorks() {
             static final String DayOfYear = "DayOfYear";
-            Expression<Func<DateTime,Integer>> expected = x => x.DayOfYear;
+            Expression<Func<DateTime,Integer>> expected = x -> x.DayOfYear;
 
             actual = ExpressionBuilder.MakePropertyOrFieldSelector<DateTime,Integer>(DayOfYear);
 
@@ -37,7 +37,7 @@ package com.quantconnect.lean.Tests.Common.Util
         [Test]
         public void NonGenericMakesPropertyOrFieldSelectorThatWorks() {
             static final String DayOfYear = "DayOfYear";
-            Expression<Func<DateTime,Integer>> expected = x => x.DayOfYear;
+            Expression<Func<DateTime,Integer>> expected = x -> x.DayOfYear;
 
             actual = ExpressionBuilder.MakePropertyOrFieldSelector(typeof (DateTime), DayOfYear) as Expression<Func<DateTime,Integer>>; 
             Assert.IsNotNull(actual);

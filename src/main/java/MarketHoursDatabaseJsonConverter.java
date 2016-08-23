@@ -10,52 +10,52 @@
 /// Provides json conversion for the <see cref="MarketHoursDatabase"/> class
 public class MarketHoursDatabaseJsonConverter : TypeChangeJsonConverter<MarketHoursDatabase, MarketHoursDatabaseJsonConverter.MarketHoursDatabaseJson>
 {
-    /// <summary>
+    /**
     /// Convert the input value to a value to be serialzied
-    /// </summary>
-    /// <param name="value">The input value to be converted before serialziation</param>
-    /// <returns>A new instance of TResult that is to be serialzied</returns>
+    */
+     * @param value">The input value to be converted before serialziation
+    @returns A new instance of TResult that is to be serialzied
     protected @Override MarketHoursDatabaseJson Convert(MarketHoursDatabase value) {
         return new MarketHoursDatabaseJson( value );
     }
 
-    /// <summary>
+    /**
     /// Converts the input value to be deserialized
-    /// </summary>
-    /// <param name="value">The deserialized value that needs to be converted to T</param>
-    /// <returns>The converted value</returns>
+    */
+     * @param value">The deserialized value that needs to be converted to T
+    @returns The converted value
     protected @Override MarketHoursDatabase Convert(MarketHoursDatabaseJson value) {
         return value.Convert();
     }
 
-    /// <summary>
+    /**
     /// Creates an instance of the un-projected type to be deserialized
-    /// </summary>
-    /// <param name="type">The input object type, this is the data held in the token</param>
-    /// <param name="token">The input data to be converted into a T</param>
-    /// <returns>A new instance of T that is to be serialized using default rules</returns>
+    */
+     * @param type">The input object type, this is the data held in the token
+     * @param token">The input data to be converted into a T
+    @returns A new instance of T that is to be serialized using default rules
     protected @Override MarketHoursDatabase Create(Type type, JToken token) {
         jobject = (JObject) token;
         instance = jobject.ToObject<MarketHoursDatabaseJson>();
         return Convert(instance);
     }
 
-    /// <summary>
+    /**
     /// Defines the json structure of the market-hours-database.json file
-    /// </summary>
+    */
     [JsonObject(MemberSerialization.OptIn)]
     public class MarketHoursDatabaseJson
     {
-        /// <summary>
+        /**
         /// The entries in the market hours database, keyed by <see cref="MarketHoursDatabase.Key.toString"/>
-        /// </summary>
-        [JsonProperty( "entries")]
+        */
+        @JsonProperty( "entries")]
         public Map<String, MarketHoursDatabaseEntryJson> Entries;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="MarketHoursDatabaseJson"/> class
-        /// </summary>
-        /// <param name="database">The database instance to copy</param>
+        */
+         * @param database">The database instance to copy
         public MarketHoursDatabaseJson(MarketHoursDatabase database) {
             if( database == null ) return;
             Entries = new Map<String, MarketHoursDatabaseEntryJson>();
@@ -66,10 +66,10 @@ public class MarketHoursDatabaseJsonConverter : TypeChangeJsonConverter<MarketHo
             }
         }
 
-        /// <summary>
+        /**
         /// Converts this json representation to the <see cref="MarketHoursDatabase"/> type
-        /// </summary>
-        /// <returns>A new instance of the <see cref="MarketHoursDatabase"/> class</returns>
+        */
+        @returns A new instance of the <see cref="MarketHoursDatabase"/> class
         public MarketHoursDatabase Convert() {
             entries = new Map<SecurityDatabaseKey, MarketHoursDatabase.Entry>();
             foreach (entry in Entries) {
@@ -86,67 +86,67 @@ public class MarketHoursDatabaseJsonConverter : TypeChangeJsonConverter<MarketHo
         }
     }
 
-    /// <summary>
+    /**
     /// Defines the json structure of a single entry in the market-hours-database.json file
-    /// </summary>
+    */
     [JsonObject(MemberSerialization.OptIn)]
     public class MarketHoursDatabaseEntryJson
     {
-        /// <summary>
+        /**
         /// The data's raw time zone
-        /// </summary>
-        [JsonProperty( "dataTimeZone")]
+        */
+        @JsonProperty( "dataTimeZone")]
         public String DataTimeZone;
-        /// <summary>
+        /**
         /// The exchange's time zone id from the tzdb
-        /// </summary>
-        [JsonProperty( "exchangeTimeZone")]
+        */
+        @JsonProperty( "exchangeTimeZone")]
         public String ExchangeTimeZone;
-        /// <summary>
+        /**
         /// Sunday market hours segments
-        /// </summary>
-        [JsonProperty( "sunday")]
+        */
+        @JsonProperty( "sunday")]
         public List<MarketHoursSegment> Sunday;
-        /// <summary>
+        /**
         /// Monday market hours segments
-        /// </summary>
-        [JsonProperty( "monday")]
+        */
+        @JsonProperty( "monday")]
         public List<MarketHoursSegment> Monday;
-        /// <summary>
+        /**
         /// Tuesday market hours segments
-        /// </summary>
-        [JsonProperty( "tuesday")]
+        */
+        @JsonProperty( "tuesday")]
         public List<MarketHoursSegment> Tuesday;
-        /// <summary>
+        /**
         /// Wednesday market hours segments
-        /// </summary>
-        [JsonProperty( "wednesday")]
+        */
+        @JsonProperty( "wednesday")]
         public List<MarketHoursSegment> Wednesday;
-        /// <summary>
+        /**
         /// Thursday market hours segments
-        /// </summary>
-        [JsonProperty( "thursday")]
+        */
+        @JsonProperty( "thursday")]
         public List<MarketHoursSegment> Thursday;
-        /// <summary>
+        /**
         /// Friday market hours segments
-        /// </summary>
-        [JsonProperty( "friday")]
+        */
+        @JsonProperty( "friday")]
         public List<MarketHoursSegment> Friday;
-        /// <summary>
+        /**
         /// Saturday market hours segments
-        /// </summary>
-        [JsonProperty( "saturday")]
+        */
+        @JsonProperty( "saturday")]
         public List<MarketHoursSegment> Saturday;
-        /// <summary>
+        /**
         /// Holiday date strings
-        /// </summary>
-        [JsonProperty( "holidays")]
+        */
+        @JsonProperty( "holidays")]
         public List<String> Holidays;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="MarketHoursDatabaseEntryJson"/> class
-        /// </summary>
-        /// <param name="entry">The entry instance to copy</param>
+        */
+         * @param entry">The entry instance to copy
         public MarketHoursDatabaseEntryJson(MarketHoursDatabase.Entry entry) {
             if( entry == null ) return;
             DataTimeZone = entry.DataTimeZone.Id;
@@ -159,13 +159,13 @@ public class MarketHoursDatabaseJsonConverter : TypeChangeJsonConverter<MarketHo
             SetSegmentsForDay(hours, DayOfWeek.Thursday, out Thursday);
             SetSegmentsForDay(hours, DayOfWeek.Friday, out Friday);
             SetSegmentsForDay(hours, DayOfWeek.Saturday, out Saturday);
-            Holidays = hours.Holidays.Select(x => x.toString( "M/d/yyyy", CultureInfo.InvariantCulture)).ToList();
+            Holidays = hours.Holidays.Select(x -> x.toString( "M/d/yyyy", CultureInfo.InvariantCulture)).ToList();
         }
 
-        /// <summary>
+        /**
         /// Converts this json representation to the <see cref="MarketHoursDatabase.Entry"/> type
-        /// </summary>
-        /// <returns>A new instance of the <see cref="MarketHoursDatabase.Entry"/> class</returns>
+        */
+        @returns A new instance of the <see cref="MarketHoursDatabase.Entry"/> class
         public MarketHoursDatabase.Entry Convert() {
             hours = new Map<DayOfWeek, LocalMarketHours>
             {
@@ -177,7 +177,7 @@ public class MarketHoursDatabaseJsonConverter : TypeChangeJsonConverter<MarketHo
                 { DayOfWeek.Friday, new LocalMarketHours(DayOfWeek.Friday, Friday) },
                 { DayOfWeek.Saturday, new LocalMarketHours(DayOfWeek.Saturday, Saturday) }
             };
-            holidayDates = Holidays.Select(x => DateTime.ParseExact(x, "M/d/yyyy", CultureInfo.InvariantCulture)).ToHashSet();
+            holidayDates = Holidays.Select(x -> DateTime.ParseExact(x, "M/d/yyyy", CultureInfo.InvariantCulture)).ToHashSet();
             exchangeHours = new SecurityExchangeHours(ZoneIdProviders.Tzdb[ExchangeTimeZone], holidayDates, hours);
             return new MarketHoursDatabase.Entry(ZoneIdProviders.Tzdb[DataTimeZone], exchangeHours);
         }

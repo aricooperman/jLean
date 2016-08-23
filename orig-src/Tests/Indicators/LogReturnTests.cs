@@ -51,7 +51,7 @@ package com.quantconnect.lean.Tests.Indicators
         public void CompareAgainstExternalData() {
             logr = new LogReturn(14);
             double epsilon = 1e-3;
-            TestHelper.TestIndicator(logr, "spy_logr14.txt", "LOGR14", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value, epsilon));
+            TestHelper.TestIndicator(logr, "spy_logr14.txt", "LOGR14", (ind, expected) -> Assert.AreEqual(expected, (double)ind.Current.Value, epsilon));
         }
 
         [Test]

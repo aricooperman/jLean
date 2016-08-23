@@ -17,33 +17,33 @@ using System;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Represents the model responsible for applying cash settlement rules
-    /// </summary>
-    /// <remarks>This model applies cash settlement after T+N days</remarks>
+    */
+    /// This model applies cash settlement after T+N days
     public class DelayedSettlementModel : ISettlementModel
     {
-        private readonly int _numberOfDays;
-        private readonly TimeSpan _timeOfDay;
+        private final int _numberOfDays;
+        private final Duration _timeOfDay;
 
-        /// <summary>
+        /**
         /// Creates an instance of the <see cref="DelayedSettlementModel"/> class
-        /// </summary>
-        /// <param name="numberOfDays">The number of days required for settlement</param>
-        /// <param name="timeOfDay">The time of day used for settlement</param>
-        public DelayedSettlementModel(int numberOfDays, TimeSpan timeOfDay) {
+        */
+         * @param numberOfDays">The number of days required for settlement
+         * @param timeOfDay">The time of day used for settlement
+        public DelayedSettlementModel(int numberOfDays, Duration timeOfDay) {
             _numberOfDays = numberOfDays;
             _timeOfDay = timeOfDay;
         }
 
-        /// <summary>
+        /**
         /// Applies cash settlement rules
-        /// </summary>
-        /// <param name="portfolio">The algorithm's portfolio</param>
-        /// <param name="security">The fill's security</param>
-        /// <param name="applicationTimeUtc">The fill time (in UTC)</param>
-        /// <param name="currency">The currency symbol</param>
-        /// <param name="amount">The amount of cash to apply</param>
+        */
+         * @param portfolio">The algorithm's portfolio
+         * @param security">The fill's security
+         * @param applicationTimeUtc">The fill time (in UTC)
+         * @param currency">The currency symbol
+         * @param amount">The amount of cash to apply
         public void ApplyFunds(SecurityPortfolioManager portfolio, Security security, DateTime applicationTimeUtc, String currency, BigDecimal amount) {
             if( amount > 0) {
                 // positive amount: sell order filled

@@ -22,54 +22,54 @@ using System.Linq;
 
 package com.quantconnect.lean.Data.Auxiliary
 {
-    /// <summary>
+    /**
     /// Defines a single row in a factor_factor file. This is a csv file ordered as {date, price factor, split factor}
-    /// </summary>
+    */
     public class FactorFileRow
     {
-        /// <summary>
+        /**
         /// Gets the date associated with this data
-        /// </summary>
+        */
         public DateTime Date { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the price factor associated with this data
-        /// </summary>
+        */
         public BigDecimal PriceFactor { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets te split factored associated with the date
-        /// </summary>
+        */
         public BigDecimal SplitFactor { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the combined factor used to create adjusted prices from raw prices
-        /// </summary>
+        */
         public BigDecimal PriceScaleFactor
         {
             get { return PriceFactor*SplitFactor; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FactorFileRow"/> class
-        /// </summary>
+        */
         public FactorFileRow(DateTime date, BigDecimal priceFactor, BigDecimal splitFactor) {
             Date = date;
             PriceFactor = priceFactor;
             SplitFactor = splitFactor;
         }
 
-        /// <summary>
+        /**
         /// Reads in the factor file for the specified equity symbol
-        /// </summary>
+        */
         public static IEnumerable<FactorFileRow> Read( String permtick, String market) {
             String path = Path.Combine(Globals.DataFolder, "equity", market, "factor_files", permtick.toLowerCase() + ".csv");
-            return File.ReadAllLines(path).Where(l => !string.IsNullOrWhiteSpace(l)).Select(Parse);
+            return File.ReadAllLines(path).Where(l -> !string.IsNullOrWhiteSpace(l)).Select(Parse);
         }
 
-        /// <summary>
+        /**
         /// Parses the specified line as a factor file row
-        /// </summary>
+        */
         public static FactorFileRow Parse( String line) {
             csv = line.split(',');
             return new FactorFileRow(
@@ -79,12 +79,12 @@ package com.quantconnect.lean.Data.Auxiliary
                 );
         }
 
-        /// <summary>
+        /**
         /// Returns a String that represents the current object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A String that represents the current object.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         public @Override String toString() {
             return Date + ": " + PriceScaleFactor.toString( "0.0000");

@@ -50,56 +50,56 @@ public class Backtest extends RestResponse {
 /*
 package com.quantconnect.lean.Api
 {
-    /// <summary>
+    /**
     /// Backtest response packet from the QuantConnect.com API.
-    /// </summary>
+    */
     public class Backtest : RestResponse
     {
-        /// <summary>
+        /**
         /// Name of the backtest
-        /// </summary>
+        */
         @JsonProperty( "name")]
         public String Name;
 
-        /// <summary>
+        /**
         /// Note on the backtest attached by the user
-        /// </summary>
+        */
         @JsonProperty( "note")]
         public String Note;
 
-        /// <summary>
+        /**
         /// Assigned backtest Id
-        /// </summary>
+        */
         @JsonProperty( "backtestId")]
         public String BacktestId;
 
-        /// <summary>
+        /**
         /// Boolean true when the backtest is completed.
-        /// </summary>
+        */
         @JsonProperty( "completed")]
         public boolean Completed;
 
-        /// <summary>
+        /**
         /// Progress of the backtest in percent 0-1.
-        /// </summary>
+        */
         @JsonProperty( "progress")]
         public BigDecimal Progress;
 
-        /// <summary>
+        /**
         /// Result packet for the backtest
-        /// </summary>
+        */
         @JsonProperty( "result")]
         public BacktestResult Result;
     }
 
-    /// <summary>
+    /**
     /// Collection container for a list of backtests for a project
-    /// </summary>
+    */
     public class BacktestList : RestResponse
     {
-        /// <summary>
+        /**
         /// Collection of summarized backtest objects
-        /// </summary>
+        */
         @JsonProperty( "backtests")]
         public List<Backtest> Backtests; 
     }

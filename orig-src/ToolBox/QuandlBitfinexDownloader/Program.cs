@@ -21,9 +21,9 @@ package com.quantconnect.lean.ToolBox.QuandlBitfinexDownloader
 {
     class Program
     {
-        /// <summary>
+        /**
         /// Quandl Bitfinex Toolbox Project For LEAN Algorithmic Trading Engine.
-        /// </summary>
+        */
         static void Main( String[] args) {
             if( args.Length != 2) {
                 Console.WriteLine( "Usage: Downloader FROMDATE APIKEY");

@@ -21,17 +21,17 @@ using QuantConnect.Securities.Interfaces;
 
 package com.quantconnect.lean.Securities.Forex
 {
-    /// <summary>
+    /**
     /// Forex Transaction Model Class: Specific transaction fill models for FOREX orders
-    /// </summary>
+    */
     /// <seealso cref="SecurityTransactionModel"/>
     /// <seealso cref="ISecurityTransactionModel"/>
     public class ForexTransactionModel : SecurityTransactionModel
     {
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ForexTransactionModel"/> class
-        /// </summary>
-        /// <param name="monthlyTradeAmountInUSDollars">The monthly dollar volume traded</param>
+        */
+         * @param monthlyTradeAmountInUSDollars">The monthly dollar volume traded
         public ForexTransactionModel( BigDecimal monthlyTradeAmountInUSDollars = 0)
             : base(new ImmediateFillModel(), new InteractiveBrokersFeeModel(monthlyTradeAmountInUSDollars), new SpreadSlippageModel()) {   
         }

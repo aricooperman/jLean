@@ -30,10 +30,10 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
     [TestFixture, Ignore( "This test requires a configured and testable Oanda practice account")]
     public partial class OandaBrokerageTests : BrokerageTests
     {
-        /// <summary>
+        /**
         ///     Creates the brokerage under test and connects it
-        /// </summary>
-        /// <returns>A connected brokerage instance</returns>
+        */
+        @returns A connected brokerage instance
         protected @Override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider) {
             environment = Config.Get( "oanda-environment").ConvertTo<Environment>();
             accessToken = Config.Get( "oanda-access-token");
@@ -42,41 +42,41 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
             return new OandaBrokerage(orderProvider, securityProvider, environment, accessToken, accountId);
         }
 
-        /// <summary>
+        /**
         ///     Gets the symbol to be traded, must be shortable
-        /// </summary>
+        */
         protected @Override Symbol Symbol
         {
             get { return Symbol.Create( "EURUSD", SecurityType.Forex, Market.Oanda); }
         }
 
-        /// <summary>
+        /**
         ///     Gets the security type associated with the <see cref="BrokerageTests.Symbol" />
-        /// </summary>
+        */
         protected @Override SecurityType SecurityType
         {
             get { return SecurityType.Forex; }
         }
 
-        /// <summary>
+        /**
         ///     Gets a high price for the specified symbol so a limit sell won't fill
-        /// </summary>
+        */
         protected @Override BigDecimal HighPrice
         {
             get { return 5m; }
         }
 
-        /// <summary>
+        /**
         ///     Gets a low price for the specified symbol so a limit buy won't fill
-        /// </summary>
+        */
         protected @Override BigDecimal LowPrice
         {
             get { return 0.32m; }
         }
 
-        /// <summary>
+        /**
         ///     Gets the current market price of the specified security
-        /// </summary>
+        */
         protected @Override BigDecimal GetAskPrice(Symbol symbol) {
             oanda = (OandaBrokerage) Brokerage;
             quotes = oanda.GetRates(new List<String> { new OandaSymbolMapper().GetBrokerageSymbol(symbol) });

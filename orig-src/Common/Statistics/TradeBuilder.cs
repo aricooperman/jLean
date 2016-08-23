@@ -21,14 +21,14 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Statistics
 {
-    /// <summary>
+    /**
     /// The <see cref="TradeBuilder"/> class generates trades from executions and market price updates
-    /// </summary>
+    */
     public class TradeBuilder
     {
-        /// <summary>
+        /**
         /// Helper class to manage pending trades and market price updates for a symbol
-        /// </summary>
+        */
         private class Position 
         {
             internal List<Trade> PendingTrades { get; set; }
@@ -47,42 +47,42 @@ package com.quantconnect.lean.Statistics
         private static final int LiveModeMaxTradeAgeMonths = 12;
         private static final int MaxOrderIdCacheSize = 1000;
 
-        private readonly List<Trade> _closedTrades = new List<Trade>();
-        private readonly Map<Symbol, Position> _positions = new Map<Symbol, Position>();
-        private readonly FixedSizeHashQueue<Integer> _ordersWithFeesAssigned = new FixedSizeHashQueue<Integer>(MaxOrderIdCacheSize);
-        private readonly FillGroupingMethod _groupingMethod;
-        private readonly FillMatchingMethod _matchingMethod;
+        private final List<Trade> _closedTrades = new List<Trade>();
+        private final Map<Symbol, Position> _positions = new Map<Symbol, Position>();
+        private final FixedSizeHashQueue<Integer> _ordersWithFeesAssigned = new FixedSizeHashQueue<Integer>(MaxOrderIdCacheSize);
+        private final FillGroupingMethod _groupingMethod;
+        private final FillMatchingMethod _matchingMethod;
         private boolean _liveMode;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="TradeBuilder"/> class
-        /// </summary>
+        */
         public TradeBuilder(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             _groupingMethod = groupingMethod;
             _matchingMethod = matchingMethod;
         }
 
-        /// <summary>
+        /**
         /// Sets the live mode flag
-        /// </summary>
-        /// <param name="live">The live mode flag</param>
+        */
+         * @param live">The live mode flag
         public void SetLiveMode( boolean live) {
             _liveMode = live;
         }
 
-        /// <summary>
+        /**
         /// The list of closed trades
-        /// </summary>
+        */
         public List<Trade> ClosedTrades
         {
             get { return _closedTrades; }
         }
 
-        /// <summary>
+        /**
         /// Returns true if there is an open position for the symbol
-        /// </summary>
-        /// <param name="symbol">The symbol</param>
-        /// <returns>true if there is an open position for the symbol</returns>
+        */
+         * @param symbol">The symbol
+        @returns true if there is an open position for the symbol
         public boolean HasOpenPosition(Symbol symbol) {
             Position position;
             if( !_positions.TryGetValue(symbol, out position)) return false;
@@ -93,11 +93,11 @@ package com.quantconnect.lean.Statistics
             return position.PendingFills.Count > 0;
         }
 
-        /// <summary>
+        /**
         /// Sets the current market price for the symbol
-        /// </summary>
-        /// <param name="symbol"></param>
-        /// <param name="price"></param>
+        */
+         * @param symbol">
+         * @param price">
         public void SetMarketPrice(Symbol symbol, BigDecimal price) {
             Position position;
             if( !_positions.TryGetValue(symbol, out position)) return;
@@ -108,11 +108,11 @@ package com.quantconnect.lean.Statistics
                 position.MinPrice = price;
         }
 
-        /// <summary>
+        /**
         /// Processes a new fill, eventually creating new trades
-        /// </summary>
-        /// <param name="fill">The new fill order event</param>
-        /// <param name="conversionRate">The current market conversion rate into the account currency</param>
+        */
+         * @param fill">The new fill order event
+         * @param conversionRate">The current market conversion rate into the account currency
         public void ProcessFill(OrderEvent fill, BigDecimal conversionRate) {
             // If we have multiple fills per order, we assign the order fee only to its first fill
             // to avoid counting the same order fee multiple times.
@@ -275,12 +275,12 @@ package com.quantconnect.lean.Statistics
             else
             {
                 // execution has opposite direction of trade
-                if( position.PendingFills.Sum(x => x.FillQuantity) + fill.FillQuantity == 0 || fill.AbsoluteFillQuantity > Math.Abs(position.PendingFills.Sum(x => x.FillQuantity))) {
+                if( position.PendingFills.Sum(x -> x.FillQuantity) + fill.FillQuantity == 0 || fill.AbsoluteFillQuantity > Math.Abs(position.PendingFills.Sum(x -> x.FillQuantity))) {
                     // trade closed
                     position.PendingFills.Add(fill);
                     position.TotalFees += orderFee;
 
-                    reverseQuantity = position.PendingFills.Sum(x => x.FillQuantity);
+                    reverseQuantity = position.PendingFills.Sum(x -> x.FillQuantity);
 
                     index = _matchingMethod == FillMatchingMethod.FIFO ? 0 : position.PendingFills.Count - 1;
 
@@ -431,9 +431,9 @@ package com.quantconnect.lean.Statistics
             }
         }
 
-        /// <summary>
+        /**
         /// Adds a trade to the list of closed trades, capping the total number only in live mode
-        /// </summary>
+        */
         private void AddNewTrade(Trade trade) {
             _closedTrades.Add(trade);
 

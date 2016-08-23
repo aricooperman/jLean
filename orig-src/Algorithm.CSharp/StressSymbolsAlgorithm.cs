@@ -20,9 +20,9 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// Randomly selects the specified number of symbols from the lists below
-    /// </summary>
+    */
     public class StressSymbolsAlgorithm : QCAlgorithm
     {
         public static final int TickSymbolsToRun = 0;
@@ -31,9 +31,9 @@ package com.quantconnect.lean.Algorithm.Examples
         public static final int HourSymbolsToRun = 0;
         public static final int DailySymbolsToRun = 1000;
 
-        /// <summary>
+        /**
         /// Add Hundreds of Stock and Forex Symbol
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2001, 10, 07);
             SetEndDate(2010, 10, 11);
@@ -58,7 +58,7 @@ package com.quantconnect.lean.Algorithm.Examples
             AddSecurity(hours, Resolution.Hour);
             AddSecurity(daily, Resolution.Daily);
 
-            //SetUniverse(coarse => coarse.Take(1));
+            //SetUniverse(coarse -> coarse.Take(1));
         }
 
         private void AddSecurity(IEnumerable<String> symbols, Resolution resolution) {
@@ -69,10 +69,10 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         private IEnumerable<String> GetRandomSymbols(List<String> allSymbols, HashSet<String> hash, int numberOfSymbols) {
-            return Enumerable.Range(0, numberOfSymbols).Select(x => GetRandomItem(allSymbols, hash));
+            return Enumerable.Range(0, numberOfSymbols).Select(x -> GetRandomItem(allSymbols, hash));
         }
 
-        private readonly Random _random = new Random();
+        private final Random _random = new Random();
         private String GetRandomItem(IReadOnlyList<String> list, HashSet<String> hash) {
             count = 0;
             String item;
@@ -85,9 +85,9 @@ package com.quantconnect.lean.Algorithm.Examples
             return item;
         }
 
-        /// <summary>
+        /**
         /// TradeBar data event handler
-        /// </summary>
+        */
         public void OnData(TradeBars data) {
 
         }

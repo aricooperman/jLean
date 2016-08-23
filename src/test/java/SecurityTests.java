@@ -138,7 +138,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             security.SetLeverage(5m);
             Assert.AreEqual(5m, security.Leverage);
 
-            Assert.That(() => security.SetLeverage(0.1m),
+            Assert.That(() -> security.SetLeverage(0.1m),
                 Throws.TypeOf<ArgumentException>().With.Message.EqualTo( "Leverage must be greater than or equal to 1."));
         }
         private Security GetSecurity() {

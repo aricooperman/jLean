@@ -15,7 +15,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         private static final String BAC    = "BAC";
         private static final String GOOGL  = "GOOGL";
 
-        private readonly Map<Symbol, SymbolData> _sd = new Map<Symbol, SymbolData>();
+        private final Map<Symbol, SymbolData> _sd = new Map<Symbol, SymbolData>();
 
         public @Override void Initialize() {
             SetStartDate(2013, 10, 08);
@@ -65,20 +65,20 @@ package com.quantconnect.lean.Algorithm.CSharp
             public static final BigDecimal PercentGlobalStopLoss = 0.01m;
             private static final int LotSize = 10;
 
-            public readonly Symbol Symbol;
-            public readonly Security Security;
+            public final Symbol Symbol;
+            public final Security Security;
 
             public int Quantity
             {
                 get { return Security.Holdings.Quantity; }
             }
 
-            public readonly Identity Close;
-            public readonly AverageDirectionalIndex ADX;
-            public readonly ExponentialMovingAverage EMA;
-            public readonly MovingAverageConvergenceDivergence MACD;
+            public final Identity Close;
+            public final AverageDirectionalIndex ADX;
+            public final ExponentialMovingAverage EMA;
+            public final MovingAverageConvergenceDivergence MACD;
 
-            private readonly QCAlgorithm _algorithm;
+            private final QCAlgorithm _algorithm;
 
             private OrderTicket _currentStopLoss;
 

@@ -35,10 +35,10 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 public abstract class TypeChangeJsonConverter<T, TResult> {
 
     
-    /// <summary>
+    /**
     /// Writes the JSON representation of the object.
-    /// </summary>
-    /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
+    */
+     * @param writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.<param name="value">The value.<param name="serializer">The calling serializer.
     public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
         // Convert the value into TResult to be serialized
         valueToSerialize = Convert((T)value);
@@ -47,40 +47,40 @@ public abstract class TypeChangeJsonConverter<T, TResult> {
     }
 
     /// Determines whether this instance can convert the specified object type.
-    /// <param name="objectType">Type of the object.</param>
-    /// <returns>
+     * @param objectType">Type of the object.
+    @returns 
     /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-    /// </returns>
+    /// 
     public @Override boolean CanConvert(Type objectType) {
         return typeof(T) == objectType;
     }
 
     /// Creates an instance of the un-projected type to be deserialized
-    /// <param name="type">The input object type, this is the data held in the token</param>
-    /// <param name="token">The input data to be converted into a T</param>
-    /// <returns>A new instance of T that is to be serialized using default rules</returns>
+     * @param type">The input object type, this is the data held in the token
+     * @param token">The input data to be converted into a T
+    @returns A new instance of T that is to be serialized using default rules
     protected T create( Type type, JToken token ) {
         // Default impl reads from the token of the requested type
         return convert( token.Value<TResult>());
     }
 
     /// Convert the input value to a value to be serialzied
-    /// <param name="value">The input value to be converted before serialziation</param>
-    /// <returns>A new instance of TResult that is to be serialzied</returns>
+     * @param value">The input value to be converted before serialziation
+    @returns A new instance of TResult that is to be serialzied
     protected abstract TResult convert( T value );
 
     /// Converts the input value to be deserialized
-    /// <param name="value">The deserialized value that needs to be converted to T</param>
-    /// <returns>The converted value</returns>
+     * @param value">The deserialized value that needs to be converted to T
+    @returns The converted value
     protected abstract T convert( TResult value );
     
-    public abstract class TypeChangeJsonConverterDeserializer extends JsonDeserializer<T> {
+    public abstract class TypeChangeJsonConverterDeserializer extends JsonDeserializer<T>gi  {
         
       /// Reads the JSON representation of the object.
-        /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.</param><param name="objectType">Type of the object.</param><param name="existingValue">The existing value of object being read.</param><param name="serializer">The calling serializer.</param>
-        /// <returns>
+         * @param reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.<param name="objectType">Type of the object.<param name="existingValue">The existing value of object being read.<param name="serializer">The calling serializer.
+        @returns 
         /// The object value.
-        /// </returns>
+        /// 
         @Override
         public Object ReadJson( JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
             // Load token from stream

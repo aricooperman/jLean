@@ -68,10 +68,10 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
             Assert.AreEqual(currentTime, bar.EndTime);
             Assert.AreEqual(Symbols.SPY, bar.Symbol);
             Assert.AreEqual(ticks.First().LastPrice, bar.Open);
-            Assert.AreEqual(ticks.Max(x => x.LastPrice), bar.High);
-            Assert.AreEqual(ticks.Min(x => x.LastPrice), bar.Low);
+            Assert.AreEqual(ticks.Max(x -> x.LastPrice), bar.High);
+            Assert.AreEqual(ticks.Min(x -> x.LastPrice), bar.Low);
             Assert.AreEqual(ticks.Last().LastPrice, bar.Close);
-            Assert.AreEqual(ticks.Sum(x => x.Quantity), bar.Volume);
+            Assert.AreEqual(ticks.Sum(x -> x.Quantity), bar.Volume);
         }
     }
 }

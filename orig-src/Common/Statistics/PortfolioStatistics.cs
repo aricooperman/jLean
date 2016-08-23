@@ -20,115 +20,115 @@ using MathNet.Numerics.Statistics;
 
 package com.quantconnect.lean.Statistics
 {
-    /// <summary>
+    /**
     /// The <see cref="PortfolioStatistics"/> class represents a set of statistics calculated from equity and benchmark samples
-    /// </summary>
+    */
     public class PortfolioStatistics
     {
         private static final BigDecimal RiskFreeRate = 0;
 
-        /// <summary>
+        /**
         /// The average rate of return for winning trades
-        /// </summary>
+        */
         public BigDecimal AverageWinRate { get; private set; }
 
-        /// <summary>
+        /**
         /// The average rate of return for losing trades
-        /// </summary>
+        */
         public BigDecimal AverageLossRate { get; private set; }
 
-        /// <summary>
+        /**
         /// The ratio of the average win rate to the average loss rate
-        /// </summary>
-        /// <remarks>If the average loss rate is zero, ProfitLossRatio is set to 0</remarks>
+        */
+        /// If the average loss rate is zero, ProfitLossRatio is set to 0
         public BigDecimal ProfitLossRatio { get; private set; }
 
-        /// <summary>
+        /**
         /// The ratio of the number of winning trades to the total number of trades
-        /// </summary>
-        /// <remarks>If the total number of trades is zero, WinRate is set to zero</remarks>
+        */
+        /// If the total number of trades is zero, WinRate is set to zero
         public BigDecimal WinRate { get; private set; }
 
-        /// <summary>
+        /**
         /// The ratio of the number of losing trades to the total number of trades
-        /// </summary>
-        /// <remarks>If the total number of trades is zero, LossRate is set to zero</remarks>
+        */
+        /// If the total number of trades is zero, LossRate is set to zero
         public BigDecimal LossRate { get; private set; }
 
-        /// <summary>
+        /**
         /// The expected value of the rate of return
-        /// </summary>
+        */
         public BigDecimal Expectancy { get; private set; }
 
-        /// <summary>
+        /**
         /// Annual compounded returns statistic based on the final-starting capital and years.
-        /// </summary>
-        /// <remarks>Also known as Compound Annual Growth Rate (CAGR)</remarks>
+        */
+        /// Also known as Compound Annual Growth Rate (CAGR)
         public BigDecimal CompoundingAnnualReturn { get; private set; }
 
-        /// <summary>
+        /**
         /// Drawdown maximum percentage.
-        /// </summary>
+        */
         public BigDecimal Drawdown { get; private set; }
 
-        /// <summary>
+        /**
         /// The total net profit percentage.
-        /// </summary>
+        */
         public BigDecimal TotalNetProfit { get; private set; }
 
-        /// <summary>
+        /**
         /// Sharpe ratio with respect to risk free rate: measures excess of return per unit of risk.
-        /// </summary>
-        /// <remarks>With risk defined as the algorithm's volatility</remarks>
+        */
+        /// With risk defined as the algorithm's volatility
         public BigDecimal SharpeRatio { get; private set; }
 
-        /// <summary>
+        /**
         /// Algorithm "Alpha" statistic - abnormal returns over the risk free rate and the relationshio (beta) with the benchmark returns.
-        /// </summary>
+        */
         public BigDecimal Alpha { get; private set; }
 
-        /// <summary>
+        /**
         /// Algorithm "beta" statistic - the covariance between the algorithm and benchmark performance, divided by benchmark's variance
-        /// </summary>
+        */
         public BigDecimal Beta { get; private set; }
 
-        /// <summary>
+        /**
         /// Annualized standard deviation
-        /// </summary>
+        */
         public BigDecimal AnnualStandardDeviation { get; private set; }
 
-        /// <summary>
+        /**
         /// Annualized variance statistic calculation using the daily performance variance and trading days per year.
-        /// </summary>
+        */
         public BigDecimal AnnualVariance { get; private set; }
 
-        /// <summary>
+        /**
         /// Information ratio - risk adjusted return
-        /// </summary>
-        /// <remarks>(risk = tracking error volatility, a volatility measures that considers the volatility of both algo and benchmark)</remarks>
+        */
+        /// (risk = tracking error volatility, a volatility measures that considers the volatility of both algo and benchmark)
         public BigDecimal InformationRatio { get; private set; }
 
-        /// <summary>
+        /**
         /// Tracking error volatility (TEV) statistic - a measure of how closely a portfolio follows the index to which it is benchmarked
-        /// </summary>
-        /// <remarks>If algo = benchmark, TEV = 0</remarks>
+        */
+        /// If algo = benchmark, TEV = 0
         public BigDecimal TrackingError { get; private set; }
 
-        /// <summary>
+        /**
         /// Treynor ratio statistic is a measurement of the returns earned in excess of that which could have been earned on an investment that has no diversifiable risk
-        /// </summary>
+        */
         public BigDecimal TreynorRatio { get; private set; }
 
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="PortfolioStatistics"/> class
-        /// </summary>
-        /// <param name="profitLoss">Trade record of profits and losses</param>
-        /// <param name="equity">The list of daily equity values</param>
-        /// <param name="listPerformance">The list of algorithm performance values</param>
-        /// <param name="listBenchmark">The list of benchmark values</param>
-        /// <param name="startingCapital">The algorithm starting capital</param>
-        /// <param name="tradingDaysPerYear">The number of trading days per year</param>
+        */
+         * @param profitLoss">Trade record of profits and losses
+         * @param equity">The list of daily equity values
+         * @param listPerformance">The list of algorithm performance values
+         * @param listBenchmark">The list of benchmark values
+         * @param startingCapital">The algorithm starting capital
+         * @param tradingDaysPerYear">The number of trading days per year
         public PortfolioStatistics(
             SortedMap<DateTime, decimal> profitLoss,
             SortedMap<DateTime, decimal> equity,
@@ -197,29 +197,29 @@ package com.quantconnect.lean.Statistics
             TreynorRatio = Beta == 0 ? 0 : (annualPerformance - RiskFreeRate) / Beta;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="PortfolioStatistics"/> class
-        /// </summary>
+        */
         public PortfolioStatistics() {
         }
 
-        /// <summary>
+        /**
         /// Annual compounded returns statistic based on the final-starting capital and years.
-        /// </summary>
-        /// <param name="startingCapital">Algorithm starting capital</param>
-        /// <param name="finalCapital">Algorithm final capital</param>
-        /// <param name="years">Years trading</param>
-        /// <returns>Decimal fraction for annual compounding performance</returns>
+        */
+         * @param startingCapital">Algorithm starting capital
+         * @param finalCapital">Algorithm final capital
+         * @param years">Years trading
+        @returns Decimal fraction for annual compounding performance
         private static BigDecimal CompoundingAnnualPerformance( BigDecimal startingCapital, BigDecimal finalCapital, BigDecimal years) {
             return (years == 0 ? 0d : Math.Pow((double)finalCapital / (double)startingCapital, 1 / (double)years) - 1).SafeDecimalCast();
         }
 
-        /// <summary>
+        /**
         /// Drawdown maximum percentage.
-        /// </summary>
-        /// <param name="equityOverTime">The list of daily equity values</param>
-        /// <param name="rounding">The number of BigDecimal places to round the result</param>
-        /// <returns>The drawdown percentage</returns>
+        */
+         * @param equityOverTime">The list of daily equity values
+         * @param rounding">The number of BigDecimal places to round the result
+        @returns The drawdown percentage
         private static BigDecimal DrawdownPercent(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2) {
             prices = equityOverTime.Values.ToList();
             if( prices.Count == 0) return 0;
@@ -234,24 +234,24 @@ package com.quantconnect.lean.Statistics
             return Math.Round(Math.Abs(drawdowns.Min()), rounding);
         }
 
-        /// <summary>
+        /**
         /// Annualized return statistic calculated as an average of daily trading performance multiplied by the number of trading days per year.
-        /// </summary>
-        /// <param name="performance">Dictionary collection of double performance values</param>
-        /// <param name="tradingDaysPerYear">Trading days per year for the assets in portfolio</param>
-        /// <remarks>May be unaccurate for forex algorithms with more trading days in a year</remarks>
-        /// <returns>Double annual performance percentage</returns>
+        */
+         * @param performance">Dictionary collection of double performance values
+         * @param tradingDaysPerYear">Trading days per year for the assets in portfolio
+        /// May be unaccurate for forex algorithms with more trading days in a year
+        @returns Double annual performance percentage
         private static BigDecimal GetAnnualPerformance(List<double> performance, int tradingDaysPerYear = 252) {
             return (decimal)performance.Average() * tradingDaysPerYear;
         }
 
-        /// <summary>
+        /**
         /// Annualized variance statistic calculation using the daily performance variance and trading days per year.
-        /// </summary>
-        /// <param name="performance"></param>
-        /// <param name="tradingDaysPerYear"></param>
-        /// <remarks>Invokes the variance extension in the MathNet Statistics class</remarks>
-        /// <returns>Annual variance value</returns>
+        */
+         * @param performance">
+         * @param tradingDaysPerYear">
+        /// Invokes the variance extension in the MathNet Statistics class
+        @returns Annual variance value
         private static BigDecimal GetAnnualVariance(List<double> performance, int tradingDaysPerYear = 252) {
             variance = performance.Variance();
             return variance.IsNaNOrZero() ? 0 : (decimal)variance * tradingDaysPerYear;

@@ -23,27 +23,27 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Brokerages.Paper
 {
-    /// <summary>
+    /**
     /// Paper Trading Brokerage
-    /// </summary>
+    */
     public class PaperBrokerage : BacktestingBrokerage
     {
-        private readonly LiveNodePacket _job;
+        private final LiveNodePacket _job;
 
-        /// <summary>
+        /**
         /// Creates a new PaperBrokerage
-        /// </summary>
-        /// <param name="algorithm">The algorithm under analysis</param>
-        /// <param name="job">The job packet</param>
+        */
+         * @param algorithm">The algorithm under analysis
+         * @param job">The job packet
         public PaperBrokerage(IAlgorithm algorithm, LiveNodePacket job) 
             : base(algorithm, "Paper Brokerage") {
             _job = job;
         }
 
-        /// <summary>
+        /**
         /// Gets the current cash balance for each currency held in the brokerage account
-        /// </summary>
-        /// <returns>The current cash balance for each currency available for trading</returns>
+        */
+        @returns The current cash balance for each currency available for trading
         public @Override List<Cash> GetCashBalance() {
             String value;
             if( _job.BrokerageData.TryGetValue( "project-paper-equity", out value)) {

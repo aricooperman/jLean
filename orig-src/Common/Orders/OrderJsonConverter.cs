@@ -23,18 +23,18 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="JsonConverter"/> that can deserialize Orders
-    /// </summary>
+    */
     public class OrderJsonConverter : JsonConverter
     {
-        private static readonly Lazy<IMapFileProvider> MapFileProvider = new Lazy<IMapFileProvider>(() =>
+        private static final Lazy<IMapFileProvider> MapFileProvider = new Lazy<IMapFileProvider>(() =>
             Composer.Instance.GetExportedValueByTypeName<IMapFileProvider>(Config.Get( "map-file-provider", "LocalDiskMapFileProvider"))
             );
 
-        /// <summary>
+        /**
         /// Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON.
-        /// </summary>
+        */
         /// <value>
         /// <c>true</c> if this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON; otherwise, <c>false</c>.
         /// </value>
@@ -43,32 +43,32 @@ package com.quantconnect.lean.Orders
             get { return false; }
         }
 
-        /// <summary>
+        /**
         /// Determines whether this instance can convert the specified object type.
-        /// </summary>
-        /// <param name="objectType">Type of the object.</param>
-        /// <returns>
+        */
+         * @param objectType">Type of the object.
+        @returns 
         /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-        /// </returns>
+        /// 
         public @Override boolean CanConvert(Type objectType) {
             return typeof(Order).IsAssignableFrom(objectType);
         }
 
-        /// <summary>
+        /**
         /// Writes the JSON representation of the object.
-        /// </summary>
-        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
+        */
+         * @param writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.<param name="value">The value.<param name="serializer">The calling serializer.
         public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
             throw new NotImplementedException( "The OrderJsonConverter does not implement a WriteJson method;.");
         }
 
-        /// <summary>
+        /**
         /// Reads the JSON representation of the object.
-        /// </summary>
-        /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.</param><param name="objectType">Type of the object.</param><param name="existingValue">The existing value of object being read.</param><param name="serializer">The calling serializer.</param>
-        /// <returns>
+        */
+         * @param reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.<param name="objectType">Type of the object.<param name="existingValue">The existing value of object being read.<param name="serializer">The calling serializer.
+        @returns 
         /// The object value.
-        /// </returns>
+        /// 
         public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
             jObject = JObject.Load(reader);
 
@@ -77,11 +77,11 @@ package com.quantconnect.lean.Orders
             return order;
         }
 
-        /// <summary>
+        /**
         /// Create an order from a simple JObject
-        /// </summary>
-        /// <param name="jObject"></param>
-        /// <returns>Order Object</returns>
+        */
+         * @param jObject">
+        @returns Order Object
         public static Order CreateOrderFromJObject(JObject jObject) {
             // create order instance based on order type field
             orderType = (OrderType) jObject["Type"].Value<Integer>();
@@ -96,7 +96,7 @@ package com.quantconnect.lean.Orders
             order.Quantity = jObject["Quantity"].Value<Integer>();
             order.Price = jObject["Price"].Value<decimal>();
             securityType = (SecurityType) jObject["SecurityType"].Value<Integer>();
-            order.BrokerId = jObject["BrokerId"].Select(x => x.Value<String>()).ToList();
+            order.BrokerId = jObject["BrokerId"].Select(x -> x.Value<String>()).ToList();
             order.ContingentId = jObject["ContingentId"].Value<Integer>();
 
             market = Market.USA;
@@ -120,9 +120,9 @@ package com.quantconnect.lean.Orders
             return order;
         }
         
-        /// <summary>
+        /**
         /// Creates an order of the correct type
-        /// </summary>
+        */
         private static Order CreateOrder(OrderType orderType, JObject jObject) {
             Order order;
             switch (orderType) {

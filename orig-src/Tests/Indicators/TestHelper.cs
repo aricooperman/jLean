@@ -26,45 +26,45 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Tests.Indicators
 {
-    /// <summary>
+    /**
     /// Provides helper methods for testing indicatora
-    /// </summary>
+    */
     public static class TestHelper
     {
-        /// <summary>
+        /**
         /// Gets a stream of IndicatorDataPoints that can be fed to an indicator. The data stream starts at {DateTime.Today, 1m} and
         /// increasing at {1 second, 1m}
-        /// </summary>
-        /// <param name="count">The number of data points to stream</param>
-        /// <param name="valueProducer">Function to produce the value of the data, null to use the index</param>
-        /// <returns>A stream of IndicatorDataPoints</returns>
+        */
+         * @param count">The number of data points to stream
+         * @param valueProducer">Function to produce the value of the data, null to use the index
+        @returns A stream of IndicatorDataPoints
         public static IEnumerable<IndicatorDataPoint> GetDataStream(int count, Func<Integer, decimal> valueProducer = null ) {
             reference = DateTime.Today;
-            valueProducer = valueProducer ?? (x => x);
+            valueProducer = valueProducer ?? (x -> x);
             for (int i = 0; i < count; i++) {
                 yield return new IndicatorDataPoint(reference.AddSeconds(i), valueProducer.Invoke(i));
             }
         }
 
-        /// <summary>
+        /**
         /// Compare the specified indicator against external data using the spy_with_indicators.txt file.
         /// The 'Close' column will be fed to the indicator as input
-        /// </summary>
-        /// <param name="indicator">The indicator under test</param>
-        /// <param name="targetColumn">The column with the correct answers</param>
-        /// <param name="epsilon">The maximum delta between expected and actual</param>
+        */
+         * @param indicator">The indicator under test
+         * @param targetColumn">The column with the correct answers
+         * @param epsilon">The maximum delta between expected and actual
         public static void TestIndicator(IndicatorBase<IndicatorDataPoint> indicator, String targetColumn, double epsilon = 1e-3) {
-            TestIndicator(indicator, "spy_with_indicators.txt", targetColumn, (i, expected) => Assert.AreEqual(expected, (double) i.Current.Value, epsilon));
+            TestIndicator(indicator, "spy_with_indicators.txt", targetColumn, (i, expected) -> Assert.AreEqual(expected, (double) i.Current.Value, epsilon));
         }
 
-        /// <summary>
+        /**
         /// Compare the specified indicator against external data using the specificied comma delimited text file.
         /// The 'Close' column will be fed to the indicator as input
-        /// </summary>
-        /// <param name="indicator">The indicator under test</param>
-        /// <param name="externalDataFilename"></param>
-        /// <param name="targetColumn">The column with the correct answers</param>
-        /// <param name="customAssertion">Sets custom assertion logic, parameter is the indicator, expected value from the file</param>
+        */
+         * @param indicator">The indicator under test
+         * @param externalDataFilename">
+         * @param targetColumn">The column with the correct answers
+         * @param customAssertion">Sets custom assertion logic, parameter is the indicator, expected value from the file
         public static void TestIndicator(IndicatorBase<IndicatorDataPoint> indicator, String externalDataFilename, String targetColumn, Action<IndicatorBase<IndicatorDataPoint>, double> customAssertion) {
             // assumes the Date is in the first index
 
@@ -107,41 +107,41 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
 
-        /// <summary>
+        /**
         /// Compare the specified indicator against external data using the specificied comma delimited text file.
         /// The 'Close' column will be fed to the indicator as input
-        /// </summary>
-        /// <param name="indicator">The indicator under test</param>
-        /// <param name="externalDataFilename"></param>
-        /// <param name="targetColumn">The column with the correct answers</param>
-        /// <param name="epsilon">The maximum delta between expected and actual</param>
+        */
+         * @param indicator">The indicator under test
+         * @param externalDataFilename">
+         * @param targetColumn">The column with the correct answers
+         * @param epsilon">The maximum delta between expected and actual
         public static void TestIndicator(IndicatorBase<TradeBar> indicator, String externalDataFilename, String targetColumn, double epsilon = 1e-3) {
-            TestIndicator(indicator, externalDataFilename, targetColumn, (i, expected) => Assert.AreEqual(expected, (double)i.Current.Value, epsilon, "Failed at " + i.Current.Time.toString( "o")));
+            TestIndicator(indicator, externalDataFilename, targetColumn, (i, expected) -> Assert.AreEqual(expected, (double)i.Current.Value, epsilon, "Failed at " + i.Current.Time.toString( "o")));
         }
 
-        /// <summary>
+        /**
         /// Compare the specified indicator against external data using the specificied comma delimited text file.
         /// The 'Close' column will be fed to the indicator as input
-        /// </summary>
-        /// <param name="indicator">The indicator under test</param>
-        /// <param name="externalDataFilename"></param>
-        /// <param name="targetColumn">The column with the correct answers</param>
-        /// <param name="selector">A function that receives the indicator as input and outputs a value to match the target column</param>
-        /// <param name="epsilon">The maximum delta between expected and actual</param>
+        */
+         * @param indicator">The indicator under test
+         * @param externalDataFilename">
+         * @param targetColumn">The column with the correct answers
+         * @param selector">A function that receives the indicator as input and outputs a value to match the target column
+         * @param epsilon">The maximum delta between expected and actual
         public static void TestIndicator<T>(T indicator, String externalDataFilename, String targetColumn, Func<T, double> selector, double epsilon = 1e-3)
             where T : Indicator
         {
-            TestIndicator(indicator, externalDataFilename, targetColumn, (i, expected) => Assert.AreEqual(expected, selector(indicator), epsilon, "Failed at " + i.Current.Time.toString( "o")));
+            TestIndicator(indicator, externalDataFilename, targetColumn, (i, expected) -> Assert.AreEqual(expected, selector(indicator), epsilon, "Failed at " + i.Current.Time.toString( "o")));
         }
 
-        /// <summary>
+        /**
         /// Compare the specified indicator against external data using the specified comma delimited text file.
         /// The 'Close' column will be fed to the indicator as input
-        /// </summary>
-        /// <param name="indicator">The indicator under test</param>
-        /// <param name="externalDataFilename">The external CSV file name</param>
-        /// <param name="targetColumn">The column with the correct answers</param>
-        /// <param name="customAssertion">Sets custom assertion logic, parameter is the indicator, expected value from the file</param>
+        */
+         * @param indicator">The indicator under test
+         * @param externalDataFilename">The external CSV file name
+         * @param targetColumn">The column with the correct answers
+         * @param customAssertion">Sets custom assertion logic, parameter is the indicator, expected value from the file
         public static void TestIndicator(IndicatorBase<TradeBar> indicator, String externalDataFilename, String targetColumn, Action<IndicatorBase<TradeBar>, double> customAssertion) {
             boolean first = true;
             int targetIndex = -1;
@@ -181,12 +181,12 @@ package com.quantconnect.lean.Tests.Indicators
             }
         }
 
-        /// <summary>
+        /**
         /// Tests a reset of the specified indicator after processing external data using the specified comma delimited text file.
         /// The 'Close' column will be fed to the indicator as input
-        /// </summary>
-        /// <param name="indicator">The indicator under test</param>
-        /// <param name="externalDataFilename">The external CSV file name</param>
+        */
+         * @param indicator">The indicator under test
+         * @param externalDataFilename">The external CSV file name
         public static void TestIndicatorReset(IndicatorBase<TradeBar> indicator, String externalDataFilename) {
             foreach (data in GetTradeBarStream(externalDataFilename, false)) {
                 indicator.Update(data);
@@ -199,12 +199,12 @@ package com.quantconnect.lean.Tests.Indicators
             AssertIndicatorIsInDefaultState(indicator);
         }
 
-        /// <summary>
+        /**
         /// Tests a reset of the specified indicator after processing external data using the specified comma delimited text file.
         /// The 'Close' column will be fed to the indicator as input
-        /// </summary>
-        /// <param name="indicator">The indicator under test</param>
-        /// <param name="externalDataFilename">The external CSV file name</param>
+        */
+         * @param indicator">The indicator under test
+         * @param externalDataFilename">The external CSV file name
         public static void TestIndicatorReset(IndicatorBase<IndicatorDataPoint> indicator, String externalDataFilename) {
             date = DateTime.Today;
 
@@ -228,17 +228,17 @@ package com.quantconnect.lean.Tests.Indicators
             string[] header = enumerator.Current.split(',');
             while (enumerator.MoveNext()) {
                 values = enumerator.Current.split(',');
-                headerAndValues = header.Zip(values, (h, v) => new {h, v});
-                dictionary = headerAndValues.ToDictionary(x => x.h.Trim(), x => x.v.Trim(), StringComparer.OrdinalIgnoreCase);
+                headerAndValues = header.Zip(values, (h, v) -> new {h, v});
+                dictionary = headerAndValues.ToDictionary(x -> x.h.Trim(), x -> x.v.Trim(), StringComparer.OrdinalIgnoreCase);
                 yield return new ReadOnlyMap<String,String>(dictionary);
             }
         }
 
-        /// <summary>
+        /**
         /// Gets a stream of trade bars from the specified file
-        /// </summary>
+        */
         public static IEnumerable<TradeBar> GetTradeBarStream( String externalDataFilename, boolean fileHasVolume = true) {
-            return GetCsvFileStream(externalDataFilename).Select(values => new TradeBar
+            return GetCsvFileStream(externalDataFilename).Select(values -> new TradeBar
             {
                 Time = Time.ParseDate(values.GetCsvValue( "date", "time")),
                 Open = values.GetCsvValue( "open") new BigDecimal(  ),
@@ -249,10 +249,10 @@ package com.quantconnect.lean.Tests.Indicators
             });
         }
 
-        /// <summary>
+        /**
         /// Asserts that the indicator has zero samples, is not ready, and has the default value
-        /// </summary>
-        /// <param name="indicator">The indicator to assert</param>
+        */
+         * @param indicator">The indicator to assert
         public static void AssertIndicatorIsInDefaultState<T>(IndicatorBase<T> indicator)
             where T : BaseData
         {
@@ -262,7 +262,7 @@ package com.quantconnect.lean.Tests.Indicators
             Assert.IsFalse(indicator.IsReady);
 
             fields = indicator.GetType().GetProperties()
-                .Where(x => x.PropertyType.IsSubclassOfGeneric(typeof(IndicatorBase<T>)) ||
+                .Where(x -> x.PropertyType.IsSubclassOfGeneric(typeof(IndicatorBase<T>)) ||
                             x.PropertyType.IsSubclassOfGeneric(typeof(IndicatorBase<TradeBar>)) ||
                             x.PropertyType.IsSubclassOfGeneric(typeof(IndicatorBase<IndicatorDataPoint>)));
             foreach (field in fields) {
@@ -286,13 +286,13 @@ package com.quantconnect.lean.Tests.Indicators
             }
         }
 
-        /// <summary>
+        /**
         /// Gets a customAssertion action which will gaurantee that the delta between the expected and the
         /// actual continues to decrease with a lower bound as specified by the epsilon parameter.  This is useful
         /// for testing indicators which retain theoretically infinite information via methods such as exponential smoothing
-        /// </summary>
-        /// <param name="epsilon">The largest increase in the delta permitted</param>
-        /// <returns></returns>
+        */
+         * @param epsilon">The largest increase in the delta permitted
+        @returns 
         public static Action<IndicatorBase<IndicatorDataPoint>, double> AssertDeltaDecreases(double epsilon) {
             double delta = double.MaxValue;
             return (indicator, expected) =>
@@ -307,12 +307,12 @@ package com.quantconnect.lean.Tests.Indicators
             };
         }
 
-        /// <summary>
+        /**
         /// Grabs the first value from the set of keys
-        /// </summary>
+        */
         private static String GetCsvValue(this IReadOnlyMap<String,String> dictionary, params string[] keys) {
             String value = null;
-            if( keys.Any(key => dictionary.TryGetValue(key, out value))) {
+            if( keys.Any(key -> dictionary.TryGetValue(key, out value))) {
                 return value;
             }
 

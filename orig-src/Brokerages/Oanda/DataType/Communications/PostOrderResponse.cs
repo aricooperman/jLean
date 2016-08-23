@@ -21,9 +21,9 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Represents the post order response from Oanda.
-    /// </summary>
+    */
 	public class PostOrderResponse : Response
 	{
 		public String instrument { get; set; }

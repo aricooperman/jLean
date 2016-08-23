@@ -25,34 +25,34 @@ using RestSharp;
 
 package com.quantconnect.lean.Api
 {
-    /// <summary>
+    /**
     /// QuantConnect.com Interaction Via API.
-    /// </summary>
+    */
     public class Api : IApi
     {
         private ApiConnection _connection;
         private static MarketHoursDatabase _marketHoursDatabase;
 
-        /// <summary>
+        /**
         /// Initialize the API using the config.json file.
-        /// </summary>
+        */
         public virtual void Initialize(int userId, String token) {
             _connection = new ApiConnection(userId, token);
             _marketHoursDatabase = MarketHoursDatabase.FromDataFolder();
 
             //Allow proper decoding of orders from the API.
-            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            JsonConvert.DefaultSettings = () -> new JsonSerializerSettings
             {
                 Converters = { new OrderJsonConverter() }
             };
         }
 
-        /// <summary>
+        /**
         /// Create a project with the specified name and language via QuantConnect.com API
-        /// </summary>
-        /// <param name="name">Project name</param>
-        /// <param name="language">Programming language to use</param>
-        /// <returns>Project object from the API.</returns>
+        */
+         * @param name">Project name
+         * @param language">Programming language to use
+        @returns Project object from the API.
         public Project CreateProject( String name, Language language) {
             request = new RestRequest( "projects/create", Method.POST);
             request.RequestFormat = DataFormat.Json;
@@ -67,11 +67,11 @@ package com.quantconnect.lean.Api
             return result;
         }
 
-        /// <summary>
+        /**
         /// Read in a project from the QuantConnect.com API.
-        /// </summary>
-        /// <param name="projectId">Project id you own</param>
-        /// <returns></returns>
+        */
+         * @param projectId">Project id you own
+        @returns 
         public Project ReadProject(int projectId) {
             request = new RestRequest( "projects/read", Method.GET);
             request.RequestFormat = DataFormat.Json;
@@ -81,10 +81,10 @@ package com.quantconnect.lean.Api
             return result;
         }
 
-        /// <summary>
+        /**
         /// Read back a list of all projects on the account for a user.
-        /// </summary>
-        /// <returns>Container for list of projects</returns>
+        */
+        @returns Container for list of projects
         public ProjectList ProjectList() {
             request = new RestRequest( "projects/read", Method.GET);
             request.RequestFormat = DataFormat.Json;
@@ -93,12 +93,12 @@ package com.quantconnect.lean.Api
             return result;
         }
 
-        /// <summary>
+        /**
         /// Update a specific project with a list of files. All other files will be deleted.
-        /// </summary>
-        /// <param name="projectId">Project id for project to be updated</param>
-        /// <param name="files">Files list to update</param>
-        /// <returns>RestResponse indicating success</returns>
+        */
+         * @param projectId">Project id for project to be updated
+         * @param files">Files list to update
+        @returns RestResponse indicating success
         public RestResponse UpdateProject(int projectId, List<ProjectFile> files) {
             request = new RestRequest( "projects/update", Method.POST);
             request.RequestFormat = DataFormat.Json;
@@ -112,11 +112,11 @@ package com.quantconnect.lean.Api
             return result;
         }
 
-        /// <summary>
+        /**
         /// Delete a specific project owned by the user from QuantConnect.com
-        /// </summary>
-        /// <param name="projectId">Project id we own and wish to delete</param>
-        /// <returns>RestResponse indicating success</returns>
+        */
+         * @param projectId">Project id we own and wish to delete
+        @returns RestResponse indicating success
         public RestResponse Delete(int projectId) {
             request = new RestRequest( "projects/delete", Method.POST);
             request.RequestFormat = DataFormat.Json;
@@ -129,11 +129,11 @@ package com.quantconnect.lean.Api
             return result;
         }
 
-        /// <summary>
+        /**
         /// Create a new compile job request for this project id.
-        /// </summary>
-        /// <param name="projectId">Project id we wish to compile.</param>
-        /// <returns>Compile object result</returns>
+        */
+         * @param projectId">Project id we wish to compile.
+        @returns Compile object result
         public Compile CreateCompile(int projectId) {
             request = new RestRequest( "compile/create", Method.POST);
             request.AddParameter( "application/json", JsonConvert.SerializeObject(new
@@ -145,12 +145,12 @@ package com.quantconnect.lean.Api
             return result;
         }
 
-        /// <summary>
+        /**
         /// Read a compile packet job result.
-        /// </summary>
-        /// <param name="projectId">Project id we sent for compile</param>
-        /// <param name="compileId">Compile id return from the creation request</param>
-        /// <returns>Compile object result</returns>
+        */
+         * @param projectId">Project id we sent for compile
+         * @param compileId">Compile id return from the creation request
+        @returns Compile object result
         public Compile ReadCompile(int projectId, String compileId) {
             request = new RestRequest( "compile/read", Method.GET);
             request.RequestFormat = DataFormat.Json;
@@ -162,13 +162,13 @@ package com.quantconnect.lean.Api
         }
 
 
-        /// <summary>
+        /**
         /// Create a new backtest request and get the id.
-        /// </summary>
-        /// <param name="projectId">Id for the project we'd like to backtest</param>
-        /// <param name="compileId">Successfuly compile id for the project</param>
-        /// <param name="backtestName">Name for the new backtest</param>
-        /// <returns>Backtest object</returns>
+        */
+         * @param projectId">Id for the project we'd like to backtest
+         * @param compileId">Successfuly compile id for the project
+         * @param backtestName">Name for the new backtest
+        @returns Backtest object
         public Backtest CreateBacktest(int projectId, String compileId, String backtestName) {
             request = new RestRequest( "backtests/create", Method.POST);
             request.AddParameter( "projectId", projectId);
@@ -179,12 +179,12 @@ package com.quantconnect.lean.Api
             return result;
         }
 
-        /// <summary>
+        /**
         /// Read out a backtest in the project id specified.
-        /// </summary>
-        /// <param name="projectId">Project id to read</param>
-        /// <param name="backtestId">Specific backtest id to read</param>
-        /// <returns>Backtest object with the results</returns>
+        */
+         * @param projectId">Project id to read
+         * @param backtestId">Specific backtest id to read
+        @returns Backtest object with the results
         public Backtest ReadBacktest(int projectId, String backtestId) {
             request = new RestRequest( "backtests/read", Method.GET);
             request.AddParameter( "backtestId", backtestId);
@@ -194,14 +194,14 @@ package com.quantconnect.lean.Api
             return result;
         }
 
-        /// <summary>
+        /**
         /// Update a backtest name
-        /// </summary>
-        /// <param name="projectId">Project for the backtest we want to update</param>
-        /// <param name="backtestId">Backtest id we want to update</param>
-        /// <param name="name">Name we'd like to assign to the backtest</param>
-        /// <param name="note">Note attached to the backtest</param>
-        /// <returns>Rest response class indicating success</returns>
+        */
+         * @param projectId">Project for the backtest we want to update
+         * @param backtestId">Backtest id we want to update
+         * @param name">Name we'd like to assign to the backtest
+         * @param note">Note attached to the backtest
+        @returns Rest response class indicating success
         public RestResponse UpdateBacktest(int projectId, String backtestId, String name = "", String note = "") {
             request = new RestRequest( "backtests/update", Method.POST);
             request.RequestFormat = DataFormat.Json;
@@ -217,11 +217,11 @@ package com.quantconnect.lean.Api
             return result;
         }
 
-        /// <summary>
+        /**
         /// List all the backtests in a prokect
-        /// </summary>
-        /// <param name="projectId">Project id we'd like to get a list of backtest for</param>
-        /// <returns>Backtest list container</returns>
+        */
+         * @param projectId">Project id we'd like to get a list of backtest for
+        @returns Backtest list container
         public BacktestList BacktestList(int projectId) {
             request = new RestRequest( "backtests/read", Method.GET);
             request.AddParameter( "projectId", projectId);
@@ -230,12 +230,12 @@ package com.quantconnect.lean.Api
             return result;
         }
         
-        /// <summary>
+        /**
         /// Delete a backtest from the specified project and backtestId.
-        /// </summary>
-        /// <param name="projectId">Project for the backtest we want to delete</param>
-        /// <param name="backtestId">Backtest id we want to delete</param>
-        /// <returns></returns>
+        */
+         * @param projectId">Project for the backtest we want to delete
+         * @param backtestId">Backtest id we want to delete
+        @returns 
         public RestResponse DeleteBacktest(int projectId, String backtestId) {
             request = new RestRequest( "backtests/delete", Method.POST);
             request.RequestFormat = DataFormat.Json;
@@ -246,10 +246,10 @@ package com.quantconnect.lean.Api
             return result;
         }
 
-        /// <summary>
+        /**
         /// Get a list of live running algorithms for a logged in user.
-        /// </summary>
-        /// <returns>List of live algorithm instances</returns>
+        */
+        @returns List of live algorithm instances
         public LiveList LiveList() {
             request = new RestRequest( "live/read", Method.GET);
             LiveList result;
@@ -258,71 +258,71 @@ package com.quantconnect.lean.Api
         }
 
 
-        /// <summary>
+        /**
         /// Calculate the remaining bytes of user log allowed based on the user's cap and daily cumulative usage.
-        /// </summary>
-        /// <param name="userId">User ID</param>
-        /// <param name="userToken">User API token</param>
-        /// <returns>int[3] iUserBacktestLimit, iUserDailyLimit, remaining</returns>
+        */
+         * @param userId">User ID
+         * @param userToken">User API token
+        @returns int[3] iUserBacktestLimit, iUserDailyLimit, remaining
         public virtual int[] ReadLogAllowance(int userId, String userToken) {
             return new[] { int.MaxValue, int.MaxValue, int.MaxValue };
         }
 
-        /// <summary>
+        /**
         /// Update the daily log of allowed logging-data
-        /// </summary>
-        /// <param name="userId">Id of the User</param>
-        /// <param name="backtestId">BacktestId</param>
-        /// <param name="url">URL of the log entry</param>
-        /// <param name="length">length of data</param>
-        /// <param name="userToken">User access token</param>
-        /// <param name="hitLimit">Boolean signifying hit log limit</param>
-        /// <returns>Number of bytes remaining</returns>
+        */
+         * @param userId">Id of the User
+         * @param backtestId">BacktestId
+         * @param url">URL of the log entry
+         * @param length">length of data
+         * @param userToken">User access token
+         * @param hitLimit">Boolean signifying hit log limit
+        @returns Number of bytes remaining
         public virtual void UpdateDailyLogUsed(int userId, String backtestId, String url, int length, String userToken, boolean hitLimit = false) {
             //
         }
 
-        /// <summary>
+        /**
         /// Get the algorithm status from the user with this algorithm id.
-        /// </summary>
-        /// <param name="algorithmId">String algorithm id we're searching for.</param>
-        /// <param name="userId">The user id of the algorithm</param>
-        /// <returns>Algorithm status enum</returns>
+        */
+         * @param algorithmId">String algorithm id we're searching for.
+         * @param userId">The user id of the algorithm
+        @returns Algorithm status enum
         public virtual AlgorithmControl GetAlgorithmStatus( String algorithmId, int userId) {
             return new AlgorithmControl();
         }
 
-        /// <summary>
+        /**
         /// Algorithm passes back its current status to the UX.
-        /// </summary>
-        /// <param name="status">Status of the current algorithm</param>
-        /// <param name="algorithmId">String algorithm id we're setting.</param>
-        /// <param name="message">Message for the algorithm status event</param>
-        /// <returns>Algorithm status enum</returns>
+        */
+         * @param status">Status of the current algorithm
+         * @param algorithmId">String algorithm id we're setting.
+         * @param message">Message for the algorithm status event
+        @returns Algorithm status enum
         public virtual void SetAlgorithmStatus( String algorithmId, AlgorithmStatus status, String message = "") {
             //
         }
 
-        /// <summary>
+        /**
         /// Send the statistics to storage for performance tracking.
-        /// </summary>
-        /// <param name="algorithmId">Identifier for algorithm</param>
-        /// <param name="unrealized">Unrealized gainloss</param>
-        /// <param name="fees">Total fees</param>
-        /// <param name="netProfit">Net profi</param>
-        /// <param name="holdings">Algorithm holdings</param>
-        /// <param name="equity">Total equity</param>
-        /// <param name="netReturn">Net return for the deployment</param>
-        /// <param name="volume">Volume traded</param>
-        /// <param name="trades">Total trades since inception</param>
-        /// <param name="sharpe">Sharpe ratio since inception</param>
+        */
+         * @param algorithmId">Identifier for algorithm
+         * @param unrealized">Unrealized gainloss
+         * @param fees">Total fees
+         * @param netProfit">Net profi
+         * @param holdings">Algorithm holdings
+         * @param equity">Total equity
+         * @param netReturn">Net return for the deployment
+         * @param volume">Volume traded
+         * @param trades">Total trades since inception
+         * @param sharpe">Sharpe ratio since inception
         public virtual void SendStatistics( String algorithmId, BigDecimal unrealized, BigDecimal fees, BigDecimal netProfit, BigDecimal holdings, BigDecimal equity, BigDecimal netReturn, BigDecimal volume, int trades, double sharpe) {
             // 
         }
 
-        /// <summary>
+        /**
         /// Get the calendar open hours for the date.
-        /// </summary>
+        */
         public virtual IEnumerable<MarketHoursSegment> MarketToday(DateTime time, Symbol symbol) {
             if( Config.GetBool( "force-exchange-always-open")) {
                 yield return MarketHoursSegment.OpenAllDay();
@@ -335,26 +335,26 @@ package com.quantconnect.lean.Api
             }
         }
 
-        /// <summary>
+        /**
         /// Store logs with these authentication type
-        /// </summary>
+        */
         public virtual void Store( String data, String location, StoragePermissions permissions, boolean async = false) {
             //
         }
 
-        /// <summary>
+        /**
         /// Send an email to the user associated with the specified algorithm id
-        /// </summary>
-        /// <param name="algorithmId">The algorithm id</param>
-        /// <param name="subject">The email subject</param>
-        /// <param name="body">The email message body</param>
+        */
+         * @param algorithmId">The algorithm id
+         * @param subject">The email subject
+         * @param body">The email message body
         public virtual void SendUserEmail( String algorithmId, String subject, String body) {
             //
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public virtual void Dispose() {
             // NOP

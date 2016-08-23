@@ -32,20 +32,20 @@ sing Newtonsoft.Json;
 
 package com.quantconnect.lean.Api
 {
-    /// <summary>
+    /**
     /// File for a project
-    /// </summary>
+    */
     public class ProjectFile
     {
-        /// <summary>
+        /**
         /// Name of a project file
-        /// </summary>
+        */
         @JsonProperty( "name")]
         public String Name;
 
-        /// <summary>
+        /**
         /// Contents of the project file
-        /// </summary>
+        */
         @JsonProperty( "code")]
         public String Code;
     }

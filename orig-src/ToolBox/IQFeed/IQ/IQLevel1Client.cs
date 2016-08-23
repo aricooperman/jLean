@@ -38,7 +38,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
 
     public class Level1TextLineEventArgs : EventArgs
     {
-        public readonly String TextLine;
+        public final String TextLine;
         public Level1TextLineEventArgs( String line) {
             TextLine = line;
         }
@@ -70,7 +70,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 if( !int.TryParse(fields[14], out _tick)) _tick = 0;
                 if( !int.TryParse(fields[15], out _bidTick)) _bidTick = 0;
                 if( !double.TryParse(fields[16], out _range)) _range = 0;
-                if( !string.IsNullOrEmpty(fields[17])) {
+                if( !StringUtils.isEmpty(fields[17])) {
                     switch (fields[17].Substring(fields[17].Length - 1, 1)) {
                         case "t":
                             _updateType = UpdateType.Trade;
@@ -276,13 +276,13 @@ package com.quantconnect.lean.ToolBox.IQFeed
     }
     public class Level1FundamentalEventArgs : EventArgs
     {
-        private static readonly StreamWriter _logger = new StreamWriter( "fundamental.log");
-        private static readonly Timer _timer = new Timer(1.0);
+        private static final StreamWriter _logger = new StreamWriter( "fundamental.log");
+        private static final Timer _timer = new Timer(1.0);
 
         static Level1FundamentalEventArgs() {
             _timer.Enabled = true;
             _timer.AutoReset = true;
-            _timer.Elapsed += (sender, args) => _logger.Flush();
+            _timer.Elapsed += (sender, args) -> _logger.Flush();
         }
 
         public Level1FundamentalEventArgs( String line) {
@@ -636,9 +636,9 @@ package com.quantconnect.lean.ToolBox.IQFeed
         }
         public boolean IsNewsOn { get; private set; }
 
-        /// <summary>
+        /**
         /// Add this symbol to our subscription list.
-        /// </summary>
+        */
         public void Subscribe( String symbol, boolean requestFundamental = true, boolean active = true, boolean regionOn = false) {
             item = new IQLevel1WatchItem(symbol, active, regionOn);
             if( _key.ContainsKey(item.Symbol)) {
@@ -651,9 +651,9 @@ package com.quantconnect.lean.ToolBox.IQFeed
             }
         }
 
-        /// <summary>
+        /**
         /// Remove this symbol from our subscriptions.
-        /// </summary>
+        */
         public void Unsubscribe( String symbol) {
             if( !_key.ContainsKey(symbol)) {
                 throw new Exception( "Symbol ( " + symbol + ") does not exist");
@@ -662,16 +662,16 @@ package com.quantconnect.lean.ToolBox.IQFeed
             _key.Remove(symbol);
         }
 
-        /// <summary>
+        /**
         /// Check if the storage contains this symbol
-        /// </summary>
+        */
         public boolean Contains( String symbol) {
             return _key.Keys.Contains(symbol);
         }
 
-        /// <summary>
+        /**
         /// Unsubscribe from all symbols and clear the internal storage.
-        /// </summary>
+        */
         public void Clear() {
             Send( "S,UNWATCH ALL\r\n");
             foreach (wi in _key.Values) {
@@ -680,9 +680,9 @@ package com.quantconnect.lean.ToolBox.IQFeed
             _key.Clear();
         }
 
-        /// <summary>
+        /**
         /// Number of subscribed items
-        /// </summary>
+        */
         public int Count
         {
             get { return _key.Count; }

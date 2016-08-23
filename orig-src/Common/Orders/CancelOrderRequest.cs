@@ -17,35 +17,35 @@ using System;
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Defines a request to cancel an order
-    /// </summary>
+    */
     public class CancelOrderRequest : OrderRequest
     {
-        /// <summary>
+        /**
         /// Gets <see cref="Orders.OrderRequestType.Cancel"/>
-        /// </summary>
+        */
         public @Override OrderRequestType OrderRequestType
         {
             get { return OrderRequestType.Cancel; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="CancelOrderRequest"/> class
-        /// </summary>
-        /// <param name="time">The time this cancelation was requested</param>
-        /// <param name="orderId">The order id to be canceled</param>
-        /// <param name="tag">A new tag for the order</param>
+        */
+         * @param time">The time this cancelation was requested
+         * @param orderId">The order id to be canceled
+         * @param tag">A new tag for the order
         public CancelOrderRequest(DateTime time, int orderId, String tag)
             : base(time, orderId, tag) {
         }
 
-        /// <summary>
+        /**
         /// Returns a String that represents the current object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A String that represents the current object.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         public @Override String toString() {
             return String.format( "%1$s UTC: Cancel Order: (%2$s) - %3$s", Time, OrderId, Tag) + " Status: " + Status;

@@ -15,61 +15,61 @@
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Represents a simple margining model where margin/leverage depends on market state (open or close).
     /// During regular market hours, leverage is 4x, otherwise 2x
-    /// </summary>
+    */
     public class PatternDayTradingMarginModel : SecurityMarginModel
     {
-        private readonly BigDecimal _closedMarginCorrectionFactor;
+        private final BigDecimal _closedMarginCorrectionFactor;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="PatternDayTradingMarginModel" />
-        /// </summary>
+        */
         public PatternDayTradingMarginModel()
             : this(2.0m, 4.0m) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="PatternDayTradingMarginModel" />
-        /// </summary>
-        /// <param name="closedMarketLeverage">Leverage used outside regular market hours</param>
-        /// <param name="openMarketLeverage">Leverage used during regular market hours</param>
+        */
+         * @param closedMarketLeverage">Leverage used outside regular market hours
+         * @param openMarketLeverage">Leverage used during regular market hours
         public PatternDayTradingMarginModel( BigDecimal closedMarketLeverage, BigDecimal openMarketLeverage)
             : base(openMarketLeverage) {
             _closedMarginCorrectionFactor = openMarketLeverage/closedMarketLeverage;
         }
 
-        /// <summary>
+        /**
         /// Sets the leverage for the applicable securities, i.e, equities
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// Do nothing, we use a constant leverage for this model
-        /// </remarks>
-        /// <param name="security">The security to set leverage to</param>
-        /// <param name="leverage">The new leverage</param>
+        /// 
+         * @param security">The security to set leverage to
+         * @param leverage">The new leverage
         public @Override void SetLeverage(Security security, BigDecimal leverage) {
         }
 
-        /// <summary>
+        /**
         /// The percentage of an order's absolute cost that must be held in free cash in order to place the order
-        /// </summary>
+        */
         protected @Override BigDecimal GetInitialMarginRequirement(Security security) {
             return base.GetInitialMarginRequirement(security)*GetMarginCorrectionFactor(security);
         }
 
-        /// <summary>
+        /**
         /// The percentage of the holding's absolute cost that must be held in free cash in order to avoid a margin call
-        /// </summary>
+        */
         protected @Override BigDecimal GetMaintenanceMarginRequirement(Security security) {
             return base.GetMaintenanceMarginRequirement(security)*GetMarginCorrectionFactor(security);
         }
 
-        /// <summary>
+        /**
         /// Get margin correction factor if not in regular market hours
-        /// </summary>
-        /// <param name="security">The security to apply conditional leverage to</param>
-        /// <returns>The margin correction factor</returns>
+        */
+         * @param security">The security to apply conditional leverage to
+        @returns The margin correction factor
         private BigDecimal GetMarginCorrectionFactor(Security security) {
             // when the market is open the base type returns the correct values
             // when the market is closed, we need to multiply by a correction factor

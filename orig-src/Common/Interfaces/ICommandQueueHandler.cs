@@ -21,24 +21,24 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Interfaces
 {
-    /// <summary>
+    /**
     /// Represents a command queue for the algorithm. This is an entry point
     /// for external messages to act upon the running algorithm instance.
-    /// </summary>
+    */
     [InheritedExport(typeof(ICommandQueueHandler))]
     public interface ICommandQueueHandler : IDisposable
     {
-        /// <summary>
+        /**
         /// Initializes this command queue for the specified job
-        /// </summary>
-        /// <param name="job">The job that defines what queue to bind to</param>
-        /// <param name="algorithm">The algorithm instance</param>
+        */
+         * @param job">The job that defines what queue to bind to
+         * @param algorithm">The algorithm instance
         void Initialize(AlgorithmNodePacket job, IAlgorithm algorithm);
 
-        /// <summary>
+        /**
         /// Gets the commands in the queue
-        /// </summary>
-        /// <returns>The next command in the queue, if present, null if no commands present</returns>
+        */
+        @returns The next command in the queue, if present, null if no commands present
         IEnumerable<ICommand> GetCommands();
     }
 }

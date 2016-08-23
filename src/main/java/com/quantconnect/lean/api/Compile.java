@@ -41,27 +41,27 @@ using Newtonsoft.Json.Converters;
 
 package com.quantconnect.lean.Api
 {
-    /// <summary>
+    /**
     /// Response from the compiler on a build event
-    /// </summary>
+    */
     public class Compile : RestResponse
     {
-        /// <summary>
+        /**
         /// Compile Id for a sucessful build
-        /// </summary>
+        */
         @JsonProperty( "compileId")]
         public String CompileId;
 
-        /// <summary>
+        /**
         /// True on successful compile
-        /// </summary>
+        */
         @JsonProperty( "state")]
         [JsonConverter(typeof(StringEnumConverter))]
         public CompileState State;
 
-        /// <summary>
+        /**
         /// Logs of the compilation request
-        /// </summary>
+        */
         @JsonProperty( "logs")]
         public List<String> Logs;
     }

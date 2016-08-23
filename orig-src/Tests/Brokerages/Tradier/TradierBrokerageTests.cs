@@ -30,10 +30,10 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
     [TestFixture, Ignore( "This test requires a configured and active Tradier account")]
     public class TradierBrokerageTests : BrokerageTests
     {
-        /// <summary>
+        /**
         /// Creates the brokerage under test
-        /// </summary>
-        /// <returns>A connected brokerage instance</returns>
+        */
+        @returns A connected brokerage instance
         protected @Override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider) {
             accountID = TradierBrokerageFactory.Configuration.AccountID;
             tradier = new TradierBrokerage(orderProvider, securityProvider, accountID);
@@ -51,41 +51,41 @@ package com.quantconnect.lean.Tests.Brokerages.Tradier
             return tradier;
         }
 
-        /// <summary>
+        /**
         /// Gets the symbol to be traded, must be shortable
-        /// </summary>
+        */
         protected @Override Symbol Symbol
         {
             get { return Symbols.AAPL; }
         }
 
-        /// <summary>
+        /**
         /// Gets the security type associated with the <see cref="BrokerageTests.Symbol"/>
-        /// </summary>
+        */
         protected @Override SecurityType SecurityType
         {
             get { return SecurityType.Equity; }
         }
 
-        /// <summary>
+        /**
         /// Gets a high price for the specified symbol so a limit sell won't fill
-        /// </summary>
+        */
         protected @Override BigDecimal HighPrice
         {
             get { return 1000m; }
         }
 
-        /// <summary>
+        /**
         /// Gets a low price for the specified symbol so a limit buy won't fill
-        /// </summary>
+        */
         protected @Override BigDecimal LowPrice
         {
             get { return 0.01m; }
         }
 
-        /// <summary>
+        /**
         /// Gets the current market price of the specified security
-        /// </summary>
+        */
         protected @Override BigDecimal GetAskPrice(Symbol symbol) {
             tradier = (TradierBrokerage) Brokerage;
             quotes = tradier.GetQuotes(new List<String> {symbol.Value});

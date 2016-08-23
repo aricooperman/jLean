@@ -72,9 +72,9 @@ package com.quantconnect.lean
     }
 
 
-    /// <summary>
+    /**
     /// Custom imported data -- VIX indicator:
-    /// </summary>
+    */
     public class VIX : BaseData
     {
         public BigDecimal Open = 0;

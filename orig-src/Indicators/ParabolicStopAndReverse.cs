@@ -18,10 +18,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// Parabolic SAR Indicator 
     /// Based on TA-Lib implementation
-    /// </summary>
+    */
     public class ParabolicStopAndReverse : TradeBarIndicator
     {
         private boolean _isLong;
@@ -30,17 +30,17 @@ package com.quantconnect.lean.Indicators
         private BigDecimal _ep;
         private BigDecimal _outputSar;
         private BigDecimal _af;
-        private readonly BigDecimal _afInit;
-        private readonly BigDecimal _afMax;
-        private readonly BigDecimal _afIncrement;
+        private final BigDecimal _afInit;
+        private final BigDecimal _afMax;
+        private final BigDecimal _afIncrement;
 
-        /// <summary>
+        /**
         /// Create new Parabolic SAR
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="afStart">Acceleration factor start value</param>
-        /// <param name="afIncrement">Acceleration factor increment value</param>
-        /// <param name="afMax">Acceleration factor max value</param>
+        */
+         * @param name">The name of this indicator
+         * @param afStart">Acceleration factor start value
+         * @param afIncrement">Acceleration factor increment value
+         * @param afMax">Acceleration factor max value
         public ParabolicStopAndReverse( String name, BigDecimal afStart = 0.02m, BigDecimal afIncrement = 0.02m, BigDecimal afMax = 0.2m)
             : base(name) {
             _afInit = afStart;
@@ -49,37 +49,37 @@ package com.quantconnect.lean.Indicators
             _afMax = afMax;
         }
 
-        /// <summary>
+        /**
         /// Create new Parabolic SAR
-        /// </summary>
-        /// <param name="afStart">Acceleration factor start value</param>
-        /// <param name="afIncrement">Acceleration factor increment value</param>
-        /// <param name="afMax">Acceleration factor max value</param>
+        */
+         * @param afStart">Acceleration factor start value
+         * @param afIncrement">Acceleration factor increment value
+         * @param afMax">Acceleration factor max value
         public ParabolicStopAndReverse( BigDecimal afStart = 0.02m, BigDecimal afIncrement = 0.02m, BigDecimal afMax = 0.2m)
             : this( String.format( "PSAR(%1$s,%2$s,%3$s)", afStart, afIncrement, afMax), afStart, afIncrement, afMax) {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= 2; }
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _af = _afInit;
             base.Reset();
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The trade bar input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The trade bar input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             // On first iteration we can’t produce an SAR value so we save the current bar and return zero
             if( Samples == 1) {
@@ -109,9 +109,9 @@ package com.quantconnect.lean.Indicators
             return _outputSar;
         }
 
-        /// <summary>
+        /**
         /// Initialize the indicator values 
-        /// </summary>
+        */
         private void Init(TradeBar currentBar) {
             // init position
             _isLong = currentBar.Close >= _previousBar.Close;
@@ -129,9 +129,9 @@ package com.quantconnect.lean.Indicators
             }
         }
 
-        /// <summary>
+        /**
         /// Calculate indicator value when the position is long
-        /// </summary>
+        */
         private void HandleLongPosition(TradeBar currentBar) {
             // Switch to short if the low penetrates the SAR value.
             if( currentBar.Low <= _sar) {
@@ -188,9 +188,9 @@ package com.quantconnect.lean.Indicators
             }
         }
 
-        /// <summary>
+        /**
         /// Calculate indicator value when the position is short
-        /// </summary>
+        */
         private void HandleShortPosition(TradeBar currentBar) {
             // Switch to long if the high penetrates the SAR value.
             if( currentBar.High >= _sar) {

@@ -20,27 +20,27 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Provides a functional implementation of <see cref="IDerivativeSecurityFilter"/>
-    /// </summary>
+    */
     public class FuncSecurityDerivativeFilter : IDerivativeSecurityFilter
     {
-        private readonly Func<IEnumerable<Symbol>, BaseData, IEnumerable<Symbol>> _filter;
+        private final Func<IEnumerable<Symbol>, BaseData, IEnumerable<Symbol>> _filter;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FuncSecurityDerivativeFilter"/> class
-        /// </summary>
-        /// <param name="filter">The functional implementation of the <see cref="Filter"/> method</param>
+        */
+         * @param filter">The functional implementation of the <see cref="Filter"/> method
         public FuncSecurityDerivativeFilter(Func<IEnumerable<Symbol>, BaseData, IEnumerable<Symbol>> filter) {
             _filter = filter;
         }
 
-        /// <summary>
+        /**
         /// Filters the input set of symbols using the underlying price data
-        /// </summary>
-        /// <param name="symbols">The derivative symbols to be filtered</param>
-        /// <param name="underlying">The underlying price data</param>
-        /// <returns>The filtered set of symbols</returns>
+        */
+         * @param symbols">The derivative symbols to be filtered
+         * @param underlying">The underlying price data
+        @returns The filtered set of symbols
         public IEnumerable<Symbol> Filter(IEnumerable<Symbol> symbols, BaseData underlying) {
             return _filter(symbols, underlying);
         }

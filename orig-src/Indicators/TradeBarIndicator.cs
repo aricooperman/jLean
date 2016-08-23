@@ -17,17 +17,17 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// The TradeBarIndicator is an indicator that accepts TradeBar data as its input.
     /// 
     /// This type is more of a shim/typedef to reduce the need to refer to things as IndicatorBase&lt;TradeBar&gt;
-    /// </summary>
+    */
     public abstract class TradeBarIndicator : IndicatorBase<TradeBar>
     {
-        /// <summary>
+        /**
         /// Creates a new TradeBarIndicator with the specified name
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         protected TradeBarIndicator( String name)
             : base(name) {
         }

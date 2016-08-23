@@ -25,9 +25,9 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
 {
     class Program
     {
-        /// <summary>
+        /**
         /// Primary entry point to the program
-        /// </summary>
+        */
         static void Main( String[] args) {
             if( args.Length != 4) {
                 Console.WriteLine( "Usage: OandaDownloader SYMBOLS RESOLUTION FROMDATE TODATE");
@@ -96,14 +96,14 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
             }
         }
 
-        /// <summary>
+        /**
         /// Aggregates a list of 5-second bars at the requested resolution
-        /// </summary>
-        /// <param name="symbol"></param>
-        /// <param name="bars"></param>
-        /// <param name="resolution"></param>
-        /// <returns></returns>
-        private static IEnumerable<TradeBar> AggregateBars(Symbol symbol, IEnumerable<TradeBar> bars, TimeSpan resolution) {
+        */
+         * @param symbol">
+         * @param bars">
+         * @param resolution">
+        @returns 
+        private static IEnumerable<TradeBar> AggregateBars(Symbol symbol, IEnumerable<TradeBar> bars, Duration resolution) {
             return
                 (from b in bars
                  group b by b.Time.RoundDown(resolution)
@@ -113,8 +113,8 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
                          Symbol = symbol,
                          Time = g.Key,
                          Open = g.First().Open,
-                         High = g.Max(b => b.High),
-                         Low = g.Min(b => b.Low),
+                         High = g.Max(b -> b.High),
+                         Low = g.Min(b -> b.Low),
                          Close = g.Last().Close
                      });
         }

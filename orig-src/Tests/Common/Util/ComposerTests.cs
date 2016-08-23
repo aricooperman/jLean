@@ -27,15 +27,15 @@ package com.quantconnect.lean.Tests.Common.Util
         public void ComposesTypes() {
             instances = Composer.Instance.GetExportedValues<IExport>().ToList();
             Assert.AreEqual(4, instances.Count);
-            Assert.AreEqual(1, instances.Count(x => x.GetType() == typeof (Export1)));
-            Assert.AreEqual(1, instances.Count(x => x.GetType() == typeof (Export2)));
-            Assert.AreEqual(1, instances.Count(x => x.GetType() == typeof (Export3)));
-            Assert.AreEqual(1, instances.Count(x => x.GetType() == typeof (Export4)));
+            Assert.AreEqual(1, instances.Count(x -> x.GetType() == typeof (Export1)));
+            Assert.AreEqual(1, instances.Count(x -> x.GetType() == typeof (Export2)));
+            Assert.AreEqual(1, instances.Count(x -> x.GetType() == typeof (Export3)));
+            Assert.AreEqual(1, instances.Count(x -> x.GetType() == typeof (Export4)));
         }
 
         [Test]
         public void GetsInstanceUsingPredicate() {
-            instance = Composer.Instance.Single<IExport>(x => x.Id == 3);
+            instance = Composer.Instance.Single<IExport>(x -> x.Id == 3);
             Assert.IsNotNull(instance);
             Assert.IsInstanceOf(typeof (Export3), instance);
         }
@@ -43,10 +43,10 @@ package com.quantconnect.lean.Tests.Common.Util
         [Test]
         public void ResetsAndCreatesNewInstances() {
             composer = Composer.Instance;
-            export1 = composer.Single<IExport>(x => x.Id == 3);
+            export1 = composer.Single<IExport>(x -> x.Id == 3);
             Assert.IsNotNull(export1);
             composer.Reset();
-            export2 = composer.Single<IExport>(x => x.Id == 3);
+            export2 = composer.Single<IExport>(x -> x.Id == 3);
             Assert.AreNotEqual(export1, export2);
         }
 

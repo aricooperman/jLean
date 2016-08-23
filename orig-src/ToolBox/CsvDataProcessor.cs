@@ -22,26 +22,26 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.ToolBox
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IDataProcessor"/> that writes the incoming
     /// stream of data to a csv file.
-    /// </summary>
+    */
     public class CsvDataProcessor : IDataProcessor
     {
         private static final int TicksPerFlush = 50;
-        private static readonly object DirectoryCreateSync = new object();
+        private static final object DirectoryCreateSync = new object();
         
-        private readonly String _dataDirectory;
-        private readonly Resolution _resolution;
-        private readonly TickType _tickType;
-        private readonly Map<Symbol, Writer> _writers;
+        private final String _dataDirectory;
+        private final Resolution _resolution;
+        private final TickType _tickType;
+        private final Map<Symbol, Writer> _writers;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="CsvDataProcessor"/> class
-        /// </summary>
-        /// <param name="dataDirectory">The root data directory, /Data</param>
-        /// <param name="resolution">The resolution being sent into the Process method</param>
-        /// <param name="tickType">The tick type, trade or quote</param>
+        */
+         * @param dataDirectory">The root data directory, /Data
+         * @param resolution">The resolution being sent into the Process method
+         * @param tickType">The tick type, trade or quote
         public CsvDataProcessor( String dataDirectory, Resolution resolution, TickType tickType) {
             _dataDirectory = dataDirectory;
             _resolution = resolution;
@@ -49,10 +49,10 @@ package com.quantconnect.lean.ToolBox
             _writers = new Map<Symbol, Writer>();
         }
 
-        /// <summary>
+        /**
         /// Invoked for each piece of data from the source file
-        /// </summary>
-        /// <param name="data">The data to be processed</param>
+        */
+         * @param data">The data to be processed
         public void Process(BaseData data) {
             Writer writer;
             if( !_writers.TryGetValue(data.Symbol, out writer)) {
@@ -69,18 +69,18 @@ package com.quantconnect.lean.ToolBox
             writer.TextWriter.WriteLine(line);
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         public void Dispose() {
             foreach (kvp in _writers) {
                 kvp.Value.TextWriter.Dispose();
             }
         }
 
-        /// <summary>
+        /**
         /// Creates the <see cref="TextWriter"/> that writes data to csv files
-        /// </summary>
+        */
         private Writer CreateTextWriter(BaseData data) {
             entry = LeanData.GenerateZipEntryName(data.Symbol, data.Time.Date, _resolution, _tickType);
             relativePath = LeanData.GenerateRelativeZipFilePath(data.Symbol, data.Time.Date, _resolution, _tickType)
@@ -98,8 +98,8 @@ package com.quantconnect.lean.ToolBox
 
         private sealed class Writer
         {
-            public readonly String Path;
-            public readonly TextWriter TextWriter;
+            public final String Path;
+            public final TextWriter TextWriter;
             public int ProcessCount;
             public Writer( String path, TextWriter textWriter) {
                 Path = path;

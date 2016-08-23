@@ -30,7 +30,7 @@ package com.quantconnect.lean.Tests.Indicators
             static final double epsilon = 1e-3;
 
             TestHelper.TestIndicator(stochastics, "spy_with_stoch12k3.txt", "Stochastics 12 %K 3",
-                (ind, expected) => Assert.AreEqual(expected, (double) ((Stochastic) ind).StochK.Current.Value, epsilon)
+                (ind, expected) -> Assert.AreEqual(expected, (double) ((Stochastic) ind).StochK.Current.Value, epsilon)
                 );
         }
 
@@ -39,7 +39,7 @@ package com.quantconnect.lean.Tests.Indicators
             stochastics = new Stochastic( "sto", 12, 3, 5);
 
             TestHelper.TestIndicator(stochastics, "spy_with_stoch12k3.txt", "Stochastics 12 %K 3",
-                (ind, expected) => Assert.AreEqual((double) ((Stochastic) ind).FastStoch.Current.Value, ind.Current.Value)
+                (ind, expected) -> Assert.AreEqual((double) ((Stochastic) ind).FastStoch.Current.Value, ind.Current.Value)
                 );
         }
 
@@ -49,7 +49,7 @@ package com.quantconnect.lean.Tests.Indicators
 
             static final double epsilon = 1e-3;
             TestHelper.TestIndicator(stochastics, "spy_with_stoch12k3.txt", "%D 5",
-                (ind, expected) => Assert.AreEqual(expected, (double) ((Stochastic) ind).StochD.Current.Value, epsilon)
+                (ind, expected) -> Assert.AreEqual(expected, (double) ((Stochastic) ind).StochD.Current.Value, epsilon)
                 );
         }
 

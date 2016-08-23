@@ -15,35 +15,35 @@
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// This indicator computes the n-period percentage rate of change in a value using the following:
     /// 100 * (value_0 - value_n) / value_n
-    /// </summary>
+    */
     public class RateOfChangePercent : WindowIndicator<IndicatorDataPoint>
     {
-        /// <summary>
+        /**
         /// Creates a new RateOfChangePercent indicator with the specified period
-        /// </summary>
-        /// <param name="period">The period over which to perform to computation</param>
+        */
+         * @param period">The period over which to perform to computation
         public RateOfChangePercent(int period)
             : base( "ROCP" + period, period) {
         }
 
-        /// <summary>
+        /**
         /// Creates a new RateOfChangePercent indicator with the specified period
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="period">The period over which to perform to computation</param>
+        */
+         * @param name">The name of this indicator
+         * @param period">The period over which to perform to computation
         public RateOfChangePercent( String name, int period)
             : base(name, period) {
         }
 
-        /// <summary>
+        /**
         /// Computes the next value for this indicator from the given state.
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input value to this indicator on this time step</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input value to this indicator on this time step
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             // if we're not ready just grab the first input point in the window
             BigDecimal denominator = !window.IsReady ? window[window.Count - 1] : window.MostRecentlyRemoved;

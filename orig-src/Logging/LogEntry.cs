@@ -18,52 +18,52 @@ using System;
 
 package com.quantconnect.lean.Logging
 {
-    /// <summary>
+    /**
     /// Log entry wrapper to make logging simpler:
-    /// </summary>
+    */
     public class LogEntry
     {
-        /// <summary>
+        /**
         /// Time of the log entry
-        /// </summary>
+        */
         public DateTime Time;
 
-        /// <summary>
+        /**
         /// Message of the log entry
-        /// </summary>
+        */
         public String Message;
 
-        /// <summary>
+        /**
         /// Descriptor of the message type.
-        /// </summary>
+        */
         public LogType MessageType;
 
-        /// <summary>
+        /**
         /// Create a default log message with the current time.
-        /// </summary>
-        /// <param name="message"></param>
+        */
+         * @param message">
         public LogEntry( String message) {
             Time = DateTime.UtcNow;
             Message = message;
             MessageType = LogType.Trace;
         }
 
-        /// <summary>
+        /**
         /// Create a log entry at a specific time in the analysis (for a backtest).
-        /// </summary>
-        /// <param name="message">Message for log</param>
-        /// <param name="time">Time of the message</param>
-        /// <param name="type">Type of the log entry</param>
+        */
+         * @param message">Message for log
+         * @param time">Time of the message
+         * @param type">Type of the log entry
         public LogEntry( String message, DateTime time, LogType type = LogType.Trace) {
             Time = time.ToUniversalTime();
             Message = message;
             MessageType = type;
         }
 
-        /// <summary>
+        /**
         /// Helper @Override on the log entry.
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         public @Override String toString() {
             return String.format( "%1$s %2$s %3$s", Time.toString( "o"), MessageType, Message);
         }

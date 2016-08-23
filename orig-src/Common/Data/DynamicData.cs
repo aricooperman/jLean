@@ -22,27 +22,27 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Data
 {
-    /// <summary>
+    /**
     /// Dynamic Data Class: Accept flexible data, adapting to the columns provided by source.
-    /// </summary>
-    /// <remarks>Intended for use with Quandl class.</remarks>
+    */
+    /// Intended for use with Quandl class.
     public abstract class DynamicData : BaseData, IDynamicMetaObjectProvider
     {
-        private readonly Map<String, object> _storage = new Map<String, object>();
+        private final Map<String, object> _storage = new Map<String, object>();
 
-        /// <summary>
+        /**
         /// Get the metaObject required for Dynamism.
-        /// </summary>
+        */
         public DynamicMetaObject GetMetaObject(Expression parameter) {
             return new DynamicDataMetaObject(parameter, this);
         }
 
-        /// <summary>
+        /**
         /// Sets the property with the specified name to the value. This is a case-insensitve search.
-        /// </summary>
-        /// <param name="name">The property name to set</param>
-        /// <param name="value">The new property value</param>
-        /// <returns>Returns the input value back to the caller</returns>
+        */
+         * @param name">The property name to set
+         * @param value">The new property value
+        @returns Returns the input value back to the caller
         public object SetProperty( String name, object value) {
             name = name.toLowerCase();
 
@@ -70,11 +70,11 @@ package com.quantconnect.lean.Data
             return value;
         }
 
-        /// <summary>
+        /**
         /// Gets the property's value with the specified name. This is a case-insensitve search.
-        /// </summary>
-        /// <param name="name">The property name to access</param>
-        /// <returns>object value of BaseData</returns>
+        */
+         * @param name">The property name to access
+        @returns object value of BaseData
         public object GetProperty( String name) {
             name = name.toLowerCase();
 
@@ -101,23 +101,23 @@ package com.quantconnect.lean.Data
             return value;
         }
 
-        /// <summary>
+        /**
         /// Gets whether or not this dynamic data instance has a property with the specified name.
         /// This is a case-insensitve search.
-        /// </summary>
-        /// <param name="name">The property name to check for</param>
-        /// <returns>True if the property exists, false otherwise</returns>
+        */
+         * @param name">The property name to check for
+        @returns True if the property exists, false otherwise
         public boolean HasProperty( String name) {
             return _storage.ContainsKey(name.toLowerCase());
         }
 
-        /// <summary>
+        /**
         /// Return a new instance clone of this object, used in fill forward
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// This base implementation uses reflection to copy all public fields and properties
-        /// </remarks>
-        /// <returns>A clone of the current object</returns>
+        /// 
+        @returns A clone of the current object
         public @Override BaseData Clone() {
             clone = ObjectActivator.Clone(this);
             foreach (kvp in _storage) {
@@ -127,13 +127,13 @@ package com.quantconnect.lean.Data
             return clone;
         }
 
-        /// <summary>
+        /**
         /// Custom implementation of Dynamic Data MetaObject
-        /// </summary>
+        */
         private class DynamicDataMetaObject : DynamicMetaObject
         {
-            private static readonly MethodInfo SetPropertyMethodInfo = typeof(DynamicData).GetMethod( "SetProperty");
-            private static readonly MethodInfo GetPropertyMethodInfo = typeof(DynamicData).GetMethod( "GetProperty");
+            private static final MethodInfo SetPropertyMethodInfo = typeof(DynamicData).GetMethod( "SetProperty");
+            private static final MethodInfo GetPropertyMethodInfo = typeof(DynamicData).GetMethod( "GetProperty");
 
             public DynamicDataMetaObject(Expression expression, DynamicData instance)
                 : base(expression, BindingRestrictions.Empty, instance) {

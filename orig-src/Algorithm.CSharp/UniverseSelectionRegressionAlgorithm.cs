@@ -22,16 +22,16 @@ using QuantConnect.Orders;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// Basic template algorithm simply initializes the date range and cash
-    /// </summary>
+    */
     public class UniverseSelectionRegressionAlgorithm : QCAlgorithm
     {
         private HashSet<Symbol> _delistedSymbols = new HashSet<Symbol>(); 
         private SecurityChanges _changes;
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             UniverseSettings.Resolution = Resolution.Daily;
 
@@ -55,10 +55,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             });
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">Slice object keyed by symbol containing the stock data</param>
+        */
+         * @param data">Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             if( Transactions.OrdersCount == 0) {
                 MarketOrder( "SPY", 100);
@@ -73,7 +73,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 return;
             }
 
-            if( _changes != null && _changes.AddedSecurities.All(x => data.Bars.ContainsKey(x.Symbol))) {
+            if( _changes != null && _changes.AddedSecurities.All(x -> data.Bars.ContainsKey(x.Symbol))) {
                 foreach (security in _changes.AddedSecurities) {
                     Console.WriteLine(Time + ": Added Security: " + security.Symbol);
                     MarketOnOpenOrder(security.Symbol, 100);

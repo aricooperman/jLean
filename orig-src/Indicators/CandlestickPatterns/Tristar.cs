@@ -18,52 +18,52 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Tristar candlestick pattern indicator
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - 3 consecutive doji days
     /// - the second doji is a star
     /// The meaning of "doji" is specified with SetCandleSettings
     /// The returned value is positive(+1) when bullish or negative(-1) when bearish
-    /// </remarks>
+    /// 
     public class Tristar : CandlestickPattern
     {
-        private readonly int _bodyDojiAveragePeriod;
+        private final int _bodyDojiAveragePeriod;
 
         private BigDecimal _bodyDojiPeriodTotal;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Tristar"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public Tristar( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod + 2 + 1) {
             _bodyDojiAveragePeriod = CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Tristar"/> class.
-        /// </summary>
+        */
         public Tristar()
             : this( "TRISTAR") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _bodyDojiAveragePeriod - 2 && Samples < Period - 2) {
@@ -109,9 +109,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _bodyDojiPeriodTotal = 0m;
             base.Reset();

@@ -28,7 +28,7 @@ package com.quantconnect.lean.Tests.Indicators
         public void ComparesWithExternalData() {
             aroon = new AroonOscillator(14, 14);
             TestHelper.TestIndicator(aroon, "spy_aroon_oscillator.txt", "Aroon Oscillator 14",
-                (i, expected) => Assert.AreEqual(expected, (double)aroon.Current.Value, 1e-3));
+                (i, expected) -> Assert.AreEqual(expected, (double)aroon.Current.Value, 1e-3));
         }
 
         [Test]

@@ -21,89 +21,89 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Interfaces
 {
-    /// <summary>
+    /**
     /// Brokerage interface that defines the operations all brokerages must implement. The IBrokerage implementation
     /// must have a matching IBrokerageFactory implementation.
-    /// </summary>
+    */
     public interface IBrokerage
     {
-        /// <summary>
+        /**
         /// Event that fires each time an order is filled
-        /// </summary>
+        */
         event EventHandler<OrderEvent> OrderStatusChanged;
 
-        /// <summary>
+        /**
         /// Event that fires each time a user's brokerage account is changed
-        /// </summary>
+        */
         event EventHandler<AccountEvent> AccountChanged;
 
-        /// <summary>
+        /**
         /// Event that fires when a message is received from the brokerage
-        /// </summary>
+        */
         event EventHandler<BrokerageMessageEvent> Message;
 
-        /// <summary>
+        /**
         /// Gets the name of the brokerage
-        /// </summary>
+        */
         String Name { get; }
 
-        /// <summary>
+        /**
         /// Returns true if we're currently connected to the broker
-        /// </summary>
+        */
         boolean IsConnected { get; }
 
-        /// <summary>
+        /**
         /// Gets all open orders on the account
-        /// </summary>
-        /// <returns>The open orders returned from IB</returns>
+        */
+        @returns The open orders returned from IB
         List<Order> GetOpenOrders();
 
-        /// <summary>
+        /**
         /// Gets all holdings for the account
-        /// </summary>
-        /// <returns>The current holdings from the account</returns>
+        */
+        @returns The current holdings from the account
         List<Holding> GetAccountHoldings();
 
-        /// <summary>
+        /**
         /// Gets the current cash balance for each currency held in the brokerage account
-        /// </summary>
-        /// <returns>The current cash balance for each currency available for trading</returns>
+        */
+        @returns The current cash balance for each currency available for trading
         List<Cash> GetCashBalance();
 
-        /// <summary>
+        /**
         /// Places a new order and assigns a new broker ID to the order
-        /// </summary>
-        /// <param name="order">The order to be placed</param>
-        /// <returns>True if the request for a new order has been placed, false otherwise</returns>
+        */
+         * @param order">The order to be placed
+        @returns True if the request for a new order has been placed, false otherwise
         boolean PlaceOrder(Order order);
 
-        /// <summary>
+        /**
         /// Updates the order with the same id
-        /// </summary>
-        /// <param name="order">The new order information</param>
-        /// <returns>True if the request was made for the order to be updated, false otherwise</returns>
+        */
+         * @param order">The new order information
+        @returns True if the request was made for the order to be updated, false otherwise
         boolean UpdateOrder(Order order);
 
-        /// <summary>
+        /**
         /// Cancels the order with the specified ID
-        /// </summary>
-        /// <param name="order">The order to cancel</param>
-        /// <returns>True if the request was made for the order to be canceled, false otherwise</returns>
+        */
+         * @param order">The order to cancel
+        @returns True if the request was made for the order to be canceled, false otherwise
         boolean CancelOrder(Order order);
 
-        /// <summary>
+        /**
         /// Connects the client to the broker's remote servers
-        /// </summary>
+        */
         void Connect();
 
-        /// <summary>
+        /**
         /// Disconnects the client from the broker's remote servers
-        /// </summary>
+        */
         void Disconnect();
 
-        /// <summary>
+        /**
         /// Specifies whether the brokerage will instantly update account balances
-        /// </summary>
+        */
         boolean AccountInstantlyUpdated { get; }
     }
 }

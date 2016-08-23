@@ -19,35 +19,35 @@ using System.IO;
 
 package com.quantconnect.lean.ToolBox
 {
-    /// <summary>
+    /**
     /// Defines how to open/close a source file
-    /// </summary>
+    */
     public interface IStreamProvider : IDisposable
     {
-        /// <summary>
+        /**
         /// Opens the specified source as read to be consumed stream
-        /// </summary>
-        /// <param name="source">The source file to be opened</param>
-        /// <returns>The stream representing the specified source</returns>
+        */
+         * @param source">The source file to be opened
+        @returns The stream representing the specified source
         IEnumerable<Stream> Open( String source);
 
-        /// <summary>
+        /**
         /// Closes the specified source file stream
-        /// </summary>
-        /// <param name="source">The source file to be closed</param>
+        */
+         * @param source">The source file to be closed
         void Close( String source);
     }
 
-    /// <summary>
+    /**
     /// Provides factor method for creating an <see cref="IStreamProvider"/> from a file name
-    /// </summary>
+    */
     public static class StreamProvider
     {
-        /// <summary>
+        /**
         /// Creates a new <see cref="IStreamProvider"/> capable of reading a file with the specified extenson
-        /// </summary>
-        /// <param name="extension">The file extension</param>
-        /// <returns>A new stream provider capable of reading files with the specified extension</returns>
+        */
+         * @param extension">The file extension
+        @returns A new stream provider capable of reading files with the specified extension
         public static IStreamProvider ForExtension( String extension) {
             ext = Path.GetExtension(extension);
             if( ext == ".zip") {

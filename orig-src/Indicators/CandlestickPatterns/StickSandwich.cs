@@ -17,10 +17,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Stick Sandwich candlestick pattern indicator
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - first candle: black candle
     /// - second candle: white candle that trades only above the prior close(low > prior close)
@@ -29,43 +29,43 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The returned value is always positive(+1): stick sandwich is always bullish;
     /// The user should consider that stick sandwich is significant when coming in a downtrend,
     /// while this function does not consider it
-    /// </remarks>
+    /// 
     public class StickSandwich : CandlestickPattern
     {
-        private readonly int _equalAveragePeriod;
+        private final int _equalAveragePeriod;
 
         private BigDecimal _equalPeriodTotal;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="StickSandwich"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public StickSandwich( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.Equal).AveragePeriod + 2 + 1) {
             _equalAveragePeriod = CandleSettings.Get(CandleSettingType.Equal).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="StickSandwich"/> class.
-        /// </summary>
+        */
         public StickSandwich()
             : this( "STICKSANDWICH") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _equalAveragePeriod) {
@@ -102,9 +102,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _equalPeriodTotal = 0m;
             base.Reset();

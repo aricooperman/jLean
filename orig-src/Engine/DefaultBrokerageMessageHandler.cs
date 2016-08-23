@@ -25,37 +25,37 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Lean.Engine
 {
-    /// <summary>
+    /**
     /// Provides a default implementation o <see cref="IBrokerageMessageHandler"/> that will forward
     /// messages as follows:
     /// Information -> IResultHandler.Debug
     /// Warning     -> IResultHandler.Error &amp;&amp; IApi.SendUserEmail
     /// Error       -> IResultHandler.Error &amp;&amp; IAlgorithm.RunTimeError
-    /// </summary>
+    */
     public class DefaultBrokerageMessageHandler : IBrokerageMessageHandler
     {
-        private static readonly TimeSpan DefaultOpenThreshold = Duration.ofMinutes(5);
-        private static readonly TimeSpan DefaultInitialDelay = Duration.ofMinutes(15);
+        private static final Duration DefaultOpenThreshold = Duration.ofMinutes(5);
+        private static final Duration DefaultInitialDelay = Duration.ofMinutes(15);
 
         private volatile boolean _connected;
 
-        private readonly IApi _api;
-        private readonly IAlgorithm _algorithm;
-        private readonly IResultHandler _results;
-        private readonly TimeSpan _openThreshold;
-        private readonly AlgorithmNodePacket _job;
-        private readonly TimeSpan _initialDelay;
+        private final IApi _api;
+        private final IAlgorithm _algorithm;
+        private final IResultHandler _results;
+        private final Duration _openThreshold;
+        private final AlgorithmNodePacket _job;
+        private final Duration _initialDelay;
         private CancellationTokenSource _cancellationTokenSource;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="DefaultBrokerageMessageHandler"/> class
-        /// </summary>
-        /// <param name="algorithm">The running algorithm</param>
-        /// <param name="job">The job that produced the algorithm</param>
-        /// <param name="results">The result handler for the algorithm</param>
-        /// <param name="api">The api for the algorithm</param>
-        /// <param name="initialDelay"></param>
-        /// <param name="openThreshold">Defines how long before market open to re-check for brokerage reconnect message</param>
+        */
+         * @param algorithm">The running algorithm
+         * @param job">The job that produced the algorithm
+         * @param results">The result handler for the algorithm
+         * @param api">The api for the algorithm
+         * @param initialDelay">
+         * @param openThreshold">Defines how long before market open to re-check for brokerage reconnect message
         public DefaultBrokerageMessageHandler(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler results, IApi api, TimeSpan? initialDelay = null, TimeSpan? openThreshold = null ) {
             _api = api;
             _job = job;
@@ -66,10 +66,10 @@ package com.quantconnect.lean.Lean.Engine
             _initialDelay = initialDelay ?? DefaultInitialDelay;
         }
 
-        /// <summary>
+        /**
         /// Handles the message
-        /// </summary>
-        /// <param name="message">The message to be handled</param>
+        */
+         * @param message">The message to be handled
         public void Handle(BrokerageMessageEvent message) {
             // based on message type dispatch to result handler
             switch (message.Type) {

@@ -18,18 +18,18 @@ using NUnit.Framework;
 
 package com.quantconnect.lean.Tests
 {
-    /// <summary>
+    /**
     /// Provides extension methods to make test code easier to read/write
-    /// </summary>
+    */
     public static class TestExtensions
     {
-        /// <summary>
+        /**
         /// Calls <see cref="WaitHandle.WaitOne(int)"/> on the specified <see cref="WaitHandle"></see> and then
         /// call <see cref="Assert.Fail( String)"/> if <paramref name="wait"/> was not set.
-        /// </summary>
-        /// <param name="wait">The <see cref="WaitHandle"/></param> instance to wait on
-        /// <param name="milliseconds">The timeout, in milliseconds</param>
-        /// <param name="message">The message to fail with, null to fail with no message</param>
+        */
+         * @param wait">The <see cref="WaitHandle"/> instance to wait on
+         * @param milliseconds">The timeout, in milliseconds
+         * @param message">The message to fail with, null to fail with no message
         public static void WaitOneAssertFail(this WaitHandle wait, int milliseconds, String message = null ) {
             if( !wait.WaitOne(milliseconds)) {
                 Assert.Fail(message);

@@ -30,38 +30,38 @@ import com.quantconnect.lean.interfaces.IApi;
 
 /// Provides a container for the system level handlers
 public class LeanEngineSystemHandlers implements Closeable {
-    private /*readonly*/ IApi _api;
-    private /*readonly*/ IMessagingHandler _notify;
-    private /*readonly*/ IJobQueueHandler _jobQueue;
+    private /*final*/ IApi _api;
+    private /*final*/ IMessagingHandler _notify;
+    private /*final*/ IJobQueueHandler _jobQueue;
 
-    /// <summary>
+    /**
     /// Gets the api instance used for communicating algorithm limits, status, and storing of log data
-    /// </summary>
+    */
     public IApi getApi() {
         return _api;
     }
 
-    /// <summary>
+    /**
     /// Gets the messaging handler instance used for communicating various packets to listeners, including
     /// debug/log messages, email/sms/web messages, as well as results and run time errors
-    /// </summary>
+    */
     public IMessagingHandler getNotify() {
         return _notify;
     }
 
-    /// <summary>
+    /**
     /// Gets the job queue responsible for acquiring and acknowledging an algorithm job
-    /// </summary>
+    */
     public IJobQueueHandler getJobQueue() {
         return _jobQueue;
     }
 
-    /// <summary>
+    /**
     /// Initializes a new instance of the <see cref="LeanEngineSystemHandlers"/> class with the specified handles
-    /// </summary>
-    /// <param name="jobQueue">The job queue used to acquire algorithm jobs</param>
-    /// <param name="api">The api instance used for communicating limits and status</param>
-    /// <param name="notify">The messaging handler user for passing messages from the algorithm to listeners</param>
+    */
+     * @param jobQueue">The job queue used to acquire algorithm jobs
+     * @param api">The api instance used for communicating limits and status
+     * @param notify">The messaging handler user for passing messages from the algorithm to listeners
     public LeanEngineSystemHandlers(IJobQueueHandler jobQueue, IApi api, IMessagingHandler notify) {
         if( jobQueue == null ) {
             throw new ArgumentNullException( "jobQueue");
@@ -77,11 +77,11 @@ public class LeanEngineSystemHandlers implements Closeable {
         _notify = notify;
     }
 
-    /// <summary>
+    /**
     /// Creates a new instance of the <see cref="LeanEngineSystemHandlers"/> class from the specified composer using type names from configuration
-    /// </summary>
-    /// <param name="composer">The composer instance to obtain implementations from</param>
-    /// <returns>A fully hydrates <see cref="LeanEngineSystemHandlers"/> instance.</returns>
+    */
+     * @param composer">The composer instance to obtain implementations from
+    @returns A fully hydrates <see cref="LeanEngineSystemHandlers"/> instance.
     /// <exception cref="CompositionException">Throws a CompositionException during failure to load</exception>
     public static LeanEngineSystemHandlers FromConfiguration(Composer composer) {
         return new LeanEngineSystemHandlers(
@@ -113,46 +113,46 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine
 {
-    /// <summary>
+    /**
     /// Provides a container for the system level handlers
-    /// </summary>
+    */
     public class LeanEngineSystemHandlers : IDisposable
     {
-        private readonly IApi _api;
-        private readonly IMessagingHandler _notify;
-        private readonly IJobQueueHandler _jobQueue;
+        private final IApi _api;
+        private final IMessagingHandler _notify;
+        private final IJobQueueHandler _jobQueue;
 
-        /// <summary>
+        /**
         /// Gets the api instance used for communicating algorithm limits, status, and storing of log data
-        /// </summary>
+        */
         public IApi Api
         {
             get { return _api; }
         }
 
-        /// <summary>
+        /**
         /// Gets the messaging handler instance used for communicating various packets to listeners, including
         /// debug/log messages, email/sms/web messages, as well as results and run time errors
-        /// </summary>
+        */
         public IMessagingHandler Notify
         {
             get { return _notify; }
         }
 
-        /// <summary>
+        /**
         /// Gets the job queue responsible for acquiring and acknowledging an algorithm job
-        /// </summary>
+        */
         public IJobQueueHandler JobQueue
         {
             get { return _jobQueue; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="LeanEngineSystemHandlers"/> class with the specified handles
-        /// </summary>
-        /// <param name="jobQueue">The job queue used to acquire algorithm jobs</param>
-        /// <param name="api">The api instance used for communicating limits and status</param>
-        /// <param name="notify">The messaging handler user for passing messages from the algorithm to listeners</param>
+        */
+         * @param jobQueue">The job queue used to acquire algorithm jobs
+         * @param api">The api instance used for communicating limits and status
+         * @param notify">The messaging handler user for passing messages from the algorithm to listeners
         public LeanEngineSystemHandlers(IJobQueueHandler jobQueue, IApi api, IMessagingHandler notify) {
             if( jobQueue == null ) {
                 throw new ArgumentNullException( "jobQueue");
@@ -168,11 +168,11 @@ package com.quantconnect.lean.Lean.Engine
             _notify = notify;
         }
 
-        /// <summary>
+        /**
         /// Creates a new instance of the <see cref="LeanEngineSystemHandlers"/> class from the specified composer using type names from configuration
-        /// </summary>
-        /// <param name="composer">The composer instance to obtain implementations from</param>
-        /// <returns>A fully hydrates <see cref="LeanEngineSystemHandlers"/> instance.</returns>
+        */
+         * @param composer">The composer instance to obtain implementations from
+        @returns A fully hydrates <see cref="LeanEngineSystemHandlers"/> instance.
         /// <exception cref="CompositionException">Throws a CompositionException during failure to load</exception>
         public static LeanEngineSystemHandlers FromConfiguration(Composer composer) {
             return new LeanEngineSystemHandlers(
@@ -182,18 +182,18 @@ package com.quantconnect.lean.Lean.Engine
                 );
         }
 
-        /// <summary>
+        /**
         /// Initializes the Api, Messaging, and JobQueue components
-        /// </summary>
+        */
         public void Initialize() {
             Api.Initialize(Config.GetInt( "job-user-id", 0), Config.Get( "api-access-token", ""));
             Notify.Initialize();
             JobQueue.Initialize();
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             Api.Dispose();

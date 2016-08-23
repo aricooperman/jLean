@@ -18,9 +18,9 @@ using Newtonsoft.Json;
 
 package com.quantconnect.lean.Brokerages.Tradier
 {
-    /// <summary>
+    /**
     /// Wrapper container for fault:
-    /// </summary>
+    */
     public class TradierFaultContainer
     {
         /// Inner Fault Object
@@ -31,10 +31,10 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierFaultContainer() { }
     }
 
-    /// <summary>
+    /**
     /// Tradier fault object:
     /// {"fault":{"faultstring":"Access Token expired","detail":{"errorcode":"keymanagement.service.access_token_expired"}}}
-    /// </summary>
+    */
     public class TradierFault
     {
         /// Description of fault
@@ -49,9 +49,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierFault() { }
     }
 
-    /// <summary>
+    /**
     /// Error code associated with this fault.
-    /// </summary>
+    */
     public class TradierFaultDetail
     {
         /// Error code for fault

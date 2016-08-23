@@ -21,34 +21,34 @@ using NodaTime.TimeZones;
 
 package com.quantconnect.lean
 {
-    /// <summary>
+    /**
     /// Represents the discontinuties in a single time zone and provides offsets to UTC.
     /// This type assumes that times will be asked in a forward marching manner.
     /// This type is not thread safe.
-    /// </summary>
+    */
     public class TimeZoneOffsetProvider
     {
-        private static readonly long DateTimeMaxValueTicks = DateTime.MaxValue.Ticks;
+        private static final long DateTimeMaxValueTicks = DateTime.MaxValue.Ticks;
 
         private long _nextDiscontinuity;
         private long _currentOffsetTicks;
-        private readonly ZoneId _timeZone;
-        private readonly Queue<long> _discontinuities;
+        private final ZoneId _timeZone;
+        private final Queue<long> _discontinuities;
 
-        /// <summary>
+        /**
         /// Gets the time zone this instances provides offsets for
-        /// </summary>
+        */
         public ZoneId TimeZone
         {
             get { return _timeZone; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="TimeZoneOffsetProvider"/> class
-        /// </summary>
-        /// <param name="timeZone">The time zone to provide offsets for</param>
-        /// <param name="utcStartTime">The start of the range of offsets</param>
-        /// <param name="utcEndTime">The en of the range of offsets</param>
+        */
+         * @param timeZone">The time zone to provide offsets for
+         * @param utcStartTime">The start of the range of offsets
+         * @param utcEndTime">The en of the range of offsets
         public TimeZoneOffsetProvider(ZoneId timeZone, DateTime utcStartTime, DateTime utcEndTime) {
             _timeZone = timeZone;
 
@@ -75,11 +75,11 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Gets the offset in ticks from this time zone to UTC, such that UTC time + offset = local time
-        /// </summary>
-        /// <param name="utcTime">The time in UTC to get an offset to local</param>
-        /// <returns>The offset in ticks between UTC and the local time zone</returns>
+        */
+         * @param utcTime">The time in UTC to get an offset to local
+        @returns The offset in ticks between UTC and the local time zone
         public long GetOffsetTicks(DateTime utcTime) {
             // keep advancing our discontinuity until the requested time, don't recompute if already at max value
             while (utcTime.Ticks >= _nextDiscontinuity && _nextDiscontinuity != DateTimeMaxValueTicks) {
@@ -96,27 +96,27 @@ package com.quantconnect.lean
             return _currentOffsetTicks;
         }
 
-        /// <summary>
+        /**
         /// Gets this offset provider's next discontinuity
-        /// </summary>
-        /// <returns>The next discontinuity in UTC ticks</returns>
+        */
+        @returns The next discontinuity in UTC ticks
         public long GetNextDiscontinuity() {
             return _nextDiscontinuity;
         }
 
-        /// <summary>
+        /**
         /// Converts the specified <paramref name="utcTime"/> using the offset resolved from
         /// a call to <see cref="GetOffsetTicks"/>
-        /// </summary>
-        /// <param name="utcTime">The time to convert from utc</param>
-        /// <returns>The same instant in time represented in the <see cref="TimeZone"/></returns>
+        */
+         * @param utcTime">The time to convert from utc
+        @returns The same instant in time represented in the <see cref="TimeZone"/>
         public DateTime ConvertFromUtc(DateTime utcTime) {
             return new DateTime(utcTime.Ticks + GetOffsetTicks(utcTime));
         }
 
-        /// <summary>
+        /**
         /// Gets the zone interval's start time in DateTimeKind.Utc ticks
-        /// </summary>
+        */
         private static long GetDateTimeUtcTicks(ZoneInterval zoneInterval) {
             // can't convert these values directly to date times, so just shortcut these here
             // we set the min value to one since the logic in the ctor will decrement this value to

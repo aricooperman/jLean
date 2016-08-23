@@ -28,9 +28,9 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
         [Test]
         public void SynchronizesData() {
             time = new DateTime(2016, 03, 03, 12, 05, 00);
-            stream1 = Enumerable.Range(0, 10).Select(x => new Tick {Time = time.AddSeconds(1)}).GetEnumerator();
-            stream2 = Enumerable.Range(0, 5).Select(x => new Tick {Time = time.AddSeconds(2)}).GetEnumerator();
-            stream3 = Enumerable.Range(0, 20).Select(x => new Tick {Time = time.AddSeconds(0.5)}).GetEnumerator();
+            stream1 = Enumerable.Range(0, 10).Select(x -> new Tick {Time = time.AddSeconds(1)}).GetEnumerator();
+            stream2 = Enumerable.Range(0, 5).Select(x -> new Tick {Time = time.AddSeconds(2)}).GetEnumerator();
+            stream3 = Enumerable.Range(0, 20).Select(x -> new Tick {Time = time.AddSeconds(0.5)}).GetEnumerator();
 
             previous = DateTime.MinValue;
             synchronizer = new SynchronizingEnumerator(stream1, stream2, stream3);

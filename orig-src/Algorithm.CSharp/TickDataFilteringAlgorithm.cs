@@ -7,14 +7,14 @@ using QuantConnect.Securities.Interfaces;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// Tick Filter Example
-    /// </summary>
+    */
     public class TickDataFilteringAlgorithm : QCAlgorithm
     {
-        /// <summary>
+        /**
         /// Initialize the tick filtering example algorithm
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetCash(25000);
             SetStartDate(2013, 10, 07);
@@ -25,10 +25,10 @@ package com.quantconnect.lean.Algorithm.Examples
             Securities["SPY"].DataFilter = new ExchangeDataFilter(this);
         }
 
-        /// <summary>
+        /**
         /// Data arriving here will now be filtered.
-        /// </summary>
-        /// <param name="data">Ticks data array</param>
+        */
+         * @param data">Ticks data array
         public void OnData(Ticks data) {
             if( !data.ContainsKey( "SPY")) return;
             spyTickList = data["SPY"];
@@ -43,25 +43,25 @@ package com.quantconnect.lean.Algorithm.Examples
             }
         }
     }
-    /// <summary>
+    /**
     /// Exchange filter class 
-    /// </summary>
+    */
     public class ExchangeDataFilter : ISecurityDataFilter
     {
         private IAlgorithm _algo;
 
-        /// <summary>
+        /**
         /// Save instance of the algorithm namespace
-        /// </summary>
-        /// <param name="algo"></param>
+        */
+         * @param algo">
         public ExchangeDataFilter(IAlgorithm algo) {
             _algo = algo;
         }
 
-        /// <summary>
+        /**
         /// Global Market Short Codes and their full versions: (used in tick objects)
         /// https://github.com/QuantConnect/QCAlgorithm/blob/master/QuantConnect.Common/Global.cs
-        /// </summary>
+        */
         public static class MarketCodesFilter
         {
             /// US Market Codes
@@ -92,9 +92,9 @@ package com.quantconnect.lean.Algorithm.Examples
                 {"V", "Venture"}
             };
 
-            /// <summary>
+            /**
             /// Select allowed exchanges for this filter: e.g. top 4
-            /// </summary>
+            */
             public static List<String> AllowedExchanges = new List<String>() { 
                 "P",    //NYSE ARCA - SPY PRIMARY EXCHANGE
                         //https://www.google.com/finance?q=NYSEARCA%3ASPY&ei=XcA2VKCSLs228waMhYCIBg
@@ -102,11 +102,11 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
 
-        /// <summary>
+        /**
         /// Filter out a tick from this vehicle, with this new data:
-        /// </summary>
-        /// <param name="data">New data packet:</param>
-        /// <param name="asset">Vehicle of this filter.</param>
+        */
+         * @param data">New data packet:
+         * @param asset">Vehicle of this filter.
         public boolean Filter(Security asset, BaseData data) {
             // TRUE -->  Accept Tick
             // FALSE --> Reject Tick

@@ -30,7 +30,7 @@ package com.quantconnect.lean.Tests.Common.Securities
 
 
         // this is really not european style, but I'd prefer to test a value of 1 vs a value of 0
-        private readonly SecurityIdentifier SPY_Put_19550 = SecurityIdentifier.GenerateOption(new DateTime(2015, 09, 18), "SPY", Market.USA, 195.50m, OptionRight.Put, OptionStyle.European);
+        private final SecurityIdentifier SPY_Put_19550 = SecurityIdentifier.GenerateOption(new DateTime(2015, 09, 18), "SPY", Market.USA, 195.50m, OptionRight.Put, OptionStyle.European);
 
         [Test]
         public void GenerateEquityProperlyResolvesFirstDate() {
@@ -80,7 +80,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             eurusd = SecurityIdentifier.GenerateForex( "EURUSD", Market.FXCM);
 
             // verify various values
-            Assert.Throws<InvalidOperationException>(() => { x = eurusd.Date; });
+            Assert.Throws<InvalidOperationException>(() -> { x = eurusd.Date; });
             Assert.AreEqual(Market.FXCM, eurusd.Market);
             Assert.AreEqual(SecurityType.Forex, eurusd.SecurityType);
             Assert.AreEqual( "EURUSD", eurusd.Symbol);

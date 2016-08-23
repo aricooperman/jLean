@@ -15,74 +15,74 @@
 
 package com.quantconnect.lean.Brokerages
 {
-    /// <summary>
+    /**
     /// Represents a message received from a brokerage
-    /// </summary>
+    */
     public class BrokerageMessageEvent
     {
-        /// <summary>
+        /**
         /// Gets the type of brokerage message
-        /// </summary>
+        */
         public BrokerageMessageType Type { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the brokerage specific code for this message, zero if no code was specified
-        /// </summary>
+        */
         public String Code { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the message text received from the brokerage
-        /// </summary>
+        */
         public String Message { get; private set; }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the BrokerageMessageEvent class
-        /// </summary>
-        /// <param name="type">The type of brokerage message</param>
-        /// <param name="code">The brokerage specific code</param>
-        /// <param name="message">The message text received from the brokerage</param>
+        */
+         * @param type">The type of brokerage message
+         * @param code">The brokerage specific code
+         * @param message">The message text received from the brokerage
         public BrokerageMessageEvent(BrokerageMessageType type, int code, String message) {
             Type = type;
             Code = code.toString();
             Message = message;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the BrokerageMessageEvent class
-        /// </summary>
-        /// <param name="type">The type of brokerage message</param>
-        /// <param name="code">The brokerage specific code</param>
-        /// <param name="message">The message text received from the brokerage</param>
+        */
+         * @param type">The type of brokerage message
+         * @param code">The brokerage specific code
+         * @param message">The message text received from the brokerage
         public BrokerageMessageEvent(BrokerageMessageType type, String code, String message) {
             Type = type;
             Code = code;
             Message = message;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="BrokerageMessageEvent"/> to represent a disconnect message
-        /// </summary>
-        /// <param name="message">The message from the brokerage</param>
-        /// <returns>A brokerage disconnect message</returns>
+        */
+         * @param message">The message from the brokerage
+        @returns A brokerage disconnect message
         public static BrokerageMessageEvent Disconnected( String message) {
             return new BrokerageMessageEvent(BrokerageMessageType.Disconnect, "Disconnect", message);
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="BrokerageMessageEvent"/> to represent a reconnect message
-        /// </summary>
-        /// <param name="message">The message from the brokerage</param>
-        /// <returns>A brokerage reconnect message</returns>
+        */
+         * @param message">The message from the brokerage
+        @returns A brokerage reconnect message
         public static BrokerageMessageEvent Reconnected( String message) {
             return new BrokerageMessageEvent(BrokerageMessageType.Reconnect, "Reconnect", message);
         }
 
-        /// <summary>
+        /**
         /// Returns a String that represents the current object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A String that represents the current object.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         public @Override String toString() {
             return String.format( "%1$s - Code: %2$s - %3$s", Type, Code, Message);

@@ -46,92 +46,92 @@ public interface IApi extends Closeable {
     void initialize( int userId, String token );
 
     /// Create a project with the specified name and language via QuantConnect.com API
-    /// <param name="name">Project name</param>
-    /// <param name="language">Programming language to use</param>
-    /// <returns>Project object from the API.</returns>
+     * @param name">Project name
+     * @param language">Programming language to use
+    @returns Project object from the API.
     Project createProject( String name, Language language );
 
-    /// <summary>
+    /**
     /// Read in a project from the QuantConnect.com API.
-    /// </summary>
-    /// <param name="projectId">Project id you own</param>
-    /// <returns></returns>
+    */
+     * @param projectId">Project id you own
+    @returns 
     Project readProject( int projectId );
 
-    /// <summary>
+    /**
     /// Update a specific project with a list of files. All other files will be deleted.
-    /// </summary>
-    /// <param name="projectId">Project id for project to be updated</param>
-    /// <param name="files">Files list to update</param>
-    /// <returns>RestResponse indicating success</returns>
+    */
+     * @param projectId">Project id for project to be updated
+     * @param files">Files list to update
+    @returns RestResponse indicating success
     RestResponse updateProject( int projectId, List<ProjectFile> files );
 
-    /// <summary>
+    /**
     /// Delete a specific project owned by the user from QuantConnect.com
-    /// </summary>
-    /// <param name="projectId">Project id we own and wish to delete</param>
-    /// <returns>RestResponse indicating success</returns>
+    */
+     * @param projectId">Project id we own and wish to delete
+    @returns RestResponse indicating success
     RestResponse delete( int projectId );
 
     /// Read back a list of all projects on the account for a user.
-    /// <returns>Container for list of projects</returns>
+    @returns Container for list of projects
     ProjectList projectList();
 
     /// Create a new compile job request for this project id.
-    /// <param name="projectId">Project id we wish to compile.</param>
-    /// <returns>Compile object result</returns>
+     * @param projectId">Project id we wish to compile.
+    @returns Compile object result
     Compile createCompile( int projectId );
 
     /// Read a compile packet job result.
-    /// <param name="projectId">Project id we sent for compile</param>
-    /// <param name="compileId">Compile id return from the creation request</param>
-    /// <returns>Compile object result</returns>
+     * @param projectId">Project id we sent for compile
+     * @param compileId">Compile id return from the creation request
+    @returns Compile object result
     Compile readCompile( int projectId, String compileId );
 
     /// Create a new backtest from a specified projectId and compileId
-    /// <param name="projectId"></param>
-    /// <param name="compileId"></param>
-    /// <param name="backtestName"></param>
-    /// <returns></returns>
+     * @param projectId">
+     * @param compileId">
+     * @param backtestName">
+    @returns 
     Backtest createBacktest( int projectId, String compileId, String backtestName );
 
-    /// <summary>
+    /**
     /// Read out the full result of a specific backtest
-    /// </summary>
-    /// <param name="projectId">Project id for the backtest we'd like to read</param>
-    /// <param name="backtestId">Backtest id for the backtest we'd like to read</param>
-    /// <returns>Backtest result object</returns>
+    */
+     * @param projectId">Project id for the backtest we'd like to read
+     * @param backtestId">Backtest id for the backtest we'd like to read
+    @returns Backtest result object
     Backtest readBacktest(int projectId, String backtestId);
 
-    /// <summary>
+    /**
     /// Update the backtest name
-    /// </summary>
-    /// <param name="projectId">Project id to update</param>
-    /// <param name="backtestId">Backtest id to update</param>
-    /// <param name="backtestName">New backtest name to set</param>
-    /// <param name="backtestNote">Note attached to the backtest</param>
-    /// <returns>Rest response on success</returns>
+    */
+     * @param projectId">Project id to update
+     * @param backtestId">Backtest id to update
+     * @param backtestName">New backtest name to set
+     * @param backtestNote">Note attached to the backtest
+    @returns Rest response on success
     RestResponse updateBacktest(int projectId, String backtestId, String backtestName = "", String backtestNote = "");
 
-    /// <summary>
+    /**
     /// Delete a backtest from the specified project and backtestId.
-    /// </summary>
-    /// <param name="projectId">Project for the backtest we want to delete</param>
-    /// <param name="backtestId">Backtest id we want to delete</param>
-    /// <returns>RestResponse on success</returns>
+    */
+     * @param projectId">Project for the backtest we want to delete
+     * @param backtestId">Backtest id we want to delete
+    @returns RestResponse on success
     RestResponse deleteBacktest(int projectId, String backtestId);
 
-    /// <summary>
+    /**
     /// Get a list of backtests for a specific project id
-    /// </summary>
-    /// <param name="projectId">Project id to search</param>
-    /// <returns>BacktestList container for list of backtests</returns>
+    */
+     * @param projectId">Project id to search
+    @returns BacktestList container for list of backtests
     BacktestList backtestList(int projectId);
 
-    /// <summary>
+    /**
     /// Get a list of live running algorithms for a logged in user.
-    /// </summary>
-    /// <returns>List of live algorithm instances</returns>
+    */
+    @returns List of live algorithm instances
     LiveList liveList();
     
 
@@ -147,9 +147,9 @@ public interface IApi extends Closeable {
 
 
 
-    /// <summary>
+    /**
     /// Read the maximum log allowance
-    /// </summary>
+    */
     int[] readLogAllowance( int userId, String userToken );
 
     /// Update running total of log usage
@@ -159,43 +159,43 @@ public interface IApi extends Closeable {
     
     void updateDailyLogUsed( int userId, String backtestId, String url, int length, String userToken, boolean hitLimit );
 
-    /// <summary>
+    /**
     /// Get the algorithm current status, active or cancelled from the user
-    /// </summary>
-    /// <param name="algorithmId"></param>
-    /// <param name="userId">The user id of the algorithm</param>
-    /// <returns></returns>
+    */
+     * @param algorithmId">
+     * @param userId">The user id of the algorithm
+    @returns 
     AlgorithmControl getAlgorithmStatus( String algorithmId, int userId );
 
-    /// <summary>
+    /**
     /// Set the algorithm status from the worker to update the UX e.g. if there was an error.
-    /// </summary>
-    /// <param name="algorithmId">Algorithm id we're setting.</param>
-    /// <param name="status">Status enum of the current worker</param>
-    /// <param name="message">Message for the algorithm status event</param>
+    */
+     * @param algorithmId">Algorithm id we're setting.
+     * @param status">Status enum of the current worker
+     * @param message">Message for the algorithm status event
     void setAlgorithmStatus( String algorithmId, AlgorithmStatus status, String message = "" );
 
-    /// <summary>
+    /**
     /// Send the statistics to storage for performance tracking.
-    /// </summary>
-    /// <param name="algorithmId">Identifier for algorithm</param>
-    /// <param name="unrealized">Unrealized gainloss</param>
-    /// <param name="fees">Total fees</param>
-    /// <param name="netProfit">Net profi</param>
-    /// <param name="holdings">Algorithm holdings</param>
-    /// <param name="equity">Total equity</param>
-    /// <param name="netReturn">Algorithm return</param>
-    /// <param name="volume">Volume traded</param>
-    /// <param name="trades">Total trades since inception</param>
-    /// <param name="sharpe">Sharpe ratio since inception</param>
+    */
+     * @param algorithmId">Identifier for algorithm
+     * @param unrealized">Unrealized gainloss
+     * @param fees">Total fees
+     * @param netProfit">Net profi
+     * @param holdings">Algorithm holdings
+     * @param equity">Total equity
+     * @param netReturn">Algorithm return
+     * @param volume">Volume traded
+     * @param trades">Total trades since inception
+     * @param sharpe">Sharpe ratio since inception
     void sendStatistics( String algorithmId, BigDecimal unrealized, BigDecimal fees, BigDecimal netProfit, BigDecimal holdings, BigDecimal equity, BigDecimal netReturn, BigDecimal volume, int trades, double sharpe);
 
-    /// <summary>
+    /**
     /// Market Status Today: REST call.
-    /// </summary>
-    /// <param name="time">The date we need market hours for</param>
-    /// <param name="symbol"></param>
-    /// <returns>Market open hours.</returns>
+    */
+     * @param time">The date we need market hours for
+     * @param symbol">
+    @returns Market open hours.
     Iterable<MarketHoursSegment> marketToday( LocalDateTime time, Symbol symbol);
 
     default void store( String data, String location, StoragePermissions permissions ) {
@@ -206,9 +206,9 @@ public interface IApi extends Closeable {
     void store( String data, String location, StoragePermissions permissions, boolean async );
 
     /// Send an email to the user associated with the specified algorithm id
-    /// <param name="algorithmId">The algorithm id</param>
-    /// <param name="subject">The email subject</param>
-    /// <param name="body">The email message body</param>
+     * @param algorithmId">The algorithm id
+     * @param subject">The email subject
+     * @param body">The email message body
     void sendUserEmail( String algorithmId, String subject, String body );
 }
 
@@ -222,114 +222,114 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Interfaces
 {
-    /// <summary>
+    /**
     /// API for QuantConnect.com 
-    /// </summary>
+    */
     [InheritedExport(typeof(IApi))]
     public interface IApi : IDisposable
     {
-        /// <summary>
+        /**
         /// Initialize the control system
-        /// </summary>
+        */
         void Initialize(int userId, String token);
 
-        /// <summary>
+        /**
         /// Create a project with the specified name and language via QuantConnect.com API
-        /// </summary>
-        /// <param name="name">Project name</param>
-        /// <param name="language">Programming language to use</param>
-        /// <returns>Project object from the API.</returns>
+        */
+         * @param name">Project name
+         * @param language">Programming language to use
+        @returns Project object from the API.
         Project CreateProject( String name, Language language);
 
-        /// <summary>
+        /**
         /// Read in a project from the QuantConnect.com API.
-        /// </summary>
-        /// <param name="projectId">Project id you own</param>
-        /// <returns></returns>
+        */
+         * @param projectId">Project id you own
+        @returns 
         Project ReadProject(int projectId);
 
-        /// <summary>
+        /**
         /// Update a specific project with a list of files. All other files will be deleted.
-        /// </summary>
-        /// <param name="projectId">Project id for project to be updated</param>
-        /// <param name="files">Files list to update</param>
-        /// <returns>RestResponse indicating success</returns>
+        */
+         * @param projectId">Project id for project to be updated
+         * @param files">Files list to update
+        @returns RestResponse indicating success
         RestResponse UpdateProject(int projectId, List<ProjectFile> files);
 
-        /// <summary>
+        /**
         /// Delete a specific project owned by the user from QuantConnect.com
-        /// </summary>
-        /// <param name="projectId">Project id we own and wish to delete</param>
-        /// <returns>RestResponse indicating success</returns>
+        */
+         * @param projectId">Project id we own and wish to delete
+        @returns RestResponse indicating success
         RestResponse Delete(int projectId);
 
-        /// <summary>
+        /**
         /// Read back a list of all projects on the account for a user.
-        /// </summary>
-        /// <returns>Container for list of projects</returns>
+        */
+        @returns Container for list of projects
         ProjectList ProjectList();
 
-        /// <summary>
+        /**
         /// Create a new compile job request for this project id.
-        /// </summary>
-        /// <param name="projectId">Project id we wish to compile.</param>
-        /// <returns>Compile object result</returns>
+        */
+         * @param projectId">Project id we wish to compile.
+        @returns Compile object result
         Compile CreateCompile(int projectId);
 
-        /// <summary>
+        /**
         /// Read a compile packet job result.
-        /// </summary>
-        /// <param name="projectId">Project id we sent for compile</param>
-        /// <param name="compileId">Compile id return from the creation request</param>
-        /// <returns>Compile object result</returns>
+        */
+         * @param projectId">Project id we sent for compile
+         * @param compileId">Compile id return from the creation request
+        @returns Compile object result
         Compile ReadCompile(int projectId, String compileId);
 
-        /// <summary>
+        /**
         /// Create a new backtest from a specified projectId and compileId
-        /// </summary>
-        /// <param name="projectId"></param>
-        /// <param name="compileId"></param>
-        /// <param name="backtestName"></param>
-        /// <returns></returns>
+        */
+         * @param projectId">
+         * @param compileId">
+         * @param backtestName">
+        @returns 
         Backtest CreateBacktest(int projectId, String compileId, String backtestName);
 
-        /// <summary>
+        /**
         /// Read out the full result of a specific backtest
-        /// </summary>
-        /// <param name="projectId">Project id for the backtest we'd like to read</param>
-        /// <param name="backtestId">Backtest id for the backtest we'd like to read</param>
-        /// <returns>Backtest result object</returns>
+        */
+         * @param projectId">Project id for the backtest we'd like to read
+         * @param backtestId">Backtest id for the backtest we'd like to read
+        @returns Backtest result object
         Backtest ReadBacktest(int projectId, String backtestId);
 
-        /// <summary>
+        /**
         /// Update the backtest name
-        /// </summary>
-        /// <param name="projectId">Project id to update</param>
-        /// <param name="backtestId">Backtest id to update</param>
-        /// <param name="backtestName">New backtest name to set</param>
-        /// <param name="backtestNote">Note attached to the backtest</param>
-        /// <returns>Rest response on success</returns>
+        */
+         * @param projectId">Project id to update
+         * @param backtestId">Backtest id to update
+         * @param backtestName">New backtest name to set
+         * @param backtestNote">Note attached to the backtest
+        @returns Rest response on success
         RestResponse UpdateBacktest(int projectId, String backtestId, String backtestName = "", String backtestNote = "");
 
-        /// <summary>
+        /**
         /// Delete a backtest from the specified project and backtestId.
-        /// </summary>
-        /// <param name="projectId">Project for the backtest we want to delete</param>
-        /// <param name="backtestId">Backtest id we want to delete</param>
-        /// <returns>RestResponse on success</returns>
+        */
+         * @param projectId">Project for the backtest we want to delete
+         * @param backtestId">Backtest id we want to delete
+        @returns RestResponse on success
         RestResponse DeleteBacktest(int projectId, String backtestId);
 
-        /// <summary>
+        /**
         /// Get a list of backtests for a specific project id
-        /// </summary>
-        /// <param name="projectId">Project id to search</param>
-        /// <returns>BacktestList container for list of backtests</returns>
+        */
+         * @param projectId">Project id to search
+        @returns BacktestList container for list of backtests
         BacktestList BacktestList(int projectId);
 
-        /// <summary>
+        /**
         /// Get a list of live running algorithms for a logged in user.
-        /// </summary>
-        /// <returns>List of live algorithm instances</returns>
+        */
+        @returns List of live algorithm instances
         LiveList LiveList();
         
 
@@ -345,66 +345,66 @@ package com.quantconnect.lean.Interfaces
 
 
 
-        /// <summary>
+        /**
         /// Read the maximum log allowance
-        /// </summary>
+        */
         int[] ReadLogAllowance(int userId, String userToken);
 
-        /// <summary>
+        /**
         /// Update running total of log usage
-        /// </summary>
+        */
         void UpdateDailyLogUsed(int userId, String backtestId, String url, int length, String userToken, boolean hitLimit = false);
 
-        /// <summary>
+        /**
         /// Get the algorithm current status, active or cancelled from the user
-        /// </summary>
-        /// <param name="algorithmId"></param>
-        /// <param name="userId">The user id of the algorithm</param>
-        /// <returns></returns>
+        */
+         * @param algorithmId">
+         * @param userId">The user id of the algorithm
+        @returns 
         AlgorithmControl GetAlgorithmStatus( String algorithmId, int userId);
 
-        /// <summary>
+        /**
         /// Set the algorithm status from the worker to update the UX e.g. if there was an error.
-        /// </summary>
-        /// <param name="algorithmId">Algorithm id we're setting.</param>
-        /// <param name="status">Status enum of the current worker</param>
-        /// <param name="message">Message for the algorithm status event</param>
+        */
+         * @param algorithmId">Algorithm id we're setting.
+         * @param status">Status enum of the current worker
+         * @param message">Message for the algorithm status event
         void SetAlgorithmStatus( String algorithmId, AlgorithmStatus status, String message = "");
 
-        /// <summary>
+        /**
         /// Send the statistics to storage for performance tracking.
-        /// </summary>
-        /// <param name="algorithmId">Identifier for algorithm</param>
-        /// <param name="unrealized">Unrealized gainloss</param>
-        /// <param name="fees">Total fees</param>
-        /// <param name="netProfit">Net profi</param>
-        /// <param name="holdings">Algorithm holdings</param>
-        /// <param name="equity">Total equity</param>
-        /// <param name="netReturn">Algorithm return</param>
-        /// <param name="volume">Volume traded</param>
-        /// <param name="trades">Total trades since inception</param>
-        /// <param name="sharpe">Sharpe ratio since inception</param>
+        */
+         * @param algorithmId">Identifier for algorithm
+         * @param unrealized">Unrealized gainloss
+         * @param fees">Total fees
+         * @param netProfit">Net profi
+         * @param holdings">Algorithm holdings
+         * @param equity">Total equity
+         * @param netReturn">Algorithm return
+         * @param volume">Volume traded
+         * @param trades">Total trades since inception
+         * @param sharpe">Sharpe ratio since inception
         void SendStatistics( String algorithmId, BigDecimal unrealized, BigDecimal fees, BigDecimal netProfit, BigDecimal holdings, BigDecimal equity, BigDecimal netReturn, BigDecimal volume, int trades, double sharpe);
 
-        /// <summary>
+        /**
         /// Market Status Today: REST call.
-        /// </summary>
-        /// <param name="time">The date we need market hours for</param>
-        /// <param name="symbol"></param>
-        /// <returns>Market open hours.</returns>
+        */
+         * @param time">The date we need market hours for
+         * @param symbol">
+        @returns Market open hours.
         IEnumerable<MarketHoursSegment> MarketToday(DateTime time, Symbol symbol);
 
-        /// <summary>
+        /**
         /// Store the algorithm logs.
-        /// </summary>
+        */
         void Store( String data, String location, StoragePermissions permissions, boolean async = false);
 
-        /// <summary>
+        /**
         /// Send an email to the user associated with the specified algorithm id
-        /// </summary>
-        /// <param name="algorithmId">The algorithm id</param>
-        /// <param name="subject">The email subject</param>
-        /// <param name="body">The email message body</param>
+        */
+         * @param algorithmId">The algorithm id
+         * @param subject">The email subject
+         * @param body">The email message body
         void SendUserEmail( String algorithmId, String subject, String body);
     }
 }

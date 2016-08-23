@@ -22,9 +22,9 @@ using QuantConnect.Securities.Forex;
 
 package com.quantconnect.lean.Securities.Interfaces
 {
-    /// <summary>
+    /**
     /// Security transaction model interface for QuantConnect security objects
-    /// </summary>
+    */
     /// <seealso cref="EquityTransactionModel"/>
     /// <seealso cref="ForexTransactionModel"/>
     public interface ISecurityTransactionModel : IFillModel, IFeeModel, ISlippageModel

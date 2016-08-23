@@ -17,22 +17,22 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// This indicator computes the MidPrice (MIDPRICE).
     /// The MidPrice is calculated using the following formula:
     /// MIDPRICE = (Highest High + Lowest Low) / 2
-    /// </summary>
+    */
     public class MidPrice : TradeBarIndicator
     {
-        private readonly BigDecimal _period;
-        private readonly Maximum _maximum;
-        private readonly Minimum _minimum;
+        private final BigDecimal _period;
+        private final Maximum _maximum;
+        private final Minimum _minimum;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="MidPrice"/> class using the specified name and period.
-        /// </summary> 
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="period">The period of the MIDPRICE</param>
+        */ 
+         * @param name">The name of this indicator
+         * @param period">The period of the MIDPRICE
         public MidPrice( String name, int period) 
             : base(name) {
             _period = period;
@@ -40,27 +40,27 @@ package com.quantconnect.lean.Indicators
             _minimum = new Minimum(period);
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="MidPrice"/> class using the specified period.
-        /// </summary> 
-        /// <param name="period">The period of the MIDPRICE</param>
+        */ 
+         * @param period">The period of the MIDPRICE
         public MidPrice(int period)
             : this( "MIDPRICE" + period, period) {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _maximum.Update(new IndicatorDataPoint { Value = input.High });
             _minimum.Update(new IndicatorDataPoint { Value = input.Low });

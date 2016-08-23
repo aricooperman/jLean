@@ -41,14 +41,14 @@ public class Chart {
     public Chart() { }
 
     /// Constructor for a chart
-    /// <param name="name">String name of the chart</param>
+     * @param name">String name of the chart
     public Chart( String name ) {
         this.name = name;
         this.series = new HashMap<String,Series>();
     }
 
     /// Add a reference to this chart series:
-    /// <param name="series">Chart series class object</param>
+     * @param series">Chart series class object
     public void addSeries( Series s ) {
         //If we dont already have this series, add to the chrt:
         if( !series.containsKey( s.name ) )
@@ -58,7 +58,7 @@ public class Chart {
     }
 
     /// Fetch the updates of the chart, and save the index position.
-    /// <returns></returns>
+    @returns 
     public Chart GetUpdates() {
         final Chart copy = new Chart( name );
         

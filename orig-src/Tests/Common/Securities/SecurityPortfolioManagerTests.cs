@@ -33,14 +33,14 @@ package com.quantconnect.lean.Tests.Common.Securities
     [TestFixture]
     public class SecurityPortfolioManagerTests
     {
-        private static readonly SecurityExchangeHours SecurityExchangeHours = SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork);
-        private static readonly Symbol CASH = new Symbol(SecurityIdentifier.GenerateBase( "CASH", Market.USA), "CASH");
-        private static readonly Symbol MCHJWB = new Symbol(SecurityIdentifier.GenerateForex( "MCHJWB", Market.FXCM), "MCHJWB");
-        private static readonly Symbol MCHUSD = new Symbol(SecurityIdentifier.GenerateForex( "MCHUSD", Market.FXCM), "MCHUSD");
-        private static readonly Symbol USDJWB = new Symbol(SecurityIdentifier.GenerateForex( "USDJWB", Market.FXCM), "USDJWB");
-        private static readonly Symbol JWBUSD = new Symbol(SecurityIdentifier.GenerateForex( "JWBUSD", Market.FXCM), "JWBUSD");
+        private static final SecurityExchangeHours SecurityExchangeHours = SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork);
+        private static final Symbol CASH = new Symbol(SecurityIdentifier.GenerateBase( "CASH", Market.USA), "CASH");
+        private static final Symbol MCHJWB = new Symbol(SecurityIdentifier.GenerateForex( "MCHJWB", Market.FXCM), "MCHJWB");
+        private static final Symbol MCHUSD = new Symbol(SecurityIdentifier.GenerateForex( "MCHUSD", Market.FXCM), "MCHUSD");
+        private static final Symbol USDJWB = new Symbol(SecurityIdentifier.GenerateForex( "USDJWB", Market.FXCM), "USDJWB");
+        private static final Symbol JWBUSD = new Symbol(SecurityIdentifier.GenerateForex( "JWBUSD", Market.FXCM), "JWBUSD");
 
-        private static readonly Map<String, Symbol> SymbolMap = new Map<String, Symbol>
+        private static final Map<String, Symbol> SymbolMap = new Map<String, Symbol>
         {
             {"CASH", CASH},
             {"MCHJWB", MCHJWB},
@@ -57,7 +57,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             static final String fillsFile = "TestData\\test_cash_fills.xml";
             static final String equityFile = "TestData\\test_cash_equity.xml";
 
-            fills = XDocument.Load(fillsFile).Descendants( "OrderEvent").Select(x => new OrderEvent(
+            fills = XDocument.Load(fillsFile).Descendants( "OrderEvent").Select(x -> new OrderEvent(
                 x.Get<Integer>( "OrderId"),
                 SymbolMap[x.Get<String>( "Symbol")],
                 DateTime.MinValue, 
@@ -71,7 +71,7 @@ package com.quantconnect.lean.Tests.Common.Securities
                 ).ToList();
 
             equity = XDocument.Load(equityFile).Descendants( "decimal")
-                .Select(x => decimal.Parse(x.Value, CultureInfo.InvariantCulture))
+                .Select(x -> decimal.Parse(x.Value, CultureInfo.InvariantCulture))
                 .ToList();
 
             Assert.AreEqual(fills.Count + 1, equity.Count);
@@ -110,7 +110,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             static final String mchQuantityFile = "TestData\\test_forex_fills_mch_quantity.xml";
             static final String jwbQuantityFile = "TestData\\test_forex_fills_jwb_quantity.xml";
 
-            fills = XDocument.Load(fillsFile).Descendants( "OrderEvent").Select(x => new OrderEvent(
+            fills = XDocument.Load(fillsFile).Descendants( "OrderEvent").Select(x -> new OrderEvent(
                 x.Get<Integer>( "OrderId"),
                 SymbolMap[x.Get<String>( "Symbol")],
                 DateTime.MinValue,
@@ -124,15 +124,15 @@ package com.quantconnect.lean.Tests.Common.Securities
                 ).ToList();
 
             equity = XDocument.Load(equityFile).Descendants( "decimal")
-                .Select(x => decimal.Parse(x.Value, CultureInfo.InvariantCulture))
+                .Select(x -> decimal.Parse(x.Value, CultureInfo.InvariantCulture))
                 .ToList();
 
             mchQuantity = XDocument.Load(mchQuantityFile).Descendants( "decimal")
-                .Select(x => decimal.Parse(x.Value, CultureInfo.InvariantCulture))
+                .Select(x -> decimal.Parse(x.Value, CultureInfo.InvariantCulture))
                 .ToList();
 
             jwbQuantity = XDocument.Load(jwbQuantityFile).Descendants( "decimal")
-                .Select(x => decimal.Parse(x.Value, CultureInfo.InvariantCulture))
+                .Select(x -> decimal.Parse(x.Value, CultureInfo.InvariantCulture))
                 .ToList();
 
             Assert.AreEqual(fills.Count + 1, equity.Count);
@@ -487,7 +487,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.AreEqual(1000, portfolio.UnsettledCash);
 
             // Friday at open, cash settled
-            marketOpen = securityExchangeHours.MarketHours[timeUtc.DayOfWeek].GetMarketOpen(TimeSpan.Zero, false);
+            marketOpen = securityExchangeHours.MarketHours[timeUtc.DayOfWeek].GetMarketOpen(Duration.ZERO, false);
             Assert.IsTrue(marketOpen.HasValue);
             timeUtc = timeUtc.AddDays(1).Date.Add(marketOpen.Value).ConvertToUtc(securityExchangeHours.TimeZone);
             portfolio.ScanForCashSettlement(timeUtc);
@@ -622,8 +622,8 @@ package com.quantconnect.lean.Tests.Common.Securities
 
         class OrderProcessor : IOrderProcessor
         {
-            private readonly ConcurrentMap<Integer, Order> _orders = new ConcurrentMap<Integer, Order>();
-            private readonly ConcurrentMap<Integer, OrderTicket> _tickets = new ConcurrentMap<Integer, OrderTicket>();
+            private final ConcurrentMap<Integer, Order> _orders = new ConcurrentMap<Integer, Order>();
+            private final ConcurrentMap<Integer, OrderTicket> _tickets = new ConcurrentMap<Integer, OrderTicket>();
             public void AddOrder(Order order) {
                 _orders[order.Id] = order;
             }
@@ -639,11 +639,11 @@ package com.quantconnect.lean.Tests.Common.Securities
             }
 
             public Order GetOrderByBrokerageId( String brokerageId) {
-                return _orders.Values.FirstOrDefault(x => x.BrokerId.Contains(brokerageId));
+                return _orders.Values.FirstOrDefault(x -> x.BrokerId.Contains(brokerageId));
             }
 
             public IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null ) {
-                return _tickets.Values.Where(filter ?? (x => true));
+                return _tickets.Values.Where(filter ?? (x -> true));
             }
 
             public OrderTicket GetOrderTicket(int orderId) {
@@ -653,7 +653,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             }
 
             public IEnumerable<Order> GetOrders(Func<Order, bool> filter = null ) {
-                return _orders.Values.Where(filter ?? (x => true));
+                return _orders.Values.Where(filter ?? (x -> true));
             }
 
             public OrderTicket Process(OrderRequest request) {

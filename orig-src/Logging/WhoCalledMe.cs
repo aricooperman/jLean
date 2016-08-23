@@ -18,16 +18,16 @@ using System.Runtime.CompilerServices;
 
 package com.quantconnect.lean.Logging
 {
-    /// <summary>
+    /**
     /// Provides methods for determining higher stack frames
-    /// </summary>
+    */
     public static class WhoCalledMe
     {
-        /// <summary>
+        /**
         /// Gets the method name of the caller
-        /// </summary>
-        /// <param name="frame">The number of stack frames to retrace from the caller's position</param>
-        /// <returns>The method name of the containing scope 'frame' stack frames above the caller</returns>
+        */
+         * @param frame">The number of stack frames to retrace from the caller's position
+        @returns The method name of the containing scope 'frame' stack frames above the caller
         [MethodImpl(MethodImplOptions.NoInlining)] // inlining messes this up pretty badly
         public static String GetMethodName(int frame = 1) {
             // we need to increment the frame to account for this method

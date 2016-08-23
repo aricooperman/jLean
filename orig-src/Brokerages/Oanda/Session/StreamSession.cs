@@ -28,15 +28,15 @@ using QuantConnect.Brokerages.Oanda.DataType;
 package com.quantconnect.lean.Brokerages.Oanda.Session
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// StreamSession abstract class used to model the Oanda Events Sessions.
-    /// </summary>
+    */
     /// <typeparam name="T"></typeparam>
     public abstract class StreamSession<T> where T : IHeartbeat
     {
         public delegate void DataHandler(T data);
 
-        protected readonly int _accountId;
+        protected final int _accountId;
         private WebResponse _response;
         private boolean _shutdown;
         private Task _runningTask;

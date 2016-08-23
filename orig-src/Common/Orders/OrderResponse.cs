@@ -15,68 +15,68 @@
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Represents a response to an <see cref="OrderRequest"/>. See <see cref="OrderRequest.Response"/> property for
     /// a specific request's response value
-    /// </summary>
+    */
     public class OrderResponse
     {
-        /// <summary>
+        /**
         /// Gets the order id
-        /// </summary>
+        */
         public int OrderId
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the error message if the <see cref="ErrorCode"/> does not equal <see cref="OrderResponseErrorCode.None"/>, otherwise
         /// gets <see cref="string.Empty"/>
-        /// </summary>
+        */
         public String ErrorMessage
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the error code for this response.
-        /// </summary>
+        */
         public OrderResponseErrorCode ErrorCode
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets true if this response represents a successful request, false otherwise
         /// If this is an unprocessed response, IsSuccess will return false.
-        /// </summary>
+        */
         public boolean IsSuccess
         {
             get { return IsProcessed && !IsError; }
         }
 
-        /// <summary>
+        /**
         /// Gets true if this response represents an error, false otherwise
-        /// </summary>
+        */
         public boolean IsError
         {
             get { return IsProcessed && ErrorCode != OrderResponseErrorCode.None; }
         }
 
-        /// <summary>
+        /**
         /// Gets true if this response has been processed, false otherwise
-        /// </summary>
+        */
         public boolean IsProcessed
         {
             get { return this != Unprocessed; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="OrderResponse"/> class
-        /// </summary>
-        /// <param name="orderId">The order id</param>
-        /// <param name="errorCode">The error code of the response, specify <see cref="OrderResponseErrorCode.None"/> for no error</param>
-        /// <param name="errorMessage">The error message, applies only if the <paramref name="errorCode"/> does not equal <see cref="OrderResponseErrorCode.None"/></param>
+        */
+         * @param orderId">The order id
+         * @param errorCode">The error code of the response, specify <see cref="OrderResponseErrorCode.None"/> for no error
+         * @param errorMessage">The error message, applies only if the <paramref name="errorCode"/> does not equal <see cref="OrderResponseErrorCode.None"/>
         private OrderResponse(int orderId, OrderResponseErrorCode errorCode, String errorMessage) {
             OrderId = orderId;
             ErrorCode = errorCode;
@@ -85,12 +85,12 @@ package com.quantconnect.lean.Orders
             }
         }
 
-        /// <summary>
+        /**
         /// Returns a String that represents the current object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A String that represents the current object.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         public @Override String toString() {
             if( this == Unprocessed) {
@@ -105,53 +105,53 @@ package com.quantconnect.lean.Orders
 
         #region Statics - implicit(int), Unprocessed constant, reponse factory methods
 
-        /// <summary>
+        /**
         /// Gets an <see cref="OrderResponse"/> for a request that has not yet been processed
-        /// </summary>
-        public static readonly OrderResponse Unprocessed = new OrderResponse(int.MinValue, OrderResponseErrorCode.None, "The request has not yet been processed.");
+        */
+        public static final OrderResponse Unprocessed = new OrderResponse(int.MinValue, OrderResponseErrorCode.None, "The request has not yet been processed.");
 
-        /// <summary>
+        /**
         /// Helper method to create a successful response from a request
-        /// </summary>
+        */
         public static OrderResponse Success(OrderRequest request) {
             return new OrderResponse(request.OrderId, OrderResponseErrorCode.None, null );
         }
 
-        /// <summary>
+        /**
         /// Helper method to create an error response from a request
-        /// </summary>
+        */
         public static OrderResponse Error(OrderRequest request, OrderResponseErrorCode errorCode, String errorMessage) {
             return new OrderResponse(request.OrderId, errorCode, errorMessage);
         }
 
-        /// <summary>
+        /**
         /// Helper method to create an error response due to an invalid order status
-        /// </summary>
+        */
         public static OrderResponse InvalidStatus(OrderRequest request, Order order) {
             return Error(request, OrderResponseErrorCode.InvalidOrderStatus,
                 String.format( "Unable to update order with id %1$s because it already has %2$s status", request.OrderId, order.Status));
         }
 
-        /// <summary>
+        /**
         /// Helper method to create an error response due to a bad order id
-        /// </summary>
+        */
         public static OrderResponse UnableToFindOrder(OrderRequest request) {
             return Error(request, OrderResponseErrorCode.UnableToFindOrder,
                 String.format( "Unable to locate order with id %1$s.", request.OrderId));
         }
 
-        /// <summary>
+        /**
         /// Helper method to create an error response due to a zero order quantity
-        /// </summary>
+        */
         public static OrderResponse ZeroQuantity(OrderRequest request) {
             static final String format = "Unable to %1$s order with id %2$s that have zero quantity.";
             return Error(request, OrderResponseErrorCode.OrderQuantityZero,
                 String.format(format, request.OrderRequestType.toString().toLowerCase(), request.OrderId));
         }
 
-        /// <summary>
+        /**
         /// Helper method to create an error response due to algorithm still in warmup mode
-        /// </summary>
+        */
         public static OrderResponse WarmingUp(OrderRequest request) {
             return Error(request, OrderResponseErrorCode.AlgorithmWarmingUp, "Algorithm in warmup.");
         }

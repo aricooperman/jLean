@@ -29,27 +29,27 @@ using QuantConnect.Statistics;
 
 package com.quantconnect.lean.Tests.Engine
 {
-    /// <summary>
+    /**
     /// Provides a result handler implementation that handles result packets via
     /// a constructor defined function. Also, this implementation does not require
     /// the Run method to be called at all, a task is launched via ctor to process
     /// the packets
-    /// </summary>
+    */
     public class TestResultHandler : IResultHandler
     {
         private AlgorithmNodePacket _job = new BacktestNodePacket();
 
-        private readonly Action<Packet> _packetHandler;
-        private readonly CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
+        private final Action<Packet> _packetHandler;
+        private final CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         public ConcurrentQueue<Packet> Messages { get; set; }
         public ConcurrentMap<String, Chart> Charts { get; set; }
-        public TimeSpan ResamplePeriod { get; private set; }
-        public TimeSpan NotificationPeriod { get; private set; }
+        public Duration ResamplePeriod { get; private set; }
+        public Duration NotificationPeriod { get; private set; }
         public boolean IsActive { get; private set; }
 
         public TestResultHandler(Action<Packet> packetHandler = null ) {
-            _packetHandler = packetHandler ?? (packet => { });
+            _packetHandler = packetHandler ?? (packet -> { });
             Messages = new ConcurrentQueue<Packet>();
             Task.Run(() =>
             {

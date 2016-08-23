@@ -20,49 +20,49 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Commands
 {
-    /// <summary>
+    /**
     /// Represents a command to add a security to the algorithm
-    /// </summary>
+    */
     public class AddSecurityCommand : ICommand
     {
-        /// <summary>
+        /**
         /// The security type of the security
-        /// </summary>
+        */
         public SecurityType SecurityType { get; set; }
 
-        /// <summary>
+        /**
         /// The security's ticker symbol
-        /// </summary>
+        */
         public String Symbol { get; set; }
 
-        /// <summary>
+        /**
         /// The requested resolution, defaults to Resolution.Minute
-        /// </summary>
+        */
         public Resolution Resolution { get; set; }
 
-        /// <summary>
+        /**
         /// The security's market, defaults to <see cref="QuantConnect.Market.USA"/> except for Forex, defaults to <see cref="QuantConnect.Market.FXCM"/>
-        /// </summary>
+        */
         public String Market { get; set; }
 
-        /// <summary>
+        /**
         /// The fill forward behavior, true to fill forward, false otherwise - defaults to true
-        /// </summary>
+        */
         public boolean FillDataForward { get; set; }
 
-        /// <summary>
+        /**
         /// The leverage for the security, defaults to 2 for equity, 50 for forex, and 1 for everything else
-        /// </summary>
+        */
         public BigDecimal Leverage { get; set; }
 
-        /// <summary>
+        /**
         /// The extended market hours flag, true to allow pre/post market data, false for only in market data
-        /// </summary>
+        */
         public boolean ExtendedMarketHours { get; set; }
 
-        /// <summary>
+        /**
         /// Default construct that applies default values
-        /// </summary>
+        */
         public AddSecurityCommand() {
             Resolution = Resolution.Minute;
             Market = null;
@@ -71,28 +71,28 @@ package com.quantconnect.lean.Commands
             ExtendedMarketHours = false;
         }
 
-        /// <summary>
+        /**
         /// Runs this command against the specified algorithm instance
-        /// </summary>
-        /// <param name="algorithm">The algorithm to run this command against</param>
+        */
+         * @param algorithm">The algorithm to run this command against
         public CommandResultPacket Run(IAlgorithm algorithm) {
             security = algorithm.AddSecurity(SecurityType, Symbol, Resolution, Market, FillDataForward, Leverage, ExtendedMarketHours);
             return new Result(this, true, security.Symbol);
         }
 
-        /// <summary>
+        /**
         /// Result packet type for the <see cref="AddSecurityCommand"/> command
-        /// </summary>
+        */
         public class Result : CommandResultPacket
         {
-            /// <summary>
+            /**
             /// The symbol result from the add security command
-            /// </summary>
+            */
             public Symbol Symbol { get; set; }
 
-            /// <summary>
+            /**
             /// Initializes a new instance of the <see cref="Result"/> class
-            /// </summary>
+            */
             public Result(AddSecurityCommand command, boolean success, Symbol symbol)
                 : base(command, success) {
                 Symbol = symbol;

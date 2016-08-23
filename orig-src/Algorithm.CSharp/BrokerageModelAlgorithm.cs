@@ -21,16 +21,16 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// Quick demo algorithm showing usage of the BrokerageModel property. The BrokerageModel helps to
     /// improve backtesting fidelity through simulation of a specific brokerage's rules around restrictions
     /// on submitting orders as well as fee structure.
-    /// </summary>
+    */
     public class BrokerageModelAlgorithm : QCAlgorithm
     {
-        /// <summary>
+        /**
         /// Initialize the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must be initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 07);  //Set Start Date
             SetEndDate(2013, 10, 11);    //Set End Date
@@ -54,10 +54,10 @@ package com.quantconnect.lean.Algorithm.Examples
 
         private BigDecimal last = 1.0m;
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">TradeBars IDictionary object with your stock data</param>
+        */
+         * @param data">TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             if( !Portfolio.Invested) {
                 //fails first several times, we'll keep decrementing until it succeeds
@@ -74,22 +74,22 @@ package com.quantconnect.lean.Algorithm.Examples
             }
         }
 
-        /// <summary>
+        /**
         /// Custom brokerage model that requires clients to maintain a minimum cash balance
-        /// </summary>
+        */
         class MinimumAccountBalanceBrokerageModel : DefaultBrokerageModel
         {
-            private readonly QCAlgorithm _algorithm;
-            private readonly BigDecimal _minimumAccountBalance;
+            private final QCAlgorithm _algorithm;
+            private final BigDecimal _minimumAccountBalance;
 
             public MinimumAccountBalanceBrokerageModel(QCAlgorithm algorithm, BigDecimal minimumAccountBalance) {
                 _algorithm = algorithm;
                 _minimumAccountBalance = minimumAccountBalance;
             }
 
-            /// <summary>
+            /**
             /// Prevent orders which would bring the account below a minimum cash balance
-            /// </summary>
+            */
             public @Override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
                 message = null;
                 

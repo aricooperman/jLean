@@ -18,64 +18,64 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
 
-    /// <summary> 
+    /** 
     /// This indicator creates a moving average (middle band) with an upper band and lower band
     /// fixed at k average true range multiples away from the middle band.  
-    /// </summary>
+    */
     public class KeltnerChannels : TradeBarIndicator
     {
-        private readonly BigDecimal _k;
+        private final BigDecimal _k;
 
-        /// <summary>
+        /**
         /// Gets the middle band of the channel
-        /// </summary>
+        */
         public IndicatorBase<IndicatorDataPoint> MiddleBand
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the upper band of the channel
-        /// </summary>
+        */
         public IndicatorBase<TradeBar> UpperBand
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the lower band of the channel
-        /// </summary>
+        */
         public IndicatorBase<TradeBar> LowerBand
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the average true range
-        /// </summary>
+        */
         public IndicatorBase<TradeBar> AverageTrueRange
         {
             get; private set;
         }
 
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the KeltnerChannels class
-        /// </summary>
-        /// <param name="period">The period of the average true range and moving average (middle band)</param>
-        /// <param name="k">The number of multiplies specifying the distance between the middle band and upper or lower bands</param>
-        /// <param name="movingAverageType">The type of moving average to be used</param>
+        */
+         * @param period">The period of the average true range and moving average (middle band)
+         * @param k">The number of multiplies specifying the distance between the middle band and upper or lower bands
+         * @param movingAverageType">The type of moving average to be used
         public KeltnerChannels(int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple)
             : this( String.format( "KC(%1$s,%2$s)", period, k), period, k, movingAverageType) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the KeltnerChannels class
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="period">The period of the average true range and moving average (middle band)</param>
-        /// <param name="k">The number of multiples specifying the distance between the middle band and upper or lower bands</param>
-        /// <param name="movingAverageType">The type of moving average to be used</param>
+        */
+         * @param name">The name of this indicator
+         * @param period">The period of the average true range and moving average (middle band)
+         * @param k">The number of multiples specifying the distance between the middle band and upper or lower bands
+         * @param movingAverageType">The type of moving average to be used
         public KeltnerChannels( String name, int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple)
             : base(name) {
             _k = k;
@@ -86,30 +86,30 @@ package com.quantconnect.lean.Indicators
 
             //Compute Lower Band
             LowerBand = new FunctionalIndicator<TradeBar>(name + "_LowerBand",
-                input => ComputeLowerBand(),
-                lowerBand => MiddleBand.IsReady,
-                () => MiddleBand.Reset()
+                input -> ComputeLowerBand(),
+                lowerBand -> MiddleBand.IsReady,
+                () -> MiddleBand.Reset()
                 );
 
             //Compute Upper Band
             UpperBand = new FunctionalIndicator<TradeBar>(name + "_UpperBand",
-                input => ComputeUpperBand(),
-                upperBand => MiddleBand.IsReady,
-                () => MiddleBand.Reset()
+                input -> ComputeUpperBand(),
+                upperBand -> MiddleBand.IsReady,
+                () -> MiddleBand.Reset()
                 );
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return MiddleBand.IsReady && UpperBand.IsReady && LowerBand.IsReady && AverageTrueRange.IsReady; }
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             AverageTrueRange.Reset();
             MiddleBand.Reset();
@@ -118,11 +118,11 @@ package com.quantconnect.lean.Indicators
             base.Reset();
         }
 
-        /// <summary>
+        /**
         /// Computes the next value for this indicator from the given state.
-        /// </summary>
-        /// <param name="input">The TradeBar to this indicator on this time step</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The TradeBar to this indicator on this time step
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             AverageTrueRange.Update(input);
 
@@ -136,16 +136,16 @@ package com.quantconnect.lean.Indicators
             return MiddleBand;
         }
 
-        /// <summary>
+        /**
         /// Calculates the lower band
-        /// </summary>
+        */
         private BigDecimal ComputeLowerBand() {
             return MiddleBand.IsReady ? MiddleBand - AverageTrueRange*_k : new decimal(0.0);
         }
 
-        /// <summary>
+        /**
         /// Calculates the upper band
-        /// </summary>
+        */
         private BigDecimal ComputeUpperBand() {
             return MiddleBand.IsReady ? MiddleBand + AverageTrueRange*_k : new decimal(0.0);
         }

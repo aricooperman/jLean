@@ -42,8 +42,8 @@ public class TimeKeeper {
     /// Initializes a new instance of the <see cref="TimeKeeper"/> class at the specified
     /// UTC time and for the specified time zones. Each time zone specified will cause the
     /// creation of a <see cref="LocalTimeKeeper"/> to handle conversions for that time zone.
-    /// <param name="utcDateTime">The initial time</param>
-    /// <param name="timeZones">The time zones used to instantiate <see cref="LocalTimeKeeper"/> instances.</param>
+     * @param utcDateTime">The initial time
+     * @param timeZones">The time zones used to instantiate <see cref="LocalTimeKeeper"/> instances.
     public TimeKeeper( LocalDateTime utcDateTime, ZoneId... timeZones ) {
         this( utcDateTime, timeZones != null ? Arrays.asList( timeZones ) : Collections.<ZoneId>emptyList() );
     }
@@ -51,8 +51,8 @@ public class TimeKeeper {
     /// Initializes a new instance of the <see cref="TimeKeeper"/> class at the specified
     /// UTC time and for the specified time zones. Each time zone specified will cause the
     /// creation of a <see cref="LocalTimeKeeper"/> to handle conversions for that time zone.
-    /// <param name="utcDateTime">The initial time</param>
-    /// <param name="timeZones">The time zones used to instantiate <see cref="LocalTimeKeeper"/> instances.</param>
+     * @param utcDateTime">The initial time
+     * @param timeZones">The time zones used to instantiate <see cref="LocalTimeKeeper"/> instances.
     public TimeKeeper( LocalDateTime utcDateTime, Iterable<ZoneId> timeZones )  {
         this.utcDateTime = utcDateTime;
         this.localTimeKeepers = StreamSupport.stream( timeZones.spliterator(), false )
@@ -62,7 +62,7 @@ public class TimeKeeper {
     }
     
     /// Sets the current UTC time for this time keeper and the attached child <see cref="LocalTimeKeeper"/> instances.
-    /// <param name="utcDateTime">The current time in UTC</param>
+     * @param utcDateTime">The current time in UTC
     public void setUtcDateTime( LocalDateTime utcDateTime )  {
         this.utcDateTime = utcDateTime;
         for( LocalTimeKeeper timeZone : localTimeKeepers.values() )
@@ -71,21 +71,21 @@ public class TimeKeeper {
     
     /// Gets the local time in the specified time zone. If the specified <see cref="ZoneId"/>
     /// has not already been added, this will throw a <see cref="KeyNotFoundException"/>.
-    /// <param name="timeZone">The time zone to get local time for</param>
-    /// <returns>The local time in the specifed time zone</returns>
+     * @param timeZone">The time zone to get local time for
+    @returns The local time in the specifed time zone
     public LocalDateTime getTimeIn( ZoneId timeZone ) {
         return getLocalTimeKeeper( timeZone ).getLocalTime();
     }
     
     /// Gets the <see cref="LocalTimeKeeper"/> instance for the specified time zone
-    /// <param name="timeZone">The time zone whose <see cref="LocalTimeKeeper"/> we seek</param>
-    /// <returns>The <see cref="LocalTimeKeeper"/> instance for the specified time zone</returns>
+     * @param timeZone">The time zone whose <see cref="LocalTimeKeeper"/> we seek
+    @returns The <see cref="LocalTimeKeeper"/> instance for the specified time zone
     public LocalTimeKeeper getLocalTimeKeeper( ZoneId timeZone ) {
         return localTimeKeepers.computeIfAbsent( timeZone, tz -> new LocalTimeKeeper( utcDateTime, tz ) );
     }
     
     /// Adds the specified time zone to this time keeper
-    /// <param name="timeZone"></param>
+     * @param timeZone">
     public void addTimeZone( ZoneId timeZone ) {
         localTimeKeepers.putIfAbsent( timeZone, new LocalTimeKeeper( utcDateTime, timeZone ) );
     }

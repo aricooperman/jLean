@@ -20,29 +20,29 @@ using QuantConnect.Securities.Forex;
 
 package com.quantconnect.lean.Orders.Fees
 {
-    /// <summary>
+    /**
     /// Provides the default implementation of <see cref="IFeeModel"/>
-    /// </summary>
+    */
     public class InteractiveBrokersFeeModel : IFeeModel
     {
-        private readonly BigDecimal _forexCommissionRate;
-        private readonly BigDecimal _forexMinimumOrderFee;
+        private final BigDecimal _forexCommissionRate;
+        private final BigDecimal _forexMinimumOrderFee;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ImmediateFillModel"/>
-        /// </summary>
-        /// <param name="monthlyForexTradeAmountInUSDollars">Monthly dollar volume traded</param>
+        */
+         * @param monthlyForexTradeAmountInUSDollars">Monthly dollar volume traded
         public InteractiveBrokersFeeModel( BigDecimal monthlyForexTradeAmountInUSDollars = 0) {
             ProcessForexRateSchedule(monthlyForexTradeAmountInUSDollars, out _forexCommissionRate, out _forexMinimumOrderFee);
         }
 
-        /// <summary>
+        /**
         /// Gets the order fee associated with the specified order. This returns the cost
         /// of the transaction in the account currency
-        /// </summary>
-        /// <param name="security">The security matching the order</param>
-        /// <param name="order">The order to compute fees for</param>
-        /// <returns>The cost of the order in units of the account currency</returns>
+        */
+         * @param security">The security matching the order
+         * @param order">The order to compute fees for
+        @returns The cost of the order in units of the account currency
         public BigDecimal GetOrderFee(Security security, Order order) {
             switch (security.Type) {
                 case SecurityType.Forex:
@@ -75,9 +75,9 @@ package com.quantconnect.lean.Orders.Fees
             return 0m;
         }
 
-        /// <summary>
+        /**
         /// Determines which tier an account falls into based on the monthly trading volume
-        /// </summary>
+        */
         private static void ProcessForexRateSchedule( BigDecimal monthlyForexTradeAmountInUSDollars, out BigDecimal commissionRate, out BigDecimal minimumOrderFee) {
             static final BigDecimal bp = 0.0001m;
             if( monthlyForexTradeAmountInUSDollars <= 1000000000)      // 1 billion

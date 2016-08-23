@@ -19,36 +19,36 @@ using System;
 package com.quantconnect.lean.Indicators
 {
 
-    /// <summary>
+    /**
     /// The tools of the Swiss Army Knife. Some of the tools lend well to chaining with the "Of" Method, others may be treated as moving averages
-    /// </summary>
+    */
     public enum SwissArmyKnifeTool
     {
-        /// <summary>
+        /**
         /// Two Pole Guassian Filter
-        /// </summary>
+        */
         Gauss,
-        /// <summary>
+        /**
         /// Two Pole Butterworth Filter
-        /// </summary>
+        */
         Butter,
-        /// <summary>
+        /**
         /// High Pass Filter
-        /// </summary>
+        */
         HighPass,
-        /// <summary>
+        /**
         /// Two Pole High Pass Filter
-        /// </summary>
+        */
         TwoPoleHighPass,
-        /// <summary>
+        /**
         /// BandPass Filter
-        /// </summary>
+        */
         BandPass,
     }
 
-    /// <summary>
+    /**
     /// Swiss Army Knife indicator by John Ehlers
-    /// </summary>
+    */
     public class SwissArmyKnife : Indicator
     {
 
@@ -66,23 +66,23 @@ package com.quantconnect.lean.Indicators
         double _a1 = 0;
         double _a2 = 0;
 
-        /// <summary>
+        /**
         /// Swiss Army Knife indicator by John Ehlers
-        /// </summary>
-        /// <param name="period"></param>
-        /// <param name="delta"></param>
-        /// <param name="tool"></param>
+        */
+         * @param period">
+         * @param delta">
+         * @param tool">
         public SwissArmyKnife(int period, double delta, SwissArmyKnifeTool tool)
             : this( "Swiss" + period, period, delta, tool) {
         }
 
-        /// <summary>
+        /**
         /// Swiss Army Knife indicator by John Ehlers
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="period"></param>
-        /// <param name="delta"></param>
-        /// <param name="tool"></param>
+        */
+         * @param name">
+         * @param period">
+         * @param delta">
+         * @param tool">
         public SwissArmyKnife( String name, int period, double delta, SwissArmyKnifeTool tool)
             : base(name) {
             _period = period;
@@ -143,19 +143,19 @@ package com.quantconnect.lean.Indicators
         }
 
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
 
             _price.Add((double)input.Price);
@@ -172,9 +172,9 @@ package com.quantconnect.lean.Indicators
             return (decimal)signal;
         }
 
-        /// <summary>
+        /**
         /// Resets to the initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _period = 20;
             _delta = 0.1;

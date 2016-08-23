@@ -33,18 +33,18 @@ package com.quantconnect.lean.Views
         Version11Edge = 11001
     }
 
-    /// <summary>
+    /**
     /// Helper class for setting registry configuration for the web browser control
-    /// </summary>
+    */
     public static class WBEmulator
     {
         private static final String InternetExplorerRootKey = @"Software\Microsoft\Internet Explorer";
         private static final String BrowserEmulationKey = InternetExplorerRootKey + @"\Main\FeatureControl\FEATURE_BROWSER_EMULATION";
 
-        /// <summary>
+        /**
         /// Get the version of internet explorer from the registry
-        /// </summary>
-        /// <returns>int version of IE.</returns>
+        */
+        @returns int version of IE.
         public static int GetInternetExplorerMajorVersion() {
             result = 0;
             try
@@ -96,11 +96,11 @@ package com.quantconnect.lean.Views
             return result;
         }
 
-        /// <summary>
+        /**
         /// Set the browser's IE version in registry
-        /// </summary>
-        /// <param name="browserEmulationVersion"></param>
-        /// <returns></returns>
+        */
+         * @param browserEmulationVersion">
+        @returns 
         public static boolean SetBrowserEmulationVersion(BrowserEmulationVersion browserEmulationVersion) {
             result = false;
             try
@@ -130,9 +130,9 @@ package com.quantconnect.lean.Views
             return result;
         }
 
-        /// <summary>
+        /**
         /// Set the enumulation version for the web browser control
-        /// </summary>
+        */
         public static boolean SetBrowserEmulationVersion() {
             BrowserEmulationVersion emulationCode;
             ieVersion = GetInternetExplorerMajorVersion();
@@ -160,10 +160,10 @@ package com.quantconnect.lean.Views
             return SetBrowserEmulationVersion(emulationCode);
         }
 
-        /// <summary>
+        /**
         /// Helper to confirm if the browser 
-        /// </summary>
-        /// <returns>Bool check if its set</returns>
+        */
+        @returns Bool check if its set
         public static boolean IsBrowserEmulationSet() {
             return GetBrowserEmulationVersion() != BrowserEmulationVersion.Default;
         }

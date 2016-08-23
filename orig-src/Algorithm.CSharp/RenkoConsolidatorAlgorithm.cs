@@ -19,14 +19,14 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// This algorithm shows how to initialize and use the RenkoConsolidator
-    /// </summary>
+    */
     public class RenkoConsolidatorAlgorithm : QCAlgorithm
     {
-        /// <summary>
+        /**
         /// Initializes the algorithm state.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2012, 01, 01);
             SetEndDate(2013, 01, 01);
@@ -52,7 +52,7 @@ package com.quantconnect.lean.Algorithm.Examples
             // this allows us to perform the renko logic on values other than Close, even computed values!
 
             // break SPY into (2*o + h + l + 3*c)/7
-            renko7bar = new RenkoConsolidator<TradeBar>(2.5m, x => (2*x.Open + x.High + x.Low + 3*x.Close)/7m, x => x.Volume);
+            renko7bar = new RenkoConsolidator<TradeBar>(2.5m, x -> (2*x.Open + x.High + x.Low + 3*x.Close)/7m, x -> x.Volume);
             renko7bar.DataConsolidated += (sender, consolidated) =>
             {
                 HandleRenko7Bar(consolidated);
@@ -62,16 +62,16 @@ package com.quantconnect.lean.Algorithm.Examples
             SubscriptionManager.AddConsolidator( "SPY", renko7bar);
         }
 
-        /// <summary>
+        /**
         /// We're doing our analysis in the OnRenkoBar method, but the framework verifies that this method exists, so we define it.
-        /// </summary>
+        */
         public void OnData(TradeBars data) {
         }
 
-        /// <summary>
+        /**
         /// This function is called by our renkoClose consolidator defined in Initialize()
-        /// </summary>
-        /// <param name="data">The new renko bar produced by the consolidator</param>
+        */
+         * @param data">The new renko bar produced by the consolidator
         public void HandleRenkoClose(RenkoBar data) {
             if( !Portfolio.Invested) {
                 SetHoldings(data.Symbol, 1.0);
@@ -79,10 +79,10 @@ package com.quantconnect.lean.Algorithm.Examples
             Console.WriteLine( "CLOSE - %1$s - %2$s %3$s", data.Time.toString( "o"), data.Open, data.Close);
         }
 
-        /// <summary>
+        /**
         /// This function is called by our renko7bar onsolidator defined in Initialize()
-        /// </summary>
-        /// <param name="data">The new renko bar produced by the consolidator</param>
+        */
+         * @param data">The new renko bar produced by the consolidator
         public void HandleRenko7Bar(RenkoBar data) {
             Console.WriteLine( "7BAR  - %1$s - %2$s %3$s", data.Time.toString( "o"), data.Open, data.Close);
         }

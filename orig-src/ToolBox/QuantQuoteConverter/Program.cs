@@ -23,9 +23,9 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
 {
     class Program
     {
-        /// <summary>
+        /**
         /// Primary entry point to the program
-        /// </summary>
+        */
         private static void Main( String[] args) {
             //Document the process:
             Console.WriteLine( "QuantConnect.ToolBox: QuantQuote Converter: ");
@@ -99,21 +99,21 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
         }
 
 
-        /// <summary>
+        /**
         /// Application error: display error and then stop conversion
-        /// </summary>
-        /// <param name="error">Error string</param>
+        */
+         * @param error">Error string
         private static void Error( String error) {
             Console.WriteLine(error);
             Console.ReadKey();
             Environment.Exit(0);
         }
 
-        /// <summary>
+        /**
         /// Get the count of the files to process
-        /// </summary>
-        /// <param name="sourceDirectory"></param>
-        /// <returns></returns>
+        */
+         * @param sourceDirectory">
+        @returns 
         private static int GetCount( String sourceDirectory) {
             count = 0;
             foreach (directory in Directory.EnumerateDirectories(sourceDirectory)) {
@@ -122,18 +122,18 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
             return count;
         }
 
-        /// <summary>
+        /**
         /// Remove the final slash to make path building easier
-        /// </summary>
+        */
         private static String StripFinalSlash( String directory) {
             return directory.Trim('/', '\\');
         }
 
-        /// <summary>
+        /**
         /// Get the date component of tie file path.
-        /// </summary>
-        /// <param name="date"></param>
-        /// <returns></returns>
+        */
+         * @param date">
+        @returns 
         private static DateTime GetDate( String date) {
             splits = date.split('/', '\\');
             dateString = splits[splits.Length - 1].Replace( "allstocks_", "");
@@ -141,9 +141,9 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
         }
 
 
-        /// <summary>
+        /**
         /// Extract the symbol from the path
-        /// </summary>
+        */
         private static String GetSymbol( String filePath) {
             splits = filePath.split('/', '\\');
             file = splits[splits.Length - 1];
@@ -152,9 +152,9 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
             return file.Replace( ".csv", "");
         }
 
-        /// <summary>
+        /**
         /// Validate the users input and throw error if not valid
-        /// </summary>
+        */
         private static void Validate( String sourceDirectory, String destinationDirectory, String resolution) {
             if(  String.IsNullOrWhiteSpace(sourceDirectory)) {
                 Error( "Error: Please enter a valid source directory.");

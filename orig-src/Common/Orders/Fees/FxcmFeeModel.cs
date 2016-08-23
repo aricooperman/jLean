@@ -19,12 +19,12 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Orders.Fees
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IFeeModel"/> that models FXCM order fees
-    /// </summary>
+    */
     public class FxcmFeeModel : IFeeModel
     {
-        private readonly HashSet<Symbol> _groupCommissionSchedule1 = new HashSet<Symbol>
+        private final HashSet<Symbol> _groupCommissionSchedule1 = new HashSet<Symbol>
         {
             Symbol.Create( "EURUSD", SecurityType.Forex, Market.FXCM),
             Symbol.Create( "GBPUSD", SecurityType.Forex, Market.FXCM),
@@ -35,12 +35,12 @@ package com.quantconnect.lean.Orders.Fees
             Symbol.Create( "GBPJPY", SecurityType.Forex, Market.FXCM),
         };
 
-        /// <summary>
+        /**
         /// Get the fee for this order
-        /// </summary>
-        /// <param name="security">The security matching the order</param>
-        /// <param name="order">The order to compute fees for</param>
-        /// <returns>The cost of the order in units of the account currency</returns>
+        */
+         * @param security">The security matching the order
+         * @param order">The order to compute fees for
+        @returns The cost of the order in units of the account currency
         public BigDecimal GetOrderFee(Security security, Order order) {
             // From http://www.fxcm.com/forex/forex-pricing/ (on Oct 6th, 2015)
             // Forex: $0.04 per side per 1k lot for EURUSD, GBPUSD, USDJPY, USDCHF, AUDUSD, EURJPY, GBPJPY

@@ -93,7 +93,7 @@ public class Program {
 //            {
 //                Application.EnableVisualStyles();
 //                messagingHandler = leanEngineSystemHandlers.Notify;
-//                thread = new Thread(() => LaunchUX(messagingHandler, job));
+//                thread = new Thread(() -> LaunchUX(messagingHandler, job));
 //                thread.SetApartmentState(ApartmentState.STA);
 //                thread.Start();
 //            }
@@ -139,9 +139,9 @@ public class Program {
             }
     }
 
-    //    /// <summary>
+    //    /**
     //    /// Form launcher method for thread.
-    //    /// </summary>
+    //    */
     //    static void LaunchUX( IMessagingHandler messaging, AlgorithmNodePacket job ) {
     //            //Launch the UX
     //            //form = Composer.Instance.GetExportedValueByTypeName<Form>( "desktop-ux-classname");
@@ -223,7 +223,7 @@ public class Program {
  * {
  * Application.EnableVisualStyles();
  * messagingHandler = leanEngineSystemHandlers.Notify;
- * thread = new Thread(() => LaunchUX(messagingHandler, job));
+ * thread = new Thread(() -> LaunchUX(messagingHandler, job));
  * thread.SetApartmentState(ApartmentState.STA);
  * thread.Start();
  * }
@@ -273,9 +273,9 @@ public class Program {
  * Log.LogHandler.Dispose();
  * }
  * }
- * /// <summary>
+ * /**
  * /// Form launcher method for thread.
- * /// </summary>
+ * */
  * static void LaunchUX(IMessagingHandler messaging, AlgorithmNodePacket job)
  * {
  * //Launch the UX

@@ -23,34 +23,34 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
-    /// <summary>
+    /**
     /// Aggregates ticks into trade bars ready to be time synced
-    /// </summary>
+    */
     public class TradeBarBuilderEnumerator : IEnumerator<BaseData>
     {
-        private readonly TimeSpan _barSize;
-        private readonly ZoneId _timeZone;
-        private readonly ITimeProvider _timeProvider;
-        private readonly ConcurrentQueue<TradeBar> _queue;
+        private final Duration _barSize;
+        private final ZoneId _timeZone;
+        private final ITimeProvider _timeProvider;
+        private final ConcurrentQueue<TradeBar> _queue;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="TradeBarBuilderEnumerator"/> class
-        /// </summary>
-        /// <param name="barSize">The trade bar size to produce</param>
-        /// <param name="timeZone">The time zone the raw data is time stamped in</param>
-        /// <param name="timeProvider">The time provider instance used to determine when bars are completed and
-        /// can be emitted</param>
+        */
+         * @param barSize">The trade bar size to produce
+         * @param timeZone">The time zone the raw data is time stamped in
+         * @param timeProvider">The time provider instance used to determine when bars are completed and
+        /// can be emitted
         public TradeBarBuilderEnumerator(TimeSpan barSize, ZoneId timeZone, ITimeProvider timeProvider) {
             _barSize = barSize;
             _timeZone = timeZone;
             _timeProvider = timeProvider;
             _queue = new ConcurrentQueue<TradeBar>();
         }
-        /// <summary>
+        /**
         /// Pushes the tick into this enumerator. This tick will be aggregated into a bar
         /// and emitted after the alotted time has passed
-        /// </summary>
-        /// <param name="data">The new data to be aggregated</param>
+        */
+         * @param data">The new data to be aggregated
         public void ProcessData(BaseData data) {
             TradeBar working;
             tick = data as Tick;
@@ -74,12 +74,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             }
         }
 
-        /// <summary>
+        /**
         /// Advances the enumerator to the next element of the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// </returns>
+        /// 
         public boolean MoveNext() {
             TradeBar working;
 
@@ -100,39 +100,39 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             return true;
         }
 
-        /// <summary>
+        /**
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
-        /// </summary>
+        */
         public void Reset() {
             _queue.Clear();
         }
 
-        /// <summary>
+        /**
         /// Gets the element in the collection at the current position of the enumerator.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The element in the collection at the current position of the enumerator.
-        /// </returns>
+        /// 
         public BaseData Current
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the current element in the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The current element in the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
         }

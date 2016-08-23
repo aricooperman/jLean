@@ -28,48 +28,48 @@ using QuantConnect.Brokerages.Oanda;
 
 package com.quantconnect.lean.ToolBox.OandaDownloader
 {
-    /// <summary>
+    /**
     /// Oanda Data Downloader class
-    /// </summary>
+    */
     public class OandaDataDownloader : IDataDownloader
     {
-        private readonly OandaSymbolMapper _symbolMapper = new OandaSymbolMapper();
+        private final OandaSymbolMapper _symbolMapper = new OandaSymbolMapper();
         private static final int BarsPerRequest = 5000;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="OandaDataDownloader"/> class
-        /// </summary>
+        */
         public OandaDataDownloader( String accessToken, int accountId) {
             // Set Oanda account credentials
             Credentials.SetCredentials(EEnvironment.Practice, accessToken, accountId);
         }
 
-        /// <summary>
+        /**
         /// Checks if downloader can get the data for the Lean symbol
-        /// </summary>
-        /// <param name="symbol">The Lean symbol</param>
-        /// <returns>Returns true if the symbol is available</returns>
+        */
+         * @param symbol">The Lean symbol
+        @returns Returns true if the symbol is available
         public boolean HasSymbol( String symbol) {
             return _symbolMapper.IsKnownLeanSymbol(Symbol.Create(symbol, GetSecurityType(symbol), Market.Oanda));
         }
 
-        /// <summary>
+        /**
         /// Gets the security type for the specified Lean symbol
-        /// </summary>
-        /// <param name="symbol">The Lean symbol</param>
-        /// <returns>The security type</returns>
+        */
+         * @param symbol">The Lean symbol
+        @returns The security type
         public SecurityType GetSecurityType( String symbol) {
             return _symbolMapper.GetLeanSecurityType(symbol);
         }
 
-        /// <summary>
+        /**
         /// Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
-        /// </summary>
-        /// <param name="symbol">Symbol for the data we're looking for.</param>
-        /// <param name="resolution">Resolution of the data request</param>
-        /// <param name="startUtc">Start time of the data in UTC</param>
-        /// <param name="endUtc">End time of the data in UTC</param>
-        /// <returns>Enumerable of base data for this symbol</returns>
+        */
+         * @param symbol">Symbol for the data we're looking for.
+         * @param resolution">Resolution of the data request
+         * @param startUtc">Start time of the data in UTC
+         * @param endUtc">End time of the data in UTC
+        @returns Enumerable of base data for this symbol
         public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
             if( !_symbolMapper.IsKnownLeanSymbol(symbol))
                 throw new ArgumentException( "Invalid symbol requested: " + symbol.Value);
@@ -158,14 +158,14 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
             }
         }
 
-        /// <summary>
+        /**
         /// Aggregates a list of 5-second bars at the requested resolution
-        /// </summary>
-        /// <param name="symbol"></param>
-        /// <param name="bars"></param>
-        /// <param name="resolution"></param>
-        /// <returns></returns>
-        private static IEnumerable<TradeBar> AggregateBars(Symbol symbol, List<Candle> bars, TimeSpan resolution) {
+        */
+         * @param symbol">
+         * @param bars">
+         * @param resolution">
+        @returns 
+        private static IEnumerable<TradeBar> AggregateBars(Symbol symbol, List<Candle> bars, Duration resolution) {
             return
                 (from b in bars
                  group b by GetDateTimeFromString(b.time).RoundDown(resolution)
@@ -175,17 +175,17 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
                          Symbol = symbol,
                          Time = g.Key,
                          Open = new BigDecimal( g.First().openMid),
-                         High = new BigDecimal( g.Max(b => b.highMid)),
-                         Low = new BigDecimal( g.Min(b => b.lowMid)),
+                         High = new BigDecimal( g.Max(b -> b.highMid)),
+                         Low = new BigDecimal( g.Min(b -> b.lowMid)),
                          Close = new BigDecimal( g.Last().closeMid)
                      });
         }
 
-        /// <summary>
+        /**
         /// Groups a list of bars into a dictionary keyed by date
-        /// </summary>
-        /// <param name="bars"></param>
-        /// <returns></returns>
+        */
+         * @param bars">
+        @returns 
         private static SortedMap<DateTime, List<Candle>> GroupBarsByDate(List<Candle> bars) {
             groupedBars = new SortedMap<DateTime, List<Candle>>();
 
@@ -201,21 +201,21 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
             return groupedBars;
         }
 
-        /// <summary>
+        /**
         /// Returns a DateTime from an RFC3339 String (with microsecond resolution)
-        /// </summary>
-        /// <param name="time"></param>
+        */
+         * @param time">
         private static DateTime GetDateTimeFromString( String time) {
             return DateTime.ParseExact(time, "yyyy-MM-dd'T'HH:mm:ss.000000'Z'", CultureInfo.InvariantCulture);
         }
 
-        /// <summary>
+        /**
         /// Downloads a block of 5-second bars from a starting datetime
-        /// </summary>
-        /// <param name="oandaSymbol"></param>
-        /// <param name="start"></param>
-        /// <param name="barsPerRequest"></param>
-        /// <returns></returns>
+        */
+         * @param oandaSymbol">
+         * @param start">
+         * @param barsPerRequest">
+        @returns 
         private static List<Candle> DownloadBars( String oandaSymbol, String start, int barsPerRequest) {
             request = new CandlesRequest
             {
@@ -228,11 +228,11 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
             return GetCandles(request);
         }
 
-        /// <summary>
+        /**
         /// More detailed request to retrieve candles
-        /// </summary>
-        /// <param name="request">the request data to use when retrieving the candles</param>
-        /// <returns>List of Candles received (or empty list)</returns>
+        */
+         * @param request">the request data to use when retrieving the candles
+        @returns List of Candles received (or empty list)
         public static List<Candle> GetCandles(CandlesRequest request) {
             String requestString = Credentials.GetDefaultCredentials().GetServer(EServer.Rates) + request.GetRequestString();
 
@@ -244,14 +244,14 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
             return candles;
         }
 
-        /// <summary>
+        /**
         /// Primary (internal) request handler
-        /// </summary>
+        */
         /// <typeparam name="T">The response type</typeparam>
-        /// <param name="requestString">the request to make</param>
-        /// <param name="method">method for the request (defaults to GET)</param>
-        /// <param name="requestParams">optional parameters (note that if provided, it's assumed the requestString doesn't contain any)</param>
-        /// <returns>response via type T</returns>
+         * @param requestString">the request to make
+         * @param method">method for the request (defaults to GET)
+         * @param requestParams">optional parameters (note that if provided, it's assumed the requestString doesn't contain any)
+        @returns response via type T
         private static T MakeRequest<T>( String requestString, String method = "GET", Map<String,String> requestParams = null ) {
             if( requestParams != null && requestParams.Count > 0) {
                 parameters = CreateParamString(requestParams);
@@ -287,13 +287,13 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
             return stream;
         }
 
-        /// <summary>
+        /**
         /// Helper function to create the parameter String out of a dictionary of parameters
-        /// </summary>
-        /// <param name="requestParams">the parameters to convert</param>
-        /// <returns>string containing all the parameters for use in requests</returns>
+        */
+         * @param requestParams">the parameters to convert
+        @returns string containing all the parameters for use in requests
         private static String CreateParamString(Map<String,String> requestParams) {
-            return String.join( ",", requestParams.Select(x => x.Key + "=" + x.Value).Select(WebUtility.UrlEncode));
+            return String.join( ",", requestParams.Select(x -> x.Key + "=" + x.Value).Select(WebUtility.UrlEncode));
         }
 
 

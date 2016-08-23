@@ -22,14 +22,14 @@ using QuantConnect.Orders;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// ETF Global Rotation Strategy
-    /// </summary>
+    */
     public class ETFGlobalRotationAlgorithm : QCAlgorithm
     {
         // we'll use this to tell us when the month has ended
         DateTime LastRotationTime = DateTime.MinValue;
-        TimeSpan RotationInterval = Duration.ofDays(30);
+        Duration RotationInterval = Duration.ofDays(30);
         private boolean first = true;
 
         // these are the growth symbols we'll rotate through
@@ -52,9 +52,9 @@ package com.quantconnect.lean.Algorithm.Examples
         // we'll hold some computed data in these guys
         List<SymbolData> SymbolData = new List<SymbolData>();
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetCash(25000);
             SetStartDate(2007, 1, 1);
@@ -75,10 +75,10 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">TradeBars IDictionary object with your stock data</param>
+        */
+         * @param data">TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             try
             {
@@ -95,7 +95,7 @@ package com.quantconnect.lean.Algorithm.Examples
                     LastRotationTime = Time;
 
                     // pick which one is best from growth and safety symbols
-                    orderedObjScores = SymbolData.OrderByDescending(x => x.ObjectiveScore).ToList();
+                    orderedObjScores = SymbolData.OrderByDescending(x -> x.ObjectiveScore).ToList();
                     foreach (orderedObjScore in orderedObjScores) {
                         Log( ">>SCORE>>" + orderedObjScore.Symbol + ">>" + orderedObjScore.ObjectiveScore);
                     }

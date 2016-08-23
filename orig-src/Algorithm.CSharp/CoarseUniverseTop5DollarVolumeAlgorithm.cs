@@ -20,10 +20,10 @@ using QuantConnect.Data.UniverseSelection;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// In this algorithm we demonstrate how to use the coarse fundamental data to
     /// define a universe as the top dollar volume
-    /// </summary>
+    */
     public class CoarseFundamentalTop5Algorithm : QCAlgorithm
     {
         private static final int NumberOfSymbols = 5;
@@ -46,13 +46,13 @@ package com.quantconnect.lean.Algorithm.CSharp
         // sort the data by daily dollar volume and take the top 'NumberOfSymbols'
         public static IEnumerable<Symbol> CoarseSelectionFunction(IEnumerable<CoarseFundamental> coarse) {
             // sort descending by daily dollar volume
-            sortedByDollarVolume = coarse.OrderByDescending(x => x.DollarVolume);
+            sortedByDollarVolume = coarse.OrderByDescending(x -> x.DollarVolume);
 
             // take the top entries from our sorted collection
             top5 = sortedByDollarVolume.Take(NumberOfSymbols);
 
             // we need to return only the symbol objects
-            return top5.Select(x => x.Symbol);
+            return top5.Select(x -> x.Symbol);
         }
 
         //Data Event Handler: New data arrives here. "TradeBars" type is a dictionary of strings so you can access it by symbol.

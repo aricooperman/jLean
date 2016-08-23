@@ -128,9 +128,9 @@ public class BacktestResultPacket extends Packet {
 
 
     /// Compose result data packet - with tradable dates from the backtest job task and the partial result packet.
-    /// <param name="job">Job that started this request</param>
-    /// <param name="results">Results class for the Backtest job</param>
-    /// <param name="progress">Progress of the packet. For the packet we assume progess of 100%.</param>
+     * @param job">Job that started this request
+     * @param results">Results class for the Backtest job
+     * @param progress">Progress of the packet. For the packet we assume progess of 100%.
     public BacktestResultPacket( BacktestNodePacket job, BacktestResult results ) {
         this( job, results, 1.0D );
     }
@@ -176,7 +176,7 @@ public class BacktestResult {
     public Map<DateTime,BigDecimal> ProfitLoss = new HashMap<DateTime,BigDecimal>();
 
     /// Statistics information for the backtest.
-    /// <remarks>The statistics are only generated on the last result packet of the backtest.</remarks>
+    /// The statistics are only generated on the last result packet of the backtest.
     public Map<String,String> Statistics = new HashMap<String,String>();
 
     /// The runtime / dynamic statistics generated while a backtest is running.

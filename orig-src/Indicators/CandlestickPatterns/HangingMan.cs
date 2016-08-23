@@ -18,10 +18,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Hanging Man candlestick pattern indicator
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - small real body
     /// - long lower shadow
@@ -30,23 +30,23 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The meaning of "short", "long" and "near the highs" is specified with SetCandleSettings;
     /// The returned value is negative (-1): hanging man is always bearish;
     /// The user should consider that a hanging man must appear in an uptrend, while this function does not consider it
-    /// </remarks>
+    /// 
     public class HangingMan : CandlestickPattern
     {
-        private readonly int _bodyShortAveragePeriod;
-        private readonly int _shadowLongAveragePeriod;
-        private readonly int _shadowVeryShortAveragePeriod;
-        private readonly int _nearAveragePeriod;
+        private final int _bodyShortAveragePeriod;
+        private final int _shadowLongAveragePeriod;
+        private final int _shadowVeryShortAveragePeriod;
+        private final int _nearAveragePeriod;
 
         private BigDecimal _bodyShortPeriodTotal;
         private BigDecimal _shadowLongPeriodTotal;
         private BigDecimal _shadowVeryShortPeriodTotal;
         private BigDecimal _nearPeriodTotal;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="HangingMan"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public HangingMan( String name) 
             : base(name, Math.Max(Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod),
                 CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod), CandleSettings.Get(CandleSettingType.Near).AveragePeriod) + 1 + 1) {
@@ -56,27 +56,27 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             _nearAveragePeriod = CandleSettings.Get(CandleSettingType.Near).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="HangingMan"/> class.
-        /// </summary>
+        */
         public HangingMan()
             : this( "HANGINGMAN") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _bodyShortAveragePeriod) {
@@ -131,9 +131,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _bodyShortPeriodTotal = 0m;
             _shadowLongPeriodTotal = 0m;

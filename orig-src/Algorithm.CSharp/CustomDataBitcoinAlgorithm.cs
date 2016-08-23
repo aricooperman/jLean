@@ -17,7 +17,7 @@ using System;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// 3.0 CUSTOM DATA SOURCE: USE YOUR OWN MARKET DATA (OPTIONS, FOREX, FUTURES, DERIVATIVES etc).
     /// 
     /// The new QuantConnect Lean Backtesting Engine is incredibly flexible and allows you to define your own data source. 
@@ -25,14 +25,14 @@ package com.quantconnect.lean.Algorithm.Examples
     /// This includes any data source which has a TIME and VALUE. These are the *only* requirements. To demonstrate this we're loading
     /// in "Bitcoin" data.
     /// 
-    /// </summary>
+    */
     public class CustomDataBitcoinAlgorithm : QCAlgorithm
     {
 
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             //Weather data we have is within these days:
             SetStartDate(2011, 9, 13);
@@ -45,11 +45,11 @@ package com.quantconnect.lean.Algorithm.Examples
             AddData<Bitcoin>( "BTC");
         }
 
-        /// <summary>
+        /**
         /// Event Handler for Bitcoin Data Events: These weather objects are created from our 
         /// "Weather" type below and fired into this event handler.
-        /// </summary>
-        /// <param name="data">One(1) Weather Object, streamed into our algorithm synchronised in time with our other data streams</param>
+        */
+         * @param data">One(1) Weather Object, streamed into our algorithm synchronised in time with our other data streams
         public void OnData(Bitcoin data) {
             //If we don't have any weather "SHARES" -- invest"
             if( !Portfolio.Invested) {

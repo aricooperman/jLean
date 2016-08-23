@@ -18,48 +18,48 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Market order type definition
-    /// </summary>
+    */
     public class MarketOrder : Order
     {
-        /// <summary>
+        /**
         /// Added a default constructor for JSON Deserialization:
-        /// </summary>
+        */
         public MarketOrder() {
         }
 
-        /// <summary>
+        /**
         /// Market Order Type
-        /// </summary>
+        */
         public @Override OrderType Type
         {
             get { return OrderType.Market; }
         }
 
-        /// <summary>
+        /**
         /// New market order constructor
-        /// </summary>
-        /// <param name="symbol">Symbol asset we're seeking to trade</param>
-        /// <param name="quantity">Quantity of the asset we're seeking to trade</param>
-        /// <param name="time">Time the order was placed</param>
-        /// <param name="tag">User defined data tag for this order</param>
+        */
+         * @param symbol">Symbol asset we're seeking to trade
+         * @param quantity">Quantity of the asset we're seeking to trade
+         * @param time">Time the order was placed
+         * @param tag">User defined data tag for this order
         public MarketOrder(Symbol symbol, int quantity, DateTime time, String tag = "")
             : base(symbol, quantity, time, tag) {
         }
 
-        /// <summary>
+        /**
         /// Gets the order value in units of the security's quote currency
-        /// </summary>
-        /// <param name="security">The security matching this order's symbol</param>
+        */
+         * @param security">The security matching this order's symbol
         protected @Override BigDecimal GetValueImpl(Security security) {
             return Quantity*security.Price;
         }
 
-        /// <summary>
+        /**
         /// Creates a deep-copy clone of this order
-        /// </summary>
-        /// <returns>A copy of this order</returns>
+        */
+        @returns A copy of this order
         public @Override Order Clone() {
             order = new MarketOrder();
             CopyTo(order);

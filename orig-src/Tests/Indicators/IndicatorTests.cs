@@ -22,9 +22,9 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Tests.Indicators
 {
-    /// <summary>
+    /**
     ///     Test class for QuantConnect.Indicators.Indicator
-    /// </summary>
+    */
     [TestFixture]
     public class IndicatorTests
     {
@@ -87,13 +87,13 @@ package com.quantconnect.lean.Tests.Indicators
         [Test]
         public void SortsTheSameAsDecimalDescending() {
             int count = 100;
-            targets = Enumerable.Range(0, count).Select(x => new TestIndicator(x.toString())).ToList();
+            targets = Enumerable.Range(0, count).Select(x -> new TestIndicator(x.toString())).ToList();
             for (int i = 0; i < targets.Count; i++) {
                 targets[i].Update(DateTime.Today, i);
             }
 
-            expected = Enumerable.Range(0, count).Select(x => (decimal)x).OrderByDescending(x => x).ToList();
-            actual = targets.OrderByDescending(x => x).ToList();
+            expected = Enumerable.Range(0, count).Select(x -> (decimal)x).OrderByDescending(x -> x).ToList();
+            actual = targets.OrderByDescending(x -> x).ToList();
             foreach (pair in expected.Zip<decimal, TestIndicator, Tuple<decimal, TestIndicator>>(actual, Tuple.Create)) {
                 Assert.AreEqual(pair.Item1, pair.Item2.Current.Value);
             }
@@ -102,13 +102,13 @@ package com.quantconnect.lean.Tests.Indicators
         [Test]
         public void SortsTheSameAsDecimalAsecending() {
             int count = 100;
-            targets = Enumerable.Range(0, count).Select(x => new TestIndicator(x.toString())).ToList();
+            targets = Enumerable.Range(0, count).Select(x -> new TestIndicator(x.toString())).ToList();
             for (int i = 0; i < targets.Count; i++) {
                 targets[i].Update(DateTime.Today, i);
             }
 
-            expected = Enumerable.Range(0, count).Select(x => (decimal)x).OrderBy(x => x).ToList();
-            actual = targets.OrderBy(x => x).ToList();
+            expected = Enumerable.Range(0, count).Select(x -> (decimal)x).OrderBy(x -> x).ToList();
+            actual = targets.OrderBy(x -> x).ToList();
             foreach (pair in expected.Zip<decimal, TestIndicator, Tuple<decimal, TestIndicator>>(actual, Tuple.Create)) {
                 Assert.AreEqual(pair.Item1, pair.Item2.Current.Value);
             }
@@ -152,7 +152,7 @@ package com.quantconnect.lean.Tests.Indicators
             methodName = "op_" + @operator;
             method =
                 typeof (IndicatorBase<IndicatorDataPoint>).GetMethods(BindingFlags.Static | BindingFlags.Public)
-                .SingleOrDefault(x => x.Name == methodName && x.GetParameters()[argIndex].ParameterType == typeof(T));
+                .SingleOrDefault(x -> x.Name == methodName && x.GetParameters()[argIndex].ParameterType == typeof(T));
 
             if( method == null ) {
                 Assert.Fail( "Failed to find method for " + @operator + " of type " + typeof(T).Name + " at index: " + argIndex);
@@ -163,33 +163,33 @@ package com.quantconnect.lean.Tests.Indicators
 
         private class TestIndicator : Indicator
         {
-            /// <summary>
+            /**
             ///     Initializes a new instance of the Indicator class using the specified name.
-            /// </summary>
-            /// <param name="name">The name of this indicator</param>
+            */
+             * @param name">The name of this indicator
             public TestIndicator( String name)
                 : base(name) {
             }
-            /// <summary>
+            /**
             ///     Initializes a new instance of the Indicator class using the name "test"
-            /// </summary>
+            */
             public TestIndicator()
                 : base( "test") {
             }
 
-            /// <summary>
+            /**
             ///     Gets a flag indicating when this indicator is ready and fully initialized
-            /// </summary>
+            */
             public @Override boolean IsReady
             {
                 get { return true; }
             }
 
-            /// <summary>
+            /**
             ///     Computes the next value of this indicator from the given state
-            /// </summary>
-            /// <param name="input">The input given to the indicator</param>
-            /// <returns>A new value for this indicator</returns>
+            */
+             * @param input">The input given to the indicator
+            @returns A new value for this indicator
             protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
                 return input;
             }

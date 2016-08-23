@@ -19,9 +19,9 @@ using System;
 
 package com.quantconnect.lean.Tests.Indicators
 {
-    /// <summary>
+    /**
     /// Result tested vs. Python available at: http://tinyurl.com/o7redso
-    /// </summary>
+    */
     [TestFixture]
     public class LeastSquaresMovingAverageTest
     {

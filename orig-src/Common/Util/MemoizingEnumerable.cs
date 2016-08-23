@@ -20,43 +20,43 @@ using System.Collections.Generic;
 
 package com.quantconnect.lean.Util
 {
-    /// <summary>
+    /**
     /// Defines an enumerable that can be enumerated many times while
     /// only performing a single enumeration of the root enumerable
-    /// </summary>
+    */
     /// <typeparam name="T"></typeparam>
     public class MemoizingEnumerable<T> : IEnumerable<T>
     {
         private boolean _finished;
 
-        private readonly List<T> _buffer;
-        private readonly IEnumerator<T> _enumerator;
+        private final List<T> _buffer;
+        private final IEnumerator<T> _enumerator;
 
-        private readonly object _lock = new object();
+        private final object _lock = new object();
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="MemoizingEnumerable{T}"/> class
-        /// </summary>
-        /// <param name="enumerable">The source enumerable to be memoized</param>
+        */
+         * @param enumerable">The source enumerable to be memoized
         public MemoizingEnumerable(IEnumerable<T> enumerable)
             : this(enumerable.GetEnumerator()) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="MemoizingEnumerable{T}"/> class
-        /// </summary>
-        /// <param name="enumerator">The source enumerator to be memoized</param>
+        */
+         * @param enumerator">The source enumerator to be memoized
         public MemoizingEnumerable(IEnumerator<T> enumerator) {
             _buffer = new List<T>();
             _enumerator = enumerator;
         }
 
-        /// <summary>
+        /**
         /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>1</filterpriority>
         public IEnumerator<T> GetEnumerator() {
             int i = 0;
@@ -97,12 +97,12 @@ package com.quantconnect.lean.Util
             }
         }
 
-        /// <summary>
+        /**
         /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();

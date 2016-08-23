@@ -22,37 +22,37 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Data.Auxiliary
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IFactorFileProvider"/> that searches the local disk
-    /// </summary>
+    */
     public class LocalDiskFactorFileProvider : IFactorFileProvider
     {
-        private readonly IMapFileProvider _mapFileProvider;
-        private readonly ConcurrentMap<Symbol, FactorFile> _cache;
+        private final IMapFileProvider _mapFileProvider;
+        private final ConcurrentMap<Symbol, FactorFile> _cache;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of <see cref="LocalDiskFactorFileProvider"/> that uses configuration
         /// to resolve an instance of <see cref="IMapFileProvider"/> from the <see cref="Composer.Instance"/>
-        /// </summary>
+        */
         public LocalDiskFactorFileProvider()
             : this(Composer.Instance.GetExportedValueByTypeName<IMapFileProvider>(Config.Get( "map-file-provider", "LocalDiskMapFileProvider"))) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="LocalDiskFactorFileProvider"/> using the specified
         /// map file provider
-        /// </summary>
-        /// <param name="mapFileProvider">The map file provider used to resolve permticks of securities</param>
+        */
+         * @param mapFileProvider">The map file provider used to resolve permticks of securities
         public LocalDiskFactorFileProvider(IMapFileProvider mapFileProvider) {
             _mapFileProvider = mapFileProvider;
             _cache = new ConcurrentMap<Symbol, FactorFile>();
         }
 
-        /// <summary>
+        /**
         /// Gets a <see cref="FactorFile"/> instance for the specified symbol, or null if not found
-        /// </summary>
-        /// <param name="symbol">The security's symbol whose factor file we seek</param>
-        /// <returns>The resolved factor file, or null if not found</returns>
+        */
+         * @param symbol">The security's symbol whose factor file we seek
+        @returns The resolved factor file, or null if not found
         public FactorFile Get(Symbol symbol) {
             FactorFile factorFile;
             if( _cache.TryGetValue(symbol, out factorFile)) {
@@ -75,13 +75,13 @@ package com.quantconnect.lean.Data.Auxiliary
             return GetFactorFile(symbol, mapFile.Permtick, market);
         }
 
-        /// <summary>
+        /**
         /// Checks that the factor file exists on disk, and if it does, loads it into memory
-        /// </summary>
+        */
         private FactorFile GetFactorFile(Symbol symbol, String permtick, String market) {
             if( FactorFile.HasScalingFactors(permtick, market)) {
                 factorFile = FactorFile.Read(permtick, market);
-                _cache.AddOrUpdate(symbol, factorFile, (s, c) => factorFile);
+                _cache.AddOrUpdate(symbol, factorFile, (s, c) -> factorFile);
                 return factorFile;
             }
             // return null if not found

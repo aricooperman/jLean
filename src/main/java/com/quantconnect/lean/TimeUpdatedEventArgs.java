@@ -30,8 +30,8 @@ public final class TimeUpdatedEventArgs implements Serializable {
     public final ZoneId timeZone;
 
     /// Initializes a new instance of the <see cref="TimeUpdatedEventArgs"/> class
-    /// <param name="time">The newly updated time</param>
-    /// <param name="timeZone">The time zone of the new time</param>
+     * @param time">The newly updated time
+     * @param timeZone">The time zone of the new time
     public TimeUpdatedEventArgs( LocalDateTime time, ZoneId timeZone ) {
         this.time = time;
         this.timeZone = timeZone;

@@ -24,74 +24,74 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Data.UniverseSelection
 {
-    /// <summary>
+    /**
     /// Provides a base class for all universes to derive from.
-    /// </summary>
+    */
     public abstract class Universe
     {
-        /// <summary>
+        /**
         /// Gets a value indicating that no change to the universe should be made
-        /// </summary>
-        public static readonly UnchangedUniverse Unchanged = UnchangedUniverse.Instance;
+        */
+        public static final UnchangedUniverse Unchanged = UnchangedUniverse.Instance;
 
         private HashSet<Symbol> _previousSelections; 
 
-        private readonly ConcurrentMap<Symbol, Member> _securities;
+        private final ConcurrentMap<Symbol, Member> _securities;
 
-        /// <summary>
+        /**
         /// Gets the security type of this universe
-        /// </summary>
+        */
         public SecurityType SecurityType
         {
             get { return Configuration.SecurityType; }
         }
 
-        /// <summary>
+        /**
         /// Gets the market of this universe
-        /// </summary>
+        */
         public String Market
         {
             get { return Configuration.Market; }
         }
 
-        /// <summary>
+        /**
         /// Gets the settings used for subscriptons added for this universe
-        /// </summary>
+        */
         public abstract UniverseSettings UniverseSettings
         {
             get;
         }
 
-        /// <summary>
+        /**
         /// Gets the configuration used to get universe data
-        /// </summary>
+        */
         public SubscriptionDataConfig Configuration
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the instance responsible for initializing newly added securities
-        /// </summary>
+        */
         public ISecurityInitializer SecurityInitializer
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the current listing of members in this universe. Modifications
         /// to this dictionary do not change universe membership.
-        /// </summary>
+        */
         public Map<Symbol, Security> Members
         {
-            get { return _securities.Select(x => x.Value.Security).ToDictionary(x => x.Symbol); }
+            get { return _securities.Select(x -> x.Value.Security).ToDictionary(x -> x.Symbol); }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Universe"/> class
-        /// </summary>
-        /// <param name="config">The configuration used to source data for this universe</param>
-        /// <param name="securityInitializer">Initializes securities when they're added to the universe</param>
+        */
+         * @param config">The configuration used to source data for this universe
+         * @param securityInitializer">Initializes securities when they're added to the universe
         protected Universe(SubscriptionDataConfig config, ISecurityInitializer securityInitializer = null ) {
             _previousSelections = new HashSet<Symbol>();
             _securities = new ConcurrentMap<Symbol, Member>();
@@ -100,15 +100,15 @@ package com.quantconnect.lean.Data.UniverseSelection
             SecurityInitializer = securityInitializer ?? Securities.SecurityInitializer.Null;
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not the specified security can be removed from
         /// this universe. This is useful to prevent securities from being taken
         /// out of a universe before the algorithm has had enough time to make
         /// decisions on the security
-        /// </summary>
-        /// <param name="utcTime">The current utc time</param>
-        /// <param name="security">The security to check if its ok to remove</param>
-        /// <returns>True if we can remove the security, false otherwise</returns>
+        */
+         * @param utcTime">The current utc time
+         * @param security">The security to check if its ok to remove
+        @returns True if we can remove the security, false otherwise
         public virtual boolean CanRemoveMember(DateTime utcTime, Security security) {
             Member member;
             if( _securities.TryGetValue(security.Symbol, out member)) {
@@ -120,12 +120,12 @@ package com.quantconnect.lean.Data.UniverseSelection
             return false;
         }
 
-        /// <summary>
+        /**
         /// Performs universe selection using the data specified
-        /// </summary>
-        /// <param name="utcTime">The current utc time</param>
-        /// <param name="data">The symbols to remain in the universe</param>
-        /// <returns>The data that passes the filter</returns>
+        */
+         * @param utcTime">The current utc time
+         * @param data">The symbols to remain in the universe
+        @returns The data that passes the filter
         public IEnumerable<Symbol> PerformSelection(DateTime utcTime, BaseDataCollection data) {
             result = SelectSymbols(utcTime, data);
             if( ReferenceEquals(result, Unchanged)) {
@@ -141,22 +141,22 @@ package com.quantconnect.lean.Data.UniverseSelection
             return selections;
         }
 
-        /// <summary>
+        /**
         /// Performs universe selection using the data specified
-        /// </summary>
-        /// <param name="utcTime">The current utc time</param>
-        /// <param name="data">The symbols to remain in the universe</param>
-        /// <returns>The data that passes the filter</returns>
+        */
+         * @param utcTime">The current utc time
+         * @param data">The symbols to remain in the universe
+        @returns The data that passes the filter
         public abstract IEnumerable<Symbol> SelectSymbols(DateTime utcTime, BaseDataCollection data);
 
-        /// <summary>
+        /**
         /// Creates and configures a security for the specified symbol
-        /// </summary>
-        /// <param name="symbol">The symbol of the security to be created</param>
-        /// <param name="algorithm">The algorithm instance</param>
-        /// <param name="marketHoursDatabase">The market hours database</param>
-        /// <param name="symbolPropertiesDatabase">The symbol properties database</param>
-        /// <returns>The newly initialized security object</returns>
+        */
+         * @param symbol">The symbol of the security to be created
+         * @param algorithm">The algorithm instance
+         * @param marketHoursDatabase">The market hours database
+         * @param symbolPropertiesDatabase">The symbol properties database
+        @returns The newly initialized security object
         public virtual Security CreateSecurity(Symbol symbol, IAlgorithm algorithm, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase) {
             // by default invoke the create security method to handle security initialization
             return SecurityManager.CreateSecurity(algorithm.Portfolio, algorithm.SubscriptionManager, marketHoursDatabase, symbolPropertiesDatabase,
@@ -164,36 +164,36 @@ package com.quantconnect.lean.Data.UniverseSelection
                 UniverseSettings.ExtendedMarketHours, false, false, symbol.ID.SecurityType == SecurityType.Option);
         }
 
-        /// <summary>
+        /**
         /// Gets the subscriptions to be added for the specified security
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// In most cases the default implementaon of returning the security's configuration is
         /// sufficient. It's when we want multiple subscriptions (trade/quote data) that we'll need
         /// to @Override this
-        /// </remarks>
-        /// <param name="security">The security to get subscriptions for</param>
-        /// <returns>All subscriptions required by this security</returns>
+        /// 
+         * @param security">The security to get subscriptions for
+        @returns All subscriptions required by this security
         public virtual IEnumerable<SubscriptionDataConfig> GetSubscriptions(Security security) {
             return security.Subscriptions;
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not the specified symbol is currently a member of this universe
-        /// </summary>
-        /// <param name="symbol">The symbol whose membership is to be checked</param>
-        /// <returns>True if the specified symbol is part of this universe, false otherwise</returns>
+        */
+         * @param symbol">The symbol whose membership is to be checked
+        @returns True if the specified symbol is part of this universe, false otherwise
         public boolean ContainsMember(Symbol symbol) {
             return _securities.ContainsKey(symbol);
         }
 
-        /// <summary>
+        /**
         /// Adds the specified security to this universe
-        /// </summary>
-        /// <param name="utcTime">The current utc date time</param>
-        /// <param name="security">The security to be added</param>
-        /// <returns>True if the security was successfully added,
-        /// false if the security was already in the universe</returns>
+        */
+         * @param utcTime">The current utc date time
+         * @param security">The security to be added
+        @returns True if the security was successfully added,
+        /// false if the security was already in the universe
         internal boolean AddMember(DateTime utcTime, Security security) {
             if( _securities.ContainsKey(security.Symbol)) {
                 return false;
@@ -201,15 +201,15 @@ package com.quantconnect.lean.Data.UniverseSelection
             return _securities.TryAdd(security.Symbol, new Member(utcTime, security));
         }
 
-        /// <summary>
+        /**
         /// Tries to remove the specified security from the universe. This
         /// will first check to verify that we can remove the security by
         /// calling the <see cref="CanRemoveMember"/> function.
-        /// </summary>
-        /// <param name="utcTime">The current utc time</param>
-        /// <param name="security">The security to be removed</param>
-        /// <returns>True if the security was successfully removed, false if
-        /// we're not allowed to remove or if the security didn't exist</returns>
+        */
+         * @param utcTime">The current utc time
+         * @param security">The security to be removed
+        @returns True if the security was successfully removed, false if
+        /// we're not allowed to remove or if the security didn't exist
         internal boolean RemoveMember(DateTime utcTime, Security security) {
             if( CanRemoveMember(utcTime, security)) {
                 Member member;
@@ -218,16 +218,16 @@ package com.quantconnect.lean.Data.UniverseSelection
             return false;
         }
 
-        /// <summary>
+        /**
         /// Provides a value to indicate that no changes should be made to the universe.
         /// This value is intended to be return reference via <see cref="Universe.SelectSymbols"/>
-        /// </summary>
+        */
         public sealed class UnchangedUniverse : IEnumerable<String>, IEnumerable<Symbol>
         {
-            /// <summary>
+            /**
             /// Read-only instance of the <see cref="UnchangedUniverse"/> value
-            /// </summary>
-            public static readonly UnchangedUniverse Instance = new UnchangedUniverse();
+            */
+            public static final UnchangedUniverse Instance = new UnchangedUniverse();
             private UnchangedUniverse() { }
             IEnumerator<Symbol> IEnumerable<Symbol>.GetEnumerator() { yield break; }
             IEnumerator<String> IEnumerable<String>.GetEnumerator() { yield break; }
@@ -236,8 +236,8 @@ package com.quantconnect.lean.Data.UniverseSelection
 
         private sealed class Member
         {
-            public readonly DateTime Added;
-            public readonly Security Security;
+            public final DateTime Added;
+            public final Security Security;
             public Member(DateTime added, Security security) {
                 Added = added;
                 Security = security;

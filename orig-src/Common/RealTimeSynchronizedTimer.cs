@@ -19,34 +19,34 @@ using System.Threading;
 
 package com.quantconnect.lean 
 {
-    /// <summary>
+    /**
     /// Real time timer class for precise callbacks on a millisecond resolution in a self managed thread.
-    /// </summary>
-    /// <remarks>Due to the way Window's system clock works the clock is only accurate to the nearest 16ms. In linux it is accurate to the millisecond.</remarks>
+    */
+    /// Due to the way Window's system clock works the clock is only accurate to the nearest 16ms. In linux it is accurate to the millisecond.
     public class RealTimeSynchronizedTimer
     {        
         private boolean _stopped;
         private Thread _thread;
-        private TimeSpan _period;
+        private Duration _period;
         private Action<DateTime> _callback = null;
         private Stopwatch _timer = new Stopwatch();
         private DateTime _triggerTime;
         private boolean _paused;
 
-        /// <summary>
+        /**
         /// Constructor for Real Time Event Driver:
-        /// </summary>
+        */
         public RealTimeSynchronizedTimer() {
             _period = Duration.ofSeconds(0);
             _thread = new Thread(Scanner);
         }
 
-        /// <summary>
+        /**
         /// Trigger an event callback after precisely milliseconds-lapsed. 
         /// This is expensive, it creates a new thread and closely monitors the loop.
-        /// </summary>
-        /// <param name="period">delay period between event callbacks</param>
-        /// <param name="callback">Callback event passed the UTC time the event is intended to be triggered</param>
+        */
+         * @param period">delay period between event callbacks
+         * @param callback">Callback event passed the UTC time the event is intended to be triggered
         public RealTimeSynchronizedTimer(TimeSpan period, Action<DateTime> callback) {
             _period = period;
             _callback = callback;
@@ -56,18 +56,18 @@ package com.quantconnect.lean
             _triggerTime = DateTime.UtcNow.RoundUp(period);
         }
 
-        /// <summary>
+        /**
         /// Start the synchronized real time timer - fire events at start of each second or minute 
-        /// </summary>
+        */
         public void Start() { 
             _timer.Start();
             _thread.Start();
             _triggerTime = DateTime.UtcNow.RoundDown(_period).Add(_period);
         }
         
-        /// <summary>
+        /**
         /// Scan the stopwatch for the desired millisecond delay:
-        /// </summary>
+        */
         public void Scanner() {
             while (!_stopped) {
                 if( _callback != null && DateTime.UtcNow >= _triggerTime) {
@@ -82,23 +82,23 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Hang the real time event:
-        /// </summary>
+        */
         public void Pause() {
             _paused = true;
         }
 
-        /// <summary>
+        /**
         /// Resume clock
-        /// </summary>
+        */
         public void Resume() {
             _paused = false;
         }
 
-        /// <summary>
+        /**
         /// Stop the real time timer:
-        /// </summary>
+        */
         public void Stop() {
             _stopped = true;
         }

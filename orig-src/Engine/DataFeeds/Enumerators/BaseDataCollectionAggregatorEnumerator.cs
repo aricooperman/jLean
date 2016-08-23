@@ -21,25 +21,25 @@ using QuantConnect.Data.UniverseSelection;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IEnumerator{BaseDataCollection}"/>
     /// that aggregates an underlying <see cref="IEnumerator{BaseData}"/> into a single
     /// data packet
-    /// </summary>
+    */
     public class BaseDataCollectionAggregatorEnumerator<T> : IEnumerator<T>
         where T : BaseDataCollection, new() {
         private boolean _endOfStream;
         private boolean _needsMoveNext;
-        private readonly Symbol _symbol;
-        private readonly IEnumerator<BaseData> _enumerator;
+        private final Symbol _symbol;
+        private final IEnumerator<BaseData> _enumerator;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="BaseDataCollectionAggregatorEnumerator"/> class
         /// This will aggregate instances emitted from the underlying enumerator and tag them with the
         /// specified symbol
-        /// </summary>
-        /// <param name="enumerator">The underlying enumerator to aggregate</param>
-        /// <param name="symbol">The symbol to place on the aggregated collection</param>
+        */
+         * @param enumerator">The underlying enumerator to aggregate
+         * @param symbol">The symbol to place on the aggregated collection
         public BaseDataCollectionAggregatorEnumerator(IEnumerator<BaseData> enumerator, Symbol symbol) {
             _symbol = symbol;
             _enumerator = enumerator;
@@ -47,12 +47,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             _needsMoveNext = true;
         }
 
-        /// <summary>
+        /**
         /// Advances the enumerator to the next element of the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// </returns>
+        /// 
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public boolean MoveNext() {
             if( _endOfStream) {
@@ -96,52 +96,52 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             return collection != null;
         }
 
-        /// <summary>
+        /**
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
-        /// </summary>
+        */
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             _enumerator.Reset();
         }
 
-        /// <summary>
+        /**
         /// Gets the element in the collection at the current position of the enumerator.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The element in the collection at the current position of the enumerator.
-        /// </returns>
+        /// 
         public T Current
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the current element in the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The current element in the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             _enumerator.Dispose();
         }
 
-        /// <summary>
+        /**
         /// Creates a new, empty <see cref="BaseDataCollection"/>.
-        /// </summary>
-        /// <param name="symbol">The base data collection symbol</param>
-        /// <param name="time">The start time of the collection</param>
-        /// <param name="endTime">The end time of the collection</param>
-        /// <returns>A new, empty <see cref="BaseDataCollection"/></returns>
+        */
+         * @param symbol">The base data collection symbol
+         * @param time">The start time of the collection
+         * @param endTime">The end time of the collection
+        @returns A new, empty <see cref="BaseDataCollection"/>
         protected virtual T CreateCollection(Symbol symbol, DateTime time, DateTime endTime) {
             return new T
             {
@@ -151,26 +151,26 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             };
         }
 
-        /// <summary>
+        /**
         /// Adds the specified instance of <see cref="BaseData"/> to the current collection
-        /// </summary>
-        /// <param name="collection">The collection to be added to</param>
-        /// <param name="current">The data to be added</param>
+        */
+         * @param collection">The collection to be added to
+         * @param current">The data to be added
         protected virtual void Add(T collection, BaseData current) {
             collection.Data.Add(current);
         }
     }
 
-    /// <summary>
+    /**
     /// Provides a non-generic implementation of <see cref="BaseDataCollectionAggregatorEnumerator{T}"/>
-    /// </summary>
+    */
     public class BaseDataCollectionAggregatorEnumerator : BaseDataCollectionAggregatorEnumerator<BaseDataCollection>
     {
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="BaseDataCollectionAggregatorEnumerator"/> class
-        /// </summary>
-        /// <param name="enumerator">The enumerator to aggregate</param>
-        /// <param name="symbol">The output data's symbol</param>
+        */
+         * @param enumerator">The enumerator to aggregate
+         * @param symbol">The output data's symbol
         public BaseDataCollectionAggregatorEnumerator(IEnumerator<BaseData> enumerator, Symbol symbol)
             : base(enumerator, symbol) {
         }

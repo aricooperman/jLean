@@ -22,97 +22,97 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Scheduling
 {
-    /// <summary>
+    /**
     /// Helper class used to provide better syntax when defining date rules
-    /// </summary>
+    */
     public class DateRules
     {
-        private readonly SecurityManager _securities;
+        private final SecurityManager _securities;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="DateRules"/> helper class
-        /// </summary>
-        /// <param name="securities">The security manager</param>
+        */
+         * @param securities">The security manager
         public DateRules(SecurityManager securities) {
             _securities = securities;
         }
 
-        /// <summary>
+        /**
         /// Specifies an event should fire only on the specified day
-        /// </summary>
-        /// <param name="year">The year</param>
-        /// <param name="month">The month</param>
-        /// <param name="day">The day</param>
-        /// <returns></returns>
+        */
+         * @param year">The year
+         * @param month">The month
+         * @param day">The day
+        @returns 
         public IDateRule On(int year, int month, int day) {
             // make sure they're date objects
             dates = new[] {new DateTime(year, month, day)};
-            return new FuncDateRule( String.Join( ",", dates.Select(x => x.ToShortDateString())), (start, end) => dates);
+            return new FuncDateRule( String.Join( ",", dates.Select(x -> x.ToShortDateString())), (start, end) -> dates);
         }
 
-        /// <summary>
+        /**
         /// Specifies an event should fire only on the specified days
-        /// </summary>
-        /// <param name="dates">The dates the event should fire</param>
-        /// <returns></returns>
+        */
+         * @param dates">The dates the event should fire
+        @returns 
         public IDateRule On(params DateTime[] dates) {
             // make sure they're date objects
-            dates = dates.Select(x => x.Date).ToArray();
-            return new FuncDateRule( String.Join( ",", dates.Select(x => x.ToShortDateString())), (start, end) => dates);
+            dates = dates.Select(x -> x.Date).ToArray();
+            return new FuncDateRule( String.Join( ",", dates.Select(x -> x.ToShortDateString())), (start, end) -> dates);
         }
 
-        /// <summary>
+        /**
         /// Specifies an event should fire on each of the specified days of week
-        /// </summary>
-        /// <param name="days">The days the event shouls fire</param>
-        /// <returns>A date rule that fires on every specified day of week</returns>
+        */
+         * @param days">The days the event shouls fire
+        @returns A date rule that fires on every specified day of week
         public IDateRule Every(params DayOfWeek[] days) {
             hash = days.ToHashSet();
-            return new FuncDateRule( String.Join( ",", days), (start, end) => Time.EachDay(start, end).Where(date => hash.Contains(date.DayOfWeek)));
+            return new FuncDateRule( String.Join( ",", days), (start, end) -> Time.EachDay(start, end).Where(date -> hash.Contains(date.DayOfWeek)));
         }
 
-        /// <summary>
+        /**
         /// Specifies an event should fire every day
-        /// </summary>
-        /// <returns>A date rule that fires every day</returns>
+        */
+        @returns A date rule that fires every day
         public IDateRule EveryDay() {
             return new FuncDateRule( "EveryDay", Time.EachDay);
         }
 
-        /// <summary>
+        /**
         /// Specifies an event should fire every day the symbol is trading
-        /// </summary>
-        /// <param name="symbol">The symbol whose exchange is used to determine tradeable dates</param>
-        /// <returns>A date rule that fires every day the specified symbol trades</returns>
+        */
+         * @param symbol">The symbol whose exchange is used to determine tradeable dates
+        @returns A date rule that fires every day the specified symbol trades
         public IDateRule EveryDay(Symbol symbol) {
             security = GetSecurity(symbol);
-            return new FuncDateRule(symbol.toString() + ": EveryDay", (start, end) => Time.EachTradeableDay(security, start, end));
+            return new FuncDateRule(symbol.toString() + ": EveryDay", (start, end) -> Time.EachTradeableDay(security, start, end));
         }
 
-        /// <summary>
+        /**
         /// Specifies an event should fire on the first of each month
-        /// </summary>
-        /// <returns>A date rule that fires on the first of each month</returns>
+        */
+        @returns A date rule that fires on the first of each month
         public IDateRule MonthStart() {
-            return new FuncDateRule( "MonthStart", (start, end) => MonthStartIterator(null, start, end));
+            return new FuncDateRule( "MonthStart", (start, end) -> MonthStartIterator(null, start, end));
         }
 
-        /// <summary>
+        /**
         /// Specifies an event should fire on the first tradeable date for the specified
         /// symbol of each month
-        /// </summary>
-        /// <param name="symbol">The symbol whose exchange is used to determine the first 
-        /// tradeable date of the month</param>
-        /// <returns>A date rule that fires on the first tradeable date for the specified security each month</returns>
+        */
+         * @param symbol">The symbol whose exchange is used to determine the first 
+        /// tradeable date of the month
+        @returns A date rule that fires on the first tradeable date for the specified security each month
         public IDateRule MonthStart(Symbol symbol) {
-            return new FuncDateRule(symbol.toString() + ": MonthStart", (start, end) => MonthStartIterator(GetSecurity(symbol), start, end));
+            return new FuncDateRule(symbol.toString() + ": MonthStart", (start, end) -> MonthStartIterator(GetSecurity(symbol), start, end));
         }
 
-        /// <summary>
+        /**
         /// Gets the security with the specified symbol, or throws an exception if the symbol is not found
-        /// </summary>
-        /// <param name="symbol">The security's symbol to search for</param>
-        /// <returns>The security object matching the given symbol</returns>
+        */
+         * @param symbol">The security's symbol to search for
+        @returns The security object matching the given symbol
         private Security GetSecurity(Symbol symbol) {
             Security security;
             if( !_securities.TryGetValue(symbol, out security)) {

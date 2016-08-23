@@ -19,18 +19,18 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// MACD Example Algorithm
-    /// </summary>
+    */
     public class MACDTrendAlgorithm : QCAlgorithm
     {
         private DateTime previous;
         private MovingAverageConvergenceDivergence macd;
         private String Symbol = "SPY";
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2009, 01, 01);
             SetEndDate(2015, 01, 01);
@@ -41,10 +41,10 @@ package com.quantconnect.lean.Algorithm.Examples
             macd = MACD(Symbol, 9, 26, 9, MovingAverageType.Exponential, Resolution.Daily);
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">TradeBars IDictionary object with your stock data</param>
+        */
+         * @param data">TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             // only once per day
             if( previous.Date == Time.Date) return;

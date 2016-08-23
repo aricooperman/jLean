@@ -23,34 +23,34 @@ using RestSharp.Authenticators;
 
 package com.quantconnect.lean.Api
 {
-    /// <summary>
+    /**
     /// API Connection and Hash Manager
-    /// </summary>
+    */
     public class ApiConnection
     {
-        /// <summary>
+        /**
         /// Authorized client to use for requests.
-        /// </summary>
+        */
         public RestClient Client;
 
         // Authorization Credentials
-        private readonly String _userId;
-        private readonly String _token;
+        private final String _userId;
+        private final String _token;
 
-        /// <summary>
+        /**
         /// Create a new Api Connection Class.
-        /// </summary>
-        /// <param name="userId">User Id number from QuantConnect.com account. Found at www.quantconnect.com/account </param>
-        /// <param name="token">Access token for the QuantConnect account. Found at www.quantconnect.com/account </param>
+        */
+         * @param userId">User Id number from QuantConnect.com account. Found at www.quantconnect.com/account 
+         * @param token">Access token for the QuantConnect account. Found at www.quantconnect.com/account 
         public ApiConnection(int userId, String token) {
             _token = token;
             _userId = userId.toString();
             Client = new RestClient( "https://www.quantconnect.com/api/v2/");
         }
 
-        /// <summary>
+        /**
         /// Return true if connected successfully.
-        /// </summary>
+        */
         public boolean Connected
         {
             get
@@ -64,13 +64,13 @@ package com.quantconnect.lean.Api
             }
         }
 
-        /// <summary>
+        /**
         /// Place a secure request and get back an object of type T.
-        /// </summary>
+        */
         /// <typeparam name="T"></typeparam>
-        /// <param name="request"></param>
-        /// <param name="result">Result object from the </param>
-        /// <returns>T typed object response</returns>
+         * @param request">
+         * @param result">Result object from the 
+        @returns T typed object response
         public boolean TryRequest<T>(RestRequest request, out T result)
             where T : RestResponse
         {
@@ -102,10 +102,10 @@ package com.quantconnect.lean.Api
             return true;
         }
 
-        /// <summary>
+        /**
         /// Generate a secure hash for the authorization headers.
-        /// </summary>
-        /// <returns>Time based hash of user token and timestamp.</returns>
+        */
+        @returns Time based hash of user token and timestamp.
         private String CreateSecureHash(int timestamp) {
             // Create a new hash using current UTC timestamp.
             // Hash must be generated fresh each time.
@@ -113,11 +113,11 @@ package com.quantconnect.lean.Api
             return SHA256(data);
         }
 
-        /// <summary>
+        /**
         /// Encrypt the token:time data to make our API hash.
-        /// </summary>
-        /// <param name="data">Data to be hashed by SHA256</param>
-        /// <returns>Hashed string.</returns>
+        */
+         * @param data">Data to be hashed by SHA256
+        @returns Hashed string.
         private String SHA256( String data) {
             crypt = new SHA256Managed();
             hash = new StringBuilder();

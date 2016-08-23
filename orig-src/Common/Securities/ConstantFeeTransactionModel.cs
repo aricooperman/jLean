@@ -18,27 +18,27 @@ using QuantConnect.Orders;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Provides a transaction model that always returns the same order fee.
-    /// </summary>
+    */
     public sealed class ConstantFeeTransactionModel : SecurityTransactionModel
     {
-        private readonly BigDecimal _fee;
+        private final BigDecimal _fee;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ConstantFeeTransactionModel"/> class with the specified <paramref name="fee"/>
-        /// </summary>
-        /// <param name="fee">The constant order fee used by the model</param>
+        */
+         * @param fee">The constant order fee used by the model
         public ConstantFeeTransactionModel( BigDecimal fee) {
             _fee = Math.Abs(fee);
         }
 
-        /// <summary>
+        /**
         /// Returns the constant fee for the model
-        /// </summary>
-        /// <param name="security">The security matching the order</param>
-        /// <param name="order">The order to compute fees for</param>
-        /// <returns>The cost of the order in units of the account currency</returns>
+        */
+         * @param security">The security matching the order
+         * @param order">The order to compute fees for
+        @returns The cost of the order in units of the account currency
         public @Override BigDecimal GetOrderFee(Security security, Order order) {
             return _fee;
         }

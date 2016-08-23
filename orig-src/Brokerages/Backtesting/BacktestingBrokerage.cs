@@ -24,9 +24,9 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Brokerages.Backtesting
 {
-    /// <summary>
+    /**
     /// Represents a brokerage to be used during backtesting. This is intended to be only be used with the BacktestingTransactionHandler
-    /// </summary>
+    */
     public class BacktestingBrokerage : Brokerage
     {
         // flag used to indicate whether or not we need to scan for
@@ -35,74 +35,74 @@ package com.quantconnect.lean.Brokerages.Backtesting
         // time loop
         private boolean _needsScan;
         // this is the algorithm under test
-        protected readonly IAlgorithm Algorithm;
-        private readonly ConcurrentMap<Integer, Order> _pending;
-        private readonly object _needsScanLock = new object();
+        protected final IAlgorithm Algorithm;
+        private final ConcurrentMap<Integer, Order> _pending;
+        private final object _needsScanLock = new object();
 
-        /// <summary>
+        /**
         /// Creates a new BacktestingBrokerage for the specified algorithm
-        /// </summary>
-        /// <param name="algorithm">The algorithm instance</param>
+        */
+         * @param algorithm">The algorithm instance
         public BacktestingBrokerage(IAlgorithm algorithm)
             : base( "Backtesting Brokerage") {
             Algorithm = algorithm;
             _pending = new ConcurrentMap<Integer, Order>();
         }
 
-        /// <summary>
+        /**
         /// Creates a new BacktestingBrokerage for the specified algorithm
-        /// </summary>
-        /// <param name="algorithm">The algorithm instance</param>
-        /// <param name="name">The name of the brokerage</param>
+        */
+         * @param algorithm">The algorithm instance
+         * @param name">The name of the brokerage
         protected BacktestingBrokerage(IAlgorithm algorithm, String name)
             : base(name) {
             Algorithm = algorithm;
             _pending = new ConcurrentMap<Integer, Order>();
         }
 
-        /// <summary>
+        /**
         /// Gets the connection status
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// The BacktestingBrokerage is always connected
-        /// </remarks>
+        /// 
         public @Override boolean IsConnected
         {
             get { return true; }
         }
 
-        /// <summary>
+        /**
         /// Gets all open orders on the account
-        /// </summary>
-        /// <returns>The open orders returned from IB</returns>
+        */
+        @returns The open orders returned from IB
         public @Override List<Order> GetOpenOrders() {
             return Algorithm.Transactions.GetOpenOrders();
         }
 
-        /// <summary>
+        /**
         /// Gets all holdings for the account
-        /// </summary>
-        /// <returns>The current holdings from the account</returns>
+        */
+        @returns The current holdings from the account
         public @Override List<Holding> GetAccountHoldings() {
             // grab everything from the portfolio with a non-zero absolute quantity
-            return (from security in Algorithm.Portfolio.Securities.Values.OrderBy(x => x.Symbol) 
+            return (from security in Algorithm.Portfolio.Securities.Values.OrderBy(x -> x.Symbol) 
                     where security.Holdings.AbsoluteQuantity > 0 
                     select new Holding(security)).ToList();
         }
 
-        /// <summary>
+        /**
         /// Gets the current cash balance for each currency held in the brokerage account
-        /// </summary>
-        /// <returns>The current cash balance for each currency available for trading</returns>
+        */
+        @returns The current cash balance for each currency available for trading
         public @Override List<Cash> GetCashBalance() {
             return Algorithm.Portfolio.CashBook.Values.ToList();
         }
 
-        /// <summary>
+        /**
         /// Places a new order and assigns a new broker ID to the order
-        /// </summary>
-        /// <param name="order">The order to be placed</param>
-        /// <returns>True if the request for a new order has been placed, false otherwise</returns>
+        */
+         * @param order">The order to be placed
+        @returns True if the request for a new order has been placed, false otherwise
         public @Override boolean PlaceOrder(Order order) {
             if( order.Status == OrderStatus.New) {
                 lock (_needsScanLock) {
@@ -123,11 +123,11 @@ package com.quantconnect.lean.Brokerages.Backtesting
             return false;
         }
 
-        /// <summary>
+        /**
         /// Updates the order with the same ID
-        /// </summary>
-        /// <param name="order">The new order information</param>
-        /// <returns>True if the request was made for the order to be updated, false otherwise</returns>
+        */
+         * @param order">The new order information
+        @returns True if the request was made for the order to be updated, false otherwise
         public @Override boolean UpdateOrder(Order order) {
             if( true) {
                 Order pending;
@@ -153,11 +153,11 @@ package com.quantconnect.lean.Brokerages.Backtesting
             }
         }
 
-        /// <summary>
+        /**
         /// Cancels the order with the specified ID
-        /// </summary>
-        /// <param name="order">The order to cancel</param>
-        /// <returns>True if the request was made for the order to be canceled, false otherwise</returns>
+        */
+         * @param order">The order to cancel
+        @returns True if the request was made for the order to be canceled, false otherwise
         public @Override boolean CancelOrder(Order order) {
             Order pending;
             if( !_pending.TryRemove(order.Id, out pending)) {
@@ -176,9 +176,9 @@ package com.quantconnect.lean.Brokerages.Backtesting
             return true;
         }
 
-        /// <summary>
+        /**
         /// Scans all the outstanding orders and applies the algorithm model fills to generate the order events
-        /// </summary>
+        */
         public void Scan() {
             lock (_needsScanLock) {
                 // there's usually nothing in here
@@ -189,7 +189,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
                 stillNeedsScan = false;
 
                 // process each pending order to produce fills/fire events
-                foreach (kvp in _pending.OrderBy(x => x.Key)) {
+                foreach (kvp in _pending.OrderBy(x -> x.Key)) {
                     order = kvp.Value;
 
                     if( order.Status.IsClosed()) {
@@ -306,25 +306,25 @@ package com.quantconnect.lean.Brokerages.Backtesting
             }
         }
 
-        /// <summary>
+        /**
         /// The BacktestingBrokerage is always connected. This is a no-op.
-        /// </summary>
+        */
         public @Override void Connect() {
             //NOP
         }
 
-        /// <summary>
+        /**
         /// The BacktestingBrokerage is always connected. This is a no-op.
-        /// </summary>
+        */
         public @Override void Disconnect() {
             //NOP
         }
 
-        /// <summary>
+        /**
         /// Sets the pending order as a clone to prevent object reference nastiness
-        /// </summary>
-        /// <param name="order">The order to be added to the pending orders Map</param>
-        /// <returns></returns>
+        */
+         * @param order">The order to be added to the pending orders Map
+        @returns 
         private void SetPendingOrder(Order order) {
             // only save off clones!
             _pending[order.Id] = order.Clone();

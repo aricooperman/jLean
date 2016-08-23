@@ -22,157 +22,157 @@ using QuantConnect.Securities.Option;
 
 package com.quantconnect.lean.Data.Market
 {
-    /// <summary>
+    /**
     /// Defines a single option contract at a specific expiration and strike price
-    /// </summary>
+    */
     public class OptionContract
     {
-        private Lazy<OptionPriceModelResult> _optionPriceModelResult = new Lazy<OptionPriceModelResult>(() => new OptionPriceModelResult(0m, new FirstOrderGreeks())); 
+        private Lazy<OptionPriceModelResult> _optionPriceModelResult = new Lazy<OptionPriceModelResult>(() -> new OptionPriceModelResult(0m, new FirstOrderGreeks())); 
 
-        /// <summary>
+        /**
         /// Gets the option contract's symbol
-        /// </summary>
+        */
         public Symbol Symbol
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the underlying security's symbol
-        /// </summary>
+        */
         public Symbol UnderlyingSymbol
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the strike price
-        /// </summary>
+        */
         public BigDecimal Strike
         {
             get { return Symbol.ID.StrikePrice; }
         }
 
-        /// <summary>
+        /**
         /// Gets the expiration date
-        /// </summary>
+        */
         public DateTime Expiry
         {
             get { return Symbol.ID.Date; }
         }
 
-        /// <summary>
+        /**
         /// Gets the right being purchased (call [right to buy] or put [right to sell])
-        /// </summary>
+        */
         public OptionRight Right
         {
             get { return Symbol.ID.OptionRight; }
         }
 
-        /// <summary>
+        /**
         /// Gets the theoretical price of this option contract as computed by the <see cref="IOptionPriceModel"/>
-        /// </summary>
+        */
         public BigDecimal TheoreticalPrice
         {
             get { return _optionPriceModelResult.Value.TheoreticalPrice; }
         }
 
-        /// <summary>
+        /**
         /// Gets the greeks for this contract
-        /// </summary>
+        */
         public FirstOrderGreeks Greeks
         {
             get { return _optionPriceModelResult.Value.Greeks; }
         }
 
-        /// <summary>
+        /**
         /// Gets the local date time this contract's data was last updated
-        /// </summary>
+        */
         public DateTime Time
         {
             get; set;
         }
 
-        /// <summary>
+        /**
         /// Gets the open interest
-        /// </summary>
+        */
         public BigDecimal OpenInterest
         {
             get; set;
         }
 
-        /// <summary>
+        /**
         /// Gets the last price this contract traded at
-        /// </summary>
+        */
         public BigDecimal LastPrice
         {
             get; set;
         }
 
-        /// <summary>
+        /**
         /// Gets the current bid price
-        /// </summary>
+        */
         public BigDecimal BidPrice
         {
             get; set;
         }
 
-        /// <summary>
+        /**
         /// Get the current bid size
-        /// </summary>
+        */
         public long BidSize
         {
             get; set;
         }
 
-        /// <summary>
+        /**
         /// Gets the ask price
-        /// </summary>
+        */
         public BigDecimal AskPrice
         {
             get; set;
         }
 
-        /// <summary>
+        /**
         /// Gets the current ask size
-        /// </summary>
+        */
         public long AskSize
         {
             get; set;
         }
 
-        /// <summary>
+        /**
         /// Gets the last price the underlying security traded at
-        /// </summary>
+        */
         public BigDecimal UnderlyingLastPrice
         {
             get; set;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="OptionContract"/> class
-        /// </summary>
-        /// <param name="symbol">The option contract symbol</param>
-        /// <param name="underlyingSymbol">The symbol of the underlying security</param>
+        */
+         * @param symbol">The option contract symbol
+         * @param underlyingSymbol">The symbol of the underlying security
         public OptionContract(Symbol symbol, Symbol underlyingSymbol) {
             Symbol = symbol;
             UnderlyingSymbol = underlyingSymbol;
         }
 
-        /// <summary>
+        /**
         /// Sets the option price model evaluator function to be used for this contract
-        /// </summary>
-        /// <param name="optionPriceModelEvaluator">Function delegate used to evaluate the option price model</param>
+        */
+         * @param optionPriceModelEvaluator">Function delegate used to evaluate the option price model
         internal void SetOptionPriceModel(Func<OptionPriceModelResult> optionPriceModelEvaluator) {
             _optionPriceModelResult = new Lazy<OptionPriceModelResult>(optionPriceModelEvaluator);
         }
 
-        /// <summary>
+        /**
         /// Returns a String that represents the current object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A String that represents the current object.
-        /// </returns>
+        /// 
         public @Override String toString() {
             return String.format( "%1$s%2$s%3$s{3:00000000}", Symbol.ID.Symbol, Expiry.toString(DateFormat.EightCharacter), Right.toString()[0], Strike*1000m);
         }

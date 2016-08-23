@@ -27,10 +27,10 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
     [TestFixture, Ignore( "These tests require a configured and active FXCM practice account")]
     public partial class FxcmBrokerageTests : BrokerageTests
     {
-        /// <summary>
+        /**
         /// Creates the brokerage under test
-        /// </summary>
-        /// <returns>A connected brokerage instance</returns>
+        */
+        @returns A connected brokerage instance
         protected @Override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider) {
             server = Config.Get( "fxcm-server");
             terminal = Config.Get( "fxcm-terminal");
@@ -41,17 +41,17 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
             return new FxcmBrokerage(orderProvider, securityProvider, server, terminal, userName, password, accountId);
         }
 
-        /// <summary>
+        /**
         /// Disposes of the brokerage and any external resources started in order to create it
-        /// </summary>
-        /// <param name="brokerage">The brokerage instance to be disposed of</param>
+        */
+         * @param brokerage">The brokerage instance to be disposed of
         protected @Override void DisposeBrokerage(IBrokerage brokerage) {
             brokerage.Disconnect();
         }
 
-        /// <summary>
+        /**
         /// Provides the data required to test each order type in various cases
-        /// </summary>
+        */
         public @Override TestCaseData[] OrderParameters
         {
             get
@@ -65,51 +65,51 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// Gets the symbol to be traded, must be shortable
-        /// </summary>
+        */
         protected @Override Symbol Symbol
         {
             get { return Symbols.EURUSD; }
         }
 
-        /// <summary>
+        /**
         /// Gets the security type associated with the <see cref="BrokerageTests.Symbol"/>
-        /// </summary>
+        */
         protected @Override SecurityType SecurityType
         {
             get { return SecurityType.Forex; }
         }
 
-        /// <summary>
+        /**
         /// Gets a high price for the specified symbol so a limit sell won't fill
-        /// </summary>
+        */
         protected @Override BigDecimal HighPrice
         {
             // FXCM requires order prices to be not more than 5600 pips from the market price (at least for EURUSD)
             get { return 1.5m; }
         }
 
-        /// <summary>
+        /**
         /// Gets a low price for the specified symbol so a limit buy won't fill
-        /// </summary>
+        */
         protected @Override BigDecimal LowPrice
         {
             // FXCM requires order prices to be not more than 5600 pips from the market price (at least for EURUSD)
             get { return 0.7m; }
         }
 
-        /// <summary>
+        /**
         /// Gets the current market price of the specified security
-        /// </summary>
+        */
         protected @Override BigDecimal GetAskPrice(Symbol symbol) {
             // not used, we use bid/ask prices
             return 0;
         }
 
-        /// <summary>
+        /**
         /// Gets the default order quantity
-        /// </summary>
+        */
         protected @Override int GetDefaultQuantity() {
             // FXCM requires a multiple of 1000 for Forex instruments
             return 1000;

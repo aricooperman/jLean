@@ -20,32 +20,32 @@ using QuantConnect.Data.Consolidators;
 
 package com.quantconnect.lean.ToolBox
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IDataProcessor"/> that consolidates the data
     /// stream and forwards the consolidated data to other processors
-    /// </summary>
+    */
     public class ConsolidatorDataProcessor : IDataProcessor
     {
         private DateTime _frontier;
-        private readonly IDataProcessor _destination;
-        private readonly Func<BaseData, IDataConsolidator> _createConsolidator;
-        private readonly Map<Symbol, IDataConsolidator> _consolidators;
+        private final IDataProcessor _destination;
+        private final Func<BaseData, IDataConsolidator> _createConsolidator;
+        private final Map<Symbol, IDataConsolidator> _consolidators;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ConsolidatorDataProcessor"/> class
-        /// </summary>
-        /// <param name="destination">The receiver of the consolidated data</param>
-        /// <param name="createConsolidator">Function used to create consolidators</param>
+        */
+         * @param destination">The receiver of the consolidated data
+         * @param createConsolidator">Function used to create consolidators
         public ConsolidatorDataProcessor(IDataProcessor destination, Func<BaseData, IDataConsolidator> createConsolidator) {
             _destination = destination;
             _createConsolidator = createConsolidator;
             _consolidators = new Map<Symbol, IDataConsolidator>();
         }
 
-        /// <summary>
+        /**
         /// Invoked for each piece of data from the source file
-        /// </summary>
-        /// <param name="data">The data to be processed</param>
+        */
+         * @param data">The data to be processed
         public void Process(BaseData data) {
             // grab the correct consolidator for this symbol
             IDataConsolidator consolidator;
@@ -58,9 +58,9 @@ package com.quantconnect.lean.ToolBox
             consolidator.Update(data);
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         public void Dispose() {
             _frontier = DateTime.MaxValue;
 
@@ -73,9 +73,9 @@ package com.quantconnect.lean.ToolBox
             _consolidators.Clear();
         }
 
-        /// <summary>
+        /**
         /// Handles the <see cref="IDataConsolidator.DataConsolidated"/> event
-        /// </summary>
+        */
         private void OnDataConsolidated(object sender, BaseData args) {
             _destination.Process(args);
 

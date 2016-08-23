@@ -25,123 +25,123 @@ using QuantConnect.Logging;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Provides a means of distributing output from enumerators from a dedicated separate thread
-    /// </summary>
+    */
     public class BaseDataExchange
     {
         private int _sleepInterval = 1;
         private volatile boolean _isStopping = false;
         private Func<Exception, bool> _isFatalError;
 
-        private readonly String _name;
-        private readonly object _enumeratorsWriteLock = new object();
-        private readonly ConcurrentMap<Symbol, DataHandler> _dataHandlers;
+        private final String _name;
+        private final object _enumeratorsWriteLock = new object();
+        private final ConcurrentMap<Symbol, DataHandler> _dataHandlers;
         private ConcurrentMap<Symbol, EnumeratorHandler> _enumerators;
 
-        /// <summary>
+        /**
         /// Gets or sets how long this thread will sleep when no data is available
-        /// </summary>
+        */
         public int SleepInterval
         {
             get { return _sleepInterval; }
             set { if( value > -1) _sleepInterval = value; }
         }
 
-        /// <summary>
+        /**
         /// Gets a name for this exchange
-        /// </summary>
+        */
         public String Name
         {
             get { return _name; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="BaseDataExchange"/>
-        /// </summary>
-        /// <param name="name">A name for this exchange</param>
-        /// <param name="enumerators">The enumerators to fanout</param>
+        */
+         * @param name">A name for this exchange
+         * @param enumerators">The enumerators to fanout
         public BaseDataExchange( String name) {
             _name = name;
-            _isFatalError = x => false;
+            _isFatalError = x -> false;
             _dataHandlers = new ConcurrentMap<Symbol, DataHandler>();
             _enumerators = new ConcurrentMap<Symbol, EnumeratorHandler>();
         }
 
-        /// <summary>
+        /**
         /// Adds the enumerator to this exchange. If it has already been added
         /// then it will remain registered in the exchange only once
-        /// </summary>
-        /// <param name="handler">The handler to use when this symbol's data is encountered</param>
+        */
+         * @param handler">The handler to use when this symbol's data is encountered
         public void AddEnumerator(EnumeratorHandler handler) {
             _enumerators[handler.Symbol] = handler;
         }
 
-        /// <summary>
+        /**
         /// Adds the enumerator to this exchange. If it has already been added
         /// then it will remain registered in the exchange only once
-        /// </summary>
-        /// <param name="symbol">A unique symbol used to identify this enumerator</param>
-        /// <param name="enumerator">The enumerator to be added</param>
-        /// <param name="shouldMoveNext">Function used to determine if move next should be called on this
-        /// enumerator, defaults to always returning true</param>
-        /// <param name="enumeratorFinished">Delegate called when the enumerator move next returns false</param>
+        */
+         * @param symbol">A unique symbol used to identify this enumerator
+         * @param enumerator">The enumerator to be added
+         * @param shouldMoveNext">Function used to determine if move next should be called on this
+        /// enumerator, defaults to always returning true
+         * @param enumeratorFinished">Delegate called when the enumerator move next returns false
         public void AddEnumerator(Symbol symbol, IEnumerator<BaseData> enumerator, Func<bool> shouldMoveNext = null, Action<EnumeratorHandler> enumeratorFinished = null ) {
             enumeratorHandler = new EnumeratorHandler(symbol, enumerator, shouldMoveNext);
             if( enumeratorFinished != null ) {
-                enumeratorHandler.EnumeratorFinished += (sender, args) => enumeratorFinished(args);
+                enumeratorHandler.EnumeratorFinished += (sender, args) -> enumeratorFinished(args);
             }
             AddEnumerator(enumeratorHandler);
         }
 
-        /// <summary>
+        /**
         /// Sets the specified function as the error handler. This function
         /// returns true if it is a fatal error and queue consumption should
         /// cease.
-        /// </summary>
-        /// <param name="isFatalError">The error handling function to use when an
+        */
+         * @param isFatalError">The error handling function to use when an
         /// error is encountered during queue consumption. Returns true if queue
         /// consumption should be stopped, returns false if queue consumption should
-        /// continue</param>
+        /// continue
         public void SetErrorHandler(Func<Exception, bool> isFatalError) {
             // default to false;
-            _isFatalError = isFatalError ?? (x => false);
+            _isFatalError = isFatalError ?? (x -> false);
         }
 
-        /// <summary>
+        /**
         /// Sets the specified hander function to handle data for the handler's symbol
-        /// </summary>
-        /// <param name="handler">The handler to use when this symbol's data is encountered</param>
-        /// <returns>An identifier that can be used to remove this handler</returns>
+        */
+         * @param handler">The handler to use when this symbol's data is encountered
+        @returns An identifier that can be used to remove this handler
         public void SetDataHandler(DataHandler handler) {
             _dataHandlers[handler.Symbol] = handler;
         }
 
-        /// <summary>
+        /**
         /// Sets the specified hander function to handle data for the handler's symbol
-        /// </summary>
-        /// <param name="symbol">The symbol whose data is to be handled</param>
-        /// <param name="handler">The handler to use when this symbol's data is encountered</param>
-        /// <returns>An identifier that can be used to remove this handler</returns>
+        */
+         * @param symbol">The symbol whose data is to be handled
+         * @param handler">The handler to use when this symbol's data is encountered
+        @returns An identifier that can be used to remove this handler
         public void SetDataHandler(Symbol symbol, Action<BaseData> handler) {
             dataHandler = new DataHandler(symbol);
-            dataHandler.DataEmitted += (sender, args) => handler(args);
+            dataHandler.DataEmitted += (sender, args) -> handler(args);
             SetDataHandler(dataHandler);
         }
 
-        /// <summary>
+        /**
         /// Removes the handler with the specified identifier
-        /// </summary>
-        /// <param name="symbol">The symbol to remove handlers for</param>
+        */
+         * @param symbol">The symbol to remove handlers for
         public boolean RemoveDataHandler(Symbol symbol) {
             DataHandler handler;
             return _dataHandlers.TryRemove(symbol, out handler);
         }
 
-        /// <summary>
+        /**
         /// Removes and returns enumerator handler with the specified symbol.
         /// The removed handler is returned, null if not found
-        /// </summary>
+        */
         public EnumeratorHandler RemoveEnumerator(Symbol symbol) {
             EnumeratorHandler handler;
             if( _enumerators.TryRemove(symbol, out handler)) {
@@ -151,28 +151,28 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return handler;
         }
 
-        /// <summary>
+        /**
         /// Begins consumption of the wrapped <see cref="IDataQueueHandler"/> on
         /// a separate thread
-        /// </summary>
-        /// <param name="token">A cancellation token used to signal to stop</param>
+        */
+         * @param token">A cancellation token used to signal to stop
         public void Start(CancellationToken? token = null ) {
             Log.Trace( "BaseDataExchange(%1$s) Starting...", Name);
             _isStopping = false;
             ConsumeEnumerators(token ?? CancellationToken.None);
         }
 
-        /// <summary>
+        /**
         /// Ends consumption of the wrapped <see cref="IDataQueueHandler"/>
-        /// </summary>
+        */
         public void Stop() {
             Log.Trace( "BaseDataExchange(%1$s) Stopping...", Name);
             _isStopping = true;
         }
 
-        /// <summary> Entry point for queue consumption </summary>
-        /// <param name="token">A cancellation token used to signal to stop</param>
-        /// <remarks> This function only returns after <see cref="Stop"/> is called or the token is cancelled</remarks>
+        /** Entry point for queue consumption </summary>
+         * @param token">A cancellation token used to signal to stop
+        ///  This function only returns after <see cref="Stop"/> is called or the token is cancelled
         private void ConsumeEnumerators(CancellationToken token) {
             while (true) {
                 if( _isStopping || token.IsCancellationRequested) {
@@ -233,120 +233,120 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
         }
 
-        /// <summary>
+        /**
         /// Handler used to handle data emitted from enumerators
-        /// </summary>
+        */
         public class DataHandler
         {
-            /// <summary>
+            /**
             /// Event fired when MoveNext returns true and Current is non-null
-            /// </summary>
+            */
             public event EventHandler<BaseData> DataEmitted;
 
-            /// <summary>
+            /**
             /// The symbol this handler handles
-            /// </summary>
-            public readonly Symbol Symbol;
+            */
+            public final Symbol Symbol;
 
-            /// <summary>
+            /**
             /// Initializes a new instance of the <see cref="DataHandler"/> class
-            /// </summary>
-            /// <param name="symbol">The symbol whose data is to be handled</param>
+            */
+             * @param symbol">The symbol whose data is to be handled
             public DataHandler(Symbol symbol) {
                 Symbol = symbol;
             }
 
-            /// <summary>
+            /**
             /// Event invocator for the <see cref="DataEmitted"/> event
-            /// </summary>
-            /// <param name="data">The data being emitted</param>
+            */
+             * @param data">The data being emitted
             public void OnDataEmitted(BaseData data) {
                 handler = DataEmitted;
                 if( handler != null ) handler(this, data);
             }
         }
 
-        /// <summary>
+        /**
         /// Handler used to manage a single enumerator's move next/end of stream behavior
-        /// </summary>
+        */
         public class EnumeratorHandler
         {
-            private readonly Func<bool> _shouldMoveNext;
-            private readonly Action<BaseData> _handleData;
+            private final Func<bool> _shouldMoveNext;
+            private final Action<BaseData> _handleData;
 
-            /// <summary>
+            /**
             /// Event fired when MoveNext returns false
-            /// </summary>
+            */
             public event EventHandler<EnumeratorHandler> EnumeratorFinished;
 
-            /// <summary>
+            /**
             /// A unique symbol used to identify this enumerator
-            /// </summary>
-            public readonly Symbol Symbol;
+            */
+            public final Symbol Symbol;
 
-            /// <summary>
+            /**
             /// The enumerator this handler handles
-            /// </summary>
-            public readonly IEnumerator<BaseData> Enumerator;
+            */
+            public final IEnumerator<BaseData> Enumerator;
 
-            /// <summary>
+            /**
             /// Determines whether or not this handler is to be used for handling the
             /// data emitted. This is useful when enumerators are not for a single symbol,
             /// such is the case with universe subscriptions
-            /// </summary>
-            public readonly boolean HandlesData;
+            */
+            public final boolean HandlesData;
 
-            /// <summary>
+            /**
             /// Initializes a new instance of the <see cref="EnumeratorHandler"/> class
-            /// </summary>
-            /// <param name="symbol">The symbol to identify this enumerator</param>
-            /// <param name="enumerator">The enumeator this handler handles</param>
-            /// <param name="shouldMoveNext">Predicate function used to determine if we should call move next
-            /// on the symbol's enumerator</param>
-            /// <param name="handleData">Handler for data if HandlesData=true</param>
+            */
+             * @param symbol">The symbol to identify this enumerator
+             * @param enumerator">The enumeator this handler handles
+             * @param shouldMoveNext">Predicate function used to determine if we should call move next
+            /// on the symbol's enumerator
+             * @param handleData">Handler for data if HandlesData=true
             public EnumeratorHandler(Symbol symbol, IEnumerator<BaseData> enumerator, Func<bool> shouldMoveNext = null, Action<BaseData> handleData = null ) {
                 Symbol = symbol;
                 Enumerator = enumerator;
                 HandlesData = handleData != null;
 
-                _handleData = handleData ?? (data => { });
-                _shouldMoveNext = shouldMoveNext ?? (() => true);
+                _handleData = handleData ?? (data -> { });
+                _shouldMoveNext = shouldMoveNext ?? (() -> true);
             }
 
-            /// <summary>
+            /**
             /// Initializes a new instance of the <see cref="EnumeratorHandler"/> class
-            /// </summary>
-            /// <param name="symbol">The symbol to identify this enumerator</param>
-            /// <param name="enumerator">The enumeator this handler handles</param>
-            /// <param name="handlesData">True if this handler will handle the data, false otherwise</param>
+            */
+             * @param symbol">The symbol to identify this enumerator
+             * @param enumerator">The enumeator this handler handles
+             * @param handlesData">True if this handler will handle the data, false otherwise
             protected EnumeratorHandler(Symbol symbol, IEnumerator<BaseData> enumerator, boolean handlesData) {
                 Symbol = symbol;
                 HandlesData = handlesData;
                 Enumerator = enumerator;
 
-                _handleData = data => { };
-                _shouldMoveNext = () => true;
+                _handleData = data -> { };
+                _shouldMoveNext = () -> true;
             }
 
-            /// <summary>
+            /**
             /// Event invocator for the <see cref="EnumeratorFinished"/> event
-            /// </summary>
+            */
             public virtual void OnEnumeratorFinished() {
                 handler = EnumeratorFinished;
                 if( handler != null ) handler(this, this);
             }
 
-            /// <summary>
+            /**
             /// Returns true if this enumerator should move next
-            /// </summary>
+            */
             public virtual boolean ShouldMoveNext() {
                 return _shouldMoveNext();
             }
 
-            /// <summary>
+            /**
             /// Handles the specified data.
-            /// </summary>
-            /// <param name="data">The data to be handled</param>
+            */
+             * @param data">The data to be handled
             public virtual void HandleData(BaseData data) {
                 _handleData(data);
             }

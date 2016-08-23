@@ -38,7 +38,7 @@ public class SymbolJsonConverter {
     public static class SymbolJsonSerializer extends JsonSerializer<Symbol> {
 
         /// Writes the JSON representation of the object.
-        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
+         * @param writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.<param name="value">The value.<param name="serializer">The calling serializer.
         @Override
         public void serialize( Symbol symbol, JsonGenerator gen, SerializerProvider serializers )
                 throws IOException, JsonProcessingException {
@@ -62,10 +62,10 @@ public class SymbolJsonConverter {
     public static class SymbolJsonDeserializer extends JsonDeserializer<Symbol> {
 
         /// Reads the JSON representation of the object.
-        /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.</param><param name="objectType">Type of the object.</param><param name="existingValue">The existing value of object being read.</param><param name="serializer">The calling serializer.</param>
-        /// <returns>
+         * @param reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.<param name="objectType">Type of the object.<param name="existingValue">The existing value of object being read.<param name="serializer">The calling serializer.
+        @returns 
         /// The object value.
-        /// </returns>
+        /// 
         @Override
         public Symbol deserialize( JsonParser p, DeserializationContext ctxt )
                 throws IOException, JsonProcessingException {
@@ -83,10 +83,10 @@ public class SymbolJsonConverter {
     
 
 //    /// Determines whether this instance can convert the specified object type.
-//    /// <param name="objectType">Type of the object.</param>
-//    /// <returns>
+//     * @param objectType">Type of the object.
+//    @returns 
 //    /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-//    /// </returns>
+//    /// 
 //    public @Override boolean CanConvert(Type objectType)
 //    {
 //        return objectType == typeof (Symbol);

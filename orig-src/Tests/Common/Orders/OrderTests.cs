@@ -98,15 +98,15 @@ package com.quantconnect.lean.Tests.Common.Orders
                 new ValueTestParameters( "CfdShortStopMarketOrder", cfd, new StopMarketOrder(Symbols.DE10YBEUR, -quantity, pricePlusDelta, time), -quantity*pricePlusDelta*multiplierTimesConversionRate),
                 new ValueTestParameters( "CfdShortStopMarketOrder", cfd, new StopMarketOrder(Symbols.DE10YBEUR, -quantity, priceMinusDelta, time), -quantity*price*multiplierTimesConversionRate),
 
-            }.Select(x => new TestCaseData(x).SetName(x.Name)).ToArray();
+            }.Select(x -> new TestCaseData(x).SetName(x.Name)).ToArray();
         }
 
         public class ValueTestParameters
         {
-            public readonly String Name;
-            public readonly Security Security;
-            public readonly Order Order;
-            public readonly BigDecimal ExpectedValue;
+            public final String Name;
+            public final Security Security;
+            public final Order Order;
+            public final BigDecimal ExpectedValue;
 
             public ValueTestParameters( String name, Security security, Order order, BigDecimal expectedValue) {
                 Name = name;

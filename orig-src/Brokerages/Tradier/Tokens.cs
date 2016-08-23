@@ -19,9 +19,9 @@ using Newtonsoft.Json;
 
 package com.quantconnect.lean.Brokerages.Tradier
 {
-    /// <summary>
+    /**
     /// Token response model from QuantConnect terminal
-    /// </summary>
+    */
     public class TokenResponse
     {
         /// Access token for current requests:
@@ -48,9 +48,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "success")]
         public boolean Success;
 
-        /// <summary>
+        /**
         ///  Default constructor:
-        /// </summary>
+        */
         public TokenResponse() { }
     }
 

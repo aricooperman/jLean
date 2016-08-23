@@ -34,15 +34,15 @@ public interface IMessagingHandler {
     void initialize();
 
     /// Set the user communication channel
-    /// <param name="job"></param>
+     * @param job">
     void setAuthentication( AlgorithmNodePacket job );
 
     /// Send any message with a base type of Packet.
-    /// <param name="packet">Packet of data to send via the messaging system plugin</param>
+     * @param packet">Packet of data to send via the messaging system plugin
     void send( Packet packet );
 
     /// Send any notification with a base type of Notification.
-    /// <param name="notification">The notification to be sent.</param>
+     * @param notification">The notification to be sent.
     void sendNotification( Notification notification );
 }
 
@@ -54,40 +54,40 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Interfaces
 {
-    /// <summary>
+    /**
     /// Messaging System Plugin Interface. 
     /// Provides a common messaging pattern between desktop and cloud implementations of QuantConnect.
-    /// </summary>
+    */
     [InheritedExport(typeof(IMessagingHandler))]
     public interface IMessagingHandler
     {
-        /// <summary>
+        /**
         /// Gets or sets whether this messaging handler has any current subscribers.
         /// When set to false, messages won't be sent.
-        /// </summary>
+        */
         boolean HasSubscribers { get; set; }
 
-        /// <summary>
+        /**
         /// Initialize the Messaging System Plugin. 
-        /// </summary>
+        */
         void Initialize();
 
-        /// <summary>
+        /**
         /// Set the user communication channel
-        /// </summary>
-        /// <param name="job"></param>
+        */
+         * @param job">
         void SetAuthentication(AlgorithmNodePacket job);
 
-        /// <summary>
+        /**
         /// Send any message with a base type of Packet.
-        /// </summary>
-        /// <param name="packet">Packet of data to send via the messaging system plugin</param>
+        */
+         * @param packet">Packet of data to send via the messaging system plugin
         void Send(Packet packet);
 
-        /// <summary>
+        /**
         /// Send any notification with a base type of Notification.
-        /// </summary>
-        /// <param name="notification">The notification to be sent.</param>
+        */
+         * @param notification">The notification to be sent.
         void SendNotification(Notification notification);
     }
 }

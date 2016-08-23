@@ -23,32 +23,32 @@ using HistoryRequest = QuantConnect.Data.HistoryRequest;
 
 package com.quantconnect.lean.Interfaces
 {
-    /// <summary>
+    /**
     /// Provides historical data to an algorithm at runtime
-    /// </summary>
+    */
     [InheritedExport(typeof(IHistoryProvider))]
     public interface IHistoryProvider
     {
-        /// <summary>
+        /**
         /// Gets the total number of data points emitted by this history provider
-        /// </summary>
+        */
         int DataPointCount { get; }
 
-        /// <summary>
+        /**
         /// Initializes this history provider to work for the specified job
-        /// </summary>
-        /// <param name="job">The job</param>
-        /// <param name="mapFileProvider">Provider used to get a map file resolver to handle equity mapping</param>
-        /// <param name="factorFileProvider">Provider used to get factor files to handle equity price scaling</param>
-        /// <param name="statusUpdate">Function used to send status updates</param>
+        */
+         * @param job">The job
+         * @param mapFileProvider">Provider used to get a map file resolver to handle equity mapping
+         * @param factorFileProvider">Provider used to get factor files to handle equity price scaling
+         * @param statusUpdate">Function used to send status updates
         void Initialize(AlgorithmNodePacket job, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider, Action<Integer> statusUpdate);
 
-        /// <summary>
+        /**
         /// Gets the history for the requested securities
-        /// </summary>
-        /// <param name="requests">The historical data requests</param>
-        /// <param name="sliceTimeZone">The time zone used when time stamping the slice instances</param>
-        /// <returns>An enumerable of the slices of data covering the span specified in each request</returns>
+        */
+         * @param requests">The historical data requests
+         * @param sliceTimeZone">The time zone used when time stamping the slice instances
+        @returns An enumerable of the slices of data covering the span specified in each request
         IEnumerable<Slice> GetHistory(IEnumerable<HistoryRequest> requests, ZoneId sliceTimeZone);
     }
 }

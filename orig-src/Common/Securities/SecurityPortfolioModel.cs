@@ -19,19 +19,19 @@ using QuantConnect.Orders;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Provides a default implementation of <see cref="ISecurityPortfolioModel"/> that simply
     /// applies the fills to the algorithm's portfolio. This implementation is intended to 
     /// handle all security types.
-    /// </summary>
+    */
     public class SecurityPortfolioModel : ISecurityPortfolioModel
     {
-        /// <summary>
+        /**
         /// Performs application of an OrderEvent to the portfolio
-        /// </summary>
-        /// <param name="portfolio">The algorithm's portfolio</param>
-        /// <param name="security">The fill's security</param>
-        /// <param name="fill">The order event fill object to be applied</param>
+        */
+         * @param portfolio">The algorithm's portfolio
+         * @param security">The fill's security
+         * @param fill">The order event fill object to be applied
         public virtual void ProcessFill(SecurityPortfolioManager portfolio, Security security, OrderEvent fill) {
             quoteCash = security.QuoteCurrency;
 

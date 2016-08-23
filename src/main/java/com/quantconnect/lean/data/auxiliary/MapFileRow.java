@@ -69,10 +69,10 @@ public class MapFileRow {
     }
 
     /// Indicates whether the current object is equal to another object of the same type.
-    /// <returns>
+    @returns 
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-    /// </returns>
-    /// <param name="other">An object to compare with this object.</param>
+    /// 
+     * @param other">An object to compare with this object.
     public boolean equals( MapFileRow other ) {
         if( null == other ) return false;
         if( this == other ) return true;
@@ -81,10 +81,10 @@ public class MapFileRow {
     }
 
     /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-    /// <returns>
+    @returns 
     /// true if the specified object  is equal to the current object; otherwise, false.
-    /// </returns>
-    /// <param name="obj">The object to compare with the current object. </param><filterpriority>2</filterpriority>
+    /// 
+     * @param obj">The object to compare with the current object. <filterpriority>2</filterpriority>
     public boolean equals( Object obj ) {
         if( null == obj ) return false;
         if( this == obj ) return true;
@@ -93,25 +93,25 @@ public class MapFileRow {
     }
 
     /// Serves as a hash function for a particular type. 
-    /// <returns>
+    @returns 
     /// A hash code for the current <see cref="T:System.Object"/>.
-    /// </returns>
+    /// 
     /// <filterpriority>2</filterpriority>
     public int hashCode() {
         return (date.hashCode() * 397) ^ (mappedSymbol != null ? mappedSymbol.hashCode() : 0);
     }
 
-//    /// <summary>
+//    /**
 //    /// Determines whether or not the two instances are equal
-//    /// </summary>
+//    */
 //    public static boolean operator ==(MapFileRow left, MapFileRow right)
 //    {
 //        return Equals(left, right);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Determines whether or not the two instances are not equal
-//    /// </summary>
+//    */
 //    public static boolean operator !=(MapFileRow left, MapFileRow right)
 //    {
 //        return !Equals(left, right);

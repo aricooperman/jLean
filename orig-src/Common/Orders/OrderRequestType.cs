@@ -15,24 +15,24 @@
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Specifies the type of <see cref="OrderRequest"/>
-    /// </summary>
+    */
     public enum OrderRequestType
     {
-        /// <summary>
+        /**
         /// The request is a <see cref="SubmitOrderRequest"/>
-        /// </summary>
+        */
         Submit,
 
-        /// <summary>
+        /**
         /// The request is a <see cref="UpdateOrderRequest"/>
-        /// </summary>
+        */
         Update,
 
-        /// <summary>
+        /**
         /// The request is a <see cref="CancelOrderRequest"/>
-        /// </summary>
+        */
         Cancel
     }
 }

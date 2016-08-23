@@ -18,54 +18,54 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Order Event - Messaging class signifying a change in an order state and record the change in the user's algorithm portfolio 
-    /// </summary>
+    */
     public class OrderEvent
     {
-        /// <summary>
+        /**
         /// Id of the order this event comes from.
-        /// </summary>
+        */
         public int OrderId;
 
-        /// <summary>
+        /**
         /// Easy access to the order symbol associated with this event.
-        /// </summary>
+        */
         public Symbol Symbol;
 
-        /// <summary>
+        /**
         /// The date and time of this event (UTC).
-        /// </summary>
+        */
         public DateTime UtcTime;
 
-        /// <summary>
+        /**
         /// Status message of the order.
-        /// </summary>
+        */
         public OrderStatus Status;
 
-        /// <summary>
+        /**
         /// The fee associated with the order (always positive value).
-        /// </summary>
+        */
         public BigDecimal OrderFee;
 
-        /// <summary>
+        /**
         /// Fill price information about the order
-        /// </summary>
+        */
         public BigDecimal FillPrice;
 
-        /// <summary>
+        /**
         /// Currency for the fill price
-        /// </summary>
+        */
         public String FillPriceCurrency;
 
-        /// <summary>
+        /**
         /// Number of shares of the order that was filled in this event.
-        /// </summary>
+        */
         public int FillQuantity;
 
-        /// <summary>
+        /**
         /// Public Property Absolute Getter of Quantity -Filled
-        /// </summary>
+        */
         public int AbsoluteFillQuantity 
         {
             get 
@@ -74,31 +74,31 @@ package com.quantconnect.lean.Orders
             }
         }
 
-        /// <summary>
+        /**
         /// Order direction.
-        /// </summary>
+        */
         public OrderDirection Direction
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Any message from the exchange.
-        /// </summary>
+        */
         public String Message;
 
-        /// <summary>
+        /**
         /// Order Event Constructor.
-        /// </summary>
-        /// <param name="orderId">Id of the parent order</param>
-        /// <param name="symbol">Asset Symbol</param>
-        /// <param name="utcTime">Date/time of this event</param>
-        /// <param name="status">Status of the order</param>
-        /// <param name="direction">The direction of the order this event belongs to</param>
-        /// <param name="fillPrice">Fill price information if applicable.</param>
-        /// <param name="fillQuantity">Fill quantity</param>
-        /// <param name="orderFee">The order fee</param>
-        /// <param name="message">Message from the exchange</param>
+        */
+         * @param orderId">Id of the parent order
+         * @param symbol">Asset Symbol
+         * @param utcTime">Date/time of this event
+         * @param status">Status of the order
+         * @param direction">The direction of the order this event belongs to
+         * @param fillPrice">Fill price information if applicable.
+         * @param fillQuantity">Fill quantity
+         * @param orderFee">The order fee
+         * @param message">Message from the exchange
         public OrderEvent(int orderId, Symbol symbol, DateTime utcTime, OrderStatus status, OrderDirection direction, BigDecimal fillPrice, int fillQuantity, BigDecimal orderFee, String message = "") {
             OrderId = orderId;
             Symbol = symbol;
@@ -112,13 +112,13 @@ package com.quantconnect.lean.Orders
             Message = message;
         }
 
-        /// <summary>
+        /**
         /// Helper Constructor using Order to Initialize.
-        /// </summary>
-        /// <param name="order">Order for this order status</param>
-        /// <param name="utcTime">Date/time of this event</param>
-        /// <param name="orderFee">The order fee</param>
-        /// <param name="message">Message from exchange or QC.</param>
+        */
+         * @param order">Order for this order status
+         * @param utcTime">Date/time of this event
+         * @param orderFee">The order fee
+         * @param message">Message from exchange or QC.
         public OrderEvent(Order order, DateTime utcTime, BigDecimal orderFee, String message = "") {
             OrderId = order.Id;
             Symbol = order.Symbol;
@@ -135,12 +135,12 @@ package com.quantconnect.lean.Orders
             Message = message;
         }
 
-        /// <summary>
+        /**
         /// Returns a String that represents the current object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A String that represents the current object.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         public @Override String toString() {
             message = FillQuantity == 0 
@@ -153,10 +153,10 @@ package com.quantconnect.lean.Orders
             return message;
         }
 
-        /// <summary>
+        /**
         /// Returns a clone of the current object.
-        /// </summary>
-        /// <returns>The new clone object</returns>
+        */
+        @returns The new clone object
         public OrderEvent Clone() {
             return (OrderEvent)MemberwiseClone();
         }

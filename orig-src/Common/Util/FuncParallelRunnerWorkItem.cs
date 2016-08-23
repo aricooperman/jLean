@@ -18,36 +18,36 @@ using System;
 
 package com.quantconnect.lean.Util
 {
-    /// <summary>
+    /**
     /// Provides a functional implementation of the <see cref="IParallelRunnerWorkItem"/> interface
-    /// </summary>
+    */
     public sealed class FuncParallelRunnerWorkItem : IParallelRunnerWorkItem
     {
-        private readonly Func<bool> _isReady;
-        private readonly Action _execute;
+        private final Func<bool> _isReady;
+        private final Action _execute;
 
-        /// <summary>
+        /**
         /// Determines if this work item is ready to be processed
-        /// </summary>
+        */
         public boolean IsReady
         {
             get { return _isReady(); }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FuncParallelRunnerWorkItem"/> class
-        /// </summary>
-        /// <param name="isReady">The IsReady function implementation</param>
-        /// <param name="execute">The Execute function implementation</param>
+        */
+         * @param isReady">The IsReady function implementation
+         * @param execute">The Execute function implementation
         public FuncParallelRunnerWorkItem(Func<bool> isReady, Action execute) {
             _isReady = isReady;
             _execute = execute;
         }
 
-        /// <summary>
+        /**
         /// Executes this work item
-        /// </summary>
-        /// <returns>The result of execution</returns>
+        */
+        @returns The result of execution
         public void Execute() {
             _execute();
         }

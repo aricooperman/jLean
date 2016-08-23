@@ -18,33 +18,33 @@ using System;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// Volume Weighted Average Price (VWAP) Indicator:
     /// It is calculated by adding up the dollars traded for every transaction (price multiplied
     /// by number of shares traded) and then dividing by the total shares traded for the day.
-    /// </summary>
+    */
     public class VolumeWeightedAveragePriceIndicator : TradeBarIndicator
     {
-        /// <summary>
+        /**
         /// In this VWAP calculation, typical price is defined by (O + H + L + C) / 4
-        /// </summary>
+        */
         private Identity _price;
         private Identity _volume;
         private CompositeIndicator<IndicatorDataPoint> _vwap;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the VWAP class with the default name and period
-        /// </summary>
-        /// <param name="period">The period of the VWAP</param>
+        */
+         * @param period">The period of the VWAP
         public VolumeWeightedAveragePriceIndicator(int period)
             : this( "VWAP_" + period, period) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the VWAP class with a given name and period
-        /// </summary>
-        /// <param name="name">string - the name of the indicator</param>
-        /// <param name="period">The period of the VWAP</param>
+        */
+         * @param name">string - the name of the indicator
+         * @param period">The period of the VWAP
         public VolumeWeightedAveragePriceIndicator( String name, int period)
             : base(name) {
             _price = new Identity( "Price");
@@ -54,17 +54,17 @@ package com.quantconnect.lean.Indicators
             _vwap = _price.WeightedBy(_volume, period);
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return _vwap.IsReady; }
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _price.Reset();
             _volume.Reset();
@@ -72,11 +72,11 @@ package com.quantconnect.lean.Indicators
             base.Reset();
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _price.Update(input.EndTime, (input.Open + input.High + input.Low + input.Value) / 4);
             _volume.Update(input.EndTime, input.Volume);

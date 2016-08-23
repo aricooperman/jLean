@@ -22,10 +22,10 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// In this algorithm we demonstrate how to perform some technical analysis as
     /// part of your coarse fundamental universe selection
-    /// </summary>
+    */
     public class EmaCrossUniverseSelectionAlgorithm : QCAlgorithm
     {
         // tolerance to prevent bouncing
@@ -35,14 +35,14 @@ package com.quantconnect.lean.Algorithm.CSharp
         private static final BigDecimal TargetPercent = 0.1m;
         private SecurityChanges _changes = SecurityChanges.None;
         // holds our coarse fundamental indicators by symbol
-        private readonly ConcurrentMap<Symbol, SelectionData> _averages = new ConcurrentMap<Symbol, SelectionData>();
+        private final ConcurrentMap<Symbol, SelectionData> _averages = new ConcurrentMap<Symbol, SelectionData>();
 
 
         // class used to improve readability of the coarse selection function
         private class SelectionData
         {
-            public readonly ExponentialMovingAverage Fast;
-            public readonly ExponentialMovingAverage Slow;
+            public final ExponentialMovingAverage Fast;
+            public final ExponentialMovingAverage Slow;
 
             public SelectionData() {
                 Fast = new ExponentialMovingAverage(100);
@@ -61,9 +61,9 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             UniverseSettings.Leverage = 2.0m;
             UniverseSettings.Resolution = Resolution.Daily;
@@ -76,7 +76,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             {
                 return (from cf in coarse
                         // grab th SelectionData instance for this symbol
-                        let avg = _averages.GetOrAdd(cf.Symbol, sym => new SelectionData())
+                        let avg = _averages.GetOrAdd(cf.Symbol, sym -> new SelectionData())
                         // Update returns true when the indicators are ready, so don't accept until they are
                         where avg.Update(cf.EndTime, cf.Price)
                         // only pick symbols who have their 50 day ema over their 100 day ema
@@ -88,10 +88,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             });
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">TradeBars dictionary object keyed by symbol containing the stock data</param>
+        */
+         * @param data">TradeBars dictionary object keyed by symbol containing the stock data
         public void OnData(TradeBars data) {
             if( _changes == SecurityChanges.None) return;
 
@@ -108,10 +108,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Event fired each time the we add/remove securities from the data feed
-        /// </summary>
-        /// <param name="changes">Object containing AddedSecurities and RemovedSecurities</param>
+        */
+         * @param changes">Object containing AddedSecurities and RemovedSecurities
         public @Override void OnSecuritiesChanged(SecurityChanges changes) {
             _changes = changes;
         }

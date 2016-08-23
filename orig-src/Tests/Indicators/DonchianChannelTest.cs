@@ -26,7 +26,7 @@ package com.quantconnect.lean.Tests.Indicators
             donchianChannel = new DonchianChannel( "dch", 50);
 
             TestHelper.TestIndicator(donchianChannel, "spy_with_don50.txt", "Donchian Channels 50 Top",
-                    (ind, expected) => Assert.AreEqual(expected, (double)((DonchianChannel)ind).UpperBand.Current.Value));
+                    (ind, expected) -> Assert.AreEqual(expected, (double)((DonchianChannel)ind).UpperBand.Current.Value));
         }
 
         [Test]
@@ -34,7 +34,7 @@ package com.quantconnect.lean.Tests.Indicators
             donchianChannel = new DonchianChannel( "dch", 50);
 
             TestHelper.TestIndicator(donchianChannel, "spy_with_don50.txt", "Donchian Channels 50 Bottom",
-                    (ind, expected) => Assert.AreEqual(expected, (double)((DonchianChannel)ind).LowerBand.Current.Value));
+                    (ind, expected) -> Assert.AreEqual(expected, (double)((DonchianChannel)ind).LowerBand.Current.Value));
         }
         
         [Test]
@@ -42,7 +42,7 @@ package com.quantconnect.lean.Tests.Indicators
             donchianChannel = new DonchianChannel( "dch", 50);
 
             TestHelper.TestIndicator(donchianChannel, "spy_with_don50.txt", "Donchian Channels 50 Mean",
-                    (ind, expected) => Assert.AreEqual(expected, (double)((DonchianChannel)ind).Current.Value));
+                    (ind, expected) -> Assert.AreEqual(expected, (double)((DonchianChannel)ind).Current.Value));
 
         }
 

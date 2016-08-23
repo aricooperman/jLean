@@ -15,46 +15,46 @@
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// Represents the result of an indicator's calculations
-    /// </summary>
+    */
     public class IndicatorResult
     {
-        /// <summary>
+        /**
         /// The indicator output value
-        /// </summary>
+        */
         public BigDecimal Value
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// The indicator status
-        /// </summary>
+        */
         public IndicatorStatus Status
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="IndicatorResult"/> class
-        /// </summary>
-        /// <param name="value">The value output by the indicator</param>
-        /// <param name="status">The status returned by the indicator</param>
+        */
+         * @param value">The value output by the indicator
+         * @param status">The status returned by the indicator
         public IndicatorResult( BigDecimal value, IndicatorStatus status = IndicatorStatus.Success) {
             Value = value;
             Status = status;
         }
 
-        /// <summary>
+        /**
         /// Converts the specified BigDecimal value into a successful indicator result
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// This method is provided for backwards compatibility
-        /// </remarks>
-        /// <param name="value">The BigDecimal value to be converted into an <see cref="IndicatorResult"/></param>
+        /// 
+         * @param value">The BigDecimal value to be converted into an <see cref="IndicatorResult"/>
         public static implicit operator IndicatorResult( BigDecimal value) {
             return new IndicatorResult(value);
         }

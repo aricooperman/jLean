@@ -15,84 +15,84 @@
 
 package com.quantconnect.lean.Data.Market
 {
-    /// <summary>
+    /**
     /// Defines the first-order greeks
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// We can later add second and third order greeks as sub-classes
-    /// </remarks>
+    /// 
     public class FirstOrderGreeks
     {
-        /// <summary>
+        /**
         /// Gets the delta.
         /// <para>
         /// Delta measures the rate of change of the option value with respect to changes in
         /// the underlying asset'sprice. (∂V/∂S)
         /// </para>
-        /// </summary>
+        */
         public BigDecimal Delta
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the vega.
         /// <para>
         /// Vega measures the rate of change of the option value with respect to changes in
         /// the underlying's volatility. (∂V/∂σ)
         /// </para>
-        /// </summary>
+        */
         public BigDecimal Vega
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the theta.
         /// <para>
         /// Theta measures the rate of change of the option value with respect to changes in
         /// time. This is commonly known as the 'time decay.' (∂V/∂τ)
         /// </para>
-        /// </summary>
+        */
         public BigDecimal Theta
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the rho.
         /// <para>
         /// Rho measures the rate of change of the option value with respect to changes in
         /// the risk free interest rate. (∂V/∂r)
         /// </para>
-        /// </summary>
+        */
         public BigDecimal Rho
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the lambda.
         /// <para>
         /// Lambda is the percentage change in option value per percentage change in the
         /// underlying's price, a measure of leverage. Sometimes referred to as gearing.
         /// (∂V/∂S ✕ S/V)
         /// </para>
-        /// </summary>
+        */
         public BigDecimal Lambda
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new default instance of the <see cref="FirstOrderGreeks"/> class
-        /// </summary>
+        */
         public FirstOrderGreeks() {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FirstOrderGreeks"/> class
-        /// </summary>
+        */
         public FirstOrderGreeks( BigDecimal delta, BigDecimal vega, BigDecimal theta, BigDecimal rho, BigDecimal lambda) {
             Delta = delta;
             Vega = vega;

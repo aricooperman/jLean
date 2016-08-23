@@ -18,20 +18,20 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Commands
 {
-    /// <summary>
+    /**
     /// Represents a command to cancel a specific order by id
-    /// </summary>
+    */
     public sealed class CancelOrderCommand : ICommand
     {
-        /// <summary>
+        /**
         /// Gets or sets the order id to be cancelled
-        /// </summary>
+        */
         public int OrderId { get; set; }
 
-        /// <summary>
+        /**
         /// Runs this command against the specified algorithm instance
-        /// </summary>
-        /// <param name="algorithm">The algorithm to run this command against</param>
+        */
+         * @param algorithm">The algorithm to run this command against
         public CommandResultPacket Run(IAlgorithm algorithm) {
             ticket = algorithm.Transactions.CancelOrder(OrderId);
             return ticket.CancelRequest != null 
@@ -39,19 +39,19 @@ package com.quantconnect.lean.Commands
                 : new Result(this, false, ticket.QuantityFilled);
         }
 
-        /// <summary>
+        /**
         /// Result packet type for the <see cref="CancelOrderCommand"/> command
-        /// </summary>
+        */
         public class Result : CommandResultPacket
         {
-            /// <summary>
+            /**
             /// Gets or sets the quantity filled on the cancelled order
-            /// </summary>
+            */
             public BigDecimal QuantityFilled { get; set; }
 
-            /// <summary>
+            /**
             /// Initializes a new instance of the <see cref="Result"/> class
-            /// </summary>
+            */
             public Result(ICommand command, boolean success, BigDecimal quantityFilled)
                 : base(command, success) {
                 QuantityFilled = quantityFilled;

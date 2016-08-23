@@ -19,55 +19,55 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IVolatilityModel"/> that uses an indicator
     /// to compute its value
-    /// </summary>
+    */
     /// <typeparam name="T">The indicator's input type</typeparam>
     public class IndicatorVolatilityModel<T> : IVolatilityModel
         where T : BaseData
     {
-        private readonly IIndicator<T> _indicator;
-        private readonly Action<Security, BaseData, IIndicator<T>> _indicatorUpdate;
+        private final IIndicator<T> _indicator;
+        private final Action<Security, BaseData, IIndicator<T>> _indicatorUpdate;
 
-        /// <summary>
+        /**
         /// Gets the volatility of the security as a percentage
-        /// </summary>
+        */
         public BigDecimal Volatility
         {
             get { return _indicator.Current; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="IVolatilityModel"/> using
         /// the specified <paramref name="indicator"/>. The <paramref name="indicator"/>
         /// is assumed to but updated externally from this model, such as being registered
         /// into the consolidator system.
-        /// </summary>
-        /// <param name="indicator">The auto-updating indicator</param>
+        */
+         * @param indicator">The auto-updating indicator
         public IndicatorVolatilityModel(IIndicator<T> indicator) {
             _indicator = indicator;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="IVolatilityModel"/> using
         /// the specified <paramref name="indicator"/>. The <paramref name="indicator"/>
         /// is assumed to but updated externally from this model, such as being registered
         /// into the consolidator system.
-        /// </summary>
-        /// <param name="indicator">The auto-updating indicator</param>
-        /// <param name="indicatorUpdate">Function delegate used to update the indicator on each call to <see cref="Update"/></param>
+        */
+         * @param indicator">The auto-updating indicator
+         * @param indicatorUpdate">Function delegate used to update the indicator on each call to <see cref="Update"/>
         public IndicatorVolatilityModel(IIndicator<T> indicator, Action<Security, BaseData, IIndicator<T>> indicatorUpdate) {
             _indicator = indicator;
             _indicatorUpdate = indicatorUpdate;
         }
 
-        /// <summary>
+        /**
         /// Updates this model using the new price information in
         /// the specified security instance
-        /// </summary>
-        /// <param name="security">The security to calculate volatility for</param>
-        /// <param name="data">The new piece of data for the security</param>
+        */
+         * @param security">The security to calculate volatility for
+         * @param data">The new piece of data for the security
         public void Update(Security security, BaseData data) {
             if( _indicatorUpdate != null ) {
                 _indicatorUpdate(security, data, _indicator);

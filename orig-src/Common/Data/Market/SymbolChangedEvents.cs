@@ -18,21 +18,21 @@ using System;
 
 package com.quantconnect.lean.Data.Market
 {
-    /// <summary>
+    /**
     /// Collection of <see cref="SymbolChangedEvent"/> keyed by the original, requested symbol
-    /// </summary>
+    */
     public class SymbolChangedEvents : DataMap<SymbolChangedEvent>
     {
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Delistings"/> dictionary
-        /// </summary>
+        */
         public SymbolChangedEvents() {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Delistings"/> dictionary
-        /// </summary>
-        /// <param name="frontier">The time associated with the data in this Map</param>
+        */
+         * @param frontier">The time associated with the data in this Map
         public SymbolChangedEvents(DateTime frontier)
             : base(frontier) {
         }

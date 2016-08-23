@@ -27,11 +27,11 @@ package com.quantconnect.lean.Tests.Common.Securities
     [TestFixture]
     public class PatternDayTradingMarginModelTests
     {
-        private static readonly DateTime Noon = new DateTime(2016, 02, 16, 12, 0, 0);
-        private static readonly DateTime Midnight = new DateTime(2016, 02, 16, 0, 0, 0);
-        private static readonly DateTime NoonWeekend = new DateTime(2016, 02, 14, 12, 0, 0);
-        private static readonly DateTime NoonHoliday = new DateTime(2016, 02, 15, 12, 0, 0);
-        private static readonly TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), TimeZones.NewYork);
+        private static final DateTime Noon = new DateTime(2016, 02, 16, 12, 0, 0);
+        private static final DateTime Midnight = new DateTime(2016, 02, 16, 0, 0, 0);
+        private static final DateTime NoonWeekend = new DateTime(2016, 02, 14, 12, 0, 0);
+        private static final DateTime NoonHoliday = new DateTime(2016, 02, 15, 12, 0, 0);
+        private static final TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), TimeZones.NewYork);
 
         [Test]
         public void InitializationTests() {
@@ -247,10 +247,10 @@ package com.quantconnect.lean.Tests.Common.Securities
             friday = new LocalMarketHours(DayOfWeek.Friday, new TimeSpan(9, 30, 0), new TimeSpan(16, 0, 0));
             saturday = LocalMarketHours.ClosedAllDay(DayOfWeek.Saturday);
 
-            return new SecurityExchangeHours(TimeZones.NewYork, USHoliday.Dates.Select(x => x.Date), new[]
+            return new SecurityExchangeHours(TimeZones.NewYork, USHoliday.Dates.Select(x -> x.Date), new[]
             {
                 sunday, monday, tuesday, wednesday, thursday, friday, saturday
-            }.ToDictionary(x => x.DayOfWeek));
+            }.ToDictionary(x -> x.DayOfWeek));
         }
 
         private static SubscriptionDataConfig CreateTradeBarConfig() {

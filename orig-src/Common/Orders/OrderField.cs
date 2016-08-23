@@ -15,19 +15,19 @@
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Specifies an order field that does not apply to all order types
-    /// </summary>
+    */
     public enum OrderField
     {
-        /// <summary>
+        /**
         /// The limit price for a <see cref="LimitOrder"/> or <see cref="StopLimitOrder"/>
-        /// </summary>
+        */
         LimitPrice,
 
-        /// <summary>
+        /**
         /// The stop price for a <see cref="StopMarketOrder"/> or a <see cref="StopLimitOrder"/>
-        /// </summary>
+        */
         StopPrice
     }
 }

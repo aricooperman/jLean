@@ -19,27 +19,27 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Interfaces
 {
-    /// <summary>
+    /**
     /// Task requestor interface with cloud system
-    /// </summary>
+    */
     [InheritedExport(typeof(IJobQueueHandler))]
     public interface IJobQueueHandler
     {
-        /// <summary>
+        /**
         /// Initialize the internal state
-        /// </summary>
+        */
         void Initialize();
 
-        /// <summary>
+        /**
         /// Request the next task to run through the engine:
-        /// </summary>
-        /// <returns>Algorithm job to process</returns>
+        */
+        @returns Algorithm job to process
         AlgorithmNodePacket NextJob(out String algorithmPath);
 
-        /// <summary>
+        /**
         /// Signal task complete
-        /// </summary>
-        /// <param name="job">Work to do.</param>
+        */
+         * @param job">Work to do.
         void AcknowledgeJob(AlgorithmNodePacket job);
     }
 }

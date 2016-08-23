@@ -26,7 +26,7 @@ package com.quantconnect.lean.Tests.Indicators
             onBalanceVolumeIndicator = new OnBalanceVolume( "OBV");
 
             TestHelper.TestIndicator(onBalanceVolumeIndicator, "spy_with_obv.txt", "OBV",
-                (ind, expected) => Assert.AreEqual(
+                (ind, expected) -> Assert.AreEqual(
                     expected.toString( "0.##E-00"),
                     (onBalanceVolumeIndicator.Current.Value).toString( "0.##E-00")
                     )

@@ -25,21 +25,21 @@ package com.quantconnect.lean.Tests.Indicators
         public void ComparesWithExtenralDataMiddleBand() {
             kch = new KeltnerChannels(20, 1.5m, MovingAverageType.Simple);
             TestHelper.TestIndicator(kch, "spy_with_keltner.csv", "Middle Band",
-                (ind, expected) => Assert.AreEqual(expected, (double)((KeltnerChannels)ind).MiddleBand.Current.Value, 1e-3));
+                (ind, expected) -> Assert.AreEqual(expected, (double)((KeltnerChannels)ind).MiddleBand.Current.Value, 1e-3));
         }
 
         [Test]
         public void ComparesWithExternalDataUpperBand() {
             kch = new KeltnerChannels(20, 1.5m, MovingAverageType.Simple);
             TestHelper.TestIndicator(kch, "spy_with_keltner.csv", "Keltner Channels 20 Top",
-                (ind, expected) => Assert.AreEqual(expected, (double)((KeltnerChannels)ind).UpperBand.Current.Value, 1e-3));
+                (ind, expected) -> Assert.AreEqual(expected, (double)((KeltnerChannels)ind).UpperBand.Current.Value, 1e-3));
         }
 
         [Test]
         public void ComparesWithExternalDataLowerBand() {
             kch = new KeltnerChannels(20, 1.5m, MovingAverageType.Simple);
             TestHelper.TestIndicator(kch, "spy_with_keltner.csv", "Keltner Channels 20 Bottom",
-                (ind, expected) => Assert.AreEqual(expected, (double)((KeltnerChannels)ind).LowerBand.Current.Value, 1e-3));
+                (ind, expected) -> Assert.AreEqual(expected, (double)((KeltnerChannels)ind).LowerBand.Current.Value, 1e-3));
         }
 
         [Test]

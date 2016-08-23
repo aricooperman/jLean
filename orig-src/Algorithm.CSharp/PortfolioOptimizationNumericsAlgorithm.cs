@@ -24,9 +24,9 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// This algorithm uses Math.NET Numerics library, specifically Linear Algebra object (Vector and Matrix) and operations, in order to solve a portfolio optimization problem.
-    /// </summary>
+    */
     public class PortfolioOptimizationNumericsAlgorithm : QCAlgorithm
     {
         private static final double _targetReturn = 0.1;
@@ -45,15 +45,15 @@ package com.quantconnect.lean.Algorithm.CSharp
                 }
 
                 return 
-                    Vector<double>.Build.DenseOfArray(SymbolDataList.Select(x => (double)x.Return).ToArray()) -
+                    Vector<double>.Build.DenseOfArray(SymbolDataList.Select(x -> (double)x.Return).ToArray()) -
                     Vector<double>.Build.Dense(SymbolDataList.Count, _riskFreeRate);
             }
         }
 
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 07);  //Set Start Date
             SetEndDate(2013, 10, 11);    //Set End Date
@@ -69,12 +69,12 @@ package com.quantconnect.lean.Algorithm.CSharp
 
             foreach (security in Securities) {
                 history = History(security.Key, Duration.ofDays(365));
-                allHistoryBars.Add(history.Select(x => (double)x.Value).ToArray());
+                allHistoryBars.Add(history.Select(x -> (double)x.Value).ToArray());
                 SymbolDataList.Add(new SymbolData(security.Key, history));
             }
 
             // Diagonal Matrix with each security risk (standard deviation)
-            S = Matrix<double>.Build.DenseOfDiagonalArray(SymbolDataList.Select(x => (double)x.Risk).ToArray());
+            S = Matrix<double>.Build.DenseOfDiagonalArray(SymbolDataList.Select(x -> (double)x.Risk).ToArray());
 
             // Computes Correlation Matrix (using Math.NET Numerics Statistics)
             R = Correlation.PearsonMatrix(allHistoryBars);
@@ -90,31 +90,31 @@ package com.quantconnect.lean.Algorithm.CSharp
             Log( String.format( "Portfolio Risk:      {0,7:P2} ", _portfolioRisk));
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">Slice object keyed by symbol containing the stock data</param>
+        */
+         * @param data">Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             if( !Portfolio.Invested) {
-                foreach (symbolData in SymbolDataList.OrderBy(x => x.Weight)) {
+                foreach (symbolData in SymbolDataList.OrderBy(x -> x.Weight)) {
                     SetHoldings(symbolData.Symbol, symbolData.Weight);
                     Debug( "Purchased Stock: " + symbolData);
                 }
             }
         }
 
-        /// <summary>
+        /**
         /// Computes Lagrange Multiplier
-        /// </summary>
+        */
         private void ComputeLagrangeMultiplier() {
             denominatorMatrix = DiscountMeanVector * Sigma.Inverse() * DiscountMeanVector.ToColumnMatrix();
 
             _lagrangeMultiplier = (_targetReturn - _riskFreeRate) / denominatorMatrix.ToArray().First();
         }
 
-        /// <summary>
+        /**
         /// Computes weight for each risky asset
-        /// </summary>
+        */
         private void ComputeWeights() {
             weights = _lagrangeMultiplier * Sigma.Inverse() * DiscountMeanVector.ToColumnMatrix();
 
@@ -123,18 +123,18 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Computes Portfolio Risk
-        /// </summary>
+        */
         private void ComputePortfolioRisk() {
-            weights = Vector<double>.Build.DenseOfArray(SymbolDataList.Select(x => (double)x.Return).ToArray());
+            weights = Vector<double>.Build.DenseOfArray(SymbolDataList.Select(x -> (double)x.Return).ToArray());
             portfolioVarianceMatrix = weights * Sigma * weights.ToColumnMatrix();
             _portfolioRisk = Math.Sqrt(portfolioVarianceMatrix.ToArray().First());
         }
 
-        /// <summary>
+        /**
         /// Symbol Data class to store security data (Return, Risk, Weight)
-        /// </summary>
+        */
         class SymbolData
         {
             private RateOfChange ROC = new RateOfChange(2);

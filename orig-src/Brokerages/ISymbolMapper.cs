@@ -15,25 +15,25 @@
 
 package com.quantconnect.lean.Brokerages
 {
-    /// <summary>
+    /**
     /// Provides the mapping between Lean symbols and brokerage specific symbols.
-    /// </summary>
+    */
     public interface ISymbolMapper
     {
-        /// <summary>
+        /**
         /// Converts a Lean symbol instance to a brokerage symbol
-        /// </summary>
-        /// <param name="symbol">A Lean symbol instance</param>
-        /// <returns>The brokerage symbol</returns>
+        */
+         * @param symbol">A Lean symbol instance
+        @returns The brokerage symbol
         String GetBrokerageSymbol(Symbol symbol);
 
-        /// <summary>
+        /**
         /// Converts a brokerage symbol to a Lean symbol instance
-        /// </summary>
-        /// <param name="brokerageSymbol">The brokerage symbol</param>
-        /// <param name="securityType">The security type</param>
-        /// <param name="market">The market</param>
-        /// <returns>A new Lean Symbol instance</returns>
+        */
+         * @param brokerageSymbol">The brokerage symbol
+         * @param securityType">The security type
+         * @param market">The market
+        @returns A new Lean Symbol instance
         Symbol GetLeanSymbol( String brokerageSymbol, SecurityType securityType, String market);
     }
 }

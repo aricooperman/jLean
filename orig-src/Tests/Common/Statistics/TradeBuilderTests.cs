@@ -25,7 +25,7 @@ package com.quantconnect.lean.Tests.Common.Statistics
     {
         private static final BigDecimal OrderFee = 1;
         private static final BigDecimal ConversionRate = 1;
-        private readonly DateTime _startTime = new DateTime(2015, 08, 06, 15, 30, 0);
+        private final DateTime _startTime = new DateTime(2015, 08, 06, 15, 30, 0);
 
         [TestCase(FillGroupingMethod.FillToFill, FillMatchingMethod.FIFO)]
         [TestCase(FillGroupingMethod.FillToFill, FillMatchingMethod.LIFO)]

@@ -31,15 +31,15 @@ using Timer = System.Timers.Timer;
 
 package com.quantconnect.lean.ToolBox.IQFeed
 {
-    /// <summary>
+    /**
     /// IQFeedDataQueueHandler is an implementation of IDataQueueHandler and IHistoryProvider
-    /// </summary>
+    */
     public class IQFeedDataQueueHandler : IDataQueueHandler, IHistoryProvider
     {
         private boolean _isConnected;
         private int _dataPointCount;
-        private readonly HashSet<Symbol> _symbols;
-        private readonly object _sync = new object();
+        private final HashSet<Symbol> _symbols;
+        private final object _sync = new object();
 
         //Socket connections:
         private AdminPort _adminPort;
@@ -47,38 +47,38 @@ package com.quantconnect.lean.ToolBox.IQFeed
         private HistoryPort _historyPort;
         private BlockingCollection<BaseData> _outputCollection;
 
-        /// <summary>
+        /**
         /// Gets the total number of data points emitted by this history provider
-        /// </summary>
+        */
         public int DataPointCount
         {
             get { return _dataPointCount; }
         }
 
-        /// <summary>
+        /**
         /// IQFeedDataQueueHandler is an implementation of IDataQueueHandler:
-        /// </summary>
+        */
         public IQFeedDataQueueHandler() {
             _symbols = new HashSet<Symbol>();
             _outputCollection = new BlockingCollection<BaseData>();
             if( !IsConnected) Connect();
         }
 
-        /// <summary>
+        /**
         /// Get the next ticks from the live trading data queue
-        /// </summary>
-        /// <returns>IEnumerable list of ticks since the last update.</returns>
+        */
+        @returns IEnumerable list of ticks since the last update.
         public IEnumerable<BaseData> GetNextTicks() {
             foreach (tick in _outputCollection.GetConsumingEnumerable()) {
                 yield return tick;
             }
         }
 
-        /// <summary>
+        /**
         /// Adds the specified symbols to the subscription: new IQLevel1WatchItem( "IBM", true)
-        /// </summary>
-        /// <param name="job">Job we're subscribing for:</param>
-        /// <param name="symbols">The symbols to be added keyed by SecurityType</param>
+        */
+         * @param job">Job we're subscribing for:
+         * @param symbols">The symbols to be added keyed by SecurityType
         public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             try
             {
@@ -104,11 +104,11 @@ package com.quantconnect.lean.ToolBox.IQFeed
             }
         }
 
-        /// <summary>
+        /**
         /// Removes the specified symbols to the subscription
-        /// </summary>
-        /// <param name="job">Job we're processing.</param>
-        /// <param name="symbols">The symbols to be removed keyed by SecurityType</param>
+        */
+         * @param job">Job we're processing.
+         * @param symbols">The symbols to be removed keyed by SecurityType
         public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             try
             {
@@ -131,23 +131,23 @@ package com.quantconnect.lean.ToolBox.IQFeed
             }
         }
 
-        /// <summary>
+        /**
         /// Initializes this history provider to work for the specified job
-        /// </summary>
-        /// <param name="job">The job</param>
-        /// <param name="mapFileProvider">Provider used to get a map file resolver to handle equity mapping</param>
-        /// <param name="factorFileProvider">Provider used to get factor files to handle equity price scaling</param>
-        /// <param name="statusUpdate">Function used to send status updates</param>
+        */
+         * @param job">The job
+         * @param mapFileProvider">Provider used to get a map file resolver to handle equity mapping
+         * @param factorFileProvider">Provider used to get factor files to handle equity price scaling
+         * @param statusUpdate">Function used to send status updates
         public void Initialize(AlgorithmNodePacket job, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider, Action<Integer> statusUpdate) {
             return;
         }
 
-        /// <summary>
+        /**
         /// Gets the history for the requested securities
-        /// </summary>
-        /// <param name="requests">The historical data requests</param>
-        /// <param name="sliceTimeZone">The time zone used when time stamping the slice instances</param>
-        /// <returns>An enumerable of the slices of data covering the span specified in each request</returns>
+        */
+         * @param requests">The historical data requests
+         * @param sliceTimeZone">The time zone used when time stamping the slice instances
+        @returns An enumerable of the slices of data covering the span specified in each request
         public IEnumerable<Slice> GetHistory(IEnumerable<HistoryRequest> requests, ZoneId sliceTimeZone) {
             foreach (request in requests) {
                 foreach (slice in _historyPort.ProcessHistoryRequests(request)) {
@@ -156,17 +156,17 @@ package com.quantconnect.lean.ToolBox.IQFeed
             }
         }
 
-        /// <summary>
+        /**
         /// Indicates the connection is live.
-        /// </summary>
+        */
         private boolean IsConnected
         {
             get { return _isConnected; }
         }
 
-        /// <summary>
+        /**
         /// Connect to the IQ Feed using supplied username and password information.
-        /// </summary>
+        */
         private void Connect() {
             try
             {
@@ -205,12 +205,12 @@ package com.quantconnect.lean.ToolBox.IQFeed
             }
         }
 
-        /// <summary>
+        /**
         /// Disconnect from all ports we're subscribed to:
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// Not being used. IQ automatically disconnect on killing LEAN
-        /// </remarks>
+        /// 
         private void Disconnect() {
             if( _adminPort != null ) _adminPort.Disconnect();
             if( _level1Port != null ) _level1Port.Disconnect();
@@ -218,11 +218,11 @@ package com.quantconnect.lean.ToolBox.IQFeed
             Log.Trace( "IQFeed.Disconnect(): Disconnected");
         }
 
-        /// <summary>
+        /**
         /// Returns true if this data provide can handle the specified symbol
-        /// </summary>
-        /// <param name="symbol">The symbol to be handled</param>
-        /// <returns>True if this data provider can get data for the symbol, false otherwise</returns>
+        */
+         * @param symbol">The symbol to be handled
+        @returns True if this data provider can get data for the symbol, false otherwise
         private boolean CanSubscribe(Symbol symbol) {
             market = symbol.ID.Market;
             securityType = symbol.ID.SecurityType;
@@ -231,25 +231,25 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 (securityType == SecurityType.Forex && market == Market.FXCM);
         }
 
-        /// <summary>
+        /**
         /// Admin port is connected.
-        /// </summary>
+        */
         private void AdminPortOnConnectedEvent(object sender, ConnectedEventArgs connectedEventArgs) {
             _isConnected = true;
             Log.Error( "IQFeed.AdminPortOnConnectedEvent(): ADMIN PORT CONNECTED!");
         }
 
-        /// <summary>
+        /**
         /// Admin port disconnected from the IQFeed server.
-        /// </summary>
+        */
         private void AdminPortOnDisconnectedEvent(object sender, DisconnectedEventArgs disconnectedEventArgs) {
             _isConnected = false;
             Log.Error( "IQFeed.AdminPortOnDisconnectedEvent(): ADMIN PORT DISCONNECTED!");
         }
 
-        /// <summary>
+        /**
         /// Admin class type
-        /// </summary>
+        */
         public class AdminPort : IQAdminSocketClient
         {
             public AdminPort()
@@ -257,18 +257,18 @@ package com.quantconnect.lean.ToolBox.IQFeed
             }
         }
 
-        /// <summary>
+        /**
         /// Level 1 Data Request:
-        /// </summary>
+        */
         public class Level1Port : IQLevel1Client
         {
             private int count;
             private DateTime start;
             private DateTime _feedTime;
             private Stopwatch _stopwatch = new Stopwatch();
-            private readonly Timer _timer;
-            private readonly BlockingCollection<BaseData> _dataQueue;
-            private readonly ConcurrentMap<String, double> _prices;
+            private final Timer _timer;
+            private final BlockingCollection<BaseData> _dataQueue;
+            private final ConcurrentMap<String, double> _prices;
 
             public DateTime FeedTime
             {
@@ -333,9 +333,9 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 }
             }
 
-            /// <summary>
+            /**
             /// Handle a new price update packet:
-            /// </summary>
+            */
             private void OnLevel1SummaryUpdateEvent(object sender, Level1SummaryUpdateEventArgs e) {
                 // if ticker is not found, unsubscribe
                 if( e.NotFound) Unsubscribe(e.Symbol);
@@ -369,9 +369,9 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 _prices[e.Symbol] = e.Last;
             }
 
-            /// <summary>
+            /**
             /// Set the interal clock time.
-            /// </summary>
+            */
             private void OnLevel1TimerEvent(object sender, Level1TimerEventArgs e) {
                 //If there was a bad tick and the time didn't set right, skip setting it here and just use our millisecond timer to set the time from last time it was set.
                 if( e.DateTimeStamp != DateTime.MinValue) {
@@ -379,23 +379,23 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 }
             }
 
-            /// <summary>
+            /**
             /// Server has disconnected, reconnect.
-            /// </summary>
+            */
             private void OnLevel1ServerDisconnected(object sender, Level1ServerDisconnectedArgs e) {
                 Log.Error( "IQFeed.OnLevel1ServerDisconnected(): LEVEL 1 PORT DISCONNECTED! " + e.TextLine);
             }
 
-            /// <summary>
+            /**
             /// Server has disconnected, reconnect.
-            /// </summary>
+            */
             private void OnLevel1ServerReconnectFailed(object sender, Level1ServerReconnectFailedArgs e) {
                 Log.Error( "IQFeed.OnLevel1ServerReconnectFailed(): LEVEL 1 PORT DISCONNECT! " + e.TextLine);
             }
 
-            /// <summary>
+            /**
             /// Got a message we don't know about, log it for posterity.
-            /// </summary>
+            */
             private void OnLevel1UnknownEvent(object sender, Level1TextLineEventArgs e) {
                 Log.Error( "IQFeed.OnUnknownEvent(): " + e.TextLine);
             }
@@ -422,21 +422,21 @@ package com.quantconnect.lean.ToolBox.IQFeed
             private boolean _inProgress;
             private ConcurrentMap<String, HistoryRequest> _requestDataByRequestId;
             private ConcurrentMap<String, List<BaseData>> _currentRequest;
-            private readonly String DataDirectory = Config.Get( "data-directory", "../../../Data");
-            private readonly double MaxHistoryRequestMinutes = Config.GetDouble( "max-history-minutes", 5);
+            private final String DataDirectory = Config.Get( "data-directory", "../../../Data");
+            private final double MaxHistoryRequestMinutes = Config.GetDouble( "max-history-minutes", 5);
 
-            /// <summary>
+            /**
             /// ... 
-            /// </summary>
+            */
             public HistoryPort()
                 : base(80) {
                 _requestDataByRequestId = new ConcurrentMap<String, HistoryRequest>();
                 _currentRequest = new ConcurrentMap<String, List<BaseData>>();
             }
 
-            /// <summary>
+            /**
             /// Populate request data
-            /// </summary>
+            */
             public IEnumerable<Slice> ProcessHistoryRequests(HistoryRequest request) {                
                 // we can only process equity/forex types here
                 if( request.SecurityType != SecurityType.Forex && request.SecurityType != SecurityType.Equity) {
@@ -497,20 +497,20 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 }
             }
 
-            /// <summary>
+            /**
             /// Created new request ID for a given lookup type (tick, intraday bar, daily bar)
-            /// </summary>
-            /// <param name="lookupType">Lookup type: REQ_HST_TCK (tick), REQ_HST_DWM (daily) or REQ_HST_INT (intraday resolutions)</param>
-            /// <param name="id">Sequential identifier</param>
-            /// <returns></returns>
+            */
+             * @param lookupType">Lookup type: REQ_HST_TCK (tick), REQ_HST_DWM (daily) or REQ_HST_INT (intraday resolutions)
+             * @param id">Sequential identifier
+            @returns 
             private static String CreateRequestID(LookupType lookupType, int id) {
                 return lookupType + id.toString( "0000000");
             }
 
-            /// <summary>
+            /**
             /// Method called when a new Lookup event is fired
-            /// </summary>
-            /// <param name="e">Received data</param>
+            */
+             * @param e">Received data
             protected @Override void OnLookupEvent(LookupEventArgs e) {
                 try
                 {
@@ -536,11 +536,11 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 }
             }
 
-            /// <summary>
+            /**
             /// Put received data into current list of BaseData object
-            /// </summary>
-            /// <param name="e">Received data</param>
-            /// <param name="current">Current list of BaseData object</param>
+            */
+             * @param e">Received data
+             * @param current">Current list of BaseData object
             private void HandleMessageDetail(LookupEventArgs e, List<BaseData> current) {
                 requestData = _requestDataByRequestId[e.Id];
                 data = GetData(e, requestData);
@@ -549,12 +549,12 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 }
             }
 
-            /// <summary>
+            /**
             /// Transform received data into BaseData object
-            /// </summary>
-            /// <param name="e">Received data</param>
-            /// <param name="requestData">Request information</param>
-            /// <returns>BaseData object</returns>
+            */
+             * @param e">Received data
+             * @param requestData">Request information
+            @returns BaseData object
             private BaseData GetData(LookupEventArgs e, HistoryRequest requestData) {
                 isEquity = requestData.SecurityType == SecurityType.Equity;
                 scale = isEquity ? 1000m : 1m;

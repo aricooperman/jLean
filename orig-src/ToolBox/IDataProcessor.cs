@@ -22,33 +22,33 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.ToolBox
 {
-    /// <summary>
+    /**
     /// Specifies a piece of processing that should be performed against a source file
-    /// </summary>
+    */
     public interface IDataProcessor : IDisposable
     {
-        /// <summary>
+        /**
         /// Invoked for each piece of data from the source file
-        /// </summary>
-        /// <param name="data">The data to be processed</param>
+        */
+         * @param data">The data to be processed
         void Process(BaseData data);
     }
 
-    /// <summary>
+    /**
     /// Provides methods for creating data processor stacks
-    /// </summary>
+    */
     public static class DataProcessor
     {
-        /// <summary>
+        /**
         /// Creates a new data processor that will filter in input data before piping it into the specified processor
-        /// </summary>
+        */
         public static IDataProcessor FilteredBy(this IDataProcessor processor, Func<BaseData, bool> predicate) {
             return new FilteredDataProcessor(processor, predicate);
         }
 
-        /// <summary>
+        /**
         /// Creates a data processor that will aggregate and zip the requested resolutions of data
-        /// </summary>
+        */
         public static IDataProcessor Zip( String dataDirectory, IEnumerable<Resolution> resolutions, TickType tickType, boolean sourceIsTick) {
             set = resolutions.ToHashSet();
 
@@ -56,7 +56,7 @@ package com.quantconnect.lean.ToolBox
 
             // only filter tick sources
             stack = !sourceIsTick ? root 
-                : (IDataProcessor) new FilteredDataProcessor(root, x => ((Tick) x).TickType == tickType);
+                : (IDataProcessor) new FilteredDataProcessor(root, x -> ((Tick) x).TickType == tickType);
 
             if( set.Contains(Resolution.Tick)) {
                 // tick is filtered via trade/quote
@@ -84,7 +84,7 @@ package com.quantconnect.lean.ToolBox
         private static PipeDataProcessor AddResolution( String dataDirectory, TickType tickType, PipeDataProcessor root, Resolution resolution, boolean sourceIsTick) {
             second = new CsvDataProcessor(dataDirectory, resolution, tickType);
             secondRoot = new PipeDataProcessor(second);
-            aggregator = new ConsolidatorDataProcessor(secondRoot, data => CreateConsolidator(resolution, tickType, data, sourceIsTick));
+            aggregator = new ConsolidatorDataProcessor(secondRoot, data -> CreateConsolidator(resolution, tickType, data, sourceIsTick));
             root.PipeTo(aggregator);
             return secondRoot;
         }

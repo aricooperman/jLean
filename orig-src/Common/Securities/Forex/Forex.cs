@@ -21,19 +21,19 @@ using QuantConnect.Orders.Slippage;
 
 package com.quantconnect.lean.Securities.Forex 
 {
-    /// <summary>
+    /**
     /// FOREX Security Object Implementation for FOREX Assets
-    /// </summary>
+    */
     /// <seealso cref="Security"/>
     public class Forex : Security
     {
-        /// <summary>
+        /**
         /// Constructor for the forex security
-        /// </summary>
-        /// <param name="exchangeHours">Defines the hours this exchange is open</param>
-        /// <param name="quoteCurrency">The cash object that represent the quote currency</param>
-        /// <param name="config">The subscription configuration for this security</param>
-        /// <param name="symbolProperties">The symbol properties for this security</param>
+        */
+         * @param exchangeHours">Defines the hours this exchange is open
+         * @param quoteCurrency">The cash object that represent the quote currency
+         * @param config">The subscription configuration for this security
+         * @param symbolProperties">The symbol properties for this security
         public Forex(SecurityExchangeHours exchangeHours, Cash quoteCurrency, SubscriptionDataConfig config, SymbolProperties symbolProperties)
             : base(config,
                 quoteCurrency,
@@ -57,13 +57,13 @@ package com.quantconnect.lean.Securities.Forex
             BaseCurrencySymbol = baseCurrencySymbol;
         }
 
-        /// <summary>
+        /**
         /// Constructor for the forex security
-        /// </summary>
-        /// <param name="symbol">The security's symbol</param>
-        /// <param name="exchangeHours">Defines the hours this exchange is open</param>
-        /// <param name="quoteCurrency">The cash object that represent the quote currency</param>
-        /// <param name="symbolProperties">The symbol properties for this security</param>
+        */
+         * @param symbol">The security's symbol
+         * @param exchangeHours">Defines the hours this exchange is open
+         * @param quoteCurrency">The cash object that represent the quote currency
+         * @param symbolProperties">The symbol properties for this security
         public Forex(Symbol symbol, SecurityExchangeHours exchangeHours, Cash quoteCurrency, SymbolProperties symbolProperties)
             : base(symbol,
                 quoteCurrency,
@@ -87,21 +87,21 @@ package com.quantconnect.lean.Securities.Forex
             BaseCurrencySymbol = baseCurrencySymbol;
         }
 
-        /// <summary>
+        /**
         /// Gets the currency acquired by going long this currency pair
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// For example, the EUR/USD has a base currency of the euro, and as a result
         /// of going long the EUR/USD a trader is acquiring euros in exchange for US dollars
-        /// </remarks>
+        /// 
         public String BaseCurrencySymbol { get; private set; }
 
-        /// <summary>
+        /**
         /// Decomposes the specified currency pair into a base and quote currency provided as out parameters
-        /// </summary>
-        /// <param name="currencyPair">The input currency pair to be decomposed, for example, "EURUSD"</param>
-        /// <param name="baseCurrency">The output base currency</param>
-        /// <param name="quoteCurrency">The output quote currency</param>
+        */
+         * @param currencyPair">The input currency pair to be decomposed, for example, "EURUSD"
+         * @param baseCurrency">The output base currency
+         * @param quoteCurrency">The output quote currency
         public static void DecomposeCurrencyPair( String currencyPair, out String baseCurrency, out String quoteCurrency) {
             if( currencyPair == null || currencyPair.Length != 6) {
                 throw new ArgumentException( "Currency pairs must be exactly 6 characters: " + currencyPair);

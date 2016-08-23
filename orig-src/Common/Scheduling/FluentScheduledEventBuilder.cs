@@ -21,10 +21,10 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Scheduling
 {
-    /// <summary>
+    /**
     /// Provides a builder class to allow for fluent syntax when constructing new events
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// This builder follows the following steps for event creation:
     /// 
     /// 1. Specify an event name (optional)
@@ -33,23 +33,23 @@ package com.quantconnect.lean.Scheduling
     ///     a. repeat 3. to define extra time rules (optional)
     /// 4. Specify additional where clause (optional)
     /// 5. Register event via call to Run
-    /// </remarks>
+    /// 
     public class FluentScheduledEventBuilder : IFluentSchedulingDateSpecifier, IFluentSchedulingRunnable
     {
         private IDateRule _dateRule;
         private ITimeRule _timeRule;
         private Func<DateTime, bool> _predicate;
 
-        private readonly String _name;
-        private readonly ScheduleManager _schedule;
-        private readonly SecurityManager _securities;
+        private final String _name;
+        private final ScheduleManager _schedule;
+        private final SecurityManager _securities;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FluentScheduledEventBuilder"/> class
-        /// </summary>
-        /// <param name="schedule">The schedule to send created events to</param>
-        /// <param name="securities">The algorithm's security manager</param>
-        /// <param name="name">A specific name for this event</param>
+        */
+         * @param schedule">The schedule to send created events to
+         * @param securities">The algorithm's security manager
+         * @param name">A specific name for this event
         public FluentScheduledEventBuilder(ScheduleManager schedule, SecurityManager securities, String name = null ) {
             _name = name;
             _schedule = schedule;
@@ -79,111 +79,111 @@ package com.quantconnect.lean.Scheduling
 
         #region DateRules and TimeRules delegation
 
-        /// <summary>
+        /**
         /// Creates events on each of the specified day of week
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier IFluentSchedulingDateSpecifier.Every(params DayOfWeek[] days) {
             _dateRule = _schedule.DateRules.Every(days);
             return this;
         }
 
-        /// <summary>
+        /**
         /// Creates events on every day of the year
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier IFluentSchedulingDateSpecifier.EveryDay() {
             _dateRule = _schedule.DateRules.EveryDay();
             return this;
         }
 
-        /// <summary>
+        /**
         /// Creates events on every trading day of the year for the symbol
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier IFluentSchedulingDateSpecifier.EveryDay(Symbol symbol) {
             _dateRule = _schedule.DateRules.EveryDay(symbol);
             return this;
         }
 
-        /// <summary>
+        /**
         /// Creates events on the first day of the month
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier IFluentSchedulingDateSpecifier.MonthStart() {
             _dateRule = _schedule.DateRules.MonthStart();
             return this;
         }
 
-        /// <summary>
+        /**
         /// Creates events on the first trading day of the month
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier IFluentSchedulingDateSpecifier.MonthStart(Symbol symbol) {
             _dateRule = _schedule.DateRules.MonthStart(symbol);
             return this;
         }
 
-        /// <summary>
+        /**
         /// Filters the event times using the predicate
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier IFluentSchedulingDateSpecifier.Where(Func<DateTime, bool> predicate) {
             _predicate = _predicate == null
                 ? predicate
-                : (time => _predicate(time) && predicate(time));
+                : (time -> _predicate(time) && predicate(time));
             return this;
         }
 
-        /// <summary>
+        /**
         /// Creates events that fire at the specific time of day in the algorithm's time zone
-        /// </summary>
+        */
         IFluentSchedulingRunnable IFluentSchedulingTimeSpecifier.At(TimeSpan timeOfDay) {
             return SetTimeRule(_schedule.TimeRules.At(timeOfDay));
         }
 
-        /// <summary>
+        /**
         /// Creates events that fire a specified number of minutes after market open
-        /// </summary>
+        */
         IFluentSchedulingRunnable IFluentSchedulingTimeSpecifier.AfterMarketOpen(Symbol symbol, double minutesAfterOpen, boolean extendedMarketOpen) {
             return SetTimeRule(_schedule.TimeRules.AfterMarketOpen(symbol, minutesAfterOpen, extendedMarketOpen));
         }
 
-        /// <summary>
+        /**
         /// Creates events that fire a specified numer of minutes before market close
-        /// </summary>
+        */
         IFluentSchedulingRunnable IFluentSchedulingTimeSpecifier.BeforeMarketClose(Symbol symbol, double minuteBeforeClose, boolean extendedMarketClose) {
             return SetTimeRule(_schedule.TimeRules.BeforeMarketClose(symbol, minuteBeforeClose, extendedMarketClose));
         }
 
-        /// <summary>
+        /**
         /// Creates events that fire on a period define by the specified interval
-        /// </summary>
+        */
         IFluentSchedulingRunnable IFluentSchedulingTimeSpecifier.Every(TimeSpan interval) {
             return SetTimeRule(_schedule.TimeRules.Every(interval));
         }
 
-        /// <summary>
+        /**
         /// Filters the event times using the predicate
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier IFluentSchedulingTimeSpecifier.Where(Func<DateTime, bool> predicate) {
             _predicate = _predicate == null
                 ? predicate
-                : (time => _predicate(time) && predicate(time));
+                : (time -> _predicate(time) && predicate(time));
             return this;
         }
 
-        /// <summary>
+        /**
         /// Register the defined event with the callback
-        /// </summary>
+        */
         ScheduledEvent IFluentSchedulingRunnable.Run(Action callback) {
-            return ((IFluentSchedulingRunnable)this).Run((name, time) => callback());
+            return ((IFluentSchedulingRunnable)this).Run((name, time) -> callback());
         }
 
-        /// <summary>
+        /**
         /// Register the defined event with the callback
-        /// </summary>
+        */
         ScheduledEvent IFluentSchedulingRunnable.Run(Action<DateTime> callback) {
-            return ((IFluentSchedulingRunnable)this).Run((name, time) => callback(time));
+            return ((IFluentSchedulingRunnable)this).Run((name, time) -> callback(time));
         }
 
-        /// <summary>
+        /**
         /// Register the defined event with the callback
-        /// </summary>
+        */
         ScheduledEvent IFluentSchedulingRunnable.Run(Action<String, DateTime> callback) {
             name = _name ?? _dateRule.Name + ": " + _timeRule.Name;
             // back the date up to ensure we get all events, the event scheduler will skip past events that whose time has passed
@@ -197,19 +197,19 @@ package com.quantconnect.lean.Scheduling
             return scheduledEvent;
         }
 
-        /// <summary>
+        /**
         /// Filters the event times using the predicate
-        /// </summary>
+        */
         IFluentSchedulingRunnable IFluentSchedulingRunnable.Where(Func<DateTime, bool> predicate) {
             _predicate = _predicate == null
                 ? predicate
-                : (time => _predicate(time) && predicate(time));
+                : (time -> _predicate(time) && predicate(time));
             return this;
         }
 
-        /// <summary>
+        /**
         /// Filters the event times to only include times where the symbol's market is considered open
-        /// </summary>
+        */
         IFluentSchedulingRunnable IFluentSchedulingRunnable.DuringMarketHours(Symbol symbol, boolean extendedMarket) {
             security = GetSecurity(symbol);
             Func<DateTime, bool> predicate = time =>
@@ -219,7 +219,7 @@ package com.quantconnect.lean.Scheduling
             };
             _predicate = _predicate == null
                 ? predicate
-                : (time => _predicate(time) && predicate(time));
+                : (time -> _predicate(time) && predicate(time));
             return this;
         }
 
@@ -260,112 +260,112 @@ package com.quantconnect.lean.Scheduling
         #endregion
     }
 
-    /// <summary>
+    /**
     /// Specifies the date rule component of a scheduled event
-    /// </summary>
+    */
     public interface IFluentSchedulingDateSpecifier
     {
-        /// <summary>
+        /**
         /// Filters the event times using the predicate
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier Where(Func<DateTime, bool> predicate);
-        /// <summary>
+        /**
         /// Creates events only on the specified date
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier On(int year, int month, int day);
-        /// <summary>
+        /**
         /// Creates events only on the specified dates
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier On(params DateTime[] dates);
-        /// <summary>
+        /**
         /// Creates events on each of the specified day of week
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier Every(params DayOfWeek[] days);
-        /// <summary>
+        /**
         /// Creates events on every day of the year
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier EveryDay();
-        /// <summary>
+        /**
         /// Creates events on every trading day of the year for the symbol
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier EveryDay(Symbol symbol);
-        /// <summary>
+        /**
         /// Creates events on the first day of the month
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier MonthStart();
-        /// <summary>
+        /**
         /// Creates events on the first trading day of the month
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier MonthStart(Symbol symbol);
     }
 
-    /// <summary>
+    /**
     /// Specifies the time rule component of a scheduled event
-    /// </summary>
+    */
     public interface IFluentSchedulingTimeSpecifier
     {
-        /// <summary>
+        /**
         /// Filters the event times using the predicate
-        /// </summary>
+        */
         IFluentSchedulingTimeSpecifier Where(Func<DateTime, bool> predicate);
-        /// <summary>
+        /**
         /// Creates events that fire at the specified time of day in the specified time zone
-        /// </summary>
+        */
         IFluentSchedulingRunnable At(int hour, int minute, int second = 0);
-        /// <summary>
+        /**
         /// Creates events that fire at the specified time of day in the specified time zone
-        /// </summary>
+        */
         IFluentSchedulingRunnable At(int hour, int minute, ZoneId timeZone);
-        /// <summary>
+        /**
         /// Creates events that fire at the specified time of day in the specified time zone
-        /// </summary>
+        */
         IFluentSchedulingRunnable At(int hour, int minute, int second, ZoneId timeZone);
-        /// <summary>
+        /**
         /// Creates events that fire at the specified time of day in the specified time zone
-        /// </summary>
+        */
         IFluentSchedulingRunnable At(TimeSpan timeOfDay, ZoneId timeZone);
-        /// <summary>
+        /**
         /// Creates events that fire at the specific time of day in the algorithm's time zone
-        /// </summary>
+        */
         IFluentSchedulingRunnable At(TimeSpan timeOfDay);
-        /// <summary>
+        /**
         /// Creates events that fire on a period define by the specified interval
-        /// </summary>
+        */
         IFluentSchedulingRunnable Every(TimeSpan interval);
-        /// <summary>
+        /**
         /// Creates events that fire a specified number of minutes after market open
-        /// </summary>
+        */
         IFluentSchedulingRunnable AfterMarketOpen(Symbol symbol, double minutesAfterOpen = 0, boolean extendedMarketOpen = false);
-        /// <summary>
+        /**
         /// Creates events that fire a specified numer of minutes before market close
-        /// </summary>
+        */
         IFluentSchedulingRunnable BeforeMarketClose(Symbol symbol, double minuteBeforeClose = 0, boolean extendedMarketClose = false);
     }
 
-    /// <summary>
+    /**
     /// Specifies the callback component of a scheduled event, as well as final filters
-    /// </summary>
+    */
     public interface IFluentSchedulingRunnable : IFluentSchedulingTimeSpecifier
     {
-        /// <summary>
+        /**
         /// Filters the event times using the predicate
-        /// </summary>
+        */
         new IFluentSchedulingRunnable Where(Func<DateTime, bool> predicate);
-        /// <summary>
+        /**
         /// Filters the event times to only include times where the symbol's market is considered open
-        /// </summary>
+        */
         IFluentSchedulingRunnable DuringMarketHours(Symbol symbol, boolean extendedMarket = false);
-        /// <summary>
+        /**
         /// Register the defined event with the callback
-        /// </summary>
+        */
         ScheduledEvent Run(Action callback);
-        /// <summary>
+        /**
         /// Register the defined event with the callback
-        /// </summary>
+        */
         ScheduledEvent Run(Action<DateTime> callback);
-        /// <summary>
+        /**
         /// Register the defined event with the callback
-        /// </summary>
+        */
         ScheduledEvent Run(Action<String, DateTime> callback);
     }
 }

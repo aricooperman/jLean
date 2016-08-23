@@ -85,7 +85,7 @@ package com.quantconnect.lean.Tests.Common.Data
             // defining a TradeBarConsolidator with a zero period should cause it to always fire identity
 
             TradeBar consolidated = null;
-            consolidator = new TradeBarConsolidator(TimeSpan.Zero);
+            consolidator = new TradeBarConsolidator(Duration.ZERO);
             consolidator.DataConsolidated += (sender, bar) =>
             {
                 consolidated = bar;
@@ -297,12 +297,12 @@ package com.quantconnect.lean.Tests.Common.Data
             }
         }
 
-        /// <summary>
+        /**
         /// Testing the behaviors where, the bar range is closed on the left and open on 
         /// the right in time span mode: [T, T+TimeSpan).
         /// For example, if time span is 1 minute, we have [10:00, 10:01): so data at 
         /// 10:01 is not included in the bar starting at 10:00.
-        /// </summary>
+        */
         [Test]
         public void ClosedLeftOpenRightInTimeSpanModeTest() {
             // define a three minute consolidator 
@@ -446,9 +446,9 @@ package com.quantconnect.lean.Tests.Common.Data
             Assert.IsNotNull(consolidated);
         }
 
-        private readonly TimeSpan marketStop = new DateTime(2000, 1, 1, 12 + 4, 0, 0).TimeOfDay;
-        private readonly TimeSpan marketStart = new DateTime(2000, 1, 1, 9, 30, 0).TimeOfDay;
-        private IEnumerable<TradeBar> StreamTradeBars(DateTime start, DateTime end, TimeSpan resolution, boolean skipAferMarketHours = true) {
+        private final Duration marketStop = new DateTime(2000, 1, 1, 12 + 4, 0, 0).TimeOfDay;
+        private final Duration marketStart = new DateTime(2000, 1, 1, 9, 30, 0).TimeOfDay;
+        private IEnumerable<TradeBar> StreamTradeBars(DateTime start, DateTime end, Duration resolution, boolean skipAferMarketHours = true) {
             DateTime current = start;
             while (current < end) {
                 timeOfDay = current.TimeOfDay;

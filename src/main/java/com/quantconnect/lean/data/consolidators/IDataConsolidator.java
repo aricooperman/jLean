@@ -26,8 +26,8 @@ import com.quantconnect.lean.data.BaseData;
 public interface IDataConsolidator {
     
     /// Event handler type for the IDataConsolidator.DataConsolidated event
-    /// <param name="sender">The consolidator that fired the event</param>
-    /// <param name="consolidated">The consolidated piece of data</param>
+     * @param sender">The consolidator that fired the event
+     * @param consolidated">The consolidated piece of data
     @FunctionalInterface
     public interface DataConsolidatedHandler {
         void dataConsolidated( Object sender, BaseData consolidated );
@@ -47,11 +47,11 @@ public interface IDataConsolidator {
     Class<?> getOutputType();
 
     /// Updates this consolidator with the specified data
-    /// <param name="data">The new data for the consolidator</param>
+     * @param data">The new data for the consolidator
     void update( BaseData data);
 
     /// Scans this consolidator to see if it should emit a bar due to time passing
-    /// <param name="currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)</param>
+     * @param currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)
     void scan( LocalDateTime currentLocalTime );
 
 //    event DataConsolidatedHandler DataConsolidated;

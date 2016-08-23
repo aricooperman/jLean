@@ -19,9 +19,9 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Custom data type that uses a remote file download
-    /// </summary>
+    */
     public class RemoteFileBaseData : BaseData
     {
         public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {

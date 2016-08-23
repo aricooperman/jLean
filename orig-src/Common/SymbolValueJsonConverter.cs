@@ -19,17 +19,17 @@ using Newtonsoft.Json;
 
 package com.quantconnect.lean
 {
-    /// <summary>
+    /**
     /// Defines a <see cref="JsonConverter"/> to be used when you only want to serialize
     /// the <see cref="Symbol.Value"/> property instead of the full <see cref="Symbol"/>
     /// instance
-    /// </summary>
+    */
     public class SymbolValueJsonConverter : JsonConverter
     {
-        /// <summary>
+        /**
         /// Writes the JSON representation of the object.
-        /// </summary>
-        /// <param name="writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.</param><param name="value">The value.</param><param name="serializer">The calling serializer.</param>
+        */
+         * @param writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.<param name="value">The value.<param name="serializer">The calling serializer.
         public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
             symbol = value as Symbol;
             if( symbol != null ) {
@@ -41,24 +41,24 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Reads the JSON representation of the object.
-        /// </summary>
-        /// <param name="reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.</param><param name="objectType">Type of the object.</param><param name="existingValue">The existing value of object being read.</param><param name="serializer">The calling serializer.</param>
-        /// <returns>
+        */
+         * @param reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.<param name="objectType">Type of the object.<param name="existingValue">The existing value of object being read.<param name="serializer">The calling serializer.
+        @returns 
         /// The object value.
-        /// </returns>
+        /// 
         public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
             throw new NotImplementedException( "The SymbolValueJsonConverter is write-only.");
         }
 
-        /// <summary>
+        /**
         /// Determines whether this instance can convert the specified object type.
-        /// </summary>
-        /// <param name="objectType">Type of the object.</param>
-        /// <returns>
+        */
+         * @param objectType">Type of the object.
+        @returns 
         /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-        /// </returns>
+        /// 
         public @Override boolean CanConvert(Type objectType) {
             throw new NotImplementedException( "The SymbolValueJsonConverter is intended to be decorated on the appropriate member directly.");
         }

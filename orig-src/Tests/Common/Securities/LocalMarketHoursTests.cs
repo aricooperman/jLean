@@ -22,8 +22,8 @@ package com.quantconnect.lean.Tests.Common.Securities
     [TestFixture]
     public class LocalMarketHoursTests
     {
-        private static readonly TimeSpan USEquityOpen = new TimeSpan(9, 30, 0);
-        private static readonly TimeSpan USEquityClose = new TimeSpan(16, 0, 0);
+        private static final Duration USEquityOpen = new TimeSpan(9, 30, 0);
+        private static final Duration USEquityClose = new TimeSpan(16, 0, 0);
 
         [Test]
         public void StartIsOpen() {

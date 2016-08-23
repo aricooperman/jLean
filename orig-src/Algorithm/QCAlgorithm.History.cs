@@ -27,75 +27,75 @@ package com.quantconnect.lean.Algorithm
 {
     public partial class QCAlgorithm
     {
-        /// <summary>
+        /**
         /// Gets or sets the history provider for the algorithm
-        /// </summary>
+        */
         public IHistoryProvider HistoryProvider
         {
             get;
             set;
         }
 
-        /// <summary>
+        /**
         /// Gets whether or not this algorithm is still warming up
-        /// </summary>
+        */
         public boolean IsWarmingUp
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// Sets the warm up period to the specified value
-        /// </summary>
-        /// <param name="timeSpan">The amount of time to warm up, this does not take into account market hours/weekends</param>
+        */
+         * @param timeSpan">The amount of time to warm up, this does not take into account market hours/weekends
         public void SetWarmup(TimeSpan timeSpan) {
             _warmupBarCount = null;
             _warmupTimeSpan = timeSpan;
         }
 
-        /// <summary>
+        /**
         /// Sets the warm up period to the specified value
-        /// </summary>
-        /// <param name="timeSpan">The amount of time to warm up, this does not take into account market hours/weekends</param>
+        */
+         * @param timeSpan">The amount of time to warm up, this does not take into account market hours/weekends
         public void SetWarmUp(TimeSpan timeSpan) {
             SetWarmup(timeSpan);
         }
 
-        /// <summary>
+        /**
         /// Sets the warm up period by resolving a start date that would send that amount of data into
         /// the algorithm. The highest (smallest) resolution in the securities collection will be used.
         /// For example, if an algorithm has minute and daily data and 200 bars are requested, that would
         /// use 200 minute bars.
-        /// </summary>
-        /// <param name="barCount">The number of data points requested for warm up</param>
+        */
+         * @param barCount">The number of data points requested for warm up
         public void SetWarmup(int barCount) {
             _warmupTimeSpan = null;
             _warmupBarCount = barCount;
         }
 
-        /// <summary>
+        /**
         /// Sets the warm up period by resolving a start date that would send that amount of data into
         /// the algorithm. The highest (smallest) resolution in the securities collection will be used.
         /// For example, if an algorithm has minute and daily data and 200 bars are requested, that would
         /// use 200 minute bars.
-        /// </summary>
-        /// <param name="barCount">The number of data points requested for warm up</param>
+        */
+         * @param barCount">The number of data points requested for warm up
         public void SetWarmUp(int barCount) {
             SetWarmup(barCount);
         }
 
-        /// <summary>
+        /**
         /// Sets <see cref="IAlgorithm.IsWarmingUp"/> to false to indicate this algorithm has finished its warm up
-        /// </summary>
+        */
         public void SetFinishedWarmingUp() {
             IsWarmingUp = false;
         }
 
-        /// <summary>
+        /**
         /// Gets the history requests required for provide warm up data for the algorithm
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         public IEnumerable<HistoryRequest> GetWarmupHistoryRequests() {
             if( _warmupBarCount.HasValue) {
                 return CreateBarCountHistoryRequests(Securities.Keys, _warmupBarCount.Value);
@@ -109,69 +109,69 @@ package com.quantconnect.lean.Algorithm
             return Enumerable.Empty<HistoryRequest>();
         }
 
-        /// <summary>
+        /**
         /// Get the history for all configured securities over the requested span.
         /// This will use the resolution and other subscription settings for each security.
         /// The symbols must exist in the Securities collection.
-        /// </summary>
-        /// <param name="span">The span over which to request data. This is a calendar span, so take into consideration weekends and such</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing data over the most recent span for all configured securities</returns>
+        */
+         * @param span">The span over which to request data. This is a calendar span, so take into consideration weekends and such
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing data over the most recent span for all configured securities
         public IEnumerable<Slice> History(TimeSpan span, Resolution? resolution = null ) {
             return History(Securities.Keys, Time - span, Time, resolution).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Get the history for all configured securities over the requested span.
         /// This will use the resolution and other subscription settings for each security.
         /// The symbols must exist in the Securities collection.
-        /// </summary>
-        /// <param name="periods">The number of bars to request</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing data over the most recent span for all configured securities</returns>
+        */
+         * @param periods">The number of bars to request
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing data over the most recent span for all configured securities
         public IEnumerable<Slice> History(int periods, Resolution? resolution = null ) {
             return History(Securities.Keys, periods, resolution).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for all symbols of the requested type over the requested span.
         /// The symbol's configured values for resolution and fill forward behavior will be used
         /// The symbols must exist in the Securities collection.
-        /// </summary>
-        /// <param name="span">The span over which to retrieve recent historical data</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
+        */
+         * @param span">The span over which to retrieve recent historical data
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
         public IEnumerable<DataMap<T>> History<T>(TimeSpan span, Resolution? resolution = null )
             where T : BaseData
         {
             return History<T>(Securities.Keys, span, resolution).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbols over the requested span.
         /// The symbols must exist in the Securities collection.
-        /// </summary>
+        */
         /// <typeparam name="T">The data type of the symbols</typeparam>
-        /// <param name="symbols">The symbols to retrieve historical data for</param>
-        /// <param name="span">The span over which to retrieve recent historical data</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, TimeSpan span, Resolution? resolution = null )
+         * @param symbols">The symbols to retrieve historical data for
+         * @param span">The span over which to retrieve recent historical data
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
+        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, Duration span, Resolution? resolution = null )
             where T : BaseData
         {
             return History<T>(symbols, Time - span, Time, resolution).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbols. The exact number of bars will be returned for
         /// each symbol. This may result in some data start earlier/later than others due to when various
         /// exchanges are open. The symbols must exist in the Securities collection.
-        /// </summary>
+        */
         /// <typeparam name="T">The data type of the symbols</typeparam>
-        /// <param name="symbols">The symbols to retrieve historical data for</param>
-        /// <param name="periods">The number of bars to request</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
+         * @param symbols">The symbols to retrieve historical data for
+         * @param periods">The number of bars to request
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
         public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null ) 
             where T : BaseData
         {
@@ -186,18 +186,18 @@ package com.quantconnect.lean.Algorithm
                 return CreateHistoryRequest(security, config, start, UtcTime.RoundDown(res.Value.ToTimeSpan()), resolution);
             });
 
-            return History(requests.Where(x => x != null )).Get<T>().Memoize();
+            return History(requests.Where(x -> x != null )).Get<T>().Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbols between the specified dates. The symbols must exist in the Securities collection.
-        /// </summary>
+        */
         /// <typeparam name="T">The data type of the symbols</typeparam>
-        /// <param name="symbols">The symbols to retrieve historical data for</param>
-        /// <param name="start">The start time in the algorithm's time zone</param>
-        /// <param name="end">The end time in the algorithm's time zone</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
+         * @param symbols">The symbols to retrieve historical data for
+         * @param start">The start time in the algorithm's time zone
+         * @param end">The end time in the algorithm's time zone
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
         public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, DateTime start, DateTime end, Resolution? resolution = null ) 
             where T : BaseData
         {
@@ -210,46 +210,46 @@ package com.quantconnect.lean.Algorithm
                 return CreateHistoryRequest(security, config, start, end, resolution);
             });
 
-            return History(requests.Where(x => x != null )).Get<T>().Memoize();
+            return History(requests.Where(x -> x != null )).Get<T>().Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbol over the request span. The symbol must exist in the Securities collection.
-        /// </summary>
+        */
         /// <typeparam name="T">The data type of the symbol</typeparam>
-        /// <param name="symbol">The symbol to retrieve historical data for</param>
-        /// <param name="span">The span over which to retrieve recent historical data</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<T> History<T>(Symbol symbol, TimeSpan span, Resolution? resolution = null )
+         * @param symbol">The symbol to retrieve historical data for
+         * @param span">The span over which to retrieve recent historical data
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
+        public IEnumerable<T> History<T>(Symbol symbol, Duration span, Resolution? resolution = null )
             where T : BaseData
         {
             return History<T>(symbol, Time - span, Time, resolution).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbol. The exact number of bars will be returned. 
         /// The symbol must exist in the Securities collection.
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve historical data for</param>
-        /// <param name="periods">The number of bars to request</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
+        */
+         * @param symbol">The symbol to retrieve historical data for
+         * @param periods">The number of bars to request
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
         public IEnumerable<TradeBar> History(Symbol symbol, int periods, Resolution? resolution = null ) {
             security = Securities[symbol];
             start = GetStartTimeAlgoTz(symbol, periods, resolution);
             return History(new[] {symbol}, start, Time.RoundDown((resolution ?? security.Resolution).ToTimeSpan()), resolution).Get(symbol).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbol. The exact number of bars will be returned. 
         /// The symbol must exist in the Securities collection.
-        /// </summary>
+        */
         /// <typeparam name="T">The data type of the symbol</typeparam>
-        /// <param name="symbol">The symbol to retrieve historical data for</param>
-        /// <param name="periods">The number of bars to request</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
+         * @param symbol">The symbol to retrieve historical data for
+         * @param periods">The number of bars to request
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
         public IEnumerable<T> History<T>(Symbol symbol, int periods, Resolution? resolution = null )
             where T : BaseData
         {
@@ -259,7 +259,7 @@ package com.quantconnect.lean.Algorithm
             requestedType = typeof(T);
             config = GetMatchingSubscription(security, requestedType);
             if( config == null ) {
-                actualType = security.Subscriptions.Select(x => x.Type.Name).DefaultIfEmpty( "[None]").FirstOrDefault();
+                actualType = security.Subscriptions.Select(x -> x.Type.Name).DefaultIfEmpty( "[None]").FirstOrDefault();
                 throw new ArgumentException( "The specified security is not of the requested type. Symbol: " + symbol.toString() + " Requested Type: " + requestedType.Name + " Actual Type: " + actualType);
             }
 
@@ -267,14 +267,14 @@ package com.quantconnect.lean.Algorithm
             return History<T>(symbol, start, Time.RoundDown((resolution ?? security.Resolution).ToTimeSpan()), resolution).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbol between the specified dates. The symbol must exist in the Securities collection.
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve historical data for</param>
-        /// <param name="start">The start time in the algorithm's time zone</param>
-        /// <param name="end">The end time in the algorithm's time zone</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
+        */
+         * @param symbol">The symbol to retrieve historical data for
+         * @param start">The start time in the algorithm's time zone
+         * @param end">The end time in the algorithm's time zone
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
         public IEnumerable<T> History<T>(Symbol symbol, DateTime start, DateTime end, Resolution? resolution = null )
             where T : BaseData
         {
@@ -283,7 +283,7 @@ package com.quantconnect.lean.Algorithm
             requestedType = typeof(T);
             config = GetMatchingSubscription(security, requestedType);
             if( config == null ) {
-                actualType = security.Subscriptions.Select(x => x.Type.Name).DefaultIfEmpty( "[None]").FirstOrDefault();
+                actualType = security.Subscriptions.Select(x -> x.Type.Name).DefaultIfEmpty( "[None]").FirstOrDefault();
                 throw new ArgumentException( "The specified security is not of the requested type. Symbol: " + symbol.toString() + " Requested Type: " + requestedType.Name + " Actual Type: " + actualType);
             }
 
@@ -291,73 +291,73 @@ package com.quantconnect.lean.Algorithm
             return History(request).Get<T>(symbol).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbol over the request span. The symbol must exist in the Securities collection.
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve historical data for</param>
-        /// <param name="span">The span over which to retrieve recent historical data</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<TradeBar> History(Symbol symbol, TimeSpan span, Resolution? resolution = null ) {
+        */
+         * @param symbol">The symbol to retrieve historical data for
+         * @param span">The span over which to retrieve recent historical data
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
+        public IEnumerable<TradeBar> History(Symbol symbol, Duration span, Resolution? resolution = null ) {
             return History(new[] {symbol}, span, resolution).Get(symbol).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbol over the request span. The symbol must exist in the Securities collection.
-        /// </summary>
-        /// <param name="symbol">The symbol to retrieve historical data for</param>
-        /// <param name="start">The start time in the algorithm's time zone</param>
-        /// <param name="end">The end time in the algorithm's time zone</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
+        */
+         * @param symbol">The symbol to retrieve historical data for
+         * @param start">The start time in the algorithm's time zone
+         * @param end">The end time in the algorithm's time zone
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
         public IEnumerable<TradeBar> History(Symbol symbol, DateTime start, DateTime end, Resolution? resolution = null ) {
             return History(new[] {symbol}, start, end, resolution).Get(symbol).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbols over the requested span.
         /// The symbol's configured values for resolution and fill forward behavior will be used
         /// The symbols must exist in the Securities collection.
-        /// </summary>
-        /// <param name="symbols">The symbols to retrieve historical data for</param>
-        /// <param name="span">The span over which to retrieve recent historical data</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
-        public IEnumerable<Slice> History(IEnumerable<Symbol> symbols, TimeSpan span, Resolution? resolution = null ) {
+        */
+         * @param symbols">The symbols to retrieve historical data for
+         * @param span">The span over which to retrieve recent historical data
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
+        public IEnumerable<Slice> History(IEnumerable<Symbol> symbols, Duration span, Resolution? resolution = null ) {
             return History(symbols, Time - span, Time, resolution).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbols. The exact number of bars will be returned for
         /// each symbol. This may result in some data start earlier/later than others due to when various
         /// exchanges are open. The symbols must exist in the Securities collection.
-        /// </summary>
-        /// <param name="symbols">The symbols to retrieve historical data for</param>
-        /// <param name="periods">The number of bars to request</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
+        */
+         * @param symbols">The symbols to retrieve historical data for
+         * @param periods">The number of bars to request
+         * @param resolution">The resolution to request
+        @returns An enumerable of slice containing the requested historical data
         public IEnumerable<Slice> History(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null ) {
             if( resolution == Resolution.Tick) throw new ArgumentException( "History functions that accept a 'periods' parameter can not be used with Resolution.Tick");
             return History(CreateBarCountHistoryRequests(symbols, periods, resolution)).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the historical data for the specified symbols between the specified dates. The symbols must exist in the Securities collection.
-        /// </summary>
-        /// <param name="symbols">The symbols to retrieve historical data for</param>
-        /// <param name="start">The start time in the algorithm's time zone</param>
-        /// <param name="end">The end time in the algorithm's time zone</param>
-        /// <param name="resolution">The resolution to request</param>
-        /// <param name="fillForward">True to fill forward missing data, false otherwise</param>
-        /// <param name="extendedMarket">True to include extended market hours data, false otherwise</param>
-        /// <returns>An enumerable of slice containing the requested historical data</returns>
+        */
+         * @param symbols">The symbols to retrieve historical data for
+         * @param start">The start time in the algorithm's time zone
+         * @param end">The end time in the algorithm's time zone
+         * @param resolution">The resolution to request
+         * @param fillForward">True to fill forward missing data, false otherwise
+         * @param extendedMarket">True to include extended market hours data, false otherwise
+        @returns An enumerable of slice containing the requested historical data
         public IEnumerable<Slice> History(IEnumerable<Symbol> symbols, DateTime start, DateTime end, Resolution? resolution = null, bool? fillForward = null, bool? extendedMarket = null ) {
             return History(CreateDateRangeHistoryRequests(symbols, start, end, resolution, fillForward, extendedMarket)).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Gets the start time required for the specified bar count in terms of the algorithm's time zone
-        /// </summary>
+        */
         private DateTime GetStartTimeAlgoTz(Symbol symbol, int periods, Resolution? resolution = null ) {
             security = Securities[symbol];
             timeSpan = (resolution ?? security.Resolution).ToTimeSpan();
@@ -367,20 +367,20 @@ package com.quantconnect.lean.Algorithm
             return localStartTime Extensions.convertTo(  )security.Exchange.TimeZone, TimeZone);
         }
 
-        /// <summary>
+        /**
         /// Executes the specified history request
-        /// </summary>
-        /// <param name="request">the history request to execute</param>
-        /// <returns>An enumerable of slice satisfying the specified history request</returns>
+        */
+         * @param request">the history request to execute
+        @returns An enumerable of slice satisfying the specified history request
         public IEnumerable<Slice> History(HistoryRequest request) {
             return History(new[] {request}).Memoize();
         }
 
-        /// <summary>
+        /**
         /// Executes the specified history requests
-        /// </summary>
-        /// <param name="requests">the history requests to execute</param>
-        /// <returns>An enumerable of slice satisfying the specified history request</returns>
+        */
+         * @param requests">the history requests to execute
+        @returns An enumerable of slice satisfying the specified history request
         public IEnumerable<Slice> History(IEnumerable<HistoryRequest> requests) {
             return History(requests, TimeZone).Memoize();
         }
@@ -406,9 +406,9 @@ package com.quantconnect.lean.Algorithm
             return ((IAlgorithm) this).HistoryProvider.GetHistory(reqs, timeZone);
         }
 
-        /// <summary>
+        /**
         /// Helper method to create history requests from a date range
-        /// </summary>
+        */
         private IEnumerable<HistoryRequest> CreateDateRangeHistoryRequests(IEnumerable<Symbol> symbols, DateTime startAlgoTz, DateTime endAlgoTz, Resolution? resolution = null, bool? fillForward = null, bool? extendedMarket = null ) {
             return symbols.Select(x =>
             {
@@ -424,9 +424,9 @@ package com.quantconnect.lean.Algorithm
             });
         }
 
-        /// <summary>
+        /**
         /// Helper methods to create a history request for the specified symbols and bar count
-        /// </summary>
+        */
         private IEnumerable<HistoryRequest> CreateBarCountHistoryRequests(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null ) {
             return symbols.Select(x =>
             {
@@ -450,7 +450,7 @@ package com.quantconnect.lean.Algorithm
 
         private static SubscriptionDataConfig GetMatchingSubscription(Security security, Type type) {
             // find a subscription matchin the requested type with a higher resolution than requested
-            return (from sub in security.Subscriptions.OrderByDescending(s => s.Resolution)
+            return (from sub in security.Subscriptions.OrderByDescending(s -> s.Resolution)
                     where type.IsAssignableFrom(sub.Type)
                     select sub).FirstOrDefault();
         }

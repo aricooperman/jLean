@@ -19,37 +19,37 @@ using System.Collections.Generic;
 
 package com.quantconnect.lean.Scheduling
 {
-    /// <summary>
+    /**
     /// Uses a function to define an enumerable of dates over a requested start/end period
-    /// </summary>
+    */
     public class FuncDateRule : IDateRule
     {
-        private readonly Func<DateTime, DateTime, IEnumerable<DateTime>> _getDatesFuntion;
+        private final Func<DateTime, DateTime, IEnumerable<DateTime>> _getDatesFuntion;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FuncDateRule"/> class
-        /// </summary>
-        /// <param name="name">The name of this rule</param>
-        /// <param name="getDatesFuntion">The time applicator function</param>
+        */
+         * @param name">The name of this rule
+         * @param getDatesFuntion">The time applicator function
         public FuncDateRule( String name, Func<DateTime, DateTime, IEnumerable<DateTime>> getDatesFuntion) {
             Name = name;
             _getDatesFuntion = getDatesFuntion;
         }
 
-        /// <summary>
+        /**
         /// Gets a name for this rule
-        /// </summary>
+        */
         public String Name
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the dates produced by this date rule between the specified times
-        /// </summary>
-        /// <param name="start">The start of the interval to produce dates for</param>
-        /// <param name="end">The end of the interval to produce dates for</param>
-        /// <returns>All dates in the interval matching this date rule</returns>
+        */
+         * @param start">The start of the interval to produce dates for
+         * @param end">The end of the interval to produce dates for
+        @returns All dates in the interval matching this date rule
         public IEnumerable<DateTime> GetDates(DateTime start, DateTime end) {
             return _getDatesFuntion(start, end);
         }

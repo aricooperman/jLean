@@ -33,30 +33,30 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine.Setup
 {
-    /// <summary>
+    /**
     /// Backtesting setup handler processes the algorithm initialize method and sets up the internal state of the algorithm class.
-    /// </summary>
+    */
     public class BacktestingSetupHandler : ISetupHandler
     {
-        private TimeSpan _maxRuntime = Duration.ofSeconds(300);
+        private Duration _maxRuntime = Duration.ofSeconds(300);
         private BigDecimal _startingCaptial = 0;
         private int _maxOrders = 0;
         private DateTime _startingDate = new DateTime(1998, 01, 01);
 
-        /// <summary>
+        /**
         /// Internal errors list from running the setup proceedures.
-        /// </summary>
+        */
         public List<String> Errors
         { 
             get; 
             set; 
         }
 
-        /// <summary>
+        /**
         /// Maximum runtime of the algorithm in seconds.
-        /// </summary>
-        /// <remarks>Maximum runtime is a formula based on the number and resolution of symbols requested, and the days backtesting</remarks>
-        public TimeSpan MaximumRuntime
+        */
+        /// Maximum runtime is a formula based on the number and resolution of symbols requested, and the days backtesting
+        public Duration MaximumRuntime
         {
             get 
             {
@@ -64,10 +64,10 @@ package com.quantconnect.lean.Lean.Engine.Setup
             }
         }
 
-        /// <summary>
+        /**
         /// Starting capital according to the users initialize routine.
-        /// </summary>
-        /// <remarks>Set from the user code.</remarks>
+        */
+        /// Set from the user code.
         /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
         public BigDecimal StartingPortfolioValue
         {
@@ -77,9 +77,9 @@ package com.quantconnect.lean.Lean.Engine.Setup
             }
         }
 
-        /// <summary>
+        /**
         /// Start date for analysis loops to search for data.
-        /// </summary>
+        */
         /// <seealso cref="QCAlgorithm.SetStartDate(DateTime)"/>
         public DateTime StartingDate
         {
@@ -89,10 +89,10 @@ package com.quantconnect.lean.Lean.Engine.Setup
             }
         }
 
-        /// <summary>
+        /**
         /// Maximum number of orders for this backtest.
-        /// </summary>
-        /// <remarks>To stop algorithm flooding the backtesting system with hundreds of megabytes of order data we limit it to 100 per day</remarks>
+        */
+        /// To stop algorithm flooding the backtesting system with hundreds of megabytes of order data we limit it to 100 per day
         public int MaxOrders
         {
             get 
@@ -101,52 +101,52 @@ package com.quantconnect.lean.Lean.Engine.Setup
             }
         }
 
-        /// <summary>
+        /**
         /// Initialize the backtest setup handler.
-        /// </summary>
+        */
         public BacktestingSetupHandler() {
             Errors = new List<String>();
         }
 
-        /// <summary>
+        /**
         /// Creates a new algorithm instance. Verified there's only one defined in the assembly and requires
         /// instantiation to take less than 10 seconds
-        /// </summary>
-        /// <param name="assemblyPath">Physical location of the assembly.</param>
-        /// <param name="language">Language of the DLL</param>
-        /// <returns>Algorithm instance.</returns>
+        */
+         * @param assemblyPath">Physical location of the assembly.
+         * @param language">Language of the DLL
+        @returns Algorithm instance.
         public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language) {
             String error;
             IAlgorithm algorithm;
 
             // limit load times to 10 seconds and force the assembly to have exactly one derived type
-            loader = new Loader(language, Duration.ofSeconds(15), names => names.SingleOrDefault());
+            loader = new Loader(language, Duration.ofSeconds(15), names -> names.SingleOrDefault());
             complete = loader.TryCreateAlgorithmInstanceWithIsolator(assemblyPath, out algorithm, out error);
             if( !complete) throw new Exception(error + " Try re-building algorithm.");
 
             return algorithm;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="BacktestingBrokerage"/> instance
-        /// </summary>
-        /// <param name="algorithmNodePacket">Job packet</param>
-        /// <param name="uninitializedAlgorithm">The algorithm instance before Initialize has been called</param>
-        /// <returns>The brokerage instance, or throws if error creating instance</returns>
+        */
+         * @param algorithmNodePacket">Job packet
+         * @param uninitializedAlgorithm">The algorithm instance before Initialize has been called
+        @returns The brokerage instance, or throws if error creating instance
         public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm) {
             return new BacktestingBrokerage(uninitializedAlgorithm);
         }
 
-        /// <summary>
+        /**
         /// Setup the algorithm cash, dates and data subscriptions as desired.
-        /// </summary>
-        /// <param name="algorithm">Algorithm instance</param>
-        /// <param name="brokerage">Brokerage instance</param>
-        /// <param name="baseJob">Algorithm job</param>
-        /// <param name="resultHandler">The configured result handler</param>
-        /// <param name="transactionHandler">The configurated transaction handler</param>
-        /// <param name="realTimeHandler">The configured real time handler</param>
-        /// <returns>Boolean true on successfully initializing the algorithm</returns>
+        */
+         * @param algorithm">Algorithm instance
+         * @param brokerage">Brokerage instance
+         * @param baseJob">Algorithm job
+         * @param resultHandler">The configured result handler
+         * @param transactionHandler">The configurated transaction handler
+         * @param realTimeHandler">The configured real time handler
+        @returns Boolean true on successfully initializing the algorithm
         public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket baseJob, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler) {
             job = baseJob as BacktestNodePacket;
             if( job == null ) {
@@ -226,14 +226,14 @@ package com.quantconnect.lean.Lean.Engine.Setup
             return initializeComplete;
         }
 
-        /// <summary>
+        /**
         /// Calculate the maximum runtime for this algorithm job.
-        /// </summary>
-        /// <param name="start">State date of the algorithm</param>
-        /// <param name="finish">End date of the algorithm</param>
-        /// <param name="subscriptionCount">Number of data feeds the user has requested</param>
-        /// <returns>Timespan maximum run period</returns>
-        private TimeSpan GetMaximumRuntime(DateTime start, DateTime finish, int subscriptionCount) {
+        */
+         * @param start">State date of the algorithm
+         * @param finish">End date of the algorithm
+         * @param subscriptionCount">Number of data feeds the user has requested
+        @returns Timespan maximum run period
+        private Duration GetMaximumRuntime(DateTime start, DateTime finish, int subscriptionCount) {
             double maxRunTime = 0;
             jobDays = (finish - start).TotalDays;
 
@@ -259,9 +259,9 @@ package com.quantconnect.lean.Lean.Engine.Setup
             return Duration.ofSeconds(maxRunTime);
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             // nothing to clean up

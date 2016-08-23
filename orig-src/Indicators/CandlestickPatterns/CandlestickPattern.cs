@@ -18,49 +18,49 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Abstract base class for a candlestick pattern indicator
-    /// </summary>
+    */
     public abstract class CandlestickPattern : WindowIndicator<TradeBar>
     {
-        /// <summary>
+        /**
         /// Creates a new <see cref="CandlestickPattern"/> with the specified name
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="period">The number of data points to hold in the window</param>
+        */
+         * @param name">The name of this indicator
+         * @param period">The number of data points to hold in the window
         protected CandlestickPattern( String name, int period) 
             : base(name, period) {
         }
 
-        /// <summary>
+        /**
         /// Returns the candle color of a candle
-        /// </summary>
-        /// <param name="tradeBar">The input candle</param>
+        */
+         * @param tradeBar">The input candle
         protected static CandleColor GetCandleColor(TradeBar tradeBar) {
             return tradeBar.Close >= tradeBar.Open ? CandleColor.White : CandleColor.Black;
         }
 
-        /// <summary>
+        /**
         /// Returns the distance between the close and the open of a candle
-        /// </summary>
-        /// <param name="tradeBar">The input candle</param>
+        */
+         * @param tradeBar">The input candle
         protected static BigDecimal GetRealBody(TradeBar tradeBar) {
             return Math.Abs(tradeBar.Close - tradeBar.Open);
         }
 
-        /// <summary>
+        /**
         /// Returns the full range of the candle
-        /// </summary>
-        /// <param name="tradeBar">The input candle</param>
+        */
+         * @param tradeBar">The input candle
         protected static BigDecimal GetHighLowRange(TradeBar tradeBar) {
             return tradeBar.High - tradeBar.Low;
         }
 
-        /// <summary>
+        /**
         /// Returns the range of a candle
-        /// </summary>
-        /// <param name="type">The type of setting to use</param>
-        /// <param name="tradeBar">The input candle</param>
+        */
+         * @param type">The type of setting to use
+         * @param tradeBar">The input candle
         protected static BigDecimal GetCandleRange(CandleSettingType type, TradeBar tradeBar) {
             switch (CandleSettings.Get(type).RangeType) {
                 case CandleRangeType.RealBody:
@@ -77,56 +77,56 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             }
         }
 
-        /// <summary>
+        /**
         /// Returns true if the candle is higher than the previous one
-        /// </summary>
+        */
         protected static boolean GetCandleGapUp(TradeBar tradeBar, TradeBar previousBar) {
             return tradeBar.Low > previousBar.High;
         }
 
-        /// <summary>
+        /**
         /// Returns true if the candle is lower than the previous one
-        /// </summary>
+        */
         protected static boolean GetCandleGapDown(TradeBar tradeBar, TradeBar previousBar) {
             return tradeBar.High < previousBar.Low;
         }
 
-        /// <summary>
+        /**
         /// Returns true if the candle is higher than the previous one (with no body overlap)
-        /// </summary>
+        */
         protected static boolean GetRealBodyGapUp(TradeBar tradeBar, TradeBar previousBar) {
             return Math.Min(tradeBar.Open, tradeBar.Close) > Math.Max(previousBar.Open, previousBar.Close);
         }
 
-        /// <summary>
+        /**
         /// Returns true if the candle is lower than the previous one (with no body overlap)
-        /// </summary>
+        */
         protected static boolean GetRealBodyGapDown(TradeBar tradeBar, TradeBar previousBar) {
             return Math.Max(tradeBar.Open, tradeBar.Close) < Math.Min(previousBar.Open, previousBar.Close);
         }
 
-        /// <summary>
+        /**
         /// Returns the range of the candle's lower shadow
-        /// </summary>
-        /// <param name="tradeBar">The input candle</param>
+        */
+         * @param tradeBar">The input candle
         protected static BigDecimal GetLowerShadow(TradeBar tradeBar) {
             return (tradeBar.Close >= tradeBar.Open ? tradeBar.Open : tradeBar.Close) - tradeBar.Low;
         }
 
-        /// <summary>
+        /**
         /// Returns the range of the candle's upper shadow
-        /// </summary>
-        /// <param name="tradeBar">The input candle</param>
+        */
+         * @param tradeBar">The input candle
         protected static BigDecimal GetUpperShadow(TradeBar tradeBar) {
             return tradeBar.High - (tradeBar.Close >= tradeBar.Open ? tradeBar.Close : tradeBar.Open);
         }
 
-        /// <summary>
+        /**
         /// Returns the average range of the previous candles
-        /// </summary>
-        /// <param name="type">The type of setting to use</param>
-        /// <param name="sum">The sum of the previous candles ranges</param>
-        /// <param name="tradeBar">The input candle</param>
+        */
+         * @param type">The type of setting to use
+         * @param sum">The sum of the previous candles ranges
+         * @param tradeBar">The input candle
         protected static BigDecimal GetCandleAverage(CandleSettingType type, BigDecimal sum, TradeBar tradeBar) {
             defaultSetting = CandleSettings.Get(type);
 

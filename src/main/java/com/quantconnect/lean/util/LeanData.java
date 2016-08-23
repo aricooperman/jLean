@@ -318,8 +318,8 @@ public class LeanData {
     }
 
     /// Gets the tick type most commonly associated with the specified security type
-    /// <param name="securityType">The security type</param>
-    /// <returns>The most common tick type for the specified security type</returns>
+     * @param securityType">The security type
+    @returns The most common tick type for the specified security type
     public static TickType getCommonTickType(SecurityType securityType ) {
         if( securityType == SecurityType.Forex || securityType == SecurityType.Cfd )
             return TickType.Quote;
@@ -328,10 +328,10 @@ public class LeanData {
     }
 
     /// Creates a symbol from the specified zip entry name
-    /// <param name="securityType">The security type of the output symbol</param>
-    /// <param name="resolution">The resolution of the data source producing the zip entry name</param>
-    /// <param name="zipEntryName">The zip entry name to be parsed</param>
-    /// <returns>A new symbol representing the zip entry name</returns>
+     * @param securityType">The security type of the output symbol
+     * @param resolution">The resolution of the data source producing the zip entry name
+     * @param zipEntryName">The zip entry name to be parsed
+    @returns A new symbol representing the zip entry name
     public static Symbol readSymbolFromZipEntry( SecurityType securityType, Resolution resolution, String zipEntryName ) {
         boolean isHourlyOrDaily = resolution == Resolution.Hour || resolution == Resolution.Daily;
         switch( securityType ) {

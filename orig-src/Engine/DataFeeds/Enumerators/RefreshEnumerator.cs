@@ -19,32 +19,32 @@ using System.Collections.Generic;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IEnumerator{T}"/> that will
     /// always return true via MoveNext.
-    /// </summary>
+    */
     /// <typeparam name="T"></typeparam>
     public class RefreshEnumerator<T> : IEnumerator<T>
     {
         private T _current;
         private IEnumerator<T> _enumerator;
-        private readonly Func<IEnumerator<T>> _enumeratorFactory;
+        private final Func<IEnumerator<T>> _enumeratorFactory;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="RefreshEnumerator{T}"/> class
-        /// </summary>
-        /// <param name="enumeratorFactory">Enumerator factory used to regenerate the underlying
-        /// enumerator when it ends</param>
+        */
+         * @param enumeratorFactory">Enumerator factory used to regenerate the underlying
+        /// enumerator when it ends
         public RefreshEnumerator(Func<IEnumerator<T>> enumeratorFactory) {
             _enumeratorFactory = enumeratorFactory;
         }
 
-        /// <summary>
+        /**
         /// Advances the enumerator to the next element of the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// </returns>
+        /// 
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public boolean MoveNext() {
             _enumerator = _enumeratorFactory.Invoke();
@@ -62,40 +62,40 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             return true;
         }
 
-        /// <summary>
+        /**
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
-        /// </summary>
+        */
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             _enumerator.Reset();
         }
 
-        /// <summary>
+        /**
         /// Gets the element in the collection at the current position of the enumerator.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The element in the collection at the current position of the enumerator.
-        /// </returns>
+        /// 
         public T Current
         {
             get { return _current; }
         }
 
-        /// <summary>
+        /**
         /// Gets the current element in the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The current element in the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             _enumerator.Dispose();

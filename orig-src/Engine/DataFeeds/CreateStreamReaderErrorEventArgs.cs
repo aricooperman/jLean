@@ -18,32 +18,32 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Event arguments for the <see cref="TextSubscriptionDataSourceReader.CreateStreamReader"/> event
-    /// </summary>
+    */
     public sealed class CreateStreamReaderErrorEventArgs : EventArgs
     {
-        /// <summary>
+        /**
         /// Gets the date of the source
-        /// </summary>
+        */
         public DateTime Date
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the source that caused the error
-        /// </summary>
+        */
         public SubscriptionDataSource Source
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="CreateStreamReaderErrorEventArgs"/> class
-        /// </summary>
-        /// <param name="date">The date of the source</param>
-        /// <param name="source">The source that cause the error</param>
+        */
+         * @param date">The date of the source
+         * @param source">The source that cause the error
         public CreateStreamReaderErrorEventArgs(DateTime date, SubscriptionDataSource source) {
             Date = date;
             Source = source;

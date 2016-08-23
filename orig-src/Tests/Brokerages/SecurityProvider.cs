@@ -19,12 +19,12 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Tests.Brokerages
 {
-    /// <summary>
+    /**
     /// Provides a test implementation of a security provider
-    /// </summary>
+    */
     public class SecurityProvider : ISecurityProvider
     {
-        private readonly Map<Symbol, Security> _securities;
+        private final Map<Symbol, Security> _securities;
 
         public SecurityProvider(Map<Symbol, Security> securities) {
             _securities = securities;

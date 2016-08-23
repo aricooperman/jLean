@@ -42,15 +42,15 @@ public class LocalTimeKeeper {
     }
 
     /// Initializes a new instance of the <see cref="LocalTimeKeeper"/> class
-    /// <param name="utcDateTime">The current time in UTC</param>
-    /// <param name="timeZone">The time zone</param>
+     * @param utcDateTime">The current time in UTC
+     * @param timeZone">The time zone
     protected LocalTimeKeeper( LocalDateTime utcDateTime, ZoneId timeZone ) {
         this.timeZone = timeZone;
         this.localTime = Lazy.of( () -> utcDateTime.atZone( timeZone ).toLocalDateTime() );
     }
 
     /// Updates the current time of this time keeper
-    /// <param name="utcDateTime">The current time in UTC</param>
+     * @param utcDateTime">The current time in UTC
     protected void updateTime( LocalDateTime utcDateTime ) {
         // redefine the lazy conversion each time this is set
         localTime = Lazy.of( () -> utcDateTime.atZone( timeZone ).toLocalDateTime() );

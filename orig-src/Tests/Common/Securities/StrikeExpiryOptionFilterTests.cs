@@ -29,7 +29,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         public void FiltersStrikeRange() {
             expiry = new DateTime(2016, 03, 04);
             underlying = new Tick { Value = 10m, Time = new DateTime(2016, 02, 26) };
-            filter = new StrikeExpiryOptionFilter(-2, 3, TimeSpan.Zero, TimeSpan.MaxValue);
+            filter = new StrikeExpiryOptionFilter(-2, 3, Duration.ZERO, TimeSpan.MaxValue);
             symbols = new[]
             {
                 Symbol.CreateOption( "SPY", Market.USA, OptionStyle.American, OptionRight.Put, 2, expiry),  // 0

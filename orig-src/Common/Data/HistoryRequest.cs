@@ -21,63 +21,63 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Data
 {
-    /// <summary>
+    /**
     /// Represents a request for historical data
-    /// </summary>
+    */
     public class HistoryRequest
     {
-        /// <summary>
+        /**
         /// Gets the start time of the request.
-        /// </summary>
+        */
         public DateTime StartTimeUtc { get; set; }
-        /// <summary>
+        /**
         /// Gets the end time of the request. 
-        /// </summary>
+        */
         public DateTime EndTimeUtc { get; set; }
-        /// <summary>
+        /**
         /// Gets the symbol to request data for
-        /// </summary>
+        */
         public Symbol Symbol { get; set; }
-        /// <summary>
+        /**
         /// Gets the exchange hours used for processing fill forward requests
-        /// </summary>
+        */
         public SecurityExchangeHours ExchangeHours { get; set; }
-        /// <summary>
+        /**
         /// Gets the requested data resolution
-        /// </summary>
+        */
         public Resolution Resolution { get; set; }
-        /// <summary>
+        /**
         /// Gets the requested fill forward resolution, set to null for no fill forward behavior
-        /// </summary>
+        */
         public Resolution? FillForwardResolution { get; set; }
-        /// <summary>
+        /**
         /// Gets whether or not to include extended market hours data, set to false for only normal market hours
-        /// </summary>
+        */
         public boolean IncludeExtendedMarketHours { get; set; }
-        /// <summary>
+        /**
         /// Gets the data type used to process the subscription request, this type must derive from BaseData
-        /// </summary>
+        */
         public Type DataType { get; set; }
-        /// <summary>
+        /**
         /// Gets the security type of the subscription
-        /// </summary>
+        */
         public SecurityType SecurityType { get; set; }
-        /// <summary>
+        /**
         /// Gets the time zone of the time stamps on the raw input data
-        /// </summary>
+        */
         public ZoneId TimeZone { get; set; }
-        /// <summary>
+        /**
         /// Gets the market for this subscription
-        /// </summary>
+        */
         public String Market { get; set; }
-        /// <summary>
+        /**
         /// Gets true if this is a custom data request, false for normal QC data
-        /// </summary>
+        */
         public boolean IsCustomData { get; set; }
 
-        /// <summary>
+        /**
         /// Initializes a new default instance of the <see cref="HistoryRequest"/> class
-        /// </summary>
+        */
         public HistoryRequest() {
             StartTimeUtc = EndTimeUtc = DateTime.UtcNow;
             Symbol = Symbol.Empty;
@@ -92,20 +92,20 @@ package com.quantconnect.lean.Data
             IsCustomData = false;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="HistoryRequest"/> class from the specified parameters
-        /// </summary>
-        /// <param name="startTimeUtc">The start time for this request,</param>
-        /// <param name="endTimeUtc">The start time for this request</param>
-        /// <param name="dataType">The data type of the output data</param>
-        /// <param name="symbol">The symbol to request data for</param>
-        /// <param name="securityType">The security type of the symbol</param>
-        /// <param name="resolution">The requested data resolution</param>
-        /// <param name="market">The market this data belongs to</param>
-        /// <param name="exchangeHours">The exchange hours used in fill forward processing</param>
-        /// <param name="fillForwardResolution">The requested fill forward resolution for this request</param>
-        /// <param name="includeExtendedMarketHours">True to include data from pre/post market hours</param>
-        /// <param name="isCustomData">True for custom user data, false for normal QC data</param>
+        */
+         * @param startTimeUtc">The start time for this request,
+         * @param endTimeUtc">The start time for this request
+         * @param dataType">The data type of the output data
+         * @param symbol">The symbol to request data for
+         * @param securityType">The security type of the symbol
+         * @param resolution">The requested data resolution
+         * @param market">The market this data belongs to
+         * @param exchangeHours">The exchange hours used in fill forward processing
+         * @param fillForwardResolution">The requested fill forward resolution for this request
+         * @param includeExtendedMarketHours">True to include data from pre/post market hours
+         * @param isCustomData">True for custom user data, false for normal QC data
         public HistoryRequest(DateTime startTimeUtc, 
             DateTime endTimeUtc,
             Type dataType,
@@ -132,13 +132,13 @@ package com.quantconnect.lean.Data
             TimeZone = exchangeHours.TimeZone;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="HistoryRequest"/> class from the specified config and exchange hours
-        /// </summary>
-        /// <param name="config">The subscription data config used to initalize this request</param>
-        /// <param name="hours">The exchange hours used for fill forward processing</param>
-        /// <param name="startTimeUtc">The start time for this request,</param>
-        /// <param name="endTimeUtc">The start time for this request</param>
+        */
+         * @param config">The subscription data config used to initalize this request
+         * @param hours">The exchange hours used for fill forward processing
+         * @param startTimeUtc">The start time for this request,
+         * @param endTimeUtc">The start time for this request
         public HistoryRequest(SubscriptionDataConfig config, SecurityExchangeHours hours, DateTime startTimeUtc, DateTime endTimeUtc) {
             StartTimeUtc = startTimeUtc;
             EndTimeUtc = endTimeUtc;

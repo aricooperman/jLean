@@ -70,7 +70,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         private static void RunTestIndicator(IndicatorBase<IndicatorDataPoint> indicator, String field, BigDecimal variance) {
-            TestHelper.TestIndicator(indicator, "spy_swiss.txt", field, (actual, expected) => { AssertResult(expected, actual.Current.Value, variance); });
+            TestHelper.TestIndicator(indicator, "spy_swiss.txt", field, (actual, expected) -> { AssertResult(expected, actual.Current.Value, variance); });
         }
 
         private static void AssertResult(double expected, BigDecimal actual, BigDecimal variance) {

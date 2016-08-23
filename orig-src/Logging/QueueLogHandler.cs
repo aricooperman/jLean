@@ -19,47 +19,47 @@ using System.IO;
 
 package com.quantconnect.lean.Logging
 {
-    /// <summary>
+    /**
     /// ILogHandler implementation that queues all logs and writes them when instructed.
-    /// </summary>
+    */
     public class QueueLogHandler : ILogHandler
     {
-        private readonly ConcurrentQueue<LogEntry> _logs;
+        private final ConcurrentQueue<LogEntry> _logs;
         private static final String DateFormat = "yyyyMMdd HH:mm:ss";
-        private readonly TextWriter _trace;
-        private readonly TextWriter _error;
+        private final TextWriter _trace;
+        private final TextWriter _error;
 
-        /// <summary>
+        /**
         /// Public access to the queue for log processing.
-        /// </summary>
+        */
         public ConcurrentQueue<LogEntry> Logs
         {
             get { return _logs; }
         }
 
-        /// <summary>
+        /**
         /// LOgging event delegate
-        /// </summary>
+        */
         public delegate void LogEventRaised(LogEntry log);
 
-        /// <summary>
+        /**
         /// Logging Event Handler
-        /// </summary>
+        */
         public event LogEventRaised LogEvent;
         
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="QueueLogHandler"/> class.
-        /// </summary>
+        */
         public QueueLogHandler() {
             _logs = new ConcurrentQueue<LogEntry>();
             _trace = Console.Out;
             _error = Console.Error;
         }
 
-        /// <summary>
+        /**
         /// Write error message to log
-        /// </summary>
-        /// <param name="text">The error text to log</param>
+        */
+         * @param text">The error text to log
         public void Error( String text) {
             log = new LogEntry(text, DateTime.Now, LogType.Error);
             _logs.Enqueue(log);
@@ -70,10 +70,10 @@ package com.quantconnect.lean.Logging
             Console.ResetColor();
         }
 
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="text">The debug text to log</param>
+        */
+         * @param text">The debug text to log
         public void Debug( String text) {
             log = new LogEntry(text, DateTime.Now, LogType.Debug);
             _logs.Enqueue(log);
@@ -82,10 +82,10 @@ package com.quantconnect.lean.Logging
             _trace.WriteLine(DateTime.Now.toString(DateFormat) + " Debug:: " + text);
         }
 
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="text">The trace text to log</param>
+        */
+         * @param text">The trace text to log
         public void Trace( String text) {
             log = new LogEntry(text, DateTime.Now, LogType.Trace);
             _logs.Enqueue(log);
@@ -94,16 +94,16 @@ package com.quantconnect.lean.Logging
             _trace.WriteLine(DateTime.Now.toString(DateFormat) + " Trace:: " + text);
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
         }
 
-        /// <summary>
+        /**
         /// Raise a log event safely
-        /// </summary>
+        */
         protected virtual void OnLogEvent(LogEntry log) {
             handler = LogEvent;
 

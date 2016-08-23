@@ -23,7 +23,7 @@ package com.quantconnect.lean.Tests.Common
         [Test]
         public void GetServerStatisticsDoesntThrow() {
             serverStatistics = OS.GetServerStatistics();
-            //maxKeyLength = serverStatistics.Keys.Max(x => x.Length);
+            //maxKeyLength = serverStatistics.Keys.Max(x -> x.Length);
             //foreach (statistic in serverStatistics)
             //{
             //    Console.WriteLine( "{0, -" + maxKeyLength + "} - %2$s", statistic.Key, statistic.Value);

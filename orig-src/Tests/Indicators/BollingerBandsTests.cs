@@ -25,19 +25,19 @@ package com.quantconnect.lean.Tests.Indicators
         [Test]
         public void ComparesWithExternalDataMiddleBand() {
             bb = new BollingerBands(20, 2.0m, MovingAverageType.Simple);
-            TestHelper.TestIndicator(bb, "spy_bollinger_bands.txt", "Moving Average 20", (BollingerBands ind) => (double)ind.MiddleBand.Current.Value);
+            TestHelper.TestIndicator(bb, "spy_bollinger_bands.txt", "Moving Average 20", (BollingerBands ind) -> (double)ind.MiddleBand.Current.Value);
         }   
 
         [Test]
         public void ComparesWithExternalDataUpperBand() {
             bb = new BollingerBands(20, 2.0m, MovingAverageType.Simple);
-            TestHelper.TestIndicator(bb, "spy_bollinger_bands.txt", "Bollinger Bands® 20 2 Top", (BollingerBands ind) => (double)ind.UpperBand.Current.Value);
+            TestHelper.TestIndicator(bb, "spy_bollinger_bands.txt", "Bollinger Bands® 20 2 Top", (BollingerBands ind) -> (double)ind.UpperBand.Current.Value);
         }           
 
         [Test]
         public void ComparesWithExternalDataLowerBand() {
             bb = new BollingerBands(20, 2.0m, MovingAverageType.Simple);
-            TestHelper.TestIndicator(bb, "spy_bollinger_bands.txt", "Bollinger Bands® 20 2 Bottom", (BollingerBands ind) => (double)ind.LowerBand.Current.Value);
+            TestHelper.TestIndicator(bb, "spy_bollinger_bands.txt", "Bollinger Bands® 20 2 Bottom", (BollingerBands ind) -> (double)ind.LowerBand.Current.Value);
         }
 
         [Test]

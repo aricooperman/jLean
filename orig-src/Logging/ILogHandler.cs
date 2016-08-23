@@ -18,28 +18,28 @@ using System.ComponentModel.Composition;
 
 package com.quantconnect.lean.Logging
 {
-    /// <summary>
+    /**
     /// Interface for redirecting log output
-    /// </summary>
+    */
     [InheritedExport(typeof(ILogHandler))]
     public interface ILogHandler : IDisposable
     {
-        /// <summary>
+        /**
         /// Write error message to log
-        /// </summary>
-        /// <param name="text">The error text to log</param>
+        */
+         * @param text">The error text to log
         void Error( String text);
        
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="text">The debug text to log</param>
+        */
+         * @param text">The debug text to log
         void Debug( String text);
        
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="text">The trace text to log</param>
+        */
+         * @param text">The trace text to log
         void Trace( String text);
     }
 }

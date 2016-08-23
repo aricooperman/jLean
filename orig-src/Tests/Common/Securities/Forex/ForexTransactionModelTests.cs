@@ -34,7 +34,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
             throw new NotImplementedException(type.toString());
         }
 
-        private static readonly TimeKeeper TimeKeeper = new TimeKeeper(DateTime.UtcNow, new[] { TimeZones.NewYork });
+        private static final TimeKeeper TimeKeeper = new TimeKeeper(DateTime.UtcNow, new[] { TimeZones.NewYork });
         [Test]
         public void PerformsMarketFillBuy() {
             model = new ForexTransactionModel();

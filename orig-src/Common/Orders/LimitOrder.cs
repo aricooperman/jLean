@@ -18,38 +18,38 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Limit order type definition
-    /// </summary>
+    */
     public class LimitOrder : Order
     {
-        /// <summary>
+        /**
         /// Limit price for this order.
-        /// </summary>
+        */
         public BigDecimal LimitPrice { get; internal set; }
 
-        /// <summary>
+        /**
         /// Limit Order Type
-        /// </summary>
+        */
         public @Override OrderType Type
         {
             get { return OrderType.Limit; }
         }
 
-        /// <summary>
+        /**
         /// Added a default constructor for JSON Deserialization:
-        /// </summary>
+        */
         public LimitOrder() {
         }
 
-        /// <summary>
+        /**
         /// New limit order constructor
-        /// </summary>
-        /// <param name="symbol">Symbol asset we're seeking to trade</param>
-        /// <param name="quantity">Quantity of the asset we're seeking to trade</param>
-        /// <param name="time">Time the order was placed</param>
-        /// <param name="limitPrice">Price the order should be filled at if a limit order</param>
-        /// <param name="tag">User defined data tag for this order</param>
+        */
+         * @param symbol">Symbol asset we're seeking to trade
+         * @param quantity">Quantity of the asset we're seeking to trade
+         * @param time">Time the order was placed
+         * @param limitPrice">Price the order should be filled at if a limit order
+         * @param tag">User defined data tag for this order
         public LimitOrder(Symbol symbol, int quantity, BigDecimal limitPrice, DateTime time, String tag = "")
             : base(symbol, quantity, time, tag) {
             LimitPrice = limitPrice;
@@ -60,10 +60,10 @@ package com.quantconnect.lean.Orders
             }
         }
 
-        /// <summary>
+        /**
         /// Gets the order value in units of the security's quote currency
-        /// </summary>
-        /// <param name="security">The security matching this order's symbol</param>
+        */
+         * @param security">The security matching this order's symbol
         protected @Override BigDecimal GetValueImpl(Security security) {
             // selling, so higher price will be used
             if( Quantity < 0) {
@@ -78,10 +78,10 @@ package com.quantconnect.lean.Orders
             return 0m;
         }
 
-        /// <summary>
+        /**
         /// Modifies the state of this order to match the update request
-        /// </summary>
-        /// <param name="request">The request to update this order object</param>
+        */
+         * @param request">The request to update this order object
         public @Override void ApplyUpdateOrderRequest(UpdateOrderRequest request) {
             base.ApplyUpdateOrderRequest(request);
             if( request.LimitPrice.HasValue) {
@@ -89,21 +89,21 @@ package com.quantconnect.lean.Orders
             }
         }
 
-        /// <summary>
+        /**
         /// Returns a String that represents the current object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A String that represents the current object.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         public @Override String toString() {
             return String.format( "%1$s at limit %2$s", base.toString(), LimitPrice.SmartRounding());
         }
 
-        /// <summary>
+        /**
         /// Creates a deep-copy clone of this order
-        /// </summary>
-        /// <returns>A copy of this order</returns>
+        */
+        @returns A copy of this order
         public @Override Order Clone() {
             order = new LimitOrder {LimitPrice = LimitPrice};
             CopyTo(order);

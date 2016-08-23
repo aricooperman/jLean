@@ -20,18 +20,18 @@ using System.Threading;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     ///     This is a window that allows for list access semantics,
     ///     where this[0] refers to the most recent item in the
     ///     window and this[Count-1] refers to the last item in the window
-    /// </summary>
+    */
     /// <typeparam name="T">The type of data in the window</typeparam>
     public class RollingWindow<T> : IReadOnlyWindow<T>
     {
         // the backing list object used to hold the data
-        private readonly List<T> _list;
+        private final List<T> _list;
         // read-write lock used for controlling access to the underlying list data structure
-        private readonly ReaderWriterLockSlim _listLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+        private final ReaderWriterLockSlim _listLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         // the most recently removed item from the window (fell off the back)
         private T _mostRecentlyRemoved;
         // the total number of samples taken by this indicator
@@ -39,10 +39,10 @@ package com.quantconnect.lean.Indicators
         // used to locate the last item in the window as an indexer into the _list
         private int _tail;
 
-        /// <summary>
+        /**
         ///     Initializes a new instance of the RollwingWindow class with the specified window size.
-        /// </summary>
-        /// <param name="size">The number of items to hold in the window</param>
+        */
+         * @param size">The number of items to hold in the window
         public RollingWindow(int size) {
             if( size < 1) {
                 throw new ArgumentException( "RollingWindow must have size of at least 1.", "size");
@@ -50,9 +50,9 @@ package com.quantconnect.lean.Indicators
             _list = new List<T>(size);
         }
 
-        /// <summary>
+        /**
         ///     Gets the size of this window
-        /// </summary>
+        */
         public int Size
         {
             get
@@ -69,9 +69,9 @@ package com.quantconnect.lean.Indicators
             }
         }
 
-        /// <summary>
+        /**
         ///     Gets the current number of elements in this window
-        /// </summary>
+        */
         public int Count
         {
             get
@@ -88,9 +88,9 @@ package com.quantconnect.lean.Indicators
             }
         }
 
-        /// <summary>
+        /**
         ///     Gets the number of samples that have been added to this window over its lifetime
-        /// </summary>
+        */
         public BigDecimal Samples
         {
             get
@@ -107,11 +107,11 @@ package com.quantconnect.lean.Indicators
             }
         }
 
-        /// <summary>
+        /**
         ///     Gets the most recently removed item from the window. This is the
         ///     piece of data that just 'fell off' as a result of the most recent
         ///     add. If no items have been removed, this will throw an exception.
-        /// </summary>
+        */
         public T MostRecentlyRemoved
         {
             get
@@ -133,12 +133,12 @@ package com.quantconnect.lean.Indicators
             }
         }
 
-        /// <summary>
+        /**
         ///     Indexes into this window, where index 0 is the most recently
         ///     entered value
-        /// </summary>
-        /// <param name="i">the index, i</param>
-        /// <returns>the ith most recent entry</returns>
+        */
+         * @param i">the index, i
+        @returns the ith most recent entry
         public T this [int i]
         {
             get
@@ -175,10 +175,10 @@ package com.quantconnect.lean.Indicators
             }
         }
 
-        /// <summary>
+        /**
         ///     Gets a value indicating whether or not this window is ready, i.e,
         ///     it has been filled to its capacity and one has fallen off the back
-        /// </summary>
+        */
         public boolean IsReady
         {
             get
@@ -195,12 +195,12 @@ package com.quantconnect.lean.Indicators
             }
         }
 
-        /// <summary>
+        /**
         ///     Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         ///     A <see cref="T:System.Collections.Generic.IEnumerator`1" /> that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>1</filterpriority>
         public IEnumerator<T> GetEnumerator() {
             // we make a copy on purpose so the enumerator isn't tied 
@@ -222,21 +222,21 @@ package com.quantconnect.lean.Indicators
 
         }
 
-        /// <summary>
+        /**
         ///     Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         ///     An <see cref="T:System.Collections.IEnumerator" /> object that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
-        /// <summary>
+        /**
         ///     Adds an item to this window and shifts all other elements
-        /// </summary>
-        /// <param name="item">The item to be added</param>
+        */
+         * @param item">The item to be added
         public void Add(T item) {
             try
             {
@@ -261,9 +261,9 @@ package com.quantconnect.lean.Indicators
             }
         }
 
-        /// <summary>
+        /**
         ///     Clears this window of all data
-        /// </summary>
+        */
         public void Reset() {
             try
             {

@@ -26,7 +26,7 @@ package com.quantconnect.lean.Tests.Indicators
         public void ComparesAgainstExternalData() {
             fisher = new FisherTransform( "fisher", 10);
             TestHelper.TestIndicator(fisher, "spy_with_fisher.txt", "Fisher Transform 10",
-                (ind, expected) => Assert.AreEqual(expected, (double)((FisherTransform)ind).Current.Value, 1e-3));
+                (ind, expected) -> Assert.AreEqual(expected, (double)((FisherTransform)ind).Current.Value, 1e-3));
         }
 
         [Test]

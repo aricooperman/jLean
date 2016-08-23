@@ -45,7 +45,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         private static void TestIndicator(ChandeMomentumOscillator cmo) {
-            TestHelper.TestIndicator(cmo, "spy_cmo.txt", "CMO_5", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value, 1e-3));
+            TestHelper.TestIndicator(cmo, "spy_cmo.txt", "CMO_5", (ind, expected) -> Assert.AreEqual(expected, (double)ind.Current.Value, 1e-3));
         }
     }
 }

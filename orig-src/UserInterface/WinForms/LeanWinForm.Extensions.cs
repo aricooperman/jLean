@@ -21,10 +21,10 @@ using System.Windows.Forms;
 
 package com.quantconnect.lean.Views.WinForms
 {
-    /// <summary>
+    /**
     /// Public extensions methods for the forms.
     /// Credit: http://stackoverflow.com/questions/1926264/color-different-parts-of-a-richtextbox-string/1926822#1926822
-    /// </summary>
+    */
     public static class Extensions
     {
         public static void AppendText(this RichTextBox box, String text, Color color) {
@@ -36,9 +36,9 @@ package com.quantconnect.lean.Views.WinForms
             box.ScrollToCaret();
         }
 
-        /// <summary>
+        /**
         /// Cross thread invokation
-        /// </summary>
+        */
         public static TResult SafeInvoke<T, TResult>(this T isi, Func<T, TResult> call) where T : ISynchronizeInvoke
         {
             if( isi.InvokeRequired) {

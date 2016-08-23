@@ -17,204 +17,204 @@ using NodaTime;
 
 package com.quantconnect.lean
 {
-    /// <summary>
+    /**
     /// Provides access to common time zones
-    /// </summary>
+    */
     public static class TimeZones
     {
-        /// <summary>
+        /**
         /// Gets the Universal Coordinated time zone.
-        /// </summary>
-        public static readonly ZoneId Utc = ZoneId.Utc;
+        */
+        public static final ZoneId Utc = ZoneId.Utc;
 
-        /// <summary>
+        /**
         /// Gets the time zone for New York City, USA. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId NewYork = ZoneIdProviders.Tzdb["America/New_York"];
+        */
+        public static final ZoneId NewYork = ZoneIdProviders.Tzdb["America/New_York"];
 
-        /// <summary>
+        /**
         /// Get the Eastern Standard Time (EST) WITHOUT daylight savings, this is a constant -5 hour offset
-        /// </summary>
-        public static readonly ZoneId EasternStandard = ZoneIdProviders.Tzdb["UTC-05"];
+        */
+        public static final ZoneId EasternStandard = ZoneIdProviders.Tzdb["UTC-05"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for London, England. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId London = ZoneIdProviders.Tzdb["Europe/London"];
+        */
+        public static final ZoneId London = ZoneIdProviders.Tzdb["Europe/London"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Hong Kong, China.
-        /// </summary>
-        public static readonly ZoneId HongKong = ZoneIdProviders.Tzdb["Asia/Hong_Kong"];
+        */
+        public static final ZoneId HongKong = ZoneIdProviders.Tzdb["Asia/Hong_Kong"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Tokyo, Japan.
-        /// </summary>
-        public static readonly ZoneId Tokyo = ZoneIdProviders.Tzdb["Asia/Tokyo"];
+        */
+        public static final ZoneId Tokyo = ZoneIdProviders.Tzdb["Asia/Tokyo"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Rome, Italy. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Rome = ZoneIdProviders.Tzdb["Europe/Rome"];
+        */
+        public static final ZoneId Rome = ZoneIdProviders.Tzdb["Europe/Rome"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Sydney, Australia. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Sydney = ZoneIdProviders.Tzdb["Australia/Sydney"];
+        */
+        public static final ZoneId Sydney = ZoneIdProviders.Tzdb["Australia/Sydney"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Vancouver, Canada.
-        /// </summary>
-        public static readonly ZoneId Vancouver = ZoneIdProviders.Tzdb["America/Vancouver"];
+        */
+        public static final ZoneId Vancouver = ZoneIdProviders.Tzdb["America/Vancouver"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Toronto, Canada. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Toronto = ZoneIdProviders.Tzdb["America/Toronto"];
+        */
+        public static final ZoneId Toronto = ZoneIdProviders.Tzdb["America/Toronto"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Chicago, USA. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Chicao = ZoneIdProviders.Tzdb["America/Chicago"];
+        */
+        public static final ZoneId Chicao = ZoneIdProviders.Tzdb["America/Chicago"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Los Angeles, USA. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId LosAngeles = ZoneIdProviders.Tzdb["America/Los_Angeles"];
+        */
+        public static final ZoneId LosAngeles = ZoneIdProviders.Tzdb["America/Los_Angeles"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Phoenix, USA. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Phoenix = ZoneIdProviders.Tzdb["America/Phoenix"];
+        */
+        public static final ZoneId Phoenix = ZoneIdProviders.Tzdb["America/Phoenix"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Auckland, New Zealand. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Auckland = ZoneIdProviders.Tzdb["Pacific/Auckland"];
+        */
+        public static final ZoneId Auckland = ZoneIdProviders.Tzdb["Pacific/Auckland"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Moscow, Russia.
-        /// </summary>
-        public static readonly ZoneId Moscow = ZoneIdProviders.Tzdb["Europe/Moscow"];
+        */
+        public static final ZoneId Moscow = ZoneIdProviders.Tzdb["Europe/Moscow"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Madrid, Span. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Madrid = ZoneIdProviders.Tzdb["Europe/Madrid"];
+        */
+        public static final ZoneId Madrid = ZoneIdProviders.Tzdb["Europe/Madrid"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Buenos Aires, Argentia.
-        /// </summary>
-        public static readonly ZoneId BuenosAires = ZoneIdProviders.Tzdb["America/Argentina/Buenos_Aires"];
+        */
+        public static final ZoneId BuenosAires = ZoneIdProviders.Tzdb["America/Argentina/Buenos_Aires"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Brisbane, Australia.
-        /// </summary>
-        public static readonly ZoneId Brisbane = ZoneIdProviders.Tzdb["Australia/Brisbane"];
+        */
+        public static final ZoneId Brisbane = ZoneIdProviders.Tzdb["Australia/Brisbane"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Sao Paulo, Brazil. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId SaoPaulo = ZoneIdProviders.Tzdb["America/Sao_Paulo"];
+        */
+        public static final ZoneId SaoPaulo = ZoneIdProviders.Tzdb["America/Sao_Paulo"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Cairo, Egypt.
-        /// </summary>
-        public static readonly ZoneId Cairo = ZoneIdProviders.Tzdb["Africa/Cairo"];
+        */
+        public static final ZoneId Cairo = ZoneIdProviders.Tzdb["Africa/Cairo"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Johannesburg, South Africa.
-        /// </summary>
-        public static readonly ZoneId Johannesburg = ZoneIdProviders.Tzdb["Africa/Johannesburg"];
+        */
+        public static final ZoneId Johannesburg = ZoneIdProviders.Tzdb["Africa/Johannesburg"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Anchorage, USA. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Anchorage = ZoneIdProviders.Tzdb["America/Anchorage"];
+        */
+        public static final ZoneId Anchorage = ZoneIdProviders.Tzdb["America/Anchorage"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Denver, USA. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Denver = ZoneIdProviders.Tzdb["America/Denver"];
+        */
+        public static final ZoneId Denver = ZoneIdProviders.Tzdb["America/Denver"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Detroit, USA. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Detroit = ZoneIdProviders.Tzdb["America/Detroit"];
+        */
+        public static final ZoneId Detroit = ZoneIdProviders.Tzdb["America/Detroit"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Mexico City, Mexico. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId MexicoCity = ZoneIdProviders.Tzdb["America/Mexico_City"];
+        */
+        public static final ZoneId MexicoCity = ZoneIdProviders.Tzdb["America/Mexico_City"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Jerusalem, Israel. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Jerusalem = ZoneIdProviders.Tzdb["Asia/Jerusalem"];
+        */
+        public static final ZoneId Jerusalem = ZoneIdProviders.Tzdb["Asia/Jerusalem"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Shanghai, China.
-        /// </summary>
-        public static readonly ZoneId Shanghai = ZoneIdProviders.Tzdb["Asia/Shanghai"];
+        */
+        public static final ZoneId Shanghai = ZoneIdProviders.Tzdb["Asia/Shanghai"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Melbourne, Australia. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Melbourne = ZoneIdProviders.Tzdb["Australia/Melbourne"];
+        */
+        public static final ZoneId Melbourne = ZoneIdProviders.Tzdb["Australia/Melbourne"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Amsterdam, Netherlands. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Amsterdam = ZoneIdProviders.Tzdb["Europe/Amsterdam"];
+        */
+        public static final ZoneId Amsterdam = ZoneIdProviders.Tzdb["Europe/Amsterdam"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Athens, Greece. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Athens = ZoneIdProviders.Tzdb["Europe/Athens"];
+        */
+        public static final ZoneId Athens = ZoneIdProviders.Tzdb["Europe/Athens"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Berlin, Germany. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Berlin = ZoneIdProviders.Tzdb["Europe/Berlin"];
+        */
+        public static final ZoneId Berlin = ZoneIdProviders.Tzdb["Europe/Berlin"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Bucharest, Romania. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Bucharest = ZoneIdProviders.Tzdb["Europe/Bucharest"];
+        */
+        public static final ZoneId Bucharest = ZoneIdProviders.Tzdb["Europe/Bucharest"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Dublin, Ireland. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Dublin = ZoneIdProviders.Tzdb["Europe/Dublin"];
+        */
+        public static final ZoneId Dublin = ZoneIdProviders.Tzdb["Europe/Dublin"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Helsinki, Finland. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Helsinki = ZoneIdProviders.Tzdb["Europe/Helsinki"];
+        */
+        public static final ZoneId Helsinki = ZoneIdProviders.Tzdb["Europe/Helsinki"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Istanbul, Turkey. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Istanbul = ZoneIdProviders.Tzdb["Europe/Istanbul"];
+        */
+        public static final ZoneId Istanbul = ZoneIdProviders.Tzdb["Europe/Istanbul"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Minsk, Belarus.
-        /// </summary>
-        public static readonly ZoneId Minsk = ZoneIdProviders.Tzdb["Europe/Minsk"];
+        */
+        public static final ZoneId Minsk = ZoneIdProviders.Tzdb["Europe/Minsk"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Paris, France. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Paris = ZoneIdProviders.Tzdb["Europe/Paris"];
+        */
+        public static final ZoneId Paris = ZoneIdProviders.Tzdb["Europe/Paris"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Zurich, Switzerland. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Zurich = ZoneIdProviders.Tzdb["Europe/Zurich"];
+        */
+        public static final ZoneId Zurich = ZoneIdProviders.Tzdb["Europe/Zurich"];
 
-        /// <summary>
+        /**
         /// Gets the time zone for Honolulu, USA. This is a daylight savings time zone.
-        /// </summary>
-        public static readonly ZoneId Honolulu = ZoneIdProviders.Tzdb["Pacific/Honolulu"];
+        */
+        public static final ZoneId Honolulu = ZoneIdProviders.Tzdb["Pacific/Honolulu"];
     }
 }

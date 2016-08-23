@@ -26,29 +26,29 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine.RealTime
 {
-    /// <summary>
+    /**
     /// Psuedo realtime event processing for backtesting to simulate realtime events in fast forward.
-    /// </summary>
+    */
     public class BacktestingRealTimeHandler : IRealTimeHandler
     {
         private IAlgorithm _algorithm;
         private IResultHandler _resultHandler;
         // initialize this immediately since the Initialzie method gets called after IAlgorithm.Initialize,
         // so we want to be ready to accept events as soon as possible
-        private readonly ConcurrentMap<String, ScheduledEvent> _scheduledEvents = new ConcurrentMap<String, ScheduledEvent>();
+        private final ConcurrentMap<String, ScheduledEvent> _scheduledEvents = new ConcurrentMap<String, ScheduledEvent>();
 
-        /// <summary>
+        /**
         /// Flag indicating the hander thread is completely finished and ready to dispose.
-        /// </summary>
+        */
         public boolean IsActive
         {
             // this doesn't run as its own thread
             get { return false; }
         }
 
-        /// <summary>
+        /**
         /// Intializes the real time handler for the specified algorithm and job
-        /// </summary>
+        */
         public void Setup(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler resultHandler, IApi api) {
             //Initialize:
             _algorithm = algorithm;
@@ -58,7 +58,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
             Add(ScheduledEventFactory.EveryAlgorithmEndOfDay(_algorithm, _resultHandler, _algorithm.StartDate, _algorithm.EndDate, ScheduledEvent.AlgorithmEndOfDayDelta));
 
             // set up the events for each security to fire every tradeable date before market close
-            foreach (security in _algorithm.Securities.Values.Where(x => x.IsInternalFeed())) {
+            foreach (security in _algorithm.Securities.Values.Where(x -> x.IsInternalFeed())) {
                 Add(ScheduledEventFactory.EverySecurityEndOfDay(_algorithm, _resultHandler, security, algorithm.StartDate, _algorithm.EndDate, ScheduledEvent.SecurityEndOfDayDelta));
             }
 
@@ -70,17 +70,17 @@ package com.quantconnect.lean.Lean.Engine.RealTime
             }
         }
         
-        /// <summary>
+        /**
         /// Normally this would run the realtime event monitoring. Backtesting is in fastforward so the realtime is linked to the backtest clock.
         /// This thread does nothing. Wait until the job is over.
-        /// </summary>
+        */
         public void Run() {
         }
 
-        /// <summary>
+        /**
         /// Adds the specified event to the schedule
-        /// </summary>
-        /// <param name="scheduledEvent">The event to be scheduled, including the date/times the event fires and the callback</param>
+        */
+         * @param scheduledEvent">The event to be scheduled, including the date/times the event fires and the callback
         public void Add(ScheduledEvent scheduledEvent) {
             if( _algorithm != null ) {
                 scheduledEvent.SkipEventsUntil(_algorithm.UtcTime);
@@ -92,29 +92,29 @@ package com.quantconnect.lean.Lean.Engine.RealTime
             }
         }
 
-        /// <summary>
+        /**
         /// Removes the specified event from the schedule
-        /// </summary>
-        /// <param name="name">The name of the event to remove</param>
+        */
+         * @param name">The name of the event to remove
         public void Remove( String name) {
             ScheduledEvent scheduledEvent;
             _scheduledEvents.TryRemove(name, out scheduledEvent);
         }
 
-        /// <summary>
+        /**
         /// Set the time for the realtime event handler.
-        /// </summary>
-        /// <param name="time">Current time.</param>
+        */
+         * @param time">Current time.
         public void SetTime(DateTime time) {
             // poke each event to see if it has fired, be sure to invoke these in time order
-            foreach (scheduledEvent in _scheduledEvents)//.OrderBy(x => x.Value.NextEventUtcTime)) {
+            foreach (scheduledEvent in _scheduledEvents)//.OrderBy(x -> x.Value.NextEventUtcTime)) {
                 scheduledEvent.Value.Scan(time);
             }
         }
 
-        /// <summary>
+        /**
         /// Stop the real time thread
-        /// </summary>
+        */
         public void Exit() {
             // this doesn't run as it's own thread, so nothing to exit
         }

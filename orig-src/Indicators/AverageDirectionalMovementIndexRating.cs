@@ -18,22 +18,22 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// This indicator computes the Average Directional Movement Index Rating (ADXR). 
     /// The Average Directional Movement Index Rating is calculated with the following formula:
     /// ADXR[i] = (ADX[i] + ADX[i - period + 1]) / 2
-    /// </summary>
+    */
     public class AverageDirectionalMovementIndexRating : TradeBarIndicator
     {
-        private readonly int _period;
-        private readonly AverageDirectionalIndex _adx;
-        private readonly RollingWindow<decimal> _adxHistory;
+        private final int _period;
+        private final AverageDirectionalIndex _adx;
+        private final RollingWindow<decimal> _adxHistory;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="AverageDirectionalMovementIndexRating"/> class using the specified name and period.
-        /// </summary> 
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="period">The period of the ADXR</param>
+        */ 
+         * @param name">The name of this indicator
+         * @param period">The period of the ADXR
         public AverageDirectionalMovementIndexRating( String name, int period) 
             : base(name) {
             _period = period;
@@ -41,27 +41,27 @@ package com.quantconnect.lean.Indicators
             _adxHistory = new RollingWindow<decimal>(period);
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="AverageDirectionalMovementIndexRating"/> class using the specified period.
-        /// </summary> 
-        /// <param name="period">The period of the ADXR</param>
+        */ 
+         * @param period">The period of the ADXR
         public AverageDirectionalMovementIndexRating(int period)
             : this( "ADXR" + period, period) {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _adx.Update(input);
             _adxHistory.Add(_adx);
@@ -69,9 +69,9 @@ package com.quantconnect.lean.Indicators
             return (_adx + _adxHistory[Math.Min(_adxHistory.Count - 1, _period - 1)]) / 2;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _adx.Reset();
             _adxHistory.Reset();

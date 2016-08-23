@@ -21,19 +21,19 @@ using QuantConnect.Orders.Slippage;
 
 package com.quantconnect.lean.Securities.Cfd
 {
-    /// <summary>
+    /**
     /// CFD Security Object Implementation for CFD Assets
-    /// </summary>
+    */
     /// <seealso cref="Security"/>
     public class Cfd : Security
     {
-        /// <summary>
+        /**
         /// Constructor for the CFD security
-        /// </summary>
-        /// <param name="exchangeHours">Defines the hours this exchange is open</param>
-        /// <param name="quoteCurrency">The cash object that represent the quote currency</param>
-        /// <param name="config">The subscription configuration for this security</param>
-        /// <param name="symbolProperties">The symbol properties for this security</param>
+        */
+         * @param exchangeHours">Defines the hours this exchange is open
+         * @param quoteCurrency">The cash object that represent the quote currency
+         * @param config">The subscription configuration for this security
+         * @param symbolProperties">The symbol properties for this security
         public Cfd(SecurityExchangeHours exchangeHours, Cash quoteCurrency, SubscriptionDataConfig config, SymbolProperties symbolProperties)
             : base(config,
                 quoteCurrency,
@@ -52,13 +52,13 @@ package com.quantconnect.lean.Securities.Cfd
             Holdings = new CfdHolding(this);
         }
 
-        /// <summary>
+        /**
         /// Constructor for the CFD security
-        /// </summary>
-        /// <param name="symbol">The security's symbol</param>
-        /// <param name="exchangeHours">Defines the hours this exchange is open</param>
-        /// <param name="quoteCurrency">The cash object that represent the quote currency</param>
-        /// <param name="symbolProperties">The symbol properties for this security</param>
+        */
+         * @param symbol">The security's symbol
+         * @param exchangeHours">Defines the hours this exchange is open
+         * @param quoteCurrency">The cash object that represent the quote currency
+         * @param symbolProperties">The symbol properties for this security
         public Cfd(Symbol symbol, SecurityExchangeHours exchangeHours, Cash quoteCurrency, SymbolProperties symbolProperties)
             : base(symbol,
                 quoteCurrency,
@@ -77,20 +77,20 @@ package com.quantconnect.lean.Securities.Cfd
             Holdings = new CfdHolding(this);
         }
 
-        /// <summary>
+        /**
         /// Gets the contract multiplier for this CFD security
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// PipValue := ContractMultiplier * PipSize
-        /// </remarks>
+        /// 
         public BigDecimal ContractMultiplier
         {
             get { return SymbolProperties.ContractMultiplier; }
         }
 
-        /// <summary>
+        /**
         /// Gets the pip size for this CFD security
-        /// </summary>
+        */
         public BigDecimal PipSize
         {
             get { return SymbolProperties.PipSize; }

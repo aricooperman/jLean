@@ -17,66 +17,66 @@ using System;
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Represents a request to submit, update, or cancel an order
-    /// </summary>
+    */
     public abstract class OrderRequest
     {
-        /// <summary>
+        /**
         /// Gets the type of this order request
-        /// </summary>
+        */
         public abstract OrderRequestType OrderRequestType
         {
             get;
         }
 
-        /// <summary>
+        /**
         /// Gets the status of this request
-        /// </summary>
+        */
         public OrderRequestStatus Status
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the time the request was created
-        /// </summary>
+        */
         public DateTime Time
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the order id the request acts on
-        /// </summary>
+        */
         public int OrderId
         {
             get; protected set;
         }
 
-        /// <summary>
+        /**
         /// Gets a tag for this request
-        /// </summary>
+        */
         public String Tag
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the response for this request. If this request was never processed then this
         /// will equal <see cref="OrderResponse.Unprocessed"/>. This value is never equal to null.
-        /// </summary>
+        */
         public OrderResponse Response
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="OrderRequest"/> class
-        /// </summary>
-        /// <param name="time">The time this request was created</param>
-        /// <param name="orderId">The order id this request acts on, specify zero for <see cref="SubmitOrderRequest"/></param>
-        /// <param name="tag">A custom tag for the request</param>
+        */
+         * @param time">The time this request was created
+         * @param orderId">The order id this request acts on, specify zero for <see cref="SubmitOrderRequest"/>
+         * @param tag">A custom tag for the request
         protected OrderRequest(DateTime time, int orderId, String tag) {
             Time = time;
             OrderId = orderId;
@@ -85,11 +85,11 @@ package com.quantconnect.lean.Orders
             Status = OrderRequestStatus.Unprocessed;
         }
 
-        /// <summary>
+        /**
         /// Sets the <see cref="Response"/> for this request
-        /// </summary>
-        /// <param name="response">The response to this request</param>
-        /// <param name="status">The current status of this request</param>
+        */
+         * @param response">The response to this request
+         * @param status">The current status of this request
         public void SetResponse(OrderResponse response, OrderRequestStatus status = OrderRequestStatus.Error) {
             if( response == null ) {
                 throw new ArgumentNullException( "response", "Response can not be null");
@@ -100,12 +100,12 @@ package com.quantconnect.lean.Orders
             Response = response;
         }
 
-        /// <summary>
+        /**
         /// Returns a String that represents the current object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A String that represents the current object.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         public @Override String toString() {
             return String.format( "%1$s UTC: Order: (%2$s) - %3$s Status: {3}", Time, OrderId, Tag, Status);

@@ -18,22 +18,22 @@ using System.Collections.Generic;
 
 package com.quantconnect.lean.Data.Market
 {
-    /// <summary>
+    /**
     /// Ticks collection which implements an IDictionary-string-list of ticks. This way users can iterate over the String indexed ticks of the requested symbol.
-    /// </summary>
-    /// <remarks>Ticks are timestamped to the nearest second in QuantConnect</remarks>
+    */
+    /// Ticks are timestamped to the nearest second in QuantConnect
     public class Ticks : DataMap<List<Tick>>
     {
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Ticks"/> dictionary
-        /// </summary>
+        */
         public Ticks() {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Ticks"/> dictionary
-        /// </summary>
-        /// <param name="frontier">The time associated with the data in this Map</param>
+        */
+         * @param frontier">The time associated with the data in this Map
         public Ticks(DateTime frontier)
             : base(frontier) {
         }

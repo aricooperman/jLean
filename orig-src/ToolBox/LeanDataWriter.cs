@@ -27,25 +27,25 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.ToolBox
 {
-    /// <summary>
+    /**
     /// Data writer for saving an IEnumerable of BaseData into the LEAN data directory.
-    /// </summary>
+    */
     public class LeanDataWriter
     {
-        private readonly Symbol _symbol;
-        private readonly String _market;
-        private readonly String _dataDirectory;
-        private readonly TickType _dataType;
-        private readonly Resolution _resolution;
-        private readonly SecurityType _securityType;
+        private final Symbol _symbol;
+        private final String _market;
+        private final String _dataDirectory;
+        private final TickType _dataType;
+        private final Resolution _resolution;
+        private final SecurityType _securityType;
 
-        /// <summary>
+        /**
         /// Create a new lean data writer to this base data directory.
-        /// </summary>
-        /// <param name="symbol">Symbol string</param>
-        /// <param name="dataDirectory">Base data directory</param>
-        /// <param name="resolution">Resolution of the desired output data</param>
-        /// <param name="dataType">Write the data to trade files</param>
+        */
+         * @param symbol">Symbol string
+         * @param dataDirectory">Base data directory
+         * @param resolution">Resolution of the desired output data
+         * @param dataType">Write the data to trade files
         public LeanDataWriter(Resolution resolution, Symbol symbol, String dataDirectory, TickType dataType = TickType.Trade) {
             _securityType = symbol.ID.SecurityType;
             _dataDirectory = dataDirectory;
@@ -65,10 +65,10 @@ package com.quantconnect.lean.ToolBox
             }
         }
 
-        /// <summary>
+        /**
         /// Given the constructor parameters, write out the data in LEAN format.
-        /// </summary>
-        /// <param name="source">IEnumerable source of the data: sorted from oldest to newest.</param>
+        */
+         * @param source">IEnumerable source of the data: sorted from oldest to newest.
         public void Write(IEnumerable<BaseData> source) {
             switch (_resolution) {
                 case Resolution.Daily:
@@ -84,11 +84,11 @@ package com.quantconnect.lean.ToolBox
             }
         }
 
-        /// <summary>
+        /**
         /// Write out the data in LEAN format (minute, second or tick resolutions)
-        /// </summary>
-        /// <param name="source">IEnumerable source of the data: sorted from oldest to newest.</param>
-        /// <remarks>This function overwrites existing data files</remarks>
+        */
+         * @param source">IEnumerable source of the data: sorted from oldest to newest.
+        /// This function overwrites existing data files
         private void WriteMinuteOrSecondOrTick(IEnumerable<BaseData> source) {
             sb = new StringBuilder();
             lastTime = new DateTime();
@@ -120,11 +120,11 @@ package com.quantconnect.lean.ToolBox
             }
         }
 
-        /// <summary>
+        /**
         /// Write out the data in LEAN format (daily or hour resolutions)
-        /// </summary>
-        /// <param name="source">IEnumerable source of the data: sorted from oldest to newest.</param>
-        /// <remarks>This function performs a merge (insert/append/overwrite) with the existing Lean zip file</remarks>
+        */
+         * @param source">IEnumerable source of the data: sorted from oldest to newest.
+        /// This function performs a merge (insert/append/overwrite) with the existing Lean zip file
         private void WriteDailyOrHour(IEnumerable<BaseData> source) {
             sb = new StringBuilder();
             lastTime = new DateTime();
@@ -133,7 +133,7 @@ package com.quantconnect.lean.ToolBox
             outputFile = GetZipOutputFileName(_dataDirectory, lastTime);
 
             // Load new data rows into a SortedDictionary for easy merge/update
-            newRows = new SortedMap<DateTime,String>(source.ToDictionary(x => x.Time, x => LeanData.GenerateLine(x, _securityType, _resolution)));
+            newRows = new SortedMap<DateTime,String>(source.ToDictionary(x -> x.Time, x -> LeanData.GenerateLine(x, _securityType, _resolution)));
             SortedMap<DateTime,String> rows;
 
             if( File.Exists(outputFile)) {
@@ -161,9 +161,9 @@ package com.quantconnect.lean.ToolBox
             }
         }
 
-        /// <summary>
+        /**
         /// Loads an existing hourly or daily Lean zip file into a SortedDictionary
-        /// </summary>
+        */
         private static SortedMap<DateTime,String> LoadHourlyOrDailyFile( String fileName) {
             rows = new SortedMap<DateTime,String>();
 
@@ -185,9 +185,9 @@ package com.quantconnect.lean.ToolBox
             return rows;
         }
 
-        /// <summary>
+        /**
         /// Write this file to disk
-        /// </summary>
+        */
         private void WriteFile( String fileName, String data, DateTime time) {
             data = data.TrimEnd();
             if( File.Exists(fileName)) {
@@ -202,12 +202,12 @@ package com.quantconnect.lean.ToolBox
             Log.Trace( "LeanDataWriter.Write(): Created: " + fileName);
         }
 
-        /// <summary>
+        /**
         /// Get the output zip file
-        /// </summary>
-        /// <param name="baseDirectory">Base output directory for the zip file</param>
-        /// <param name="time">Date/time for the data we're writing</param>
-        /// <returns>The full path to the output zip file</returns>
+        */
+         * @param baseDirectory">Base output directory for the zip file
+         * @param time">Date/time for the data we're writing
+        @returns The full path to the output zip file
         private String GetZipOutputFileName( String baseDirectory, DateTime time) {
             return LeanData.GenerateZipFilePath(baseDirectory, _symbol.Value, _securityType, _market, time, _resolution);
         }

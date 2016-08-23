@@ -46,7 +46,7 @@ public class MapFileResolver implements Iterable<MapFile> {
 
     /// Initializes a new instance of the <see cref="MapFileResolver"/> by reading
     /// in all files in the specified directory.
-    /// <param name="mapFiles">The data used to initialize this resolver.</param>
+     * @param mapFiles">The data used to initialize this resolver.
     public MapFileResolver( Iterable<MapFile> mapFiles ) {
         mapFilesByPermtick = new TreeMap<String,MapFile>( IGNORE_CASE_COMP );
         bySymbol = new TreeMap<String,SortedMap<LocalDate,MapFileRowEntry>>( IGNORE_CASE_COMP );
@@ -78,32 +78,32 @@ public class MapFileResolver implements Iterable<MapFile> {
 
     /// Creates a new instance of the <see cref="MapFileResolver"/> class by reading all map files
     /// for the specified market into memory
-    /// <param name="dataDirectory">The root data directory</param>
-    /// <param name="market">The equity market to produce a map file collection for</param>
-    /// <returns>The collection of map files capable of mapping equity symbols within the specified market</returns>
+     * @param dataDirectory">The root data directory
+     * @param market">The equity market to produce a map file collection for
+    @returns The collection of map files capable of mapping equity symbols within the specified market
     public static MapFileResolver create( String dataDirectory, String market ) throws IOException {
         return create( Paths.get( dataDirectory, "equity", market.toLowerCase(), "map_files" ) );
     }
 
     /// Creates a new instance of the <see cref="MapFileResolver"/> class by reading all map files
     /// for the specified market into memory
-    /// <param name="mapFileDirectory">The directory containing the map files</param>
-    /// <returns>The collection of map files capable of mapping equity symbols within the specified market</returns>
+     * @param mapFileDirectory">The directory containing the map files
+    @returns The collection of map files capable of mapping equity symbols within the specified market
     public static MapFileResolver create( Path mapFileDirectory ) throws IOException {
         return new MapFileResolver( MapFile.getMapFiles( mapFileDirectory ) );
     }
 
     /// Gets the map file matching the specified permtick
-    /// <param name="permtick">The permtick to match on</param>
-    /// <returns>The map file matching the permtick, or null if not found</returns>
+     * @param permtick">The permtick to match on
+    @returns The map file matching the permtick, or null if not found
     public MapFile getByPermtick( String permtick ) {
         return mapFilesByPermtick.get( permtick.toUpperCase() );
     }
 
     /// Resolves the map file path containing the mapping information for the symbol defined at <paramref name="date"/>
-    /// <param name="symbol">The symbol as of <paramref name="date"/> to be mapped</param>
-    /// <param name="date">The date associated with the <paramref name="symbol"/></param>
-    /// <returns>The map file responsible for mapping the symbol, if no map file is found, null is returned</returns>
+     * @param symbol">The symbol as of <paramref name="date"/> to be mapped
+     * @param date">The date associated with the <paramref name="symbol"/>
+    @returns The map file responsible for mapping the symbol, if no map file is found, null is returned
     public MapFile resolveMapFile( String symbol, LocalDate date ) {
         // lookup the symbol's history
         final SortedMap<LocalDate,MapFileRowEntry> entries = bySymbol.get( symbol );
@@ -132,9 +132,9 @@ public class MapFileResolver implements Iterable<MapFile> {
     }
 
     /// Returns an enumerator that iterates through the collection.
-    /// <returns>
+    @returns 
     /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-    /// </returns>
+    /// 
     /// <filterpriority>1</filterpriority>
     @Override
     public Iterator<MapFile> iterator() {
@@ -153,18 +153,18 @@ public class MapFileResolver implements Iterable<MapFile> {
 //        { get; private set; }
 
         /// Initializes a new instance of the <see cref="MapFileRowEntry"/> class
-        /// <param name="entitySymbol">The map file that produced this row</param>
-        /// <param name="mapFileRow">The map file row data</param>
+         * @param entitySymbol">The map file that produced this row
+         * @param mapFileRow">The map file row data
         public MapFileRowEntry( String entitySymbol, MapFileRow mapFileRow ) {
             this.mapFileRow = mapFileRow;
             this.entitySymbol = entitySymbol;
         }
 
         /// Indicates whether the current object is equal to another object of the same type.
-        /// <returns>
+        @returns 
         /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
+        /// 
+         * @param other">An object to compare with this object.
         public boolean equals( MapFileRowEntry other ) {
             if( other == null ) return false;
             return other.mapFileRow.getDate().equals( mapFileRow.getDate() )
@@ -172,9 +172,9 @@ public class MapFileResolver implements Iterable<MapFile> {
         }
 
         /// Returns a String that represents the current object.
-        /// <returns>
+        @returns 
         /// A String that represents the current object.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         public String toString() {
             return mapFileRow.getDate() + ": " + mapFileRow.getMappedSymbol() + ": " + entitySymbol;

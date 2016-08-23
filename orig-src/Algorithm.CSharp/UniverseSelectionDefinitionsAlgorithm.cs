@@ -20,10 +20,10 @@ using QuantConnect.Data.UniverseSelection;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// This algorithm shows some of the various helper methods available
     /// when defining universes
-    /// </summary>
+    */
     public class UniverseSelectionDefinitionsAlgorithm : QCAlgorithm
     {
         private SecurityChanges _changes = SecurityChanges.None;

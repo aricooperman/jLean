@@ -47,11 +47,13 @@ public class Extensions {
         return (price1.add( price2 )).divide( TWO, RoundingMode.HALF_UP );
     }
     
-    /// Extension to move one element from list from A to position B.
+    /**
+     * Extension to move one element from list from A to position B.
+     * @param list List we're operating on.
+     * @param oldIndex Index of variable we want to move.
+     * @param newInde New location for the variable
+     */
     /// <typeparam name="T">Type of list</typeparam>
-    /// <param name="list">List we're operating on.</param>
-    /// <param name="oldIndex">Index of variable we want to move.</param>
-    /// <param name="newIndex">New location for the variable</param>
     public static <T> void move( List<T> list, int oldIndex, int newIndex ) {
         T oItem = list.get( oldIndex );
         list.remove( oldIndex );
@@ -60,9 +62,11 @@ public class Extensions {
         list.add( newIndex, oItem );
     }
 
-    /// Extension method to convert a String into a byte array
-    /// <param name="str">String to convert to bytes.</param>
-    /// <returns>Byte array</returns>
+    /**
+     * Extension method to convert a String into a byte array
+     * @param str">String to convert to bytes.
+     * @returns Byte array
+     */
     public static byte[] getBytes( String str ) {
         return str.getBytes();
 //        bytes = new byte[str.Length * sizeof(char)];
@@ -71,9 +75,9 @@ public class Extensions {
     }
 
 //    /// Extentsion method to clear all items from a thread safe queue
-//    /// <remarks>Small risk of race condition if a producer is adding to the list.</remarks>
+//    /// Small risk of race condition if a producer is adding to the list.
 //    /// <typeparam name="T">Queue type</typeparam>
-//    /// <param name="queue">queue object</param>
+//     * @param queue">queue object
 //    public static void clear<T>( ConcurrentQueue<T> queue) 
 //    {
 //        T item;
@@ -82,11 +86,11 @@ public class Extensions {
 //        }
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to convert a byte array into a string.
-//    /// </summary>
-//    /// <param name="bytes">Byte array to convert.</param>
-//    /// <returns>String from bytes.</returns>
+//    */
+//     * @param bytes">Byte array to convert.
+//    @returns String from bytes.
 //    public static String GetString(this byte[] bytes) 
 //    {
 //        chars = new char[bytes.Length / sizeof(char)];
@@ -94,11 +98,11 @@ public class Extensions {
 //        return new string(chars);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to convert a String to a MD5 hash.
-//    /// </summary>
-//    /// <param name="str">String we want to MD5 encode.</param>
-//    /// <returns>MD5 hash of a string</returns>
+//    */
+//     * @param str">String we want to MD5 encode.
+//    @returns MD5 hash of a string
 //    public static String ToMD5(this String str) 
 //    {
 //        builder = new StringBuilder();
@@ -110,30 +114,30 @@ public class Extensions {
 //        return builder.toString();
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to automatically set the update value to same as "add" value for TryAddUpdate. 
 //    /// This makes the API similar for traditional and concurrent dictionaries.
-//    /// </summary>
+//    */
 //    /// <typeparam name="K">Key type for Map</typeparam>
 //    /// <typeparam name="V">Value type for dictonary</typeparam>
-//    /// <param name="dictionary">Dictionary object we're operating on</param>
-//    /// <param name="key">Key we want to add or update.</param>
-//    /// <param name="value">Value we want to set.</param>
+//     * @param dictionary">Dictionary object we're operating on
+//     * @param key">Key we want to add or update.
+//     * @param value">Value we want to set.
 //    public static void AddOrUpdate<K, V>(this ConcurrentMap<K, V> dictionary, K key, V value)
 //    {
-//        dictionary.AddOrUpdate(key, value, (oldkey, oldvalue) => value);
+//        dictionary.AddOrUpdate(key, value, (oldkey, oldvalue) -> value);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Adds the specified element to the collection with the specified key. If an entry does not exist for th
 //    /// specified key then one will be created.
-//    /// </summary>
+//    */
 //    /// <typeparam name="TKey">The key type</typeparam>
 //    /// <typeparam name="TElement">The collection element type</typeparam>
 //    /// <typeparam name="TCollection">The collection type</typeparam>
-//    /// <param name="dictionary">The source dictionary to be added to</param>
-//    /// <param name="key">The key</param>
-//    /// <param name="element">The element to be added</param>
+//     * @param dictionary">The source dictionary to be added to
+//     * @param key">The key
+//     * @param element">The element to be added
 //    public static void Add<TKey, TElement, TCollection>(this Map<TKey, TCollection> dictionary, TKey key, TElement element)
 //        where TCollection : ICollection<TElement>, new()
 //    {
@@ -146,12 +150,12 @@ public class Extensions {
 //        list.Add(element);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to round a double value to a fixed number of significant figures instead of a fixed BigDecimal places.
-//    /// </summary>
-//    /// <param name="d">Double we're rounding</param>
-//    /// <param name="digits">Number of significant figures</param>
-//    /// <returns>New double rounded to digits-significant figures</returns>
+//    */
+//     * @param d">Double we're rounding
+//     * @param digits">Number of significant figures
+//    @returns New double rounded to digits-significant figures
 //    public static double RoundToSignificantDigits(this double d, int digits)
 //    {
 //        if( d == 0) return 0;
@@ -159,12 +163,12 @@ public class Extensions {
 //        return scale * Math.Round(d / scale, digits);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to round a double value to a fixed number of significant figures instead of a fixed BigDecimal places.
-//    /// </summary>
-//    /// <param name="d">Double we're rounding</param>
-//    /// <param name="digits">Number of significant figures</param>
-//    /// <returns>New double rounded to digits-significant figures</returns>
+//    */
+//     * @param d">Double we're rounding
+//     * @param digits">Number of significant figures
+//    @returns New double rounded to digits-significant figures
 //    public static BigDecimal RoundToSignificantDigits(this BigDecimal d, int digits)
 //    {
 //        if( d == 0) return 0;
@@ -172,10 +176,10 @@ public class Extensions {
 //        return scale * Math.Round(d / scale, digits);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Provides global smart rounding, numbers larger than 1000 will round to 4 BigDecimal places,
 //    /// while numbers smaller will round to 7 significant digits
-//    /// </summary>
+//    */
 //    public static BigDecimal SmartRounding(this BigDecimal input)
 //    {
 //        input = Normalize(input);
@@ -191,12 +195,12 @@ public class Extensions {
 //        return (decimal)d.RoundToSignificantDigits(7);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Casts the specified input value to a BigDecimal while acknowledging the overflow conditions
-//    /// </summary>
-//    /// <param name="input">The value to be cast</param>
-//    /// <returns>The input value as a decimal, if the value is too large or to small to be represented
-//    /// as a decimal, then the closest BigDecimal value will be returned</returns>
+//    */
+//     * @param input">The value to be cast
+//    @returns The input value as a decimal, if the value is too large or to small to be represented
+//    /// as a decimal, then the closest BigDecimal value will be returned
 //    public static BigDecimal SafeDecimalCast(this double input)
 //    {
 //        if( input <= (double) decimal.MinValue) return decimal.MinValue;
@@ -210,12 +214,12 @@ public class Extensions {
 //        return input / 1.000000000000000000000000000000000m;
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method for faster String to BigDecimal conversion. 
-//    /// </summary>
-//    /// <param name="str">String to be converted to positive BigDecimal value</param>
-//    /// <remarks>Method makes some assuptions - always numbers, no "signs" +,- etc.</remarks>
-//    /// <returns>Decimal value of the string</returns>
+//    */
+//     * @param str">String to be converted to positive BigDecimal value
+//    /// Method makes some assuptions - always numbers, no "signs" +,- etc.
+//    @returns Decimal value of the string
 //    public static BigDecimal ToDecimal(this String str)
 //    {
 //        long value = 0;
@@ -242,12 +246,12 @@ public class Extensions {
 //        return new decimal(lo, mid, 0, false, (byte)(hasDecimals ? decimalPlaces : 0));
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method for faster String to Int32 conversion. 
-//    /// </summary>
-//    /// <param name="str">String to be converted to positive Int32 value</param>
-//    /// <remarks>Method makes some assuptions - always numbers, no "signs" +,- etc.</remarks>
-//    /// <returns>Int32 value of the string</returns>
+//    */
+//     * @param str">String to be converted to positive Int32 value
+//    /// Method makes some assuptions - always numbers, no "signs" +,- etc.
+//    @returns Int32 value of the string
 //    public static int ToInt32(this String str)
 //    {
 //        int value = 0;
@@ -258,12 +262,12 @@ public class Extensions {
 //        return value;
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method for faster String to Int64 conversion. 
-//    /// </summary>
-//    /// <param name="str">String to be converted to positive Int64 value</param>
-//    /// <remarks>Method makes some assuptions - always numbers, no "signs" +,- etc.</remarks>
-//    /// <returns>Int32 value of the string</returns>
+//    */
+//     * @param str">String to be converted to positive Int64 value
+//    /// Method makes some assuptions - always numbers, no "signs" +,- etc.
+//    @returns Int32 value of the string
 //    public static long ToInt64(this String str)
 //    {
 //        long value = 0;
@@ -274,10 +278,12 @@ public class Extensions {
 //        return value;
 //    }
 
-    /// Breaks the specified String into csv components, all commas are considered separators
-    /// <param name="str">The String to be broken into csv</param>
-    /// <param name="size">The expected size of the output list</param>
-    /// <returns>A list of the csv pieces</returns>
+    /**
+     * Breaks the specified String into csv components, all commas are considered separators
+     * @param str The String to be broken into csv
+     * @param size The expected size of the output list
+     * @returns A list of the csv pieces
+     */
     public static String[] toCsv( String str ) {
         return toCsv( str, 4 );
     }
@@ -304,29 +310,29 @@ public class Extensions {
         return csv.toArray( new String[csv.size()] );
     }
 
-//    /// <summary>
+//    /**
 //    /// Check if a number is NaN or equal to zero
-//    /// </summary>
-//    /// <param name="value">The double value to check</param>
+//    */
+//     * @param value">The double value to check
 //    public static boolean IsNaNOrZero(this double value)
 //    {
 //        return double.IsNaN(value) || Math.Abs(value) < double.Epsilon;
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Gets the smallest positive number that can be added to a BigDecimal instance and return
 //    /// a new value that does not == the old value
-//    /// </summary>
+//    */
 //    public static BigDecimal GetDecimalEpsilon()
 //    {
 //        return new decimal(1, 0, 0, false, 27); //1e-27m;
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to extract the extension part of this file name if it matches a safe list, or return a ".custom" extension for ones which do not match.
-//    /// </summary>
-//    /// <param name="str">String we're looking for the extension for.</param>
-//    /// <returns>Last 4 character String of string.</returns>
+//    */
+//     * @param str">String we're looking for the extension for.
+//    @returns Last 4 character String of string.
 //    public static String GetExtension(this String str) {
 //        ext = str.Substring(Math.Max(0, str.Length - 4));
 //        allowedExt = new List<String>() { ".zip", ".csv", ".json" };
@@ -337,11 +343,11 @@ public class Extensions {
 //        return ext;
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to convert strings to stream to be read.
-//    /// </summary>
-//    /// <param name="str">String to convert to stream</param>
-//    /// <returns>Stream instance</returns>
+//    */
+//     * @param str">String to convert to stream
+//    @returns Stream instance
 //    public static Stream ToStream(this String str) 
 //    {
 //        stream = new MemoryStream();
@@ -352,16 +358,16 @@ public class Extensions {
 //        return stream;
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to round a timeSpan to nearest timespan period.
-//    /// </summary>
-//    /// <param name="time">TimeSpan To Round</param>
-//    /// <param name="roundingInterval">Rounding Unit</param>
-//    /// <param name="roundingType">Rounding method</param>
-//    /// <returns>Rounded timespan</returns>
-//    public static TimeSpan Round(this TimeSpan time, TimeSpan roundingInterval, MidpointRounding roundingType) 
+//    */
+//     * @param time">TimeSpan To Round
+//     * @param roundingInterval">Rounding Unit
+//     * @param roundingType">Rounding method
+//    @returns Rounded timespan
+//    public static Duration Round(this Duration time, Duration roundingInterval, MidpointRounding roundingType) 
 //    {
-//        if( roundingInterval == TimeSpan.Zero)
+//        if( roundingInterval == Duration.ZERO)
 //        {
 //            // divide by zero exception
 //            return time;
@@ -376,26 +382,26 @@ public class Extensions {
 //    }
 //
 //    
-//    /// <summary>
+//    /**
 //    /// Extension method to round timespan to nearest timespan period.
-//    /// </summary>
-//    /// <param name="time">Base timespan we're looking to round.</param>
-//    /// <param name="roundingInterval">Timespan period we're rounding.</param>
-//    /// <returns>Rounded timespan period</returns>
-//    public static TimeSpan Round(this TimeSpan time, TimeSpan roundingInterval)
+//    */
+//     * @param time">Base timespan we're looking to round.
+//     * @param roundingInterval">Timespan period we're rounding.
+//    @returns Rounded timespan period
+//    public static Duration Round(this Duration time, Duration roundingInterval)
 //    {
 //        return Round(time, roundingInterval, MidpointRounding.ToEven);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to round a datetime down by a timespan interval.
-//    /// </summary>
-//    /// <param name="dateTime">Base DateTime object we're rounding down.</param>
-//    /// <param name="interval">Timespan interval to round to.</param>
-//    /// <returns>Rounded datetime</returns>
-//    public static DateTime RoundDown(this DateTime dateTime, TimeSpan interval)
+//    */
+//     * @param dateTime">Base DateTime object we're rounding down.
+//     * @param interval">Timespan interval to round to.
+//    @returns Rounded datetime
+//    public static DateTime RoundDown(this DateTime dateTime, Duration interval)
 //    {
-//        if( interval == TimeSpan.Zero)
+//        if( interval == Duration.ZERO)
 //        {
 //            // divide by zero exception
 //            return dateTime;
@@ -403,22 +409,22 @@ public class Extensions {
 //        return dateTime.AddTicks(-(dateTime.Ticks % interval.Ticks));
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to round a datetime down by a timespan interval until it's
 //    /// within the specified exchange's open hours. This works by first rounding down
 //    /// the specified time using the interval, then producing a bar between that
 //    /// rounded time and the interval plus the rounded time and incrementally walking
 //    /// backwards until the exchange is open
-//    /// </summary>
-//    /// <param name="dateTime">Time to be rounded down</param>
-//    /// <param name="interval">Timespan interval to round to.</param>
-//    /// <param name="exchangeHours">The exchange hours to determine open times</param>
-//    /// <param name="extendedMarket">True for extended market hours, otherwise false</param>
-//    /// <returns>Rounded datetime</returns>
-//    public static DateTime ExchangeRoundDown(this DateTime dateTime, TimeSpan interval, SecurityExchangeHours exchangeHours, boolean extendedMarket)
+//    */
+//     * @param dateTime">Time to be rounded down
+//     * @param interval">Timespan interval to round to.
+//     * @param exchangeHours">The exchange hours to determine open times
+//     * @param extendedMarket">True for extended market hours, otherwise false
+//    @returns Rounded datetime
+//    public static DateTime ExchangeRoundDown(this DateTime dateTime, Duration interval, SecurityExchangeHours exchangeHours, boolean extendedMarket)
 //    {
 //        // can't round against a zero interval
-//        if( interval == TimeSpan.Zero) return dateTime;
+//        if( interval == Duration.ZERO) return dateTime;
 //
 //        rounded = dateTime.RoundDown(interval);
 //        while (!exchangeHours.IsOpen(rounded, rounded + interval, extendedMarket))
@@ -428,26 +434,26 @@ public class Extensions {
 //        return rounded;
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to round a datetime to the nearest unit timespan.
-//    /// </summary>
-//    /// <param name="datetime">Datetime object we're rounding.</param>
-//    /// <param name="roundingInterval">Timespan rounding period.s</param>
-//    /// <returns>Rounded datetime</returns>
-//    public static DateTime Round(this DateTime datetime, TimeSpan roundingInterval) 
+//    */
+//     * @param datetime">Datetime object we're rounding.
+//     * @param roundingInterval">Timespan rounding period.s
+//    @returns Rounded datetime
+//    public static DateTime Round(this DateTime datetime, Duration roundingInterval) 
 //    {
 //        return new DateTime((datetime - DateTime.MinValue).Round(roundingInterval).Ticks);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Extension method to explicitly round up to the nearest timespan interval.
-//    /// </summary>
-//    /// <param name="time">Base datetime object to round up.</param>
-//    /// <param name="d">Timespan interval for rounding</param>
-//    /// <returns>Rounded datetime</returns>
-//    public static DateTime RoundUp(this DateTime time, TimeSpan d)
+//    */
+//     * @param time">Base datetime object to round up.
+//     * @param d">Timespan interval for rounding
+//    @returns Rounded datetime
+//    public static DateTime RoundUp(this DateTime time, Duration d)
 //    {
-//        if( d == TimeSpan.Zero)
+//        if( d == Duration.ZERO)
 //        {
 //            // divide by zero exception
 //            return time;
@@ -455,12 +461,14 @@ public class Extensions {
 //        return new DateTime(((time.Ticks + d.Ticks - 1) / d.Ticks) * d.Ticks);
 //    }
 
-    /// Converts the specified time from the <paramref name="from"/> time zone to the <paramref name="to"/> time zone
-    /// <param name="time">The time to be converted in terms of the <paramref name="from"/> time zone</param>
-    /// <param name="from">The time zone the specified <paramref name="time"/> is in</param>
-    /// <param name="to">The time zone to be converted to</param>
-    /// <param name="strict">True for strict conversion, this will throw during ambiguitities, false for lenient conversion</param>
-    /// <returns>The time in terms of the to time zone</returns>
+    /**
+     * Converts the specified time from the <paramref name="from"/> time zone to the <paramref name="to"/> time zone
+     * @param time The time to be converted in terms of the <paramref name="from"/> time zone
+     * @param from The time zone the specified <paramref name="time"/> is in
+     * @param to The time zone to be converted to
+     * @param strict True for strict conversion, this will throw during ambiguitities, false for lenient conversion
+     * @returns The time in terms of the to time zone
+     */
     public static LocalDateTime convertTo( LocalDateTime time, ZoneId from, ZoneId to/*, boolean strict = false*/ ) {
         if( from.equals( to ) )
             return time;
@@ -475,24 +483,24 @@ public class Extensions {
         return time.atZone( from ).withZoneSameInstant( to ).toLocalDateTime();
     }
 
-    /// <summary>
-    /// Converts the specified time from UTC to the <paramref name="to"/> time zone
-    /// </summary>
-    /// <param name="time">The time to be converted expressed in UTC</param>
-    /// <param name="to">The destinatio time zone</param>
-    /// <param name="strict">True for strict conversion, this will throw during ambiguitities, false for lenient conversion</param>
-    /// <returns>The time in terms of the <paramref name="to"/> time zone</returns>
+    /**
+     * Converts the specified time from UTC to the <paramref name="to"/> time zone
+     * @param time The time to be converted expressed in UTC
+     * @param to The destinatio time zone
+     * @param strict True for strict conversion, this will throw during ambiguitities, false for lenient conversion
+     * @returns The time in terms of the <paramref name="to"/> time zone
+     */
     public static LocalDateTime convertFromUtc( LocalDateTime time, ZoneId to/*, boolean strict = false*/ ) {
         return convertTo( time, Global.UTC_ZONE_ID, to/*, strict*/ );
     }
 
-    /// <summary>
-    /// Converts the specified time from the <paramref name="from"/> time zone to <see cref="TimeZones.Utc"/>
-    /// </summary>
-    /// <param name="time">The time to be converted in terms of the <paramref name="from"/> time zone</param>
-    /// <param name="from">The time zone the specified <paramref name="time"/> is in</param>
-    /// <param name="strict">True for strict conversion, this will throw during ambiguitities, false for lenient conversion</param>
-    /// <returns>The time in terms of the to time zone</returns>
+    /**
+     * Converts the specified time from the <paramref name="from"/> time zone to <see cref="TimeZones.Utc"/>
+     * @param time The time to be converted in terms of the <paramref name="from"/> time zone
+     * @param from The time zone the specified <paramref name="time"/> is in
+     * @param strict True for strict conversion, this will throw during ambiguitities, false for lenient conversion
+     * @returns The time in terms of the to time zone
+     */
     public static LocalDateTime convertToUtc( LocalDateTime time, ZoneId from/*, boolean strict = false*/ ) {
 //        if( strict)
 //        {
@@ -504,23 +512,23 @@ public class Extensions {
         return convertTo( time, from, Global.UTC_ZONE_ID );
     }
 
-//    /// <summary>
+//    /**
 //    /// Add the reset method to the System.Timer class.
-//    /// </summary>
-//    /// <param name="timer">System.timer object</param>
+//    */
+//     * @param timer">System.timer object
 //    public static void Reset(this Timer timer)
 //    {
 //        timer.Stop();
 //        timer.Start();
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Function used to match a type against a String type name. This function compares on the AssemblyQualfiedName,
 //    /// the FullName, and then just the Name of the type.
-//    /// </summary>
-//    /// <param name="type">The type to test for a match</param>
-//    /// <param name="typeName">The name of the type to match</param>
-//    /// <returns>True if the specified type matches the type name, false otherwise</returns>
+//    */
+//     * @param type">The type to test for a match
+//     * @param typeName">The name of the type to match
+//    @returns True if the specified type matches the type name, false otherwise
 //    public static boolean MatchesTypeName(this Type type, String typeName)
 //    {
 //        if( type.AssemblyQualifiedName == typeName)
@@ -538,13 +546,13 @@ public class Extensions {
 //        return false;
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Checks the specified type to see if it is a subclass of the <paramref name="possibleSuperType"/>. This method will
 //    /// crawl up the inheritance heirarchy to check for equality using generic type definitions (if exists)
-//    /// </summary>
-//    /// <param name="type">The type to be checked as a subclass of <paramref name="possibleSuperType"/></param>
-//    /// <param name="possibleSuperType">The possible superclass of <paramref name="type"/></param>
-//    /// <returns>True if <paramref name="type"/> is a subclass of the generic type definition <paramref name="possibleSuperType"/></returns>
+//    */
+//     * @param type">The type to be checked as a subclass of <paramref name="possibleSuperType"/>
+//     * @param possibleSuperType">The possible superclass of <paramref name="type"/>
+//    @returns True if <paramref name="type"/> is a subclass of the generic type definition <paramref name="possibleSuperType"/>
 //    public static boolean IsSubclassOfGeneric(this Type type, Type possibleSuperType)
 //    {
 //        while (type != null && type != typeof(object))
@@ -567,12 +575,12 @@ public class Extensions {
 //        return false;
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Gets a type's name with the generic parameters filled in the way they would look when
 //    /// defined in code, such as converting Dictionary&lt;`1,`2&gt; to Dictionary&lt;string,int&gt;
-//    /// </summary>
-//    /// <param name="type">The type who's name we seek</param>
-//    /// <returns>A better type name</returns>
+//    */
+//     * @param type">The type who's name we seek
+//    @returns A better type name
 //    public static String GetBetterTypeName(this Type type)
 //    {
 //        String name = type.Name;
@@ -580,17 +588,17 @@ public class Extensions {
 //        {
 //            genericArguments = type.GetGenericArguments();
 //            toBeReplaced = "`" + (genericArguments.Length);
-//            name = name.Replace(toBeReplaced, "<" + String.join( ", ", genericArguments.Select(x => x.GetBetterTypeName())) + ">");
+//            name = name.Replace(toBeReplaced, "<" + String.join( ", ", genericArguments.Select(x -> x.GetBetterTypeName())) + ">");
 //        }
 //        return name;
 //    }
 //
-//    /// <summary>
-//    /// Converts the Resolution instance into a TimeSpan instance
-//    /// </summary>
-//    /// <param name="resolution">The resolution to be converted</param>
-//    /// <returns>A TimeSpan instance that represents the resolution specified</returns>
-//    public static TimeSpan ToTimeSpan(this Resolution resolution)
+//    /**
+//    /// Converts the Resolution instance into a Duration instance
+//    */
+//     * @param resolution">The resolution to be converted
+//    @returns A Duration instance that represents the resolution specified
+//    public static Duration ToTimeSpan(this Resolution resolution)
 //    {
 //        switch (resolution)
 //        {
@@ -610,23 +618,23 @@ public class Extensions {
 //        }
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Converts the specified String value into the specified type
-//    /// </summary>
+//    */
 //    /// <typeparam name="T">The output type</typeparam>
-//    /// <param name="value">The String value to be converted</param>
-//    /// <returns>The converted value</returns>
+//     * @param value">The String value to be converted
+//    @returns The converted value
 //    public static T ConvertTo<T>(this String value)
 //    {
 //        return (T) value Extensions.convertTo(  )typeof (T));
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Converts the specified String value into the specified type
-//    /// </summary>
-//    /// <param name="value">The String value to be converted</param>
-//    /// <param name="type">The output type</param>
-//    /// <returns>The converted value</returns>
+//    */
+//     * @param value">The String value to be converted
+//     * @param type">The output type
+//    @returns The converted value
 //    public static object ConvertTo(this String value, Type type)
 //    {
 //        if( type.IsEnum)
@@ -650,11 +658,11 @@ public class Extensions {
 //        return JsonConvert.DeserializeObject(value, type);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Blocks the current thread until the current <see cref="T:System.Threading.WaitHandle"/> receives a signal, while observing a <see cref="T:System.Threading.CancellationToken"/>.
-//    /// </summary>
-//    /// <param name="waitHandle">The wait handle to wait on</param>
-//    /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> to observe.</param>
+//    */
+//     * @param waitHandle">The wait handle to wait on
+//     * @param cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> to observe.
 //    /// <exception cref="T:System.InvalidOperationException">The maximum number of waiters has been exceeded.</exception>
 //    /// <exception cref="T:System.OperationCanceledExcepton"><paramref name="cancellationToken"/> was canceled.</exception>
 //    /// <exception cref="T:System.ObjectDisposedException">The object has already been disposed or the <see cref="T:System.Threading.CancellationTokenSource"/> that created <paramref name="cancellationToken"/> has been disposed.</exception>
@@ -663,34 +671,34 @@ public class Extensions {
 //        return waitHandle.WaitOne(Timeout.Infinite, cancellationToken);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Blocks the current thread until the current <see cref="T:System.Threading.WaitHandle"/> is set, using a <see cref="T:System.TimeSpan"/> to measure the time interval, while observing a <see cref="T:System.Threading.CancellationToken"/>.
-//    /// </summary>
+//    */
 //    /// 
-//    /// <returns>
+//    @returns 
 //    /// true if the <see cref="T:System.Threading.WaitHandle"/> was set; otherwise, false.
-//    /// </returns>
-//    /// <param name="waitHandle">The wait handle to wait on</param>
-//    /// <param name="timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a <see cref="T:System.TimeSpan"/> that represents -1 milliseconds to wait indefinitely.</param>
-//    /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> to observe.</param>
+//    /// 
+//     * @param waitHandle">The wait handle to wait on
+//     * @param timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a <see cref="T:System.TimeSpan"/> that represents -1 milliseconds to wait indefinitely.
+//     * @param cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> to observe.
 //    /// <exception cref="T:System.Threading.OperationCanceledException"><paramref name="cancellationToken"/> was canceled.</exception>
 //    /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout"/> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue"/>.</exception>
 //    /// <exception cref="T:System.InvalidOperationException">The maximum number of waiters has been exceeded. </exception><exception cref="T:System.ObjectDisposedException">The object has already been disposed or the <see cref="T:System.Threading.CancellationTokenSource"/> that created <paramref name="cancellationToken"/> has been disposed.</exception>
-//    public static boolean WaitOne(this WaitHandle waitHandle, TimeSpan timeout, CancellationToken cancellationToken)
+//    public static boolean WaitOne(this WaitHandle waitHandle, Duration timeout, CancellationToken cancellationToken)
 //    {
 //        return waitHandle.WaitOne((int) timeout.TotalMilliseconds, cancellationToken);
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Blocks the current thread until the current <see cref="T:System.Threading.WaitHandle"/> is set, using a 32-bit signed integer to measure the time interval, while observing a <see cref="T:System.Threading.CancellationToken"/>.
-//    /// </summary>
+//    */
 //    /// 
-//    /// <returns>
+//    @returns 
 //    /// true if the <see cref="T:System.Threading.WaitHandle"/> was set; otherwise, false.
-//    /// </returns>
-//    /// <param name="waitHandle">The wait handle to wait on</param>
-//    /// <param name="millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/>(-1) to wait indefinitely.</param>
-//    /// <param name="cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> to observe.</param>
+//    /// 
+//     * @param waitHandle">The wait handle to wait on
+//     * @param millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/>(-1) to wait indefinitely.
+//     * @param cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> to observe.
 //    /// <exception cref="T:System.Threading.OperationCanceledException"><paramref name="cancellationToken"/> was canceled.</exception>
 //    /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout"/> is a negative number other than -1, which represents an infinite time-out.</exception>
 //    /// <exception cref="T:System.InvalidOperationException">The maximum number of waiters has been exceeded.</exception>
@@ -700,11 +708,11 @@ public class Extensions {
 //        return WaitHandle.WaitAny(new[] { waitHandle, cancellationToken.WaitHandle }, millisecondsTimeout) == 0;
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Gets the MD5 hash from a stream
-//    /// </summary>
-//    /// <param name="stream">The stream to compute a hash for</param>
-//    /// <returns>The MD5 hash</returns>
+//    */
+//     * @param stream">The stream to compute a hash for
+//    @returns The MD5 hash
 //    public static byte[] GetMD5Hash(this Stream stream)
 //    {
 //        using (md5 = MD5.Create())
@@ -713,11 +721,11 @@ public class Extensions {
 //        }
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Convert a String into the same String with a URL! :)
-//    /// </summary>
-//    /// <param name="source">The source String to be converted</param>
-//    /// <returns>The same source String but with anchor tags around substrings matching a link regex</returns>
+//    */
+//     * @param source">The source String to be converted
+//    @returns The same source String but with anchor tags around substrings matching a link regex
 //    public static String WithEmbeddedHtmlAnchors(this String source)
 //    {
 //        regx = new Regex( "http(s)?://([\\w+?\\.\\w+])+([a-zA-Z0-9\\~\\!\\@\\#\\$\\%\\^\\&amp;\\*\\(\\)_\\-\\=\\+\\\\\\/\\?\\.\\:\\;\\'\\,]*([a-zA-Z0-9\\?\\#\\=\\/])%2$s)?", RegexOptions.IgnoreCase);
@@ -729,11 +737,11 @@ public class Extensions {
 //        return source;
 //    }
 //
-//    /// <summary>
+//    /**
 //    /// Converts the specified <paramref name="enum"/> value to its corresponding lower-case String representation
-//    /// </summary>
-//    /// <param name="enum">The enumeration value</param>
-//    /// <returns>A lower-case String representation of the specified enumeration value</returns>
+//    */
+//     * @param enum">The enumeration value
+//    @returns A lower-case String representation of the specified enumeration value
 //    public static String ToLower(this Enum @enum)
 //    {
 //        return @enum.toString().toLowerCase();

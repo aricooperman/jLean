@@ -19,66 +19,66 @@ using System.Globalization;
 
 package com.quantconnect.lean.Data.Custom
 {
-    /// <summary>
+    /**
     /// Quandl Data Type - Import generic data from quandl, without needing to define Reader methods. 
     /// This reads the headers of the data imported, and dynamically creates properties for the imported data.
-    /// </summary>
+    */
     public class Quandl : DynamicData
     {
         private boolean _isInitialized;
-        private readonly List<String> _propertyNames = new List<String>();
-        private readonly String _valueColumn;
+        private final List<String> _propertyNames = new List<String>();
+        private final String _valueColumn;
         private static String _authCode = "";
 
-        /// <summary>
+        /**
         /// Flag indicating whether or not the Quanl auth code has been set yet
-        /// </summary>
+        */
         public static boolean IsAuthCodeSet
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// The end time of this data. Some data covers spans (trade bars) and as such we want
         /// to know the entire time span covered
-        /// </summary>
+        */
         public @Override DateTime EndTime
         {
             get { return Time + Period; }
             set { Time = value - Period; }
         }
 
-        /// <summary>
+        /**
         /// Gets a time span of one day
-        /// </summary>
-        public TimeSpan Period
+        */
+        public Duration Period
         {
             get { return QuantConnect.Time.OneDay; }
         }
 
-        /// <summary>
+        /**
         /// Default quandl constructor uses Close as its value column
-        /// </summary>
+        */
         public Quandl() : this( "Close") {
         }
 
-        /// <summary>
+        /**
         /// Constructor for creating customized quandl instance which doesn't use "Close" as its value item.
-        /// </summary>
-        /// <param name="valueColumnName"></param>
+        */
+         * @param valueColumnName">
         protected Quandl( String valueColumnName) {
             _valueColumn = valueColumnName;
         }
 
-        /// <summary>
+        /**
         /// Generic Reader Implementation for Quandl Data.
-        /// </summary>
-        /// <param name="config">Subscription configuration</param>
-        /// <param name="line">CSV line of data from the souce</param>
-        /// <param name="date">Date of the requested line</param>
-        /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-        /// <returns></returns>
+        */
+         * @param config">Subscription configuration
+         * @param line">CSV line of data from the souce
+         * @param date">Date of the requested line
+         * @param isLiveMode">true if we're in live mode, false for backtesting mode
+        @returns 
         public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
             // be sure to instantiate the correct type
             data = (Quandl) Activator.CreateInstance(GetType());
@@ -111,22 +111,22 @@ package com.quantconnect.lean.Data.Custom
             return data;
         }
 
-        /// <summary>
+        /**
         /// Quandl Source Locator: Using the Quandl V1 API automatically set the URL for the dataset.
-        /// </summary>
-        /// <param name="config">Subscription configuration object</param>
-        /// <param name="date">Date of the data file we're looking for</param>
-        /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-        /// <returns>STRING API Url for Quandl.</returns>
+        */
+         * @param config">Subscription configuration object
+         * @param date">Date of the data file we're looking for
+         * @param isLiveMode">true if we're in live mode, false for backtesting mode
+        @returns STRING API Url for Quandl.
         public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             source = @"https://www.quandl.com/api/v3/datasets/" + config.Symbol.Value + ".csv?order=asc&api_key=" + _authCode;
             return new SubscriptionDataSource(source, SubscriptionTransportMedium.RemoteFile);
         }
 
-        /// <summary>
+        /**
         /// Set the auth code for the quandl set to the QuantConnect auth code.
-        /// </summary>
-        /// <param name="authCode"></param>
+        */
+         * @param authCode">
         public static void SetAuthCode( String authCode) {
             if(  String.IsNullOrWhiteSpace(authCode)) return;
 

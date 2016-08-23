@@ -22,32 +22,32 @@ using System.Linq;
 
 package com.quantconnect.lean.ToolBox.CryptoiqDownloader
 {
-    /// <summary>
+    /**
     /// Cryptoiq Data Downloader class 
-    /// </summary>
+    */
     public class CryptoiqDownloader : IDataDownloader
     {
-        private readonly String _exchange;
-        private readonly BigDecimal _scaleFactor;
+        private final String _exchange;
+        private final BigDecimal _scaleFactor;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="CryptoiqDownloader"/> class
-        /// </summary>
-        /// <param name="exchange">The bitcoin exchange</param>
-        /// <param name="scaleFactor">Scale factor used to scale the data, useful for changing the BTC units</param>
+        */
+         * @param exchange">The bitcoin exchange
+         * @param scaleFactor">Scale factor used to scale the data, useful for changing the BTC units
         public CryptoiqDownloader( String exchange = "bitfinex", BigDecimal scaleFactor = 1m) {
             _exchange = exchange;
             _scaleFactor = scaleFactor;
         }
 
-        /// <summary>
+        /**
         /// Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
-        /// </summary>
-        /// <param name="symbol">Symbol for the data we're looking for.</param>
-        /// <param name="resolution">Only Tick is currently supported</param>
-        /// <param name="startUtc">Start time of the data in UTC</param>
-        /// <param name="endUtc">End time of the data in UTC</param>
-        /// <returns>Enumerable of base data for this symbol</returns>
+        */
+         * @param symbol">Symbol for the data we're looking for.
+         * @param resolution">Only Tick is currently supported
+         * @param startUtc">Start time of the data in UTC
+         * @param endUtc">End time of the data in UTC
+        @returns Enumerable of base data for this symbol
         public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
             if( resolution != Resolution.Tick) {
                 throw new ArgumentException( "Only tick data is currently supported.");
@@ -64,7 +64,7 @@ package com.quantconnect.lean.ToolBox.CryptoiqDownloader
                         data = cl.DownloadString(request);
 
                         mbtc = JsonConvert.DeserializeObject<List<CryptoiqBitcoin>>(data);
-                        foreach (item in mbtc.OrderBy(x => x.Time)) {
+                        foreach (item in mbtc.OrderBy(x -> x.Time)) {
                             yield return new Tick
                             {
                                 Time = item.Time,

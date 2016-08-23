@@ -25,24 +25,24 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Queues
 {
-    /// <summary>
+    /**
     /// Implementation of local/desktop job request:
-    /// </summary>
+    */
     public class JobQueue : IJobQueueHandler
     {
         // The type name of the QuantConnect.Brokerages.Paper.PaperBrokerage
-        private static readonly TextWriter Console = System.Console.Out;
+        private static final TextWriter Console = System.Console.Out;
         private static final String PaperBrokerageTypeName = "PaperBrokerage";
         private boolean _liveMode = Config.GetBool( "live-mode");
-        private static readonly String AccessToken = Config.Get( "api-access-token");
-        private static readonly int UserId = Config.GetInt( "job-user-id", 0);
-        private static readonly int ProjectId = Config.GetInt( "job-project-id", 0);
-        private static readonly String AlgorithmTypeName = Config.Get( "algorithm-type-name");
-        private readonly Language Language = (Language)Enum.Parse(typeof(Language), Config.Get( "algorithm-language"));
+        private static final String AccessToken = Config.Get( "api-access-token");
+        private static final int UserId = Config.GetInt( "job-user-id", 0);
+        private static final int ProjectId = Config.GetInt( "job-project-id", 0);
+        private static final String AlgorithmTypeName = Config.Get( "algorithm-type-name");
+        private final Language Language = (Language)Enum.Parse(typeof(Language), Config.Get( "algorithm-language"));
 
-        /// <summary>
+        /**
         /// Physical location of Algorithm DLL.
-        /// </summary>
+        */
         private String AlgorithmLocation
         {
             get
@@ -52,17 +52,17 @@ package com.quantconnect.lean.Queues
             }
         }
 
-        /// <summary>
+        /**
         /// Initialize the job queue:
-        /// </summary>
+        */
         public void Initialize() {
             //
         }
         
-        /// <summary>
+        /**
         /// Desktop/Local Get Next Task - Get task from the Algorithm folder of VS Solution.
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         public AlgorithmNodePacket NextJob(out String location) {
             location = AlgorithmLocation;
             Log.Trace( "JobQueue.NextJob(): Selected " + location);
@@ -94,7 +94,7 @@ package com.quantconnect.lean.Queues
                 try
                 { 
                     // import the brokerage data for the configured brokerage
-                    brokerageFactory = Composer.Instance.Single<IBrokerageFactory>(factory => factory.BrokerageType.MatchesTypeName(liveJob.Brokerage));
+                    brokerageFactory = Composer.Instance.Single<IBrokerageFactory>(factory -> factory.BrokerageType.MatchesTypeName(liveJob.Brokerage));
                     liveJob.BrokerageData = brokerageFactory.BrokerageData;
                 }
                 catch (Exception err) {
@@ -121,10 +121,10 @@ package com.quantconnect.lean.Queues
             return backtestJob;
         }
 
-        /// <summary>
+        /**
         /// Desktop/Local acknowledge the task processed. Nothing to do.
-        /// </summary>
-        /// <param name="job"></param>
+        */
+         * @param job">
         public void AcknowledgeJob(AlgorithmNodePacket job) {
             // Make the console window pause so we can read log output before exiting and killing the application completely
             Console.WriteLine( "Engine.Main(): Analysis Complete. Press any key to continue.");

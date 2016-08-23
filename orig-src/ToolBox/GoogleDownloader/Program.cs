@@ -22,10 +22,10 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
 {
     class Program
     {
-        /// <summary>
+        /**
         /// QuantConnect Google Downloader For LEAN Algorithmic Trading Engine.
         /// Original by @chrisdk2015, tidied by @jaredbroad
-        /// </summary>
+        */
         public static void Main( String[] args) {
             if( args.Length != 4) {
                 Console.WriteLine( "Usage: GoogleDownloader SYMBOLS RESOLUTION FROMDATE TODATE");

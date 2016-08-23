@@ -17,16 +17,16 @@ using System;
 
 package com.quantconnect.lean.Brokerages.InteractiveBrokers
 {
-    /// <summary>
+    /**
     /// Provides the mapping between Lean symbols and InteractiveBrokers symbols.
-    /// </summary>
+    */
     public class InteractiveBrokersSymbolMapper : ISymbolMapper
     {
-        /// <summary>
+        /**
         /// Converts a Lean symbol instance to an InteractiveBrokers symbol
-        /// </summary>
-        /// <param name="symbol">A Lean symbol instance</param>
-        /// <returns>The InteractiveBrokers symbol</returns>
+        */
+         * @param symbol">A Lean symbol instance
+        @returns The InteractiveBrokers symbol
         public String GetBrokerageSymbol(Symbol symbol) {
             if( symbol == null || symbol == Symbol.Empty || string.IsNullOrWhiteSpace(symbol.Value))
                 throw new ArgumentException( "Invalid symbol: " + (symbol == null ? "null" : symbol.toString()));
@@ -42,13 +42,13 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             return symbol.Value;
         }
 
-        /// <summary>
+        /**
         /// Converts an InteractiveBrokers symbol to a Lean symbol instance
-        /// </summary>
-        /// <param name="brokerageSymbol">The InteractiveBrokers symbol</param>
-        /// <param name="securityType">The security type</param>
-        /// <param name="market">The market</param>
-        /// <returns>A new Lean Symbol instance</returns>
+        */
+         * @param brokerageSymbol">The InteractiveBrokers symbol
+         * @param securityType">The security type
+         * @param market">The market
+        @returns A new Lean Symbol instance
         public Symbol GetLeanSymbol( String brokerageSymbol, SecurityType securityType, String market) {
             if(  String.IsNullOrWhiteSpace(brokerageSymbol))
                 throw new ArgumentException( "Invalid symbol: " + brokerageSymbol);

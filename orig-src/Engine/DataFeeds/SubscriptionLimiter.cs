@@ -19,28 +19,28 @@ using System.Linq;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Provides logic to prevent an algorithm from adding too many data subscriptions
-    /// </summary>
+    */
     public class SubscriptionLimiter
     {
         private static final int MinuteMemory = 2;
         private static final int SecondMemory = 10;
         private static final int TickMemory = 34;
 
-        private readonly int _tickLimit;
-        private readonly int _secondLimit;
-        private readonly int _minuteLimit;
-        private readonly BigDecimal _maxRamEstimate;
-        private readonly Func<IEnumerable<Subscription>> _subscriptionsProvider;
+        private final int _tickLimit;
+        private final int _secondLimit;
+        private final int _minuteLimit;
+        private final BigDecimal _maxRamEstimate;
+        private final Func<IEnumerable<Subscription>> _subscriptionsProvider;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="SubscriptionLimiter"/> class
-        /// </summary>
-        /// <param name="subscriptionsProvider">Delegate used to provide access to the current subscriptions</param>
-        /// <param name="tickLimit">The maximum number of tick symbols</param>
-        /// <param name="secondLimit">The maximum number of second symbols</param>
-        /// <param name="minuteLimit">The maximum number of minute symbol</param>
+        */
+         * @param subscriptionsProvider">Delegate used to provide access to the current subscriptions
+         * @param tickLimit">The maximum number of tick symbols
+         * @param secondLimit">The maximum number of second symbols
+         * @param minuteLimit">The maximum number of minute symbol
         public SubscriptionLimiter(Func<IEnumerable<Subscription>> subscriptionsProvider, int tickLimit, int secondLimit, int minuteLimit) {
             _subscriptionsProvider = subscriptionsProvider;
             _tickLimit = tickLimit;
@@ -49,11 +49,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             _maxRamEstimate = GetRamEstimate(minuteLimit, secondLimit, tickLimit);
         }
 
-        /// <summary>
+        /**
         /// Get the number of securities that have this resolution.
-        /// </summary>
-        /// <param name="resolution">Search resolution value.</param>
-        /// <returns>Count of the securities</returns>
+        */
+         * @param resolution">Search resolution value.
+        @returns Count of the securities
         public int GetResolutionCount(Resolution resolution) {
             return (from subscription in _subscriptionsProvider()
                     let security = subscription.Security
@@ -63,22 +63,22 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     select security.Resolution).Count();
         }
 
-        /// <summary>
+        /**
         /// Gets the number of available slots for the specifed resolution
-        /// </summary>
-        /// <param name="resolution">The resolution we want to add subscriptions at</param>
-        /// <returns>The number of subscriptions we can safely add without maxing out the count (ram usage depends on other factors)</returns>
+        */
+         * @param resolution">The resolution we want to add subscriptions at
+        @returns The number of subscriptions we can safely add without maxing out the count (ram usage depends on other factors)
         public int GetRemaining(Resolution resolution) {
             return GetResolutionLimit(resolution) - GetResolutionCount(resolution);
         }
 
-        /// <summary>
+        /**
         /// Determines if we can add a subscription for the specified resolution
-        /// </summary>
-        /// <param name="resolution">The new subscription resolution to check</param>
-        /// <param name="reason">When this function returns false, this is the reason we are unable to add the subscription</param>
-        /// <returns>True if we can add a subscription for the specified resolution while
-        /// remaining within our limits, false if this will put us over our limits</returns>
+        */
+         * @param resolution">The new subscription resolution to check
+         * @param reason">When this function returns false, this is the reason we are unable to add the subscription
+        @returns True if we can add a subscription for the specified resolution while
+        /// remaining within our limits, false if this will put us over our limits
         public boolean CanAddSubscription(Resolution resolution, out String reason) {
             reason = null;
             limit = GetResolutionLimit(resolution);
@@ -107,11 +107,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return true;
         }
 
-        /// <summary>
+        /**
         /// Gets the max number of symbols for the specified resolution
-        /// </summary>
-        /// <param name="resolution">The resolution whose limit we seek</param>
-        /// <returns>The specified resolution's limit</returns>
+        */
+         * @param resolution">The resolution whose limit we seek
+        @returns The specified resolution's limit
         private int GetResolutionLimit(Resolution resolution) {
             switch (resolution) {
                 case Resolution.Tick:
@@ -132,25 +132,25 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
         }
 
-        /// <summary>
+        /**
         /// Estimated ram usage with this symbol combination:
-        /// </summary>
-        /// <returns>Decimal estimate of the number of MB ram the requested assets would consume</returns>
+        */
+        @returns Decimal estimate of the number of MB ram the requested assets would consume
         private BigDecimal GetRamEstimate(int minute, int second, int tick) {
             return MinuteMemory * minute + SecondMemory * second + TickMemory * tick;
         }
 
-        /// <summary>
+        /**
         /// Gets reason String for having a larger count than the limits
-        /// </summary>
+        */
         private String GetCountLimitReason(Resolution resolution) {
             limit = GetResolutionLimit(resolution);
             return String.format( "We currently only support %1$s %2$s at a time due to physical memory limitations", limit, resolution.toString().toLowerCase());
         }
 
-        /// <summary>
+        /**
         /// Gets reason String for having a larger estimated ram usage than the limits
-        /// </summary>
+        */
         private String GetMaxRamReason( BigDecimal currentEstimatedRam) {
             return String.format( "We estimate you will run out of memory (%1$smb of %2$smb physically available). " +
                 "Please reduce the number of symbols you're analysing or if in live trading upgrade your server to allow more memory.",

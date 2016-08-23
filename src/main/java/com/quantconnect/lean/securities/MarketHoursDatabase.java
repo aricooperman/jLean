@@ -15,6 +15,8 @@
 
 package com.quantconnect.lean.securities;
 
+import com.google.common.collect.ImmutableMap;
+
 //using System.IO;
 //using System.Linq;
 //using Newtonsoft.Json;
@@ -24,36 +26,36 @@ package com.quantconnect.lean.securities;
 //using QuantConnect.Util;
 
 /// Provides access to exchange hours and raw data times zones in various markets
-[JsonConverter(typeof(MarketHoursDatabaseJsonConverter))]
+// TODO [JsonConverter(typeof(MarketHoursDatabaseJsonConverter))]
 public class MarketHoursDatabase {
     
     private static MarketHoursDatabase _dataFolderMarketHoursDatabase;
     
     private static final Object DataFolderMarketHoursDatabaseLock = new Object();
 
-    private readonly IReadOnlyMap<SecurityDatabaseKey, Entry> _entries;
+    private final ImmutableMap<SecurityDatabaseKey, Entry> _entries;
 
-    /// <summary>
+    /**
     /// Gets an instant of <see cref="MarketHoursDatabase"/> that will always return <see cref="SecurityExchangeHours.AlwaysOpen"/>
     /// for each call to <see cref="GetExchangeHours( String, Symbol, SecurityType,ZoneId)"/>
-    /// </summary>
+    */
     public static MarketHoursDatabase AlwaysOpen
     {
         get { return new AlwaysOpenMarketHoursDatabase(); }
     }
 
-    /// <summary>
+    /**
     /// Gets all the exchange hours held by this provider
-    /// </summary>
+    */
     public List<KeyValuePair<SecurityDatabaseKey,Entry>> ExchangeHoursListing
     {
         get { return _entries.ToList(); }
     }
 
-    /// <summary>
+    /**
     /// Initializes a new instance of the <see cref="MarketHoursDatabase"/> class
-    /// </summary>
-    /// <param name="exchangeHours">The full listing of exchange hours by key</param>
+    */
+     * @param exchangeHours">The full listing of exchange hours by key
     public MarketHoursDatabase(IReadOnlyMap<SecurityDatabaseKey, Entry> exchangeHours) {
         _entries = exchangeHours.ToDictionary();
     }
@@ -62,54 +64,54 @@ public class MarketHoursDatabase {
         // used for the always open implementation
     }
 
-    /// <summary>
+    /**
     /// Performs a lookup using the specified information and returns the exchange hours if found,
     /// if exchange hours are not found, an exception is thrown
-    /// </summary>
-    /// <param name="configuration">The subscription data config to get exchange hours for</param>
-    /// <param name="@OverrideTimeZone">Specify this time zone to @Override the resolved time zone from the market hours database.
+    */
+     * @param configuration">The subscription data config to get exchange hours for
+     * @param @OverrideTimeZone">Specify this time zone to @Override the resolved time zone from the market hours database.
     /// This value will also be used as the time zone for SecurityType.Base with no market hours database entry.
-    /// If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.</param>
+    /// If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.
     public SecurityExchangeHours GetExchangeHours(SubscriptionDataConfig configuration, ZoneId @OverrideTimeZone = null ) {
         // we don't expect base security types to be in the market-hours-database, so set @OverrideTimeZone
         if( configuration.SecurityType == SecurityType.Base && @OverrideTimeZone == null ) @OverrideTimeZone = configuration.ExchangeTimeZone;
         return GetExchangeHours(configuration.Market, configuration.Symbol, configuration.SecurityType, @OverrideTimeZone);
     }
 
-    /// <summary>
+    /**
     /// Performs a lookup using the specified information and returns the exchange hours if found,
     /// if exchange hours are not found, an exception is thrown
-    /// </summary>
-    /// <param name="market">The market the exchange resides in, i.e, 'usa', 'fxcm', ect...</param>
-    /// <param name="symbol">The particular symbol being traded</param>
-    /// <param name="securityType">The security type of the symbol</param>
-    /// <param name="@OverrideTimeZone">Specify this time zone to @Override the resolved time zone from the market hours database.
+    */
+     * @param market">The market the exchange resides in, i.e, 'usa', 'fxcm', ect...
+     * @param symbol">The particular symbol being traded
+     * @param securityType">The security type of the symbol
+     * @param @OverrideTimeZone">Specify this time zone to @Override the resolved time zone from the market hours database.
     /// This value will also be used as the time zone for SecurityType.Base with no market hours database entry.
-    /// If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.</param>
-    /// <returns>The exchange hours for the specified security</returns>
+    /// If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.
+    @returns The exchange hours for the specified security
     public SecurityExchangeHours GetExchangeHours( String market, Symbol symbol, SecurityType securityType, ZoneId @OverrideTimeZone = null ) {
         stringSymbol = symbol == null ? string.Empty : symbol.Value;
         return GetEntry(market, stringSymbol, securityType, @OverrideTimeZone).ExchangeHours;
     }
 
-    /// <summary>
+    /**
     /// Performs a lookup using the specified information and returns the data's time zone if found,
     /// if an entry is not found, an exception is thrown
-    /// </summary>
-    /// <param name="market">The market the exchange resides in, i.e, 'usa', 'fxcm', ect...</param>
-    /// <param name="symbol">The particular symbol being traded</param>
-    /// <param name="securityType">The security type of the symbol</param>
-    /// <returns>The raw data time zone for the specified security</returns>
+    */
+     * @param market">The market the exchange resides in, i.e, 'usa', 'fxcm', ect...
+     * @param symbol">The particular symbol being traded
+     * @param securityType">The security type of the symbol
+    @returns The raw data time zone for the specified security
     public ZoneId GetDataTimeZone( String market, Symbol symbol, SecurityType securityType) {
         stringSymbol = symbol == null ? string.Empty : symbol.Value;
         return GetEntry(market, stringSymbol, securityType).DataTimeZone;
     }
 
-    /// <summary>
+    /**
     /// Gets the instance of the <see cref="MarketHoursDatabase"/> class produced by reading in the market hours
     /// data found in /Data/market-hours/
-    /// </summary>
-    /// <returns>A <see cref="MarketHoursDatabase"/> class that represents the data in the market-hours folder</returns>
+    */
+    @returns A <see cref="MarketHoursDatabase"/> class that represents the data in the market-hours folder
     public static MarketHoursDatabase FromDataFolder() {
         lock (DataFolderMarketHoursDatabaseLock) {
             if( _dataFolderMarketHoursDatabase == null ) {
@@ -120,25 +122,25 @@ public class MarketHoursDatabase {
         return _dataFolderMarketHoursDatabase;
     }
 
-    /// <summary>
+    /**
     /// Reads the specified file as a market hours database instance
-    /// </summary>
-    /// <param name="path">The market hours database file path</param>
-    /// <returns>A new instance of the <see cref="MarketHoursDatabase"/> class</returns>
+    */
+     * @param path">The market hours database file path
+    @returns A new instance of the <see cref="MarketHoursDatabase"/> class
     public static MarketHoursDatabase FromFile( String path) {
         return JsonConvert.DeserializeObject<MarketHoursDatabase>(File.ReadAllText(path));
     }
 
-    /// <summary>
+    /**
     /// Gets the entry for the specified market/symbol/security-type
-    /// </summary>
-    /// <param name="market">The market the exchange resides in, i.e, 'usa', 'fxcm', ect...</param>
-    /// <param name="symbol">The particular symbol being traded</param>
-    /// <param name="securityType">The security type of the symbol</param>
-    /// <param name="@OverrideTimeZone">Specify this time zone to @Override the resolved time zone from the market hours database.
+    */
+     * @param market">The market the exchange resides in, i.e, 'usa', 'fxcm', ect...
+     * @param symbol">The particular symbol being traded
+     * @param securityType">The security type of the symbol
+     * @param @OverrideTimeZone">Specify this time zone to @Override the resolved time zone from the market hours database.
     /// This value will also be used as the time zone for SecurityType.Base with no market hours database entry.
-    /// If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.</param>
-    /// <returns>The entry matching the specified market/symbol/security-type</returns>
+    /// If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.
+    @returns The entry matching the specified market/symbol/security-type
     public virtual Entry GetEntry( String market, String symbol, SecurityType securityType, ZoneId @OverrideTimeZone = null ) {
         Entry entry;
         key = new SecurityDatabaseKey(market, symbol, securityType);
@@ -170,26 +172,21 @@ public class MarketHoursDatabase {
         return entry;
     }
 
-    /// <summary>
     /// Represents a single entry in the <see cref="MarketHoursDatabase"/>
-    /// </summary>
     public class Entry {
-        /// <summary>
+        
         /// Gets the raw data time zone for this entry
-        /// </summary>
-        public readonly ZoneId DataTimeZone;
-        /// <summary>
+        public final ZoneId DataTimeZone;
+
         /// Gets the exchange hours for this entry
-        /// </summary>
-        public readonly SecurityExchangeHours ExchangeHours;
-        /// <summary>
+        public final SecurityExchangeHours ExchangeHours;
+
         /// Initializes a new instance of the <see cref="Entry"/> class
-        /// </summary>
-        /// <param name="dataTimeZone">The raw data time zone</param>
-        /// <param name="exchangeHours">The security exchange hours for this entry</param>
-        public Entry(ZoneId dataTimeZone, SecurityExchangeHours exchangeHours) {
-            DataTimeZone = dataTimeZone;
-            ExchangeHours = exchangeHours;
+         * @param dataTimeZone">The raw data time zone
+         * @param exchangeHours">The security exchange hours for this entry
+        public Entry( ZoneId dataTimeZone, SecurityExchangeHours exchangeHours ) {
+            this.DataTimeZone = dataTimeZone;
+            this.ExchangeHours = exchangeHours;
         }
     }
 

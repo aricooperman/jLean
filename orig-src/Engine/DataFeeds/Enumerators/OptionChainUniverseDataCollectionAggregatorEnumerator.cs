@@ -20,25 +20,25 @@ using QuantConnect.Data.UniverseSelection;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
-    /// <summary>
+    /**
     /// Aggregates an enumerator into <see cref="OptionChainUniverseDataCollection"/> instances
-    /// </summary>
+    */
     public class OptionChainUniverseDataCollectionAggregatorEnumerator : BaseDataCollectionAggregatorEnumerator<OptionChainUniverseDataCollection>
     {
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="OptionChainUniverseDataCollectionAggregatorEnumerator"/> class
-        /// </summary>
-        /// <param name="enumerator">The enumerator to aggregate</param>
-        /// <param name="symbol">The output data's symbol</param>
+        */
+         * @param enumerator">The enumerator to aggregate
+         * @param symbol">The output data's symbol
         public OptionChainUniverseDataCollectionAggregatorEnumerator(IEnumerator<BaseData> enumerator, Symbol symbol)
             : base(enumerator, symbol) {
         }
 
-        /// <summary>
+        /**
         /// Adds the specified instance of <see cref="BaseData"/> to the current collection
-        /// </summary>
-        /// <param name="collection">The collection to be added to</param>
-        /// <param name="current">The data to be added</param>
+        */
+         * @param collection">The collection to be added to
+         * @param current">The data to be added
         protected @Override void Add(OptionChainUniverseDataCollection collection, BaseData current) {
             AddSingleItem(collection, current);
         }

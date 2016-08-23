@@ -18,18 +18,18 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// This indicator computes Average Directional Index which measures trend strength without regard to trend direction.
     /// Firstly, it calculates the Directional Movement and the True Range value, and then the values are accumulated and smoothed
     /// using a custom smoothing method proposed by Wilder. For an n period smoothing, 1/n of each period's value is added to the total period.
     /// From these accumulated values we are therefore able to derived the 'Positive Directional Index' (+DI) and 'Negative Directional Index' (-DI)
     /// which is used to calculate the Average Directional Index.
-    /// </summary>
+    */
     public class AverageDirectionalIndex : IndicatorBase<TradeBar>
     {
         private TradeBar _previousInput;
 
-        private readonly int _period;
+        private final int _period;
 
         private IndicatorBase<TradeBar> TrueRange { get; set; }
 
@@ -43,27 +43,27 @@ package com.quantconnect.lean.Indicators
 
         private IndicatorBase<IndicatorDataPoint> SmoothedTrueRange { get; set; }
 
-        /// <summary>
+        /**
         /// Gets or sets the index of the Plus Directional Indicator
-        /// </summary>
+        */
         /// <value>
         /// The  index of the Plus Directional Indicator.
         /// </value>
         public IndicatorBase<IndicatorDataPoint> PositiveDirectionalIndex { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets or sets the index of the Minus Directional Indicator
-        /// </summary>
+        */
         /// <value>
         /// The index of the Minus Directional Indicator.
         /// </value>
         public IndicatorBase<IndicatorDataPoint> NegativeDirectionalIndex { get; private set; }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="AverageDirectionalIndex"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="period">The period.</param>
+        */
+         * @param name">The name.
+         * @param period">The period.
         public AverageDirectionalIndex( String name, int period)
             : base(name) {
             _period = period;
@@ -74,7 +74,7 @@ package com.quantconnect.lean.Indicators
                     value = ComputeTrueRange(currentBar);
                     return value;
                 },
-                isReady => _previousInput != null
+                isReady -> _previousInput != null
                 );
 
             DirectionalMovementPlus = new FunctionalIndicator<TradeBar>(name + "_PositiveDirectionalMovement",
@@ -83,7 +83,7 @@ package com.quantconnect.lean.Indicators
                     value = ComputePositiveDirectionalMovement(currentBar);
                     return value;
                 },
-                isReady => _previousInput != null
+                isReady -> _previousInput != null
                 );
 
 
@@ -93,12 +93,12 @@ package com.quantconnect.lean.Indicators
                     value = ComputeNegativeDirectionalMovement(currentBar);
                     return value;
                 },
-                isReady => _previousInput != null
+                isReady -> _previousInput != null
                 );
 
             PositiveDirectionalIndex = new FunctionalIndicator<IndicatorDataPoint>(name + "_PositiveDirectionalIndex",
-                input => ComputePositiveDirectionalIndex(),
-                positiveDirectionalIndex => DirectionalMovementPlus.IsReady && TrueRange.IsReady,
+                input -> ComputePositiveDirectionalIndex(),
+                positiveDirectionalIndex -> DirectionalMovementPlus.IsReady && TrueRange.IsReady,
                 () =>
                 {
                     DirectionalMovementPlus.Reset();
@@ -107,8 +107,8 @@ package com.quantconnect.lean.Indicators
                 );
 
             NegativeDirectionalIndex = new FunctionalIndicator<IndicatorDataPoint>(name + "_NegativeDirectionalIndex",
-                input => ComputeNegativeDirectionalIndex(),
-                negativeDirectionalIndex => DirectionalMovementMinus.IsReady && TrueRange.IsReady,
+                input -> ComputeNegativeDirectionalIndex(),
+                negativeDirectionalIndex -> DirectionalMovementMinus.IsReady && TrueRange.IsReady,
                 () =>
                 {
                     DirectionalMovementMinus.Reset();
@@ -117,27 +117,27 @@ package com.quantconnect.lean.Indicators
                 );
 
             SmoothedTrueRange = new FunctionalIndicator<IndicatorDataPoint>(name + "_SmoothedTrueRange",
-                    currentBar => ComputeSmoothedTrueRange(period),
-                    isReady => _previousInput != null
+                    currentBar -> ComputeSmoothedTrueRange(period),
+                    isReady -> _previousInput != null
                 );
 
 
             SmoothedDirectionalMovementPlus = new FunctionalIndicator<IndicatorDataPoint>(name + "_SmoothedDirectionalMovementPlus",
-                    currentBar => ComputeSmoothedDirectionalMovementPlus(period),
-                    isReady => _previousInput != null
+                    currentBar -> ComputeSmoothedDirectionalMovementPlus(period),
+                    isReady -> _previousInput != null
                 );
 
             SmoothedDirectionalMovementMinus = new FunctionalIndicator<IndicatorDataPoint>(name + "_SmoothedDirectionalMovementMinus",
-                    currentBar => ComputeSmoothedDirectionalMovementMinus(period),
-                    isReady => _previousInput != null
+                    currentBar -> ComputeSmoothedDirectionalMovementMinus(period),
+                    isReady -> _previousInput != null
                 );
         }
 
-        /// <summary>
+        /**
         /// Computes the Smoothed Directional Movement Plus value.
-        /// </summary>
-        /// <param name="period">The period.</param>
-        /// <returns></returns>
+        */
+         * @param period">The period.
+        @returns 
         private BigDecimal ComputeSmoothedDirectionalMovementPlus(int period) {
 
             BigDecimal value;
@@ -153,11 +153,11 @@ package com.quantconnect.lean.Indicators
             return value;
         }
 
-        /// <summary>
+        /**
         /// Computes the Smoothed Directional Movement Minus value.
-        /// </summary>
-        /// <param name="period">The period.</param>
-        /// <returns></returns>
+        */
+         * @param period">The period.
+        @returns 
         private BigDecimal ComputeSmoothedDirectionalMovementMinus(int period) {
             BigDecimal value;
 
@@ -172,11 +172,11 @@ package com.quantconnect.lean.Indicators
             return value;
         }
 
-        /// <summary>
+        /**
         /// Computes the Smoothed True Range value.
-        /// </summary>
-        /// <param name="period">The period.</param>
-        /// <returns></returns>
+        */
+         * @param period">The period.
+        @returns 
         private BigDecimal ComputeSmoothedTrueRange(int period) {
             BigDecimal value;
 
@@ -190,19 +190,19 @@ package com.quantconnect.lean.Indicators
             return value;
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the True Range value.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <returns></returns>
+        */
+         * @param input">The input.
+        @returns 
         private BigDecimal ComputeTrueRange(TradeBar input) {
             trueRange = new decimal(0.0);
 
@@ -213,11 +213,11 @@ package com.quantconnect.lean.Indicators
             return trueRange;
         }
 
-        /// <summary>
+        /**
         /// Computes the positive directional movement.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <returns></returns>
+        */
+         * @param input">The input.
+        @returns 
         private BigDecimal ComputePositiveDirectionalMovement(TradeBar input) {
             postiveDirectionalMovement = new decimal(0.0);
 
@@ -232,11 +232,11 @@ package com.quantconnect.lean.Indicators
             return postiveDirectionalMovement;
         }
 
-        /// <summary>
+        /**
         /// Computes the negative directional movement.
-        /// </summary>
-        /// <param name="input">The input.</param>
-        /// <returns></returns>
+        */
+         * @param input">The input.
+        @returns 
         private BigDecimal ComputeNegativeDirectionalMovement(TradeBar input) {
             negativeDirectionalMovement = new decimal(0.0);
 
@@ -251,11 +251,11 @@ package com.quantconnect.lean.Indicators
             return negativeDirectionalMovement;
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             TrueRange.Update(input);
             DirectionalMovementPlus.Update(input);
@@ -274,10 +274,10 @@ package com.quantconnect.lean.Indicators
             return value;
         }
 
-        /// <summary>
+        /**
         /// Computes the Plus Directional Indicator (+DI period).
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         private BigDecimal ComputePositiveDirectionalIndex() {
             if( SmoothedTrueRange == 0) return new decimal(0.0);
 
@@ -286,10 +286,10 @@ package com.quantconnect.lean.Indicators
             return positiveDirectionalIndex;
         }
 
-        /// <summary>
+        /**
         /// Computes the Minus Directional Indicator (-DI period).
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         private BigDecimal ComputeNegativeDirectionalIndex() {
             if( SmoothedTrueRange == 0) return new decimal(0.0);
 
@@ -298,9 +298,9 @@ package com.quantconnect.lean.Indicators
             return negativeDirectionalIndex;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             base.Reset();
             _previousInput = null;

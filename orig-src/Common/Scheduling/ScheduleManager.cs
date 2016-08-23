@@ -21,32 +21,32 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Scheduling
 {
-    /// <summary>
+    /**
     /// Provides access to the real time handler's event scheduling feature
-    /// </summary>
+    */
     public class ScheduleManager : IEventSchedule
     {
         private IEventSchedule _eventSchedule;
 
-        private readonly SecurityManager _securities;
-        private readonly object _eventScheduleLock = new object();
-        private readonly List<ScheduledEvent> _preInitializedEvents;
+        private final SecurityManager _securities;
+        private final object _eventScheduleLock = new object();
+        private final List<ScheduledEvent> _preInitializedEvents;
 
-        /// <summary>
+        /**
         /// Gets the date rules helper object to make specifying dates for events easier
-        /// </summary>
+        */
         public DateRules DateRules { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the time rules helper object to make specifying times for events easier
-        /// </summary>
+        */
         public TimeRules TimeRules { get; private set; }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ScheduleManager"/> class
-        /// </summary>
-        /// <param name="securities">Securities manager containing the algorithm's securities</param>
-        /// <param name="timeZone">The algorithm's time zone</param>
+        */
+         * @param securities">Securities manager containing the algorithm's securities
+         * @param timeZone">The algorithm's time zone
         public ScheduleManager(SecurityManager securities, ZoneId timeZone) {
             _securities = securities;
             DateRules = new DateRules(securities);
@@ -56,10 +56,10 @@ package com.quantconnect.lean.Scheduling
             _preInitializedEvents = new List<ScheduledEvent>();
         }
 
-        /// <summary>
+        /**
         /// Sets the <see cref="IEventSchedule"/> implementation
-        /// </summary>
-        /// <param name="eventSchedule">The event schedule implementation to be used. This is the IRealTimeHandler</param>
+        */
+         * @param eventSchedule">The event schedule implementation to be used. This is the IRealTimeHandler
         internal void SetEventSchedule(IEventSchedule eventSchedule) {
             if( eventSchedule == null ) {
                 throw new ArgumentNullException( "eventSchedule");
@@ -75,10 +75,10 @@ package com.quantconnect.lean.Scheduling
             }
         }
 
-        /// <summary>
+        /**
         /// Adds the specified event to the schedule using the <see cref="ScheduledEvent.Name"/> as a key.
-        /// </summary>
-        /// <param name="scheduledEvent">The event to be scheduled, including the date/times the event fires and the callback</param>
+        */
+         * @param scheduledEvent">The event to be scheduled, including the date/times the event fires and the callback
         public void Add(ScheduledEvent scheduledEvent) {
             lock (_eventScheduleLock) {
                 if( _eventSchedule != null ) {
@@ -91,10 +91,10 @@ package com.quantconnect.lean.Scheduling
             }
         }
 
-        /// <summary>
+        /**
         /// Removes the event with the specified name from the schedule
-        /// </summary>
-        /// <param name="name">The name of the event to be removed</param>
+        */
+         * @param name">The name of the event to be removed
         public void Remove( String name) {
             lock (_eventScheduleLock) {
                 if( _eventSchedule != null ) {
@@ -102,50 +102,50 @@ package com.quantconnect.lean.Scheduling
                 }
                 else
                 {
-                    _preInitializedEvents.RemoveAll(se => se.Name == name);
+                    _preInitializedEvents.RemoveAll(se -> se.Name == name);
                 }
             }
         }
 
-        /// <summary>
+        /**
         /// Schedules the callback to run using the specified date and time rules
-        /// </summary>
-        /// <param name="dateRule">Specifies what dates the event should run</param>
-        /// <param name="timeRule">Specifies the times on those dates the event should run</param>
-        /// <param name="callback">The callback to be invoked</param>
+        */
+         * @param dateRule">Specifies what dates the event should run
+         * @param timeRule">Specifies the times on those dates the event should run
+         * @param callback">The callback to be invoked
         public ScheduledEvent On(IDateRule dateRule, ITimeRule timeRule, Action callback) {
-            return On(dateRule, timeRule, (name, time) => callback());
+            return On(dateRule, timeRule, (name, time) -> callback());
         }
 
-        /// <summary>
+        /**
         /// Schedules the callback to run using the specified date and time rules
-        /// </summary>
-        /// <param name="dateRule">Specifies what dates the event should run</param>
-        /// <param name="timeRule">Specifies the times on those dates the event should run</param>
-        /// <param name="callback">The callback to be invoked</param>
+        */
+         * @param dateRule">Specifies what dates the event should run
+         * @param timeRule">Specifies the times on those dates the event should run
+         * @param callback">The callback to be invoked
         public ScheduledEvent On(IDateRule dateRule, ITimeRule timeRule, Action<String, DateTime> callback) {
             name = dateRule.Name + ": " + timeRule.Name;
             return On(name, dateRule, timeRule, callback);
         }
 
-        /// <summary>
+        /**
         /// Schedules the callback to run using the specified date and time rules
-        /// </summary>
-        /// <param name="name">The event's unique name</param>
-        /// <param name="dateRule">Specifies what dates the event should run</param>
-        /// <param name="timeRule">Specifies the times on those dates the event should run</param>
-        /// <param name="callback">The callback to be invoked</param>
+        */
+         * @param name">The event's unique name
+         * @param dateRule">Specifies what dates the event should run
+         * @param timeRule">Specifies the times on those dates the event should run
+         * @param callback">The callback to be invoked
         public ScheduledEvent On( String name, IDateRule dateRule, ITimeRule timeRule, Action callback) {
-            return On(name, dateRule, timeRule, (n, d) => callback());
+            return On(name, dateRule, timeRule, (n, d) -> callback());
         }
 
-        /// <summary>
+        /**
         /// Schedules the callback to run using the specified date and time rules
-        /// </summary>
-        /// <param name="name">The event's unique name</param>
-        /// <param name="dateRule">Specifies what dates the event should run</param>
-        /// <param name="timeRule">Specifies the times on those dates the event should run</param>
-        /// <param name="callback">The callback to be invoked</param>
+        */
+         * @param name">The event's unique name
+         * @param dateRule">Specifies what dates the event should run
+         * @param timeRule">Specifies the times on those dates the event should run
+         * @param callback">The callback to be invoked
         public ScheduledEvent On( String name, IDateRule dateRule, ITimeRule timeRule, Action<String, DateTime> callback) {
             // back the date up to ensure we get all events, the event scheduler will skip past events that whose time has passed
             dates = dateRule.GetDates(_securities.UtcTime.Date.AddDays(-1), Time.EndOfTime);
@@ -157,16 +157,16 @@ package com.quantconnect.lean.Scheduling
 
         #region Fluent Scheduling
 
-        /// <summary>
+        /**
         /// Entry point for the fluent scheduled event builder
-        /// </summary>
+        */
         public IFluentSchedulingDateSpecifier Event() {
             return new FluentScheduledEventBuilder(this, _securities);
         }
 
-        /// <summary>
+        /**
         /// Entry point for the fluent scheduled event builder
-        /// </summary>
+        */
         public IFluentSchedulingDateSpecifier Event( String name) {
             return new FluentScheduledEventBuilder(this, _securities, name);
         }

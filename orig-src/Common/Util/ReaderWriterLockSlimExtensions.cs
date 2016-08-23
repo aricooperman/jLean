@@ -19,25 +19,25 @@ using System.Threading;
 
 package com.quantconnect.lean.Util
 {
-    /// <summary>
+    /**
     /// Provides extension methods to make working with the <see cref="ReaderWriterLockSlim"/> class easier
-    /// </summary>
+    */
     public static class ReaderWriterLockSlimExtensions
     {
-        /// <summary>
+        /**
         /// Opens the read lock
-        /// </summary>
-        /// <param name="readerWriterLockSlim">The lock to open for read</param>
-        /// <returns>A disposable reference which will release the lock upon disposal</returns>
+        */
+         * @param readerWriterLockSlim">The lock to open for read
+        @returns A disposable reference which will release the lock upon disposal
         public static IDisposable Read(this ReaderWriterLockSlim readerWriterLockSlim) {
             return new ReaderLockToken(readerWriterLockSlim);
         }
 
-        /// <summary>
+        /**
         /// Opens the write lock
-        /// </summary>
-        /// <param name="readerWriterLockSlim">The lock to open for write</param>
-        /// <returns>A disposale reference which will release thelock upon disposal</returns>
+        */
+         * @param readerWriterLockSlim">The lock to open for write
+        @returns A disposale reference which will release thelock upon disposal
         public static IDisposable Write(this ReaderWriterLockSlim readerWriterLockSlim) {
             return new WriteLockToken(readerWriterLockSlim);
         }

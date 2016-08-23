@@ -34,7 +34,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             dataResolution = Time.OneMinute;
             
             reference = new DateTime(2015, 6, 25, 9, 30, 0);
-            data = Enumerable.Range(0, 2).Select(x => new TradeBar
+            data = Enumerable.Range(0, 2).Select(x -> new TradeBar
             {
                 Time = reference.AddMinutes(x*2),
                 Value = x,
@@ -130,7 +130,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         public void FillsForwardRestOfDay() {
             dataResolution = Time.OneMinute;
             reference = new DateTime(2015, 6, 25, 15, 57, 0);
-            data = Enumerable.Range(0, 1).Select(x => new TradeBar
+            data = Enumerable.Range(0, 1).Select(x -> new TradeBar
             {
                 Time = reference.AddMinutes(x*2),
                 Value = x,
@@ -610,7 +610,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             int hourlyBars = 0;
             while (fillForwardEnumerator.MoveNext()) {
                 Console.WriteLine(fillForwardEnumerator.Current.EndTime);
-                if( fillForwardEnumerator.Current.Time.TimeOfDay == TimeSpan.Zero) {
+                if( fillForwardEnumerator.Current.Time.TimeOfDay == Duration.ZERO) {
                     dailyBars++;
                 }
                 else

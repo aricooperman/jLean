@@ -39,8 +39,8 @@ public class ColorJsonConverters {
     
     
 //        /// Converts a Color to a hexadecimal as a string
-//        /// <param name="value">The input value to be converted before serialization</param>
-//        /// <returns>Hexadecimal number as a string. If Color is null, returns default #000000</returns>
+//         * @param value">The input value to be converted before serialization
+//        @returns Hexadecimal number as a string. If Color is null, returns default #000000
 //        protected @Override String Convert( Color value ) {
 //        }
         @Override
@@ -60,8 +60,8 @@ public class ColorJsonConverters {
     public static class ColorJsonDeserializer extends JsonDeserializer<Color> {
         
         /// Converts hexadecimal number to integer
-        /// <param name="hexValue">Hexadecimal number</param>
-        /// <returns>Integer representation of the hexadecimal</returns>
+         * @param hexValue">Hexadecimal number
+        @returns Integer representation of the hexadecimal
         private int hexToInt( String hexValue ) {
             if( hexValue.length() != 2 )
                 throw new NumberFormatException( String.format( "Unable to convert '%s' to an Integer. Requires String length of 2.", hexValue ) );
@@ -70,8 +70,8 @@ public class ColorJsonConverters {
         }
 
         /// Converts the input String to a Color object
-        /// <param name="value">The deserialized value that needs to be converted to T</param>
-        /// <returns>The converted value</returns>
+         * @param value">The deserialized value that needs to be converted to T
+        @returns The converted value
         @Override
         public Color deserialize( JsonParser p, DeserializationContext ctxt )
                 throws IOException, JsonProcessingException {

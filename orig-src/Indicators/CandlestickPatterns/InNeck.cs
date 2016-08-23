@@ -18,10 +18,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// In-Neck candlestick pattern indicator
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - first candle: long black candle
     /// - second candle: white candle with open below previous day low and close slightly into previous day body
@@ -29,46 +29,46 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The returned value is negative(-1): in-neck is always bearish
     /// The user should consider that in-neck is significant when it appears in a downtrend, while this function
     /// does not consider it
-    /// </remarks>
+    /// 
     public class InNeck : CandlestickPattern
     {
-        private readonly int _equalAveragePeriod;
-        private readonly int _bodyLongAveragePeriod;
+        private final int _equalAveragePeriod;
+        private final int _bodyLongAveragePeriod;
 
         private BigDecimal _equalPeriodTotal;
         private BigDecimal _bodyLongPeriodTotal;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="InNeck"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public InNeck( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.Equal).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 1 + 1) {
             _equalAveragePeriod = CandleSettings.Get(CandleSettingType.Equal).AveragePeriod;
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="InNeck"/> class.
-        /// </summary>
+        */
         public InNeck()
             : this( "INNECK") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _equalAveragePeriod) {
@@ -112,9 +112,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _equalPeriodTotal = 0m;
             _bodyLongPeriodTotal = 0m;

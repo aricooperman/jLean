@@ -17,16 +17,16 @@ using System;
 
 package com.quantconnect.lean.Benchmarks
 {
-    /// <summary>
+    /**
     /// Specifies how to compute a benchmark for an algorithm
-    /// </summary>
+    */
     public interface IBenchmark
     {
-        /// <summary>
+        /**
         /// Evaluates this benchmark at the specified time
-        /// </summary>
-        /// <param name="time">The time to evaluate the benchmark at</param>
-        /// <returns>The value of the benchmark at the specified time</returns>
+        */
+         * @param time">The time to evaluate the benchmark at
+        @returns The value of the benchmark at the specified time
         BigDecimal Evaluate(DateTime time);
     }
 }

@@ -17,25 +17,25 @@ using System;
 
 package com.quantconnect.lean.Tests
 {
-    /// <summary>
+    /**
     /// Provides symbol instancs for unit tests
-    /// </summary>
+    */
     public static class Symbols
     {
-        public static readonly Symbol SPY = CreateEquitySymbol( "SPY");
-        public static readonly Symbol AAPL = CreateEquitySymbol( "AAPL");
-        public static readonly Symbol MSFT = CreateEquitySymbol( "MSFT");
-        public static readonly Symbol ZNGA = CreateEquitySymbol( "ZNGA");
-        public static readonly Symbol FXE = CreateEquitySymbol( "FXE");
+        public static final Symbol SPY = CreateEquitySymbol( "SPY");
+        public static final Symbol AAPL = CreateEquitySymbol( "AAPL");
+        public static final Symbol MSFT = CreateEquitySymbol( "MSFT");
+        public static final Symbol ZNGA = CreateEquitySymbol( "ZNGA");
+        public static final Symbol FXE = CreateEquitySymbol( "FXE");
 
-        public static readonly Symbol USDJPY = CreateForexSymbol( "USDJPY");
-        public static readonly Symbol EURUSD = CreateForexSymbol( "EURUSD");
-        public static readonly Symbol EURGBP = CreateForexSymbol( "EURGBP");
-        public static readonly Symbol GBPUSD = CreateForexSymbol( "GBPUSD");
+        public static final Symbol USDJPY = CreateForexSymbol( "USDJPY");
+        public static final Symbol EURUSD = CreateForexSymbol( "EURUSD");
+        public static final Symbol EURGBP = CreateForexSymbol( "EURGBP");
+        public static final Symbol GBPUSD = CreateForexSymbol( "GBPUSD");
         
-        public static readonly Symbol DE10YBEUR = CreateCfdSymbol( "DE10YBEUR", Market.FXCM);
+        public static final Symbol DE10YBEUR = CreateCfdSymbol( "DE10YBEUR", Market.FXCM);
 
-        public static readonly Symbol SPY_P_192_Feb19_2016 = CreateOptionSymbol( "SPY", OptionRight.Put, 192m, new DateTime(2016, 02, 19));
+        public static final Symbol SPY_P_192_Feb19_2016 = CreateOptionSymbol( "SPY", OptionRight.Put, 192m, new DateTime(2016, 02, 19));
 
         private static Symbol CreateForexSymbol( String symbol) {
             return Symbol.Create(symbol, SecurityType.Forex, Market.FXCM);

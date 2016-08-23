@@ -53,7 +53,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             dataQueue.Enqueue(new Tick{Symbol = Symbols.SPY});
 
-            Task.Run(() => exchange.Start());
+            Task.Run(() -> exchange.Start());
 
             Thread.Sleep(50);
 
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             dataQueue.Enqueue(new Tick {Symbol = Symbols.SPY});
 
-            Task.Run(() => exchange.Start());
+            Task.Run(() -> exchange.Start());
 
             Thread.Sleep(10);
 
@@ -101,7 +101,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 last = spy;
             });
 
-            Task.Run(() => exchange.Start());
+            Task.Run(() -> exchange.Start());
 
             Thread.Sleep(1);
 
@@ -139,7 +139,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 last = spy;
             });
 
-            Task.Run(() => exchange.Start());
+            Task.Run(() -> exchange.Start());
 
             Thread.Sleep(50);
 
@@ -172,9 +172,9 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 last = spy;
             });
 
-            exchange.SetErrorHandler(error => true);
+            exchange.SetErrorHandler(error -> true);
 
-            Task.Run(() => exchange.Start());
+            Task.Run(() -> exchange.Start());
 
             Thread.Sleep(25);
 
@@ -186,12 +186,12 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         [Test]
         public void RespectsShouldMoveNext() {
             exchange = new BaseDataExchange( "test");
-            exchange.SetErrorHandler(exception => true);
-            exchange.AddEnumerator(Symbol.Empty, new List<BaseData> {new Tick()}.GetEnumerator(), () => false);
+            exchange.SetErrorHandler(exception -> true);
+            exchange.AddEnumerator(Symbol.Empty, new List<BaseData> {new Tick()}.GetEnumerator(), () -> false);
 
             isFaultedEvent = new ManualResetEvent(false);
             isCompletedEvent = new ManualResetEvent(false);
-            Task.Run(() => exchange.Start(new CancellationTokenSource(50).Token)).ContinueWith(task =>
+            Task.Run(() -> exchange.Start(new CancellationTokenSource(50).Token)).ContinueWith(task =>
             {
                 if( task.IsFaulted) isFaultedEvent.Set();
                 isCompletedEvent.Set();
@@ -207,8 +207,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             IEnumerator<BaseData> enumerator = new List<BaseData>().GetEnumerator();
 
             isCompletedEvent = new ManualResetEvent(false);
-            exchange.AddEnumerator(Symbol.Empty, enumerator, () => true, handler => isCompletedEvent.Set());
-            Task.Run(() => exchange.Start(new CancellationTokenSource(50).Token));
+            exchange.AddEnumerator(Symbol.Empty, enumerator, () -> true, handler -> isCompletedEvent.Set());
+            Task.Run(() -> exchange.Start(new CancellationTokenSource(50).Token));
 
             isCompletedEvent.WaitOne();
         }

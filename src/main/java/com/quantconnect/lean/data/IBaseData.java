@@ -68,19 +68,19 @@ public interface IBaseData extends Cloneable {
     /// Reader Method :: using set of arguements we specify read out type. Enumerate
     /// until the end of the data stream or file. E.g. Read CSV file line by line and convert
     /// into data types.
-    /// <returns>BaseData type set by Subscription Method.</returns>
+    @returns BaseData type set by Subscription Method.
     BaseData reader( SubscriptionDataConfig config, String line, LocalDate date, boolean isLiveMode );
 
 
     /// Return the URL String source of the file. This will be converted to a stream 
-    /// <param name="datafeed">Type of datafeed we're reqesting - backtest or live</param>
-    /// <param name="config">Configuration object</param>
-    /// <param name="date">Date of this source file</param>
-    /// <returns>String URL of source file.</returns>
+     * @param datafeed">Type of datafeed we're reqesting - backtest or live
+     * @param config">Configuration object
+     * @param date">Date of this source file
+    @returns String URL of source file.
     SubscriptionDataSource getSource( SubscriptionDataConfig config, LocalDate date, boolean isLiveMode );
 
     /// Return a new instance clone of this object
-    /// <returns></returns>
+    @returns 
     BaseData clone();
 
 }

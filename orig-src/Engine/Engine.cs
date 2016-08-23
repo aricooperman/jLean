@@ -29,51 +29,51 @@ using QuantConnect.Statistics;
 
 package com.quantconnect.lean.Lean.Engine 
 {
-    /// <summary>
+    /**
     /// LEAN ALGORITHMIC TRADING ENGINE: ENTRY POINT.
     /// 
     /// The engine loads new tasks, create the algorithms and threads, and sends them 
     /// to Algorithm Manager to be executed. It is the primary operating loop.
-    /// </summary>
+    */
     public class Engine
     {
-        private readonly boolean _liveMode;
-        private readonly LeanEngineSystemHandlers _systemHandlers;
-        private readonly LeanEngineAlgorithmHandlers _algorithmHandlers;
+        private final boolean _liveMode;
+        private final LeanEngineSystemHandlers _systemHandlers;
+        private final LeanEngineAlgorithmHandlers _algorithmHandlers;
 
-        /// <summary>
+        /**
         /// Gets the configured system handlers for this engine instance
-        /// </summary>
+        */
         public LeanEngineSystemHandlers SystemHandlers
         {
             get { return _systemHandlers; }
         }
 
-        /// <summary>
+        /**
         /// Gets the configured algorithm handlers for this engine instance
-        /// </summary>
+        */
         public LeanEngineAlgorithmHandlers AlgorithmHandlers
         {
             get { return _algorithmHandlers;}
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Engine"/> class using the specified handlers
-        /// </summary>
-        /// <param name="systemHandlers">The system handlers for controlling acquisition of jobs, messaging, and api calls</param>
-        /// <param name="algorithmHandlers">The algorithm handlers for managing algorithm initialization, data, results, transaction, and real time events</param>
-        /// <param name="liveMode">True when running in live mode, false otherwises</param>
+        */
+         * @param systemHandlers">The system handlers for controlling acquisition of jobs, messaging, and api calls
+         * @param algorithmHandlers">The algorithm handlers for managing algorithm initialization, data, results, transaction, and real time events
+         * @param liveMode">True when running in live mode, false otherwises
         public Engine(LeanEngineSystemHandlers systemHandlers, LeanEngineAlgorithmHandlers algorithmHandlers, boolean liveMode) {
             _liveMode = liveMode;
             _systemHandlers = systemHandlers;
             _algorithmHandlers = algorithmHandlers;
         }
 
-        /// <summary>
+        /**
         /// Runs a single backtest/live job from the job queue
-        /// </summary>
-        /// <param name="job">The algorithm job to be processed</param>
-        /// <param name="assemblyPath">The path to the algorithm's assembly</param>
+        */
+         * @param job">The algorithm job to be processed
+         * @param assemblyPath">The path to the algorithm's assembly
         public void Run(AlgorithmNodePacket job, String assemblyPath) {
             algorithm = default(IAlgorithm);
             algorithmManager = new AlgorithmManager(_liveMode);
@@ -275,7 +275,7 @@ package com.quantconnect.lean.Lean.Engine
                                 equity = charts[strategyEquityKey].Series[equityKey].Values;
                                 performance = charts[strategyEquityKey].Series[dailyPerformanceKey].Values;
                                 profitLoss = new SortedMap<DateTime, decimal>(algorithm.Transactions.TransactionRecord);
-                                totalTransactions = algorithm.Transactions.GetOrders(x => x.Status.IsFill()).Count();
+                                totalTransactions = algorithm.Transactions.GetOrders(x -> x.Status.IsFill()).Count();
                                 benchmark = charts[benchmarkKey].Series[benchmarkKey].Values;
 
                                 statisticsResults = StatisticsBuilder.Generate(trades, profitLoss, equity, performance, benchmark,

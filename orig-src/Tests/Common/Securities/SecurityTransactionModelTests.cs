@@ -26,8 +26,8 @@ package com.quantconnect.lean.Tests.Common.Securities
     [TestFixture]
     public class SecurityTransactionModelTests
     {
-        private static readonly DateTime Noon = new DateTime(2014, 6, 24, 12, 0, 0);
-        private static readonly TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), new[] { TimeZones.NewYork });
+        private static final DateTime Noon = new DateTime(2014, 6, 24, 12, 0, 0);
+        private static final TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), new[] { TimeZones.NewYork });
 
         [Test]
         public void PerformsMarketFillBuy() {

@@ -49,7 +49,7 @@ package com.quantconnect.lean.Tests.Common.Parameters
         public void FindsParameters() {
             assembly = Assembly.GetExecutingAssembly();
             parameters = ParameterAttribute.GetParametersFromAssembly(assembly);
-            foreach (field in typeof(Instance).GetFields(ParameterAttribute.BindingFlags).Where(x => !x.Name.Contains( ">k__"))) {
+            foreach (field in typeof(Instance).GetFields(ParameterAttribute.BindingFlags).Where(x -> !x.Name.Contains( ">k__"))) {
                 Assert.IsTrue(parameters.ContainsKey(field.Name), "Failed on Field: " + field.Name);
             }
             foreach (property in typeof(Instance).GetProperties(ParameterAttribute.BindingFlags)) {
@@ -61,7 +61,7 @@ package com.quantconnect.lean.Tests.Common.Parameters
         public void FindsParametersUsingReflection() {
             assembly = Assembly.GetExecutingAssembly();
             parameters = ParameterAttribute.GetParametersFromAssembly(assembly);
-            foreach (field in typeof(Instance).GetFields(ParameterAttribute.BindingFlags).Where(x => !x.Name.Contains( ">k__"))) {
+            foreach (field in typeof(Instance).GetFields(ParameterAttribute.BindingFlags).Where(x -> !x.Name.Contains( ">k__"))) {
                 Assert.IsTrue(parameters.ContainsKey(field.Name), "Failed on Field: " + field.Name);
             }
             foreach (property in typeof(Instance).GetProperties(ParameterAttribute.BindingFlags)) {

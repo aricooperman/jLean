@@ -26,14 +26,14 @@ package com.quantconnect.lean.Tests.Common.Data
     {
         [Test]
         public void OututTypeIsRenkoBar() {
-            consolidator = new RenkoConsolidator(10, x => x.Value, x => 0);
+            consolidator = new RenkoConsolidator(10, x -> x.Value, x -> 0);
             Assert.AreEqual(typeof(RenkoBar), consolidator.OutputType);
         }
 
         [Test]
         public void ConsolidatesOnBrickHigh() {
             RenkoBar bar = null;
-            consolidator = new RenkoConsolidator(10, x => x.Value, x => 0);
+            consolidator = new RenkoConsolidator(10, x -> x.Value, x -> 0);
             consolidator.DataConsolidated += (sender, consolidated) =>
             {
                 bar = consolidated;
@@ -57,7 +57,7 @@ package com.quantconnect.lean.Tests.Common.Data
         [Test]
         public void ConsolidatesOnBrickLow() {
             RenkoBar bar = null;
-            consolidator = new RenkoConsolidator(10, x => x.Value, x => 0);
+            consolidator = new RenkoConsolidator(10, x -> x.Value, x -> 0);
             consolidator.DataConsolidated += (sender, consolidated) =>
             {
                 bar = consolidated;
@@ -82,7 +82,7 @@ package com.quantconnect.lean.Tests.Common.Data
             RenkoBar bar = null;
             int count = 0;
             int rcount = 0;
-            consolidator = new RenkoConsolidator(1m, x => x.Value, x => 0);
+            consolidator = new RenkoConsolidator(1m, x -> x.Value, x -> 0);
             consolidator.DataConsolidated += (sender, consolidated) =>
             {
                 rcount++;

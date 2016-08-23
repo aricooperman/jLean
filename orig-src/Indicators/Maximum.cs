@@ -17,37 +17,37 @@ using System.Linq;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// Represents an indictor capable of tracking the maximum value and how many periods ago it occurred
-    /// </summary>
+    */
     public class Maximum : WindowIndicator<IndicatorDataPoint>
     {
-        /// <summary>
+        /**
         /// The number of periods since the maximum value was encountered
-        /// </summary>
+        */
         public int PeriodsSinceMaximum { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Creates a new Maximum indicator with the specified period
-        /// </summary>
-        /// <param name="period">The period over which to look back</param>
+        */
+         * @param period">The period over which to look back
         public Maximum(int period)
             : base( "MAX" + period, period) {
         }
 
-        /// <summary>
+        /**
         /// Creates a new Maximum indicator with the specified period
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="period">The period over which to look back</param>
+        */
+         * @param name">The name of this indicator
+         * @param period">The period over which to look back
         public Maximum( String name, int period)
             : base(name, period) {
         }
@@ -70,11 +70,11 @@ package com.quantconnect.lean.Indicators
                 // maximum, so when one falls off, we have the other... but then we would also need the 'next, next' 
                 // maximum, so on and so forth, for now this works.
 
-                maximum = window.Select((v, i) => new
+                maximum = window.Select((v, i) -> new
                 {
                     Value = v,
                     Index = i
-                }).OrderByDescending(x => x.Value.Value).First();
+                }).OrderByDescending(x -> x.Value.Value).First();
 
                 PeriodsSinceMaximum = maximum.Index;
                 return maximum.Value;
@@ -86,9 +86,9 @@ package com.quantconnect.lean.Indicators
             return Current;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             PeriodsSinceMaximum = 0;
             base.Reset();

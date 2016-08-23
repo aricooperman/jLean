@@ -19,14 +19,14 @@ using QuantConnect.Data.UniverseSelection;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// This algorithm shows how you can handle universe selection in anyway you like,
     /// at any time you like. This algorithm has a list of 10 stocks that it rotates
     /// through every hour.
-    /// </summary>
+    */
     public class UserDefinedUniverseAlgorithm : QCAlgorithm
     {
-        private static readonly IReadOnlyList<String> Symbols = new List<String>
+        private static final IReadOnlyList<String> Symbols = new List<String>
         {
             "SPY", "GOOG", "IBM", "AAPL", "MSFT", "CSCO", "ADBE", "WMT",
         };

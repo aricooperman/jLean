@@ -45,7 +45,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         private static void RunTestIndicator(IndicatorBase<IndicatorDataPoint> indicator) {
-            TestHelper.TestIndicator(indicator, "spy_t3.txt", "T3_5", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value, 2e-2));
+            TestHelper.TestIndicator(indicator, "spy_t3.txt", "T3_5", (ind, expected) -> Assert.AreEqual(expected, (double)ind.Current.Value, 2e-2));
         }
     }
 }

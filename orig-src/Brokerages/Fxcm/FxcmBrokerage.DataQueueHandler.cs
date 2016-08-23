@@ -24,20 +24,20 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Brokerages.Fxcm
 {
-    /// <summary>
+    /**
     /// FXCM brokerage - implementation of IDataQueueHandler interface
-    /// </summary>
+    */
     public partial class FxcmBrokerage
     {
-        private readonly List<Tick> _ticks = new List<Tick>();
-        private readonly HashSet<Symbol> _subscribedSymbols = new HashSet<Symbol>(); 
+        private final List<Tick> _ticks = new List<Tick>();
+        private final HashSet<Symbol> _subscribedSymbols = new HashSet<Symbol>(); 
         
         #region IDataQueueHandler implementation
 
-        /// <summary>
+        /**
         /// Get the next ticks from the live trading data queue
-        /// </summary>
-        /// <returns>IEnumerable list of ticks since the last update.</returns>
+        */
+        @returns IEnumerable list of ticks since the last update.
         public IEnumerable<BaseData> GetNextTicks() {
             lock (_ticks) {
                 copy = _ticks.ToArray();
@@ -46,11 +46,11 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// Adds the specified symbols to the subscription
-        /// </summary>
-        /// <param name="job">Job we're subscribing for:</param>
-        /// <param name="symbols">The symbols to be added keyed by SecurityType</param>
+        */
+         * @param job">Job we're subscribing for:
+         * @param symbols">The symbols to be added keyed by SecurityType
         public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             symbolsToSubscribe = (from symbol in symbols 
                                       where !_subscribedSymbols.Contains(symbol) 
@@ -76,11 +76,11 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// Removes the specified symbols to the subscription
-        /// </summary>
-        /// <param name="job">Job we're processing.</param>
-        /// <param name="symbols">The symbols to be removed keyed by SecurityType</param>
+        */
+         * @param job">Job we're processing.
+         * @param symbols">The symbols to be removed keyed by SecurityType
         public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             symbolsToUnsubscribe = (from symbol in symbols 
                                         where _subscribedSymbols.Contains(symbol) 

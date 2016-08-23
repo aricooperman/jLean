@@ -36,94 +36,94 @@ using RestSharp;
 
 package com.quantconnect.lean.Brokerages.Tradier
 {
-    /// <summary>
+    /**
     /// Tradier Class: 
     ///  - Handle authentication.
     ///  - Data requests.
     ///  - Rate limiting.
     ///  - Placing orders.
     ///  - Getting user data.
-    /// </summary>
+    */
     public class TradierBrokerage : Brokerage
     {
-        private readonly long _accountID;
+        private final long _accountID;
 
         // we're reusing the equity exchange here to grab typical exchange hours
-        private static readonly EquityExchange Exchange =
+        private static final EquityExchange Exchange =
             new EquityExchange(MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.USA, null, SecurityType.Equity, TimeZones.NewYork));
         
         //Access and Refresh Tokens:
         private String _previousResponseRaw = "";
         private DateTime _issuedAt;
-        private TimeSpan _lifeSpan = Duration.ofSeconds(86399); // 1 second less than a day
-        private readonly object _lockAccessCredentials = new object();
+        private Duration _lifeSpan = Duration.ofSeconds(86399); // 1 second less than a day
+        private final object _lockAccessCredentials = new object();
 
         // polling timers for refreshing access tokens and checking for fill events
         private Timer _refreshTimer;
         private Timer _orderFillTimer;
 
         //Tradier Spec:
-        private readonly Map<TradierApiRequestType, TimeSpan> _rateLimitPeriod;
-        private readonly Map<TradierApiRequestType, DateTime> _rateLimitNextRequest;
+        private final Map<TradierApiRequestType, TimeSpan> _rateLimitPeriod;
+        private final Map<TradierApiRequestType, DateTime> _rateLimitNextRequest;
 
         //Endpoints:
         private static final String RequestEndpoint = @"https://api.tradier.com/v1/";
-        private readonly IOrderProvider _orderProvider;
-        private readonly ISecurityProvider _securityProvider;
+        private final IOrderProvider _orderProvider;
+        private final ISecurityProvider _securityProvider;
 
-        private readonly object _fillLock = new object();
-        private readonly DateTime _initializationDateTime = DateTime.Now;
-        private readonly ConcurrentMap<long, TradierCachedOpenOrder> _cachedOpenOrdersByTradierOrderID;
+        private final object _fillLock = new object();
+        private final DateTime _initializationDateTime = DateTime.Now;
+        private final ConcurrentMap<long, TradierCachedOpenOrder> _cachedOpenOrdersByTradierOrderID;
         // this is used to block reentrance when doing look ups for orders with IDs we don't have cached
-        private readonly HashSet<long> _reentranceGuardByTradierOrderID = new HashSet<long>();
-        private readonly FixedSizeHashQueue<long> _filledTradierOrderIDs = new FixedSizeHashQueue<long>(10000); 
+        private final HashSet<long> _reentranceGuardByTradierOrderID = new HashSet<long>();
+        private final FixedSizeHashQueue<long> _filledTradierOrderIDs = new FixedSizeHashQueue<long>(10000); 
         // this is used to handle the zero crossing case, when the first order is filled we'll submit the next order
-        private readonly ConcurrentMap<long, ContingentOrderQueue> _contingentOrdersByQCOrderID = new ConcurrentMap<long, ContingentOrderQueue>();
+        private final ConcurrentMap<long, ContingentOrderQueue> _contingentOrdersByQCOrderID = new ConcurrentMap<long, ContingentOrderQueue>();
         // this is used to block reentrance when handling contingent orders
-        private readonly HashSet<long> _contingentReentranceGuardByQCOrderID = new HashSet<long>();
-        private readonly HashSet<long> _unknownTradierOrderIDs = new HashSet<long>(); 
-        private readonly FixedSizeHashQueue<long> _verifiedUnknownTradierOrderIDs = new FixedSizeHashQueue<long>(1000);
-        private readonly FixedSizeHashQueue<Integer> _cancelledQcOrderIDs = new FixedSizeHashQueue<Integer>(10000);  
+        private final HashSet<long> _contingentReentranceGuardByQCOrderID = new HashSet<long>();
+        private final HashSet<long> _unknownTradierOrderIDs = new HashSet<long>(); 
+        private final FixedSizeHashQueue<long> _verifiedUnknownTradierOrderIDs = new FixedSizeHashQueue<long>(1000);
+        private final FixedSizeHashQueue<Integer> _cancelledQcOrderIDs = new FixedSizeHashQueue<Integer>(10000);  
 
-        /// <summary>
+        /**
         /// Event fired when our session has been refreshed/tokens updated
-        /// </summary>
+        */
         public event EventHandler<TokenResponse> SessionRefreshed;
 
-        /// <summary>
+        /**
         /// When we expect this access token to expire, leaves an hour of padding
-        /// </summary>
+        */
         private DateTime ExpectedExpiry
         {
             get { return _issuedAt + _lifeSpan - Duration.ofMinutes(60); }
         }
 
-        /// <summary>
+        /**
         /// Access Token Access:
-        /// </summary>
+        */
         public String AccessToken { get; private set; }
 
-        /// <summary>
+        /**
         /// Refresh Token Access:
-        /// </summary>
+        */
         public String RefreshToken { get; private set; }
 
-        /// <summary>
+        /**
         /// The QC User id, used for refreshing the session
-        /// </summary>
+        */
         public int UserId { get; private set; }
 
-        /// <summary>
+        /**
         /// Get the last String returned
-        /// </summary>
+        */
         public String LastResponse
         {
             get { return _previousResponseRaw; }
         }
 
-        /// <summary>
+        /**
         /// Create a new Tradier Object:
-        /// </summary>
+        */
         public TradierBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider, long accountID)
             : base( "Tradier Brokerage") {
             _orderProvider = orderProvider;
@@ -150,15 +150,15 @@ package com.quantconnect.lean.Brokerages.Tradier
 
         #region Tradier client implementation
 
-        /// <summary>
+        /**
         /// Set the access token and login information for the tradier brokerage 
-        /// </summary>
-        /// <param name="userId">Userid for this brokerage</param>
-        /// <param name="accessToken">Viable access token</param>
-        /// <param name="refreshToken">Our refresh token</param>
-        /// <param name="issuedAt">When the token was issued</param>
-        /// <param name="lifeSpan">Life span for our token.</param>
-        public void SetTokens(int userId, String accessToken, String refreshToken, DateTime issuedAt, TimeSpan lifeSpan) {
+        */
+         * @param userId">Userid for this brokerage
+         * @param accessToken">Viable access token
+         * @param refreshToken">Our refresh token
+         * @param issuedAt">When the token was issued
+         * @param lifeSpan">Life span for our token.
+        public void SetTokens(int userId, String accessToken, String refreshToken, DateTime issuedAt, Duration lifeSpan) {
             AccessToken = accessToken;
             RefreshToken = refreshToken;
             _issuedAt = issuedAt;
@@ -173,24 +173,24 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
             
             dueTime = ExpectedExpiry - DateTime.UtcNow;
-            if( dueTime < TimeSpan.Zero) dueTime = TimeSpan.Zero;
+            if( dueTime < Duration.ZERO) dueTime = Duration.ZERO;
             period = Duration.ofDays(1).Subtract(Duration.ofMinutes(-1));
-            _refreshTimer = new Timer(state => RefreshSession(), null, dueTime, period);
+            _refreshTimer = new Timer(state -> RefreshSession(), null, dueTime, period);
 
             // we can poll orders once a second in sandbox and twice a second in production
             double orderPollingIntervalInSeconds = Config.GetDouble( "tradier-order-poll-interval", 1.0);
             interval = (int)(1000*orderPollingIntervalInSeconds);
-            _orderFillTimer = new Timer(state => CheckForFills(), null, interval, interval);
+            _orderFillTimer = new Timer(state -> CheckForFills(), null, interval, interval);
         }
 
-        /// <summary>
+        /**
         /// Execute a authenticated call:
-        /// </summary>
+        */
         public T Execute<T>(RestRequest request, TradierApiRequestType type, String rootName = "", int attempts = 0, int max = 10) where T : new() {
             response = default(T);
 
             method = "TradierBrokerage.Execute." + request.Resource;
-            parameters = request.Parameters.Select(x => x.Name + ": " + x.Value);
+            parameters = request.Parameters.Select(x -> x.Name + ": " + x.Value);
 
             if( attempts != 0) {
                 Log.Trace(method + "(): Begin attempt " + attempts);
@@ -250,7 +250,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                         if( raw.Content.Contains( "order already in finalized state: filled")) {
                             if( request.Method == Method.DELETE) {
                                 String orderId = "[unknown]";
-                                parameter = request.Parameters.FirstOrDefault(x => x.Name == "orderId");
+                                parameter = request.Parameters.FirstOrDefault(x -> x.Name == "orderId");
                                 if( parameter != null ) orderId = parameter.Value.toString();
                                 OnMessage(new BrokerageMessageEvent(BrokerageMessageType.Warning, "OrderAlreadyFilled",
                                     "Unable to cancel the order because it has already been filled. TradierOrderId: " + orderId
@@ -299,9 +299,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return response;
         }
 
-        /// <summary>
+        /**
         /// Verify we have a user session; or refresh the access token.
-        /// </summary>
+        */
         public boolean RefreshSession() {
             //Send: 
             //Get: {"sAccessToken":"123123","iExpiresIn":86399,"dtIssuedAt":"2014-10-15T16:59:52-04:00","sRefreshToken":"123123","sScope":"read write market trade stream","sStatus":"approved","success":true}
@@ -356,26 +356,26 @@ package com.quantconnect.lean.Brokerages.Tradier
             return success;
         }
 
-        /// <summary>
+        /**
         /// Using this auth token get the tradier user:
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// Returns null if the request was unsucessful
-        /// </remarks>
-        /// <returns>Tradier user model:</returns>
+        /// 
+        @returns Tradier user model:
         public TradierUser GetUserProfile() {
             request = new RestRequest( "user/profile", Method.GET);
             userContainer = Execute<TradierUserContainer>(request, TradierApiRequestType.Standard);
             return userContainer.Profile;
         }
 
-        /// <summary>
+        /**
         /// Get all the users balance information:
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// Returns null if the request was unsucessful
-        /// </remarks>
-        /// <returns>Balance</returns>
+        /// 
+        @returns Balance
         public TradierBalanceDetails GetBalanceDetails(long accountId) {
             request = new RestRequest( "accounts/{accountId}/balances", Method.GET);
             request.AddParameter( "accountId", accountId, ParameterType.UrlSegment);
@@ -384,13 +384,13 @@ package com.quantconnect.lean.Brokerages.Tradier
             return balContainer.Balances;
         }
 
-        /// <summary>
+        /**
         /// Get a list of the tradier positions for this account:
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// Returns null if the request was unsucessful
-        /// </remarks>
-        /// <returns>Array of the symbols we hold.</returns>
+        /// 
+        @returns Array of the symbols we hold.
         public List<TradierPosition> GetPositions() {
             request = new RestRequest( "accounts/{accountId}/positions", Method.GET);
             request.AddParameter( "accountId", _accountID, ParameterType.UrlSegment);
@@ -405,12 +405,12 @@ package com.quantconnect.lean.Brokerages.Tradier
             return positionContainer.TradierPositions.Positions;
         }
 
-        /// <summary>
+        /**
         /// Get a list of historical events for this account:
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// Returns null if the request was unsucessful
-        /// </remarks>
+        /// 
         public List<TradierEvent> GetAccountEvents(long accountId) {
             request = new RestRequest( "accounts/{accountId}/history", Method.GET);
             request.AddUrlSegment( "accountId", accountId.toString());
@@ -426,9 +426,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return eventContainer.TradierEvents.Events;
         }
 
-        /// <summary>
+        /**
         /// GainLoss of recent trades for this account:
-        /// </summary>
+        */
         public List<TradierGainLoss> GetGainLoss(long accountId) {
             request = new RestRequest( "accounts/{accountId}/gainloss");
             request.AddUrlSegment( "accountId", accountId.toString());
@@ -444,9 +444,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return gainLossContainer.GainLossClosed.ClosedPositions;
         }
 
-        /// <summary>
+        /**
         /// Get Intraday and pending orders for users account: accounts/{account_id}/orders
-        /// </summary>
+        */
         public List<TradierOrder> GetIntradayAndPendingOrders() {
             request = new RestRequest( "accounts/{accountId}/orders");
             request.AddUrlSegment( "accountId", _accountID.toString());
@@ -461,9 +461,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return ordersContainer.Orders.Orders;
         }
 
-        /// <summary>
+        /**
         /// Get information about a specific order: accounts/{account_id}/orders/{id}
-        /// </summary>
+        */
         public TradierOrderDetailed GetOrder(long orderId) {
             request = new RestRequest( "accounts/{accountId}/orders/" + orderId);
             request.AddUrlSegment( "accountId", _accountID.toString());
@@ -475,10 +475,10 @@ package com.quantconnect.lean.Brokerages.Tradier
             return detailsParent.DetailedOrder;
         }
 
-        /// <summary>
+        /**
         /// Place Order through API.
         /// accounts/{account-id}/orders
-        /// </summary>
+        */
         public TradierOrderResponse PlaceOrder(long accountId,
             TradierOrderClass classification,
             TradierOrderDirection direction,
@@ -512,9 +512,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return Execute<TradierOrderResponse>(request, TradierApiRequestType.Orders);
         }
 
-        /// <summary>
+        /**
         /// Update an exiting Tradier Order:
-        /// </summary>
+        */
         public TradierOrderResponse ChangeOrder(long accountId,
             long orderId,
             TradierOrderType type = TradierOrderType.Market,
@@ -537,9 +537,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return Execute<TradierOrderResponse>(request, TradierApiRequestType.Orders);
         }
 
-        /// <summary>
+        /**
         /// Cancel the order with this account and id number
-        /// </summary>
+        */
         public TradierOrderResponse CancelOrder(long accountId, long orderId) {
             //Compose Request:
             request = new RestRequest( "accounts/{accountId}/orders/{orderId}");
@@ -551,9 +551,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return Execute<TradierOrderResponse>(request, TradierApiRequestType.Orders);
         }
 
-        /// <summary>
+        /**
         /// List of quotes for symbols 
-        /// </summary>
+        */
         public List<TradierQuote> GetQuotes(List<String> symbols) {
             if( symbols.Count == 0) {
                 return new List<TradierQuote>();
@@ -568,9 +568,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return dataContainer.Quotes;
         }
 
-        /// <summary>
+        /**
         /// Get the historical bars for this period
-        /// </summary>
+        */
         public List<TradierTimeSeries> GetTimeSeries( String symbol, DateTime start, DateTime end, TradierTimeSeriesIntervals interval) {
             //Send Request:
             request = new RestRequest( "markets/timesales", Method.GET);
@@ -582,9 +582,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return dataContainer.TimeSeries;
         }
 
-        /// <summary>
+        /**
         /// Get full daily, weekly or monthly bars of historical periods:
-        /// </summary>
+        */
         public List<TradierHistoryBar> GetHistoricalData( String symbol,
             DateTime start,
             DateTime end,
@@ -598,17 +598,17 @@ package com.quantconnect.lean.Brokerages.Tradier
             return dataContainer.Data;
         }
 
-        /// <summary>
+        /**
         /// Get the current market status
-        /// </summary>
+        */
         public TradierMarketStatus GetMarketStatus() {
             request = new RestRequest( "markets/clock", Method.GET);
             return Execute<TradierMarketStatus>(request, TradierApiRequestType.Data, "clock");
         }
 
-        /// <summary>
+        /**
         /// Get the list of days status for this calendar month, year:
-        /// </summary>
+        */
         public List<TradierCalendarDay> GetMarketCalendar(int month, int year) {
             request = new RestRequest( "markets/calendar", Method.GET);
             request.AddParameter( "month", month.toString());
@@ -617,9 +617,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return calendarContainer.Days.Days;
         }
 
-        /// <summary>
+        /**
         /// Get the list of days status for this calendar month, year:
-        /// </summary>
+        */
         public List<TradierSearchResult> Search( String query, boolean includeIndexes = true) {
             request = new RestRequest( "markets/search", Method.GET);
             request.AddParameter( "q", query);
@@ -628,9 +628,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return searchContainer.Results;
         }
 
-        /// <summary>
+        /**
         /// Get the list of days status for this calendar month, year:
-        /// </summary>
+        */
         public List<TradierSearchResult> LookUpSymbol( String query, boolean includeIndexes = true) {
             request = new RestRequest( "markets/lookup", Method.GET);
             request.AddParameter( "q", query);
@@ -639,19 +639,19 @@ package com.quantconnect.lean.Brokerages.Tradier
             return searchContainer.Results;
         }
 
-        /// <summary>
+        /**
         /// Get the current market status
-        /// </summary>
+        */
         public TradierStreamSession CreateStreamSession() {
             request = new RestRequest( "markets/events/session", Method.POST);
             return Execute<TradierStreamSession>(request, TradierApiRequestType.Data, "stream");
         }
 
-        /// <summary>
+        /**
         /// Connect to tradier API strea:
-        /// </summary>
-        /// <param name="symbols">symbol list</param>
-        /// <returns></returns>
+        */
+         * @param symbols">symbol list
+        @returns 
         public IEnumerable<TradierStreamData> Stream(List<String> symbols) {
             boolean success;
             symbolJoined = String.Join( ",", symbols);
@@ -749,9 +749,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
         }
 
-        /// <summary>
+        /**
         /// Convert the C# Enums back to the Tradier API Equivalent:
-        /// </summary>
+        */
         private String GetEnumDescription(Enum value) {
             // Get the Description attribute value for the enum value
             fi = value.GetType().GetField(value.toString());
@@ -766,9 +766,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
         }
 
-        /// <summary>
+        /**
         /// Get the rype inside the nested root:
-        /// </summary>
+        */
         private T DeserializeRemoveRoot<T>( String json, String rootName) {
             obj = default(T);
 
@@ -785,9 +785,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return obj;
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the SessionRefreshed event
-        /// </summary>
+        */
         protected virtual void OnSessionRefreshed(TokenResponse e) {
             handler = SessionRefreshed;
             if( handler != null ) handler(this, e);
@@ -797,19 +797,19 @@ package com.quantconnect.lean.Brokerages.Tradier
 
         #region IBrokerage implementation
 
-        /// <summary>
+        /**
         /// Returns true if we're currently connected to the broker
-        /// </summary>
+        */
         public @Override boolean IsConnected
         {
             get { return _issuedAt + _lifeSpan > DateTime.Now; }
         }
 
-        /// <summary>
+        /**
         /// Gets all open orders on the account. 
         /// NOTE: The order objects returned do not have QC order IDs.
-        /// </summary>
-        /// <returns>The open orders returned from IB</returns>
+        */
+        @returns The open orders returned from IB
         public @Override List<Order> GetOpenOrders() {
             orders = new List<Order>();
             openOrders = GetIntradayAndPendingOrders().Where(OrderIsOpen);
@@ -823,14 +823,14 @@ package com.quantconnect.lean.Brokerages.Tradier
             return orders;
         }
 
-        /// <summary>
+        /**
         /// Gets all holdings for the account
-        /// </summary>
-        /// <returns>The current holdings from the account</returns>
+        */
+        @returns The current holdings from the account
         public @Override List<Holding> GetAccountHoldings() {
-            holdings = GetPositions().Select(ConvertHolding).Where(x => x.Quantity != 0).ToList();
-            symbols = holdings.Select(x => x.Symbol.Value).ToList();
-            quotes = GetQuotes(symbols).ToDictionary(x => x.Symbol);
+            holdings = GetPositions().Select(ConvertHolding).Where(x -> x.Quantity != 0).ToList();
+            symbols = holdings.Select(x -> x.Symbol.Value).ToList();
+            quotes = GetQuotes(symbols).ToDictionary(x -> x.Symbol);
             foreach (holding in holdings) {
                 TradierQuote quote;
                 if( quotes.TryGetValue(holding.Symbol.Value, out quote)) {
@@ -840,10 +840,10 @@ package com.quantconnect.lean.Brokerages.Tradier
             return holdings;
         }
 
-        /// <summary>
+        /**
         /// Gets the current cash balance for each currency held in the brokerage account
-        /// </summary>
-        /// <returns>The current cash balance for each currency available for trading</returns>
+        */
+        @returns The current cash balance for each currency available for trading
         public @Override List<Cash> GetCashBalance() {
             return new List<Cash>
             {
@@ -851,11 +851,11 @@ package com.quantconnect.lean.Brokerages.Tradier
             };
         }
 
-        /// <summary>
+        /**
         /// Places a new order and assigns a new broker ID to the order
-        /// </summary>
-        /// <param name="order">The order to be placed</param>
-        /// <returns>True if the request for a new order has been placed, false otherwise</returns>
+        */
+         * @param order">The order to be placed
+        @returns True if the request for a new order has been placed, false otherwise
         public @Override boolean PlaceOrder(Order order) {
             Log.Trace( "TradierBrokerage.PlaceOrder(): " + order);
 
@@ -865,7 +865,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
 
             // before doing anything, verify only one outstanding order per symbol
-            cachedOpenOrder = _cachedOpenOrdersByTradierOrderID.FirstOrDefault(x => x.Value.Order.Symbol == order.Symbol.Value).Value;
+            cachedOpenOrder = _cachedOpenOrdersByTradierOrderID.FirstOrDefault(x -> x.Value.Order.Symbol == order.Symbol.Value).Value;
             if( cachedOpenOrder != null ) {
                 qcOrder = _orderProvider.GetOrderByBrokerageId(cachedOpenOrder.Order.Id);
                 if( qcOrder == null ) {
@@ -962,11 +962,11 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
         }
 
-        /// <summary>
+        /**
         /// Updates the order with the same id
-        /// </summary>
-        /// <param name="order">The new order information</param>
-        /// <returns>True if the request was made for the order to be updated, false otherwise</returns>
+        */
+         * @param order">The new order information
+        @returns True if the request was made for the order to be updated, false otherwise
         public @Override boolean UpdateOrder(Order order) {
             Log.Trace( "TradierBrokerage.UpdateOrder(): " + order);
 
@@ -1039,11 +1039,11 @@ package com.quantconnect.lean.Brokerages.Tradier
             return true;
         }
 
-        /// <summary>
+        /**
         /// Cancels the order with the specified ID
-        /// </summary>
-        /// <param name="order">The order to cancel</param>
-        /// <returns>True if the request was made for the order to be canceled, false otherwise</returns>
+        */
+         * @param order">The order to cancel
+        @returns True if the request was made for the order to be canceled, false otherwise
         public @Override boolean CancelOrder(Order order) {
             Log.Trace( "TradierBrokerage.CancelOrder(): " + order);
 
@@ -1078,25 +1078,25 @@ package com.quantconnect.lean.Brokerages.Tradier
             return true;
         }
 
-        /// <summary>
+        /**
         /// Connects the client to the broker's remote servers
-        /// </summary>
+        */
         public @Override void Connect() {
             if( IsConnected) return;
             RefreshSession();
         }
 
-        /// <summary>
+        /**
         /// Disconnects the client from the broker's remote servers
-        /// </summary>
+        */
         public @Override void Disconnect() {
             // NOP - token will eventually expire
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the Message event
-        /// </summary>
-        /// <param name="e">The error</param>
+        */
+         * @param e">The error
         protected @Override void OnMessage(BrokerageMessageEvent e) {
             message = e;
             if( Exchange.DateTimeIsOpen(DateTime.Now) && ErrorsDuringMarketHours.Contains(e.Code)) {
@@ -1186,10 +1186,10 @@ package com.quantconnect.lean.Brokerages.Tradier
                     Task.Run(() =>
                     {
                         orders = GetIntradayAndPendingOrders()
-                            .Where(x => x.Status == TradierOrderStatus.Rejected)
-                            .Where(x => DateTime.UtcNow - x.TransactionDate < Duration.ofSeconds(2));
+                            .Where(x -> x.Status == TradierOrderStatus.Rejected)
+                            .Where(x -> DateTime.UtcNow - x.TransactionDate < Duration.ofSeconds(2));
 
-                        recentOrder = orders.OrderByDescending(x => x.TransactionDate).FirstOrDefault(x => x.Symbol == order.Symbol && x.Quantity == order.Quantity && x.Direction == order.Direction && x.Type == order.Type);
+                        recentOrder = orders.OrderByDescending(x -> x.TransactionDate).FirstOrDefault(x -> x.Symbol == order.Symbol && x.Quantity == order.Quantity && x.Direction == order.Direction && x.Type == order.Type);
                         if( recentOrder == null ) {
                             // without this we're going to corrupt the algorithm state
                             OnMessage(new BrokerageMessageEvent(BrokerageMessageType.Error, "OrderError", "Unable to resolve rejected Tradier order id for QC order: " + order.QCOrder.Id));
@@ -1205,9 +1205,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return response;
         }
 
-        /// <summary>
+        /**
         /// Checks for fill events by polling FetchOrders for pending orders and diffing against the last orders seen
-        /// </summary>
+        */
         private void CheckForFills() {
             // reentrance guard
             if( !Monitor.TryEnter(_fillLock)) {
@@ -1222,7 +1222,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                     return;
                 }
 
-                updatedOrders = intradayAndPendingOrders.ToDictionary(x => x.Id);
+                updatedOrders = intradayAndPendingOrders.ToDictionary(x -> x.Id);
 
                 // loop over our cache of orders looking for changes in status for fill quantities
                 foreach (cachedOrder in _cachedOpenOrdersByTradierOrderID) {
@@ -1272,7 +1272,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                 }
 
                 // if we get order updates for orders we're unaware of we need to bail, this can corrupt the algorithm state
-                unknownOrderIDs = updatedOrders.Where(IsUnknownOrderID).ToHashSet(x => x.Key);
+                unknownOrderIDs = updatedOrders.Where(IsUnknownOrderID).ToHashSet(x -> x.Key);
                 unknownOrderIDs.ExceptWith(_verifiedUnknownTradierOrderIDs);
                 fireTask = unknownOrderIDs.Count != 0 && _unknownTradierOrderIDs.Count == 0;
                 foreach (unknownOrderID in unknownOrderIDs) {
@@ -1289,15 +1289,15 @@ package com.quantconnect.lean.Brokerages.Tradier
                         {
                             // verify we don't have them in the order provider
                             Log.Trace( "TradierBrokerage.CheckForFills(): Verifying missing brokerage IDs: " + String.join( ",", localUnknownTradierOrderIDs));
-                            orders = localUnknownTradierOrderIDs.Select(x => _orderProvider.GetOrderByBrokerageId(x)).Where(x => x != null );
-                            stillUnknownOrderIDs = localUnknownTradierOrderIDs.Where(x => !orders.Any(y => y.BrokerId.Contains(x.toString()))).ToList();
+                            orders = localUnknownTradierOrderIDs.Select(x -> _orderProvider.GetOrderByBrokerageId(x)).Where(x -> x != null );
+                            stillUnknownOrderIDs = localUnknownTradierOrderIDs.Where(x -> !orders.Any(y -> y.BrokerId.Contains(x.toString()))).ToList();
                             if( stillUnknownOrderIDs.Count > 0) {
                                 // fetch all rejected intraday orders within the last minute, we're going to exclude rejected orders from the error condition
-                                recentOrders = GetIntradayAndPendingOrders().Where(x => x.Status == TradierOrderStatus.Rejected)
-                                    .Where(x => DateTime.UtcNow - x.TransactionDate < Duration.ofMinutes(1)).ToHashSet(x => x.Id);
+                                recentOrders = GetIntradayAndPendingOrders().Where(x -> x.Status == TradierOrderStatus.Rejected)
+                                    .Where(x -> DateTime.UtcNow - x.TransactionDate < Duration.ofMinutes(1)).ToHashSet(x -> x.Id);
 
                                 // remove recently rejected orders, sometimes we'll get updates for these but we've already marked them as rejected
-                                stillUnknownOrderIDs.RemoveAll(x => recentOrders.Contains(x));
+                                stillUnknownOrderIDs.RemoveAll(x -> recentOrders.Contains(x));
 
                                 if( stillUnknownOrderIDs.Count > 0) {
                                     // if we still have unknown IDs then we've gotta bail on the algorithm
@@ -1446,9 +1446,9 @@ package com.quantconnect.lean.Brokerages.Tradier
 
         #region Conversion routines
 
-        /// <summary>
+        /**
         /// Returns true if the specified order is considered open, otherwise false
-        /// </summary>
+        */
         protected static boolean OrderIsOpen(TradierOrder order) {
             return order.Status != TradierOrderStatus.Filled
                 && order.Status != TradierOrderStatus.Canceled
@@ -1456,16 +1456,16 @@ package com.quantconnect.lean.Brokerages.Tradier
                 && order.Status != TradierOrderStatus.Rejected;
         }
 
-        /// <summary>
+        /**
         /// Returns true if the specified order is considered close, otherwise false
-        /// </summary>
+        */
         protected static boolean OrderIsClosed(TradierOrder order) {
             return !OrderIsOpen(order);
         }
 
-        /// <summary>
+        /**
         /// Returns true if the specified tradier order direction represents a short position
-        /// </summary>
+        */
         protected static boolean IsShort(TradierOrderDirection direction) {
             switch (direction) {
                 case TradierOrderDirection.Sell:
@@ -1484,10 +1484,10 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
         }
 
-        /// <summary>
+        /**
         /// Converts the specified tradier order into a qc order.
         /// The 'task' will have a value if we needed to issue a rest call for the stop price, otherwise it will be null
-        /// </summary>
+        */
         protected Order ConvertOrder(TradierOrder order) {
             Order qcOrder;
             switch (order.Type) {
@@ -1524,9 +1524,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return qcOrder;
         }
 
-        /// <summary>
+        /**
         /// Converts the qc order type into a tradier order type
-        /// </summary>
+        */
         protected TradierOrderType ConvertOrderType(OrderType type) {
             switch (type) {
                 case OrderType.Market:
@@ -1548,9 +1548,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
         }
 
-        /// <summary>
+        /**
         /// Converts the tradier order duration into a qc order duration
-        /// </summary>
+        */
         protected OrderDuration ConvertDuration(TradierOrderDuration duration) {
             switch (duration) {
                 case TradierOrderDuration.GTC:
@@ -1562,9 +1562,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
         }
 
-        /// <summary>
+        /**
         /// Converts the tradier order status into a qc order status
-        /// </summary>
+        */
         protected OrderStatus ConvertStatus(TradierOrderStatus status) {
             switch (status) {
                 case TradierOrderStatus.Filled:
@@ -1592,9 +1592,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
         }
 
-        /// <summary>
+        /**
         /// Converts the qc order status into a tradier order status
-        /// </summary>
+        */
         protected TradierOrderStatus ConvertStatus(OrderStatus status) {
             switch (status) {
                 case OrderStatus.New:
@@ -1623,13 +1623,13 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
         }
 
-        /// <summary>
+        /**
         /// Converts the tradier order quantity into a qc quantity
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// Tradier quantities are always positive and use the direction to denote +/-, where as qc
         /// order quantities determine the direction
-        /// </remarks>
+        /// 
         protected int ConvertQuantity(TradierOrder order) {
             switch (order.Direction) {
                 case TradierOrderDirection.Buy:
@@ -1652,9 +1652,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
         }
 
-        /// <summary>
+        /**
         /// Converts the tradier position into a qc holding
-        /// </summary>
+        */
         protected Holding ConvertHolding(TradierPosition position) {
             return new Holding
             {
@@ -1668,9 +1668,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             };
         }
 
-        /// <summary>
+        /**
         /// Converts the QC order direction to a tradier order direction
-        /// </summary>
+        */
         protected static TradierOrderDirection ConvertDirection(OrderDirection direction, BigDecimal holdingQuantity) {
             // this mapping assumes we're dealing with equity types, options have different codes, buy_to_open and sell_to_close
             // Tradier has 4 types of orders for this: buy/sell/buy to cover and sell short.
@@ -1707,9 +1707,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return TradierOrderDirection.None;
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not the specified order will bring us across the zero line for holdings
-        /// </summary>
+        */
         protected boolean OrderCrossesZero(Order order) {
             holdingQuantity = _securityProvider.GetHoldingsQuantity(order.Symbol);
 
@@ -1729,9 +1729,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             return false;
         }
 
-        /// <summary>
+        /**
         /// Converts the qc order duration into a tradier order duration
-        /// </summary>
+        */
         protected static TradierOrderDuration GetOrderDuration(OrderDuration duration) {
             switch (duration) {
                 case OrderDuration.GTC:
@@ -1741,9 +1741,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
         }
 
-        /// <summary>
+        /**
         /// Converts the qc order type into a tradier order type
-        /// </summary>
+        */
         protected static TradierOrderType ConvertOrderType(Order order) {
             switch (order.Type) {
                 case OrderType.Market:
@@ -1759,9 +1759,9 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
         }
 
-        /// <summary>
+        /**
         /// Gets the stop price used in API calls with tradier from the specified qc order instance
-        /// </summary>
+        */
         protected static BigDecimal GetStopPrice(Order order) {
             stopm = order as StopMarketOrder;
             if( stopm != null ) {
@@ -1774,11 +1774,11 @@ package com.quantconnect.lean.Brokerages.Tradier
             return 0;
         }
 
-        /// <summary>
+        /**
         /// Gets the limit price used in API calls with tradier from the specified qc order instance
-        /// </summary>
-        /// <param name="order"></param>
-        /// <returns></returns>
+        */
+         * @param order">
+        @returns 
         protected static BigDecimal GetLimitPrice(Order order) {
             limit = order as LimitOrder;
             if( limit != null ) {
@@ -1793,30 +1793,30 @@ package com.quantconnect.lean.Brokerages.Tradier
 
         #endregion
 
-        private readonly HashSet<String> ErrorsDuringMarketHours = new HashSet<String>
+        private final HashSet<String> ErrorsDuringMarketHours = new HashSet<String>
         {
             "CheckForFillsError", "UnknownIdResolution", "ContingentOrderError", "NullResponse", "PendingOrderNotReturned"
         };
 
         class ContingentOrderQueue
         {
-            /// <summary>
+            /**
             /// The original order produced by the algorithm
-            /// </summary>
-            public readonly Order QCOrder;
-            /// <summary>
+            */
+            public final Order QCOrder;
+            /**
             /// A queue of contingent orders to be placed after fills
-            /// </summary>
-            public readonly Queue<TradierPlaceOrderRequest> Contingents;
+            */
+            public final Queue<TradierPlaceOrderRequest> Contingents;
 
             public ContingentOrderQueue(Order qcOrder, params TradierPlaceOrderRequest[] contingents) {
                 QCOrder = qcOrder;
                 Contingents = new Queue<TradierPlaceOrderRequest>(contingents);
             }
 
-            /// <summary>
+            /**
             /// Dequeues the next contingent order, or null if there are none left
-            /// </summary>
+            */
             public TradierPlaceOrderRequest Next() {
                 if( Contingents.Count == 0) {
                     return null;

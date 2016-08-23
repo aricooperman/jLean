@@ -17,15 +17,15 @@ using System.Collections.Generic;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Candle settings for all candlestick patterns
-    /// </summary>
+    */
     public static class CandleSettings
     {
-        /// <summary>
+        /**
         /// Default settings for all candle setting types
-        /// </summary>
-        private static readonly Map<CandleSettingType, CandleSetting> DefaultSettings = new Map<CandleSettingType, CandleSetting>
+        */
+        private static final Map<CandleSettingType, CandleSetting> DefaultSettings = new Map<CandleSettingType, CandleSetting>
         {
             { CandleSettingType.BodyLong, new CandleSetting(CandleRangeType.RealBody, 10, 1m) },
             { CandleSettingType.BodyVeryLong, new CandleSetting(CandleRangeType.RealBody, 10, 3m) },
@@ -40,64 +40,64 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             { CandleSettingType.Equal, new CandleSetting(CandleRangeType.HighLow, 5, 0.05m) }
         };
 
-        /// <summary>
+        /**
         /// Returns the candle setting for the requested type
-        /// </summary>
-        /// <param name="type">The candle setting type</param>
+        */
+         * @param type">The candle setting type
         public static CandleSetting Get(CandleSettingType type) {
             CandleSetting setting;
             DefaultSettings.TryGetValue(type, out setting);
             return setting;
         }
 
-        /// <summary>
+        /**
         /// Changes the default candle setting for the requested type
-        /// </summary>
-        /// <param name="type">The candle setting type</param>
-        /// <param name="setting">The candle setting</param>
+        */
+         * @param type">The candle setting type
+         * @param setting">The candle setting
         public static void Set(CandleSettingType type, CandleSetting setting) {
             DefaultSettings[type] = setting;
         }
     }
 
-    /// <summary>
+    /**
     /// Represents a candle setting
-    /// </summary>
+    */
     public class CandleSetting
     {
-        /// <summary>
+        /**
         /// The candle range type
-        /// </summary>
+        */
         public CandleRangeType RangeType
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// The number of previous candles to average
-        /// </summary>
+        */
         public int AveragePeriod
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// A multiplier to calculate candle ranges
-        /// </summary>
+        */
         public BigDecimal Factor
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// Creates an instance of the <see cref="CandleSetting"/> class
-        /// </summary>
-        /// <param name="rangeType">The range type</param>
-        /// <param name="averagePeriod">The average period</param>
-        /// <param name="factor">The factor</param>
+        */
+         * @param rangeType">The range type
+         * @param averagePeriod">The average period
+         * @param factor">The factor
         public CandleSetting(CandleRangeType rangeType, int averagePeriod, BigDecimal factor) {
             RangeType = rangeType;
             AveragePeriod = averagePeriod;

@@ -26,35 +26,35 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Provides methods for apply the results of universe selection to an algorithm
-    /// </summary>
+    */
     public class UniverseSelection
     {
-        private readonly IDataFeed _dataFeed;
-        private readonly IAlgorithm _algorithm;
-        private readonly SubscriptionLimiter _limiter;
-        private readonly MarketHoursDatabase _marketHoursDatabase = MarketHoursDatabase.FromDataFolder();
-        private readonly SymbolPropertiesDatabase _symbolPropertiesDatabase = SymbolPropertiesDatabase.FromDataFolder();
+        private final IDataFeed _dataFeed;
+        private final IAlgorithm _algorithm;
+        private final SubscriptionLimiter _limiter;
+        private final MarketHoursDatabase _marketHoursDatabase = MarketHoursDatabase.FromDataFolder();
+        private final SymbolPropertiesDatabase _symbolPropertiesDatabase = SymbolPropertiesDatabase.FromDataFolder();
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="UniverseSelection"/> class
-        /// </summary>
-        /// <param name="dataFeed">The data feed to add/remove subscriptions from</param>
-        /// <param name="algorithm">The algorithm to add securities to</param>
-        /// <param name="controls">Specifies limits on the algorithm's memory usage</param>
+        */
+         * @param dataFeed">The data feed to add/remove subscriptions from
+         * @param algorithm">The algorithm to add securities to
+         * @param controls">Specifies limits on the algorithm's memory usage
         public UniverseSelection(IDataFeed dataFeed, IAlgorithm algorithm, Controls controls) {
             _dataFeed = dataFeed;
             _algorithm = algorithm;
-            _limiter = new SubscriptionLimiter(() => dataFeed.Subscriptions, controls.TickLimit, controls.SecondLimit, controls.MinuteLimit);
+            _limiter = new SubscriptionLimiter(() -> dataFeed.Subscriptions, controls.TickLimit, controls.SecondLimit, controls.MinuteLimit);
         }
 
-        /// <summary>
+        /**
         /// Applies universe selection the the data feed and algorithm
-        /// </summary>
-        /// <param name="universe">The universe to perform selection on</param>
-        /// <param name="dateTimeUtc">The current date time in utc</param>
-        /// <param name="universeData">The data provided to perform selection with</param>
+        */
+         * @param universe">The universe to perform selection on
+         * @param dateTimeUtc">The current date time in utc
+         * @param universeData">The data provided to perform selection with
         public SecurityChanges ApplyUniverseSelection(Universe universe, DateTime dateTimeUtc, BaseDataCollection universeData) {
             settings = universe.UniverseSettings;
 
@@ -70,7 +70,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             selections = selectSymbolsResult.ToHashSet();
 
             // create a hash set of our existing subscriptions by sid
-            existingSubscriptions = _dataFeed.Subscriptions.Where(x => !x.EndOfStream).ToHashSet(x => x.Security.Symbol);
+            existingSubscriptions = _dataFeed.Subscriptions.Where(x -> !x.EndOfStream).ToHashSet(x -> x.Security.Symbol);
 
             additions = new List<Security>();
             removals = new List<Security>();
@@ -89,7 +89,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 removals.Add(member);
 
                 // but don't physically remove it from the algorithm if we hold stock or have open orders against it
-                openOrders = _algorithm.Transactions.GetOrders(x => x.Status.IsOpen() && x.Symbol == member.Symbol);
+                openOrders = _algorithm.Transactions.GetOrders(x -> x.Status.IsOpen() && x.Symbol == member.Symbol);
                 if( !member.HoldStock && !openOrders.Any()) {
                     // safe to remove the member from the universe
                     universe.RemoveMember(dateTimeUtc, member);

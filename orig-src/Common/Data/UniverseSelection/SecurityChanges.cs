@@ -20,91 +20,91 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Data.UniverseSelection
 {
-    /// <summary>
+    /**
     /// Defines the additions and subtractions to the algorithm's security subscriptions
-    /// </summary>
+    */
     public class SecurityChanges
     {
-        /// <summary>
+        /**
         /// Gets an instance that represents no changes have been made
-        /// </summary>
-        public static readonly SecurityChanges None = new SecurityChanges(new List<Security>(), new List<Security>());
+        */
+        public static final SecurityChanges None = new SecurityChanges(new List<Security>(), new List<Security>());
 
-        private readonly HashSet<Security> _addedSecurities;
-        private readonly HashSet<Security> _removedSecurities;
+        private final HashSet<Security> _addedSecurities;
+        private final HashSet<Security> _removedSecurities;
 
-        /// <summary>
+        /**
         /// Gets the symbols that were added by universe selection
-        /// </summary>
+        */
         public IReadOnlyList<Security> AddedSecurities
         {
-            get { return _addedSecurities.OrderBy(x => x.Symbol.Value).ToList(); }
+            get { return _addedSecurities.OrderBy(x -> x.Symbol.Value).ToList(); }
         }
 
-        /// <summary>
+        /**
         /// Gets the symbols that were removed by universe selection. This list may
         /// include symbols that were removed, but are still receiving data due to
         /// existing holdings or open orders
-        /// </summary>
+        */
         public IReadOnlyList<Security> RemovedSecurities
         {
-            get { return _removedSecurities.OrderBy(x => x.Symbol.Value).ToList(); }
+            get { return _removedSecurities.OrderBy(x -> x.Symbol.Value).ToList(); }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="SecurityChanges"/> class
-        /// </summary>
-        /// <param name="addedSecurities">Added symbols list</param>
-        /// <param name="removedSecurities">Removed symbols list</param>
+        */
+         * @param addedSecurities">Added symbols list
+         * @param removedSecurities">Removed symbols list
         public SecurityChanges(IEnumerable<Security> addedSecurities, IEnumerable<Security> removedSecurities) {
             _addedSecurities = addedSecurities.ToHashSet();
             _removedSecurities = removedSecurities.ToHashSet();
         }
 
-        /// <summary>
+        /**
         /// Returns a new instance of <see cref="SecurityChanges"/> with the specified securities marked as added
-        /// </summary>
-        /// <param name="securities">The added securities</param>
-        /// <returns>A new security changes instance with the specified securities marked as added</returns>
+        */
+         * @param securities">The added securities
+        @returns A new security changes instance with the specified securities marked as added
         public static SecurityChanges Added(params Security[] securities) {
             if( securities == null || securities.Length == 0) return None;
             return new SecurityChanges(securities.ToList(), new List<Security>());
         }
 
-        /// <summary>
+        /**
         /// Returns a new instance of <see cref="SecurityChanges"/> with the specified securities marked as removed
-        /// </summary>
-        /// <param name="securities">The removed securities</param>
-        /// <returns>A new security changes instance with the specified securities marked as removed</returns>
+        */
+         * @param securities">The removed securities
+        @returns A new security changes instance with the specified securities marked as removed
         public static SecurityChanges Removed(params Security[] securities) {
             if( securities == null || securities.Length == 0) return None;
             return new SecurityChanges(new List<Security>(), securities.ToList());
         }
 
-        /// <summary>
+        /**
         /// Combines the results of two <see cref="SecurityChanges"/>
-        /// </summary>
-        /// <param name="left">The left side of the operand</param>
-        /// <param name="right">The right side of the operand</param>
-        /// <returns>Adds the additions together and removes any removals found in the additions, that is, additions take precendence</returns>
+        */
+         * @param left">The left side of the operand
+         * @param right">The right side of the operand
+        @returns Adds the additions together and removes any removals found in the additions, that is, additions take precendence
         public static SecurityChanges operator +(SecurityChanges left, SecurityChanges right) {
             // common case is adding something to nothing, shortcut these to prevent linqness
             if( left == None) return right;
             if( right == None) return left;
 
             additions = left.AddedSecurities.Union(right.AddedSecurities).ToList();
-            removals = left.RemovedSecurities.Union(right.RemovedSecurities).Where(x => !additions.Contains(x)).ToList();
+            removals = left.RemovedSecurities.Union(right.RemovedSecurities).Where(x -> !additions.Contains(x)).ToList();
             return new SecurityChanges(additions, removals);
         }
 
         #region Overrides of Object
 
-        /// <summary>
+        /**
         /// Returns a String that represents the current object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A String that represents the current object.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         public @Override String toString() {
             if( AddedSecurities.Count == 0 && RemovedSecurities.Count == 0) {
@@ -112,11 +112,11 @@ package com.quantconnect.lean.Data.UniverseSelection
             }
             added = string.Empty;
             if( AddedSecurities.Count != 0) {
-                added = " Added: " + String.join( ",", AddedSecurities.Select(x => x.Symbol.ID));
+                added = " Added: " + String.join( ",", AddedSecurities.Select(x -> x.Symbol.ID));
             }
             removed = string.Empty;
             if( RemovedSecurities.Count != 0) {
-                removed = " Removed: " + String.join( ",", RemovedSecurities.Select(x => x.Symbol.ID));
+                removed = " Removed: " + String.join( ",", RemovedSecurities.Select(x -> x.Symbol.ID));
             }
 
             return "SecurityChanges: " + added + removed;

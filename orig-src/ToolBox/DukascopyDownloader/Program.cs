@@ -24,9 +24,9 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
 {
     class Program
     {
-        /// <summary>
+        /**
         /// Primary entry point to the program
-        /// </summary>
+        */
         static void Main( String[] args) {
             if( args.Length != 4) {
                 Console.WriteLine( "Usage: DukascopyDownloader SYMBOLS RESOLUTION FROMDATE TODATE");

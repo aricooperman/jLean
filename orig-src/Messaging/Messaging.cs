@@ -22,43 +22,43 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Messaging
 {
-    /// <summary>
+    /**
     /// Local/desktop implementation of messaging system for Lean Engine.
-    /// </summary>
+    */
     public class Messaging : IMessagingHandler
     {
         // used to aid in generating regression tests via Cosole.WriteLine(...)
-        private static readonly TextWriter Console = System.Console.Out;
+        private static final TextWriter Console = System.Console.Out;
 
         private AlgorithmNodePacket _job;
 
-        /// <summary>
+        /**
         /// This implementation ignores the <seealso cref="HasSubscribers"/> flag and
         /// instead will always write to the log.
-        /// </summary>
+        */
         public boolean HasSubscribers
         {
             get; 
             set;
         }
 
-        /// <summary>
+        /**
         /// Initialize the messaging system
-        /// </summary>
+        */
         public void Initialize() {
             //
         }
 
-        /// <summary>
+        /**
         /// Set the messaging channel
-        /// </summary>
+        */
         public void SetAuthentication(AlgorithmNodePacket job) {
             _job = job;
         }
 
-        /// <summary>
+        /**
         /// Send a generic base packet without processing
-        /// </summary>
+        */
         public void Send(Packet packet) {
             switch (packet.Type) {
                 case PacketType.Debug:
@@ -73,13 +73,13 @@ package com.quantconnect.lean.Messaging
 
                 case PacketType.RuntimeError:
                     runtime = (RuntimeErrorPacket) packet;
-                    rstack = (!string.IsNullOrEmpty(runtime.StackTrace) ? (Environment.NewLine + " " + runtime.StackTrace) : string.Empty);
+                    rstack = (!StringUtils.isEmpty(runtime.StackTrace) ? (Environment.NewLine + " " + runtime.StackTrace) : string.Empty);
                     Log.Error(runtime.Message + rstack);
                     break;
 
                 case PacketType.HandledError:
                     handled = (HandledErrorPacket) packet;
-                    hstack = (!string.IsNullOrEmpty(handled.StackTrace) ? (Environment.NewLine + " " + handled.StackTrace) : string.Empty);
+                    hstack = (!StringUtils.isEmpty(handled.StackTrace) ? (Environment.NewLine + " " + handled.StackTrace) : string.Empty);
                     Log.Error(handled.Message + hstack);
                     break;
 
@@ -110,9 +110,9 @@ package com.quantconnect.lean.Messaging
             }
         }
 
-        /// <summary>
+        /**
         /// Send any notification with a base type of Notification.
-        /// </summary>
+        */
         public void SendNotification(Notification notification) {
             type = notification.GetType();
             if( type == typeof (NotificationEmail)

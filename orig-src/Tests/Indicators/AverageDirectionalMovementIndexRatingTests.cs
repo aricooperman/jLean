@@ -39,7 +39,7 @@ package com.quantconnect.lean.Tests.Indicators
 
         protected @Override Action<IndicatorBase<TradeBar>, double> Assertion
         {
-            get { return (indicator, expected) => Assert.AreEqual(expected, (double)indicator.Current.Value, 1.0); }
+            get { return (indicator, expected) -> Assert.AreEqual(expected, (double)indicator.Current.Value, 1.0); }
         }
     }
 }

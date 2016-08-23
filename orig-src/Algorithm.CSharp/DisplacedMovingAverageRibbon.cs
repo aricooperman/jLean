@@ -21,21 +21,21 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// Constructs a displaced moving average ribbon and buys when all are lined up, liquidates when they all line down
     /// Ribbons are great for visualizing trends
     ///   Signals are generated when they all line up in a paricular direction
     ///     A buy signal is when the values of the indicators are increasing (from slowest to fastest)
     ///     A sell signal is when the values of the indicators are decreasing (from slowest to fastest)
-    /// </summary>
+    */
     public class DisplacedMovingAverageRibbon : QCAlgorithm
     {
         private static final String Symbol = "SPY";
         private IndicatorBase<IndicatorDataPoint>[] _ribbon;
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         /// <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
@@ -61,7 +61,7 @@ package com.quantconnect.lean.Algorithm.Examples
                 delayedSma = delay.Of(sma);
 
                 // register our new 'delayedSma' for automaic updates on a daily resolution
-                RegisterIndicator(Symbol, delayedSma, Resolution.Daily, data => data.Value);
+                RegisterIndicator(Symbol, delayedSma, Resolution.Daily, data -> data.Value);
 
                 return delayedSma;
             }).ToArray();
@@ -69,13 +69,13 @@ package com.quantconnect.lean.Algorithm.Examples
 
         private DateTime _previous;
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">TradeBars IDictionary object with your stock data</param>
+        */
+         * @param data">TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             // wait for our entire ribbon to be ready
-            if( !_ribbon.All(x => x.IsReady)) return;
+            if( !_ribbon.All(x -> x.IsReady)) return;
 
             // only once per day
             if( _previous.Date == Time.Date) return;
@@ -85,7 +85,7 @@ package com.quantconnect.lean.Algorithm.Examples
 
 
             // check for a buy signal
-            values = _ribbon.Select(x => x.Current.Value).ToArray();
+            values = _ribbon.Select(x -> x.Current.Value).ToArray();
 
             holding = Portfolio[Symbol];
             if( holding.Quantity <= 0 && IsAscending(values)) {
@@ -98,9 +98,9 @@ package com.quantconnect.lean.Algorithm.Examples
             _previous = Time;
         }
 
-        /// <summary>
+        /**
         /// Returns true if the specified values are in ascending order
-        /// </summary>
+        */
         private boolean IsAscending(IEnumerable<decimal> values) {
             decimal? last = null;
             foreach (val in values) {
@@ -117,9 +117,9 @@ package com.quantconnect.lean.Algorithm.Examples
             return true;
         }
 
-        /// <summary>
+        /**
         /// Returns true if the specified values are in descending order
-        /// </summary>
+        */
         private boolean IsDescending(IEnumerable<decimal> values) {
             decimal? last = null;
             foreach (val in values) {

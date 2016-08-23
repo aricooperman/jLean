@@ -21,19 +21,19 @@ using QuantConnect.Data.UniverseSelection;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// In this algortihm we show how you can easily use the universe selection feature to fetch symbols
     /// to be traded using the BaseData custom data system in combination with the AddUniverse{T} method.
     /// AddUniverse{T} requires a function that will return the symbols to be traded.
-    /// </summary>
+    */
     public class DropboxBaseDataUniverseSelectionAlgorithm : QCAlgorithm
     {
         // the changes from the previous universe selection
         private SecurityChanges _changes = SecurityChanges.None;
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         /// <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
@@ -45,13 +45,13 @@ package com.quantconnect.lean.Algorithm.CSharp
 
             AddUniverse<StockDataSource>( "my-stock-data-source", stockDataSource =>
             {
-                return stockDataSource.SelectMany(x => x.Symbols);
+                return stockDataSource.SelectMany(x -> x.Symbols);
             });
         }
 
-        /// <summary>
+        /**
         /// Event - v3.0 DATA EVENT HANDLER: (Pattern) Basic template for user to @Override for receiving all subscription data in a single event
-        /// </summary>
+        */
         /// <code>
         /// TradeBars bars = slice.Bars;
         /// Ticks ticks = slice.Ticks;
@@ -62,7 +62,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// DataDictionary{Quandl} allQuandlData = slice.Get{Quand}
         /// Quandl oil = slice.Get{Quandl}( "OIL")
         /// </code>
-        /// <param name="slice">The current slice of data keyed by symbol string</param>
+         * @param slice">The current slice of data keyed by symbol string
         public @Override void OnData(Slice slice) {
             if( slice.Bars.Count == 0) return;
             if( _changes == SecurityChanges.None) return;
@@ -80,57 +80,57 @@ package com.quantconnect.lean.Algorithm.CSharp
             _changes = SecurityChanges.None;
         }
 
-        /// <summary>
+        /**
         /// Event fired each time the we add/remove securities from the data feed
-        /// </summary>
-        /// <param name="changes"></param>
+        */
+         * @param changes">
         public @Override void OnSecuritiesChanged(SecurityChanges changes) {
             // each time our securities change we'll be notified here
             _changes = changes;
         }
 
-        /// <summary>
+        /**
         /// Our custom data type that defines where to get and how to read our backtest and live data.
-        /// </summary>
+        */
         class StockDataSource : BaseData
         {
             private static final String LiveUrl = @"https://www.dropbox.com/s/2az14r5xbx4w5j6/daily-stock-picker-live.csv?dl=1";
             private static final String BacktestUrl = @"https://www.dropbox.com/s/rmiiktz0ntpff3a/daily-stock-picker-backtest.csv?dl=1";
 
-            /// <summary>
+            /**
             /// The symbols to be selected
-            /// </summary>
+            */
             public List<String> Symbols { get; set; }
 
-            /// <summary>
+            /**
             /// Required default constructor
-            /// </summary>
+            */
             public StockDataSource() {
                 // initialize our list to empty
                 Symbols = new List<String>();
             }
 
-            /// <summary>
+            /**
             /// Return the URL String source of the file. This will be converted to a stream 
-            /// </summary>
-            /// <param name="config">Configuration object</param>
-            /// <param name="date">Date of this source file</param>
-            /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-            /// <returns>String URL of source file.</returns>
+            */
+             * @param config">Configuration object
+             * @param date">Date of this source file
+             * @param isLiveMode">true if we're in live mode, false for backtesting mode
+            @returns String URL of source file.
             public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
                 url = isLiveMode ? LiveUrl : BacktestUrl;
                 return new SubscriptionDataSource(url, SubscriptionTransportMedium.RemoteFile);
             }
 
-            /// <summary>
+            /**
             /// Reader converts each line of the data source into BaseData objects. Each data type creates its own factory method, and returns a new instance of the object 
             /// each time it is called. The returned object is assumed to be time stamped in the config.ExchangeTimeZone.
-            /// </summary>
-            /// <param name="config">Subscription data config setup object</param>
-            /// <param name="line">Line of the source document</param>
-            /// <param name="date">Date of the requested data</param>
-            /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-            /// <returns>Instance of the T:BaseData object generated by this line of the CSV</returns>
+            */
+             * @param config">Subscription data config setup object
+             * @param line">Line of the source document
+             * @param date">Date of the requested data
+             * @param isLiveMode">true if we're in live mode, false for backtesting mode
+            @returns Instance of the T:BaseData object generated by this line of the CSV
             public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
                 try
                 {

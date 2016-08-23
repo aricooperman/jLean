@@ -17,20 +17,20 @@ using System;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Represents the model responsible for applying cash settlement rules
-    /// </summary>
-    /// <remarks>This model applies cash settlement immediately</remarks>
+    */
+    /// This model applies cash settlement immediately
     public class ImmediateSettlementModel : ISettlementModel
     {
-        /// <summary>
+        /**
         /// Applies cash settlement rules
-        /// </summary>
-        /// <param name="portfolio">The algorithm's portfolio</param>
-        /// <param name="security">The fill's security</param>
-        /// <param name="applicationTimeUtc">The fill time (in UTC)</param>
-        /// <param name="currency">The currency symbol</param>
-        /// <param name="amount">The amount of cash to apply</param>
+        */
+         * @param portfolio">The algorithm's portfolio
+         * @param security">The fill's security
+         * @param applicationTimeUtc">The fill time (in UTC)
+         * @param currency">The currency symbol
+         * @param amount">The amount of cash to apply
         public void ApplyFunds(SecurityPortfolioManager portfolio, Security security, DateTime applicationTimeUtc, String currency, BigDecimal amount) {
             portfolio.CashBook[currency].AddAmount(amount);
         }

@@ -20,9 +20,9 @@ using Newtonsoft.Json.Converters;
 
 package com.quantconnect.lean.Brokerages.Tradier
 {
-    /// <summary>
+    /**
     /// Rate limiting categorization
-    /// </summary>
+    */
     public enum TradierApiRequestType
     { 
         /// Standard Rate Limit
@@ -33,9 +33,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         Orders
     }
     
-    /// <summary>
+    /**
     /// Tradier account type:
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierAccountType 
     {
@@ -50,10 +50,10 @@ package com.quantconnect.lean.Brokerages.Tradier
         Margin
     }
 
-    /// <summary>
+    /**
     /// Direction of the order
     /// (buy, buy_to_open, buy_to_cover, buy_to_close, sell, sell_short, sell_to_open, sell_to_close)
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierOrderDirection
     {
@@ -90,10 +90,10 @@ package com.quantconnect.lean.Brokerages.Tradier
         None,
     }
 
-    /// <summary>
+    /**
     /// Status of the tradier order.
     ///  (filled, canceled, open, expired, rejected, pending, partially_filled, submitted)
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierOrderStatus
     {
@@ -123,9 +123,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         Submitted
     }
 
-    /// <summary>
+    /**
     /// Length of the order offer.
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierOrderDuration
     {
@@ -137,9 +137,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         Day
     }
 
-    /// <summary>
+    /**
     /// Class of the order.
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierOrderClass
     {
@@ -157,9 +157,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         Combo
     }
 
-    /// <summary>
+    /**
     /// Account status flag.
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierAccountStatus
     {
@@ -174,9 +174,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         Closed
     }
 
-    /// <summary>
+    /**
     /// Tradier options status
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierOptionStatus
     {
@@ -191,9 +191,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         Assignment
     }
 
-    /// <summary>
+    /**
     /// TradeBar windows for Tradier's data histories
-    /// </summary>
+    */
     public enum TradierTimeSeriesIntervals
     {
         /// TradierTimeSeriesIntervals: Tick
@@ -210,9 +210,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         FifteenMinutes,
     }
 
-    /// <summary>
+    /**
     /// Historical data intervals for tradier requests:
-    /// </summary>
+    */
     public enum TradierHistoricalDataIntervals
     {
         /// TradierTimeSeriesIntervals: Daily
@@ -227,9 +227,9 @@ package com.quantconnect.lean.Brokerages.Tradier
     }
 
 
-    /// <summary>
+    /**
     /// Tradier option type
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierOptionType
     {
@@ -241,9 +241,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         Call
     }
 
-    /// <summary>
+    /**
     /// Tradier options expiration
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierOptionExpirationType
     {
@@ -255,9 +255,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         Weekly
     }
 
-    /// <summary>
+    /**
     /// Account classification
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierAccountClassification
     {
@@ -278,9 +278,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         Entity
     }
 
-    /// <summary>
+    /**
     /// Tradier event type:
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierEventType
     {
@@ -298,9 +298,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         Dividend
     }
 
-    /// <summary>
+    /**
     /// Market type of the trade: 
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierTradeType
     {
@@ -312,9 +312,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         Option
     }
 
-    /// <summary>
+    /**
     /// Tradier order type: (market, limit, stop, stop_limit or market) //credit, debit, even
-    /// </summary>
+    */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum TradierOrderType
     {

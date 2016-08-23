@@ -17,17 +17,17 @@ using System;
 
 package com.quantconnect.lean.Logging
 {
-    /// <summary>
+    /**
     /// Logging extensions.
-    /// </summary>
+    */
     public static class LogHandlerExtensions
     {
-        /// <summary>
+        /**
         /// Write error message to log
-        /// </summary>
-        /// <param name="logHandler"></param>
-        /// <param name="text">Message</param>
-        /// <param name="args">Arguments to format.</param>
+        */
+         * @param logHandler">
+         * @param text">Message
+         * @param args">Arguments to format.
         public static void Error(this ILogHandler logHandler, String text, params object[] args) {
             if( logHandler == null ) {
                 throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");
@@ -36,12 +36,12 @@ package com.quantconnect.lean.Logging
             logHandler.Error( String.format(text, args));
         }
 
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="logHandler"></param>
-        /// <param name="text">Message</param>
-        /// <param name="args">Arguments to format.</param>
+        */
+         * @param logHandler">
+         * @param text">Message
+         * @param args">Arguments to format.
         public static void Debug(this ILogHandler logHandler, String text, params object[] args) {
             if( logHandler == null ) {
                 throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");
@@ -50,12 +50,12 @@ package com.quantconnect.lean.Logging
             logHandler.Debug( String.format(text, args));
         }
 
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="logHandler"></param>
-        /// <param name="text">Message</param>
-        /// <param name="args">Arguments to format.</param>
+        */
+         * @param logHandler">
+         * @param text">Message
+         * @param args">Arguments to format.
         public static void Trace(this ILogHandler logHandler, String text, params object[] args) {
             if( logHandler == null ) {
                 throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");

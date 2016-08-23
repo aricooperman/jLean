@@ -28,7 +28,7 @@ package com.quantconnect.lean.Tests.Indicators
             static final double epsilon = 1;
 
             TestHelper.TestIndicator(adx, "spy_with_adx.txt", "ADX 14",
-                (ind, expected) => Assert.AreEqual(expected, (double)((AverageDirectionalIndex)ind).Current.Value, epsilon)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((AverageDirectionalIndex)ind).Current.Value, epsilon)
             );
         }
 
@@ -39,10 +39,10 @@ package com.quantconnect.lean.Tests.Indicators
             static final double epsilon = 1;
 
             TestHelper.TestIndicator(adx, "spy_with_adx.txt", "ADX 14",
-                (ind, expected) => Assert.AreEqual(expected, (double)((AverageDirectionalIndex)ind).Current.Value, epsilon));
+                (ind, expected) -> Assert.AreEqual(expected, (double)((AverageDirectionalIndex)ind).Current.Value, epsilon));
             adx.Reset();
             TestHelper.TestIndicator(adx, "spy_with_adx.txt", "ADX 14",
-                (ind, expected) => Assert.AreEqual(expected, (double)((AverageDirectionalIndex)ind).Current.Value, epsilon));
+                (ind, expected) -> Assert.AreEqual(expected, (double)((AverageDirectionalIndex)ind).Current.Value, epsilon));
         }
 
         [Test]

@@ -35,8 +35,8 @@ public class SecurityIdentifierJsonConverter {
     
     public static class SecurityIdentifierJsonSerializer extends JsonSerializer<SecurityIdentifier> {
         /// Converts as security identifier to a string
-        /// <param name="value">The input value to be converted before serialziation</param>
-        /// <returns>A new instance of TResult that is to be serialzied</returns>
+         * @param value">The input value to be converted before serialziation
+        @returns A new instance of TResult that is to be serialzied
         @Override
         public void serialize( SecurityIdentifier value, JsonGenerator gen, SerializerProvider serializers )
                 throws IOException, JsonProcessingException {
@@ -46,8 +46,8 @@ public class SecurityIdentifierJsonConverter {
 
     public static class SecurityIdentifierJsonDeserializer extends JsonDeserializer<SecurityIdentifier> {
         /// Converts the input String to a security identifier
-        /// <param name="value">The deserialized value that needs to be converted to T</param>
-        /// <returns>The converted value</returns>
+         * @param value">The deserialized value that needs to be converted to T
+        @returns The converted value
         @Override
         public com.quantconnect.lean.SecurityIdentifier deserialize( JsonParser p, DeserializationContext ctxt )
                 throws IOException, JsonProcessingException {

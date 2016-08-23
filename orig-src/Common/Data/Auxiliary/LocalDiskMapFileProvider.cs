@@ -22,21 +22,21 @@ using QuantConnect.Logging;
 
 package com.quantconnect.lean.Data.Auxiliary
 {
-    /// <summary>
+    /**
     /// Provides a default implementation of <see cref="IMapFileProvider"/> that reads from
     /// the local disk
-    /// </summary>
+    */
     public class LocalDiskMapFileProvider : IMapFileProvider
     {
         private static int _wroteTraceStatement;
-        private readonly ConcurrentMap<String, MapFileResolver> _cache = new ConcurrentMap<String, MapFileResolver>();
+        private final ConcurrentMap<String, MapFileResolver> _cache = new ConcurrentMap<String, MapFileResolver>();
 
-        /// <summary>
+        /**
         /// Gets a <see cref="MapFileResolver"/> representing all the map
         /// files for the specified market
-        /// </summary>
-        /// <param name="market">The equity market, for example, 'usa'</param>
-        /// <returns>A <see cref="MapFileRow"/> containing all map files for the specified market</returns>
+        */
+         * @param market">The equity market, for example, 'usa'
+        @returns A <see cref="MapFileRow"/> containing all map files for the specified market
         public MapFileResolver Get( String market) {
             market = market.toLowerCase();
             return _cache.GetOrAdd(market, GetMapFileResolver);

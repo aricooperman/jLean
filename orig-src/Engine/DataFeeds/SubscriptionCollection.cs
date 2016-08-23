@@ -21,25 +21,25 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Provides a collection for holding subscriptions.
-    /// </summary>
+    */
     public class SubscriptionCollection : IEnumerable<Subscription>
     {
-        private readonly ConcurrentMap<Symbol, ConcurrentMap<SubscriptionDataConfig, Subscription>> _subscriptions;
+        private final ConcurrentMap<Symbol, ConcurrentMap<SubscriptionDataConfig, Subscription>> _subscriptions;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="SubscriptionCollection"/> class
-        /// </summary>
+        */
         public SubscriptionCollection() {
             _subscriptions = new ConcurrentMap<Symbol, ConcurrentMap<SubscriptionDataConfig, Subscription>>();
         }
 
-        /// <summary>
+        /**
         /// Checks the collection for the specified subscription configuration
-        /// </summary>
-        /// <param name="configuration">The subscription configuration to check for</param>
-        /// <returns>True if a subscription with the specified configuration is found in this collection, false otherwise</returns>
+        */
+         * @param configuration">The subscription configuration to check for
+        @returns True if a subscription with the specified configuration is found in this collection, false otherwise
         public boolean Contains(SubscriptionDataConfig configuration) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if( !_subscriptions.TryGetValue(configuration.Symbol, out dictionary)) {
@@ -49,21 +49,21 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return dictionary.ContainsKey(configuration);
         }
 
-        /// <summary>
+        /**
         /// Checks the collection for any subscriptions with the specified symbol
-        /// </summary>
-        /// <param name="symbol">The symbol to check</param>
-        /// <returns>True if any subscriptions are found with the specified symbol</returns>
+        */
+         * @param symbol">The symbol to check
+        @returns True if any subscriptions are found with the specified symbol
         public boolean ContainsAny(Symbol symbol) {
             return _subscriptions.ContainsKey(symbol);
         }
 
-        /// <summary>
+        /**
         /// Attempts to add the specified subscription to the collection. If another subscription
         /// exists with the same configuration then it won't be added.
-        /// </summary>
-        /// <param name="subscription">The subscription to add</param>
-        /// <returns>True if the subscription is successfully added, false otherwise</returns>
+        */
+         * @param subscription">The subscription to add
+        @returns True if the subscription is successfully added, false otherwise
         public boolean TryAdd(Subscription subscription) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if( !_subscriptions.TryGetValue(subscription.Configuration.Symbol, out dictionary)) {
@@ -74,12 +74,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return dictionary.TryAdd(subscription.Configuration, subscription);
         }
 
-        /// <summary>
+        /**
         /// Attempts to retrieve the subscription with the specified configuration
-        /// </summary>
-        /// <param name="configuration">The subscription's configuration</param>
-        /// <param name="subscription">The subscription matching the configuration, null if not found</param>
-        /// <returns>True if the subscription is successfully retrieved, false otherwise</returns>
+        */
+         * @param configuration">The subscription's configuration
+         * @param subscription">The subscription matching the configuration, null if not found
+        @returns True if the subscription is successfully retrieved, false otherwise
         public boolean TryGetValue(SubscriptionDataConfig configuration, out Subscription subscription) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if( !_subscriptions.TryGetValue(configuration.Symbol, out dictionary)) {
@@ -90,12 +90,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return dictionary.TryGetValue(configuration, out subscription);
         }
         
-        /// <summary>
+        /**
         /// Attempts to retrieve the subscription with the specified configuration
-        /// </summary>
-        /// <param name="symbol">The symbol of the subscription's configuration</param>
-        /// <param name="subscriptions">The subscriptions matching the symbol, null if not found</param>
-        /// <returns>True if the subscriptions are successfully retrieved, false otherwise</returns>
+        */
+         * @param symbol">The symbol of the subscription's configuration
+         * @param subscriptions">The subscriptions matching the symbol, null if not found
+        @returns True if the subscriptions are successfully retrieved, false otherwise
         public boolean TryGetAll(Symbol symbol, out ICollection<Subscription> subscriptions) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if( !_subscriptions.TryGetValue(symbol, out dictionary)) {
@@ -107,12 +107,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return true;
         }
 
-        /// <summary>
+        /**
         /// Attempts to remove the subscription with the specified configuraton from the collection.
-        /// </summary>
-        /// <param name="configuration">The configuration of the subscription to remove</param>
-        /// <param name="subscription">The removed subscription, null if not found.</param>
-        /// <returns>True if the subscription is successfully removed, false otherwise</returns>
+        */
+         * @param configuration">The configuration of the subscription to remove
+         * @param subscription">The removed subscription, null if not found.
+        @returns True if the subscription is successfully removed, false otherwise
         public boolean TryRemove(SubscriptionDataConfig configuration, out Subscription subscription) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if( !_subscriptions.TryRemove(configuration.Symbol, out dictionary)) {
@@ -123,12 +123,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return dictionary.TryRemove(configuration, out subscription);
         }
 
-        /// <summary>
+        /**
         /// Attempts to remove all subscriptons for the specified symbol
-        /// </summary>
-        /// <param name="symbol">The symbol of the subscriptions to remove</param>
-        /// <param name="subscriptions">The removed subscriptions</param>
-        /// <returns></returns>
+        */
+         * @param symbol">The symbol of the subscriptions to remove
+         * @param subscriptions">The removed subscriptions
+        @returns 
         public boolean TryRemoveAll(Symbol symbol, out ICollection<Subscription> subscriptions) {
             ConcurrentMap<SubscriptionDataConfig, Subscription> dictionary;
             if( !_subscriptions.TryRemove(symbol, out dictionary)) {
@@ -140,12 +140,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return true;
         }
 
-        /// <summary>
+        /**
         /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// An enumerator that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         public IEnumerator<Subscription> GetEnumerator() {
             foreach (subscriptionsBySymbol in _subscriptions) {
                 subscriptionsByConfig = subscriptionsBySymbol.Value;
@@ -156,12 +156,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
         }
 
-        /// <summary>
+        /**
         /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }

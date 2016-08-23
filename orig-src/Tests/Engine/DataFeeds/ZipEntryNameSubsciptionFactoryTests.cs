@@ -43,8 +43,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             actual = factory.Read(new SubscriptionDataSource(source, SubscriptionTransportMedium.LocalFile, FileFormat.ZipEntryName)).ToList();
 
             // we only really care about the symbols
-            CollectionAssert.AreEqual(expected, actual.Select(x => x.Symbol));
-            Assert.IsTrue(actual.All(x => x is ZipEntryName));
+            CollectionAssert.AreEqual(expected, actual.Select(x -> x.Symbol));
+            Assert.IsTrue(actual.All(x -> x is ZipEntryName));
         }
     }
 }

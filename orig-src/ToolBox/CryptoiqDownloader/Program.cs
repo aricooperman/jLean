@@ -21,9 +21,9 @@ package com.quantconnect.lean.ToolBox.CryptoiqDownloader
 {
     class Program
     {
-        /// <summary>
+        /**
         /// Cryptoiq Downloader Toolbox Project For LEAN Algorithmic Trading Engine.
-        /// </summary>
+        */
         static void Main( String[] args) {
             if( args.Length == 3) {
                 args = new [] { args[0], DateTime.UtcNow.toString( "yyyyMMdd"), args[1], args[2] };

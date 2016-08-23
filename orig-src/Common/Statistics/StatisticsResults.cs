@@ -17,41 +17,41 @@ using System.Collections.Generic;
 
 package com.quantconnect.lean.Statistics
 {
-    /// <summary>
+    /**
     /// The <see cref="StatisticsResults"/> class represents total and rolling statistics for an algorithm
-    /// </summary>
+    */
     public class StatisticsResults
     {
-        /// <summary>
+        /**
         /// The performance of the algorithm over the whole period
-        /// </summary>
+        */
         public AlgorithmPerformance TotalPerformance { get; private set; }
 
-        /// <summary>
+        /**
         /// The rolling performance of the algorithm over 1, 3, 6, 12 month periods
-        /// </summary>
+        */
         public Map<String, AlgorithmPerformance> RollingPerformances { get; private set; }
 
-        /// <summary>
+        /**
         /// Returns a summary of the algorithm performance as a dictionary
-        /// </summary>
+        */
         public Map<String,String> Summary { get; private set; }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="StatisticsResults"/> class
-        /// </summary>
-        /// <param name="totalPerformance">The algorithm total performance</param>
-        /// <param name="rollingPerformances">The algorithm rolling performances</param>
-        /// <param name="summary">The summary performance Map</param>
+        */
+         * @param totalPerformance">The algorithm total performance
+         * @param rollingPerformances">The algorithm rolling performances
+         * @param summary">The summary performance Map
         public StatisticsResults(AlgorithmPerformance totalPerformance, Map<String, AlgorithmPerformance> rollingPerformances, Map<String,String> summary) {
             TotalPerformance = totalPerformance;
             RollingPerformances = rollingPerformances;
             Summary = summary;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="StatisticsResults"/> class
-        /// </summary>
+        */
         public StatisticsResults() {
             TotalPerformance = new AlgorithmPerformance();
             RollingPerformances = new Map<String, AlgorithmPerformance>();

@@ -18,65 +18,65 @@ using System.IO;
 
 package com.quantconnect.lean.Logging
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="ILogHandler"/> that writes all log messages to a file on disk.
-    /// </summary>
+    */
     public class FileLogHandler : ILogHandler
     {
         private boolean _disposed;
 
         // we need to control synchronization to our stream writer since it's not inherently thread-safe
-        private readonly object _lock = new object();
-        private readonly Lazy<TextWriter> _writer;
-        private readonly boolean _useTimestampPrefix;
+        private final object _lock = new object();
+        private final Lazy<TextWriter> _writer;
+        private final boolean _useTimestampPrefix;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FileLogHandler"/> class to write messages to the specified file path.
         /// The file will be opened using <see cref="FileMode.Append"/>
-        /// </summary>
-        /// <param name="filepath">The file path use to save the log messages</param>
-        /// <param name="useTimestampPrefix">True to prefix each line in the log which the UTC timestamp, false otherwise</param>
+        */
+         * @param filepath">The file path use to save the log messages
+         * @param useTimestampPrefix">True to prefix each line in the log which the UTC timestamp, false otherwise
         public FileLogHandler( String filepath, boolean useTimestampPrefix = true) {
             _useTimestampPrefix = useTimestampPrefix;
             _writer = new Lazy<TextWriter>(
-                () => new StreamWriter(File.Open(filepath, FileMode.Append, FileAccess.Write, FileShare.Read))
+                () -> new StreamWriter(File.Open(filepath, FileMode.Append, FileAccess.Write, FileShare.Read))
                 );
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FileLogHandler"/> class using 'log.txt' for the filepath.
-        /// </summary>
+        */
         public FileLogHandler()
             : this( "log.txt") {
         }
 
-        /// <summary>
+        /**
         /// Write error message to log
-        /// </summary>
-        /// <param name="text">The error text to log</param>
+        */
+         * @param text">The error text to log
         public void Error( String text) {
             WriteMessage(text, "ERROR");
         }
 
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="text">The debug text to log</param>
+        */
+         * @param text">The debug text to log
         public void Debug( String text) {
             WriteMessage(text, "DEBUG");
         }
 
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="text">The trace text to log</param>
+        */
+         * @param text">The trace text to log
         public void Trace( String text) {
             WriteMessage(text, "TRACE");
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             lock (_lock) {
@@ -87,12 +87,12 @@ package com.quantconnect.lean.Logging
             }
         }
 
-        /// <summary>
+        /**
         /// Creates the message to be logged
-        /// </summary>
-        /// <param name="text">The text to be logged</param>
-        /// <param name="level">The logging leel</param>
-        /// <returns></returns>
+        */
+         * @param text">The text to be logged
+         * @param level">The logging leel
+        @returns 
         protected virtual String CreateMessage( String text, String level) {
             if( _useTimestampPrefix) {
                 return String.format( "%1$s %2$s:: %3$s", DateTime.UtcNow.toString( "o"), level, text);
@@ -100,9 +100,9 @@ package com.quantconnect.lean.Logging
             return String.format( "%1$s:: %2$s", level, text);
         }
 
-        /// <summary>
+        /**
         /// Writes the message to the writer
-        /// </summary>
+        */
         private void WriteMessage( String text, String level) {
             lock (_lock) {
                 if( _disposed) return;

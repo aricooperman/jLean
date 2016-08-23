@@ -37,9 +37,9 @@ public class LiveNodePacket extends AlgorithmNodePacket {
 //    @JsonProperty( "aBrokerageData")]
     public Map<String,String> BrokerageData = new HashMap<String,String>();
 
-    /// <summary>
+    /**
     /// Default constructor for JSON of the Live Task Packet
-    /// </summary>
+    */
     public LiveNodePacket() {
         super( PacketType.LiveNode );
         controls = new Controls( 50, 25, 15 );
@@ -54,32 +54,32 @@ using Newtonsoft.Json;
 
 package com.quantconnect.lean.Packets
 {
-    /// <summary>
+    /**
     /// Live job task packet: container for any live specific job variables
-    /// </summary>
+    */
     public class LiveNodePacket : AlgorithmNodePacket 
     {
-        /// <summary>
+        /**
         /// Deploy Id for this live algorithm.
-        /// </summary>
+        */
         @JsonProperty( "sDeployID")]
         public String DeployId = "";
 
-        /// <summary>
+        /**
         /// String name of the brokerage we're trading with
-        /// </summary>
+        */
         @JsonProperty( "sBrokerage")]
         public String Brokerage = "";
 
-        /// <summary>
+        /**
         /// String-String Dictionary of Brokerage Data for this Live Job
-        /// </summary>
+        */
         @JsonProperty( "aBrokerageData")]
         public Map<String,String> BrokerageData = new Map<String,String>();
 
-        /// <summary>
+        /**
         /// Default constructor for JSON of the Live Task Packet
-        /// </summary>
+        */
         public LiveNodePacket() 
             : base(PacketType.LiveNode) {
             Controls = new Controls

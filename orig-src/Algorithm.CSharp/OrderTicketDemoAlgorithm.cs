@@ -21,21 +21,21 @@ using QuantConnect.Orders;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// In this algorithm we submit/update/cancel each order type
-    /// </summary>
+    */
     public class OrderTicketDemoAlgorithm : QCAlgorithm
     {
         private static final String Symbol = "SPY";
-        private readonly List<OrderTicket> _openMarketOnOpenOrders = new List<OrderTicket>(); 
-        private readonly List<OrderTicket> _openMarketOnCloseOrders = new List<OrderTicket>(); 
-        private readonly List<OrderTicket> _openLimitOrders = new List<OrderTicket>();
-        private readonly List<OrderTicket> _openStopMarketOrders = new List<OrderTicket>();
-        private readonly List<OrderTicket> _openStopLimitOrders = new List<OrderTicket>();
+        private final List<OrderTicket> _openMarketOnOpenOrders = new List<OrderTicket>(); 
+        private final List<OrderTicket> _openMarketOnCloseOrders = new List<OrderTicket>(); 
+        private final List<OrderTicket> _openLimitOrders = new List<OrderTicket>();
+        private final List<OrderTicket> _openStopMarketOrders = new List<OrderTicket>();
+        private final List<OrderTicket> _openStopLimitOrders = new List<OrderTicket>();
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 7);  //Set Start Date
             SetEndDate(2013, 10, 11);    //Set End Date
@@ -44,10 +44,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             AddSecurity(SecurityType.Equity, Symbol, Resolution.Minute);
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">Slice object keyed by symbol containing the stock data</param>
+        */
+         * @param data">Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             // MARKET ORDERS
 
@@ -74,11 +74,11 @@ package com.quantconnect.lean.Algorithm.CSharp
             MarketOnCloseOrders();
         }
 
-        /// <summary>
+        /**
         /// MarketOrders are the only orders that are processed synchronously by default, so 
         /// they'll fill by the next line of code. This behavior equally applies to live mode. 
         /// You can opt out of this behavior by specifying the 'asynchronous' parameter as true.
-        /// </summary>
+        */
         private void MarketOrders() {
             if( TimeIs(7, 9, 31)) {
                 Log( "Submitting MarketOrder");
@@ -107,7 +107,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// LimitOrders are always processed asynchronously. Limit orders are used to
         /// set 'good' entry points for an order. For example, you may wish to go
         /// long a stock, but want a good price, so can place a LimitOrder to buy with
@@ -120,7 +120,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <code>
         /// currentLimitPrice = orderTicket.Get(OrderField.LimitPrice);
         /// </code>
-        /// </summary>
+        */
         private void LimitOrders() {
             if( TimeIs(7, 12, 0)) {
                 Log( "Submitting LimitOrder");
@@ -169,7 +169,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// StopMarketOrders work in the opposite way that limit orders do.
         /// When placing a long trade, the stop price must be above current
         /// market price. In this way it's a 'stop loss' for a short trade.
@@ -181,7 +181,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// <code>
         /// currentStopPrice = orderTicket.Get(OrderField.StopPrice);
         /// </code>
-        /// </summary>
+        */
         private void StopMarketOrders() {
             if( TimeIs(7, 12 + 4, 0)) {
                 Log( "Submitting StopMarketOrder");
@@ -234,7 +234,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// StopLimitOrders work as a combined stop and limit order. First, the
         /// price must pass the stop price in the same way a StopMarketOrder works,
         /// but then we're also gauranteed a fill price at least as good as the
@@ -249,7 +249,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// currentStopPrice = orderTicket.Get(OrderField.StopPrice);
         /// currentLimitPrice = orderTicket.Get(OrderField.LimitPrice);
         /// </code>
-        /// </summary>
+        */
         private void StopLimitOrders() {
             if( TimeIs(8, 12, 1)) {
                 Log( "Submitting StopLimitOrder");
@@ -315,11 +315,11 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// MarketOnCloseOrders are always executed at the next market's closing
         /// price. The only properties that can be updated are the quantity and
         /// order tag properties.
-        /// </summary>
+        */
         private void MarketOnCloseOrders() {
             if( TimeIs(9, 12, 0)) {
                 Log( "Submitting MarketOnCloseOrder");
@@ -358,11 +358,11 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// MarketOnOpenOrders are always executed at the next market's opening
         /// price. The only properties that can be updated are the quantity and
         /// order tag properties.
-        /// </summary>
+        */
         private void MarketOnOpenOrders() {
             if( TimeIs(8, 12 + 2, 0)) {
                 Log( "Submitting MarketOnOpenOrder");

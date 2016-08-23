@@ -62,7 +62,7 @@ package com.quantconnect.lean.Tests.Common.Util
             {
                 dates = new HashSet<DateTime>();
                 market = Path.GetFileNameWithoutExtension(x).Replace( "holidays-", string.Empty);
-                foreach (line in File.ReadAllLines(x).Skip(1).Where(l => !l.StartsWith( "#"))) {
+                foreach (line in File.ReadAllLines(x).Skip(1).Where(l -> !l.StartsWith( "#"))) {
                     csv = line Extensions.toCsv( );
                     dates.Add(new DateTime(int.Parse(csv[0]), int.Parse(csv[1]), int.Parse(csv[2])));
                 }
@@ -74,12 +74,12 @@ package com.quantconnect.lean.Tests.Common.Util
 
         #region These methods represent the old way of reading MarketHoursDatabase from csv and are left here to allow users to convert
 
-        /// <summary>
+        /**
         /// Creates a new instance of the <see cref="MarketHoursDatabase"/> class by reading the specified csv file
-        /// </summary>
-        /// <param name="file">The csv file to be read</param>
-        /// <param name="holidaysByMarket">The holidays for each market in the file, if no holiday is present then none is used</param>
-        /// <returns>A new instance of the <see cref="MarketHoursDatabase"/> class representing the data in the specified file</returns>
+        */
+         * @param file">The csv file to be read
+         * @param holidaysByMarket">The holidays for each market in the file, if no holiday is present then none is used
+        @returns A new instance of the <see cref="MarketHoursDatabase"/> class representing the data in the specified file
         public static MarketHoursDatabase FromCsvFile( String file, IReadOnlyMap<String, IEnumerable<DateTime>> holidaysByMarket) {
             exchangeHours = new Map<SecurityDatabaseKey, MarketHoursDatabase.Entry>();
 
@@ -88,7 +88,7 @@ package com.quantconnect.lean.Tests.Common.Util
             }
 
             // skip the first header line, also skip #'s as these are comment lines
-            foreach (line in File.ReadLines(file).Where(x => !x.StartsWith( "#")).Skip(1)) {
+            foreach (line in File.ReadLines(file).Where(x -> !x.StartsWith( "#")).Skip(1)) {
                 SecurityDatabaseKey key;
                 hours = FromCsvLine(line, holidaysByMarket, out key);
                 if( exchangeHours.ContainsKey(key)) {
@@ -101,13 +101,13 @@ package com.quantconnect.lean.Tests.Common.Util
             return new MarketHoursDatabase(exchangeHours);
         }
 
-        /// <summary>
+        /**
         /// Creates a new instance of <see cref="SecurityExchangeHours"/> from the specified csv line and holiday set
-        /// </summary>
-        /// <param name="line">The csv line to be parsed</param>
-        /// <param name="holidaysByMarket">The holidays this exchange isn't open for trading by market</param>
-        /// <param name="key">The key used to uniquely identify these market hours</param>
-        /// <returns>A new <see cref="SecurityExchangeHours"/> for the specified csv line and holidays</returns>
+        */
+         * @param line">The csv line to be parsed
+         * @param holidaysByMarket">The holidays this exchange isn't open for trading by market
+         * @param key">The key used to uniquely identify these market hours
+        @returns A new <see cref="SecurityExchangeHours"/> for the specified csv line and holidays
         private static MarketHoursDatabase.Entry FromCsvLine( String line,
             IReadOnlyMap<String, IEnumerable<DateTime>> holidaysByMarket,
             out SecurityDatabaseKey key) {
@@ -123,7 +123,7 @@ package com.quantconnect.lean.Tests.Common.Util
             //market = csv[2];
             //symbol = csv[3];
             //type = csv[4];
-            symbol = string.IsNullOrEmpty(csv[3]) ? null : csv[3];
+            symbol = StringUtils.isEmpty(csv[3]) ? null : csv[3];
             key = new SecurityDatabaseKey(csv[2], symbol, (SecurityType)Enum.Parse(typeof(SecurityType), csv[4], true));
 
             int csvLength = csv.Length;
@@ -142,7 +142,7 @@ package com.quantconnect.lean.Tests.Common.Util
                 holidays = Enumerable.Empty<DateTime>();
             }
 
-            exchangeHours = new SecurityExchangeHours(exchangeTimeZone, holidays, marketHours.ToDictionary(x => x.DayOfWeek));
+            exchangeHours = new SecurityExchangeHours(exchangeTimeZone, holidays, marketHours.ToDictionary(x -> x.DayOfWeek));
             return new MarketHoursDatabase.Entry(dataTimeZone, exchangeHours);
         }
 
@@ -177,17 +177,17 @@ package com.quantconnect.lean.Tests.Common.Util
             close_time = ParseHoursToTimeSpan(close);
             ex_close_time = ParseHoursToTimeSpan(ex_close);
 
-            if( ex_open_time == TimeSpan.Zero
-                && open_time == TimeSpan.Zero
-                && close_time == TimeSpan.Zero
-                && ex_close_time == TimeSpan.Zero) {
+            if( ex_open_time == Duration.ZERO
+                && open_time == Duration.ZERO
+                && close_time == Duration.ZERO
+                && ex_close_time == Duration.ZERO) {
                 return LocalMarketHours.ClosedAllDay(dayOfWeek);
             }
 
             return new LocalMarketHours(dayOfWeek, ex_open_time, open_time, close_time, ex_close_time);
         }
 
-        private static TimeSpan ParseHoursToTimeSpan( String ex_open) {
+        private static Duration ParseHoursToTimeSpan( String ex_open) {
             return Duration.ofHours(double.Parse(ex_open, CultureInfo.InvariantCulture));
         }
 

@@ -37,7 +37,7 @@ package com.quantconnect.lean.Tests.Engine
             algorithm.SetDateTime(referenceTime);
             algorithm.Securities[Symbols.SPY].Exchange.SetMarketHours(Enumerable.Empty<MarketHoursSegment>(), referenceTime.ConvertFromUtc(TimeZones.NewYork).DayOfWeek);
             job = new LiveNodePacket();
-            results = new TestResultHandler();//packet => Console.WriteLine(FieldstoString(packet)));
+            results = new TestResultHandler();//packet -> Console.WriteLine(FieldstoString(packet)));
             api = new Api.Api();
             handler = new DefaultBrokerageMessageHandler(algorithm, job, results, api, Duration.ofMinutes(15));
 
@@ -61,7 +61,7 @@ package com.quantconnect.lean.Tests.Engine
             marketHours = new MarketHoursSegment(MarketHoursState.Market, open, closed);
             algorithm.Securities[Symbols.SPY].Exchange.SetMarketHours(new [] {marketHours}, localReferencTime.DayOfWeek);
             job = new LiveNodePacket();
-            results = new TestResultHandler();//packet => Console.WriteLine(FieldstoString(packet)));
+            results = new TestResultHandler();//packet -> Console.WriteLine(FieldstoString(packet)));
             api = new Api.Api();
             handler = new DefaultBrokerageMessageHandler(algorithm, job, results, api, Duration.ofMinutes(15), Duration.ofSeconds(.25));
 

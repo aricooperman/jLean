@@ -45,7 +45,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         private static void RunTestIndicator(TradeBarIndicator indicator) {
-            TestHelper.TestIndicator(indicator, "spy_natr.txt", "NATR_5", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value, 1e-3));
+            TestHelper.TestIndicator(indicator, "spy_natr.txt", "NATR_5", (ind, expected) -> Assert.AreEqual(expected, (double)ind.Current.Value, 1e-3));
         }
     }
 }

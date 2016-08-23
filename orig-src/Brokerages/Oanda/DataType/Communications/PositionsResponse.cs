@@ -21,9 +21,9 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Represents the current active positions from Oanda.
-    /// </summary>
+    */
     public class PositionsResponse
     {
         public List<Position> positions;

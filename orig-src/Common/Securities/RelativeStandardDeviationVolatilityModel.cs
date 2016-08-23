@@ -20,22 +20,22 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IVolatilityModel"/> that computes the
     /// relative standard deviation as the volatility of the security
-    /// </summary>
+    */
     public class RelativeStandardDeviationVolatilityModel : IVolatilityModel
     {
         private boolean _needsUpdate;
         private BigDecimal _volatility;
         private DateTime _lastUpdate;
-        private readonly TimeSpan _periodSpan;
-        private readonly object _sync = new object();
-        private readonly RollingWindow<double> _window;
+        private final Duration _periodSpan;
+        private final object _sync = new object();
+        private final RollingWindow<double> _window;
 
-        /// <summary>
+        /**
         /// Gets the volatility of the security as a percentage
-        /// </summary>
+        */
         public BigDecimal Volatility
         {
             get
@@ -59,11 +59,11 @@ package com.quantconnect.lean.Securities
             }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="RelativeStandardDeviationVolatilityModel"/> class
-        /// </summary>
-        /// <param name="periodSpan">The time span representing one 'period' length</param>
-        /// <param name="periods">The nuber of 'period' lengths to wait until updating the value</param>
+        */
+         * @param periodSpan">The time span representing one 'period' length
+         * @param periods">The nuber of 'period' lengths to wait until updating the value
         public RelativeStandardDeviationVolatilityModel(TimeSpan periodSpan, int periods) {
             if( periods < 2) throw new ArgumentOutOfRangeException( "periods", "'periods' must be greater than or equal to 2.");
             _periodSpan = periodSpan;
@@ -71,12 +71,12 @@ package com.quantconnect.lean.Securities
             _lastUpdate = DateTime.MinValue + Duration.ofMilliseconds(periodSpan.TotalMilliseconds*periods);
         }
 
-        /// <summary>
+        /**
         /// Updates this model using the new price information in
         /// the specified security instance
-        /// </summary>
-        /// <param name="security">The security to calculate volatility for</param>
-        /// <param name="data"></param>
+        */
+         * @param security">The security to calculate volatility for
+         * @param data">
         public void Update(Security security, BaseData data) {
             timeSinceLastUpdate = data.EndTime - _lastUpdate;
             if( timeSinceLastUpdate >= _periodSpan) {

@@ -32,39 +32,39 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine.Setup
 {
-    /// <summary>
+    /**
     /// Console setup handler to initialize and setup the Lean Engine properties for a local backtest
-    /// </summary>
+    */
     public class ConsoleSetupHandler : ISetupHandler
     {
-        /// <summary>
+        /**
         /// Error which occured during setup may appear here.
-        /// </summary>
+        */
         public List<String> Errors { get;  set; }
 
-        /// <summary>
+        /**
         /// Maximum runtime of the strategy. (Set to 10 years for local backtesting).
-        /// </summary>
-        public TimeSpan MaximumRuntime { get; private set; }
+        */
+        public Duration MaximumRuntime { get; private set; }
 
-        /// <summary>
+        /**
         /// Starting capital for the algorithm (Loaded from the algorithm code).
-        /// </summary>
+        */
         public BigDecimal StartingPortfolioValue { get; private set; }
 
-        /// <summary>
+        /**
         /// Start date for the backtest.
-        /// </summary>
+        */
         public DateTime StartingDate { get; private set; }
 
-        /// <summary>
+        /**
         /// Maximum number of orders for this backtest.
-        /// </summary>
+        */
         public int MaxOrders { get; private set; }
 
-        /// <summary>
+        /**
         /// Setup the algorithm data, cash, job start end date etc:
-        /// </summary>
+        */
         public ConsoleSetupHandler() {
             MaxOrders = int.MaxValue;
             StartingPortfolioValue = 0;
@@ -73,13 +73,13 @@ package com.quantconnect.lean.Lean.Engine.Setup
             Errors = new List<String>();
         }
 
-        /// <summary>
+        /**
         /// Creates a new algorithm instance. Checks configuration for a specific type name, and if present will
         /// force it to find that one
-        /// </summary>
-        /// <param name="assemblyPath">Physical path of the algorithm dll.</param>
-        /// <param name="language">Language of the assembly.</param>
-        /// <returns>Algorithm instance</returns>
+        */
+         * @param assemblyPath">Physical path of the algorithm dll.
+         * @param language">Language of the assembly.
+        @returns Algorithm instance
         public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language) {
             String error;
             IAlgorithm algorithm;
@@ -87,33 +87,33 @@ package com.quantconnect.lean.Lean.Engine.Setup
 
             // don't force load times to be fast here since we're running locally, this allows us to debug
             // and step through some code that may take us longer than the default 10 seconds
-            loader = new Loader(language, Duration.ofHours(1), names => names.SingleOrDefault(name => MatchTypeName(name, algorithmName)));
+            loader = new Loader(language, Duration.ofHours(1), names -> names.SingleOrDefault(name -> MatchTypeName(name, algorithmName)));
             complete = loader.TryCreateAlgorithmInstanceWithIsolator(assemblyPath, out algorithm, out error);
             if( !complete) throw new Exception(error + ": try re-building algorithm.");
 
             return algorithm;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="BacktestingBrokerage"/> instance
-        /// </summary>
-        /// <param name="algorithmNodePacket">Job packet</param>
-        /// <param name="uninitializedAlgorithm">The algorithm instance before Initialize has been called</param>
-        /// <returns>The brokerage instance, or throws if error creating instance</returns>
+        */
+         * @param algorithmNodePacket">Job packet
+         * @param uninitializedAlgorithm">The algorithm instance before Initialize has been called
+        @returns The brokerage instance, or throws if error creating instance
         public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm) {
             return new BacktestingBrokerage(uninitializedAlgorithm);
         }
 
-        /// <summary>
+        /**
         /// Setup the algorithm cash, dates and portfolio as desired.
-        /// </summary>
-        /// <param name="algorithm">Existing algorithm instance</param>
-        /// <param name="brokerage">New brokerage instance</param>
-        /// <param name="baseJob">Backtesting job</param>
-        /// <param name="resultHandler">The configured result handler</param>
-        /// <param name="transactionHandler">The configuration transaction handler</param>
-        /// <param name="realTimeHandler">The configured real time handler</param>
-        /// <returns>Boolean true on successfully setting up the console.</returns>
+        */
+         * @param algorithm">Existing algorithm instance
+         * @param brokerage">New brokerage instance
+         * @param baseJob">Backtesting job
+         * @param resultHandler">The configured result handler
+         * @param transactionHandler">The configuration transaction handler
+         * @param realTimeHandler">The configured real time handler
+        @returns Boolean true on successfully setting up the console.
         public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket baseJob, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler) {
             initializeComplete = false;
 
@@ -167,13 +167,13 @@ package com.quantconnect.lean.Lean.Engine.Setup
             return initializeComplete;
         }
 
-        /// <summary>
+        /**
         /// Matches type names as namespace qualified or just the name
         /// If expectedTypeName is null or empty, this will always return true
-        /// </summary>
-        /// <param name="currentTypeFullName"></param>
-        /// <param name="expectedTypeName"></param>
-        /// <returns>True on matching the type name</returns>
+        */
+         * @param currentTypeFullName">
+         * @param expectedTypeName">
+        @returns True on matching the type name
         private static boolean MatchTypeName( String currentTypeFullName, String expectedTypeName) {
             if(  String.IsNullOrEmpty(expectedTypeName)) {
                 return true;
@@ -182,9 +182,9 @@ package com.quantconnect.lean.Lean.Engine.Setup
                 || currentTypeFullName.Substring(currentTypeFullName.LastIndexOf('.') + 1) == expectedTypeName;
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             // nothing to clean up

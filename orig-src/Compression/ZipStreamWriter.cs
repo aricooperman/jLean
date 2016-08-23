@@ -21,34 +21,34 @@ using QuantConnect.Logging;
 
 package com.quantconnect.lean
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="TextWriter"/> to write to a zip file
-    /// </summary>
+    */
     public class ZipStreamWriter : TextWriter
     {
-        private readonly String _filename;
-        private readonly String _zipEntry;
-        private readonly String _tempFilename;
+        private final String _filename;
+        private final String _zipEntry;
+        private final String _tempFilename;
         private ZipArchive _archive;
         private StreamWriter _writer;
 
-        /// <summary>
+        /**
         /// When overridden in a derived class, returns the character encoding in which the output is written.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The character encoding in which the output is written.
-        /// </returns>
+        /// 
         /// <filterpriority>1</filterpriority>
         public @Override Encoding Encoding
         {
             get { return Encoding.Default; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ZipStreamWriter"/> class
-        /// </summary>
-        /// <param name="filename">The output zip file name</param>
-        /// <param name="zipEntry">The file name in the zip file</param>
+        */
+         * @param filename">The output zip file name
+         * @param zipEntry">The file name in the zip file
         public ZipStreamWriter( String filename, String zipEntry) {
             _filename = filename;
             _zipEntry = zipEntry;
@@ -68,10 +68,10 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Writes a character to the text String or stream.
-        /// </summary>
-        /// <param name="value">The character to write to the text stream. </param>
+        */
+         * @param value">The character to write to the text stream. 
         /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <filterpriority>1</filterpriority>
@@ -79,10 +79,10 @@ package com.quantconnect.lean
             _writer.Write(value);
         }
 
-        /// <summary>
+        /**
         /// Writes a String followed by a line terminator to the text String or stream.
-        /// </summary>
-        /// <param name="value">The String to write. If <paramref name="value"/> is null, only the line terminator is written. </param>
+        */
+         * @param value">The String to write. If <paramref name="value"/> is null, only the line terminator is written. 
         /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception>
         /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
         /// <filterpriority>1</filterpriority>
@@ -90,9 +90,9 @@ package com.quantconnect.lean
             _writer.WriteLine(value);
         }
 
-        /// <summary>
+        /**
         /// Clears all buffers for the current writer and causes any buffered data to be written to the underlying device.
-        /// </summary>
+        */
         public @Override void Flush() {
             _writer.Flush();
             _writer.Dispose();
@@ -106,10 +106,10 @@ package com.quantconnect.lean
             _writer.BaseStream.Seek(0L, SeekOrigin.End);
         }
 
-        /// <summary>
+        /**
         /// Releases the unmanaged resources used by the <see cref="T:System.IO.TextWriter"/> and optionally releases the managed resources.
-        /// </summary>
-        /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. </param>
+        */
+         * @param disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. 
         protected @Override void Dispose( boolean disposing) {
             if( _writer == null || !disposing)
                 return;

@@ -19,56 +19,56 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Kicking candlestick pattern
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - first candle: marubozu
     /// - second candle: opposite color marubozu
     /// - gap between the two candles: upside gap if black then white, downside gap if white then black
     /// The meaning of "long body" and "very short shadow" is specified with SetCandleSettings
     /// The returned value is positive(+1) when bullish or negative(-1) when bearish
-    /// </remarks>
+    /// 
     public class Kicking : CandlestickPattern
     {
-        private readonly int _shadowVeryShortAveragePeriod;
-        private readonly int _bodyLongAveragePeriod;
+        private final int _shadowVeryShortAveragePeriod;
+        private final int _bodyLongAveragePeriod;
 
         private decimal[] _shadowVeryShortPeriodTotal = new decimal[2];
         private decimal[] _bodyLongPeriodTotal = new decimal[2];
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Kicking"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public Kicking( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 1 + 1) {
             _shadowVeryShortAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod;
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Kicking"/> class.
-        /// </summary>
+        */
         public Kicking()
             : this( "KICKING") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _shadowVeryShortAveragePeriod) {
@@ -121,9 +121,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _shadowVeryShortPeriodTotal = new decimal[2];
             _bodyLongPeriodTotal = new decimal[2];

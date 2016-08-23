@@ -18,10 +18,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Three Outside Up/Down candlestick pattern
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - first: black(white) real body
     /// - second: white(black) real body that engulfs the prior real body
@@ -29,38 +29,38 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The returned value is positive (+1) for the three outside up or negative (-1) for the three outside down;
     /// The user should consider that a three outside up must appear in a downtrend and three outside down must appear
     /// in an uptrend, while this function does not consider it
-    /// </remarks>
+    /// 
     public class ThreeOutside : CandlestickPattern
     {
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ThreeOutside"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public ThreeOutside( String name) 
             : base(name, 3) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ThreeOutside"/> class.
-        /// </summary>
+        */
         public ThreeOutside()
             : this( "THREEOUTSIDE") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 return 0m;

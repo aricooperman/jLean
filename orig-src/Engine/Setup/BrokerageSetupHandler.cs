@@ -30,55 +30,55 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine.Setup
 {
-    /// <summary>
+    /**
     /// Defines a set up handler that initializes the algorithm instance using values retrieved from the user's brokerage account
-    /// </summary>
+    */
     public class BrokerageSetupHandler : ISetupHandler
     {
-        /// <summary>
+        /**
         /// Any errors from the initialization stored here:
-        /// </summary>
+        */
         public List<String> Errors { get; set; }
 
-        /// <summary>
+        /**
         /// Get the maximum runtime for this algorithm job.
-        /// </summary>
-        public TimeSpan MaximumRuntime { get; private set; }
+        */
+        public Duration MaximumRuntime { get; private set; }
 
-        /// <summary>
+        /**
         /// Algorithm starting capital for statistics calculations
-        /// </summary>
+        */
         public BigDecimal StartingPortfolioValue { get; private set; }
 
-        /// <summary>
+        /**
         /// Start date for analysis loops to search for data.
-        /// </summary>
+        */
         public DateTime StartingDate { get; private set; }
 
-        /// <summary>
+        /**
         /// Maximum number of orders for the algorithm run -- applicable for backtests only.
-        /// </summary>
+        */
         public int MaxOrders { get; private set; }
 
         // saves ref to algo so we can call quit if runtime error encountered
         private IAlgorithm _algorithm;
         private IBrokerageFactory _factory;
 
-        /// <summary>
+        /**
         /// Initializes a new BrokerageSetupHandler
-        /// </summary>
+        */
         public BrokerageSetupHandler() {
             Errors = new List<String>();
             MaximumRuntime = Duration.ofDays(10*365);
             MaxOrders = int.MaxValue;
         }
 
-        /// <summary>
+        /**
         /// Create a new instance of an algorithm from a physical dll path.
-        /// </summary>
-        /// <param name="assemblyPath">The path to the assembly's location</param>
-        /// <param name="language">The algorithm's language</param>
-        /// <returns>A new instance of IAlgorithm, or throws an exception if there was an error</returns>
+        */
+         * @param assemblyPath">The path to the assembly's location
+         * @param language">The algorithm's language
+        @returns A new instance of IAlgorithm, or throws an exception if there was an error
         public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language) {
             String error;
             IAlgorithm algorithm;
@@ -93,7 +93,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
 
                 // if there's more than one then check configuration for which one we should use
                 algorithmName = Config.Get( "algorithm-type-name");
-                return names.Single(x => x.Contains( "." + algorithmName));
+                return names.Single(x -> x.Contains( "." + algorithmName));
             });
 
             complete = loader.TryCreateAlgorithmInstanceWithIsolator(assemblyPath, out algorithm, out error);
@@ -102,12 +102,12 @@ package com.quantconnect.lean.Lean.Engine.Setup
             return algorithm;
         }
 
-        /// <summary>
+        /**
         /// Creates the brokerage as specified by the job packet
-        /// </summary>
-        /// <param name="algorithmNodePacket">Job packet</param>
-        /// <param name="uninitializedAlgorithm">The algorithm instance before Initialize has been called</param>
-        /// <returns>The brokerage instance, or throws if error creating instance</returns>
+        */
+         * @param algorithmNodePacket">Job packet
+         * @param uninitializedAlgorithm">The algorithm instance before Initialize has been called
+        @returns The brokerage instance, or throws if error creating instance
         public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm) {
             liveJob = algorithmNodePacket as LiveNodePacket;
             if( liveJob == null ) {
@@ -115,7 +115,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
             }
 
             // find the correct brokerage factory based on the specified brokerage in the live job packet
-            _factory = Composer.Instance.Single<IBrokerageFactory>(factory => factory.BrokerageType.MatchesTypeName(liveJob.Brokerage));
+            _factory = Composer.Instance.Single<IBrokerageFactory>(factory -> factory.BrokerageType.MatchesTypeName(liveJob.Brokerage));
 
             // initialize the correct brokerage using the resolved factory
             brokerage = _factory.CreateBrokerage(liveJob, uninitializedAlgorithm);
@@ -123,16 +123,16 @@ package com.quantconnect.lean.Lean.Engine.Setup
             return brokerage;
         }
 
-        /// <summary>
+        /**
         /// Primary entry point to setup a new algorithm
-        /// </summary>
-        /// <param name="algorithm">Algorithm instance</param>
-        /// <param name="brokerage">New brokerage output instance</param>
-        /// <param name="job">Algorithm job task</param>
-        /// <param name="resultHandler">The configured result handler</param>
-        /// <param name="transactionHandler">The configurated transaction handler</param>
-        /// <param name="realTimeHandler">The configured real time handler</param>
-        /// <returns>True on successfully setting up the algorithm state, or false on error.</returns>
+        */
+         * @param algorithm">Algorithm instance
+         * @param brokerage">New brokerage output instance
+         * @param job">Algorithm job task
+         * @param resultHandler">The configured result handler
+         * @param transactionHandler">The configurated transaction handler
+         * @param realTimeHandler">The configured real time handler
+        @returns True on successfully setting up the algorithm state, or false on error.
         public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket job, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler) {
             _algorithm = algorithm;
 
@@ -252,7 +252,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
                         // be sure to assign order IDs such that we increment from the SecurityTransactionManager to avoid ID collisions
                         Log.Trace( "BrokerageSetupHandler.Setup(): Has open order: " + order.Symbol.toString() + " - " + order.Quantity);
                         order.Id = algorithm.Transactions.GetIncrementOrderId();
-                        transactionHandler.Orders.AddOrUpdate(order.Id, order, (i, o) => order);
+                        transactionHandler.Orders.AddOrUpdate(order.Id, order, (i, o) -> order);
                     }
                 }
                 catch (Exception err) {
@@ -267,7 +267,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
                     // populate the algorithm with the account's current holdings
                     holdings = brokerage.GetAccountHoldings();
                     supportedSecurityTypes = new HashSet<SecurityType> { SecurityType.Equity, SecurityType.Forex, SecurityType.Cfd };
-                    minResolution = new Lazy<Resolution>(() => algorithm.Securities.Select(x => x.Value.Resolution).DefaultIfEmpty(Resolution.Second).Min());
+                    minResolution = new Lazy<Resolution>(() -> algorithm.Securities.Select(x -> x.Value.Resolution).DefaultIfEmpty(Resolution.Second).Min());
                     foreach (holding in holdings) {
                         Log.Trace( "BrokerageSetupHandler.Setup(): Has existing holding: " + holding);
 
@@ -323,17 +323,17 @@ package com.quantconnect.lean.Lean.Engine.Setup
             return Errors.Count == 0;
         }
 
-        /// <summary>
+        /**
         /// Adds initializaion error to the Errors list
-        /// </summary>
-        /// <param name="message">The error message to be added</param>
+        */
+         * @param message">The error message to be added
         private void AddInitializationError( String message) {
             Errors.Add( "Failed to initialize algorithm: " + message);
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             if( _factory != null ) {

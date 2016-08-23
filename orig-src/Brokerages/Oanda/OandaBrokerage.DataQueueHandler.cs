@@ -30,26 +30,26 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Brokerages.Oanda
 {
-    /// <summary>
+    /**
     /// Oanda Brokerage - implementation of IDataQueueHandler interface
-    /// </summary>
+    */
     public partial class OandaBrokerage
     {
-        private static readonly TimeSpan SubscribeDelay = Duration.ofMilliseconds(250);
+        private static final Duration SubscribeDelay = Duration.ofMilliseconds(250);
         private DateTime _lastSubscribeRequestUtcTime = DateTime.MinValue;
         private boolean _subscriptionsPending;
-        private readonly object _lockerSubscriptions = new object();
+        private final object _lockerSubscriptions = new object();
 
-        private readonly List<Tick> _ticks = new List<Tick>();
+        private final List<Tick> _ticks = new List<Tick>();
         private HashSet<Symbol> _subscribedSymbols = new HashSet<Symbol>();
         private RatesSession _ratesSession;
 
         #region IDataQueueHandler implementation
 
-        /// <summary>
+        /**
         /// Get the next ticks from the live trading data queue
-        /// </summary>
-        /// <returns>IEnumerable list of ticks since the last update.</returns>
+        */
+        @returns IEnumerable list of ticks since the last update.
         public IEnumerable<BaseData> GetNextTicks() {
             lock (_ticks) {
                 copy = _ticks.ToArray();
@@ -58,11 +58,11 @@ package com.quantconnect.lean.Brokerages.Oanda
             }
         }
 
-        /// <summary>
+        /**
         /// Adds the specified symbols to the subscription
-        /// </summary>
-        /// <param name="job">Job we're subscribing for:</param>
-        /// <param name="symbols">The symbols to be added keyed by SecurityType</param>
+        */
+         * @param job">Job we're subscribing for:
+         * @param symbols">The symbols to be added keyed by SecurityType
         public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             lock (_lockerSubscriptions) {
                 symbolsToSubscribe = (from symbol in symbols
@@ -71,7 +71,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                 if( symbolsToSubscribe.Count == 0)
                     return;
 
-                Log.Trace( "OandaBrokerage.Subscribe(): %1$s", String.join( ",", symbolsToSubscribe.Select(x => x.Value)));
+                Log.Trace( "OandaBrokerage.Subscribe(): %1$s", String.join( ",", symbolsToSubscribe.Select(x -> x.Value)));
 
                 // Oanda does not allow more than a few rate streaming sessions, 
                 // so we only use a single session for all currently subscribed symbols
@@ -83,11 +83,11 @@ package com.quantconnect.lean.Brokerages.Oanda
             }
         }
 
-        /// <summary>
+        /**
         /// Removes the specified symbols from the subscription
-        /// </summary>
-        /// <param name="job">Job we're processing.</param>
-        /// <param name="symbols">The symbols to be removed keyed by SecurityType</param>
+        */
+         * @param job">Job we're processing.
+         * @param symbols">The symbols to be removed keyed by SecurityType
         public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             lock (_lockerSubscriptions) {
                 symbolsToUnsubscribe = (from symbol in symbols
@@ -96,11 +96,11 @@ package com.quantconnect.lean.Brokerages.Oanda
                 if( symbolsToUnsubscribe.Count == 0)
                     return;
 
-                Log.Trace( "OandaBrokerage.Unsubscribe(): %1$s", String.join( ",", symbolsToUnsubscribe.Select(x => x.Value)));
+                Log.Trace( "OandaBrokerage.Unsubscribe(): %1$s", String.join( ",", symbolsToUnsubscribe.Select(x -> x.Value)));
 
                 // Oanda does not allow more than a few rate streaming sessions, 
                 // so we only use a single session for all currently subscribed symbols
-                symbolsToSubscribe = _subscribedSymbols.ToList().Where(x => !symbolsToUnsubscribe.Contains(x)).ToList();
+                symbolsToSubscribe = _subscribedSymbols.ToList().Where(x -> !symbolsToUnsubscribe.Contains(x)).ToList();
 
                 _subscribedSymbols = symbolsToSubscribe.ToHashSet();
 
@@ -108,9 +108,9 @@ package com.quantconnect.lean.Brokerages.Oanda
             }
         }
 
-        /// <summary>
+        /**
         /// Groups multiple subscribe/unsubscribe calls to avoid closing and reopening the streaming session on each call
-        /// </summary>
+        */
         private void ProcessSubscriptionRequest() {
             if( _subscriptionsPending) return;
             
@@ -146,13 +146,13 @@ package com.quantconnect.lean.Brokerages.Oanda
             });
         }
 
-        /// <summary>
+        /**
         /// Subscribes to the requested symbols (using a single streaming session)
-        /// </summary>
-        /// <param name="symbolsToSubscribe">The list of symbols to subscribe</param>
+        */
+         * @param symbolsToSubscribe">The list of symbols to subscribe
         private void SubscribeSymbols(List<Symbol> symbolsToSubscribe) {
             instruments = symbolsToSubscribe
-                .Select(symbol => new Instrument { instrument = _symbolMapper.GetBrokerageSymbol(symbol) })
+                .Select(symbol -> new Instrument { instrument = _symbolMapper.GetBrokerageSymbol(symbol) })
                 .ToList();
 
             if( _ratesSession != null ) {
@@ -167,18 +167,18 @@ package com.quantconnect.lean.Brokerages.Oanda
             }
         }
 
-        /// <summary>
+        /**
         /// Returns a DateTime from an RFC3339 String (with microsecond resolution)
-        /// </summary>
-        /// <param name="time">The time string</param>
+        */
+         * @param time">The time string
         private static DateTime GetDateTimeFromString( String time) {
             return DateTime.ParseExact(time, "yyyy-MM-dd'T'HH:mm:ss.ffffff'Z'", CultureInfo.InvariantCulture);
         }
 
-        /// <summary>
+        /**
         /// Event handler for streaming ticks
-        /// </summary>
-        /// <param name="data">The data object containing the received tick</param>
+        */
+         * @param data">The data object containing the received tick
         private void OnDataReceived(RateStreamResponse data) {
             if( data.IsHeartbeat()) {
                 lock (_lockerConnectionMonitor) {

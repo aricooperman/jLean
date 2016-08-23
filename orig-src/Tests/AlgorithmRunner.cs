@@ -25,9 +25,9 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Tests
 {
-    /// <summary>
+    /**
     /// Provides methods for running an algorithm and testing it's performance metrics
-    /// </summary>
+    */
     public static class AlgorithmRunner
     {
         static AlgorithmRunner() {

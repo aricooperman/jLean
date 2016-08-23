@@ -24,9 +24,9 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// This algorithm shows how you can define your own custom models.
-    /// </summary>
+    */
     public class CustomModelsAlgorithm : QCAlgorithm
     {
         private Security _security;
@@ -60,9 +60,9 @@ package com.quantconnect.lean.Algorithm.CSharp
 
         public class CustomFillModel : ImmediateFillModel
         {
-            private readonly QCAlgorithm _algorithm;
-            private readonly Random _random = new Random(387510346); // seed it for reproducibility
-            private readonly Map<long, decimal> _absoluteRemainingByOrderId = new Map<long, decimal>();
+            private final QCAlgorithm _algorithm;
+            private final Random _random = new Random(387510346); // seed it for reproducibility
+            private final Map<long, decimal> _absoluteRemainingByOrderId = new Map<long, decimal>();
 
             public CustomFillModel(QCAlgorithm algorithm) {
                 _algorithm = algorithm;
@@ -100,7 +100,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
         public class CustomFeeModel : IFeeModel
         {
-            private readonly QCAlgorithm _algorithm;
+            private final QCAlgorithm _algorithm;
 
             public CustomFeeModel(QCAlgorithm algorithm) {
                 _algorithm = algorithm;
@@ -117,7 +117,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
         public class CustomSlippageModel : ISlippageModel
         {
-            private readonly QCAlgorithm _algorithm;
+            private final QCAlgorithm _algorithm;
 
             public CustomSlippageModel(QCAlgorithm algorithm) {
                 _algorithm = algorithm;

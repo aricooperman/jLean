@@ -55,7 +55,7 @@ package com.quantconnect.lean.Tests.Engine.BrokerageTransactionHandlerTests
 
             // Mock the the order processor
             orderProcessorMock = new Mock<IOrderProcessor>();
-            orderProcessorMock.Setup(m => m.GetOrderTicket(It.IsAny<Integer>())).Returns(new OrderTicket(_algorithm.Transactions, orderRequest));
+            orderProcessorMock.Setup(m -> m.GetOrderTicket(It.IsAny<Integer>())).Returns(new OrderTicket(_algorithm.Transactions, orderRequest));
             _algorithm.Transactions.SetOrderProcessor(orderProcessorMock.Object);
 
             // Act
@@ -83,7 +83,7 @@ package com.quantconnect.lean.Tests.Engine.BrokerageTransactionHandlerTests
 
             // Mock the the order processor
             orderProcessorMock = new Mock<IOrderProcessor>();
-            orderProcessorMock.Setup(m => m.GetOrderTicket(It.IsAny<Integer>())).Returns(new OrderTicket(_algorithm.Transactions, orderRequest));
+            orderProcessorMock.Setup(m -> m.GetOrderTicket(It.IsAny<Integer>())).Returns(new OrderTicket(_algorithm.Transactions, orderRequest));
             _algorithm.Transactions.SetOrderProcessor(orderProcessorMock.Object);
 
             // Act
@@ -111,7 +111,7 @@ package com.quantconnect.lean.Tests.Engine.BrokerageTransactionHandlerTests
 
             // Mock the the order processor
             orderProcessorMock = new Mock<IOrderProcessor>();
-            orderProcessorMock.Setup(m => m.GetOrderTicket(It.IsAny<Integer>())).Returns(new OrderTicket(_algorithm.Transactions, orderRequest));
+            orderProcessorMock.Setup(m -> m.GetOrderTicket(It.IsAny<Integer>())).Returns(new OrderTicket(_algorithm.Transactions, orderRequest));
             _algorithm.Transactions.SetOrderProcessor(orderProcessorMock.Object);
 
             // Act

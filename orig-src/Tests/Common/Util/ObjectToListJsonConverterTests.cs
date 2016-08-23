@@ -25,7 +25,7 @@ package com.quantconnect.lean.Tests.Common.Util
     {
         private static final String Data = "some data";
 
-        private static readonly WellFormedContainer WellFormedInstance = new WellFormedContainer
+        private static final WellFormedContainer WellFormedInstance = new WellFormedContainer
         {
             ComplexTypes = new List<ComplexType>
             {
@@ -37,7 +37,7 @@ package com.quantconnect.lean.Tests.Common.Util
             }
         };
 
-        private static readonly PoorlyFormedContainer PoorlyFormedInstance = new PoorlyFormedContainer
+        private static final PoorlyFormedContainer PoorlyFormedInstance = new PoorlyFormedContainer
         {
             ComplexTypes = new ComplexType
             {
@@ -46,8 +46,8 @@ package com.quantconnect.lean.Tests.Common.Util
             }
         };
 
-        private readonly static String ListJson = JsonConvert.SerializeObject(WellFormedInstance);
-        private readonly static String ObjectJson = JsonConvert.SerializeObject(PoorlyFormedInstance);
+        private final static String ListJson = JsonConvert.SerializeObject(WellFormedInstance);
+        private final static String ObjectJson = JsonConvert.SerializeObject(PoorlyFormedInstance);
 
         [Test]
         public void DeserializesList() {

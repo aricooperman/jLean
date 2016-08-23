@@ -145,13 +145,13 @@ public abstract class Order implements Cloneable {
         this( Symbol.EMPTY, 0, LocalDateTime.now(), "" );
     }
 
-    /// <summary>
+    /**
     /// New order constructor
-    /// </summary>
-    /// <param name="symbol">Symbol asset we're seeking to trade</param>
-    /// <param name="quantity">Quantity of the asset we're seeking to trade</param>
-    /// <param name="time">Time the order was placed</param>
-    /// <param name="tag">User defined data tag for this order</param>
+    */
+     * @param symbol">Symbol asset we're seeking to trade
+     * @param quantity">Quantity of the asset we're seeking to trade
+     * @param time">Time the order was placed
+     * @param tag">User defined data tag for this order
     protected Order( Symbol symbol, int quantity, LocalDateTime time ) {
         this( symbol, quantity, time, "" );
     }
@@ -171,12 +171,12 @@ public abstract class Order implements Cloneable {
 
     }
 
-    /// <summary>
+    /**
     /// Gets the value of this order at the given market price in units of the account currency
     /// NOTE: Some order types derive value from other parameters, such as limit prices
-    /// </summary>
-    /// <param name="security">The security matching this order's symbol</param>
-    /// <returns>The value of this order given the current market price</returns>
+    */
+     * @param security">The security matching this order's symbol
+    @returns The value of this order given the current market price
     public BigDecimal getValue( Security security ) {
         value = getValueImpl( security );
         return value*security.QuoteCurrency.ConversionRate*security.SymbolProperties.ContractMultiplier;
@@ -185,11 +185,11 @@ public abstract class Order implements Cloneable {
     /// Gets the order value in units of the security's quote currency for a single unit.
     /// A single unit here is a single share of stock, or a single barrel of oil, or the
     /// cost of a single share in an option contract.
-    /// <param name="security">The security matching this order's symbol</param>
+     * @param security">The security matching this order's symbol
     protected abstract BigDecimal getValueImpl( Security security );
 
     /// Modifies the state of this order to match the update request
-    /// <param name="request">The request to update this order object</param>
+     * @param request">The request to update this order object
     public /*virtual*/ void ApplyUpdateOrderRequest( UpdateOrderRequest request ) {
         if( request.OrderId != id )
             throw new IllegalArgumentException( "Attempted to apply updates to the incorrect order!" );
@@ -202,20 +202,20 @@ public abstract class Order implements Cloneable {
     }
 
     /// Returns a String that represents the current object.
-    /// <returns>
+    @returns 
     /// A String that represents the current object.
-    /// </returns>
+    /// 
     /// <filterpriority>2</filterpriority>
     public String toString() {
         return String.format( "OrderId: %d %s %3$s order for %d unit%s of %s", id, status, Type, quantity, quantity == 1 ? "" : "s", symbol );
     }
 
     /// Creates a deep-copy clone of this order
-    /// <returns>A copy of this order</returns>
+    @returns A copy of this order
     public abstract Order clone();
 
     /// Copies base Order properties to the specified order
-    /// <param name="order">The target of the copy</param>
+     * @param order">The target of the copy
     protected void copyTo( Order order ) {
         order.id = id;
         order.time = time;
@@ -231,8 +231,8 @@ public abstract class Order implements Cloneable {
     }
 
     /// Creates an <see cref="Order"/> to match the specified <paramref name="request"/>
-    /// <param name="request">The <see cref="SubmitOrderRequest"/> to create an order for</param>
-    /// <returns>The <see cref="Order"/> that matches the request</returns>
+     * @param request">The <see cref="SubmitOrderRequest"/> to create an order for
+    @returns The <see cref="Order"/> that matches the request
     public static Order createOrder( SubmitOrderRequest request ) {
         Order order;
         switch( request.OrderType ) {

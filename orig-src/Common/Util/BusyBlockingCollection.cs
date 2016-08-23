@@ -21,37 +21,37 @@ using System.Threading;
 
 package com.quantconnect.lean.Util
 {
-    /// <summary>
+    /**
     /// A small wrapper around <see cref="BlockingCollection{T}"/> used to communicate busy state of the items
     /// being processed
-    /// </summary>
+    */
     /// <typeparam name="T">The item type being processed</typeparam>
     public class BusyBlockingCollection<T> : IDisposable
     {
-        private readonly BlockingCollection<T> _collection;
-        private readonly ManualResetEventSlim _processingCompletedEvent;
-        private readonly object _lock = new object();
+        private final BlockingCollection<T> _collection;
+        private final ManualResetEventSlim _processingCompletedEvent;
+        private final object _lock = new object();
 
-        /// <summary>
+        /**
         /// Gets a wait handle that can be used to wait until this instance is done
         /// processing all of it's item
-        /// </summary>
+        */
         public WaitHandle WaitHandle
         {
             get { return _processingCompletedEvent.WaitHandle; }
         }
 
-        /// <summary>
+        /**
         /// Gets the number of items held within this collection
-        /// </summary>
+        */
         public int Count
         {
             get { return _collection.Count; }
         }
 
-        /// <summary>
+        /**
         /// Returns true if processing, false otherwise
-        /// </summary>
+        */
         public boolean IsBusy
         {
             get
@@ -62,19 +62,19 @@ package com.quantconnect.lean.Util
             }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="BusyBlockingCollection{T}"/> class
         /// with a bounded capacity of <see cref="int.MaxValue"/>
-        /// </summary>
+        */
         public BusyBlockingCollection()
             : this(int.MaxValue) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="BusyBlockingCollection{T}"/> class
         /// with the specified <paramref name="boundedCapacity"/>
-        /// </summary>
-        /// <param name="boundedCapacity">The maximum number of items allowed in the collection</param>
+        */
+         * @param boundedCapacity">The maximum number of items allowed in the collection
         public BusyBlockingCollection(int boundedCapacity) {
             _collection = new BlockingCollection<T>(boundedCapacity);
 
@@ -82,19 +82,19 @@ package com.quantconnect.lean.Util
             _processingCompletedEvent = new ManualResetEventSlim(true);
         }
 
-        /// <summary>
+        /**
         /// Adds the items to this collection
-        /// </summary>
-        /// <param name="item">The item to be added</param>
+        */
+         * @param item">The item to be added
         public void Add(T item) {
             Add(item, CancellationToken.None);
         }
 
-        /// <summary>
+        /**
         /// Adds the items to this collection
-        /// </summary>
-        /// <param name="item">The item to be added</param>
-        /// <param name="cancellationToken">A cancellation token to observer</param>
+        */
+         * @param item">The item to be added
+         * @param cancellationToken">A cancellation token to observer
         public void Add(T item, CancellationToken cancellationToken) {
             boolean added;
             lock (_lock) {
@@ -108,26 +108,26 @@ package com.quantconnect.lean.Util
             }
         }
 
-        /// <summary>
+        /**
         /// Marks the <see cref="BusyBlockingCollection{T}"/> as not accepting any more additions
-        /// </summary>
+        */
         public void CompleteAdding() {
             _collection.CompleteAdding();
         }
 
-        /// <summary>
+        /**
         /// Provides a consuming enumerable for items in this collection.
-        /// </summary>
-        /// <returns>An enumerable that removes and returns items from the collection</returns>
+        */
+        @returns An enumerable that removes and returns items from the collection
         public IEnumerable<T> GetConsumingEnumerable() {
             return GetConsumingEnumerable(CancellationToken.None);
         }
 
-        /// <summary>
+        /**
         /// Provides a consuming enumerable for items in this collection.
-        /// </summary>
-        /// <param name="cancellationToken">A cancellation token to observer</param>
-        /// <returns>An enumerable that removes and returns items from the collection</returns>
+        */
+         * @param cancellationToken">A cancellation token to observer
+        @returns An enumerable that removes and returns items from the collection
         public IEnumerable<T> GetConsumingEnumerable(CancellationToken cancellationToken) {
             while (!_collection.IsCompleted) {
                 T item;
@@ -183,9 +183,9 @@ package com.quantconnect.lean.Util
             _processingCompletedEvent.Set();
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             _collection.Dispose();

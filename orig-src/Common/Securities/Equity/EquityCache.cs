@@ -15,16 +15,16 @@
 
 package com.quantconnect.lean.Securities.Equity
 {
-    /// <summary>
+    /**
     /// Equity cache @Override.
-    /// </summary>
-    /// <remarks>Scheduled for obsolesence</remarks>
+    */
+    /// Scheduled for obsolesence
     /// <seealso cref="SecurityCache"/>
     public class EquityCache : SecurityCache
     {
-        /// <summary>
+        /**
         /// Start a new Cache for the set Index Code
-        /// </summary>
+        */
         public EquityCache()
             : base() {
         }

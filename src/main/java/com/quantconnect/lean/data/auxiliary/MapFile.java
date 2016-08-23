@@ -73,8 +73,8 @@ public class MapFile implements Iterable<MapFileRow> {
     }
 
     /// Memory overload search method for finding the mapped symbol for this date.
-    /// <param name="searchDate">date for symbol we need to find.</param>
-    /// <returns>Symbol on this date.</returns>
+     * @param searchDate">date for symbol we need to find.
+    @returns Symbol on this date.
     public String getMappedSymbol( LocalDate searchDate ) {
         String mappedSymbol = "";
         //Iterate backwards to find the most recent factor:
@@ -107,16 +107,16 @@ public class MapFile implements Iterable<MapFileRow> {
     }
 
     /// Constructs the map file path for the specified market and symbol
-    /// <param name="permtick">The symbol as on disk, OIH or OIH.1</param>
-    /// <param name="market">The market this symbol belongs to</param>
-    /// <returns>The file path to the requested map file</returns>
+     * @param permtick">The symbol as on disk, OIH or OIH.1
+     * @param market">The market this symbol belongs to
+    @returns The file path to the requested map file
     public static Path getMapFilePath( String permtick, String market ) {
         return Paths.get( Globals.getDataFolder(), "equity", market, "map_files", permtick.toLowerCase() + ".csv" );
     }
 
     /// Reads all the map files in the specified directory
-    /// <param name="mapFileDirectory">The map file directory path</param>
-    /// <returns>An enumerable of all map files</returns>
+     * @param mapFileDirectory">The map file directory path
+    @returns An enumerable of all map files
     public static Iterable<MapFile> getMapFiles( Path mapFileDirectory ) throws IOException {
         return Files.list( mapFileDirectory )
                 .filter( p -> p.endsWith( ".csv" ) )
@@ -142,9 +142,9 @@ public class MapFile implements Iterable<MapFileRow> {
     }
 
     /// Returns an enumerator that iterates through the collection.
-    /// <returns>
+    @returns 
     /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-    /// </returns>
+    /// 
     /// <filterpriority>1</filterpriority>
     @Override
     public Iterator<MapFileRow> iterator() {

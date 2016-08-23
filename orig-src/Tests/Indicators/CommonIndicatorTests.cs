@@ -48,9 +48,9 @@ package com.quantconnect.lean.Tests.Indicators
                 throw new NotSupportedException( "ResetsProperly: Unsupported indicator data type: " + typeof(T));
         }
 
-        /// <summary>
+        /**
         /// Executes a test of the specified indicator
-        /// </summary>
+        */
         protected virtual void RunTestIndicator(IndicatorBase<T> indicator) {
             if( indicator is IndicatorBase<IndicatorDataPoint>)
                 TestHelper.TestIndicator(indicator as IndicatorBase<IndicatorDataPoint>, TestFileName, TestColumnName, Assertion as Action<IndicatorBase<IndicatorDataPoint>, double>);
@@ -60,27 +60,27 @@ package com.quantconnect.lean.Tests.Indicators
                 throw new NotSupportedException( "RunTestIndicator: Unsupported indicator data type: " + typeof(T));
         }
 
-        /// <summary>
+        /**
         /// Returns a custom assertion function, parameters are the indicator and the expected value from the file
-        /// </summary>
+        */
         protected virtual Action<IndicatorBase<T>, double> Assertion
         {
-            get { return (indicator, expected) => Assert.AreEqual(expected, (double) indicator.Current.Value, 1e-3); }
+            get { return (indicator, expected) -> Assert.AreEqual(expected, (double) indicator.Current.Value, 1e-3); }
         }
 
-        /// <summary>
+        /**
         /// Returns a new instance of the indicator to test
-        /// </summary>
+        */
         protected abstract IndicatorBase<T> CreateIndicator();
 
-        /// <summary>
+        /**
         /// Returns the CSV file name containing test data for the indicator
-        /// </summary>
+        */
         protected abstract String TestFileName { get; }
 
-        /// <summary>
+        /**
         /// Returns the name of the column of the CSV file corresponding to the precalculated data for the indicator
-        /// </summary>
+        */
         protected abstract String TestColumnName { get; }
     }
 }

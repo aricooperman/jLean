@@ -18,10 +18,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Hikkake candlestick pattern
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - first and second candle: inside bar (2nd has lower high and higher low than 1st)
     /// - third candle: lower high and lower low than 2nd(higher high and higher low than 2nd)
@@ -31,41 +31,41 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The returned value for the confirmation bar is equal to 1 + the bullish hikkake result or -1 - the bearish hikkake result
     /// Note: if confirmation and a new hikkake come at the same bar, only the new hikkake is reported(the new hikkake
     /// overwrites the confirmation of the old hikkake)
-    /// </remarks>
+    /// 
     public class Hikkake : CandlestickPattern
     {
         private int _patternIndex;
         private int _patternResult;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Hikkake"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public Hikkake( String name) 
             : base(name, 5 + 1) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Hikkake"/> class.
-        /// </summary>
+        */
         public Hikkake()
             : this( "HIKKAKE") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= 3) {
@@ -133,9 +133,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _patternIndex = 0;
             _patternResult = 0;

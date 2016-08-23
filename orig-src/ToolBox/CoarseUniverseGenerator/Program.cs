@@ -32,7 +32,7 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
     {
         private static final String ExclusionsFile = "exclusions.txt";
 
-        /// <summary>
+        /**
         /// This program generates the coarse files requires by lean for universe selection.
         /// Universe selection is planned to happen in two stages, the first stage, the 'coarse'
         /// stage serves to cull the set using coarse filters, such as price, market, and dollar volume.
@@ -40,8 +40,8 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
         /// would be run AFTER the initial coarse filter
         /// 
         /// The files are generated from LEAN formatted daily trade bar equity files
-        /// </summary>
-        /// <param name="args">Unused argument</param>
+        */
+         * @param args">Unused argument
         public static void Main( String[] args) {
             // read out the configuration file
             JToken jtoken;
@@ -49,7 +49,7 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
 
             ignoreMaplessSymbols = false;
             updateMode = false;
-            updateTime = TimeSpan.Zero;
+            updateTime = Duration.ZERO;
             if( config.TryGetValue( "update-mode", out jtoken)) {
                 updateMode = jtoken.Value<bool>();
                 if( config.TryGetValue( "update-time-of-day", out jtoken)) {
@@ -75,13 +75,13 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
             while (WaitUntilTimeInUpdateMode(updateMode, updateTime));
         }
 
-        /// <summary>
+        /**
         /// If we're in update mode, pause the thread until the next update time
-        /// </summary>
-        /// <param name="updateMode">True for update mode, false for run-once</param>
-        /// <param name="updateTime">The time of day updates should be performed</param>
-        /// <returns>True if in update mode, otherwise false</returns>
-        private static boolean WaitUntilTimeInUpdateMode( boolean updateMode, TimeSpan updateTime) {
+        */
+         * @param updateMode">True for update mode, false for run-once
+         * @param updateTime">The time of day updates should be performed
+        @returns True if in update mode, otherwise false
+        private static boolean WaitUntilTimeInUpdateMode( boolean updateMode, Duration updateTime) {
             if( !updateMode) return false;
 
             now = DateTime.Now;
@@ -90,11 +90,11 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
             return true;
         }
 
-        /// <summary>
+        /**
         /// Iterates over each equity directory and aggregates the data into the coarse file
-        /// </summary>
-        /// <param name="dataDirectory">The Lean /Data directory</param>
-        /// <param name="ignoreMaplessSymbols">Ignore symbols without a QuantQuote map file.</param>
+        */
+         * @param dataDirectory">The Lean /Data directory
+         * @param ignoreMaplessSymbols">Ignore symbols without a QuantQuote map file.
         public static void ProcessEquityDirectories( String dataDirectory, boolean ignoreMaplessSymbols) {
             exclusions = ReadExclusionsFile(ExclusionsFile);
 
@@ -112,18 +112,18 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
             }
         }
 
-        /// <summary>
+        /**
         /// Iterates each daily file in the specified <paramref name="dailyFolder"/> and adds a line for each
         /// day to the approriate coarse file
-        /// </summary>
-        /// <param name="dailyFolder">The folder with daily data</param>
-        /// <param name="coarseFolder">The coarse output folder</param>
-        /// <param name="mapFileResolver"></param>
-        /// <param name="exclusions">The symbols to be excluded from processing</param>
-        /// <param name="ignoreMapless">Ignore the symbols without a map file.</param>
-        /// <param name="symbolResolver">Function used to provide symbol resolution. Default resolution uses the zip file name to resolve
-        /// the symbol, specify null for this behavior.</param>
-        /// <returns>A collection of the generated coarse files</returns>
+        */
+         * @param dailyFolder">The folder with daily data
+         * @param coarseFolder">The coarse output folder
+         * @param mapFileResolver">
+         * @param exclusions">The symbols to be excluded from processing
+         * @param ignoreMapless">Ignore the symbols without a map file.
+         * @param symbolResolver">Function used to provide symbol resolution. Default resolution uses the zip file name to resolve
+        /// the symbol, specify null for this behavior.
+        @returns A collection of the generated coarse files
         public static ICollection<String> ProcessDailyFolder( String dailyFolder, String coarseFolder, MapFileResolver mapFileResolver, HashSet<String> exclusions, boolean ignoreMapless, DateTime startDate, Func<String,String> symbolResolver = null ) {
             static final BigDecimal scaleFactor = 10000m;
 
@@ -217,7 +217,7 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
                             if( !mapFile.IsNullOrEmpty()) {
                                 // if available, us the permtick in the coarse files, because of this, we need
                                 // to update the coarse files each time new map files are added/permticks change
-                                sid = SecurityIdentifier.GenerateEquity(mapFile.FirstDate, mapFile.OrderBy(x => x.Date).First().MappedSymbol, market);
+                                sid = SecurityIdentifier.GenerateEquity(mapFile.FirstDate, mapFile.OrderBy(x -> x.Date).First().MappedSymbol, market);
                             }
                             if( mapFile == null && ignoreMapless) {
                                 // if we're ignoring mapless files then we should always be able to resolve this
@@ -262,26 +262,26 @@ package com.quantconnect.lean.ToolBox.CoarseUniverseGenerator
             return writers.Keys;
         }
 
-        /// <summary>
+        /**
         /// Reads the specified exclusions file into a new hash set.
         /// Returns an empty set if the file does not exist
-        /// </summary>
+        */
         public static HashSet<String> ReadExclusionsFile( String exclusionsFile) {
             exclusions = new HashSet<String>();
             if( File.Exists(exclusionsFile)) {
-                excludedSymbols = File.ReadLines(exclusionsFile).Select(x => x.Trim()).Where(x => !x.StartsWith( "#"));
+                excludedSymbols = File.ReadLines(exclusionsFile).Select(x -> x.Trim()).Where(x -> !x.StartsWith( "#"));
                 exclusions = new HashSet<String>(excludedSymbols, StringComparer.InvariantCultureIgnoreCase);
                 Log.Trace( "CoarseGenerator.ReadExclusionsFile(): Loaded %1$s symbols into the exclusion set", exclusions.Count);
             }
             return exclusions;
         }
 
-        /// <summary>
+        /**
         /// Resolves the start date that should be used in the <see cref="ProcessDailyFolder"/>. This will
         /// be equal to the latest file date (20150101.csv) plus one day
-        /// </summary>
-        /// <param name="coarseDirectory">The directory containing the coarse files</param>
-        /// <returns>The last coarse file date plus one day if exists, else DateTime.MinValue</returns>
+        */
+         * @param coarseDirectory">The directory containing the coarse files
+        @returns The last coarse file date plus one day if exists, else DateTime.MinValue
         public static DateTime GetStartDate( String coarseDirectory) {
             lastProcessedDate = (
                 from coarseFile in Directory.EnumerateFiles(coarseDirectory)

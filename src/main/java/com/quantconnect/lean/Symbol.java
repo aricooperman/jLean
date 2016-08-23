@@ -43,12 +43,12 @@ public final class Symbol implements Comparable<Object> {
     
     /// Provides a convience method for creating a Symbol for most security types.
     /// This method currently does not support Option, Commodity, and Future
-    /// <param name="ticker">The String ticker symbol</param>
-    /// <param name="securityType">The security type of the ticker. If securityType == Option, then a canonical symbol is created</param>
-    /// <param name="market">The market the ticker resides in</param>
-    /// <param name="alias">An alias to be used for the symbol cache. Required when
-    /// adding the same security from different markets</param>
-    /// <returns>A new Symbol object for the specified ticker</returns>
+     * @param ticker">The String ticker symbol
+     * @param securityType">The security type of the ticker. If securityType == Option, then a canonical symbol is created
+     * @param market">The market the ticker resides in
+     * @param alias">An alias to be used for the symbol cache. Required when
+    /// adding the same security from different markets
+    @returns A new Symbol object for the specified ticker
     public static Symbol create( String ticker, SecurityType securityType, String market ) {
         return create( ticker, securityType, market, null );
     }
@@ -82,15 +82,15 @@ public final class Symbol implements Comparable<Object> {
     }
     
     /// Provides a convenience method for creating an option Symbol.
-    /// <param name="underlying">The underlying ticker</param>
-    /// <param name="market">The market the underlying resides in</param>
-    /// <param name="style">The option style (American, European, ect..)</param>
-    /// <param name="right">The option right (Put/Call)</param>
-    /// <param name="strike">The option strike price</param>
-    /// <param name="expiry">The option expiry date</param>
-    /// <param name="alias">An alias to be used for the symbol cache. Required when 
-    /// adding the same security from diferent markets</param>
-    /// <returns>A new Symbol object for the specified option contract</returns>
+     * @param underlying">The underlying ticker
+     * @param market">The market the underlying resides in
+     * @param style">The option style (American, European, ect..)
+     * @param right">The option right (Put/Call)
+     * @param strike">The option strike price
+     * @param expiry">The option expiry date
+     * @param alias">An alias to be used for the symbol cache. Required when 
+    /// adding the same security from diferent markets
+    @returns A new Symbol object for the specified option contract
     public static Symbol createOption( String underlying, String market, OptionStyle style, OptionRight right, BigDecimal strike, LocalDate expiry ) {
         return createOption( underlying, market, style, right, strike, expiry, null );
     }
@@ -118,8 +118,8 @@ public final class Symbol implements Comparable<Object> {
     private SecurityIdentifier id;
     
     /// Initializes a new instance of the <see cref="Symbol"/> class
-    /// <param name="sid">The security identifier for this symbol</param>
-    /// <param name="value">The current ticker symbol value</param>
+     * @param sid">The security identifier for this symbol
+     * @param value">The current ticker symbol value
     public Symbol( SecurityIdentifier sid, String value ) {
         if( value == null )
             throw new NullPointerException( "value" );
@@ -137,10 +137,10 @@ public final class Symbol implements Comparable<Object> {
     }
     
     /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-    /// <returns>
+    @returns 
     /// true if the specified object  is equal to the current object; otherwise, false.
-    /// </returns>
-    /// <param name="obj">The object to compare with the current object. </param><filterpriority>2</filterpriority>
+    /// 
+     * @param obj">The object to compare with the current object. <filterpriority>2</filterpriority>
     public boolean equals( Object obj ) {
         if( null == obj ) return false;
         if( this == obj ) return true;
@@ -161,9 +161,9 @@ public final class Symbol implements Comparable<Object> {
     }
     
     /// Serves as a hash function for a particular type. 
-    /// <returns>
+    @returns 
     /// A hash code for the current <see cref="T:System.Object"/>.
-    /// </returns>
+    /// 
     /// <filterpriority>2</filterpriority>
     public int hashCode() {
         // only SID is used for comparisons
@@ -171,10 +171,10 @@ public final class Symbol implements Comparable<Object> {
     }
     
     /// Compares the current instance with another object of the same type and returns an integer that indicates whether the current instance precedes, follows, or occurs in the same position in the sort order as the other object.
-    /// <returns>
+    @returns 
     /// A value that indicates the relative order of the objects being compared. The return value has these meanings: Value Meaning Less than zero This instance precedes <paramref name="obj"/> in the sort order. Zero This instance occurs in the same position in the sort order as <paramref name="obj"/>. Greater than zero This instance follows <paramref name="obj"/> in the sort order. 
-    /// </returns>
-    /// <param name="obj">An object to compare with this instance. </param><exception cref="T:System.ArgumentException"><paramref name="obj"/> is not the same type as this instance. </exception><filterpriority>2</filterpriority>
+    /// 
+     * @param obj">An object to compare with this instance. <exception cref="T:System.ArgumentException"><paramref name="obj"/> is not the same type as this instance. </exception><filterpriority>2</filterpriority>
     public int compareTo( Object obj ) {
         if( obj instanceof String ) {
             final String str = (String)obj;
@@ -190,19 +190,19 @@ public final class Symbol implements Comparable<Object> {
     }
     
     /// Returns a String that represents the current object.
-    /// <returns>
+    @returns 
     /// A String that represents the current object.
-    /// </returns>
+    /// 
     /// <filterpriority>2</filterpriority>
     public String toString() {
         return SymbolCache.getTicker( this );
     }
     
     /// Indicates whether the current object is equal to another object of the same type.
-    /// <returns>
+    @returns 
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-    /// </returns>
-    /// <param name="other">An object to compare with this object.</param>
+    /// 
+     * @param other">An object to compare with this object.
     public boolean equals( Symbol other ) {
         if( null == other ) return false;
         if( this == other ) return true;
@@ -211,21 +211,21 @@ public final class Symbol implements Comparable<Object> {
     }
     
 //    /// Equals operator 
-//    /// <param name="left">The left operand</param>
-//    /// <param name="right">The right operand</param>
-//    /// <returns>True if both symbols are equal, otherwise false</returns>
+//     * @param left">The left operand
+//     * @param right">The right operand
+//    @returns True if both symbols are equal, otherwise false
 //    public static boolean operator ==(Symbol left, Symbol right)
 //    {
 //        if( ReferenceEquals(left, null )) return ReferenceEquals(right, null );
 //        return left.Equals(right);
 //    }
 //    
-//    /// <summary>
+//    /**
 //    /// Not equals operator 
-//    /// </summary>
-//    /// <param name="left">The left operand</param>
-//    /// <param name="right">The right operand</param>
-//    /// <returns>True if both symbols are not equal, otherwise false</returns>
+//    */
+//     * @param left">The left operand
+//     * @param right">The right operand
+//    @returns True if both symbols are not equal, otherwise false
 //    public static boolean operator !=(Symbol left, Symbol right)
 //    {
 //        if( ReferenceEquals(left, null )) return ReferenceEquals(right, null );
@@ -233,8 +233,8 @@ public final class Symbol implements Comparable<Object> {
 //    }
 //    
 //    /// Returns the symbol's String ticker
-//    /// <param name="symbol">The symbol</param>
-//    /// <returns>The String ticker</returns>
+//     * @param symbol">The symbol
+//    @returns The String ticker
 //    [Obsolete( "Symbol implicit operator to String is provided for algorithm use only.")]
 //    public static implicit operator string(Symbol symbol)
 //    {
@@ -242,8 +242,8 @@ public final class Symbol implements Comparable<Object> {
 //    }
 //    
 //    /// Creates symbol using String as sid
-//    /// <param name="ticker">The string</param>
-//    /// <returns>The symbol</returns>
+//     * @param ticker">The string
+//    @returns The symbol
 //    [Obsolete( "Symbol implicit operator from String is provided for algorithm use only.")]
 //    public static implicit operator Symbol( String ticker)
 //    {

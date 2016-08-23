@@ -19,9 +19,9 @@
 ﻿package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Represents the Oanda Account.
-    /// </summary>
+    */
     public class Account
     {
 		public boolean HasAccountId;

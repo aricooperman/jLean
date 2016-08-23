@@ -21,9 +21,9 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Brokerages.Tradier
 {
-    /// <summary>
+    /**
     /// Empty class for deserializing positions held.
-    /// </summary>
+    */
     public class TradierPositionsContainer
     {
         /// Positions Class
@@ -35,9 +35,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierPositionsContainer() { }
     }
 
-    /// <summary>
+    /**
     /// Position array container.
-    /// </summary>
+    */
     public class TradierPositions 
     { 
         /// Positions Class List
@@ -50,9 +50,9 @@ package com.quantconnect.lean.Brokerages.Tradier
     }
 
 
-    /// <summary>
+    /**
     /// Individual Tradier position model.
-    /// </summary>
+    */
     public class TradierPosition
     { 
         /// Position Id

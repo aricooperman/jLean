@@ -19,10 +19,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Morning Star candlestick pattern
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - first candle: long black real body
     /// - second candle: star(Short real body gapping down)
@@ -34,23 +34,23 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The returned value is positive(+1): morning star is always bullish;
     /// The user should consider that a morning star is significant when it appears in a downtrend,
     /// while this function does not consider the trend
-    /// </remarks>
+    /// 
     public class MorningStar : CandlestickPattern
     {
-        private readonly BigDecimal _penetration;
+        private final BigDecimal _penetration;
 
-        private readonly int _bodyLongAveragePeriod;
-        private readonly int _bodyShortAveragePeriod;
+        private final int _bodyLongAveragePeriod;
+        private final int _bodyShortAveragePeriod;
 
         private BigDecimal _bodyLongPeriodTotal;
         private BigDecimal _bodyShortPeriodTotal;
         private BigDecimal _bodyShortPeriodTotal2;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="MorningStar"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
+        */
+         * @param name">The name of this indicator
+         * @param penetration">Percentage of penetration of a candle within another candle
         public MorningStar( String name, BigDecimal penetration = 0.3m) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 2 + 1) {
             _penetration = penetration;
@@ -59,28 +59,28 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             _bodyShortAveragePeriod = CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="MorningStar"/> class.
-        /// </summary>
-        /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
+        */
+         * @param penetration">Percentage of penetration of a candle within another candle
         public MorningStar( BigDecimal penetration = 0.3m)
             : this( "MORNINGSTAR", penetration) {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _bodyLongAveragePeriod - 2 && Samples < Period - 2) {
@@ -131,9 +131,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _bodyLongPeriodTotal = 0;
             _bodyShortPeriodTotal = 0;

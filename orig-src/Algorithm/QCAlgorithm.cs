@@ -41,14 +41,14 @@ using SecurityTypeMarket = System.Tuple<QuantConnect.SecurityType,String>;
 
 package com.quantconnect.lean.Algorithm
 {
-    /// <summary>
+    /**
     /// QC Algorithm Base Class - Handle the basic requirements of a trading algorithm, 
     /// allowing user to focus on event methods. The QCAlgorithm class implements Portfolio, 
     /// Securities, Transactions and Data Subscription Management.
-    /// </summary>
+    */
     public partial class QCAlgorithm : MarshalByRefObject, IAlgorithm
     {
-        private readonly TimeKeeper _timeKeeper;
+        private final TimeKeeper _timeKeeper;
         private LocalTimeKeeper _localTimeKeeper;
 
         private DateTime _startDate;   //Default start and end dates.
@@ -65,8 +65,8 @@ package com.quantconnect.lean.Algorithm
         private String _previousDebugMessage = "";
         private String _previousErrorMessage = "";
 
-        private readonly MarketHoursDatabase _marketHoursDatabase;
-        private readonly SymbolPropertiesDatabase _symbolPropertiesDatabase;
+        private final MarketHoursDatabase _marketHoursDatabase;
+        private final SymbolPropertiesDatabase _symbolPropertiesDatabase;
 
         // used for calling through to void OnData(Slice) if no @Override specified
         private boolean _checkedForOnDataSlice;
@@ -83,10 +83,10 @@ package com.quantconnect.lean.Algorithm
         private int? _warmupBarCount;
         private Map<String,String> _parameters = new Map<String,String>();
 
-        /// <summary>
+        /**
         /// QCAlgorithm Base Class Constructor - Initialize the underlying QCAlgorithm components.
         /// QCAlgorithm manages the transactions, portfolio, charting and security subscriptions for the users algorithms.
-        /// </summary>
+        */
         public QCAlgorithm() {
             Status = AlgorithmStatus.Running;
 
@@ -143,129 +143,129 @@ package com.quantconnect.lean.Algorithm
             CandlestickPatterns = new CandlestickPatterns(this);
         }
 
-        /// <summary>
+        /**
         /// Security collection is an array of the security objects such as Equities and FOREX. Securities data 
         /// manages the properties of tradeable assets such as price, open and close time and holdings information.
-        /// </summary>
+        */
         public SecurityManager Securities
         {
             get;
             set;
         }
 
-        /// <summary>
+        /**
         /// Portfolio object provieds easy access to the underlying security-holding properties; summed together in a way to make them useful.
         /// This saves the user time by providing common portfolio requests in a single 
-        /// </summary>
+        */
         public SecurityPortfolioManager Portfolio
         {
             get;
             set;
         }
 
-        /// <summary>
+        /**
         /// Generic Data Manager - Required for compiling all data feeds in order, and passing them into algorithm event methods.
         /// The subscription manager contains a list of the data feed's we're subscribed to and properties of each data feed.
-        /// </summary>
+        */
         public SubscriptionManager SubscriptionManager
         {
             get;
             set;
         }
 
-        /// <summary>
+        /**
         /// Gets the brokerage model - used to model interactions with specific brokerages.
-        /// </summary>
+        */
         public IBrokerageModel BrokerageModel
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the brokerage message handler used to decide what to do
         /// with each message sent from the brokerage
-        /// </summary>
+        */
         public IBrokerageMessageHandler BrokerageMessageHandler
         {
             get;
             set;
         }
 
-        /// <summary>
+        /**
         /// Notification Manager for Sending Live Runtime Notifications to users about important events.
-        /// </summary>
+        */
         public NotificationManager Notify
         {
             get;
             set;
         }
 
-        /// <summary>
+        /**
         /// Gets schedule manager for adding/removing scheduled events
-        /// </summary>
+        */
         public ScheduleManager Schedule
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// Gets or sets the current status of the algorithm
-        /// </summary>
+        */
         public AlgorithmStatus Status
         {
             get;
             set;
         }
 
-        /// <summary>
+        /**
         /// Gets an instance that is to be used to initialize newly created securities.
-        /// </summary>
+        */
         public ISecurityInitializer SecurityInitializer
         {
             get; 
             private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the Trade Builder to generate trades from executions
-        /// </summary>
+        */
         public TradeBuilder TradeBuilder
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// Gets an instance to access the candlestick pattern helper methods
-        /// </summary>
+        */
         public CandlestickPatterns CandlestickPatterns
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the date rules helper object to make specifying dates for events easier
-        /// </summary>
+        */
         public DateRules DateRules
         {
             get { return Schedule.DateRules; }
         }
 
-        /// <summary>
+        /**
         /// Gets the time rules helper object to make specifying times for events easier
-        /// </summary>
+        */
         public TimeRules TimeRules
         {
             get { return Schedule.TimeRules; }
         }
 
-        /// <summary>
+        /**
         /// Public name for the algorithm as automatically generated by the IDE. Intended for helping distinguish logs by noting 
         /// the algorithm-id.
-        /// </summary>
+        */
         /// <seealso cref="AlgorithmId"/>
         public String Name
         {
@@ -273,36 +273,36 @@ package com.quantconnect.lean.Algorithm
             set;
         }
 
-        /// <summary>
+        /**
         /// Read-only value for current time frontier of the algorithm in terms of the <see cref="TimeZone"/>
-        /// </summary>
-        /// <remarks>During backtesting this is primarily sourced from the data feed. During live trading the time is updated from the system clock.</remarks>
+        */
+        /// During backtesting this is primarily sourced from the data feed. During live trading the time is updated from the system clock.
         public DateTime Time
         {
             get { return _localTimeKeeper.LocalTime; }
         }
 
-        /// <summary>
+        /**
         /// Current date/time in UTC.
-        /// </summary>
+        */
         public DateTime UtcTime
         {
             get { return _timeKeeper.UtcTime; }
         }
 
-        /// <summary>
+        /**
         /// Gets the time zone used for the <see cref="Time"/> property. The default value
         /// is <see cref="TimeZones.NewYork"/>
-        /// </summary>
+        */
         public ZoneId TimeZone
         {
             get { return _localTimeKeeper.TimeZone; }
         }
 
-        /// <summary>
+        /**
         /// Value of the user set start-date from the backtest. 
-        /// </summary>
-        /// <remarks>This property is set with SetStartDate() and defaults to the earliest QuantConnect data available - Jan 1st 1998. It is ignored during live trading </remarks>
+        */
+        /// This property is set with SetStartDate() and defaults to the earliest QuantConnect data available - Jan 1st 1998. It is ignored during live trading 
         /// <seealso cref="SetStartDate(DateTime)"/>
         public DateTime StartDate
         {
@@ -312,10 +312,10 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Value of the user set start-date from the backtest. Controls the period of the backtest.
-        /// </summary>
-        /// <remarks> This property is set with SetEndDate() and defaults to today. It is ignored during live trading.</remarks>
+        */
+        ///  This property is set with SetEndDate() and defaults to today. It is ignored during live trading.
         /// <seealso cref="SetEndDate(DateTime)"/>
         public DateTime EndDate
         {
@@ -325,10 +325,10 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Algorithm Id for this backtest or live algorithm. 
-        /// </summary>
-        /// <remarks>A unique identifier for </remarks>
+        */
+        /// A unique identifier for 
         public String AlgorithmId
         {
             get
@@ -337,9 +337,9 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Control the server setup run style for the backtest: Automatic, Parallel or Series. 
-        /// </summary>
+        */
         /// <remark>
         ///     Series mode runs all days through one computer, allowing memory of the previous days. 
         ///     Parallel mode runs all days separately which maximises speed but gives no memory of a previous day trading.
@@ -354,10 +354,10 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Boolean property indicating the algorithm is currently running in live mode. 
-        /// </summary>
-        /// <remarks>Intended for use where certain behaviors will be enabled while the algorithm is trading live: such as notification emails, or displaying runtime statistics.</remarks>
+        */
+        /// Intended for use where certain behaviors will be enabled while the algorithm is trading live: such as notification emails, or displaying runtime statistics.
         public boolean LiveMode
         {
             get
@@ -366,9 +366,9 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Storage for debugging messages before the event handler has passed control back to the Lean Engine.
-        /// </summary>
+        */
         /// <seealso cref="Debug( String)"/>
         public List<String> DebugMessages
         {
@@ -382,9 +382,9 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Storage for log messages before the event handlers have passed control back to the Lean Engine.
-        /// </summary>
+        */
         /// <seealso cref="Log( String)"/>
         public List<String> LogMessages
         {
@@ -398,15 +398,15 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Gets the run time error from the algorithm, or null if none was encountered.
-        /// </summary>
+        */
         public Exception RunTimeError { get; set; }
 
-        /// <summary>
+        /**
         /// List of error messages generated by the user's code calling the "Error" function.
-        /// </summary>
-        /// <remarks>This method is best used within a try-catch bracket to handle any runtime errors from a user algorithm.</remarks>
+        */
+        /// This method is best used within a try-catch bracket to handle any runtime errors from a user algorithm.
         /// <see cref="Error( String)"/>
         public List<String> ErrorMessages
         {
@@ -420,9 +420,9 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         /// <seealso cref="SetStartDate(DateTime)"/>
         /// <seealso cref="SetEndDate(DateTime)"/>
         /// <seealso cref="SetCash(decimal)"/>
@@ -431,10 +431,10 @@ package com.quantconnect.lean.Algorithm
             throw new NotImplementedException( "Please @Override the Initialize() method");
         }
 
-        /// <summary>
+        /**
         /// Called by setup handlers after Initialize and allows the algorithm a chance to organize
         /// the data gather in the Initialize method
-        /// </summary>
+        */
         public void PostInitialize() {
             // if the benchmark hasn't been set yet, set it
             if( Benchmark == null ) {
@@ -474,7 +474,7 @@ package com.quantconnect.lean.Algorithm
             }
 
             // add option underlying securities if not present
-            foreach (option in Securities.Select(x => x.Value).OfType<Option>()) {
+            foreach (option in Securities.Select(x -> x.Value).OfType<Option>()) {
                 sid = option.Symbol.ID;
                 underlying = QuantConnect.Symbol.Create(sid.Symbol, SecurityType.Equity, sid.Market);
                 Security equity;
@@ -502,21 +502,21 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Gets the parameter with the specified name. If a parameter
         /// with the specified name does not exist, null is returned
-        /// </summary>
-        /// <param name="name">The name of the parameter to get</param>
-        /// <returns>The value of the specified parameter, or null if not found</returns>
+        */
+         * @param name">The name of the parameter to get
+        @returns The value of the specified parameter, or null if not found
         public String GetParameter( String name) {
             String value;
             return _parameters.TryGetValue(name, out value) ? value : null;
         }
 
-        /// <summary>
+        /**
         /// Sets the parameters from the dictionary
-        /// </summary>
-        /// <param name="parameters">Dictionary containing the parameter names to values</param>
+        */
+         * @param parameters">Dictionary containing the parameter names to values
         public void SetParameters(Map<String,String> parameters) {
             // save off a copy and try to apply the parameters
             _parameters = parameters.ToDictionary();
@@ -529,27 +529,27 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Sets the security initializer, used to initialize/configure securities after creation
-        /// </summary>
-        /// <param name="securityInitializer">The security initializer</param>
+        */
+         * @param securityInitializer">The security initializer
         public void SetSecurityInitializer(ISecurityInitializer securityInitializer) {
             // this flag will prevent calls to SetBrokerageModel from overwriting this initializer
             _userSetSecurityInitializer = true;
             SecurityInitializer = securityInitializer;
         }
 
-        /// <summary>
+        /**
         /// Sets the security initializer function, used to initialize/configure securities after creation
-        /// </summary>
-        /// <param name="securityInitializer">The security initializer function</param>
+        */
+         * @param securityInitializer">The security initializer function
         public void SetSecurityInitializer(Action<Security> securityInitializer) {
             SetSecurityInitializer(new FuncSecurityInitializer(securityInitializer));
         }
 
-        /// <summary>
+        /**
         /// Event - v3.0 DATA EVENT HANDLER: (Pattern) Basic template for user to @Override for receiving all subscription data in a single event
-        /// </summary>
+        */
         /// <code>
         /// TradeBars bars = slice.Bars;
         /// Ticks ticks = slice.Ticks;
@@ -560,17 +560,17 @@ package com.quantconnect.lean.Algorithm
         /// DataDictionary{Quandl} allQuandlData = slice.Get{Quand}
         /// Quandl oil = slice.Get{Quandl}( "OIL")
         /// </code>
-        /// <param name="slice">The current slice of data keyed by symbol string</param>
+         * @param slice">The current slice of data keyed by symbol string
         public virtual void OnData(Slice slice) {
             // as a default implementation, let's look for and call OnData(Slice) just in case a user forgot to use the @Override keyword
             if( !_checkedForOnDataSlice) {
                 _checkedForOnDataSlice = true;
                 
                 method = GetType().GetMethods()
-                    .Where(x => x.Name == "OnData")
-                    .Where(x => x.DeclaringType != typeof(QCAlgorithm))
-                    .Where(x => x.GetParameters().Length == 1)
-                    .FirstOrDefault(x => x.GetParameters()[0].ParameterType == typeof (Slice));
+                    .Where(x -> x.Name == "OnData")
+                    .Where(x -> x.DeclaringType != typeof(QCAlgorithm))
+                    .Where(x -> x.GetParameters().Length == 1)
+                    .FirstOrDefault(x -> x.GetParameters()[0].ParameterType == typeof (Slice));
 
                 if( method == null ) {
                     return;
@@ -588,17 +588,17 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Event fired each time the we add/remove securities from the data feed
-        /// </summary>
-        /// <param name="changes"></param>
+        */
+         * @param changes">
         public virtual void OnSecuritiesChanged(SecurityChanges changes) {
         }
 
         // <summary>
         // Event - v2.0 TRADEBAR EVENT HANDLER: (Pattern) Basic template for user to @Override when requesting tradebar data.
         // </summary>
-        // <param name="data"></param>
+        // <param name="data">
         //public void OnData(TradeBars data)
         //{
         //
@@ -607,7 +607,7 @@ package com.quantconnect.lean.Algorithm
         // <summary>
         // Event - v2.0 QUOTEBAR EVENT HANDLER: (Pattern) Basic template for user to @Override when requesting quotebar data.
         // </summary>
-        // <param name="data"></param>
+        // <param name="data">
         //public void OnData(QuoteBars data)
         //{
         //
@@ -616,7 +616,7 @@ package com.quantconnect.lean.Algorithm
         // <summary>
         // Event - v2.0 TICK EVENT HANDLER: (Pattern) Basic template for user to @Override when requesting tick data.
         // </summary>
-        // <param name="data">List of Tick Data</param>
+        // <param name="data">List of Tick Data
         //public void OnData(Ticks data)
         //{
         //
@@ -625,7 +625,7 @@ package com.quantconnect.lean.Algorithm
         // <summary>
         // Event - v2.0 OPTIONCHAIN EVENT HANDLER: (Pattern) Basic template for user to @Override when requesting option data.
         // </summary>
-        // <param name="data">List of Tick Data</param>
+        // <param name="data">List of Tick Data
         //public void OnData(OptionChains data)
         //{
         //
@@ -634,7 +634,7 @@ package com.quantconnect.lean.Algorithm
         // <summary>
         // Event - v2.0 SPLIT EVENT HANDLER: (Pattern) Basic template for user to @Override when inspecting split data.
         // </summary>
-        // <param name="data">IDictionary of Split Data Keyed by Symbol String</param>
+        // <param name="data">IDictionary of Split Data Keyed by Symbol String
         //public void OnData(Splits data)
         //{
         //
@@ -643,7 +643,7 @@ package com.quantconnect.lean.Algorithm
         // <summary>
         // Event - v2.0 DIVIDEND EVENT HANDLER: (Pattern) Basic template for user to @Override when inspecting dividend data
         // </summary>
-        // <param name="data">IDictionary of Dividend Data Keyed by Symbol String</param>
+        // <param name="data">IDictionary of Dividend Data Keyed by Symbol String
         //public void OnData(Dividends data)
         //{
         //
@@ -652,105 +652,105 @@ package com.quantconnect.lean.Algorithm
         // <summary>
         // Event - v2.0 DELISTING EVENT HANDLER: (Pattern) Basic template for user to @Override when inspecting delisting data
         // </summary>
-        // <param name="data">IDictionary of Delisting Data Keyed by Symbol String</param>
+        // <param name="data">IDictionary of Delisting Data Keyed by Symbol String
         //public void OnData(Delistings data)
 
         // <summary>
         // Event - v2.0 SYMBOL CHANGED EVENT HANDLER: (Pattern) Basic template for user to @Override when inspecting symbol changed data
         // </summary>
-        // <param name="data">IDictionary of SymbolChangedEvent Data Keyed by Symbol String</param>
+        // <param name="data">IDictionary of SymbolChangedEvent Data Keyed by Symbol String
         //public void OnData(SymbolChangedEvents data)
 
-        /// <summary>
+        /**
         /// Margin call event handler. This method is called right before the margin call orders are placed in the market.
-        /// </summary>
-        /// <param name="requests">The orders to be executed to bring this algorithm within margin limits</param>
+        */
+         * @param requests">The orders to be executed to bring this algorithm within margin limits
         public virtual void OnMarginCall(List<SubmitOrderRequest> requests) {
         }
 
-        /// <summary>
+        /**
         /// Margin call warning event handler. This method is called when Portfolio.MarginRemaining is under 5% of your Portfolio.TotalPortfolioValue
-        /// </summary>
+        */
         public virtual void OnMarginCallWarning() {
         }
 
-        /// <summary>
+        /**
         /// End of a trading day event handler. This method is called at the end of the algorithm day (or multiple times if trading multiple assets).
-        /// </summary>
-        /// <remarks>Method is called 10 minutes before closing to allow user to close out position.</remarks>
+        */
+        /// Method is called 10 minutes before closing to allow user to close out position.
         public virtual void OnEndOfDay() {
 
         }
 
-        /// <summary>
+        /**
         /// End of a trading day event handler. This method is called at the end of the algorithm day (or multiple times if trading multiple assets).
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// This method is left for backwards compatibility and is invoked via <see cref="OnEndOfDay(Symbol)"/>, if that method is
         /// @Override then this method will not be called without a called to base.OnEndOfDay( String)
-        /// </remarks>
-        /// <param name="symbol">Asset symbol for this end of day event. Forex and equities have different closing hours.</param>
+        /// 
+         * @param symbol">Asset symbol for this end of day event. Forex and equities have different closing hours.
         public virtual void OnEndOfDay( String symbol) {
         }
 
-        /// <summary>
+        /**
         /// End of a trading day event handler. This method is called at the end of the algorithm day (or multiple times if trading multiple assets).
-        /// </summary>
-        /// <param name="symbol">Asset symbol for this end of day event. Forex and equities have different closing hours.</param>
+        */
+         * @param symbol">Asset symbol for this end of day event. Forex and equities have different closing hours.
         public virtual void OnEndOfDay(Symbol symbol) {
             OnEndOfDay(symbol.toString());
         }
 
-        /// <summary>
+        /**
         /// End of algorithm run event handler. This method is called at the end of a backtest or live trading operation. Intended for closing out logs.
-        /// </summary>
+        */
         public virtual void OnEndOfAlgorithm() { 
             
         }
 
-        /// <summary>
+        /**
         /// Order fill event handler. On an order fill update the resulting information is passed to this method.
-        /// </summary>
-        /// <param name="orderEvent">Order event details containing details of the evemts</param>
-        /// <remarks>This method can be called asynchronously and so should only be used by seasoned C# experts. Ensure you use proper locks on thread-unsafe objects</remarks>
+        */
+         * @param orderEvent">Order event details containing details of the evemts
+        /// This method can be called asynchronously and so should only be used by seasoned C# experts. Ensure you use proper locks on thread-unsafe objects
         public virtual void OnOrderEvent(OrderEvent orderEvent) {
    
         }
 
-        /// <summary>
+        /**
         /// Brokerage message event handler. This method is called for all types of brokerage messages.
-        /// </summary>
+        */
         public virtual void OnBrokerageMessage(BrokerageMessageEvent messageEvent) {
             
         }
 
-        /// <summary>
+        /**
         /// Brokerage disconnected event handler. This method is called when the brokerage connection is lost.
-        /// </summary>
+        */
         public virtual void OnBrokerageDisconnect() {
 
         }
 
-        /// <summary>
+        /**
         /// Brokerage reconnected event handler. This method is called when the brokerage connection is restored after a disconnection.
-        /// </summary>
+        */
         public virtual void OnBrokerageReconnect() {
 
         }
 
-        /// <summary>
+        /**
         /// Update the internal algorithm time frontier.
-        /// </summary>
-        /// <remarks>For internal use only to advance time.</remarks>
-        /// <param name="frontier">Current datetime.</param>
+        */
+        /// For internal use only to advance time.
+         * @param frontier">Current datetime.
         public void SetDateTime(DateTime frontier) {
             _timeKeeper.SetUtcDateTime(frontier);
         }
 
-        /// <summary>
+        /**
         /// Sets the time zone of the <see cref="Time"/> property in the algorithm
-        /// </summary>
-        /// <param name="timeZone">The desired time zone</param>
+        */
+         * @param timeZone">The desired time zone
         public void SetTimeZone( String timeZone) {
             ZoneId tz;
             try
@@ -764,10 +764,10 @@ package com.quantconnect.lean.Algorithm
             SetTimeZone(tz);
         }
 
-        /// <summary>
+        /**
         /// Sets the time zone of the <see cref="Time"/> property in the algorithm
-        /// </summary>
-        /// <param name="timeZone">The desired time zone</param>
+        */
+         * @param timeZone">The desired time zone
         public void SetTimeZone(ZoneId timeZone) {
             if( _locked) {
                 throw new Exception( "Algorithm.SetTimeZone(): Cannot change time zone after algorithm running.");
@@ -781,33 +781,33 @@ package com.quantconnect.lean.Algorithm
             TimeRules.SetDefaultTimeZone(timeZone);
         }
 
-        /// <summary>
+        /**
         /// Set the RunMode for the Servers. If you are running an overnight algorithm, you must select series.
         /// Automatic will analyse the selected data, and if you selected only minute data we'll select series for you.
-        /// </summary>
+        */
         /// <obsolete>This method is now obsolete and has no replacement. All algorithms now run in Series mode.</obsolete>
-        /// <param name="mode">Enum RunMode with options Series, Parallel or Automatic. Automatic scans your requested symbols and resolutions and makes a decision on the fastest analysis</param>
+         * @param mode">Enum RunMode with options Series, Parallel or Automatic. Automatic scans your requested symbols and resolutions and makes a decision on the fastest analysis
         [Obsolete( "This method is now obsolete and has no replacement. All algorithms now run in Series mode.")]
         public void SetRunMode(RunMode mode) {
             if( mode != RunMode.Parallel) return;
             Debug( "Algorithm.SetRunMode(): RunMode-Parallel Type has been deprecated. Series analysis selected instead");
         }
 
-        /// <summary>
+        /**
         /// Sets the brokerage to emulate in backtesting or paper trading.
         /// This can be used for brokerages that have been implemented in LEAN
-        /// </summary>
-        /// <param name="brokerage">The brokerage to emulate</param>
-        /// <param name="accountType">The account type (Cash or Margin)</param>
+        */
+         * @param brokerage">The brokerage to emulate
+         * @param accountType">The account type (Cash or Margin)
         public void SetBrokerageModel(BrokerageName brokerage, AccountType accountType = AccountType.Margin) {
             SetBrokerageModel(Brokerages.BrokerageModel.Create(brokerage, accountType));
         }
 
-        /// <summary>
+        /**
         /// Sets the brokerage to emulate in backtesting or paper trading.
         /// This can be used to set a custom brokerage model.
-        /// </summary>
-        /// <param name="model">The brokerage model to use</param>
+        */
+         * @param model">The brokerage model to use
         public void SetBrokerageModel(IBrokerageModel model) {
             BrokerageModel = model;
             if( !_userSetSecurityInitializer) {
@@ -816,13 +816,13 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Sets the implementation used to handle messages from the brokerage.
         /// The default implementation will forward messages to debug or error
         /// and when a <see cref="BrokerageMessageType.Error"/> occurs, the algorithm
         /// is stopped.
-        /// </summary>
-        /// <param name="handler">The message handler to use</param>
+        */
+         * @param handler">The message handler to use
         public void SetBrokerageMessageHandler(IBrokerageMessageHandler handler) {
             if( handler == null ) {
                 throw new ArgumentNullException( "handler");
@@ -831,57 +831,57 @@ package com.quantconnect.lean.Algorithm
             BrokerageMessageHandler = handler;
         }
 
-        /// <summary>
+        /**
         /// Sets the benchmark used for computing statistics of the algorithm to the specified symbol
-        /// </summary>
-        /// <param name="symbol">symbol to use as the benchmark</param>
-        /// <param name="securityType">Is the symbol an equity, forex, base, etc. Default SecurityType.Equity</param>
-        /// <remarks>
+        */
+         * @param symbol">symbol to use as the benchmark
+         * @param securityType">Is the symbol an equity, forex, base, etc. Default SecurityType.Equity
+        /// 
         /// Must use symbol that is available to the trade engine in your data store(not strictly enforced)
-        /// </remarks>
+        /// 
         public void SetBenchmark(SecurityType securityType, String symbol) {
             market = securityType == SecurityType.Forex ? Market.FXCM : Market.USA;
             _benchmarkSymbol = QuantConnect.Symbol.Create(symbol, securityType, market);
         }
 
-        /// <summary>
+        /**
         /// Sets the benchmark used for computing statistics of the algorithm to the specified symbol, defaulting to SecurityType.Equity
         /// if the symbol doesn't exist in the algorithm
-        /// </summary>
-        /// <param name="symbol">symbol to use as the benchmark</param>
-        /// <remarks>
+        */
+         * @param symbol">symbol to use as the benchmark
+        /// 
         /// Overload to accept symbol without passing SecurityType. If symbol is in portfolio it will use that SecurityType, otherwise will default to SecurityType.Equity
-        /// </remarks>
+        /// 
         public void SetBenchmark( String symbol) {
             // check existence
             symbol = symbol.toUpperCase();
-            security = Securities.FirstOrDefault(x => x.Key.Value == symbol).Value;
+            security = Securities.FirstOrDefault(x -> x.Key.Value == symbol).Value;
             _benchmarkSymbol = security == null 
                 ? QuantConnect.Symbol.Create(symbol, SecurityType.Equity, Market.USA)
                 : security.Symbol;
         }
 
-        /// <summary>
+        /**
         /// Sets the benchmark used for computing statistics of the algorithm to the specified symbol
-        /// </summary>
-        /// <param name="symbol">symbol to use as the benchmark</param>
+        */
+         * @param symbol">symbol to use as the benchmark
         public void SetBenchmark(Symbol symbol) {
             _benchmarkSymbol = symbol;
         }
 
-        /// <summary>
+        /**
         /// Sets the specified function as the benchmark, this function provides the value of
         /// the benchmark at each date/time requested
-        /// </summary>
-        /// <param name="benchmark">The benchmark producing function</param>
+        */
+         * @param benchmark">The benchmark producing function
         public void SetBenchmark(Func<DateTime, decimal> benchmark) {
             Benchmark = new FuncBenchmark(benchmark);
         }
 
-        /// <summary>
+        /**
         /// Benchmark
-        /// </summary>
-        /// <remarks>Use Benchmark to @Override default symbol based benchmark, and create your own benchmark. For example a custom moving average benchmark </remarks>
+        */
+        /// Use Benchmark to @Override default symbol based benchmark, and create your own benchmark. For example a custom moving average benchmark 
         /// 
         public IBenchmark Benchmark
         {
@@ -889,31 +889,31 @@ package com.quantconnect.lean.Algorithm
             private set;
         }
 
-        /// <summary>
+        /**
         /// Set initial cash for the strategy while backtesting. During live mode this value is ignored 
         /// and replaced with the actual cash of your brokerage account.
-        /// </summary>
-        /// <param name="startingCash">Starting cash for the strategy backtest</param>
-        /// <remarks>Alias of SetCash(decimal)</remarks>
+        */
+         * @param startingCash">Starting cash for the strategy backtest
+        /// Alias of SetCash(decimal)
         public void SetCash(double startingCash) {
             SetCash((decimal)startingCash);
         }
 
-        /// <summary>
+        /**
         /// Set initial cash for the strategy while backtesting. During live mode this value is ignored 
         /// and replaced with the actual cash of your brokerage account.
-        /// </summary>
-        /// <param name="startingCash">Starting cash for the strategy backtest</param>
-        /// <remarks>Alias of SetCash(decimal)</remarks>
+        */
+         * @param startingCash">Starting cash for the strategy backtest
+        /// Alias of SetCash(decimal)
         public void SetCash(int startingCash) {
             SetCash((decimal)startingCash);
         }
 
-        /// <summary>
+        /**
         /// Set initial cash for the strategy while backtesting. During live mode this value is ignored 
         /// and replaced with the actual cash of your brokerage account.
-        /// </summary>
-        /// <param name="startingCash">Starting cash for the strategy backtest</param>
+        */
+         * @param startingCash">Starting cash for the strategy backtest
         public void SetCash( BigDecimal startingCash) {
             if( !_locked) {
                 Portfolio.SetCash(startingCash);
@@ -924,12 +924,12 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Set the cash for the specified symbol
-        /// </summary>
-        /// <param name="symbol">The cash symbol to set</param>
-        /// <param name="startingCash">Decimal cash value of portfolio</param>
-        /// <param name="conversionRate">The current conversion rate for the</param>
+        */
+         * @param symbol">The cash symbol to set
+         * @param startingCash">Decimal cash value of portfolio
+         * @param conversionRate">The current conversion rate for the
         public void SetCash( String symbol, BigDecimal startingCash, BigDecimal conversionRate) {
             if( !_locked) {
                 Portfolio.SetCash(symbol, startingCash, conversionRate);
@@ -940,17 +940,17 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Set the start date for backtest.
-        /// </summary>
-        /// <param name="day">Int starting date 1-30</param>
-        /// <param name="month">Int month starting date</param>
-        /// <param name="year">Int year starting date</param>
-        /// <remarks> 
+        */
+         * @param day">Int starting date 1-30
+         * @param month">Int month starting date
+         * @param year">Int year starting date
+        ///  
         ///     Wrapper for SetStartDate(DateTime). 
         ///     Must be less than end date. 
         ///     Ignored in live trading mode.
-        /// </remarks>
+        /// 
         public void SetStartDate(int year, int month, int day) {
             try
             {
@@ -966,13 +966,13 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Set the end date for a backtest run 
-        /// </summary>
-        /// <param name="day">Int end date 1-30</param>
-        /// <param name="month">Int month end date</param>
-        /// <param name="year">Int year end date</param>
-        /// <remarks>Wrapper for SetEndDate(datetime).</remarks>
+        */
+         * @param day">Int end date 1-30
+         * @param month">Int month end date
+         * @param year">Int year end date
+        /// Wrapper for SetEndDate(datetime).
         /// <seealso cref="SetEndDate(DateTime)"/>
         public void SetEndDate(int year, int month, int day) {
             try
@@ -989,20 +989,20 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Set the algorithm id (backtestId or live deployId for the algorithmm).
-        /// </summary>
-        /// <param name="algorithmId">String Algorithm Id</param>
-        /// <remarks>Intended for internal QC Lean Engine use only as a setter for AlgorihthmId</remarks>
+        */
+         * @param algorithmId">String Algorithm Id
+        /// Intended for internal QC Lean Engine use only as a setter for AlgorihthmId
         public void SetAlgorithmId( String algorithmId) {
             _algorithmId = algorithmId;
         }
 
-        /// <summary>
+        /**
         /// Set the start date for the backtest 
-        /// </summary>
-        /// <param name="start">Datetime Start date for backtest</param>
-        /// <remarks>Must be less than end date and within data available</remarks>
+        */
+         * @param start">Datetime Start date for backtest
+        /// Must be less than end date and within data available
         /// <seealso cref="SetStartDate(DateTime)"/>
         public void SetStartDate(DateTime start) {
             // no need to set this value in live mode, will be set using the current time.
@@ -1038,11 +1038,11 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Set the end date for a backtest.
-        /// </summary>
-        /// <param name="end">Datetime value for end date</param>
-        /// <remarks>Must be greater than the start date</remarks>
+        */
+         * @param end">Datetime value for end date
+        /// Must be greater than the start date
         /// <seealso cref="SetEndDate(DateTime)"/>
         public void SetEndDate(DateTime end) {
             // no need to set this value in live mode, will be set using the current time.
@@ -1074,24 +1074,24 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Lock the algorithm initialization to avoid user modifiying cash and data stream subscriptions
-        /// </summary>
-        /// <remarks>Intended for Internal QC Lean Engine use only to prevent accidental manipulation of important properties</remarks>
+        */
+        /// Intended for Internal QC Lean Engine use only to prevent accidental manipulation of important properties
         public void SetLocked() {
             _locked = true;
         }
 
-        /// <summary>
+        /**
         /// Gets whether or not this algorithm has been locked and fully initialized
-        /// </summary>
+        */
         public boolean GetLocked() {
             return _locked;
         }
 
-        /// <summary>
+        /**
         /// Set live mode state of the algorithm run: Public setter for the algorithm property LiveMode.
-        /// </summary>
+        */
         public void SetLiveMode( boolean live) {
             if( !_locked) {
                 _liveMode = live;
@@ -1105,42 +1105,42 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Add specified data to our data subscriptions. QuantConnect will funnel this data to the handle data routine.
-        /// </summary>
-        /// <param name="securityType">MarketType Type: Equity, Commodity, Future or FOREX</param>
-        /// <param name="symbol">Symbol Reference for the MarketType</param>
-        /// <param name="resolution">Resolution of the Data Required</param>
-        /// <param name="fillDataForward">When no data available on a tradebar, return the last data that was generated</param>
-        /// <param name="extendedMarketHours">Show the after market data as well</param>
+        */
+         * @param securityType">MarketType Type: Equity, Commodity, Future or FOREX
+         * @param symbol">Symbol Reference for the MarketType
+         * @param resolution">Resolution of the Data Required
+         * @param fillDataForward">When no data available on a tradebar, return the last data that was generated
+         * @param extendedMarketHours">Show the after market data as well
         public Security AddSecurity(SecurityType securityType, String symbol, Resolution resolution = Resolution.Minute, boolean fillDataForward = true, boolean extendedMarketHours = false) {
             return AddSecurity(securityType, symbol, resolution, fillDataForward, 0, extendedMarketHours);
         }
 
-        /// <summary>
+        /**
         /// Add specified data to required list. QC will funnel this data to the handle data routine.
-        /// </summary>
-        /// <param name="securityType">MarketType Type: Equity, Commodity, Future or FOREX</param>
-        /// <param name="symbol">Symbol Reference for the MarketType</param>
-        /// <param name="resolution">Resolution of the Data Required</param>
-        /// <param name="fillDataForward">When no data available on a tradebar, return the last data that was generated</param>
-        /// <param name="leverage">Custom leverage per security</param>
-        /// <param name="extendedMarketHours">Extended market hours</param>
-        /// <remarks> AddSecurity(SecurityType securityType, Symbol symbol, Resolution resolution, boolean fillDataForward, BigDecimal leverage, boolean extendedMarketHours)</remarks>
+        */
+         * @param securityType">MarketType Type: Equity, Commodity, Future or FOREX
+         * @param symbol">Symbol Reference for the MarketType
+         * @param resolution">Resolution of the Data Required
+         * @param fillDataForward">When no data available on a tradebar, return the last data that was generated
+         * @param leverage">Custom leverage per security
+         * @param extendedMarketHours">Extended market hours
+        ///  AddSecurity(SecurityType securityType, Symbol symbol, Resolution resolution, boolean fillDataForward, BigDecimal leverage, boolean extendedMarketHours)
         public Security AddSecurity(SecurityType securityType, String symbol, Resolution resolution, boolean fillDataForward, BigDecimal leverage, boolean extendedMarketHours) {
             return AddSecurity(securityType, symbol, resolution, null, fillDataForward, leverage, extendedMarketHours);
         }
 
-        /// <summary>
+        /**
         /// Set a required SecurityType-symbol and resolution for algorithm
-        /// </summary>
-        /// <param name="securityType">SecurityType Enum: Equity, Commodity, FOREX or Future</param>
-        /// <param name="symbol">Symbol Representation of the MarketType, e.g. AAPL</param>
-        /// <param name="resolution">Resolution of the MarketType required: MarketData, Second or Minute</param>
-        /// <param name="market">The market the requested security belongs to, such as 'usa' or 'fxcm'</param>
-        /// <param name="fillDataForward">If true, returns the last available data even if none in that timeslice.</param>
-        /// <param name="leverage">leverage for this security</param>
-        /// <param name="extendedMarketHours">ExtendedMarketHours send in data from 4am - 8pm, not used for FOREX</param>
+        */
+         * @param securityType">SecurityType Enum: Equity, Commodity, FOREX or Future
+         * @param symbol">Symbol Representation of the MarketType, e.g. AAPL
+         * @param resolution">Resolution of the MarketType required: MarketData, Second or Minute
+         * @param market">The market the requested security belongs to, such as 'usa' or 'fxcm'
+         * @param fillDataForward">If true, returns the last available data even if none in that timeslice.
+         * @param leverage">leverage for this security
+         * @param extendedMarketHours">ExtendedMarketHours send in data from 4am - 8pm, not used for FOREX
         public Security AddSecurity(SecurityType securityType, String symbol, Resolution resolution, String market, boolean fillDataForward, BigDecimal leverage, boolean extendedMarketHours) {
             try
             {
@@ -1167,29 +1167,29 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Creates and adds a new <see cref="Equity"/> security to the algorithm
-        /// </summary>
-        /// <param name="ticker">The equity ticker symbol</param>
-        /// <param name="resolution">The <see cref="Resolution"/> of market data, Tick, Second, Minute, Hour, or Daily. Default is <see cref="Resolution.Minute"/></param>
-        /// <param name="market">The equity's market, <seealso cref="Market"/>. Default is <see cref="Market.USA"/></param>
-        /// <param name="fillDataForward">If true, returns the last available data even if none in that timeslice. Default is <value>true</value></param>
-        /// <param name="leverage">The requested leverage for this equity. Default is set by <see cref="SecurityInitializer"/></param>
-        /// <param name="extendedMarketHours">True to send data during pre and post market sessions. Default is <value>false</value></param>
-        /// <returns>The new <see cref="Equity"/> security</returns>
+        */
+         * @param ticker">The equity ticker symbol
+         * @param resolution">The <see cref="Resolution"/> of market data, Tick, Second, Minute, Hour, or Daily. Default is <see cref="Resolution.Minute"/>
+         * @param market">The equity's market, <seealso cref="Market"/>. Default is <see cref="Market.USA"/>
+         * @param fillDataForward">If true, returns the last available data even if none in that timeslice. Default is <value>true</value>
+         * @param leverage">The requested leverage for this equity. Default is set by <see cref="SecurityInitializer"/>
+         * @param extendedMarketHours">True to send data during pre and post market sessions. Default is <value>false</value>
+        @returns The new <see cref="Equity"/> security
         public Equity AddEquity( String ticker, Resolution resolution = Resolution.Minute, String market = Market.USA, boolean fillDataForward = true, BigDecimal leverage = 0m, boolean extendedMarketHours = false) {
             return AddSecurity<Equity>(SecurityType.Equity, ticker, resolution, market, fillDataForward, leverage, extendedMarketHours);
         }
 
-        /// <summary>
+        /**
         /// Creates and adds a new equity <see cref="Option"/> security to the algorithm
-        /// </summary>
-        /// <param name="underlying">The underlying equity symbol</param>
-        /// <param name="resolution">The <see cref="Resolution"/> of market data, Tick, Second, Minute, Hour, or Daily. Default is <see cref="Resolution.Minute"/></param>
-        /// <param name="market">The equity's market, <seealso cref="Market"/>. Default is <see cref="Market.USA"/></param>
-        /// <param name="fillDataForward">If true, returns the last available data even if none in that timeslice. Default is <value>true</value></param>
-        /// <param name="leverage">The requested leverage for this equity. Default is set by <see cref="SecurityInitializer"/></param>
-        /// <returns>The new <see cref="Option"/> security</returns>
+        */
+         * @param underlying">The underlying equity symbol
+         * @param resolution">The <see cref="Resolution"/> of market data, Tick, Second, Minute, Hour, or Daily. Default is <see cref="Resolution.Minute"/>
+         * @param market">The equity's market, <seealso cref="Market"/>. Default is <see cref="Market.USA"/>
+         * @param fillDataForward">If true, returns the last available data even if none in that timeslice. Default is <value>true</value>
+         * @param leverage">The requested leverage for this equity. Default is set by <see cref="SecurityInitializer"/>
+        @returns The new <see cref="Option"/> security
         public Option AddOption( String underlying, Resolution resolution = Resolution.Minute, String market = Market.USA, boolean fillDataForward = true, BigDecimal leverage = 0m) {
             if( market == null ) {
                 if( !BrokerageModel.DefaultMarkets.TryGetValue(SecurityType.Option, out market)) {
@@ -1214,7 +1214,7 @@ package com.quantconnect.lean.Algorithm
             // add this security to the user defined universe
             Universe universe;
             if( !UniverseManager.TryGetValue(canonicalSymbol, out universe)) {
-                settings = new UniverseSettings(resolution, leverage, false, false, TimeSpan.Zero);
+                settings = new UniverseSettings(resolution, leverage, false, false, Duration.ZERO);
                 universe = new OptionChainUniverse(canonicalSecurity, settings, SecurityInitializer);
                 UniverseManager.Add(canonicalSymbol, universe);
             }
@@ -1222,37 +1222,37 @@ package com.quantconnect.lean.Algorithm
             return canonicalSecurity;
         }
 
-        /// <summary>
+        /**
         /// Creates and adds a new <see cref="Forex"/> security to the algorithm
-        /// </summary>
-        /// <param name="ticker">The currency pair</param>
-        /// <param name="resolution">The <see cref="Resolution"/> of market data, Tick, Second, Minute, Hour, or Daily. Default is <see cref="Resolution.Minute"/></param>
-        /// <param name="market">The foreign exchange trading market, <seealso cref="Market"/>. Default is <see cref="Market.FXCM"/></param>
-        /// <param name="fillDataForward">If true, returns the last available data even if none in that timeslice. Default is <value>true</value></param>
-        /// <param name="leverage">The requested leverage for this equity. Default is set by <see cref="SecurityInitializer"/></param>
-        /// <returns>The new <see cref="Forex"/> security</returns>
+        */
+         * @param ticker">The currency pair
+         * @param resolution">The <see cref="Resolution"/> of market data, Tick, Second, Minute, Hour, or Daily. Default is <see cref="Resolution.Minute"/>
+         * @param market">The foreign exchange trading market, <seealso cref="Market"/>. Default is <see cref="Market.FXCM"/>
+         * @param fillDataForward">If true, returns the last available data even if none in that timeslice. Default is <value>true</value>
+         * @param leverage">The requested leverage for this equity. Default is set by <see cref="SecurityInitializer"/>
+        @returns The new <see cref="Forex"/> security
         public Forex AddForex( String ticker, Resolution resolution = Resolution.Minute, String market = Market.FXCM, boolean fillDataForward = true, BigDecimal leverage = 0m) {
             return AddSecurity<Forex>(SecurityType.Forex, ticker, resolution, market, fillDataForward, leverage, false);
         }
 
-        /// <summary>
+        /**
         /// Creates and adds a new <see cref="Cfd"/> security to the algorithm
-        /// </summary>
-        /// <param name="ticker">The currency pair</param>
-        /// <param name="resolution">The <see cref="Resolution"/> of market data, Tick, Second, Minute, Hour, or Daily. Default is <see cref="Resolution.Minute"/></param>
-        /// <param name="market">The cfd trading market, <seealso cref="Market"/>. Default is <see cref="Market.FXCM"/></param>
-        /// <param name="fillDataForward">If true, returns the last available data even if none in that timeslice. Default is <value>true</value></param>
-        /// <param name="leverage">The requested leverage for this equity. Default is set by <see cref="SecurityInitializer"/></param>
-        /// <returns>The new <see cref="Cfd"/> security</returns>
+        */
+         * @param ticker">The currency pair
+         * @param resolution">The <see cref="Resolution"/> of market data, Tick, Second, Minute, Hour, or Daily. Default is <see cref="Resolution.Minute"/>
+         * @param market">The cfd trading market, <seealso cref="Market"/>. Default is <see cref="Market.FXCM"/>
+         * @param fillDataForward">If true, returns the last available data even if none in that timeslice. Default is <value>true</value>
+         * @param leverage">The requested leverage for this equity. Default is set by <see cref="SecurityInitializer"/>
+        @returns The new <see cref="Cfd"/> security
         public Cfd AddCfd( String ticker, Resolution resolution = Resolution.Minute, String market = Market.FXCM, boolean fillDataForward = true, BigDecimal leverage = 0m) {
             return AddSecurity<Cfd>(SecurityType.Cfd, ticker, resolution, market, fillDataForward, leverage, false);
         }
 
-        /// <summary>
+        /**
         /// Removes the security with the specified symbol. This will cancel all
         /// open orders and then liquidate any existing holdings
-        /// </summary>
-        /// <param name="symbol">The symbol of the security to be removed</param>
+        */
+         * @param symbol">The symbol of the security to be removed
         public boolean RemoveSecurity(Symbol symbol) {
             Security security;
             if( Securities.TryGetValue(symbol, out security)) {
@@ -1262,7 +1262,7 @@ package com.quantconnect.lean.Algorithm
                 // liquidate if invested
                 if( security.Invested) Liquidate(security.Symbol);
                 
-                universe = UniverseManager.Values.OfType<UserDefinedUniverse>().FirstOrDefault(x => x.Members.ContainsKey(symbol));
+                universe = UniverseManager.Values.OfType<UserDefinedUniverse>().FirstOrDefault(x -> x.Members.ContainsKey(symbol));
                 if( universe != null ) {
                     return universe.Remove(symbol);
                 }
@@ -1270,13 +1270,13 @@ package com.quantconnect.lean.Algorithm
             return false;
         }
 
-        /// <summary>
+        /**
         /// AddData<typeparam name="T"/> a new user defined data source, requiring only the minimum config options.
         /// The data is added with a default time zone of NewYork (Eastern Daylight Savings Time)
-        /// </summary>
-        /// <param name="symbol">Key/Symbol for data</param>
-        /// <param name="resolution">Resolution of the data</param>
-        /// <remarks>Generic type T must implement base data</remarks>
+        */
+         * @param symbol">Key/Symbol for data
+         * @param resolution">Resolution of the data
+        /// Generic type T must implement base data
         public void AddData<T>( String symbol, Resolution resolution = Resolution.Minute)
             where T : BaseData, new() {
             if( _locked) return;
@@ -1288,15 +1288,15 @@ package com.quantconnect.lean.Algorithm
             AddData<T>(symbol, resolution, fillDataForward: false, leverage: 1m);
         }
 
-        /// <summary>
+        /**
         /// AddData<typeparam name="T"/> a new user defined data source, requiring only the minimum config options.
         /// The data is added with a default time zone of NewYork (Eastern Daylight Savings Time)
-        /// </summary>
-        /// <param name="symbol">Key/Symbol for data</param>
-        /// <param name="resolution">Resolution of the Data Required</param>
-        /// <param name="fillDataForward">When no data available on a tradebar, return the last data that was generated</param>
-        /// <param name="leverage">Custom leverage per security</param>
-        /// <remarks>Generic type T must implement base data</remarks>
+        */
+         * @param symbol">Key/Symbol for data
+         * @param resolution">Resolution of the Data Required
+         * @param fillDataForward">When no data available on a tradebar, return the last data that was generated
+         * @param leverage">Custom leverage per security
+        /// Generic type T must implement base data
         public void AddData<T>( String symbol, Resolution resolution, boolean fillDataForward, BigDecimal leverage = 1.0m)
             where T : BaseData, new() {
             if( _locked) return;
@@ -1304,15 +1304,15 @@ package com.quantconnect.lean.Algorithm
             AddData<T>(symbol, resolution, TimeZones.NewYork, fillDataForward, leverage);
         }
 
-        /// <summary>
+        /**
         /// AddData<typeparam name="T"/> a new user defined data source, requiring only the minimum config options.
-        /// </summary>
-        /// <param name="symbol">Key/Symbol for data</param>
-        /// <param name="resolution">Resolution of the Data Required</param>
-        /// <param name="timeZone">Specifies the time zone of the raw data</param>
-        /// <param name="fillDataForward">When no data available on a tradebar, return the last data that was generated</param>
-        /// <param name="leverage">Custom leverage per security</param>
-        /// <remarks>Generic type T must implement base data</remarks>
+        */
+         * @param symbol">Key/Symbol for data
+         * @param resolution">Resolution of the Data Required
+         * @param timeZone">Specifies the time zone of the raw data
+         * @param fillDataForward">When no data available on a tradebar, return the last data that was generated
+         * @param leverage">Custom leverage per security
+        /// Generic type T must implement base data
         public void AddData<T>( String symbol, Resolution resolution, ZoneId timeZone, boolean fillDataForward = false, BigDecimal leverage = 1.0m)
             where T : BaseData, new() {
             if( _locked) return;
@@ -1330,10 +1330,10 @@ package com.quantconnect.lean.Algorithm
             AddToUserDefinedUniverse(security);
         }
 
-        /// <summary>
+        /**
         /// Send a debug message to the web console:
-        /// </summary>
-        /// <param name="message">Message to send to debug console</param>
+        */
+         * @param message">Message to send to debug console
         /// <seealso cref="Log"/>
         /// <seealso cref="Error( String)"/>
         public void Debug( String message) {
@@ -1342,10 +1342,10 @@ package com.quantconnect.lean.Algorithm
             _previousDebugMessage = message;
         }
 
-        /// <summary>
+        /**
         /// Added another method for logging if user guessed.
-        /// </summary>
-        /// <param name="message">String message to log.</param>
+        */
+         * @param message">String message to log.
         /// <seealso cref="Debug"/>
         /// <seealso cref="Error( String)"/>
         public void Log( String message) {
@@ -1353,10 +1353,10 @@ package com.quantconnect.lean.Algorithm
             _logMessages.Add(message);
         }
 
-        /// <summary>
+        /**
         /// Send a String error message to the Console.
-        /// </summary>
-        /// <param name="message">Message to display in errors grid</param>
+        */
+         * @param message">Message to display in errors grid
         /// <seealso cref="Debug"/>
         /// <seealso cref="Log"/>
         public void Error( String message) {
@@ -1365,10 +1365,10 @@ package com.quantconnect.lean.Algorithm
             _previousErrorMessage = message;
         }
 
-        /// <summary>
+        /**
         /// Send a String error message to the Console.
-        /// </summary>
-        /// <param name="error">Exception object captured from a try catch loop</param>
+        */
+         * @param error">Exception object captured from a try catch loop
         /// <seealso cref="Debug"/>
         /// <seealso cref="Log"/>
         public void Error(Exception error) {
@@ -1378,20 +1378,20 @@ package com.quantconnect.lean.Algorithm
             _previousErrorMessage = message;
         }
 
-        /// <summary>
+        /**
         /// Terminate the algorithm after processing the current event handler.
-        /// </summary>
-        /// <param name="message">Exit message to display on quitting</param>
+        */
+         * @param message">Exit message to display on quitting
         public void Quit( String message = "") {
             Debug( "Quit(): " + message);
             Status = AlgorithmStatus.Stopped;
         }
 
-        /// <summary>
+        /**
         /// Set the Quit flag property of the algorithm.
-        /// </summary>
-        /// <remarks>Intended for internal use by the QuantConnect Lean Engine only.</remarks>
-        /// <param name="quit">Boolean quit state</param>
+        */
+        /// Intended for internal use by the QuantConnect Lean Engine only.
+         * @param quit">Boolean quit state
         /// <seealso cref="Quit"/>
         public void SetQuit( boolean quit) {
             if( quit) {
@@ -1399,20 +1399,20 @@ package com.quantconnect.lean.Algorithm
             }
         }
 
-        /// <summary>
+        /**
         /// Converts the String 'ticker' symbol into a full <see cref="Symbol"/> object
         /// This requires that the String 'ticker' has been added to the algorithm
-        /// </summary>
-        /// <param name="ticker">The ticker symbol. This should be the ticker symbol
-        /// as it was added to the algorithm</param>
-        /// <returns>The symbol object mapped to the specified ticker</returns>
+        */
+         * @param ticker">The ticker symbol. This should be the ticker symbol
+        /// as it was added to the algorithm
+        @returns The symbol object mapped to the specified ticker
         public Symbol Symbol( String ticker) {
             return SymbolCache.GetSymbol(ticker);
         }
 
-        /// <summary>
+        /**
         /// Creates and adds a new <see cref="Security"/> to the algorithm
-        /// </summary>
+        */
         private T AddSecurity<T>(SecurityType securityType, String ticker, Resolution resolution, String market, boolean fillDataForward, BigDecimal leverage, boolean extendedMarketHours)
             where T : Security
         {

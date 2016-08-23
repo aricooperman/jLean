@@ -21,9 +21,9 @@ using QuantConnect.Brokerages.Oanda.DataType.Communications;
 package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Represents a Trade Data object containing the details of a trade.
-    /// </summary>
+    */
     public class TradeData : Response
     {
         public long id { get; set; }

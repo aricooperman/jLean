@@ -28,15 +28,15 @@ public class Series {
     /// Index/position of the series on the chart.
     public int index = 0;
 
-    /// <summary>
+    /**
     ///  Values for the series plot:
     /// These values are assumed to be in ascending time order (first points earliest, last points latest)
-    /// </summary>
+    */
     public List<ChartPoint> values = new ArrayList<ChartPoint>();
 
-    /// <summary>
+    /**
     /// Chart type for the series:
-    /// </summary>
+    */
     public SeriesType seriesType = SeriesType.Line;
 
     /// Color the series 
@@ -44,9 +44,9 @@ public class Series {
     @JsonDeserialize( using = ColorJsonDeserializer.class, as = Color.class )
     public Color color = null; //Color.Empty;
 
-    /// <summary>
+    /**
     /// Shape or symbol for the marker in a scatter plot
-    /// </summary>
+    */
     public ScatterMarkerSymbol scatterMarkerSymbol = ScatterMarkerSymbol.None;
 
     /// Get the index of the last fetch update request to only retrieve the "delta" of the previous request.
@@ -56,7 +56,7 @@ public class Series {
     public Series() { }
 
     /// Constructor method for Chart Series
-    /// <param name="name">Name of the chart series</param>
+     * @param name">Name of the chart series
     public Series( String name ) {
         this.name = name;
 //        this.seriesType = SeriesType.Line;
@@ -67,8 +67,8 @@ public class Series {
     }
 
     /// Foundational constructor on the series class
-    /// <param name="name">Name of the series</param>
-    /// <param name="type">Type of the series</param>
+     * @param name">Name of the series
+     * @param type">Type of the series
     public Series( String name, SeriesType type ) {
         this( name );
         seriesType = type;
@@ -79,9 +79,9 @@ public class Series {
     }
 
     /// Foundational constructor on the series class
-    /// <param name="name">Name of the series</param>
-    /// <param name="type">Type of the series</param>
-    /// <param name="index">Index position on the chart of the series</param>
+     * @param name">Name of the series
+     * @param type">Type of the series
+     * @param index">Index position on the chart of the series
     public Series( String name, SeriesType type, int index ) {
         this( name, type );
         this.index = index;
@@ -91,10 +91,10 @@ public class Series {
     }
 
     /// Foundational constructor on the series class
-    /// <param name="name">Name of the series</param>
-    /// <param name="type">Type of the series</param>
-    /// <param name="index">Index position on the chart of the series</param>
-    /// <param name="unit">Unit for the series axis</param>
+     * @param name">Name of the series
+     * @param type">Type of the series
+     * @param index">Index position on the chart of the series
+     * @param unit">Unit for the series axis
     public Series( String name, SeriesType type, int index, String unit ) {
         this( name, type, index );
         this.unit = unit;
@@ -103,9 +103,9 @@ public class Series {
     }
 
     /// Constructor method for Chart Series
-    /// <param name="name">Name of the chart series</param>
-    /// <param name="type">Type of the chart series</param>
-    /// <param name="unit">Unit of the serier</param>
+     * @param name">Name of the chart series
+     * @param type">Type of the chart series
+     * @param unit">Unit of the serier
     public Series( String name, SeriesType type, String unit ) {
         this( name, type );
         this.unit = unit;
@@ -116,10 +116,10 @@ public class Series {
     }
 
     /// Constructor method for Chart Series
-    /// <param name="name">Name of the chart series</param>
-    /// <param name="type">Type of the chart series</param>
-    /// <param name="unit">Unit of the serier</param>
-    /// <param name="color">Color of the series</param>
+     * @param name">Name of the chart series
+     * @param type">Type of the chart series
+     * @param unit">Unit of the serier
+     * @param color">Color of the series
     public Series( String name, SeriesType type, String unit, Color color ) {
         this( name, type, unit );
         this.color = color;
@@ -129,11 +129,11 @@ public class Series {
     }
 
     /// Constructor method for Chart Series
-    /// <param name="name">Name of the chart series</param>
-    /// <param name="type">Type of the chart series</param>
-    /// <param name="unit">Unit of the serier</param>
-    /// <param name="color">Color of the series</param>
-    /// <param name="symbol">Symbol for the marker in a scatter plot series</param>
+     * @param name">Name of the chart series
+     * @param type">Type of the chart series
+     * @param unit">Unit of the serier
+     * @param color">Color of the series
+     * @param symbol">Symbol for the marker in a scatter plot series
     public Series( String name, SeriesType type, String unit, Color color, ScatterMarkerSymbol symbol ) {
         this( name, type, unit, color );
         this.scatterMarkerSymbol = symbol;
@@ -142,9 +142,9 @@ public class Series {
     }
 
     /// Add a new point to this series:
-    /// <param name="time">Time of the chart point</param>
-    /// <param name="value">Value of the chart point</param>
-    /// <param name="liveMode">This is a live mode point</param>
+     * @param time">Time of the chart point
+     * @param value">Value of the chart point
+     * @param liveMode">This is a live mode point
     public void addPoint( ZonedDateTime time, BigDecimal value ) {
         addPoint( time, value, false );
     }
@@ -163,7 +163,7 @@ public class Series {
     }
 
     /// Get the updates since the last call to this function.
-    /// <returns>List of the updates from the series</returns>
+    @returns List of the updates from the series
     public Series getUpdates() {
         final Series copy = new Series( name, seriesType, index, unit );
         copy.color = this.color;

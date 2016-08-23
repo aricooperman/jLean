@@ -69,9 +69,9 @@ public class Cash {
     }
 
     /// Initializes a new instance of the <see cref="Cash"/> class
-    /// <param name="symbol">The symbol used to represent this cash</param>
-    /// <param name="amount">The amount of this currency held</param>
-    /// <param name="conversionRate">The initial conversion rate of this currency into the <see cref="CashBook.AccountCurrency"/></param>
+     * @param symbol">The symbol used to represent this cash
+     * @param amount">The amount of this currency held
+     * @param conversionRate">The initial conversion rate of this currency into the <see cref="CashBook.AccountCurrency"/>
     public Cash( String symbol, BigDecimal amount, BigDecimal conversionRate ) {
         if( symbol == null || symbol.length() != 3 )
             throw new IllegalArgumentException( "Cash symbols must be exactly 3 characters." );
@@ -82,7 +82,7 @@ public class Cash {
     }
 
     /// Updates this cash object with the specified data
-    /// <param name="data">The new data for this cash object</param>
+     * @param data">The new data for this cash object
     public void update( BaseData data ) {
         if( _isBaseCurrency ) 
             return;
@@ -96,8 +96,8 @@ public class Cash {
 
     /// Adds the specified amount of currency to this Cash instance and returns the new total.
     /// This operation is thread-safe
-    /// <param name="amount">The amount of currency to be added</param>
-    /// <returns>The amount of currency directly after the addition</returns>
+     * @param amount">The amount of currency to be added
+    @returns The amount of currency directly after the addition
     public BigDecimal addAmount( BigDecimal amt ) {
         synchronized( _locker ) {
             Amount = Amount.add( amt );
@@ -106,7 +106,7 @@ public class Cash {
     }
 
     /// Sets the Quantity to the specified amount
-    /// <param name="amount">The amount to set the quantity to</param>
+     * @param amount">The amount to set the quantity to
     public void setAmount( BigDecimal amount ) {
         synchronized( _locker ) {
             this.Amount = amount;
@@ -115,13 +115,13 @@ public class Cash {
 
     /// Ensures that we have a data feed to convert this currency into the base currency.
     /// This will add a subscription at the lowest resolution if one is not found.
-    /// <param name="securities">The security manager</param>
-    /// <param name="subscriptions">The subscription manager used for searching and adding subscriptions</param>
-    /// <param name="marketHoursDatabase">A security exchange hours provider instance used to resolve exchange hours for new subscriptions</param>
-    /// <param name="symbolPropertiesDatabase">A symbol properties database instance</param>
-    /// <param name="marketMap">The market map that decides which market the new security should be in</param>
-    /// <param name="cashBook">The cash book - used for resolving quote currencies for created conversion securities</param>
-    /// <returns>Returns the added currency security if needed, otherwise null</returns>
+     * @param securities">The security manager
+     * @param subscriptions">The subscription manager used for searching and adding subscriptions
+     * @param marketHoursDatabase">A security exchange hours provider instance used to resolve exchange hours for new subscriptions
+     * @param symbolPropertiesDatabase">A symbol properties database instance
+     * @param marketMap">The market map that decides which market the new security should be in
+     * @param cashBook">The cash book - used for resolving quote currencies for created conversion securities
+    @returns Returns the added currency security if needed, otherwise null
     public Security ensureCurrencyDataFeed( SecurityManager securities, SubscriptionManager subscriptions, MarketHoursDatabase marketHoursDatabase, 
             SymbolPropertiesDatabase symbolPropertiesDatabase, IReadOnlyMap<SecurityType,String> marketMap, CashBook cashBook ) {
         if( Symbol == CashBook.AccountCurrency ) {
@@ -137,7 +137,7 @@ public class Cash {
         // we require a subscription that converts this into the base currency
         String normal = Symbol + CashBook.AccountCurrency;
         String invert = CashBook.AccountCurrency + Symbol;
-        foreach (config in subscriptions.Subscriptions.Where(config => config.SecurityType == SecurityType.Forex || config.SecurityType == SecurityType.Cfd)) {
+        foreach (config in subscriptions.Subscriptions.Where(config -> config.SecurityType == SecurityType.Forex || config.SecurityType == SecurityType.Cfd)) {
             if( config.Symbol.Value == normal) {
                 SecuritySymbol = config.Symbol;
                 return null;
@@ -155,7 +155,7 @@ public class Cash {
             market = marketMap[securityType];
             return QuantConnect.Symbol.Create(x, securityType, market);
         } );
-        minimumResolution = subscriptions.Subscriptions.Select(x => x.Resolution).DefaultIfEmpty(Resolution.Minute).Min();
+        minimumResolution = subscriptions.Subscriptions.Select(x -> x.Resolution).DefaultIfEmpty(Resolution.Minute).Min();
         objectType = minimumResolution == Resolution.Tick ? typeof (Tick) : typeof (TradeBar);
         for( symbol : currencyPairs ) {
             if( symbol.Value == normal || symbol.Value == invert ) {
@@ -188,7 +188,7 @@ public class Cash {
     }
 
     /// Returns a <see cref="System.String"/> that represents the current <see cref="QuantConnect.Securities.Cash"/>.
-    /// <returns>A <see cref="System.String"/> that represents the current <see cref="QuantConnect.Securities.Cash"/>.</returns>
+    @returns A <see cref="System.String"/> that represents the current <see cref="QuantConnect.Securities.Cash"/>.
     public String toString() {
         // round the conversion rate for output
         BigDecimal rate = ConversionRate;

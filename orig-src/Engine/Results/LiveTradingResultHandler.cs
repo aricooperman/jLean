@@ -37,13 +37,13 @@ using QuantConnect.Securities.Forex;
 
 package com.quantconnect.lean.Lean.Engine.Results
 {
-    /// <summary>
+    /**
     /// Live trading result handler implementation passes the messages to the QC live trading interface.
-    /// </summary>
-    /// <remarks>Live trading result handler is quite busy. It sends constant price updates, equity updates and order/holdings updates.</remarks>
+    */
+    /// Live trading result handler is quite busy. It sends constant price updates, equity updates and order/holdings updates.
     public class LiveTradingResultHandler : IResultHandler
     {
-        private readonly DateTime _launchTimeUtc = DateTime.UtcNow;
+        private final DateTime _launchTimeUtc = DateTime.UtcNow;
 
         // Required properties for the cloud app.
         private boolean _isActive;
@@ -55,12 +55,12 @@ package com.quantconnect.lean.Lean.Engine.Results
         private ConcurrentQueue<Packet> _messages;
         private IAlgorithm _algorithm;
         private volatile boolean _exitTriggered;
-        private readonly DateTime _startTime;
-        private readonly Map<String,String> _runtimeStatistics = new Map<String,String>();
+        private final DateTime _startTime;
+        private final Map<String,String> _runtimeStatistics = new Map<String,String>();
 
         //Sampling Periods:
-        private readonly TimeSpan _resamplePeriod;
-        private readonly TimeSpan _notificationPeriod;
+        private final Duration _resamplePeriod;
+        private final Duration _notificationPeriod;
 
         //Update loop:
         private DateTime _nextUpdate;
@@ -69,12 +69,12 @@ package com.quantconnect.lean.Lean.Engine.Results
         private DateTime _nextLogStoreUpdate;
         private DateTime _nextStatisticsUpdate;
         private int _lastOrderId = 0;
-        private readonly object _chartLock = new Object();
-        private readonly object _runtimeLock = new Object();
+        private final object _chartLock = new Object();
+        private final object _runtimeLock = new Object();
         private String _subscription = "Strategy Equity";
 
         //Log Message Store:
-        private readonly object _logStoreLock = new object();
+        private final object _logStoreLock = new object();
         private List<LogEntry> _logStore;
         private DateTime _nextSample;
         private IMessagingHandler _messagingHandler;
@@ -83,9 +83,9 @@ package com.quantconnect.lean.Lean.Engine.Results
         private ISetupHandler _setupHandler;
         private ITransactionHandler _transactionHandler;
 
-        /// <summary>
+        /**
         /// Live packet messaging queue. Queue the messages here and send when the result queue is ready.
-        /// </summary>
+        */
         public ConcurrentQueue<Packet> Messages
         {
             get
@@ -98,13 +98,13 @@ package com.quantconnect.lean.Lean.Engine.Results
             }
         }
 
-        /// <summary>
+        /**
         /// Storage for the price and equity charts of the live results.
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         ///     Potential memory leak when the algorithm has been running for a long time. Infinitely storing the results isn't wise.
         ///     The results should be stored to disk daily, and then the caches reset.
-        /// </remarks>
+        /// 
         public ConcurrentMap<String, Chart> Charts
         {
             get
@@ -117,9 +117,9 @@ package com.quantconnect.lean.Lean.Engine.Results
             }
         }
 
-        /// <summary>
+        /**
         /// Boolean flag indicating the thread is still active.
-        /// </summary>
+        */
         public boolean IsActive
         {
             get
@@ -128,11 +128,11 @@ package com.quantconnect.lean.Lean.Engine.Results
             }
         }
 
-        /// <summary>
+        /**
         /// Equity resampling period for the charting.
-        /// </summary>
-        /// <remarks>Live trading can resample at much higher frequencies (every 1-2 seconds)</remarks>
-        public TimeSpan ResamplePeriod
+        */
+        /// Live trading can resample at much higher frequencies (every 1-2 seconds)
+        public Duration ResamplePeriod
         {
             get
             {
@@ -140,11 +140,11 @@ package com.quantconnect.lean.Lean.Engine.Results
             }
         }
 
-        /// <summary>
+        /**
         /// Notification periods set how frequently we push updates to the browser.
-        /// </summary>
-        /// <remarks>Live trading resamples - sends updates at high frequencies(every 1-2 seconds)</remarks>
-        public TimeSpan NotificationPeriod
+        */
+        /// Live trading resamples - sends updates at high frequencies(every 1-2 seconds)
+        public Duration NotificationPeriod
         {
             get
             {
@@ -152,9 +152,9 @@ package com.quantconnect.lean.Lean.Engine.Results
             }
         }
 
-        /// <summary>
+        /**
         /// Initialize the live trading result handler
-        /// </summary>
+        */
         public LiveTradingResultHandler() {
             _charts = new ConcurrentMap<String, Chart>();
             _orderEvents = new ConcurrentQueue<OrderEvent>();
@@ -170,15 +170,15 @@ package com.quantconnect.lean.Lean.Engine.Results
             _logStore = new List<LogEntry>();
         }
 
-        /// <summary>
+        /**
         /// Initialize the result handler with this result packet.
-        /// </summary>
-        /// <param name="job">Algorithm job packet for this result handler</param>
-        /// <param name="messagingHandler"></param>
-        /// <param name="api"></param>
-        /// <param name="dataFeed"></param>
-        /// <param name="setupHandler"></param>
-        /// <param name="transactionHandler"></param>
+        */
+         * @param job">Algorithm job packet for this result handler
+         * @param messagingHandler">
+         * @param api">
+         * @param dataFeed">
+         * @param setupHandler">
+         * @param transactionHandler">
         public void Initialize(AlgorithmNodePacket job, IMessagingHandler messagingHandler, IApi api, IDataFeed dataFeed, ISetupHandler setupHandler, ITransactionHandler transactionHandler) {
             _api = api;
             _dataFeed = dataFeed;
@@ -191,9 +191,9 @@ package com.quantconnect.lean.Lean.Engine.Results
             _compileId = _job.CompileId;
         }
         
-        /// <summary>
+        /**
         /// Live trading result handler thread.
-        /// </summary>
+        */
         public void Run() {
             // -> 1. Run Primary Sender Loop: Continually process messages from queue as soon as they arrive.
             while (!(_exitTriggered && Messages.Count == 0)) {
@@ -223,9 +223,9 @@ package com.quantconnect.lean.Lean.Engine.Results
         } // End Run();
 
 
-        /// <summary>
+        /**
         /// Every so often send an update to the browser with the current state of the algorithm.
-        /// </summary>
+        */
         public void Update() {
             //Initialize:
             Map<Integer, Order> deltaOrders;
@@ -283,7 +283,7 @@ package com.quantconnect.lean.Lean.Engine.Results
                     serverStatistics["Up Time"] = String.format( "%1$sd {1:hh\\:mm\\:ss}", upTime.Days, upTime);
 
                     // Only send holdings updates when we have changes in orders, except for first time, then we want to send all
-                    foreach (asset in _algorithm.Securities.Values.Where(x => !x.IsInternalFeed()).OrderBy(x => x.Symbol.Value)) {
+                    foreach (asset in _algorithm.Securities.Values.Where(x -> !x.IsInternalFeed()).OrderBy(x -> x.Symbol.Value)) {
                         holdings.Add(asset.Symbol.Value, new Holding(asset));
                     }
 
@@ -403,9 +403,9 @@ package com.quantconnect.lean.Lean.Engine.Results
 
 
 
-        /// <summary>
+        /**
         /// Run over all the data and break it into smaller packets to ensure they all arrive at the terminal
-        /// </summary>
+        */
         private IEnumerable<LiveResultPacket> SplitPackets(Map<String, Chart> deltaCharts,
             Map<Integer, Order> deltaOrders,
             Map<String, Holding> holdings,
@@ -454,22 +454,22 @@ package com.quantconnect.lean.Lean.Engine.Results
         }
 
 
-        /// <summary>
+        /**
         /// Send a live trading debug message to the live console.
-        /// </summary>
-        /// <param name="message">Message we'd like shown in console.</param>
-        /// <remarks>When there are already 500 messages in the queue it stops adding new messages.</remarks>
+        */
+         * @param message">Message we'd like shown in console.
+        /// When there are already 500 messages in the queue it stops adding new messages.
         public void DebugMessage( String message) {
             if( Messages.Count > 500) return; //if too many in the queue already skip the logging.
             Messages.Enqueue(new DebugPacket(_job.ProjectId, _deployId, _compileId, message));
             AddToLogStore(message);
         }
 
-        /// <summary>
+        /**
         /// Log String messages and send them to the console.
-        /// </summary>
-        /// <param name="message">String message wed like logged.</param>
-        /// <remarks>When there are already 500 messages in the queue it stops adding new messages.</remarks>
+        */
+         * @param message">String message wed like logged.
+        /// When there are already 500 messages in the queue it stops adding new messages.
         public void LogMessage( String message) {
             //Send the logging messages out immediately for live trading:
             if( Messages.Count > 500) return;
@@ -477,10 +477,10 @@ package com.quantconnect.lean.Lean.Engine.Results
             AddToLogStore(message);
         }
 
-        /// <summary>
+        /**
         /// Save an algorithm message to the log store. Uses a different timestamped method of adding messaging to interweve debug and logging messages.
-        /// </summary>
-        /// <param name="message">String message to send to browser.</param>
+        */
+         * @param message">String message to send to browser.
         private void AddToLogStore( String message) {
             Log.Debug( "LiveTradingResultHandler.AddToLogStore(): Adding");
             lock (_logStoreLock) {
@@ -489,47 +489,47 @@ package com.quantconnect.lean.Lean.Engine.Results
             Log.Debug( "LiveTradingResultHandler.AddToLogStore(): Finished adding");
         }
 
-        /// <summary>
+        /**
         /// Send an error message back to the browser console and highlight it read.
-        /// </summary>
-        /// <param name="message">Message we'd like shown in console.</param>
-        /// <param name="stacktrace">Stacktrace to show in the console.</param>
+        */
+         * @param message">Message we'd like shown in console.
+         * @param stacktrace">Stacktrace to show in the console.
         public void ErrorMessage( String message, String stacktrace = "") {
             if( Messages.Count > 500) return;
             Messages.Enqueue(new HandledErrorPacket(_deployId, message, stacktrace));
-            AddToLogStore(message + (!string.IsNullOrEmpty(stacktrace) ? ": StackTrace: " + stacktrace : string.Empty));
+            AddToLogStore(message + (!StringUtils.isEmpty(stacktrace) ? ": StackTrace: " + stacktrace : string.Empty));
         }
 
-        /// <summary>
+        /**
         /// Send a list of secutity types that the algorithm trades to the browser to show the market clock - is this market open or closed!
-        /// </summary>
-        /// <param name="types">List of security types</param>
+        */
+         * @param types">List of security types
         public void SecurityType(List<SecurityType> types) {
             packet = new SecurityTypesPacket { Types = types };
             Messages.Enqueue(packet);
         }
 
-        /// <summary>
+        /**
         /// Send a runtime error back to the users browser and highlight it red.
-        /// </summary>
-        /// <param name="message">Runtime error message</param>
-        /// <param name="stacktrace">Associated error stack trace.</param>
+        */
+         * @param message">Runtime error message
+         * @param stacktrace">Associated error stack trace.
         public void RuntimeError( String message, String stacktrace = "") {
             Messages.Enqueue(new RuntimeErrorPacket(_deployId, message, stacktrace));
-            AddToLogStore(message + (!string.IsNullOrEmpty(stacktrace) ? ": StackTrace: " + stacktrace : string.Empty));
+            AddToLogStore(message + (!StringUtils.isEmpty(stacktrace) ? ": StackTrace: " + stacktrace : string.Empty));
         }
 
-        /// <summary>
+        /**
         /// Add a sample to the chart specified by the chartName, and seriesName.
-        /// </summary>
-        /// <param name="chartName">String chart name to place the sample.</param>
-        /// <param name="chartType">Type of chart we should create if it doesn't already exist.</param>
-        /// <param name="seriesName">Series name for the chart.</param>
-        /// <param name="seriesType">Series type for the chart.</param>
-        /// <param name="time">Time for the sample</param>
-        /// <param name="value">Value for the chart sample.</param>
-        /// <param name="unit">Unit for the chart axis</param>
-        /// <remarks>Sample can be used to create new charts or sample equity - daily performance.</remarks>
+        */
+         * @param chartName">String chart name to place the sample.
+         * @param chartType">Type of chart we should create if it doesn't already exist.
+         * @param seriesName">Series name for the chart.
+         * @param seriesType">Series type for the chart.
+         * @param time">Time for the sample
+         * @param value">Value for the chart sample.
+         * @param unit">Unit for the chart axis
+        /// Sample can be used to create new charts or sample equity - daily performance.
         public void Sample( String chartName, String seriesName, int seriesIndex, SeriesType seriesType, DateTime time, BigDecimal value, String unit = "$") {
             Log.Debug( "LiveTradingResultHandler.Sample(): Sampling " + chartName + "." + seriesName);
             lock (_chartLock) {
@@ -549,11 +549,11 @@ package com.quantconnect.lean.Lean.Engine.Results
             Log.Debug( "LiveTradingResultHandler.Sample(): Done sampling " + chartName + "." + seriesName);
         }
 
-        /// <summary>
+        /**
         /// Wrapper methond on sample to create the equity chart.
-        /// </summary>
-        /// <param name="time">Time of the sample.</param>
-        /// <param name="value">Equity value at this moment in time.</param>
+        */
+         * @param time">Time of the sample.
+         * @param value">Equity value at this moment in time.
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
         public void SampleEquity(DateTime time, BigDecimal value) {
             if( value > 0) {
@@ -562,12 +562,12 @@ package com.quantconnect.lean.Lean.Engine.Results
             }
         }
 
-        /// <summary>
+        /**
         /// Sample the asset prices to generate plots.
-        /// </summary>
-        /// <param name="symbol">Symbol we're sampling.</param>
-        /// <param name="time">Time of sample</param>
-        /// <param name="value">Value of the asset price</param>
+        */
+         * @param symbol">Symbol we're sampling.
+         * @param time">Time of sample
+         * @param value">Value of the asset price
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
         public void SampleAssetPrices(Symbol symbol, DateTime time, BigDecimal value) {
             // don't send stockplots for internal feeds
@@ -580,11 +580,11 @@ package com.quantconnect.lean.Lean.Engine.Results
             }
         }
 
-        /// <summary>
+        /**
         /// Sample the current daily performance directly with a time-value pair.
-        /// </summary>
-        /// <param name="time">Current backtest date.</param>
-        /// <param name="value">Current daily performance value.</param>
+        */
+         * @param time">Current backtest date.
+         * @param value">Current daily performance value.
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
         public void SamplePerformance(DateTime time, BigDecimal value) {
             //No "daily performance" sampling for live trading yet.
@@ -592,20 +592,20 @@ package com.quantconnect.lean.Lean.Engine.Results
             //Sample( "Strategy Equity", ChartType.Overlay, "Daily Performance", SeriesType.Line, time, value, "%");
         }
 
-        /// <summary>
+        /**
         /// Sample the current benchmark performance directly with a time-value pair.
-        /// </summary>
-        /// <param name="time">Current backtest date.</param>
-        /// <param name="value">Current benchmark value.</param>
+        */
+         * @param time">Current backtest date.
+         * @param value">Current benchmark value.
         /// <seealso cref="IResultHandler.Sample"/>
         public void SampleBenchmark(DateTime time, BigDecimal value) {
             Sample( "Benchmark", "Benchmark", 0, SeriesType.Line, time, value);
         }
 
-        /// <summary>
+        /**
         /// Add a range of samples from the users algorithms to the end of our current list.
-        /// </summary>
-        /// <param name="updates">Chart updates since the last request.</param>
+        */
+         * @param updates">Chart updates since the last request.
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
         public void SampleRange(List<Chart> updates) {
             Log.Debug( "LiveTradingResultHandler.SampleRange(): Begin sampling");
@@ -631,10 +631,10 @@ package com.quantconnect.lean.Lean.Engine.Results
             Log.Debug( "LiveTradingResultHandler.SampleRange(): Finished sampling");
         }
 
-        /// <summary>
+        /**
         /// Set the algorithm of the result handler after its been initialized.
-        /// </summary>
-        /// <param name="algorithm">Algorithm object matching IAlgorithm interface</param>
+        */
+         * @param algorithm">Algorithm object matching IAlgorithm interface
         public void SetAlgorithm(IAlgorithm algorithm) {
             _algorithm = algorithm;
 
@@ -652,11 +652,11 @@ package com.quantconnect.lean.Lean.Engine.Results
         }
 
 
-        /// <summary>
+        /**
         /// Send a algorithm status update to the user of the algorithms running state.
-        /// </summary>
-        /// <param name="status">Status enum of the algorithm.</param>
-        /// <param name="message">Optional String message describing reason for status change.</param>
+        */
+         * @param status">Status enum of the algorithm.
+         * @param message">Optional String message describing reason for status change.
         public void SendStatusUpdate(AlgorithmStatus status, String message = "") {
             msg = status + ( String.IsNullOrEmpty(message) ? string.Empty : message);
             Log.Trace( "LiveTradingResultHandler.SendStatusUpdate(): " + msg);
@@ -665,11 +665,11 @@ package com.quantconnect.lean.Lean.Engine.Results
         }
 
 
-        /// <summary>
+        /**
         /// Set a dynamic runtime statistic to show in the (live) algorithm header
-        /// </summary>
-        /// <param name="key">Runtime headline statistic name</param>
-        /// <param name="value">Runtime headline statistic value</param>
+        */
+         * @param key">Runtime headline statistic name
+         * @param value">Runtime headline statistic value
         public void RuntimeStatistic( String key, String value) {
             Log.Debug( "LiveTradingResultHandler.RuntimeStatistic(): Begin setting statistic");
             lock (_runtimeLock) {
@@ -681,15 +681,15 @@ package com.quantconnect.lean.Lean.Engine.Results
             Log.Debug( "LiveTradingResultHandler.RuntimeStatistic(): End setting statistic");
         }
 
-        /// <summary>
+        /**
         /// Send a final analysis result back to the IDE.
-        /// </summary>
-        /// <param name="job">Lean AlgorithmJob task</param>
-        /// <param name="orders">Collection of orders from the algorithm</param>
-        /// <param name="profitLoss">Collection of time-profit values for the algorithm</param>
-        /// <param name="holdings">Current holdings state for the algorithm</param>
-        /// <param name="statisticsResults">Statistics information for the algorithm (empty if not finished)</param>
-        /// <param name="runtime">Runtime statistics banner information</param>
+        */
+         * @param job">Lean AlgorithmJob task
+         * @param orders">Collection of orders from the algorithm
+         * @param profitLoss">Collection of time-profit values for the algorithm
+         * @param holdings">Current holdings state for the algorithm
+         * @param statisticsResults">Statistics information for the algorithm (empty if not finished)
+         * @param runtime">Runtime statistics banner information
         public void SendFinalResult(AlgorithmNodePacket job, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, StatisticsResults statisticsResults, Map<String,String> runtime) {
             try
             {
@@ -717,10 +717,10 @@ package com.quantconnect.lean.Lean.Engine.Results
         }
 
 
-        /// <summary>
+        /**
         /// Process the log entries and save it to permanent storage 
-        /// </summary>
-        /// <param name="logs">Log list</param>
+        */
+         * @param logs">Log list
         public void StoreLog(IEnumerable<LogEntry> logs) {
             try
             {
@@ -734,18 +734,18 @@ package com.quantconnect.lean.Lean.Engine.Results
             }
         }
 
-        /// <summary>
+        /**
         /// Save the snapshot of the total results to storage.
-        /// </summary>
-        /// <param name="packet">Packet to store.</param>
-        /// <param name="async">Store the packet asyncronously to speed up the thread.</param>
-        /// <remarks>
+        */
+         * @param packet">Packet to store.
+         * @param async">Store the packet asyncronously to speed up the thread.
+        /// 
         ///     Async creates crashes in Mono 3.10 if the thread disappears before the upload is complete so it is disabled for now.
         ///     For live trading we're making assumption its a long running task and safe to async save large files.
-        /// </remarks>
+        /// 
         public void StoreResult(Packet packet, boolean async = true) {
             // this will hold all the serialized data and the keys to be stored
-            data_keys = Enumerable.Range(0, 0).Select(x => new
+            data_keys = Enumerable.Range(0, 0).Select(x -> new
             {
                 Key = ( String)null,
                 Serialized = ( String)null
@@ -832,10 +832,10 @@ package com.quantconnect.lean.Lean.Engine.Results
             }
         }
 
-        /// <summary>
+        /**
         /// New order event for the algorithm backtest: send event to browser.
-        /// </summary>
-        /// <param name="newEvent">New event details</param>
+        */
+         * @param newEvent">New event details
         public void OrderEvent(OrderEvent newEvent) {
             // we'll pull these out for the deltaOrders
             _orderEvents.Enqueue(newEvent);
@@ -850,24 +850,24 @@ package com.quantconnect.lean.Lean.Engine.Results
             LogMessage( "New Order Event: Id:" + newEvent.OrderId + " Symbol:" + newEvent.Symbol.toString() + " Quantity:" + newEvent.FillQuantity + " Status:" + newEvent.Status);
         }
 
-        /// <summary>
+        /**
         /// Terminate the result thread and apply any required exit proceedures.
-        /// </summary>
+        */
         public void Exit() {
             _exitTriggered = true;
             Update();
         }
 
-        /// <summary>
+        /**
         /// Purge/clear any outstanding messages in message queue.
-        /// </summary>
+        */
         public void PurgeQueue() {
             Messages.Clear();
         }
 
-        /// <summary>
+        /**
         /// Truncates the chart and order data in the result packet to within the specified time frame
-        /// </summary>
+        */
         private static void Truncate(LiveResult result, DateTime start, DateTime stop) {
             unixDateStart = Time.DateTimeToUnixTimeStamp(start);
             unixDateStop = Time.DateTimeToUnixTimeStamp(stop);
@@ -882,12 +882,12 @@ package com.quantconnect.lean.Lean.Engine.Results
                 charts.Add(kvp.Key, newChart);
                 foreach (series in chart.Series.Values) {
                     newSeries = new Series(series.Name, series.SeriesType);
-                    newSeries.Values.AddRange(series.Values.Where(chartPoint => chartPoint.x >= unixDateStart && chartPoint.x <= unixDateStop));
+                    newSeries.Values.AddRange(series.Values.Where(chartPoint -> chartPoint.x >= unixDateStart && chartPoint.x <= unixDateStop));
                     newChart.AddSeries(newSeries);
                 }
             }
             result.Charts = charts;
-            result.Orders = result.Orders.Values.Where(x => x.Time >= start && x.Time <= stop).ToDictionary(x => x.Id);
+            result.Orders = result.Orders.Values.Where(x -> x.Time >= start && x.Time <= stop).ToDictionary(x -> x.Id);
 
             //Log.Trace( "LiveTradingResultHandler.Truncate: Truncate Outgoing: " + result.Charts["Strategy Equity"].Series["Equity"].Values.Count);
 
@@ -902,18 +902,18 @@ package com.quantconnect.lean.Lean.Engine.Results
         }
 
 
-        /// <summary>
+        /**
         /// Set the chart name that we want data from.
-        /// </summary>
+        */
         public void SetChartSubscription( String symbol) {
             _subscription = symbol;
         }
 
-        /// <summary>
+        /**
         /// Process the synchronous result events, sampling and message reading. 
         /// This method is triggered from the algorithm manager thread.
-        /// </summary>
-        /// <remarks>Prime candidate for putting into a base class. Is identical across all result handlers.</remarks>
+        */
+        /// Prime candidate for putting into a base class. Is identical across all result handlers.
         public void ProcessSynchronousEvents( boolean forceProcess = false) {
             time = DateTime.Now;
 

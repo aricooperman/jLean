@@ -20,55 +20,55 @@ using QuantConnect.Logging;
 
 package com.quantconnect.lean 
 {
-    /// <summary>
+    /**
     /// Isolator class - create a new instance of the algorithm and ensure it doesn't 
     /// exceed memory or time execution limits.
-    /// </summary>
+    */
     public class Isolator
     {
-        /// <summary>
+        /**
         /// Algo cancellation controls - cancel source.
-        /// </summary>
+        */
         public CancellationTokenSource CancellationTokenSource
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Algo cancellation controls - cancellation token for algorithm thread.
-        /// </summary>
+        */
         public CancellationToken CancellationToken
         {
             get { return CancellationTokenSource.Token; }
         }
 
-        /// <summary>
+        /**
         /// Check if this task isolator is cancelled, and exit the analysis
-        /// </summary>
+        */
         public boolean IsCancellationRequested
         {
             get { return CancellationTokenSource.IsCancellationRequested; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Isolator"/> class
-        /// </summary>
+        */
         public Isolator() {
             CancellationTokenSource = new CancellationTokenSource();
         }
 
-        /// <summary>
+        /**
         /// Execute a code block with a maximum limit on time and memory.
-        /// </summary>
-        /// <param name="timeSpan">Timeout in timespan</param>
-        /// <param name="withinCustomLimits">Function used to determine if the codeBlock is within custom limits, such as with algorithm manager
-        /// timing individual time loops, return a non-null and non-empty String with a message indicating the error/reason for stoppage</param>
-        /// <param name="codeBlock">Action codeblock to execute</param>
-        /// <param name="memoryCap">Maximum memory allocation, default 1024Mb</param>
-        /// <returns>True if algorithm exited successfully, false if cancelled because it exceeded limits.</returns>
+        */
+         * @param timeSpan">Timeout in timespan
+         * @param withinCustomLimits">Function used to determine if the codeBlock is within custom limits, such as with algorithm manager
+        /// timing individual time loops, return a non-null and non-empty String with a message indicating the error/reason for stoppage
+         * @param codeBlock">Action codeblock to execute
+         * @param memoryCap">Maximum memory allocation, default 1024Mb
+        @returns True if algorithm exited successfully, false if cancelled because it exceeded limits.
         public boolean ExecuteWithTimeLimit(TimeSpan timeSpan, Func<String> withinCustomLimits, Action codeBlock, long memoryCap = 1024) {
             // default to always within custom limits
-            withinCustomLimits = withinCustomLimits ?? (() => null );
+            withinCustomLimits = withinCustomLimits ?? (() -> null );
 
             message = "";
             end = DateTime.Now + timeSpan;
@@ -101,7 +101,7 @@ package com.quantconnect.lean
 
                 // check to see if we're within other custom limits defined by the caller
                 possibleMessage = withinCustomLimits();
-                if( !string.IsNullOrEmpty(possibleMessage)) {
+                if( !StringUtils.isEmpty(possibleMessage)) {
                     message = possibleMessage;
                     break;
                 }
@@ -122,13 +122,13 @@ package com.quantconnect.lean
             return task.IsCompleted;
         }
 
-        /// <summary>
+        /**
         /// Execute a code block with a maximum limit on time and memory.
-        /// </summary>
-        /// <param name="timeSpan">Timeout in timespan</param>
-        /// <param name="codeBlock">Action codeblock to execute</param>
-        /// <param name="memoryCap">Maximum memory allocation, default 1024Mb</param>
-        /// <returns>True if algorithm exited successfully, false if cancelled because it exceeded limits.</returns>
+        */
+         * @param timeSpan">Timeout in timespan
+         * @param codeBlock">Action codeblock to execute
+         * @param memoryCap">Maximum memory allocation, default 1024Mb
+        @returns True if algorithm exited successfully, false if cancelled because it exceeded limits.
         public boolean ExecuteWithTimeLimit(TimeSpan timeSpan, Action codeBlock, long memoryCap = 1024) {
             return ExecuteWithTimeLimit(timeSpan, null, codeBlock, memoryCap);
         }

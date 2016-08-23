@@ -17,17 +17,17 @@ using System;
 
 package com.quantconnect.lean.Benchmarks
 {
-    /// <summary>
+    /**
     /// Creates a benchmark defined by a function
-    /// </summary>
+    */
     public class FuncBenchmark : IBenchmark
     {
-        private readonly Func<DateTime, decimal> _benchmark;
+        private final Func<DateTime, decimal> _benchmark;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FuncBenchmark"/> class
-        /// </summary>
-        /// <param name="benchmark">The functional benchmark implementation</param>
+        */
+         * @param benchmark">The functional benchmark implementation
         public FuncBenchmark(Func<DateTime, decimal> benchmark) {
             if( benchmark == null ) {
                 throw new ArgumentNullException( "benchmark");
@@ -35,11 +35,11 @@ package com.quantconnect.lean.Benchmarks
             _benchmark = benchmark;
         }
 
-        /// <summary>
+        /**
         /// Evaluates this benchmark at the specified time
-        /// </summary>
-        /// <param name="time">The time to evaluate the benchmark at</param>
-        /// <returns>The value of the benchmark at the specified time</returns>
+        */
+         * @param time">The time to evaluate the benchmark at
+        @returns The value of the benchmark at the specified time
         public BigDecimal Evaluate(DateTime time) {
             return _benchmark(time);
         }

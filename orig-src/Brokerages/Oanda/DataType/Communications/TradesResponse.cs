@@ -21,9 +21,9 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Represent the Active Trades Web Response. 
-    /// </summary>
+    */
     public class TradesResponse
     {
         public List<TradeData> trades;

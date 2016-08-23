@@ -170,13 +170,13 @@ public class QuoteBar extends BaseData implements IBar {
     }
 
     /// Initialize Quote Bar with Bid(OHLC) and Ask(OHLC) Values:
-    /// <param name="time">DateTime Timestamp of the bar</param>
-    /// <param name="symbol">Market MarketType Symbol</param>
-    /// <param name="bid">Bid OLHC bar</param>
-    /// <param name="lastBidSize">Average bid size over period</param>
-    /// <param name="ask">Ask OLHC bar</param>
-    /// <param name="lastAskSize">Average ask size over period</param>
-    /// <param name="period">The period of this bar, specify null for default of 1 minute</param>
+     * @param time">DateTime Timestamp of the bar
+     * @param symbol">Market MarketType Symbol
+     * @param bid">Bid OLHC bar
+     * @param lastBidSize">Average bid size over period
+     * @param ask">Ask OLHC bar
+     * @param lastAskSize">Average ask size over period
+     * @param period">The period of this bar, specify null for default of 1 minute
     public QuoteBar( LocalDateTime time, Symbol symbol, IBar bid, long lastBidSize, IBar ask, long lastAskSize ) {
         this( time, symbol, bid, lastBidSize, ask, lastAskSize, null );
     }
@@ -196,12 +196,12 @@ public class QuoteBar extends BaseData implements IBar {
     }
 
     /// Update the quotebar - build the bar from this pricing information:
-    /// <param name="lastTrade">The last trade price</param>
-    /// <param name="bidPrice">Current bid price</param>
-    /// <param name="askPrice">Current asking price</param>
-    /// <param name="volume">Volume of this trade</param>
-    /// <param name="bidSize">The size of the current bid, if available, if not, pass 0</param>
-    /// <param name="askSize">The size of the current ask, if available, if not, pass 0</param>
+     * @param lastTrade">The last trade price
+     * @param bidPrice">Current bid price
+     * @param askPrice">Current asking price
+     * @param volume">Volume of this trade
+     * @param bidSize">The size of the current bid, if available, if not, pass 0
+     * @param askSize">The size of the current ask, if available, if not, pass 0
     @Override
     public void update( BigDecimal lastTrade, BigDecimal bidPrice, BigDecimal askPrice, BigDecimal volume, BigDecimal bidSize, BigDecimal askSize ) {
         // update our bid and ask bars - handle null values, this is to give good values for midpoint OHLC
@@ -231,11 +231,11 @@ public class QuoteBar extends BaseData implements IBar {
     }
 
     /// QuoteBar Reader: Fetch the data from the QC storage and feed it line by line into the engine.
-    /// <param name="config">Symbols, Resolution, DataType, </param>
-    /// <param name="line">Line from the data file requested</param>
-    /// <param name="date">Date of this reader request</param>
-    /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-    /// <returns>Enumerable iterator for returning each line of the required data.</returns>
+     * @param config">Symbols, Resolution, DataType, 
+     * @param line">Line from the data file requested
+     * @param date">Date of this reader request
+     * @param isLiveMode">true if we're in live mode, false for backtesting mode
+    @returns Enumerable iterator for returning each line of the required data.
     @Override
     public BaseData reader( SubscriptionDataConfig config, String line, LocalDate date, boolean isLiveMode ) {
         final QuoteBar quoteBar = new QuoteBar();
@@ -281,10 +281,10 @@ public class QuoteBar extends BaseData implements IBar {
 
     /// Get Source for Custom Data File
     /// >> What source file location would you prefer for each type of usage:
-    /// <param name="config">Configuration object</param>
-    /// <param name="date">Date of this source request if source spread across multiple files</param>
-    /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-    /// <returns>String source location of the file</returns>
+     * @param config">Configuration object
+     * @param date">Date of this source request if source spread across multiple files
+     * @param isLiveMode">true if we're in live mode, false for backtesting mode
+    @returns String source location of the file
     @Override
     public SubscriptionDataSource getSource( SubscriptionDataConfig config, LocalDate date, boolean isLiveMode ) {
         if( isLiveMode)
@@ -298,7 +298,7 @@ public class QuoteBar extends BaseData implements IBar {
     }
 
     /// Return a new instance clone of this quote bar, used in fill forward
-    /// <returns>A clone of the current quote bar</returns>
+    @returns A clone of the current quote bar
     @Override
     public BaseData clone() {
         final QuoteBar quoteBar = new QuoteBar();

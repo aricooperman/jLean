@@ -28,37 +28,37 @@ using Order = QuantConnect.Orders.Order;
 
 package com.quantconnect.lean.Brokerages.Oanda
 {
-    /// <summary>
+    /**
     /// Oanda Brokerage - implementation of IBrokerage interface
-    /// </summary>
+    */
     public partial class OandaBrokerage : Brokerage, IDataQueueHandler
     {
-        private readonly IOrderProvider _orderProvider;
-        private readonly ISecurityProvider _securityProvider;
-        private readonly Environment _environment;
-        private readonly String _accessToken;
-        private readonly int _accountId;
+        private final IOrderProvider _orderProvider;
+        private final ISecurityProvider _securityProvider;
+        private final Environment _environment;
+        private final String _accessToken;
+        private final int _accountId;
 
         private EventsSession _eventsSession;
         private Map<String, Instrument> _oandaInstruments; 
-        private readonly OandaSymbolMapper _symbolMapper = new OandaSymbolMapper();
+        private final OandaSymbolMapper _symbolMapper = new OandaSymbolMapper();
 
         private boolean _isConnected;
 
         private DateTime _lastHeartbeatUtcTime;
         private Thread _connectionMonitorThread;
-        private readonly object _lockerConnectionMonitor = new object();
+        private final object _lockerConnectionMonitor = new object();
         private volatile boolean _connectionLost;
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="OandaBrokerage"/> class.
-        /// </summary>
-        /// <param name="orderProvider">The order provider.</param>
-        /// <param name="securityProvider">The holdings provider.</param>
-        /// <param name="environment">The Oanda environment (Trade or Practice)</param>
-        /// <param name="accessToken">The Oanda access token (can be the user's personal access token or the access token obtained with OAuth by QC on behalf of the user)</param>
-        /// <param name="accountId">The account identifier.</param>
+        */
+         * @param orderProvider">The order provider.
+         * @param securityProvider">The holdings provider.
+         * @param environment">The Oanda environment (Trade or Practice)
+         * @param accessToken">The Oanda access token (can be the user's personal access token or the access token obtained with OAuth by QC on behalf of the user)
+         * @param accountId">The account identifier.
         public OandaBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider, Environment environment, String accessToken, int accountId)
             : base( "Oanda Brokerage") {
             _orderProvider = orderProvider;
@@ -74,22 +74,22 @@ package com.quantconnect.lean.Brokerages.Oanda
 
         #region IBrokerage implementation
 
-        /// <summary>
+        /**
         /// Returns true if we're currently connected to the broker
-        /// </summary>
+        */
         public @Override boolean IsConnected
         {
             get { return _isConnected && !_connectionLost; }
         }
 
-        /// <summary>
+        /**
         /// Connects the client to the broker's remote servers
-        /// </summary>
+        */
         public @Override void Connect() {
             if( IsConnected) return;
 
             // Load the list of instruments
-            _oandaInstruments = GetInstruments().ToDictionary(x => x.instrument);
+            _oandaInstruments = GetInstruments().ToDictionary(x -> x.instrument);
 
             // Register to the event session to receive events.
             _eventsSession = new EventsSession(this, _accountId);
@@ -112,7 +112,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                 try
                 {
                     while (!_cancellationTokenSource.IsCancellationRequested) {
-                        TimeSpan elapsed;
+                        Duration elapsed;
                         lock (_lockerConnectionMonitor) {
                             elapsed = DateTime.UtcNow - _lastHeartbeatUtcTime;
                         }
@@ -183,9 +183,9 @@ package com.quantconnect.lean.Brokerages.Oanda
             }
         }
 
-        /// <summary>
+        /**
         /// Disconnects the client from the broker's remote servers
-        /// </summary>
+        */
         public @Override void Disconnect() {
             if( _eventsSession != null ) {
                 _eventsSession.DataReceived -= OnEventReceived;
@@ -204,11 +204,11 @@ package com.quantconnect.lean.Brokerages.Oanda
             _isConnected = false;
         }
 
-        /// <summary>
+        /**
         /// Gets all open orders on the account. 
         /// NOTE: The order objects returned do not have QC order IDs.
-        /// </summary>
-        /// <returns>The open orders returned from Oanda</returns>
+        */
+        @returns The open orders returned from Oanda
         public @Override List<Order> GetOpenOrders() {
             oandaOrders = GetOrderList();
 
@@ -216,20 +216,20 @@ package com.quantconnect.lean.Brokerages.Oanda
             return orderList;
         }
 
-        /// <summary>
+        /**
         /// Gets all holdings for the account
-        /// </summary>
-        /// <returns>The current holdings from the account</returns>
+        */
+        @returns The current holdings from the account
         public @Override List<Holding> GetAccountHoldings() {
-            holdings = GetPositions(_accountId).Select(ConvertHolding).Where(x => x.Quantity != 0).ToList();
+            holdings = GetPositions(_accountId).Select(ConvertHolding).Where(x -> x.Quantity != 0).ToList();
 
             // Set MarketPrice in each Holding
             oandaSymbols = holdings
-                .Select(x => _symbolMapper.GetBrokerageSymbol(x.Symbol))
+                .Select(x -> _symbolMapper.GetBrokerageSymbol(x.Symbol))
                 .ToList();
 
             if( oandaSymbols.Count > 0) {
-                quotes = GetRates(oandaSymbols).ToDictionary(x => x.instrument);
+                quotes = GetRates(oandaSymbols).ToDictionary(x -> x.instrument);
                 foreach (holding in holdings) {
                     oandaSymbol = _symbolMapper.GetBrokerageSymbol(holding.Symbol);
                     Price quote;
@@ -242,10 +242,10 @@ package com.quantconnect.lean.Brokerages.Oanda
             return holdings;
         }
 
-        /// <summary>
+        /**
         /// Gets the current cash balance for each currency held in the brokerage account
-        /// </summary>
-        /// <returns>The current cash balance for each currency available for trading</returns>
+        */
+        @returns The current cash balance for each currency available for trading
         public @Override List<Cash> GetCashBalance() {
             getAccountRequestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId;
             accountResponse = MakeRequest<Account>(getAccountRequestString);
@@ -257,11 +257,11 @@ package com.quantconnect.lean.Brokerages.Oanda
             };
         }
 
-        /// <summary>
+        /**
         /// Places a new order and assigns a new broker ID to the order
-        /// </summary>
-        /// <param name="order">The order to be placed</param>
-        /// <returns>True if the request for a new order has been placed, false otherwise</returns>
+        */
+         * @param order">The order to be placed
+        @returns True if the request for a new order has been placed, false otherwise
         public @Override boolean PlaceOrder(Order order) {
             requestParams = new Map<String,String>
             {
@@ -310,8 +310,8 @@ package com.quantconnect.lean.Brokerages.Oanda
 
             if( postOrderResponse.tradesClosed != null && postOrderResponse.tradesClosed.Count > 0) {
                 marketOrderFillQuantity += postOrderResponse.tradesClosed
-                    .Where(trade => order.Type == OrderType.Market)
-                    .Sum(trade => trade.units);
+                    .Where(trade -> order.Type == OrderType.Market)
+                    .Sum(trade -> trade.units);
             }
 
             // send Submitted order event
@@ -332,11 +332,11 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
 
-        /// <summary>
+        /**
         /// Updates the order with the same id
-        /// </summary>
-        /// <param name="order">The new order information</param>
-        /// <returns>True if the request was made for the order to be updated, false otherwise</returns>
+        */
+         * @param order">The new order information
+        @returns True if the request was made for the order to be updated, false otherwise
         public @Override boolean UpdateOrder(Order order) {
             Log.Trace( "OandaBrokerage.UpdateOrder(): " + order);
             
@@ -360,11 +360,11 @@ package com.quantconnect.lean.Brokerages.Oanda
             return true;
         }
 
-        /// <summary>
+        /**
         /// Cancels the order with the specified ID
-        /// </summary>
-        /// <param name="order">The order to cancel</param>
-        /// <returns>True if the request was made for the order to be canceled, false otherwise</returns>
+        */
+         * @param order">The order to cancel
+        @returns True if the request was made for the order to be canceled, false otherwise
         public @Override boolean CancelOrder(Order order) {
             Log.Trace( "OandaBrokerage.CancelOrder(): " + order);
             

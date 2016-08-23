@@ -18,15 +18,15 @@ using System.Collections.Generic;
 
 package com.quantconnect.lean.Brokerages.Oanda
 {
-    /// <summary>
+    /**
     /// Provides the mapping between Lean symbols and Oanda symbols.
-    /// </summary>
+    */
     public class OandaSymbolMapper : ISymbolMapper
     {
-        /// <summary>
+        /**
         /// The list of known Oanda symbols.
-        /// </summary>
-        private static readonly HashSet<String> KnownSymbols = new HashSet<String>
+        */
+        private static final HashSet<String> KnownSymbols = new HashSet<String>
         {
             "AU200_AUD",
             "AUD_CAD",
@@ -154,20 +154,20 @@ package com.quantconnect.lean.Brokerages.Oanda
             "ZAR_JPY"
         };
 
-        /// <summary>
+        /**
         /// The list of known Oanda currencies.
-        /// </summary>
-        private static readonly HashSet<String> KnownCurrencies = new HashSet<String>
+        */
+        private static final HashSet<String> KnownCurrencies = new HashSet<String>
         {
             "AUD", "CAD", "CHF", "CNY", "CZK", "DKK", "EUR", "GBP", "HKD", "HUF", "INR", "JPY", 
             "MXN", "NOK", "NZD", "PLN", "SAR", "SEK", "SGD", "THB", "TRY", "TWD", "USD", "ZAR"
         };
 
-        /// <summary>
+        /**
         /// Converts a Lean symbol instance to an Oanda symbol
-        /// </summary>
-        /// <param name="symbol">A Lean symbol instance</param>
-        /// <returns>The Oanda symbol</returns>
+        */
+         * @param symbol">A Lean symbol instance
+        @returns The Oanda symbol
         public String GetBrokerageSymbol(Symbol symbol) {
             if( symbol == null || symbol == Symbol.Empty || string.IsNullOrWhiteSpace(symbol.Value))
                 throw new ArgumentException( "Invalid symbol: " + (symbol == null ? "null" : symbol.toString()));
@@ -183,13 +183,13 @@ package com.quantconnect.lean.Brokerages.Oanda
             return brokerageSymbol;
         }
 
-        /// <summary>
+        /**
         /// Converts an Oanda symbol to a Lean symbol instance
-        /// </summary>
-        /// <param name="brokerageSymbol">The Oanda symbol</param>
-        /// <param name="securityType">The security type</param>
-        /// <param name="market">The market</param>
-        /// <returns>A new Lean Symbol instance</returns>
+        */
+         * @param brokerageSymbol">The Oanda symbol
+         * @param securityType">The security type
+         * @param market">The market
+        @returns A new Lean Symbol instance
         public Symbol GetLeanSymbol( String brokerageSymbol, SecurityType securityType, String market) {
             if(  String.IsNullOrWhiteSpace(brokerageSymbol))
                 throw new ArgumentException( "Invalid Oanda symbol: " + brokerageSymbol);
@@ -206,11 +206,11 @@ package com.quantconnect.lean.Brokerages.Oanda
             return Symbol.Create(ConvertOandaSymbolToLeanSymbol(brokerageSymbol), GetBrokerageSecurityType(brokerageSymbol), Market.Oanda);
         }
 
-        /// <summary>
+        /**
         /// Returns the security type for an Oanda symbol
-        /// </summary>
-        /// <param name="brokerageSymbol">The Oanda symbol</param>
-        /// <returns>The security type</returns>
+        */
+         * @param brokerageSymbol">The Oanda symbol
+        @returns The security type
         public SecurityType GetBrokerageSecurityType( String brokerageSymbol) {
             tokens = brokerageSymbol.split('_');
             if( tokens.Length != 2)
@@ -221,29 +221,29 @@ package com.quantconnect.lean.Brokerages.Oanda
                 : SecurityType.Cfd;
         }
 
-        /// <summary>
+        /**
         /// Returns the security type for a Lean symbol
-        /// </summary>
-        /// <param name="leanSymbol">The Lean symbol</param>
-        /// <returns>The security type</returns>
+        */
+         * @param leanSymbol">The Lean symbol
+        @returns The security type
         public SecurityType GetLeanSecurityType( String leanSymbol) {
             return GetBrokerageSecurityType(ConvertLeanSymbolToOandaSymbol(leanSymbol));
         }
 
-        /// <summary>
+        /**
         /// Checks if the symbol is supported by Oanda
-        /// </summary>
-        /// <param name="brokerageSymbol">The Oanda symbol</param>
-        /// <returns>True if Oanda supports the symbol</returns>
+        */
+         * @param brokerageSymbol">The Oanda symbol
+        @returns True if Oanda supports the symbol
         public boolean IsKnownBrokerageSymbol( String brokerageSymbol) {
             return KnownSymbols.Contains(brokerageSymbol);
         }
 
-        /// <summary>
+        /**
         /// Checks if the symbol is supported by Oanda
-        /// </summary>
-        /// <param name="symbol">The Lean symbol</param>
-        /// <returns>True if Oanda supports the symbol</returns>
+        */
+         * @param symbol">The Lean symbol
+        @returns True if Oanda supports the symbol
         public boolean IsKnownLeanSymbol(Symbol symbol) {
             if( symbol == null || string.IsNullOrWhiteSpace(symbol.Value)) 
                 return false;
@@ -253,17 +253,17 @@ package com.quantconnect.lean.Brokerages.Oanda
             return KnownSymbols.Contains(oandaSymbol) && GetBrokerageSecurityType(oandaSymbol) == symbol.ID.SecurityType;
         }
 
-        /// <summary>
+        /**
         /// Converts an Oanda symbol to a Lean symbol string
-        /// </summary>
+        */
         private static String ConvertOandaSymbolToLeanSymbol( String oandaSymbol) {
             // Lean symbols are equal to Oanda symbols with underscores removed
             return oandaSymbol.Replace( "_", "");
         }
 
-        /// <summary>
+        /**
         /// Converts a Lean symbol String to an Oanda symbol
-        /// </summary>
+        */
         private static String ConvertLeanSymbolToOandaSymbol( String leanSymbol) {
             // All Oanda symbols end with '_XYZ', where XYZ is the quote currency
             return leanSymbol.Insert(leanSymbol.Length - 3, "_");

@@ -27,8 +27,8 @@ package com.quantconnect.lean.Brokerages.Oanda.Session
 #pragma warning disable 1591
     public class RatesSession : StreamSession<RateStreamResponse>
     {
-        private readonly OandaBrokerage _brokerage;
-        private readonly List<Instrument> _instruments;
+        private final OandaBrokerage _brokerage;
+        private final List<Instrument> _instruments;
 
         public RatesSession(OandaBrokerage brokerage, int accountId, List<Instrument> instruments)
             : base(accountId) {

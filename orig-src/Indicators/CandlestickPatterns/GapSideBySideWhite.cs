@@ -18,10 +18,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Up/Down-gap side-by-side white lines candlestick pattern
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - upside or downside gap (between the bodies)
     /// - first candle after the window: white candlestick
@@ -32,46 +32,46 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The returned value is positive(+1) or negative(-1): the user should consider that upside
     /// or downside gap side-by-side white lines is significant when it appears in a trend, while this function
     /// does not consider the trend
-    /// </remarks>
+    /// 
     public class GapSideBySideWhite : CandlestickPattern
     {
-        private readonly int _nearAveragePeriod;
-        private readonly int _equalAveragePeriod;
+        private final int _nearAveragePeriod;
+        private final int _equalAveragePeriod;
 
         private BigDecimal _nearPeriodTotal;
         private BigDecimal _equalPeriodTotal;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="GapSideBySideWhite"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public GapSideBySideWhite( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.Near).AveragePeriod, CandleSettings.Get(CandleSettingType.Equal).AveragePeriod) + 2 + 1) {
             _nearAveragePeriod = CandleSettings.Get(CandleSettingType.Near).AveragePeriod;
             _equalAveragePeriod = CandleSettings.Get(CandleSettingType.Equal).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="GapSideBySideWhite"/> class.
-        /// </summary>
+        */
         public GapSideBySideWhite()
             : this( "GAPSIDEBYSIDEWHITE") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _nearAveragePeriod) {
@@ -119,9 +119,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _nearPeriodTotal = 0;
             _equalPeriodTotal = 0;

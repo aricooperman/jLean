@@ -19,17 +19,17 @@ using QuantConnect.Data.Auxiliary;
 
 package com.quantconnect.lean.Interfaces
 {
-    /// <summary>
+    /**
     /// Provides instances of <see cref="FactorFile"/> at run time
-    /// </summary>
+    */
     [InheritedExport(typeof(IFactorFileProvider))]
     public interface IFactorFileProvider
     {
-        /// <summary>
+        /**
         /// Gets a <see cref="FactorFile"/> instance for the specified symbol, or null if not found
-        /// </summary>
-        /// <param name="symbol">The security's symbol whose factor file we seek</param>
-        /// <returns>The resolved factor file, or null if not found</returns>
+        */
+         * @param symbol">The security's symbol whose factor file we seek
+        @returns The resolved factor file, or null if not found
         FactorFile Get(Symbol symbol);
     }
 }

@@ -22,15 +22,15 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean
 {
-    /// <summary>
+    /**
     /// QuantConnect University: Live Trading Functionality Demonstration:
     /// This algorithm demonstrates the underlying functionality specifically for live trading.
-    /// </summary>
+    */
     public class LiveTradingFeaturesAlgorithm : QCAlgorithm
     {
-        /// <summary>
+        /**
         /// Initialise the Algorithm and Prepare Required Data.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2013, 1, 1);
             SetEndDate(DateTime.Now.Date.AddDays(-1));
@@ -46,10 +46,10 @@ package com.quantconnect.lean
             AddData<Bitcoin>( "BTC", Resolution.Second);
         }
 
-        /// <summary>
+        /**
         /// New Bitcoin Data Event.
-        /// </summary>
-        /// <param name="data">Data.</param>
+        */
+         * @param data">Data.
         public void OnData(Bitcoin data) {
             if( LiveMode) //Live Mode Property
             {
@@ -67,10 +67,10 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Raises the data event.
-        /// </summary>
-        /// <param name="data">Data.</param>
+        */
+         * @param data">Data.
         public void OnData(TradeBars data) {
             if( !Portfolio.HoldStock && data.ContainsKey( "AAPL")) {
                 int quantity = (int)Math.Floor(Portfolio.Cash / data["AAPL"].Close);
@@ -81,64 +81,64 @@ package com.quantconnect.lean
         }
     }
 
-    /// <summary>
+    /**
     /// Custom Data Type: Bitcoin data from Quandl - http://www.quandl.com/help/api-for-bitcoin-data
-    /// </summary>
+    */
     public class Bitcoin : BaseData
     {
         //Set the defaults:
-        /// <summary>
+        /**
         /// Open Price
-        /// </summary>
+        */
         public BigDecimal Open = 0;
         
-        /// <summary>
+        /**
         /// High Price
-        /// </summary>
+        */
         public BigDecimal High = 0;
         
-        /// <summary>
+        /**
         /// Low Price
-        /// </summary>
+        */
         public BigDecimal Low = 0;
 
-        /// <summary>
+        /**
         /// Closing Price
-        /// </summary>
+        */
         public BigDecimal Close = 0;
 
-        /// <summary>
+        /**
         /// Volume in BTC
-        /// </summary>
+        */
         public BigDecimal VolumeBTC = 0;
 
-        /// <summary>
+        /**
         /// Volume in USD
-        /// </summary>
+        */
         public BigDecimal VolumeUSD = 0;
         
-        /// <summary>
+        /**
         /// Volume in USD:
-        /// </summary>
+        */
         public BigDecimal WeightedPrice = 0;
 
-        /// <summary>
+        /**
         /// 1. DEFAULT CONSTRUCTOR: Custom data types need a default constructor.
         /// We search for a default constructor so please provide one here. It won't be used for data, just to generate the "Factory".
-        /// </summary>
+        */
         public Bitcoin() {
             Symbol = "BTC";
         }
 
-        /// <summary>
+        /**
         /// 2. RETURN THE STRING URL SOURCE LOCATION FOR YOUR DATA:
         /// This is a powerful and dynamic select source file method. If you have a large dataset, 10+mb we recommend you break it into smaller files. E.g. One zip per year.
         /// We can accept raw text or ZIP files. We read the file extension to determine if it is a zip file.
-        /// </summary>
-        /// <param name="config">Configuration object</param>
-        /// <param name="date">Date of this source file</param>
-        /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-        /// <returns>String URL of source file.</returns>
+        */
+         * @param config">Configuration object
+         * @param date">Date of this source file
+         * @param isLiveMode">true if we're in live mode, false for backtesting mode
+        @returns String URL of source file.
         public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             if( isLiveMode) {
                 return new SubscriptionDataSource( "https://www.bitstamp.net/api/ticker/", SubscriptionTransportMedium.Rest);
@@ -149,16 +149,16 @@ package com.quantconnect.lean
             return new SubscriptionDataSource( "http://www.quandl.com/api/v1/datasets/BCHARTS/BITSTAMPUSD.csv?sort_order=asc", SubscriptionTransportMedium.RemoteFile);
         }
 
-        /// <summary>
+        /**
         /// 3. READER METHOD: Read 1 line from data source and convert it into Object.
         /// Each line of the CSV File is presented in here. The backend downloads your file, loads it into memory and then line by line
         /// feeds it into your algorithm
-        /// </summary>
-        /// <param name="line">string line from the data source file submitted above</param>
-        /// <param name="config">Subscription data, symbol name, data type</param>
-        /// <param name="date">Current date we're requesting. This allows you to break up the data source into daily files.</param>
-        /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-        /// <returns>New Bitcoin Object which extends BaseData.</returns>
+        */
+         * @param line">string line from the data source file submitted above
+         * @param config">Subscription data, symbol name, data type
+         * @param date">Current date we're requesting. This allows you to break up the data source into daily files.
+         * @param isLiveMode">true if we're in live mode, false for backtesting mode
+        @returns New Bitcoin Object which extends BaseData.
         public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
             coin = new Bitcoin();
             if( isLiveMode) {
@@ -204,26 +204,26 @@ package com.quantconnect.lean
         }
     }
 
-    /// <summary>
+    /**
     /// Live data structure
-    /// </summary>
+    */
     public class LiveBitcoin
     {
-        [JsonProperty( "timestamp")]
+        @JsonProperty( "timestamp")]
         public int Timestamp = 0;
-        [JsonProperty( "last")]
+        @JsonProperty( "last")]
         public BigDecimal Last = 0;
-        [JsonProperty( "high")]
+        @JsonProperty( "high")]
         public BigDecimal High = 0;
-        [JsonProperty( "low")]
+        @JsonProperty( "low")]
         public BigDecimal Low = 0;
-        [JsonProperty( "bid")]
+        @JsonProperty( "bid")]
         public BigDecimal Bid = 0;
-        [JsonProperty( "ask")]
+        @JsonProperty( "ask")]
         public BigDecimal Ask = 0;
-        [JsonProperty( "vwap")]
+        @JsonProperty( "vwap")]
         public BigDecimal VWAP = 0;
-        [JsonProperty( "volume")]
+        @JsonProperty( "volume")]
         public BigDecimal Volume = 0;
     }
 }

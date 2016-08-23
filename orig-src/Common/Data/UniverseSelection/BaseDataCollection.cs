@@ -20,51 +20,51 @@ using System.Linq;
 
 package com.quantconnect.lean.Data.UniverseSelection
 {
-    /// <summary>
+    /**
     /// This type exists for transport of data as a single packet
-    /// </summary>
+    */
     public class BaseDataCollection : BaseData
     {
         private DateTime _endTime;
 
-        /// <summary>
+        /**
         /// Gets the data list
-        /// </summary>
+        */
         public List<BaseData> Data { get; set; }
 
-        /// <summary>
+        /**
         /// Gets or sets the end time of this data
-        /// </summary>
+        */
         public @Override DateTime EndTime
         {
             get { return _endTime; }
             set { _endTime = value; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new default instance of the <see cref="BaseDataCollection"/> c;ass
-        /// </summary>
+        */
         public BaseDataCollection()
             : this(DateTime.MinValue, Symbol.Empty) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="BaseDataCollection"/> class
-        /// </summary>
-        /// <param name="time">The time of this data</param>
-        /// <param name="symbol">A common identifier for all data in this packet</param>
-        /// <param name="data">The data to add to this collection</param>
+        */
+         * @param time">The time of this data
+         * @param symbol">A common identifier for all data in this packet
+         * @param data">The data to add to this collection
         public BaseDataCollection(DateTime time, Symbol symbol, IEnumerable<BaseData> data = null )
             : this(time, time, symbol, data) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="BaseDataCollection"/> class
-        /// </summary>
-        /// <param name="time">The start time of this data</param>
-        /// <param name="endTime">The end time of this data</param>
-        /// <param name="symbol">A common identifier for all data in this packet</param>
-        /// <param name="data">The data to add to this collection</param>
+        */
+         * @param time">The start time of this data
+         * @param endTime">The end time of this data
+         * @param symbol">A common identifier for all data in this packet
+         * @param data">The data to add to this collection
         public BaseDataCollection(DateTime time, DateTime endTime, Symbol symbol, IEnumerable<BaseData> data = null ) {
             Symbol = symbol;
             Time = time;
@@ -72,13 +72,13 @@ package com.quantconnect.lean.Data.UniverseSelection
             Data = data != null ? data.ToList() : new List<BaseData>();
         }
 
-        /// <summary>
+        /**
         /// Return a new instance clone of this object, used in fill forward
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// This base implementation uses reflection to copy all public fields and properties
-        /// </remarks>
-        /// <returns>A clone of the current object</returns>
+        /// 
+        @returns A clone of the current object
         public @Override BaseData Clone() {
             return new BaseDataCollection(Time, EndTime, Symbol, Data);
         }

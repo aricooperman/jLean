@@ -16,21 +16,21 @@
 
 package com.quantconnect.lean.Scheduling
 {
-    /// <summary>
+    /**
     /// Provides the ability to add/remove scheduled events from the real time handler
-    /// </summary>
+    */
     public interface IEventSchedule
     {
-        /// <summary>
+        /**
         /// Adds the specified event to the schedule using the <see cref="ScheduledEvent.Name"/> as a key.
-        /// </summary>
-        /// <param name="scheduledEvent">The event to be scheduled, including the date/times the event fires and the callback</param>
+        */
+         * @param scheduledEvent">The event to be scheduled, including the date/times the event fires and the callback
         void Add(ScheduledEvent scheduledEvent);
 
-        /// <summary>
+        /**
         /// Removes the event with the specified name from the schedule
-        /// </summary>
-        /// <param name="name">The name of the event to be removed</param>
+        */
+         * @param name">The name of the event to be removed
         void Remove( String name);
     }
 }

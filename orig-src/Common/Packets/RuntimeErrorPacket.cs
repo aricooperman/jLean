@@ -18,39 +18,39 @@ using Newtonsoft.Json;
 
 package com.quantconnect.lean.Packets
 {
-    /// <summary>
+    /**
     /// Algorithm runtime error packet from the lean engine. 
     /// This is a managed error which stops the algorithm execution.
-    /// </summary>
+    */
     public class RuntimeErrorPacket : Packet
     {
-        /// <summary>
+        /**
         /// Runtime error message from the exception
-        /// </summary>
+        */
         @JsonProperty( "sMessage")]
         public String Message;
 
-        /// <summary>
+        /**
         /// Algorithm id which generated this runtime error
-        /// </summary>
+        */
         @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId;
 
-        /// <summary>
+        /**
         /// Error stack trace information String passed through from the Lean exception
-        /// </summary>
+        */
         @JsonProperty( "sStackTrace")]
         public String StackTrace;
 
-        /// <summary>
+        /**
         /// Default constructor for JSON
-        /// </summary>
+        */
         public RuntimeErrorPacket()
             : base (PacketType.RuntimeError) { }
 
-        /// <summary>
+        /**
         /// Create a new runtime error packet
-        /// </summary>
+        */
         public RuntimeErrorPacket( String algorithmId, String message, String stacktrace = "")
             : base(PacketType.RuntimeError) {
             Message = message;

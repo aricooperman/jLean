@@ -35,10 +35,10 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Historical datafeed stream reader for processing files on a local disk.
-    /// </summary>
-    /// <remarks>Filesystem datafeeds are incredibly fast</remarks>
+    */
+    /// Filesystem datafeeds are incredibly fast
     public class FileSystemDataFeed : IDataFeed
     {
         private IAlgorithm _algorithm;
@@ -52,22 +52,22 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         private UniverseSelection _universeSelection;
         private DateTime _frontierUtc;
 
-        /// <summary>
+        /**
         /// Gets all of the current subscriptions this data feed is processing
-        /// </summary>
+        */
         public IEnumerable<Subscription> Subscriptions
         {
             get { return _subscriptions; }
         }
 
-        /// <summary>
+        /**
         /// Flag indicating the hander thread is completely finished and ready to dispose.
-        /// </summary>
+        */
         public boolean IsActive { get; private set; }
 
-        /// <summary>
+        /**
         /// Initializes the data feed for the specified job and algorithm
-        /// </summary>
+        */
         public void Initialize(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler resultHandler, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider) {
             _algorithm = algorithm;
             _resultHandler = resultHandler;
@@ -83,7 +83,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             _controller.Start(_cancellationTokenSource.Token);
 
             ffres = Time.OneMinute;
-            _fillForwardResolution = Ref.Create(() => ffres, res => ffres = res);
+            _fillForwardResolution = Ref.Create(() -> ffres, res -> ffres = res);
 
             // wire ourselves up to receive notifications when universes are added/removed
             algorithm.UniverseManager.CollectionChanged += (sender, args) =>
@@ -141,7 +141,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             // schedule the work on the controller
             firstLoop = true;
             FuncParallelRunnerWorkItem workItem = null;
-            workItem = new FuncParallelRunnerWorkItem(() => enqueueable.Count < lowerThreshold, () =>
+            workItem = new FuncParallelRunnerWorkItem(() -> enqueueable.Count < lowerThreshold, () =>
             {
                 count = 0;
                 while (enumerator.MoveNext()) {
@@ -173,14 +173,14 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             _controller.Schedule(workItem);
         }
 
-        /// <summary>
+        /**
         /// Adds a new subscription to provide data for the specified security.
-        /// </summary>
-        /// <param name="universe">The universe the subscription is to be added to</param>
-        /// <param name="security">The security to add a subscription for</param>
-        /// <param name="config">The subscription config to be added</param>
-        /// <param name="utcStartTime">The start time of the subscription</param>
-        /// <param name="utcEndTime">The end time of the subscription</param>
+        */
+         * @param universe">The universe the subscription is to be added to
+         * @param security">The security to add a subscription for
+         * @param config">The subscription config to be added
+         * @param utcStartTime">The start time of the subscription
+         * @param utcEndTime">The end time of the subscription
         public boolean AddSubscription(Universe universe, Security security, SubscriptionDataConfig config, DateTime utcStartTime, DateTime utcEndTime) {
             subscription = CreateSubscription(universe, security, config, utcStartTime, utcEndTime);
             if( subscription == null ) {
@@ -198,11 +198,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return true;
         }
 
-        /// <summary>
+        /**
         /// Removes the subscription from the data feed, if it exists
-        /// </summary>
-        /// <param name="configuration">The configuration of the subscription to remove</param>
-        /// <returns>True if the subscription was successfully removed, false otherwise</returns>
+        */
+         * @param configuration">The configuration of the subscription to remove
+        @returns True if the subscription was successfully removed, false otherwise
         public boolean RemoveSubscription(SubscriptionDataConfig configuration) {
             Subscription subscription;
             if( !_subscriptions.TryRemove(configuration, out subscription)) {
@@ -218,10 +218,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return true;
         }
 
-        /// <summary>
+        /**
         /// Main routine for datafeed analysis.
-        /// </summary>
-        /// <remarks>This is a hot-thread and should be kept extremely lean. Modify with caution.</remarks>
+        */
+        /// This is a hot-thread and should be kept extremely lean. Modify with caution.
         public void Run() {
             try
             {
@@ -269,12 +269,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return frontier;
         }
 
-        /// <summary>
+        /**
         /// Adds a new subscription for universe selection
-        /// </summary>
-        /// <param name="universe">The universe to add a subscription for</param>
-        /// <param name="startTimeUtc">The start time of the subscription in utc</param>
-        /// <param name="endTimeUtc">The end time of the subscription in utc</param>
+        */
+         * @param universe">The universe to add a subscription for
+         * @param startTimeUtc">The start time of the subscription in utc
+         * @param endTimeUtc">The end time of the subscription in utc
         public void AddUniverseSubscription(Universe universe, DateTime startTimeUtc, DateTime endTimeUtc) {
             // TODO : Consider moving the creating of universe subscriptions to a separate, testable class
 
@@ -302,7 +302,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             if( userDefined != null ) {
                 // spoof a tick on the requested interval to trigger the universe selection function
                 enumerator = userDefined.GetTriggerTimes(startTimeUtc, endTimeUtc, marketHoursDatabase)
-                    .Select(x => new Tick { Time = x, Symbol = config.Symbol }).GetEnumerator();
+                    .Select(x -> new Tick { Time = x, Symbol = config.Symbol }).GetEnumerator();
 
                 // route these custom subscriptions through the exchange for buffering
                 enqueueable = new EnqueueableEnumerator<BaseData>(true);
@@ -367,33 +367,33 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             UpdateFillForwardResolution();
         }
 
-        /// <summary>
+        /**
         /// Send an exit signal to the thread.
-        /// </summary>
+        */
         public void Exit() {
             Log.Trace( "FileSystemDataFeed.Exit(): Exit triggered.");
             _cancellationTokenSource.Cancel();
         }
 
-        /// <summary>
+        /**
         /// Updates the fill forward resolution by checking all existing subscriptions and
         /// selecting the smallest resoluton not equal to tick
-        /// </summary>
+        */
         private void UpdateFillForwardResolution() {
             _fillForwardResolution.Value = _subscriptions
-                .Where(x => !x.Configuration.IsInternalFeed)
-                .Select(x => x.Configuration.Resolution)
-                .Where(x => x != Resolution.Tick)
+                .Where(x -> !x.Configuration.IsInternalFeed)
+                .Select(x -> x.Configuration.Resolution)
+                .Where(x -> x != Resolution.Tick)
                 .DefaultIfEmpty(Resolution.Minute)
                 .Min().ToTimeSpan();
         }
 
-        /// <summary>
+        /**
         /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>1</filterpriority>
         public IEnumerator<TimeSlice> GetEnumerator() {
             // compute initial frontier time
@@ -443,20 +443,20 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             Log.Trace( String.format( "FileSystemDataFeed.Run(): Data Feed Completed at %1$s UTC", _frontierUtc));
         }
 
-        /// <summary>
+        /**
         /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
-        /// <summary>
+        /**
         /// Creates an enumerator for the specified security/configuration
-        /// </summary>
+        */
         private IEnumerator<BaseData> CreateSubscriptionEnumerator(Security security,
             SubscriptionDataConfig config,
             DateTime localStartTime,

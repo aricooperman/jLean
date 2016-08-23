@@ -19,9 +19,9 @@ using QuantConnect.Orders;
 
 package com.quantconnect.lean.Tests.Brokerages
 {
-    /// <summary>
+    /**
     /// Helper class to abstract test cases from individual order types
-    /// </summary>
+    */
     public abstract class OrderTestParameters
     {
         public Symbol Symbol { get; private set; }
@@ -39,27 +39,27 @@ package com.quantconnect.lean.Tests.Brokerages
             return new MarketOrder(Symbol, -Math.Abs(quantity), DateTime.Now);
         }
 
-        /// <summary>
+        /**
         /// Creates a sell order of this type
-        /// </summary>
+        */
         public abstract Order CreateShortOrder(int quantity);
-        /// <summary>
+        /**
         /// Creates a long order of this type
-        /// </summary>
+        */
         public abstract Order CreateLongOrder(int quantity);
-        /// <summary>
+        /**
         /// Modifies the order so it is more likely to fill
-        /// </summary>
+        */
         public abstract boolean ModifyOrderToFill(IBrokerage brokerage, Order order, BigDecimal lastMarketPrice);
-        /// <summary>
+        /**
         /// The status to expect when submitting this order, typically just Submitted,
         /// unless market order, then Filled
-        /// </summary>
+        */
         public abstract OrderStatus ExpectedStatus { get; }
 
-        /// <summary>
+        /**
         /// True to continue modifying the order until it is filled, false otherwise
-        /// </summary>
+        */
         public virtual boolean ModifyUntilFilled
         {
             get { return true; }

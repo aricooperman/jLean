@@ -18,10 +18,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Homing Pigeon candlestick pattern indicator
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - first candle: long black candle
     /// - second candle: short black real body completely inside the previous day's body
@@ -29,46 +29,46 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The returned value is positive(+1): homing pigeon is always bullish;
     /// The user should consider that homing pigeon is significant when it appears in a downtrend,
     /// while this function does not consider the trend
-    /// </remarks>
+    /// 
     public class HomingPigeon : CandlestickPattern
     {
-        private readonly int _bodyLongAveragePeriod;
-        private readonly int _bodyShortAveragePeriod;
+        private final int _bodyLongAveragePeriod;
+        private final int _bodyShortAveragePeriod;
 
         private BigDecimal _bodyLongPeriodTotal;
         private BigDecimal _bodyShortPeriodTotal;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="HomingPigeon"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public HomingPigeon( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod) + 1 + 1) {
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
             _bodyShortAveragePeriod = CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="HomingPigeon"/> class.
-        /// </summary>
+        */
         public HomingPigeon()
             : this( "HOMINGPIGEON") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _bodyLongAveragePeriod) {
@@ -112,9 +112,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _bodyLongPeriodTotal = 0m;
             _bodyShortPeriodTotal = 0m;

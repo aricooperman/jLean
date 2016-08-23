@@ -21,9 +21,9 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean
 {
-    /// <summary>
+    /**
     /// QuantConnect University: Indicator Suite Example.
-    /// </summary>
+    */
     public class IndicatorSuiteAlgorithm : QCAlgorithm
     {
         String _symbol = "SPY";
@@ -41,9 +41,9 @@ package com.quantconnect.lean
 
         BigDecimal _price;
 
-        /// <summary>
+        /**
         /// Initialize the data and resolution you require for your strategy
-        /// </summary>
+        */
         public @Override void Initialize() {
             //Initialize
             SetStartDate(2013, 1, 1);
@@ -74,7 +74,7 @@ package com.quantconnect.lean
             };
 
             // Here we're going to define indicators using 'selector' functions. These 'selector' functions will define what data gets sent into the indicator
-            //  These functions have a signature like the following: BigDecimal Selector(BaseData baseData), and can be defined like: baseData => baseData.Value
+            //  These functions have a signature like the following: BigDecimal Selector(BaseData baseData), and can be defined like: baseData -> baseData.Value
             //  We'll define these 'selector' functions to select the Low value
             //
             //  For more information on 'anonymous functions' see: http://en.wikipedia.org/wiki/Anonymous_function
@@ -115,17 +115,17 @@ package com.quantconnect.lean
             PlotIndicator( "Ratio", _ratio);
         }
 
-        /// <summary>
+        /**
         /// Custom data event handler:
-        /// </summary>
-        /// <param name="data">Bitcoin - dictionary of TradeBarlike Bars of Bitcoin Data</param>
+        */
+         * @param data">Bitcoin - dictionary of TradeBarlike Bars of Bitcoin Data
         public void OnData(Bitcoin data) {
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">TradeBars IDictionary object with your stock data</param>
+        */
+         * @param data">TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             if( !_indicators.BB.IsReady || !_indicators.RSI.IsReady) return;
 
@@ -142,9 +142,9 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Fire plotting events once per day.
-        /// </summary>
+        */
         public @Override void OnEndOfDay() {
             if( !_indicators.BB.IsReady) return;
 
@@ -171,9 +171,9 @@ package com.quantconnect.lean
             Plot( "Averages", _indicators.EMA, _indicators.SMA);
         }
 
-        /// <summary>
+        /**
         /// Class to hold a bunch of different indicators for this example
-        /// </summary>
+        */
         class Indicators
         {
             public BollingerBands BB;
@@ -190,9 +190,9 @@ package com.quantconnect.lean
             public Maximum MAX;
         }
 
-        /// <summary>
+        /**
         /// Function used to select a trade bar that has double the values of the input trade bar
-        /// </summary>
+        */
         private static TradeBar SelectorDoubleTradeBar(BaseData baseData) {
             bar = (TradeBar)baseData;
             return new TradeBar

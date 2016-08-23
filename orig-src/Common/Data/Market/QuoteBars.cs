@@ -17,20 +17,20 @@ using System;
 
 package com.quantconnect.lean.Data.Market
 {
-    /// <summary>
+    /**
     /// Collection of <see cref="QuoteBar"/> keyed by symbol
-    /// </summary>
+    */
     public class QuoteBars : DataMap<QuoteBar>
     {
-        /// <summary>
+        /**
         /// Creates a new instance of the <see cref="QuoteBars"/> dictionary
-        /// </summary>
+        */
         public QuoteBars() {
         }
 
-        /// <summary>
+        /**
         /// Creates a new instance of the <see cref="QuoteBars"/> dictionary
-        /// </summary>
+        */
         public QuoteBars(DateTime time)
             : base(time) {
         }

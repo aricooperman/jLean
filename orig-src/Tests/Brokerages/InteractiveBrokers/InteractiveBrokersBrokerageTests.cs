@@ -30,7 +30,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
     [Ignore( "These tests require the IBController and IB TraderWorkstation to be installed.")]
     public class InteractiveBrokersBrokerageTests
     {
-        private readonly List<Order> _orders = new List<Order>(); 
+        private final List<Order> _orders = new List<Order>(); 
         private InteractiveBrokersBrokerage _interactiveBrokersBrokerage;
         private static final int buyQuantity = 100;
         private static final SecurityType Type = SecurityType.Forex;
@@ -84,18 +84,18 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 
                 // liquidate all positions
                 holdings = _interactiveBrokersBrokerage.GetAccountHoldings();
-                foreach (holding in holdings.Where(x => x.Quantity != 0)) {
+                foreach (holding in holdings.Where(x -> x.Quantity != 0)) {
                     //liquidate = new MarketOrder(holding.Symbol, (int) -holding.Quantity, DateTime.UtcNow, type: holding.Type);
                     //_interactiveBrokersBrokerage.PlaceOrder(liquidate);
                     //filledResetEvent.WaitOne(3000);
                     //filledResetEvent.Reset();
                 }
 
-                openOrdersText = _interactiveBrokersBrokerage.GetOpenOrders().Select(x => x.Symbol.toString() + " " + x.Quantity);
+                openOrdersText = _interactiveBrokersBrokerage.GetOpenOrders().Select(x -> x.Symbol.toString() + " " + x.Quantity);
                 Log.Trace( "InteractiveBrokersBrokerageTests.Teardown(): Open orders: " + String.join( ", ", openOrdersText));
                 //Assert.AreEqual(0, actualOpenOrderCount, "Failed to verify that there are zero open orders.");
 
-                holdingsText = _interactiveBrokersBrokerage.GetAccountHoldings().Where(x => x.Quantity != 0).Select(x => x.Symbol.toString() + " " + x.Quantity);
+                holdingsText = _interactiveBrokersBrokerage.GetAccountHoldings().Where(x -> x.Quantity != 0).Select(x -> x.Symbol.toString() + " " + x.Quantity);
                 Log.Trace( "InteractiveBrokersBrokerageTests.Teardown(): Account holdings: " + String.join( ", ", holdingsText));
                 //Assert.AreEqual(0, holdingsCount, "Failed to verify that there are zero account holdings.");
 
@@ -327,7 +327,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             canceledResetEvent.WaitOneAssertFail(2500, "Canceled event did not fire.");
 
             openOrders = ib.GetOpenOrders();
-            cancelledOrder = openOrders.FirstOrDefault(x => x.BrokerId.Contains(order.BrokerId[0]));
+            cancelledOrder = openOrders.FirstOrDefault(x -> x.BrokerId.Contains(order.BrokerId[0]));
             Assert.IsNull(cancelledOrder);
         }
 
@@ -367,7 +367,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 
             Thread.Sleep(500);
 
-            previousHoldings = ib.GetAccountHoldings().ToDictionary(x => x.Symbol);
+            previousHoldings = ib.GetAccountHoldings().ToDictionary(x -> x.Symbol);
 
             foreach (holding in previousHoldings) {
                 Console.WriteLine(holding.Value);
@@ -396,7 +396,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             // ib is slow to update tws
             Thread.Sleep(5000);
 
-            newHoldings = ib.GetAccountHoldings().ToDictionary(x => x.Symbol);
+            newHoldings = ib.GetAccountHoldings().ToDictionary(x -> x.Symbol);
             Log.Trace( "New Quantity: " + newHoldings[Symbols.USDJPY].Quantity);
 
             if( hasSymbol) {
@@ -413,11 +413,11 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         public void GetsCashBalanceAfterConnect() {
             ib = _interactiveBrokersBrokerage;
             cashBalance = ib.GetCashBalance();
-            Assert.IsTrue(cashBalance.Any(x => x.Symbol == "USD"));
+            Assert.IsTrue(cashBalance.Any(x -> x.Symbol == "USD"));
             foreach (cash in cashBalance) {
                 Console.WriteLine(cash);
                 if( cash.Symbol == "USD") {
-                    Assert.AreNotEqual(0m, cashBalance.Single(x => x.Symbol == "USD"));
+                    Assert.AreNotEqual(0m, cashBalance.Single(x -> x.Symbol == "USD"));
                 }
             }
         }
@@ -462,11 +462,11 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         public void GetsCashBalanceAfterTrade() {
             ib = _interactiveBrokersBrokerage;
 
-            BigDecimal balance = ib.GetCashBalance().Single(x => x.Symbol == "USD").Amount;
+            BigDecimal balance = ib.GetCashBalance().Single(x -> x.Symbol == "USD").Amount;
 
             // wait for our order to fill
             manualResetEvent = new ManualResetEvent(false);
-            ib.AccountChanged += (sender, orderEvent) => manualResetEvent.Set();
+            ib.AccountChanged += (sender, orderEvent) -> manualResetEvent.Set();
 
             order = new MarketOrder(Symbols.USDJPY, buyQuantity, DateTime.UtcNow);
             _orders.Add(order);
@@ -474,7 +474,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 
             manualResetEvent.WaitOneAssertFail(1500, "Didn't receive account changed event");
 
-            BigDecimal balanceAfterTrade = ib.GetCashBalance().Single(x => x.Symbol == "USD").Amount;
+            BigDecimal balanceAfterTrade = ib.GetCashBalance().Single(x -> x.Symbol == "USD").Amount;
 
             Assert.AreNotEqual(balance, balanceAfterTrade);
         }
@@ -498,7 +498,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 
             executions = ib.GetExecutions(null, null, null, DateTime.UtcNow.AddDays(-1), null );
 
-            Assert.IsTrue(executions.Any(x => order.BrokerId.Any(id => executions.Any(e => e.OrderId == int.Parse(id)))));
+            Assert.IsTrue(executions.Any(x -> order.BrokerId.Any(id -> executions.Any(e -> e.OrderId == int.Parse(id)))));
         }
 
         [Test]
@@ -563,7 +563,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
             if( !orderFilled) {
                 // find the right order and return it
                 foreach (openOrder in ib.GetOpenOrders()) {
-                    if( openOrder.BrokerId.Any(id => order.BrokerId.Any(x => x == id))) {
+                    if( openOrder.BrokerId.Any(id -> order.BrokerId.Any(x -> x == id))) {
                         return openOrder;
                     }
                 }

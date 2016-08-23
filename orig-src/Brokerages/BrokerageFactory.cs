@@ -20,61 +20,61 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Brokerages
 {
-    /// <summary>
+    /**
     /// Provides a base implementation of IBrokerageFactory that provides a helper for reading data from a job's brokerage data dictionary
-    /// </summary>
+    */
     public abstract class BrokerageFactory : IBrokerageFactory
     {
-        private readonly Type _brokerageType;
+        private final Type _brokerageType;
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public abstract void Dispose();
 
-        /// <summary>
+        /**
         /// Gets the type of brokerage produced by this factory
-        /// </summary>
+        */
         public Type BrokerageType
         {
             get { return _brokerageType; }
         }
 
-        /// <summary>
+        /**
         /// Gets the brokerage data required to run the brokerage from configuration/disk
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
-        /// </remarks>
+        /// 
         public abstract Map<String,String> BrokerageData { get; }
 
-        /// <summary>
+        /**
         /// Gets a brokerage model that can be used to model this brokerage's unique
         /// behaviors
-        /// </summary>
+        */
         public abstract IBrokerageModel BrokerageModel { get; }
 
-        /// <summary>
+        /**
         /// Creates a new IBrokerage instance
-        /// </summary>
-        /// <param name="job">The job packet to create the brokerage for</param>
-        /// <param name="algorithm">The algorithm instance</param>
-        /// <returns>A new brokerage instance</returns>
+        */
+         * @param job">The job packet to create the brokerage for
+         * @param algorithm">The algorithm instance
+        @returns A new brokerage instance
         public abstract IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm);
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="BrokerageFactory"/> class for the specified <paramref name="brokerageType"/>
-        /// </summary>
-        /// <param name="brokerageType">The type of brokerage created by this factory</param>
+        */
+         * @param brokerageType">The type of brokerage created by this factory
         protected BrokerageFactory(Type brokerageType) {
             _brokerageType = brokerageType;
         }
         
-        /// <summary>
+        /**
         /// Reads a value from the brokerage data, adding an error if the key is not found
-        /// </summary>
+        */
         protected static T Read<T>(IReadOnlyMap<String,String> brokerageData, String key, ICollection<String> errors) 
             where T : IConvertible
         {

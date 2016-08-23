@@ -21,9 +21,9 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Brokerages.Tradier
 {
-    /// <summary>
+    /**
     /// Gain loss parent class for deserialization
-    /// </summary>
+    */
     public class TradierGainLossContainer
     {
         /// Profit Loss
@@ -34,9 +34,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierGainLossContainer() { }
     }
 
-    /// <summary>
+    /**
     /// Gain loss class
-    /// </summary>
+    */
     public class TradierGainLossClosed
     {
         /// Array of user account details:
@@ -45,9 +45,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierGainLoss> ClosedPositions = new List<TradierGainLoss>();
     }
 
-    /// <summary>
+    /**
     /// Account only settings for a tradier user:
-    /// </summary>
+    */
     public class TradierGainLoss 
     {
         /// Date the position was closed.
@@ -86,9 +86,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "term")]
         public BigDecimal Term;
 
-        /// <summary>
+        /**
         /// Closed position trade summary
-        /// </summary>
+        */
         public TradierGainLoss() { }
     }
 

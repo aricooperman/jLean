@@ -15,29 +15,29 @@
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Specifies the status of a request
-    /// </summary>
+    */
     public enum OrderRequestStatus
     {
-        /// <summary>
+        /**
         /// This is an unprocessed request
-        /// </summary>
+        */
         Unprocessed,
 
-        /// <summary>
+        /**
         /// This request is partially processed
-        /// </summary>
+        */
         Processing,
 
-        /// <summary>
+        /**
         /// This request has been completely processed
-        /// </summary>
+        */
         Processed,
 
-        /// <summary>
+        /**
         /// This request encountered an error
-        /// </summary>
+        */
         Error
     }
 }

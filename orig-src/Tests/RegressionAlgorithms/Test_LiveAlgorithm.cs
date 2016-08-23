@@ -53,17 +53,17 @@ package com.quantconnect.lean
             Debug(Time.ToLongTimeString() + " >> ALGO >> OnData(BTC) >> BTC: " + data.Close);
         }
 
-        /// <summary>
+        /**
         /// Send the end of day event:
-        /// </summary>
+        */
         public @Override void OnEndOfDay( String symbol) {
             Debug( "ALGO>> OnEndOfDay() >> " + symbol);
         }
     }
 
-    /// <summary>
+    /**
     /// Custom Data Type: Bitcoin data from Quandl - http://www.quandl.com/help/api-for-bitcoin-data
-    /// </summary>
+    */
     public class Bitcoin : BaseData
     {
         //Set the defaults:
@@ -74,16 +74,16 @@ package com.quantconnect.lean
         public BigDecimal VolumeBTC = 0;
         public BigDecimal WeightedPrice = 0;
 
-        /// <summary>
+        /**
         /// Default Constructor Required.
-        /// </summary>
+        */
         public Bitcoin() {
             this.Symbol = "BTC";
         }
 
-        /// <summary>
+        /**
         /// Source URL's of Backtesting and Live Streams:
-        /// </summary>
+        */
         public @Override String GetSource(SubscriptionDataConfig config, DateTime date, DataFeedEndpoint datafeed) {
             source = "";
 
@@ -104,10 +104,10 @@ package com.quantconnect.lean
             return source;
         }
 
-        /// <summary>
+        /**
         /// Clone the bitcoin object, required for live data.
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         public @Override BaseData Clone() {
             Bitcoin coin = new Bitcoin();
             coin.Close = this.Close;
@@ -122,9 +122,9 @@ package com.quantconnect.lean
             return coin;
         }
 
-        /// <summary>
+        /**
         /// Backtesting & Live Bitcoin Decoder:
-        /// </summary>
+        */
         public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, DataFeedEndpoint datafeed) {
             Bitcoin coin = new Bitcoin();
             switch (datafeed) {

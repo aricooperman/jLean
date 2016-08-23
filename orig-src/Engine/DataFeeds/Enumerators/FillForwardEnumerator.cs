@@ -24,10 +24,10 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
-    /// <summary>
+    /**
     /// The FillForwardEnumerator wraps an existing base data enumerator and inserts extra 'base data' instances
     /// on a specified fill forward resolution
-    /// </summary>
+    */
     public class FillForwardEnumerator : IEnumerator<BaseData>
     {
         private DateTime? _delistedTime;
@@ -35,34 +35,34 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         private boolean _isFillingForward;
         private boolean _emittedAuxilliaryData;
         
-        private readonly TimeSpan _dataResolution;
-        private readonly boolean _isExtendedMarketHours;
-        private readonly DateTime _subscriptionEndTime;
-        private readonly IEnumerator<BaseData> _enumerator;
-        private readonly IReadOnlyRef<TimeSpan> _fillForwardResolution;
+        private final Duration _dataResolution;
+        private final boolean _isExtendedMarketHours;
+        private final DateTime _subscriptionEndTime;
+        private final IEnumerator<BaseData> _enumerator;
+        private final IReadOnlyRef<TimeSpan> _fillForwardResolution;
 
-        /// <summary>
+        /**
         /// The exchange used to determine when to insert fill forward data
-        /// </summary>
-        protected readonly SecurityExchange Exchange;
+        */
+        protected final SecurityExchange Exchange;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FillForwardEnumerator"/> class that accepts
         /// a reference to the fill forward resolution, useful if the fill forward resolution is dynamic
         /// and changing as the enumeration progresses
-        /// </summary>
-        /// <param name="enumerator">The source enumerator to be filled forward</param>
-        /// <param name="exchange">The exchange used to determine when to insert fill forward data</param>
-        /// <param name="fillForwardResolution">The resolution we'd like to receive data on</param>
-        /// <param name="isExtendedMarketHours">True to use the exchange's extended market hours, false to use the regular market hours</param>
-        /// <param name="subscriptionEndTime">The end time of the subscrition, once passing this date the enumerator will stop</param>
-        /// <param name="dataResolution">The source enumerator's data resolution</param>
+        */
+         * @param enumerator">The source enumerator to be filled forward
+         * @param exchange">The exchange used to determine when to insert fill forward data
+         * @param fillForwardResolution">The resolution we'd like to receive data on
+         * @param isExtendedMarketHours">True to use the exchange's extended market hours, false to use the regular market hours
+         * @param subscriptionEndTime">The end time of the subscrition, once passing this date the enumerator will stop
+         * @param dataResolution">The source enumerator's data resolution
         public FillForwardEnumerator(IEnumerator<BaseData> enumerator,
             SecurityExchange exchange,
             IReadOnlyRef<TimeSpan> fillForwardResolution,
             boolean isExtendedMarketHours,
             DateTime subscriptionEndTime,
-            TimeSpan dataResolution
+            Duration dataResolution
             ) {
             _subscriptionEndTime = subscriptionEndTime;
             Exchange = exchange;
@@ -72,36 +72,36 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             _isExtendedMarketHours = isExtendedMarketHours;
         }
 
-        /// <summary>
+        /**
         /// Gets the element in the collection at the current position of the enumerator.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The element in the collection at the current position of the enumerator.
-        /// </returns>
+        /// 
         public BaseData Current
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the current element in the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The current element in the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
-        /// <summary>
+        /**
         /// Advances the enumerator to the next element of the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// </returns>
+        /// 
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public boolean MoveNext() {
             if( _delistedTime.HasValue) {
@@ -186,30 +186,30 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             return true;
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             _enumerator.Dispose();
         }
 
-        /// <summary>
+        /**
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
-        /// </summary>
+        */
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             _enumerator.Reset();
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not fill forward is required, and if true, will produce the new fill forward data
-        /// </summary>
-        /// <param name="fillForwardResolution"></param>
-        /// <param name="previous">The last piece of data emitted by this enumerator</param>
-        /// <param name="next">The next piece of data on the source enumerator</param>
-        /// <param name="fillForward">When this function returns true, this will have a non-null value, null when the function returns false</param>
-        /// <returns>True when a new fill forward piece of data was produced and should be emitted by this enumerator</returns>
+        */
+         * @param fillForwardResolution">
+         * @param previous">The last piece of data emitted by this enumerator
+         * @param next">The next piece of data on the source enumerator
+         * @param fillForward">When this function returns true, this will have a non-null value, null when the function returns false
+        @returns True when a new fill forward piece of data was produced and should be emitted by this enumerator
         protected virtual boolean RequiresFillForwardData(TimeSpan fillForwardResolution, BaseData previous, BaseData next, out BaseData fillForward) {
             if( next.EndTime < previous.Time) {
                 throw new ArgumentException( "FillForwardEnumerator received data out of order. Symbol: " + previous.Symbol.ID);
@@ -256,9 +256,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             return false;
         }
 
-        /// <summary>
+        /**
         /// Finds the next open date that follows the specified date, this functions expects a date, not a date time
-        /// </summary>
+        */
         private DateTime GetNextOpenDateAfter(DateTime date) {
             do
             {

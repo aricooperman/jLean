@@ -22,28 +22,28 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IDerivativeSecurityFilter"/> for use in selecting
     /// options contracts based on a range of strikes and expiries
-    /// </summary>
+    */
     public class StrikeExpiryOptionFilter : IDerivativeSecurityFilter
     {
         private BigDecimal _strikeSize;
         private DateTime _strikeSizeResolveDate;
 
-        private readonly int _minStrike;
-        private readonly int _maxStrike;
-        private readonly TimeSpan _minExpiry;
-        private readonly TimeSpan _maxExpiry;
+        private final int _minStrike;
+        private final int _maxStrike;
+        private final Duration _minExpiry;
+        private final Duration _maxExpiry;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="StrikeExpiryOptionFilter"/> class
-        /// </summary>
-        /// <param name="minStrike">The minimum strike relative to the underlying price, for example, -1 would filter out contracts further than 1 strike below market price</param>
-        /// <param name="maxStrike">The maximum strike relative to the underlying price, for example, +1 would filter out contracts further than 1 strike above market price</param>
-        /// <param name="minExpiry">The minium time until expiry, for example, 7 days would filter out contracts expiring sooner than 7 days</param>
-        /// <param name="maxExpiry">The maximum time until expiry, for example, 30 days would filter out contracts expriring later than 30 days</param>
-        public StrikeExpiryOptionFilter(int minStrike, int maxStrike, TimeSpan minExpiry, TimeSpan maxExpiry) {
+        */
+         * @param minStrike">The minimum strike relative to the underlying price, for example, -1 would filter out contracts further than 1 strike below market price
+         * @param maxStrike">The maximum strike relative to the underlying price, for example, +1 would filter out contracts further than 1 strike above market price
+         * @param minExpiry">The minium time until expiry, for example, 7 days would filter out contracts expiring sooner than 7 days
+         * @param maxExpiry">The maximum time until expiry, for example, 30 days would filter out contracts expriring later than 30 days
+        public StrikeExpiryOptionFilter(int minStrike, int maxStrike, Duration minExpiry, Duration maxExpiry) {
             _minStrike = minStrike;
             _maxStrike = maxStrike;
             _minExpiry = minExpiry;
@@ -57,12 +57,12 @@ package com.quantconnect.lean.Securities
             if( _maxExpiry > Time.MaxTimeSpan) _maxExpiry = Time.MaxTimeSpan;
         }
 
-        /// <summary>
+        /**
         /// Filters the input set of symbols using the underlying price data
-        /// </summary>
-        /// <param name="symbols">The derivative symbols to be filtered</param>
-        /// <param name="underlying">The underlying price data</param>
-        /// <returns>The filtered set of symbols</returns>
+        */
+         * @param symbols">The derivative symbols to be filtered
+         * @param underlying">The underlying price data
+        @returns The filtered set of symbols
         public IEnumerable<Symbol> Filter(IEnumerable<Symbol> symbols, BaseData underlying) {
             // we can't properly apply this filter without knowing the underlying price
             // so in the event we're missing the underlying, just skip the filtering step
@@ -73,8 +73,8 @@ package com.quantconnect.lean.Securities
             if( underlying.Time.Date != _strikeSizeResolveDate) {
                 // each day we need to recompute the strike size
                 symbols = symbols.ToList();
-                uniqueStrikes = symbols.DistinctBy(x => x.ID.StrikePrice).OrderBy(x => x.ID.StrikePrice).ToList();
-                _strikeSize = uniqueStrikes.Zip(uniqueStrikes.Skip(1), (l, r) => r.ID.StrikePrice - l.ID.StrikePrice).DefaultIfEmpty(5m).Min();
+                uniqueStrikes = symbols.DistinctBy(x -> x.ID.StrikePrice).OrderBy(x -> x.ID.StrikePrice).ToList();
+                _strikeSize = uniqueStrikes.Zip(uniqueStrikes.Skip(1), (l, r) -> r.ID.StrikePrice - l.ID.StrikePrice).DefaultIfEmpty(5m).Min();
                 _strikeSizeResolveDate = underlying.Time.Date;
             }
 

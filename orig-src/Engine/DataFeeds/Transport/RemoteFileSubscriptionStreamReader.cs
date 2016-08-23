@@ -20,19 +20,19 @@ using System.Net;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
 {
-    /// <summary>
+    /**
     /// Represents a stream reader capabable of downloading a remote file and then
     /// reading it from disk
-    /// </summary>
+    */
     public class RemoteFileSubscriptionStreamReader : IStreamReader
     {
-        private readonly IStreamReader _streamReader;
+        private final IStreamReader _streamReader;
 
-        /// <summary>
+        /**
         /// Initializes a new insance of the <see cref="RemoteFileSubscriptionStreamReader"/> class.
-        /// </summary>
-        /// <param name="source">The remote url to be downloaded via web client</param>
-        /// <param name="downloadDirectory">The local directory and destination of the download</param>
+        */
+         * @param source">The remote url to be downloaded via web client
+         * @param downloadDirectory">The local directory and destination of the download
         public RemoteFileSubscriptionStreamReader( String source, String downloadDirectory) {
             // create a hash for a new filename
             filename = Guid.NewGuid() + source.GetExtension();
@@ -47,32 +47,32 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
             _streamReader = new LocalFileSubscriptionStreamReader(destination);
         }
 
-        /// <summary>
+        /**
         /// Gets <see cref="SubscriptionTransportMedium.RemoteFile"/>
-        /// </summary>
+        */
         public SubscriptionTransportMedium TransportMedium
         {
             get { return SubscriptionTransportMedium.RemoteFile; }
         }
 
-        /// <summary>
+        /**
         /// Gets whether or not there's more data to be read in the stream
-        /// </summary>
+        */
         public boolean EndOfStream
         {
             get { return _streamReader.EndOfStream; }
         }
 
-        /// <summary>
+        /**
         /// Gets the next line/batch of content from the stream 
-        /// </summary>
+        */
         public String ReadLine() {
             return _streamReader.ReadLine();
         }
 
-        /// <summary>
+        /**
         /// Disposes of the stream
-        /// </summary>
+        */
         public void Dispose() {
             _streamReader.Dispose();
         }

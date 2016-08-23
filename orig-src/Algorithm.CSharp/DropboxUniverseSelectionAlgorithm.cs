@@ -22,21 +22,21 @@ using QuantConnect.Data.UniverseSelection;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// In this algortihm we show how you can easily use the universe selection feature to fetch symbols
     /// to be traded using the AddUniverse method. This method accepts a function that will return the
     /// desired current set of symbols. Return Universe.Unchanged if no universe changes should be made
-    /// </summary>
+    */
     public class DropboxUniverseSelectionAlgorithm : QCAlgorithm
     {
         // the changes from the previous universe selection
         private SecurityChanges _changes = SecurityChanges.None;
         // only used in backtest for caching the file results
-        private readonly Map<DateTime, List<String>> _backtestSymbolsPerDay = new Map<DateTime, List<String>>();
+        private final Map<DateTime, List<String>> _backtestSymbolsPerDay = new Map<DateTime, List<String>>();
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         /// <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
         /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
@@ -89,9 +89,9 @@ package com.quantconnect.lean.Algorithm.CSharp
             });
         }
 
-        /// <summary>
+        /**
         /// Event - v3.0 DATA EVENT HANDLER: (Pattern) Basic template for user to @Override for receiving all subscription data in a single event
-        /// </summary>
+        */
         /// <code>
         /// TradeBars bars = slice.Bars;
         /// Ticks ticks = slice.Ticks;
@@ -102,7 +102,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         /// DataDictionary{Quandl} allQuandlData = slice.Get{Quand}
         /// Quandl oil = slice.Get{Quandl}( "OIL")
         /// </code>
-        /// <param name="slice">The current slice of data keyed by symbol string</param>
+         * @param slice">The current slice of data keyed by symbol string
         public @Override void OnData(Slice slice) {
             if( slice.Bars.Count == 0) return;
             if( _changes == SecurityChanges.None) return;
@@ -119,10 +119,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             _changes = SecurityChanges.None;
         }
 
-        /// <summary>
+        /**
         /// Event fired each time the we add/remove securities from the data feed
-        /// </summary>
-        /// <param name="changes"></param>
+        */
+         * @param changes">
         public @Override void OnSecuritiesChanged(SecurityChanges changes) {
             // each time our securities change we'll be notified here
             _changes = changes;

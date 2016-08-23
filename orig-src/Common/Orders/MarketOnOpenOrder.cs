@@ -18,48 +18,48 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Market on Open order type, submits a market order when the exchange opens
-    /// </summary>
+    */
     public class MarketOnOpenOrder : Order
     {
-        /// <summary>
+        /**
         /// MarketOnOpen Order Type
-        /// </summary>
+        */
         public @Override OrderType Type
         {
             get { return OrderType.MarketOnOpen; }
         }
 
-        /// <summary>
+        /**
         /// Intiializes a new instance of the <see cref="MarketOnOpenOrder"/> class.
-        /// </summary>
+        */
         public MarketOnOpenOrder() {
         }
 
-        /// <summary>
+        /**
         /// Intiializes a new instance of the <see cref="MarketOnOpenOrder"/> class.
-        /// </summary>
-        /// <param name="symbol">The security's symbol being ordered</param>
-        /// <param name="quantity">The number of units to order</param>
-        /// <param name="time">The current time</param>
-        /// <param name="tag">A user defined tag for the order</param>
+        */
+         * @param symbol">The security's symbol being ordered
+         * @param quantity">The number of units to order
+         * @param time">The current time
+         * @param tag">A user defined tag for the order
         public MarketOnOpenOrder(Symbol symbol, int quantity, DateTime time, String tag = "")
             : base(symbol, quantity, time, tag) {
         }
 
-        /// <summary>
+        /**
         /// Gets the order value in units of the security's quote currency
-        /// </summary>
-        /// <param name="security">The security matching this order's symbol</param>
+        */
+         * @param security">The security matching this order's symbol
         protected @Override BigDecimal GetValueImpl(Security security) {
             return Quantity*security.Price;
         }
 
-        /// <summary>
+        /**
         /// Creates a deep-copy clone of this order
-        /// </summary>
-        /// <returns>A copy of this order</returns>
+        */
+        @returns A copy of this order
         public @Override Order Clone() {
             order = new MarketOnOpenOrder();
             CopyTo(order);

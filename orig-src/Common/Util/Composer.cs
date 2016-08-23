@@ -28,35 +28,35 @@ using QuantConnect.Logging;
 
 package com.quantconnect.lean.Util
 {
-    /// <summary>
+    /**
     /// Provides methods for obtaining exported MEF instances
-    /// </summary>
+    */
     public class Composer
     {
-        private static readonly String PluginDirectory = Config.Get( "plugin-directory");
+        private static final String PluginDirectory = Config.Get( "plugin-directory");
 
-        /// <summary>
+        /**
         /// Gets the singleton instance
-        /// </summary>
-        public static readonly Composer Instance = new Composer();
+        */
+        public static final Composer Instance = new Composer();
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Composer"/> class. This type
         /// is a light wrapper on top of an MEF <see cref="CompositionContainer"/>
-        /// </summary>
+        */
         public Composer() {
             Reset();
         }
 
         private CompositionContainer _compositionContainer;
-        private readonly object _exportedValuesLockObject = new object();
-        private readonly Map<Type, IEnumerable> _exportedValues = new Map<Type, IEnumerable>();
+        private final object _exportedValuesLockObject = new object();
+        private final Map<Type, IEnumerable> _exportedValues = new Map<Type, IEnumerable>();
 
-        /// <summary>
+        /**
         /// Gets the export matching the predicate
-        /// </summary>
-        /// <param name="predicate">Function used to pick which imported instance to return, if null the first instance is returned</param>
-        /// <returns>The only export matching the specified predicate</returns>
+        */
+         * @param predicate">Function used to pick which imported instance to return, if null the first instance is returned
+        @returns The only export matching the specified predicate
         public T Single<T>(Func<T, bool> predicate) {
             if( predicate == null ) {
                 throw new ArgumentNullException( "predicate");
@@ -65,11 +65,11 @@ package com.quantconnect.lean.Util
             return GetExportedValues<T>().Single(predicate);
         }
 
-        /// <summary>
+        /**
         /// Adds the specified instance to this instance to allow it to be recalled via GetExportedValueByTypeName
-        /// </summary>
+        */
         /// <typeparam name="T">The contract type</typeparam>
-        /// <param name="instance">The instance to add</param>
+         * @param instance">The instance to add
         public void AddPart<T>(T instance) {
             lock (_exportedValuesLockObject) {
                 IEnumerable values;
@@ -84,15 +84,15 @@ package com.quantconnect.lean.Util
             }
         }
 
-        /// <summary>
+        /**
         /// Extension method to searches the composition container for an export that has a matching type name. This function
         /// will first try to match on Type.AssemblyQualifiedName, then Type.FullName, and finally on Type.Name
         /// 
         /// This method will not throw if multiple types are found matching the name, it will just return the first one it finds.
-        /// </summary>
+        */
         /// <typeparam name="T">The type of the export</typeparam>
-        /// <param name="typeName">The name of the type to find. This can be an assembly qualified name, a full name, or just the type's name</param>
-        /// <returns>The export instance</returns>
+         * @param typeName">The name of the type to find. This can be an assembly qualified name, a full name, or just the type's name
+        @returns The export instance
         public T GetExportedValueByTypeName<T>( String typeName)
             where T : class
         {
@@ -104,7 +104,7 @@ package com.quantconnect.lean.Util
                     type = typeof(T);
                     if( _exportedValues.TryGetValue(type, out values)) {
                         // if we've alread loaded this part, then just return the same one
-                        instance = values.OfType<T>().FirstOrDefault(x => x.GetType().MatchesTypeName(typeName));
+                        instance = values.OfType<T>().FirstOrDefault(x -> x.GetType().MatchesTypeName(typeName));
                         if( instance != null ) {
                             return instance;
                         }
@@ -112,10 +112,10 @@ package com.quantconnect.lean.Util
 
                     // we want to get the requested part without instantiating each one of that type
                     selectedPart = _compositionContainer.Catalog.Parts
-                        .Select(x => new { part = x, Type = ReflectionModelServices.GetPartType(x).Value })
-                        .Where(x => type.IsAssignableFrom(x.Type))
-                        .Where(x => x.Type.MatchesTypeName(typeName))
-                        .Select(x => x.part)
+                        .Select(x -> new { part = x, Type = ReflectionModelServices.GetPartType(x).Value })
+                        .Where(x -> type.IsAssignableFrom(x.Type))
+                        .Where(x -> x.Type.MatchesTypeName(typeName))
+                        .Select(x -> x.part)
                         .FirstOrDefault();
 
                     if( selectedPart == null ) {
@@ -125,7 +125,7 @@ package com.quantconnect.lean.Util
 
                     exportDefinition =
                         selectedPart.ExportDefinitions.First(
-                            x => x.ContractName == AttributedModelServices.GetContractName(type));
+                            x -> x.ContractName == AttributedModelServices.GetContractName(type));
                     instance = (T)selectedPart.CreatePart().GetExportedValue(exportDefinition);
 
                     // cache the new value for next time
@@ -152,9 +152,9 @@ package com.quantconnect.lean.Util
                 throw;
             }
         }
-        /// <summary>
+        /**
         /// Gets all exports of type T
-        /// </summary>
+        */
         public IEnumerable<T> GetExportedValues<T>() {
             lock (_exportedValuesLockObject) {
                 IEnumerable values;
@@ -168,9 +168,9 @@ package com.quantconnect.lean.Util
             }
         }
 
-        /// <summary>
+        /**
         /// Clears the cache of exported values, causing new instances to be created.
-        /// </summary>
+        */
         public void Reset() {
             lock(_exportedValuesLockObject) {
                 // grab assemblies from current executing directory

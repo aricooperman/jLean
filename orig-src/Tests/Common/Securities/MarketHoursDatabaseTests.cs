@@ -83,10 +83,10 @@ package com.quantconnect.lean.Tests.Common.Securities
                     Assert.IsTrue(marketHours.IsClosedAllDay);
                     continue;
                 }
-                Assert.AreEqual(new TimeSpan(4, 0, 0), marketHours.GetMarketOpen(TimeSpan.Zero, true));
-                Assert.AreEqual(new TimeSpan(9, 30, 0), marketHours.GetMarketOpen(TimeSpan.Zero, false));
-                Assert.AreEqual(new TimeSpan(16, 0, 0), marketHours.GetMarketClose(TimeSpan.Zero, false));
-                Assert.AreEqual(new TimeSpan(20, 0, 0), marketHours.GetMarketClose(TimeSpan.Zero, true));
+                Assert.AreEqual(new TimeSpan(4, 0, 0), marketHours.GetMarketOpen(Duration.ZERO, true));
+                Assert.AreEqual(new TimeSpan(9, 30, 0), marketHours.GetMarketOpen(Duration.ZERO, false));
+                Assert.AreEqual(new TimeSpan(16, 0, 0), marketHours.GetMarketClose(Duration.ZERO, false));
+                Assert.AreEqual(new TimeSpan(20, 0, 0), marketHours.GetMarketClose(Duration.ZERO, true));
             }
         }
 
@@ -105,17 +105,17 @@ package com.quantconnect.lean.Tests.Common.Securities
                     Assert.IsTrue(marketHours.IsOpenAllDay);
                 }
                 else if( day == DayOfWeek.Sunday) {
-                    Assert.AreEqual(new TimeSpan(17, 0, 0), marketHours.GetMarketOpen(TimeSpan.Zero, true));
-                    Assert.AreEqual(new TimeSpan(17, 0, 0), marketHours.GetMarketOpen(TimeSpan.Zero, false));
-                    Assert.AreEqual(new TimeSpan(24, 0, 0), marketHours.GetMarketClose(TimeSpan.Zero, false));
-                    Assert.AreEqual(new TimeSpan(24, 0, 0), marketHours.GetMarketClose(TimeSpan.Zero, true));
+                    Assert.AreEqual(new TimeSpan(17, 0, 0), marketHours.GetMarketOpen(Duration.ZERO, true));
+                    Assert.AreEqual(new TimeSpan(17, 0, 0), marketHours.GetMarketOpen(Duration.ZERO, false));
+                    Assert.AreEqual(new TimeSpan(24, 0, 0), marketHours.GetMarketClose(Duration.ZERO, false));
+                    Assert.AreEqual(new TimeSpan(24, 0, 0), marketHours.GetMarketClose(Duration.ZERO, true));
                 }
                 else
                 {
-                    Assert.AreEqual(new TimeSpan(0, 0, 0), marketHours.GetMarketOpen(TimeSpan.Zero, true));
-                    Assert.AreEqual(new TimeSpan(0, 0, 0), marketHours.GetMarketOpen(TimeSpan.Zero, false));
-                    Assert.AreEqual(new TimeSpan(17, 0, 0), marketHours.GetMarketClose(TimeSpan.Zero, false));
-                    Assert.AreEqual(new TimeSpan(17, 0, 0), marketHours.GetMarketClose(TimeSpan.Zero, true));
+                    Assert.AreEqual(new TimeSpan(0, 0, 0), marketHours.GetMarketOpen(Duration.ZERO, true));
+                    Assert.AreEqual(new TimeSpan(0, 0, 0), marketHours.GetMarketOpen(Duration.ZERO, false));
+                    Assert.AreEqual(new TimeSpan(17, 0, 0), marketHours.GetMarketClose(Duration.ZERO, false));
+                    Assert.AreEqual(new TimeSpan(17, 0, 0), marketHours.GetMarketClose(Duration.ZERO, true));
                 }
             }
         }

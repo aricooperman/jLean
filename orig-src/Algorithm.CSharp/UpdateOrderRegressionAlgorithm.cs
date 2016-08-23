@@ -24,9 +24,9 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// Provides a regression baseline focused on updating orders
-    /// </summary>
+    */
     public class UpdateOrderRegressionAlgorithm : QCAlgorithm
     {
         private int LastMonth = -1;
@@ -42,12 +42,12 @@ package com.quantconnect.lean.Algorithm.CSharp
         private static final String Symbol = "SPY";
         private static final SecurityType SecType = SecurityType.Equity;
 
-        private readonly CircularQueue<OrderType> _orderTypesQueue = new CircularQueue<OrderType>(Enum.GetValues(typeof(OrderType)).OfType<OrderType>());
-        private readonly List<OrderTicket> _tickets = new List<OrderTicket>(); 
+        private final CircularQueue<OrderType> _orderTypesQueue = new CircularQueue<OrderType>(Enum.GetValues(typeof(OrderType)).OfType<OrderType>());
+        private final List<OrderTicket> _tickets = new List<OrderTicket>(); 
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2013, 01, 01);  //Set Start Date
             SetEndDate(2015, 01, 01);    //Set End Date
@@ -63,10 +63,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             };
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">Slice object keyed by symbol containing the stock data</param>
+        */
+         * @param data">Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             if( !data.Bars.ContainsKey(Symbol)) return;
 

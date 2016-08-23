@@ -21,9 +21,9 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Brokerages.Tradier
 {
-    /// <summary>
+    /**
     /// Order parent class for deserialization
-    /// </summary>
+    */
     public class TradierOrdersContainer
     {
         /// Orders Contents:
@@ -35,9 +35,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierOrdersContainer() { }
     }
 
-    /// <summary>
+    /**
     /// Order container class
-    /// </summary>
+    */
     public class TradierOrders
     {
         /// Array of user account details:
@@ -49,9 +49,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierOrders() { }
     }
 
-    /// <summary>
+    /**
     /// Intraday or pending order for user
-    /// </summary>
+    */
     public class TradierOrder 
     {
         /// Unique order id.
@@ -130,9 +130,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierOrder() { }
     }
 
-    /// <summary>
+    /**
     /// Detailed order parent class
-    /// </summary>
+    */
     public class TradierOrderDetailedContainer
     {
         /// Details of the order
@@ -141,9 +141,9 @@ package com.quantconnect.lean.Brokerages.Tradier
     }
 
 
-    /// <summary>
+    /**
     /// Deserialization wrapper for order response:
-    /// </summary>
+    */
     public class TradierOrderResponse
     {
         /// Tradier Order information
@@ -155,9 +155,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierOrderResponseError Errors = new TradierOrderResponseError();
     }
 
-    /// <summary>
+    /**
     /// Errors result from an order request.
-    /// </summary>
+    */
     public class TradierOrderResponseError
     {
         /// List of errors
@@ -166,9 +166,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<String> Errors;
     }
 
-    /// <summary>
+    /**
     /// Order response when purchasing equity.
-    /// </summary>
+    */
     public class TradierOrderResponseOrder
     { 
         /// id or order response
@@ -184,9 +184,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public String Status;
     }
 
-    /// <summary>
+    /**
     /// Detailed order type.
-    /// </summary>
+    */
     public class TradierOrderDetailed : TradierOrder
     {
         /// Order exchange
@@ -210,9 +210,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public BigDecimal StopPrice;
     }
 
-    /// <summary>
+    /**
     /// Leg of a tradier order:
-    /// </summary>
+    */
     public class TradierOrderLeg
     {
         /// Date order was created.

@@ -15,34 +15,34 @@
 
 package com.quantconnect.lean.Brokerages
 {
-    /// <summary>
+    /**
     /// Specifies the type of message received from an IBrokerage implementation
-    /// </summary>
+    */
     public enum BrokerageMessageType
     {
-        /// <summary>
+        /**
         /// Informational message
-        /// </summary>
+        */
         Information,
 
-        /// <summary>
+        /**
         /// Warning message
-        /// </summary>
+        */
         Warning,
 
-        /// <summary>
+        /**
         /// Fatal error message, the algo will be stopped
-        /// </summary>
+        */
         Error,
 
-        /// <summary>
+        /**
         /// Brokerage reconnected with remote server
-        /// </summary>
+        */
         Reconnect,
 
-        /// <summary>
+        /**
         /// Brokerage disconnected from remote server
-        /// </summary>
+        */
         Disconnect
     }
 }

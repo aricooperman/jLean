@@ -21,31 +21,31 @@ using QuantConnect.Securities.Forex;
 
 package com.quantconnect.lean.Brokerages
 {
-    /// <summary>
+    /**
     /// Provides properties specific to interactive brokers
-    /// </summary>
+    */
     public class InteractiveBrokersBrokerageModel : DefaultBrokerageModel
     {
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="InteractiveBrokersBrokerageModel"/> class
-        /// </summary>
-        /// <param name="accountType">The type of account to be modelled, defaults to 
-        /// <see cref="QuantConnect.AccountType.Margin"/></param>
+        */
+         * @param accountType">The type of account to be modelled, defaults to 
+        /// <see cref="QuantConnect.AccountType.Margin"/>
         public InteractiveBrokersBrokerageModel(AccountType accountType = AccountType.Margin)
             : base(accountType) {
         }
 
-        /// <summary>
+        /**
         /// Returns true if the brokerage could accept this order. This takes into account
         /// order type, security type, and order size limits.
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// For example, a brokerage may have no connectivity at certain times, or an order rate/size limit
-        /// </remarks>
-        /// <param name="security">The security being ordered</param>
-        /// <param name="order">The order to be processed</param>
-        /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be submitted</param>
-        /// <returns>True if the brokerage could process the order, false otherwise</returns>
+        /// 
+         * @param security">The security being ordered
+         * @param order">The order to be processed
+         * @param message">If this function returns false, a brokerage message detailing why the order may not be submitted
+        @returns True if the brokerage could process the order, false otherwise
         public @Override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
             message = null;
 
@@ -68,14 +68,14 @@ package com.quantconnect.lean.Brokerages
             }
         }
 
-        /// <summary>
+        /**
         /// Returns true if the brokerage would allow updating the order as specified by the request
-        /// </summary>
-        /// <param name="security">The security of the order</param>
-        /// <param name="order">The order to be updated</param>
-        /// <param name="request">The requested update to be made to the order</param>
-        /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be updated</param>
-        /// <returns>True if the brokerage would allow updating the order, false otherwise</returns>
+        */
+         * @param security">The security of the order
+         * @param order">The order to be updated
+         * @param request">The requested update to be made to the order
+         * @param message">If this function returns false, a brokerage message detailing why the order may not be updated
+        @returns True if the brokerage would allow updating the order, false otherwise
         public @Override boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message) {
             message = null;
 
@@ -86,23 +86,23 @@ package com.quantconnect.lean.Brokerages
             return true;
         }
 
-        /// <summary>
+        /**
         /// Returns true if the brokerage would be able to execute this order at this time assuming
         /// market prices are sufficient for the fill to take place. This is used to emulate the 
         /// brokerage fills in backtesting and paper trading. For example some brokerages may not perform
         /// executions during extended market hours. This is not intended to be checking whether or not
         /// the exchange is open, that is handled in the Security.Exchange property.
-        /// </summary>
-        /// <param name="security"></param>
-        /// <param name="order">The order to test for execution</param>
-        /// <returns>True if the brokerage would be able to perform the execution, false otherwise</returns>
+        */
+         * @param security">
+         * @param order">The order to test for execution
+        @returns True if the brokerage would be able to perform the execution, false otherwise
         public @Override boolean CanExecuteOrder(Security security, Order order) {
             return order.SecurityType != SecurityType.Base;
         }
 
-        /// <summary>
+        /**
         /// Returns true if the specified order is within IB's order size limits
-        /// </summary>
+        */
         private boolean IsForexWithinOrderSizeLimits( String currencyPair, int quantity, out BrokerageMessageEvent message) {
             /* https://www.interactivebrokers.com/en/?f=%2Fen%2Ftrading%2FforexOrderSize.php
             Currency    Currency Description	    Minimum Order Size	Maximum Order Size
@@ -148,7 +148,7 @@ package com.quantconnect.lean.Brokerages
         }
 
 
-        private static readonly IReadOnlyMap<String, decimal> ForexCurrencyLimits = new Map<String, decimal>() {
+        private static final IReadOnlyMap<String, decimal> ForexCurrencyLimits = new Map<String, decimal>() {
             {"USD", 7000000m},
             {"AUD", 6000000m},
             {"CAD", 6000000m},

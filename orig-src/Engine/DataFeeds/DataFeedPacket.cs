@@ -20,73 +20,73 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Defines a container type to hold data produced by a data feed subscription
-    /// </summary>
+    */
     public class DataFeedPacket
     {
-        private readonly List<BaseData> _data;
+        private final List<BaseData> _data;
 
-        /// <summary>
+        /**
         /// The security
-        /// </summary>
+        */
         public Security Security
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// The subscription configuration that produced this data
-        /// </summary>
+        */
         public SubscriptionDataConfig Configuration
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the number of data points held within this packet
-        /// </summary>
+        */
         public int Count
         {
             get { return _data.Count; }
         }
 
-        /// <summary>
+        /**
         /// The data for the security
-        /// </summary>
+        */
         public List<BaseData> Data
         {
             get { return _data; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="DataFeedPacket"/> class
-        /// </summary>
-        /// <param name="security">The security whose data is held in this packet</param>
-        /// <param name="configuration">The subscription configuration that produced this data</param>
+        */
+         * @param security">The security whose data is held in this packet
+         * @param configuration">The subscription configuration that produced this data
         public DataFeedPacket(Security security, SubscriptionDataConfig configuration) {
             Security = security;
             Configuration = configuration;
             _data = new List<BaseData>();
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="DataFeedPacket"/> class
-        /// </summary>
-        /// <param name="security">The security whose data is held in this packet</param>
-        /// <param name="configuration">The subscription configuration that produced this data</param>
-        /// <param name="data">The data to add to this packet. The list reference is reused
-        /// internally and NOT copied.</param>
+        */
+         * @param security">The security whose data is held in this packet
+         * @param configuration">The subscription configuration that produced this data
+         * @param data">The data to add to this packet. The list reference is reused
+        /// internally and NOT copied.
         public DataFeedPacket(Security security, SubscriptionDataConfig configuration, List<BaseData> data) {
             Security = security;
             Configuration = configuration;
             _data = data;
         }
 
-        /// <summary>
+        /**
         /// Adds the specified data to this packet
-        /// </summary>
-        /// <param name="data">The data to be added to this packet</param>
+        */
+         * @param data">The data to be added to this packet
         public void Add(BaseData data) {
             _data.Add(data);
         }

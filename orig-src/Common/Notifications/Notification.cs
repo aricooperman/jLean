@@ -15,66 +15,66 @@
 
 package com.quantconnect.lean.Notifications
 {
-    /// <summary>
+    /**
     /// Local/desktop implementation of messaging system for Lean Engine.
-    /// </summary>
+    */
     public abstract class Notification
     {
-        /// <summary>
+        /**
         /// Method for sending implementations of notification object types.
-        /// </summary>
-        /// <remarks>SMS, Email and Web are all handled by the QC Messaging Handler. To implement your own notification type implement it here.</remarks>
+        */
+        /// SMS, Email and Web are all handled by the QC Messaging Handler. To implement your own notification type implement it here.
         public virtual void Send() {
             //
         }
     }
 
-    /// <summary>
+    /**
     /// Web Notification Class
-    /// </summary>
+    */
     public class NotificationWeb : Notification
     {
-        /// <summary>
+        /**
         /// Send a notification message to this web address
-        /// </summary>
+        */
         public String Address;
 
-        /// <summary>
+        /**
         /// Object data to send.
-        /// </summary>
+        */
         public object Data;
 
-        /// <summary>
+        /**
         /// Constructor for sending a notification SMS to a specified phone number
-        /// </summary>
-        /// <param name="address"></param>
-        /// <param name="data"></param>
+        */
+         * @param address">
+         * @param data">
         public NotificationWeb( String address, object data = null ) {
             Address = address;
             Data = data;
         }
     }
 
-    /// <summary>
+    /**
     /// Sms Notification Class
-    /// </summary>
+    */
     public class NotificationSms : Notification
     {
-        /// <summary>
+        /**
         /// Send a notification message to this phone number
-        /// </summary>
+        */
         public String PhoneNumber;
 
-        /// <summary>
+        /**
         /// Message to send. Limited to 160 characters
-        /// </summary>
+        */
         public String Message;
 
-        /// <summary>
+        /**
         /// Constructor for sending a notification SMS to a specified phone number
-        /// </summary>
-        /// <param name="number"></param>
-        /// <param name="message"></param>
+        */
+         * @param number">
+         * @param message">
         public NotificationSms( String number, String message) {
             PhoneNumber = number;
             Message = message;
@@ -82,38 +82,38 @@ package com.quantconnect.lean.Notifications
     }
 
 
-    /// <summary>
+    /**
     /// Email notification data.
-    /// </summary>
+    */
     public class NotificationEmail : Notification
     {
-        /// <summary>
+        /**
         /// Send to address:
-        /// </summary>
+        */
         public String Address;
 
-        /// <summary>
+        /**
         /// Email subject
-        /// </summary>
+        */
         public String Subject;
 
-        /// <summary>
+        /**
         /// Message to send.
-        /// </summary>
+        */
         public String Message;
 
-        /// <summary>
+        /**
         /// Email Data
-        /// </summary>
+        */
         public String Data;
 
-        /// <summary>
+        /**
         /// Default constructor for sending an email notification
-        /// </summary>
-        /// <param name="address">Address to send to</param>
-        /// <param name="subject">Subject of the email</param>
-        /// <param name="message">Message body of the email</param>
-        /// <param name="data">Data to attach to the email</param>
+        */
+         * @param address">Address to send to
+         * @param subject">Subject of the email
+         * @param message">Message body of the email
+         * @param data">Data to attach to the email
         public NotificationEmail( String address, String subject, String message, String data) {
             Message = message;
             Data = data;

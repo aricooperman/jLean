@@ -22,9 +22,9 @@ using System.Reflection;
 package com.quantconnect.lean.Brokerages.Oanda.Framework
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Common reflection helper methods for Oanda data types.
-    /// </summary>
+    */
 	public class Common
 	{
 		public static object GetDefault(Type t) {

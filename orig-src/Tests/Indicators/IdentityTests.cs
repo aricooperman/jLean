@@ -19,9 +19,9 @@ using QuantConnect.Indicators;
 
 package com.quantconnect.lean.Tests.Indicators
 {
-    /// <summary>
+    /**
     /// Test class for QuantConnect.Indicators.Identity
-    /// </summary>
+    */
     [TestFixture]
     public class IdentityTests
     {

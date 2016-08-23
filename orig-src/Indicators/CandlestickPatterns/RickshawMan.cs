@@ -19,31 +19,31 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Rickshaw Man candlestick pattern
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - doji body
     /// - two long shadows
     /// - body near the midpoint of the high-low range
     /// The meaning of "doji" and "near" is specified with SetCandleSettings
     /// The returned value is always positive(+1) but this does not mean it is bullish: rickshaw man shows uncertainty
-    /// </remarks>
+    /// 
     public class RickshawMan : CandlestickPattern
     {
-        private readonly int _bodyDojiAveragePeriod;
-        private readonly int _shadowLongAveragePeriod;
-        private readonly int _nearAveragePeriod;
+        private final int _bodyDojiAveragePeriod;
+        private final int _shadowLongAveragePeriod;
+        private final int _nearAveragePeriod;
 
         private BigDecimal _bodyDojiPeriodTotal;
         private BigDecimal _shadowLongPeriodTotal;
         private BigDecimal _nearPeriodTotal;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="RickshawMan"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public RickshawMan( String name)
             : base(name, Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod),
                   CandleSettings.Get(CandleSettingType.Near).AveragePeriod) + 1) {
@@ -52,27 +52,27 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             _nearAveragePeriod = CandleSettings.Get(CandleSettingType.Near).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="RickshawMan"/> class.
-        /// </summary>
+        */
         public RickshawMan()
             : this( "RICKSHAWMAN") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _bodyDojiAveragePeriod) {
@@ -126,9 +126,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _bodyDojiPeriodTotal = 0;
             _shadowLongPeriodTotal = 0;

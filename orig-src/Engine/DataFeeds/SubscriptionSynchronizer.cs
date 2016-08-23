@@ -23,37 +23,37 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Provides the ability to synchronize subscriptions into time slices
-    /// </summary>
+    */
     public class SubscriptionSynchronizer
     {
-        private readonly UniverseSelection _universeSelection;
+        private final UniverseSelection _universeSelection;
 
-        /// <summary>
+        /**
         /// Event fired when a subscription is finished
-        /// </summary>
+        */
         public event EventHandler<Subscription> SubscriptionFinished;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="SubscriptionSynchronizer"/> class
-        /// </summary>
-        /// <param name="universeSelection">The universe selection instance used to handle universe
-        /// selection subscription output</param>
+        */
+         * @param universeSelection">The universe selection instance used to handle universe
+        /// selection subscription output
         public SubscriptionSynchronizer(UniverseSelection universeSelection) {
             _universeSelection = universeSelection;
         }
 
-        /// <summary>
+        /**
         /// Syncs the specifies subscriptions at the frontier time
-        /// </summary>
-        /// <param name="frontier">The time used for syncing, data in the future won't be included in this time slice</param>
-        /// <param name="subscriptions">The subscriptions to sync</param>
-        /// <param name="sliceTimeZone">The time zone of the created slice object</param>
-        /// <param name="cashBook">The cash book, used for creating the cash book updates</param>
-        /// <param name="nextFrontier">The next frontier time as determined by the first piece of data in the future ahead of the frontier.
-        /// This value will equal DateTime.MaxValue when the subscriptions are all finished</param>
-        /// <returns>A time slice for the specified frontier time</returns>
+        */
+         * @param frontier">The time used for syncing, data in the future won't be included in this time slice
+         * @param subscriptions">The subscriptions to sync
+         * @param sliceTimeZone">The time zone of the created slice object
+         * @param cashBook">The cash book, used for creating the cash book updates
+         * @param nextFrontier">The next frontier time as determined by the first piece of data in the future ahead of the frontier.
+        /// This value will equal DateTime.MaxValue when the subscriptions are all finished
+        @returns A time slice for the specified frontier time
         public TimeSlice Sync(DateTime frontier, IEnumerable<Subscription> subscriptions, ZoneId sliceTimeZone, CashBook cashBook, out DateTime nextFrontier) {
             changes = SecurityChanges.None;
             nextFrontier = DateTime.MaxValue;
@@ -119,9 +119,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return TimeSlice.Create(frontier, sliceTimeZone, cashBook, data, changes);
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the <see cref="SubscriptionFinished"/> event
-        /// </summary>
+        */
         protected virtual void OnSubscriptionFinished(Subscription subscription) {
             handler = SubscriptionFinished;
             if( handler != null ) handler(this, subscription);

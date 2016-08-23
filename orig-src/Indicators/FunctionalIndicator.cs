@@ -18,40 +18,40 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// The functional indicator is used to lift any function into an indicator. This can be very useful
     /// when trying to combine output of several indicators, or for expression a mathematical equation
-    /// </summary>
+    */
     /// <typeparam name="T">The input type for this indicator</typeparam>
     public class FunctionalIndicator<T> : IndicatorBase<T>
         where T : BaseData
     {
-        /// <summary>function implementation of the IndicatorBase.IsReady property</summary>
-        private readonly Func<IndicatorBase<T>, bool> _isReady;
-        /// <summary>Action used to reset this indicator completely along with any indicators this one is dependent on</summary>
-        private readonly Action _reset;
-        /// <summary>function implementation of the IndicatorBase.ComputeNextValue method</summary>
-        private readonly Func<T, decimal> _computeNextValue;
+        /**function implementation of the IndicatorBase.IsReady property</summary>
+        private final Func<IndicatorBase<T>, bool> _isReady;
+        /**Action used to reset this indicator completely along with any indicators this one is dependent on</summary>
+        private final Action _reset;
+        /**function implementation of the IndicatorBase.ComputeNextValue method</summary>
+        private final Func<T, decimal> _computeNextValue;
 
-        /// <summary>
+        /**
         /// Creates a new FunctionalIndicator using the specified functions as its implementation.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="computeNextValue">A function accepting the input value and returning this indicator's output value</param>
-        /// <param name="isReady">A function accepting this indicator and returning true if the indicator is ready, false otherwise</param>
+        */
+         * @param name">The name of this indicator
+         * @param computeNextValue">A function accepting the input value and returning this indicator's output value
+         * @param isReady">A function accepting this indicator and returning true if the indicator is ready, false otherwise
         public FunctionalIndicator( String name, Func<T, decimal> computeNextValue, Func<IndicatorBase<T>, bool> isReady)
             : base(name) {
             _computeNextValue = computeNextValue;
             _isReady = isReady;
         }
 
-        /// <summary>
+        /**
         /// Creates a new FunctionalIndicator using the specified functions as its implementation.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="computeNextValue">A function accepting the input value and returning this indicator's output value</param>
-        /// <param name="isReady">A function accepting this indicator and returning true if the indicator is ready, false otherwise</param>
-        /// <param name="reset">Function called to reset this indicator and any indicators this is dependent on</param>
+        */
+         * @param name">The name of this indicator
+         * @param computeNextValue">A function accepting the input value and returning this indicator's output value
+         * @param isReady">A function accepting this indicator and returning true if the indicator is ready, false otherwise
+         * @param reset">Function called to reset this indicator and any indicators this is dependent on
         public FunctionalIndicator( String name, Func<T, decimal> computeNextValue, Func<IndicatorBase<T>, bool> isReady, Action reset)
             : base(name) {
             _computeNextValue = computeNextValue;
@@ -59,26 +59,26 @@ package com.quantconnect.lean.Indicators
             _reset = reset;
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return _isReady(this); }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(T input) {
             return _computeNextValue(input);
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state, optionally using the reset action passed via the constructor
-        /// </summary>
+        */
         public @Override void Reset() {
             if( _reset != null ) {
                 // if a reset function was specified then use that

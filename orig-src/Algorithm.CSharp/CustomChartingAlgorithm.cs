@@ -18,7 +18,7 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// 4.0 DEMONSTRATION OF CUSTOM CHARTING FLEXIBILITY:
     /// 
     /// The entire charting system of quantconnect is adaptable. You can adjust it to draw whatever you'd like.
@@ -28,7 +28,7 @@ package com.quantconnect.lean.Algorithm.Examples
     /// 
     /// Even the default behaviours of QuantConnect can be overridden
     /// 
-    /// </summary>
+    */
     public class CustomChartingAlgorithm : QCAlgorithm
     {
         BigDecimal lastPrice = 0;
@@ -36,14 +36,14 @@ package com.quantconnect.lean.Algorithm.Examples
         BigDecimal slowMA = 0;
 
         DateTime resample = new DateTime();
-        TimeSpan resamplePeriod = new TimeSpan();
+        Duration resamplePeriod = new TimeSpan();
 
         DateTime startDate = new DateTime(2010, 3, 3);
         DateTime endDate = new DateTime(2014, 3, 3);
 
-        /// <summary>
+        /**
         /// Called at the start of your algorithm to setup your requirements:
-        /// </summary>
+        */
         public @Override void Initialize() {
             //Set the date range you want to run your algorithm:
             SetStartDate(startDate);
@@ -78,21 +78,21 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
 
-        /// <summary>
+        /**
         /// OnEndOfDay Event Handler - At the end of each trading day we fire this code.
         /// To avoid flooding, we recommend running your plotting at the end of each day.
-        /// </summary>
+        */
         public @Override void OnEndOfDay() {
             //Log the end of day prices:
             Plot( "Trade Plot", "Price", lastPrice);
         }
 
 
-        /// <summary>
+        /**
         /// On receiving new tradebar data it will be passed into this function. The general pattern is:
         /// "public void OnData( CustomType name ) {...s"
-        /// </summary>
-        /// <param name="data">TradeBars data type synchronized and pushed into this function. The tradebars are grouped in a dictionary.</param>
+        */
+         * @param data">TradeBars data type synchronized and pushed into this function. The tradebars are grouped in a dictionary.
         public void OnData(TradeBars data) {
             lastPrice = data["SPY"].Close;
 

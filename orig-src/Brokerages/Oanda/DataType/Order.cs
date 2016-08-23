@@ -21,9 +21,9 @@ using QuantConnect.Brokerages.Oanda.DataType.Communications;
 package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Represents an order on Oanda.
-    /// </summary>
+    */
     public class Order : Response
     {
         public long id { get; set; }

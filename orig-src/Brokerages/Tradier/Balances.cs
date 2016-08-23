@@ -18,9 +18,9 @@ using Newtonsoft.Json;
 
 package com.quantconnect.lean.Brokerages.Tradier
 {
-    /// <summary>
+    /**
     /// Inside "Account" User-account balance information.
-    /// </summary>
+    */
     public class TradierBalance
     {
     //    /// Account Number
@@ -32,9 +32,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierBalanceDetails Balances;
     }
 
-    /// <summary>
+    /**
     /// Trader Balance Detail:
-    /// </summary>
+    */
     public class TradierBalanceDetails 
     {
         ///Account Number
@@ -147,9 +147,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierAccountTypeMargin MarginTypeSettings;
     }
 
-    /// <summary>
+    /**
     /// Common Account Settings.
-    /// </summary>
+    */
     public class TradierAccountTypeSettings
     {
         ///The amount that the account is in deficit for trades that have occurred but not been paid for.
@@ -176,9 +176,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierAccountTypeSettings() { }
     }
 
-    /// <summary>
+    /**
     /// Account Type Day Trader Settings:
-    /// </summary>
+    */
     public class TradierAccountTypeDayTrader : TradierAccountTypeSettings
     {
         ///The total amount of funds available for the purchase of fully marginable stock during that trading day, a portion of these funds cannot be held overnight.
@@ -189,9 +189,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierAccountTypeDayTrader() { }
     }
 
-    /// <summary>
+    /**
     /// Account Type Margin Settings:
-    /// </summary>
+    */
     public class TradierAccountTypeMargin : TradierAccountTypeSettings
     {
         ///"Sweep"
@@ -202,9 +202,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierAccountTypeMargin() { }
     }
 
-    /// <summary>
+    /**
     /// Account Type Margin Settings:
-    /// </summary>
+    */
     public class TradierAccountTypeCash
     {
         ///"Sweep"

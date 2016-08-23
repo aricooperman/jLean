@@ -17,24 +17,24 @@ using System;
 
 package com.quantconnect.lean.Logging
 {
-    /// <summary>
+    /**
     /// Provides an <see cref="ILogHandler"/> implementation that composes multiple handlers
-    /// </summary>
+    */
     public class CompositeLogHandler : ILogHandler
     {
-        private readonly ILogHandler[] _handlers;
+        private final ILogHandler[] _handlers;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="CompositeLogHandler"/> that pipes log messages to the console and log.txt
-        /// </summary>
+        */
         public CompositeLogHandler()
             : this(new ILogHandler[] {new ConsoleLogHandler(), new FileLogHandler()}) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="CompositeLogHandler"/> class from the specified handlers
-        /// </summary>
-        /// <param name="handlers">The implementations to compose</param>
+        */
+         * @param handlers">The implementations to compose
         public CompositeLogHandler(ILogHandler[] handlers) {
             if( handlers == null || handlers.Length == 0) {
                 throw new ArgumentNullException( "handlers");
@@ -43,39 +43,39 @@ package com.quantconnect.lean.Logging
             _handlers = handlers;
         }
 
-        /// <summary>
+        /**
         /// Write error message to log
-        /// </summary>
-        /// <param name="text"></param>
+        */
+         * @param text">
         public void Error( String text) {
             foreach (handler in _handlers) {
                 handler.Error(text);
             }
         }
 
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="text"></param>
+        */
+         * @param text">
         public void Debug( String text) {
             foreach (handler in _handlers) {
                 handler.Debug(text);
             }
         }
 
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="text"></param>
+        */
+         * @param text">
         public void Trace( String text) {
             foreach (handler in _handlers) {
                 handler.Trace(text);
             }
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             foreach (handler in _handlers) {

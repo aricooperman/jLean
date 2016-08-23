@@ -23,15 +23,15 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Brokerages
 {
-    /// <summary>
+    /**
     /// Provides FXCM specific properties
-    /// </summary>
+    */
     public class FxcmBrokerageModel : DefaultBrokerageModel
     {
-        /// <summary>
+        /**
         /// The default markets for the fxcm brokerage
-        /// </summary>
-        public new static readonly IReadOnlyMap<SecurityType,String> DefaultMarketMap = new Map<SecurityType,String>
+        */
+        public new static final IReadOnlyMap<SecurityType,String> DefaultMarketMap = new Map<SecurityType,String>
         {
             {SecurityType.Base, Market.USA},
             {SecurityType.Equity, Market.USA},
@@ -40,34 +40,34 @@ package com.quantconnect.lean.Brokerages
             {SecurityType.Cfd, Market.FXCM}
         }.ToReadOnlyDictionary();
 
-        /// <summary>
+        /**
         /// Gets a map of the default markets to be used for each security type
-        /// </summary>
+        */
         public @Override IReadOnlyMap<SecurityType,String> DefaultMarkets
         {
             get { return DefaultMarketMap; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="DefaultBrokerageModel"/> class
-        /// </summary>
-        /// <param name="accountType">The type of account to be modelled, defaults to 
-        /// <see cref="QuantConnect.AccountType.Margin"/></param>
+        */
+         * @param accountType">The type of account to be modelled, defaults to 
+        /// <see cref="QuantConnect.AccountType.Margin"/>
         public FxcmBrokerageModel(AccountType accountType = AccountType.Margin)
             : base(accountType) {
         }
 
-        /// <summary>
+        /**
         /// Returns true if the brokerage could accept this order. This takes into account
         /// order type, security type, and order size limits.
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// For example, a brokerage may have no connectivity at certain times, or an order rate/size limit
-        /// </remarks>
-        /// <param name="security"></param>
-        /// <param name="order">The order to be processed</param>
-        /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be submitted</param>
-        /// <returns>True if the brokerage could process the order, false otherwise</returns>
+        /// 
+         * @param security">
+         * @param order">The order to be processed
+         * @param message">If this function returns false, a brokerage message detailing why the order may not be submitted
+        @returns True if the brokerage could process the order, false otherwise
         public @Override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
             message = null;
 
@@ -117,14 +117,14 @@ package com.quantconnect.lean.Brokerages
             return true;
         }
 
-        /// <summary>
+        /**
         /// Returns true if the brokerage would allow updating the order as specified by the request
-        /// </summary>
-        /// <param name="security">The security of the order</param>
-        /// <param name="order">The order to be updated</param>
-        /// <param name="request">The requested update to be made to the order</param>
-        /// <param name="message">If this function returns false, a brokerage message detailing why the order may not be updated</param>
-        /// <returns>True if the brokerage would allow updating the order, false otherwise</returns>
+        */
+         * @param security">The security of the order
+         * @param order">The order to be updated
+         * @param request">The requested update to be made to the order
+         * @param message">If this function returns false, a brokerage message detailing why the order may not be updated
+        @returns True if the brokerage would allow updating the order, false otherwise
         public @Override boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message) {
             message = null;
 
@@ -148,36 +148,36 @@ package com.quantconnect.lean.Brokerages
             return IsValidOrderPrices(security, order.Type, direction, stopPrice, limitPrice, ref message);
         }
 
-        /// <summary>
+        /**
         /// Gets a new fill model that represents this brokerage's fill behavior
-        /// </summary>
-        /// <param name="security">The security to get fill model for</param>
-        /// <returns>The new fill model for this brokerage</returns>
+        */
+         * @param security">The security to get fill model for
+        @returns The new fill model for this brokerage
         public @Override IFillModel GetFillModel(Security security) {
             return new ImmediateFillModel();
         }
 
-        /// <summary>
+        /**
         /// Gets a new fee model that represents this brokerage's fee structure
-        /// </summary>
-        /// <param name="security">The security to get a fee model for</param>
-        /// <returns>The new fee model for this brokerage</returns>
+        */
+         * @param security">The security to get a fee model for
+        @returns The new fee model for this brokerage
         public @Override IFeeModel GetFeeModel(Security security) {
             return new FxcmFeeModel();
         }
 
-        /// <summary>
+        /**
         /// Gets a new slippage model that represents this brokerage's fill slippage behavior
-        /// </summary>
-        /// <param name="security">The security to get a slippage model for</param>
-        /// <returns>The new slippage model for this brokerage</returns>
+        */
+         * @param security">The security to get a slippage model for
+        @returns The new slippage model for this brokerage
         public @Override ISlippageModel GetSlippageModel(Security security) {
             return new SpreadSlippageModel();
         }
 
-        /// <summary>
+        /**
         /// Validates limit/stopmarket order prices, pass security.Price for limit/stop if n/a
-        /// </summary>
+        */
         private static boolean IsValidOrderPrices(Security security, OrderType orderType, OrderDirection orderDirection, BigDecimal stopPrice, BigDecimal limitPrice, ref BrokerageMessageEvent message) {
             // validate order price
             invalidPrice = orderType == OrderType.Limit && orderDirection == OrderDirection.Buy && limitPrice > security.Price ||

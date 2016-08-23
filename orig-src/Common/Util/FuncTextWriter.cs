@@ -20,12 +20,12 @@ using System.Text;
 
 package com.quantconnect.lean.Util
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="TextWriter"/> that redirects Write( String) and WriteLine( String)
-    /// </summary>
+    */
     public class FuncTextWriter : TextWriter
     {
-        private readonly Action<String> _writer;
+        private final Action<String> _writer;
 
         /// <inheritdoc />
         public @Override Encoding Encoding
@@ -33,27 +33,27 @@ package com.quantconnect.lean.Util
             get { return Encoding.Default; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FuncTextWriter"/> that will direct
         /// messages to the algorithm's Debug function.
-        /// </summary>
-        /// <param name="writer">The algorithm hosting the Debug function where messages will be directed</param>
+        */
+         * @param writer">The algorithm hosting the Debug function where messages will be directed
         public FuncTextWriter(Action<String> writer) {
             _writer = writer;
         }
 
-        /// <summary>
+        /**
         /// Writes the String value using the delegate provided at construction
-        /// </summary>
-        /// <param name="value">The String value to be written</param>
+        */
+         * @param value">The String value to be written
         public @Override void Write( String value) {
             _writer(value);
         }
 
-        /// <summary>
+        /**
         /// Writes the String value using the delegate provided at construction
-        /// </summary>
-        /// <param name="value"></param>
+        */
+         * @param value">
         public @Override void WriteLine( String value) {
             // these are grouped in a list so we don't need to add new line characters here
             _writer(value);

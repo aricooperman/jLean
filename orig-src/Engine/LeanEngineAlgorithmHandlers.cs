@@ -27,104 +27,104 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine
 {
-    /// <summary>
+    /**
     /// Provides a container for the algorithm specific handlers
-    /// </summary>
+    */
     public class LeanEngineAlgorithmHandlers : IDisposable
     {
-        private readonly IDataFeed _dataFeed;
-        private readonly ISetupHandler _setup;
-        private readonly IResultHandler _results;
-        private readonly IRealTimeHandler _realTime;
-        private readonly ITransactionHandler _transactions;
-        private readonly IHistoryProvider _historyProvider;
-        private readonly ICommandQueueHandler _commandQueue;
-        private readonly IMapFileProvider _mapFileProvider;
-        private readonly IFactorFileProvider _factorFileProvider;
+        private final IDataFeed _dataFeed;
+        private final ISetupHandler _setup;
+        private final IResultHandler _results;
+        private final IRealTimeHandler _realTime;
+        private final ITransactionHandler _transactions;
+        private final IHistoryProvider _historyProvider;
+        private final ICommandQueueHandler _commandQueue;
+        private final IMapFileProvider _mapFileProvider;
+        private final IFactorFileProvider _factorFileProvider;
 
-        /// <summary>
+        /**
         /// Gets the result handler used to communicate results from the algorithm
-        /// </summary>
+        */
         public IResultHandler Results
         {
             get { return _results; }
         }
 
-        /// <summary>
+        /**
         /// Gets the setup handler used to initialize the algorithm state
-        /// </summary>
+        */
         public ISetupHandler Setup
         {
             get { return _setup; }
         }
 
-        /// <summary>
+        /**
         /// Gets the data feed handler used to provide data to the algorithm
-        /// </summary>
+        */
         public IDataFeed DataFeed
         {
             get { return _dataFeed; }
         }
 
-        /// <summary>
+        /**
         /// Gets the transaction handler used to process orders from the algorithm
-        /// </summary>
+        */
         public ITransactionHandler Transactions
         {
             get { return _transactions; }
         }
 
-        /// <summary>
+        /**
         /// Gets the real time handler used to process real time events
-        /// </summary>
+        */
         public IRealTimeHandler RealTime
         {
             get { return _realTime; }
         }
 
-        /// <summary>
+        /**
         /// Gets the history provider used to process historical data requests within the algorithm
-        /// </summary>
+        */
         public IHistoryProvider HistoryProvider
         {
             get { return _historyProvider; }
         }
 
-        /// <summary>
+        /**
         /// Gets the command queue responsible for receiving external commands for the algorithm
-        /// </summary>
+        */
         public ICommandQueueHandler CommandQueue
         {
             get { return _commandQueue; }
         }
 
-        /// <summary>
+        /**
         /// Gets the map file provider used as a map file source for the data feed
-        /// </summary>
+        */
         public IMapFileProvider MapFileProvider
         {
             get { return _mapFileProvider; }
         }
 
-        /// <summary>
+        /**
         /// Gets the map file provider used as a map file source for the data feed
-        /// </summary>
+        */
         public IFactorFileProvider FactorFileProvider
         {
             get { return _factorFileProvider; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="LeanEngineAlgorithmHandlers"/> class from the specified handlers
-        /// </summary>
-        /// <param name="results">The result handler for communicating results from the algorithm</param>
-        /// <param name="setup">The setup handler used to initialize algorithm state</param>
-        /// <param name="dataFeed">The data feed handler used to pump data to the algorithm</param>
-        /// <param name="transactions">The transaction handler used to process orders from the algorithm</param>
-        /// <param name="realTime">The real time handler used to process real time events</param>
-        /// <param name="historyProvider">The history provider used to process historical data requests</param>
-        /// <param name="commandQueue">The command queue handler used to receive external commands for the algorithm</param>
-        /// <param name="mapFileProvider">The map file provider used to retrieve map files for the data feed</param>
+        */
+         * @param results">The result handler for communicating results from the algorithm
+         * @param setup">The setup handler used to initialize algorithm state
+         * @param dataFeed">The data feed handler used to pump data to the algorithm
+         * @param transactions">The transaction handler used to process orders from the algorithm
+         * @param realTime">The real time handler used to process real time events
+         * @param historyProvider">The history provider used to process historical data requests
+         * @param commandQueue">The command queue handler used to receive external commands for the algorithm
+         * @param mapFileProvider">The map file provider used to retrieve map files for the data feed
         public LeanEngineAlgorithmHandlers(IResultHandler results,
             ISetupHandler setup,
             IDataFeed dataFeed,
@@ -173,11 +173,11 @@ package com.quantconnect.lean.Lean.Engine
             _factorFileProvider = factorFileProvider;
         }
         
-        /// <summary>
+        /**
         /// Creates a new instance of the <see cref="LeanEngineAlgorithmHandlers"/> class from the specified composer using type names from configuration
-        /// </summary>
-        /// <param name="composer">The composer instance to obtain implementations from</param>
-        /// <returns>A fully hydrates <see cref="LeanEngineSystemHandlers"/> instance.</returns>
+        */
+         * @param composer">The composer instance to obtain implementations from
+        @returns A fully hydrates <see cref="LeanEngineSystemHandlers"/> instance.
         /// <exception cref="CompositionException">Throws a CompositionException during failure to load</exception>
         public static LeanEngineAlgorithmHandlers FromConfiguration(Composer composer) {
             setupHandlerTypeName = Config.Get( "setup-handler", "ConsoleSetupHandler");
@@ -203,9 +203,9 @@ package com.quantconnect.lean.Lean.Engine
                 );
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             Setup.Dispose();

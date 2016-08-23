@@ -21,9 +21,9 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Brokerages.Tradier
 {
-    /// <summary>
+    /**
     /// Container for timeseries array
-    /// </summary>
+    */
     public class TradierTimeSeriesContainer
     {
         /// Data Time Series
@@ -32,9 +32,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierTimeSeries> TimeSeries;
     }
 
-    /// <summary>
+    /**
     /// One bar of historical Tradier data.
-    /// </summary>
+    */
     public class TradierTimeSeries
     {
         /// Time of Price Sample
@@ -67,9 +67,9 @@ package com.quantconnect.lean.Brokerages.Tradier
     }
 
 
-    /// <summary>
+    /**
     /// Container for quotes:
-    /// </summary>
+    */
     public class TradierQuoteContainer
     {
         /// Price Quotes:
@@ -78,9 +78,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierQuote> Quotes;
     }
 
-    /// <summary>
+    /**
     /// Quote data from Tradier:
-    /// </summary>
+    */
     public class TradierQuote
     {
         /// Quote Symbol
@@ -219,9 +219,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierQuote() { }
     }
 
-    /// <summary>
+    /**
     /// Container for deserializing history classes
-    /// </summary>
+    */
     public class TradierHistoryDataContainer
     {
         /// Historical Data Contents
@@ -230,9 +230,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierHistoryBar> Data;
     }
 
-    /// <summary>
+    /**
     /// "Bar" for a history unit.
-    /// </summary>
+    */
     public class TradierHistoryBar
     {
         /// Historical Data Bar: Date
@@ -260,9 +260,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public long Volume;
     }
 
-    /// <summary>
+    /**
     /// Current market status description
-    /// </summary>
+    */
     public class TradierMarketStatus
     {
         /// Market Status: Date
@@ -286,9 +286,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public long TimeStamp;
     }
 
-    /// <summary>
+    /**
     /// Calendar status:
-    /// </summary>
+    */
     public class TradierCalendarStatus
     {
         /// Trading Calendar: Day
@@ -304,9 +304,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public int Year;
     }
 
-    /// <summary>
+    /**
     /// Container for the days array:
-    /// </summary>
+    */
     public class TradierCalendarDayContainer
     {
         /// Trading Calendar: Days List
@@ -315,9 +315,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierCalendarDay> Days;
     }
 
-    /// <summary>
+    /**
     /// Single days properties from the calendar:
-    /// </summary>
+    */
     public class TradierCalendarDay
     {
         /// Trading Calendar: Day
@@ -345,9 +345,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierCalendarDayMarketHours Postmarket;
     }
 
-    /// <summary>
+    /**
     /// Start and finish time of market hours for this market.
-    /// </summary>
+    */
     public class TradierCalendarDayMarketHours
     {
         /// Trading Calendar: Start Hours
@@ -359,9 +359,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public DateTime End;
     }
 
-    /// <summary>
+    /**
     /// Tradier Search Container for Deserialization:
-    /// </summary>
+    */
     public class TradierSearchContainer
     {
         /// Trading Search container
@@ -369,9 +369,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public List<TradierSearchResult> Results;
     }
 
-    /// <summary>
+    /**
     /// One search result from API
-    /// </summary>
+    */
     public class TradierSearchResult
     {
         /// Trading Search: Symbol
@@ -391,9 +391,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public String Description;
     }
 
-    /// <summary>
+    /**
     /// Create a new stream session
-    /// </summary>
+    */
     public class TradierStreamSession
     {
         /// Trading Stream: Session Id 
@@ -402,9 +402,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public String Url;
     }
 
-    /// <summary>
+    /**
     /// One data packet from a tradier stream:
-    /// </summary>
+    */
     public class TradierStreamData
     {
         /// Trading Stream: Type

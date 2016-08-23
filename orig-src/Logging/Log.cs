@@ -20,9 +20,9 @@ using System.Threading;
 
 package com.quantconnect.lean.Logging 
 {
-    /// <summary>
+    /**
     /// Logging management class.
-    /// </summary>
+    */
     public static class Log
     {
         private static String _lastTraceText = "";
@@ -31,38 +31,38 @@ package com.quantconnect.lean.Logging
         private static int _level = 1;
         private static ILogHandler _logHandler = new ConsoleLogHandler();
 
-        /// <summary>
+        /**
         /// Gets or sets the ILogHandler instance used as the global logging implementation.
-        /// </summary>
+        */
         public static ILogHandler LogHandler
         {
             get { return _logHandler; }
             set { _logHandler = value; }
         }
 
-        /// <summary>
+        /**
         /// Global flag whether to enable debugging logging:
-        /// </summary>
+        */
         public static boolean DebuggingEnabled
         {
             get { return _debuggingEnabled; }
             set { _debuggingEnabled = value; }
         }
 
-        /// <summary>
+        /**
         /// Set the minimum message level:
-        /// </summary>
+        */
         public static int DebuggingLevel
         {
             get { return _level; }
             set { _level = value; }
         }
 
-        /// <summary>
+        /**
         /// Log error
-        /// </summary>
-        /// <param name="error">String Error</param>
-        /// <param name="@OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive</param>
+        */
+         * @param error">String Error
+         * @param @OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive
         public static void Error( String error, boolean @OverrideMessageFloodProtection = false) {
             try 
             {
@@ -75,31 +75,31 @@ package com.quantconnect.lean.Logging
             }
         }
 
-        /// <summary>
+        /**
         /// Log error. This overload is usefull when exceptions are being thrown from within an anonymous function.
-        /// </summary>
-        /// <param name="method">The method identifier to be used</param>
-        /// <param name="exception">The exception to be logged</param>
-        /// <param name="message">An optional message to be logged, if null/whitespace the messge text will be extracted</param>
-        /// <param name="@OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive</param>
+        */
+         * @param method">The method identifier to be used
+         * @param exception">The exception to be logged
+         * @param message">An optional message to be logged, if null/whitespace the messge text will be extracted
+         * @param @OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive
         private static void Error( String method, Exception exception, String message = null, boolean @OverrideMessageFloodProtection = false) {
             message = method + "(): " + (message ?? string.Empty) + " " + exception;
             Error(message, @OverrideMessageFloodProtection);
         }
 
-        /// <summary>
+        /**
         /// Log error
-        /// </summary>
-        /// <param name="exception">The exception to be logged</param>
-        /// <param name="message">An optional message to be logged, if null/whitespace the messge text will be extracted</param>
-        /// <param name="@OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive</param>
+        */
+         * @param exception">The exception to be logged
+         * @param message">An optional message to be logged, if null/whitespace the messge text will be extracted
+         * @param @OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive
         public static void Error(Exception exception, String message = null, boolean @OverrideMessageFloodProtection = false) {
             Error(WhoCalledMe.GetMethodName(1), exception, message, @OverrideMessageFloodProtection);
         }
 
-        /// <summary>
+        /**
         /// Log trace
-        /// </summary>
+        */
         public static void Trace( String traceText, boolean @OverrideMessageFloodProtection = false) { 
             try 
             {
@@ -112,26 +112,26 @@ package com.quantconnect.lean.Logging
             }
         }
 
-        /// <summary>
+        /**
         /// Writes the message in normal text
-        /// </summary>
+        */
         public static void Trace( String format, params object[] args) {
             Trace( String.format(format, args));
         }
 
-        /// <summary>
+        /**
         /// Writes the message in red
-        /// </summary>
+        */
         public static void Error( String format, params object[] args) {
             Error( String.format(format, args));
         }
 
-        /// <summary>
+        /**
         /// Output to the console, and sleep the thread for a little period to monitor the results.
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="level">debug level</param>
-        /// <param name="delay"></param>
+        */
+         * @param text">
+         * @param level">debug level
+         * @param delay">
         public static void Debug( String text, int level = 1, int delay = 0) {
             try
             {
@@ -144,12 +144,12 @@ package com.quantconnect.lean.Logging
             }
         }
 
-        /// <summary>
+        /**
         /// C# Equivalent of Print_r in PHP:
-        /// </summary>
-        /// <param name="obj"></param>
-        /// <param name="recursion"></param>
-        /// <returns></returns>
+        */
+         * @param obj">
+         * @param recursion">
+        @returns 
         public static String VarDump(object obj, int recursion = 0) {
             result = new StringBuilder();
 

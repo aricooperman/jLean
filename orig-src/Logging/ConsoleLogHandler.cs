@@ -18,18 +18,18 @@ using System.IO;
 
 package com.quantconnect.lean.Logging
 {
-    /// <summary>
+    /**
     /// ILogHandler implementation that writes log output to console.
-    /// </summary>
+    */
     public class ConsoleLogHandler : ILogHandler
     {
         private static final String DateFormat = "yyyyMMdd HH:mm:ss";
-        private readonly TextWriter _trace;
-        private readonly TextWriter _error;
+        private final TextWriter _trace;
+        private final TextWriter _error;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="QuantConnect.Logging.ConsoleLogHandler"/> class.
-        /// </summary>
+        */
         public ConsoleLogHandler() {
             // saves references to the real console text writer since in a deployed state we may overwrite this in order
             // to redirect messages from algorithm to result handler
@@ -37,35 +37,35 @@ package com.quantconnect.lean.Logging
             _error = Console.Error;
         }
 
-        /// <summary>
+        /**
         /// Write error message to log
-        /// </summary>
-        /// <param name="text">The error text to log</param>
+        */
+         * @param text">The error text to log
         public void Error( String text) {
             Console.ForegroundColor = ConsoleColor.Red;
             _error.WriteLine(DateTime.Now.toString(DateFormat) + " ERROR:: " + text);
             Console.ResetColor();
         }
 
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="text">The debug text to log</param>
+        */
+         * @param text">The debug text to log
         public void Debug( String text) {
             _trace.WriteLine(DateTime.Now.toString(DateFormat) + " DEBUG:: " + text);
         }
 
-        /// <summary>
+        /**
         /// Write debug message to log
-        /// </summary>
-        /// <param name="text">The trace text to log</param>
+        */
+         * @param text">The trace text to log
         public void Trace( String text) {
             _trace.WriteLine(DateTime.Now.toString(DateFormat) + " Trace:: " + text);
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
         }

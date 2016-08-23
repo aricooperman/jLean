@@ -21,15 +21,15 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Orders
 {
-    /// <summary>
+    /**
     /// Provides a single reference to an order for the algorithm to maintain. As the order gets
     /// updated this ticket will also get updated
-    /// </summary>
+    */
     public sealed class OrderTicket
     {
-        private readonly object _orderEventsLock = new object();
-        private readonly object _updateRequestsLock = new object();
-        private readonly object _setCancelRequestLock = new object();
+        private final object _orderEventsLock = new object();
+        private final object _updateRequestsLock = new object();
+        private final object _setCancelRequestLock = new object();
 
         private Order _order;
         private OrderStatus? _orderStatusOverride;
@@ -38,26 +38,26 @@ package com.quantconnect.lean.Orders
         private int _quantityFilled;
         private BigDecimal _averageFillPrice;
 
-        private readonly int _orderId;
-        private readonly List<OrderEvent> _orderEvents; 
-        private readonly SubmitOrderRequest _submitRequest;
-        private readonly ManualResetEvent _orderStatusClosedEvent;
-        private readonly List<UpdateOrderRequest> _updateRequests;
+        private final int _orderId;
+        private final List<OrderEvent> _orderEvents; 
+        private final SubmitOrderRequest _submitRequest;
+        private final ManualResetEvent _orderStatusClosedEvent;
+        private final List<UpdateOrderRequest> _updateRequests;
 
         // we pull this in to provide some behavior/simplicity to the ticket API
-        private readonly SecurityTransactionManager _transactionManager;
+        private final SecurityTransactionManager _transactionManager;
 
-        /// <summary>
+        /**
         /// Gets the order id of this ticket
-        /// </summary>
+        */
         public int OrderId
         {
             get { return _orderId; }
         }
 
-        /// <summary>
+        /**
         /// Gets the current status of this order ticket
-        /// </summary>
+        */
         public OrderStatus Status
         {
             get
@@ -67,84 +67,84 @@ package com.quantconnect.lean.Orders
             }
         }
 
-        /// <summary>
+        /**
         /// Gets the symbol being ordered
-        /// </summary>
+        */
         public Symbol Symbol
         {
             get { return _submitRequest.Symbol; }
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="Symbol"/>'s <see cref="SecurityType"/>
-        /// </summary>
+        */
         public SecurityType SecurityType
         {
             get { return _submitRequest.SecurityType; }
         }
 
-        /// <summary>
+        /**
         /// Gets the number of units ordered
-        /// </summary>
+        */
         public int Quantity
         {
             get { return _order == null ? _submitRequest.Quantity : _order.Quantity; }
         }
 
-        /// <summary>
+        /**
         /// Gets the average fill price for this ticket. If no fills have been processed
         /// then this will return a value of zero.
-        /// </summary>
+        */
         public BigDecimal AverageFillPrice
         {
             get { return _averageFillPrice; }
         }
 
-        /// <summary>
+        /**
         /// Gets the total qantity filled for this ticket. If no fills have been processed
         /// then this will return a value of zero.
-        /// </summary>
+        */
         public BigDecimal QuantityFilled
         {
             get { return _quantityFilled; }
         }
 
-        /// <summary>
+        /**
         /// Gets the time this order was last updated
-        /// </summary>
+        */
         public DateTime Time
         {
             get { return GetMostRecentOrderRequest().Time; }
         }
 
-        /// <summary>
+        /**
         /// Gets the type of order
-        /// </summary>
+        */
         public OrderType OrderType
         {
             get { return _submitRequest.OrderType; }
         }
 
-        /// <summary>
+        /**
         /// Gets the order's current tag
-        /// </summary>
+        */
         public String Tag 
         {
             get { return _order == null ? _submitRequest.Tag : _order.Tag; }
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="SubmitOrderRequest"/> that initiated this order
-        /// </summary>
+        */
         public SubmitOrderRequest SubmitRequest
         {
             get { return _submitRequest; }
         }
 
-        /// <summary>
+        /**
         /// Gets a list of <see cref="UpdateOrderRequest"/> containing an item for each
         /// <see cref="UpdateOrderRequest"/> that was sent for this order id
-        /// </summary>
+        */
         public IReadOnlyList<UpdateOrderRequest> UpdateRequests
         {
             get
@@ -155,18 +155,18 @@ package com.quantconnect.lean.Orders
             }
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="CancelOrderRequest"/> if this order was canceled. If this order
         /// was not canceled, this will return null
-        /// </summary>
+        */
         public CancelOrderRequest CancelRequest
         {
             get { return _cancelRequest; }
         }
 
-        /// <summary>
+        /**
         /// Gets a list of all order events for this ticket
-        /// </summary>
+        */
         public IReadOnlyList<OrderEvent> OrderEvents
         {
             get
@@ -177,19 +177,19 @@ package com.quantconnect.lean.Orders
             }
         }
 
-        /// <summary>
+        /**
         /// Gets a wait handle that can be used to wait until this order has filled
-        /// </summary>
+        */
         public WaitHandle OrderClosed
         {
             get { return _orderStatusClosedEvent; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="OrderTicket"/> class
-        /// </summary>
-        /// <param name="transactionManager">The transaction manager used for submitting updates and cancels for this ticket</param>
-        /// <param name="submitRequest">The order request that initiated this order ticket</param>
+        */
+         * @param transactionManager">The transaction manager used for submitting updates and cancels for this ticket
+         * @param submitRequest">The order request that initiated this order ticket
         public OrderTicket(SecurityTransactionManager transactionManager, SubmitOrderRequest submitRequest) {
             _submitRequest = submitRequest;
             _orderId = submitRequest.OrderId;
@@ -200,29 +200,29 @@ package com.quantconnect.lean.Orders
             _orderStatusClosedEvent = new ManualResetEvent(false);
         }
 
-        /// <summary>
+        /**
         /// Gets the specified field from the ticket
-        /// </summary>
-        /// <param name="field">The order field to get</param>
-        /// <returns>The value of the field</returns>
+        */
+         * @param field">The order field to get
+        @returns The value of the field
         /// <exception cref="ArgumentOutOfRangeException"></exception>
         public BigDecimal Get(OrderField field) {
             switch (field) {
                 case OrderField.LimitPrice:
                     if( _submitRequest.OrderType == OrderType.Limit) {
-                        return AccessOrder<LimitOrder>(this, field, o => o.LimitPrice, r => r.LimitPrice);
+                        return AccessOrder<LimitOrder>(this, field, o -> o.LimitPrice, r -> r.LimitPrice);
                     }
                     if( _submitRequest.OrderType == OrderType.StopLimit) {
-                        return AccessOrder<StopLimitOrder>(this, field, o => o.LimitPrice, r => r.LimitPrice);
+                        return AccessOrder<StopLimitOrder>(this, field, o -> o.LimitPrice, r -> r.LimitPrice);
                     }
                     break;
 
                 case OrderField.StopPrice:
                     if( _submitRequest.OrderType == OrderType.StopLimit) {
-                        return AccessOrder<StopLimitOrder>(this, field, o => o.StopPrice, r => r.StopPrice);
+                        return AccessOrder<StopLimitOrder>(this, field, o -> o.StopPrice, r -> r.StopPrice);
                     }
                     if( _submitRequest.OrderType == OrderType.StopMarket) {
-                        return AccessOrder<StopMarketOrder>(this, field, o => o.StopPrice, r => r.StopPrice);
+                        return AccessOrder<StopMarketOrder>(this, field, o -> o.StopPrice, r -> r.StopPrice);
                     }
                     break;
 
@@ -232,38 +232,38 @@ package com.quantconnect.lean.Orders
             throw new ArgumentException( "Unable to get field " + field + " on order of type " + _submitRequest.OrderType);
         }
 
-        /// <summary>
+        /**
         /// Submits an <see cref="UpdateOrderRequest"/> with the <see cref="SecurityTransactionManager"/> to update
         /// the ticket with data specified in <paramref name="fields"/>
-        /// </summary>
-        /// <param name="fields">Defines what properties of the order should be updated</param>
-        /// <returns>The <see cref="OrderResponse"/> from updating the order</returns>
+        */
+         * @param fields">Defines what properties of the order should be updated
+        @returns The <see cref="OrderResponse"/> from updating the order
         public OrderResponse Update(UpdateOrderFields fields) {
             _transactionManager.UpdateOrder(new UpdateOrderRequest(_transactionManager.UtcTime, SubmitRequest.OrderId, fields));
             return _updateRequests.Last().Response;
         }
 
-        /// <summary>
+        /**
         /// Submits a new request to cancel this order
-        /// </summary>
+        */
         public OrderResponse Cancel( String tag = null ) {
             request = new CancelOrderRequest(_transactionManager.UtcTime, OrderId, tag);
             _transactionManager.ProcessRequest(request);
             return CancelRequest.Response;
         }
 
-        /// <summary>
+        /**
         /// Gets the most recent <see cref="OrderResponse"/> for this ticket
-        /// </summary>
-        /// <returns>The most recent <see cref="OrderResponse"/> for this ticket</returns>
+        */
+        @returns The most recent <see cref="OrderResponse"/> for this ticket
         public OrderResponse GetMostRecentOrderResponse() {
             return GetMostRecentOrderRequest().Response;
         }
 
-        /// <summary>
+        /**
         /// Gets the most recent <see cref="OrderRequest"/> for this ticket
-        /// </summary>
-        /// <returns>The most recent <see cref="OrderRequest"/> for this ticket</returns>
+        */
+        @returns The most recent <see cref="OrderRequest"/> for this ticket
         public OrderRequest GetMostRecentOrderRequest() {
             if( CancelRequest != null ) {
                 return CancelRequest;
@@ -275,10 +275,10 @@ package com.quantconnect.lean.Orders
             return SubmitRequest;
         }
 
-        /// <summary>
+        /**
         /// Adds an order event to this ticket
-        /// </summary>
-        /// <param name="orderEvent">The order event to be added</param>
+        */
+         * @param orderEvent">The order event to be added
         internal void AddOrderEvent(OrderEvent orderEvent) {
             lock (_orderEventsLock) {
                 _orderEvents.Add(orderEvent);
@@ -286,7 +286,7 @@ package com.quantconnect.lean.Orders
                     // keep running totals of quantity filled and the average fill price so we
                     // don't need to compute these on demand
                     _quantityFilled += orderEvent.FillQuantity;
-                    quantityWeightedFillPrice = _orderEvents.Where(x => x.Status.IsFill()).Sum(x => x.AbsoluteFillQuantity*x.FillPrice);
+                    quantityWeightedFillPrice = _orderEvents.Where(x -> x.Status.IsFill()).Sum(x -> x.AbsoluteFillQuantity*x.FillPrice);
                     _averageFillPrice = quantityWeightedFillPrice/Math.Abs(_quantityFilled);
                 }
             }
@@ -297,10 +297,10 @@ package com.quantconnect.lean.Orders
             }
         }
 
-        /// <summary>
+        /**
         /// Updates the internal order object with the current state
-        /// </summary>
-        /// <param name="order">The order</param>
+        */
+         * @param order">The order
         internal void SetOrder(Order order) {
             if( _order != null && _order.Id != order.Id) {
                 throw new ArgumentException( "Order id mismatch");
@@ -309,10 +309,10 @@ package com.quantconnect.lean.Orders
             _order = order;
         }
 
-        /// <summary>
+        /**
         /// Adds a new <see cref="UpdateOrderRequest"/> to this ticket.
-        /// </summary>
-        /// <param name="request">The recently processed <see cref="UpdateOrderRequest"/></param>
+        */
+         * @param request">The recently processed <see cref="UpdateOrderRequest"/>
         internal void AddUpdateRequest(UpdateOrderRequest request) {
             if( request.OrderId != OrderId) {
                 throw new ArgumentException( "Received UpdateOrderRequest for incorrect order id.");
@@ -323,14 +323,14 @@ package com.quantconnect.lean.Orders
             }
         }
 
-        /// <summary>
+        /**
         /// Sets the <see cref="CancelOrderRequest"/> for this ticket. This can only be performed once.
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// This method is thread safe.
-        /// </remarks>
-        /// <param name="request">The <see cref="CancelOrderRequest"/> that canceled this ticket.</param>
-        /// <returns>False if the the CancelRequest has already been set, true if this call set it</returns>
+        /// 
+         * @param request">The <see cref="CancelOrderRequest"/> that canceled this ticket.
+        @returns False if the the CancelRequest has already been set, true if this call set it
         internal boolean TrySetCancelRequest(CancelOrderRequest request) {
             if( request.OrderId != OrderId) {
                 throw new ArgumentException( "Received CancelOrderRequest for incorrect order id.");
@@ -344,9 +344,9 @@ package com.quantconnect.lean.Orders
             return true;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="OrderTicket"/> that represents trying to cancel an order for which no ticket exists
-        /// </summary>
+        */
         public static OrderTicket InvalidCancelOrderId(SecurityTransactionManager transactionManager, CancelOrderRequest request) {
             submit = new SubmitOrderRequest(OrderType.Market, SecurityType.Base, Symbol.Empty, 0, 0, 0, DateTime.MaxValue, string.Empty);
             submit.SetResponse(OrderResponse.UnableToFindOrder(request));
@@ -357,9 +357,9 @@ package com.quantconnect.lean.Orders
             return ticket;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="OrderTicket"/> tht represents trying to update an order for which no ticket exists
-        /// </summary>
+        */
         public static OrderTicket InvalidUpdateOrderId(SecurityTransactionManager transactionManager, UpdateOrderRequest request) {
             submit = new SubmitOrderRequest(OrderType.Market, SecurityType.Base, Symbol.Empty, 0, 0, 0, DateTime.MaxValue, string.Empty);
             submit.SetResponse(OrderResponse.UnableToFindOrder(request));
@@ -370,17 +370,17 @@ package com.quantconnect.lean.Orders
             return ticket;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="OrderTicket"/> that represents trying to submit a new order that had errors embodied in the <paramref name="response"/>
-        /// </summary>
+        */
         public static OrderTicket InvalidSubmitRequest(SecurityTransactionManager transactionManager, SubmitOrderRequest request, OrderResponse response) {
             request.SetResponse(response);
             return new OrderTicket(transactionManager, request) { _orderStatusOverride = OrderStatus.Invalid };
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="OrderTicket"/> that is invalidated because the algorithm was in the middle of warm up still
-        /// </summary>
+        */
         public static OrderTicket InvalidWarmingUp(SecurityTransactionManager transactionManager, SubmitOrderRequest submit) {
             submit.SetResponse(OrderResponse.WarmingUp(submit));
             ticket = new OrderTicket(transactionManager, submit);
@@ -388,12 +388,12 @@ package com.quantconnect.lean.Orders
             return ticket;
         }
 
-        /// <summary>
+        /**
         /// Returns a String that represents the current object.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A String that represents the current object.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         public @Override String toString() {
             counts = "Request Count: " + RequestCount() + " Response Count: " + ResponseCount();
@@ -406,18 +406,18 @@ package com.quantconnect.lean.Orders
         private int ResponseCount() {
             return (_submitRequest.Response == OrderResponse.Unprocessed ? 0 : 1) 
                  + (_cancelRequest == null || _cancelRequest.Response == OrderResponse.Unprocessed ? 0 : 1)
-                 + _updateRequests.Count(x => x.Response != OrderResponse.Unprocessed);
+                 + _updateRequests.Count(x -> x.Response != OrderResponse.Unprocessed);
         }
 
         private int RequestCount() {
             return 1 + _updateRequests.Count + (_cancelRequest == null ? 0 : 1);
         }
 
-        /// <summary>
+        /**
         /// This is provided for API backward compatibility and will resolve to the order ID, except during
         /// an error, where it will return the integer value of the <see cref="OrderResponseErrorCode"/> from
         /// the most recent response
-        /// </summary>
+        */
         public static implicit operator int(OrderTicket ticket) {
             response = ticket.GetMostRecentOrderResponse();
             if( response != null && response.IsError) {

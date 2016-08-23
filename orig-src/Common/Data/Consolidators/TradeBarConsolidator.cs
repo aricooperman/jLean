@@ -19,55 +19,55 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Data.Consolidators
 {
-    /// <summary>
+    /**
     /// A data consolidator that can make bigger bars from smaller ones over a given
     /// time span or a count of pieces of data.
     /// 
     /// Use this consolidator to turn data of a lower resolution into data of a higher resolution,
     /// for example, if you subscribe to minute data but want to have a 15 minute bar.
-    /// </summary>
+    */
     public class TradeBarConsolidator : TradeBarConsolidatorBase<TradeBar>
     {
-        /// <summary>
+        /**
         /// Create a new TradeBarConsolidator for the desired resolution
-        /// </summary>
-        /// <param name="resolution">The resoluton desired</param>
-        /// <returns>A consolidator that produces data on the resolution interval</returns>
+        */
+         * @param resolution">The resoluton desired
+        @returns A consolidator that produces data on the resolution interval
         public static TradeBarConsolidator FromResolution(Resolution resolution) {
             return new TradeBarConsolidator(resolution.ToTimeSpan());
         }
 
-        /// <summary>
+        /**
         /// Creates a consolidator to produce a new 'TradeBar' representing the period
-        /// </summary>
-        /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
+        */
+         * @param period">The minimum span of time before emitting a consolidated bar
         public TradeBarConsolidator(TimeSpan period)
             : base(period) {
         }
 
-        /// <summary>
+        /**
         /// Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data
-        /// </summary>
-        /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
+        */
+         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
         public TradeBarConsolidator(int maxCount)
             : base(maxCount) {
         }
 
-        /// <summary>
+        /**
         /// Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data or the period, whichever comes first
-        /// </summary>
-        /// <param name="maxCount">The number of pieces to accept before emiting a consolidated bar</param>
-        /// <param name="period">The minimum span of time before emitting a consolidated bar</param>
-        public TradeBarConsolidator(int maxCount, TimeSpan period)
+        */
+         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
+         * @param period">The minimum span of time before emitting a consolidated bar
+        public TradeBarConsolidator(int maxCount, Duration period)
             : base(maxCount, period) {
         }
 
-        /// <summary>
+        /**
         /// Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
         /// null following the event firing
-        /// </summary>
-        /// <param name="workingBar">The bar we're building, null if the event was just fired and we're starting a new trade bar</param>
-        /// <param name="data">The new data</param>
+        */
+         * @param workingBar">The bar we're building, null if the event was just fired and we're starting a new trade bar
+         * @param data">The new data
         protected @Override void AggregateBar(ref TradeBar workingBar, TradeBar data) {
             if( workingBar == null ) {
                 workingBar = new TradeBar

@@ -24,7 +24,7 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// 
     /// QCU: Opening Breakout Algorithm
     /// 
@@ -50,7 +50,7 @@ package com.quantconnect.lean.Algorithm.CSharp
     ///             loss is implemented using the parabolic stop and reverse
     ///             in order to gauge exit points
     /// 
-    /// </summary>
+    */
     public class OpeningBreakoutAlgorithm : QCAlgorithm
     {
         // the equity symbol we're trading
@@ -102,9 +102,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         // stop loss to a dynamic trailing stop using the PSAR
         private boolean EnablePsarTrailingStop;
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             // initialize algorithm level parameters
             SetStartDate(2013, 10, 07);
@@ -161,12 +161,12 @@ package com.quantconnect.lean.Algorithm.CSharp
             Schedule.Event( "MarketOpen")
                 .EveryDay(Symbol)
                 .AfterMarketOpen(Symbol, minutesAfterOpen: -1)
-                .Run(() => PSARMin.Reset());
+                .Run(() -> PSARMin.Reset());
         }
 
-        /// <summary>
+        /**
         /// This function is scheduled to be run every day at the specified number of minutes after market open
-        /// </summary>
+        */
         public void MarketOpeningSpanHandler() {
             // request the last n minutes of data in minute bars, we're going to
             // define the opening rang
@@ -201,10 +201,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             Log( "OpeningBarRange: Low: " + OpeningBarRange.Low.SmartRounding() + " High: " + OpeningBarRange.High.SmartRounding());
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">Slice object keyed by symbol containing the stock data</param>
+        */
+         * @param data">Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             // we don't need to run any of this during our warmup phase
             if( IsWarmingUp) return;
@@ -263,9 +263,9 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Scans for a breakout from the opening range bar
-        /// </summary>
+        */
         private void ScanForEntrance() {
             // scan for entrances, we only want to do this before 10am
             if( Time.TimeOfDay.Hours >= 10) return;
@@ -323,9 +323,9 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Manages our stop loss ticket
-        /// </summary>
+        */
         private void ManageStopLoss() {
             // if we've already exited then no need to do more
             if( StopLossTicket == null || StopLossTicket.Status == OrderStatus.Filled) return;
@@ -349,10 +349,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// This event handler is fired for each and every order event the algorithm
         /// receives. We'll perform some logging and house keeping here
-        /// </summary>
+        */
         public @Override void OnOrderEvent(OrderEvent orderEvent) {
             // print debug messages for all order events
             if( LiveMode || orderEvent.Status.IsFill() || EnableOrderUpdateLogging) {
@@ -363,26 +363,26 @@ package com.quantconnect.lean.Algorithm.CSharp
             if( !Security.Invested && orderEvent.Status == OrderStatus.Filled) {
                 // reset values for tomorrow
                 LastExitTime = Time;
-                ticket = Transactions.GetOrderTickets(x => x.OrderId == orderEvent.OrderId).Single();
+                ticket = Transactions.GetOrderTickets(x -> x.OrderId == orderEvent.OrderId).Single();
                 Plot(Symbol, "Exit", ticket.AverageFillPrice);
             }
         }
 
-        /// <summary>
+        /**
         /// If we're still invested by the end of the day, liquidate
-        /// </summary>
+        */
         public @Override void OnEndOfDay() {
             if( Security.Invested) {
                 Liquidate();
             }
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not we should plot. This is used
         /// to provide enough plot points but not too many, we don't
         /// need to plot every second in backtests to get an idea of
         /// how good or bad our algorithm is performing
-        /// </summary>
+        */
         public boolean ShouldPlot
         {
             get
@@ -404,11 +404,11 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// In live mode it's nice to push messages to the debug window
         /// as well as the log, this allows easy real time inspection of
         /// how the algorithm is performing
-        /// </summary>
+        */
         public void LiveDebug(object msg) {
             if( msg == null ) return;
 
@@ -422,9 +422,9 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not we should end a long position
-        /// </summary>
+        */
         private boolean ShouldEnterLong
         {
             // check to go in the same direction of longer term trend and opening break out
@@ -436,17 +436,17 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not we're currently in a medium term up trend
-        /// </summary>
+        */
         private boolean IsUptrend
         {
             get { return ADX14 > 20 && ADX14.PositiveDirectionalIndex > ADX14.NegativeDirectionalIndex; }
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not we should enter a short position
-        /// </summary>
+        */
         private boolean ShouldEnterShort
         {
             // check to go in the same direction of longer term trend and opening break out
@@ -458,18 +458,18 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not we're currently in a medium term down trend
-        /// </summary>
+        */
         private boolean IsDowntrend
         {
             get { return ADX14 > 20 && ADX14.NegativeDirectionalIndex > ADX14.PositiveDirectionalIndex; }
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not there's been enough recent volatility for
         /// this strategy to work
-        /// </summary>
+        */
         private boolean HasEnoughRecentVolatility
         {
             get
@@ -479,10 +479,10 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not we should enable the psar trailing stop
-        /// </summary>
-        /// <param name="stopPrice">current stop price of our stop loss tick</param>
+        */
+         * @param stopPrice">current stop price of our stop loss tick
         private boolean ShouldEnablePsarTrailingStop( BigDecimal stopPrice) {
             // no need to enable if it's already enabled
             return !EnablePsarTrailingStop
@@ -494,9 +494,9 @@ package com.quantconnect.lean.Algorithm.CSharp
                 && IsPsarMoreProfitableThanStop(stopPrice);
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not the PSAR is on the right side of price depending on our long/short
-        /// </summary>
+        */
         private boolean PsarIsOnRightSideOfPrice
         {
             get
@@ -506,9 +506,9 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not the PSAR stop price is better than the specified stop price
-        /// </summary>
+        */
         private boolean IsPsarMoreProfitableThanStop( BigDecimal stopPrice) {
             return (Security.Holdings.IsLong && PSARMin > stopPrice) 
                 || (Security.Holdings.IsShort && PSARMin < stopPrice);

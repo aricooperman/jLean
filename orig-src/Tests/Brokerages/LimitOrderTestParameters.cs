@@ -21,8 +21,8 @@ package com.quantconnect.lean.Tests.Brokerages
 {
     public class LimitOrderTestParameters : OrderTestParameters
     {
-        private readonly BigDecimal _highLimit;
-        private readonly BigDecimal _lowLimit;
+        private final BigDecimal _highLimit;
+        private final BigDecimal _lowLimit;
 
         public LimitOrderTestParameters(Symbol symbol, BigDecimal highLimit, BigDecimal lowLimit)
             : base(symbol) {

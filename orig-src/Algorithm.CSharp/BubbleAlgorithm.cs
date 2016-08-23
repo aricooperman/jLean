@@ -25,13 +25,13 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean
 {
-    /// <summary>
+    /**
     /// Based on a macroeconomic indicator(CAPE Ratio), we are looking for entry/exit points for momentum stocks
     /// CAPE data: January 1990 - December 2014. By Tim Co.
     /// Goals:    
     ///     Capitalize in overvalued markets by generating returns with momentum and selling before the crash
     ///     Capitalize in undervalued markets by purchasing stocks at bottom of trough
-    /// </summary>
+    */
     public class BubbleAlgorithm : QCAlgorithm
     {
         BigDecimal currCape;
@@ -47,9 +47,9 @@ package com.quantconnect.lean
         Map<String, RelativeStrengthIndex> rsiDic = new Map<String, RelativeStrengthIndex>();
         Map<String, MovingAverageConvergenceDivergence> macdDic = new Map<String, MovingAverageConvergenceDivergence>();
 
-        /// <summary>
+        /**
         /// Called at the start of your algorithm to setup your requirements:
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetCash(100000);
             symbols.Add( "SPY");
@@ -86,9 +86,9 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Trying to find if current Cape is the lowest Cape in three months to indicate selling period
-        /// </summary>
+        */
         public void OnData(CAPE data) {
             newLow = false;
             //Adds first four Cape Ratios to array c
@@ -112,9 +112,9 @@ package com.quantconnect.lean
             if( newLow) Debug( "New Low has been hit on " + data.Time);
         }
 
-        /// <summary>
+        /**
         /// New TradeBar data for our assets.
-        /// </summary>
+        */
         public void OnData(TradeBars data) {
             try
             {
@@ -167,9 +167,9 @@ package com.quantconnect.lean
         }
 
 
-        /// <summary>
+        /**
         /// Buy this symbol
-        /// </summary>
+        */
         public void Buy( String symbol) {
             SecurityHolding s = Securities[symbol].Holdings;
             if( macdDic[symbol] > 0m) {
@@ -180,10 +180,10 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Sell this symbol
-        /// </summary>
-        /// <param name="symbol"></param>
+        */
+         * @param symbol">
         public void Sell(String symbol) {
             SecurityHolding s = Securities[symbol].Holdings;
             if( s.Quantity > 0 && macdDic[symbol] < 0m) {
@@ -195,45 +195,45 @@ package com.quantconnect.lean
         }
     }
 
-    /// <summary>
+    /**
     /// CAPE Ratio for SP500 PE Ratio for avg inflation adjusted earnings for previous ten years 
     /// Custom Data from DropBox
     /// Original Data from: http://www.econ.yale.edu/~shiller/data.htm
-    /// </summary>
+    */
     public class CAPE : BaseData
     {
         public BigDecimal Cape = 0;
         String format = "yyyy-MM";
         CultureInfo provider = CultureInfo.InvariantCulture;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="QuantConnect.CAPE"/> indicator.
-        /// </summary>
+        */
         public CAPE() {
             this.Symbol = "CAPE";
         }
 
-        /// <summary>
+        /**
         /// Return the URL String source of the file. This will be converted to a stream
-        /// </summary>
-        /// <param name="config">Configuration object</param>
-        /// <param name="date">Date of this source file</param>
-        /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
-        /// <returns>String URL of source file.</returns>
+        */
+         * @param config">Configuration object
+         * @param date">Date of this source file
+         * @param isLiveMode">true if we're in live mode, false for backtesting mode
+        @returns String URL of source file.
         public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             return new SubscriptionDataSource( "https://www.dropbox.com/s/ggt6blmib54q36e/CAPE.csv?dl=1", SubscriptionTransportMedium.RemoteFile);
         }
 
-        /// <summary>
+        /**
         /// Reader Method :: using set of arguements we specify read out type. Enumerate
         /// until the end of the data stream or file. E.g. Read CSV file line by line and convert
         /// into data types.
-        /// </summary>
-        /// <returns>BaseData type set by Subscription Method.</returns>
-        /// <param name="config">Config.</param>
-        /// <param name="line">Line.</param>
-        /// <param name="date">Date.</param>
-        /// <param name="isLiveMode">true if we're in live mode, false for backtesting mode</param>
+        */
+        @returns BaseData type set by Subscription Method.
+         * @param config">Config.
+         * @param line">Line.
+         * @param date">Date.
+         * @param isLiveMode">true if we're in live mode, false for backtesting mode
         public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
             index = new CAPE();
 

@@ -18,21 +18,21 @@ using System.IO;
 
 package com.quantconnect.lean.ToolBox
 {
-    /// <summary>
+    /**
     /// Type representing the various pieces of information emebedded into a lean data file path
-    /// </summary>
+    */
     public class LeanDataPathComponents
     {
-        public readonly DateTime Date;
-        public readonly SecurityType SecurityType;
-        public readonly String Market;
-        public readonly Resolution Resolution;
-        public readonly String Filename;
-        public readonly Symbol Symbol; // for options this is a 'canonical' symbol using info derived from the path
+        public final DateTime Date;
+        public final SecurityType SecurityType;
+        public final String Market;
+        public final Resolution Resolution;
+        public final String Filename;
+        public final Symbol Symbol; // for options this is a 'canonical' symbol using info derived from the path
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="LeanDataPathComponents"/> class
-        /// </summary>
+        */
         public LeanDataPathComponents(SecurityType securityType, String market, Resolution resolution, Symbol symbol, String filename, DateTime date) {
             Date = date;
             SecurityType = securityType;
@@ -42,11 +42,11 @@ package com.quantconnect.lean.ToolBox
             Symbol = symbol;
         }
 
-        /// <summary>
+        /**
         /// Parses the specified path into a new instance of the <see cref="LeanDataPathComponents"/> class
-        /// </summary>
-        /// <param name="path">The path to be parsed</param>
-        /// <returns>A new instance of the <see cref="LeanDataPathComponents"/> class representing the specified path</returns>
+        */
+         * @param path">The path to be parsed
+        @returns A new instance of the <see cref="LeanDataPathComponents"/> class representing the specified path
         public static LeanDataPathComponents Parse( String path) {
             //"../Data/equity/usa/hour/spy.zip"
             //"../Data/equity/usa/hour/spy/20160218_trade.zip"

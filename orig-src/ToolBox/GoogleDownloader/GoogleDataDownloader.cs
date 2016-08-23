@@ -22,9 +22,9 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.ToolBox.GoogleDownloader
 {
-    /// <summary>
+    /**
     /// Google Data Downloader class
-    /// </summary>
+    */
     public class GoogleDataDownloader : IDataDownloader
     {
         // q = SYMBOL
@@ -34,14 +34,14 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
         // Strangely Google forces CHLO format instead of normal OHLC.
         private static final String UrlPrototype = @"http://www.google.com/finance/getprices?q=%1$s&i=%2$s&p=%3$sd&f=d,c,h,l,o,v&ts={3}";
 
-        /// <summary>
+        /**
         /// Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
-        /// </summary>
-        /// <param name="symbol">Symbol for the data we're looking for.</param>
-        /// <param name="resolution">Resolution of the data request</param>
-        /// <param name="startUtc">Start time of the data in UTC</param>
-        /// <param name="endUtc">End time of the data in UTC</param>
-        /// <returns>Enumerable of base data for this symbol</returns>
+        */
+         * @param symbol">Symbol for the data we're looking for.
+         * @param resolution">Resolution of the data request
+         * @param startUtc">Start time of the data in UTC
+         * @param endUtc">End time of the data in UTC
+        @returns Enumerable of base data for this symbol
         public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
             if( resolution != Resolution.Minute && resolution != Resolution.Hour)
                 throw new NotSupportedException( "Resolution not available: " + resolution);
@@ -106,23 +106,23 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
             }
         }
 
-        /// <summary>
+        /**
         /// Convert a DateTime object into a Unix time long value
-        /// </summary>
-        /// <param name="utcDateTime">The DateTime object (UTC)</param>
-        /// <returns>A Unix long time value.</returns>
-        /// <remarks>When we move to NET 4.6, we can replace this with DateTimeOffset.ToUnixTimeSeconds()</remarks>
+        */
+         * @param utcDateTime">The DateTime object (UTC)
+        @returns A Unix long time value.
+        /// When we move to NET 4.6, we can replace this with DateTimeOffset.ToUnixTimeSeconds()
         private static long ToUnixTime(DateTime utcDateTime) {
             epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return (long)(utcDateTime - epoch).TotalSeconds;
         }
 
-        /// <summary>
+        /**
         /// Convert a Unix time long value into a DateTime object
-        /// </summary>
-        /// <param name="unixTime">Unix long time.</param>
-        /// <returns>A DateTime value (UTC)</returns>
-        /// <remarks>When we move to NET 4.6, we can replace this with DateTimeOffset.FromUnixTimeSeconds()</remarks>
+        */
+         * @param unixTime">Unix long time.
+        @returns A DateTime value (UTC)
+        /// When we move to NET 4.6, we can replace this with DateTimeOffset.FromUnixTimeSeconds()
         private static DateTime FromUnixTime(long unixTime) {
             epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return epoch.AddSeconds(unixTime);

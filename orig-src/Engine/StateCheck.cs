@@ -23,10 +23,10 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Lean.Engine
 {
-    /// <summary>
+    /**
     /// Algorithm status monitor reads the central command directive for this algorithm/backtest. When it detects
     /// the backtest has been deleted or cancelled the backtest is aborted.
-    /// </summary>
+    */
     public class StateCheck
     {
         /// DB Ping Class
@@ -35,15 +35,15 @@ package com.quantconnect.lean.Lean.Engine
             // set to true to break while loop in Run()
             private ManualResetEventSlim _exitEvent;
 
-            private readonly AlgorithmNodePacket _job;
-            private readonly AlgorithmManager _algorithmManager;
-            private readonly IApi _api;
-            private readonly IResultHandler _resultHandler;
-            private readonly IMessagingHandler _messagingHandler;
+            private final AlgorithmNodePacket _job;
+            private final AlgorithmManager _algorithmManager;
+            private final IApi _api;
+            private final IResultHandler _resultHandler;
+            private final IMessagingHandler _messagingHandler;
 
-            /// <summary>
+            /**
             /// Creates an instance of the <see cref="Ping"/> class
-            /// </summary>
+            */
             public Ping(AlgorithmManager algorithmManager, IApi api, IResultHandler resultHandler, IMessagingHandler messagingHandler, AlgorithmNodePacket job) {
                 _api = api;
                 _job = job;
@@ -82,9 +82,9 @@ package com.quantconnect.lean.Lean.Engine
                 Log.Trace( "StateCheck.Ping.Run(): Exited thread.");
             }
 
-            /// <summary>
+            /**
             /// Send an exit signal to the thread
-            /// </summary>
+            */
             public void Exit() {
                 _exitEvent.Set();
             }

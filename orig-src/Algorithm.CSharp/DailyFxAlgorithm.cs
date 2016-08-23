@@ -21,14 +21,14 @@ using QuantConnect.Data.Custom;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// Daily Fx demonstration to call on and use the FXCM Calendar API
-    /// </summary>
+    */
     public class DailyFxAlgorithm : QCAlgorithm
     {
-        /// <summary>
+        /**
         /// Add the Daily FX type to our algorithm and use its events.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2016, 05, 26);  //Set Start Date
             SetEndDate(2016, 05, 27);    //Set End Date
@@ -42,9 +42,9 @@ package com.quantconnect.lean.Algorithm.CSharp
             Console.WriteLine( "SLICE >> %1$s : %2$s", _sliceCount++, result);
         }
 
-        /// <summary>
+        /**
         /// Trigger an event on a complete calendar event which has an actual value.
-        /// </summary>
+        */
         private int _eventCount = 0;
         private Map<String, DailyFx> _uniqueConfirmation = new Map<String, DailyFx>();
         public void OnData(DailyFx calendar) {

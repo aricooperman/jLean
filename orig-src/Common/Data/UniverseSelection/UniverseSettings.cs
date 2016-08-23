@@ -18,46 +18,46 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Data.UniverseSelection
 {
-    /// <summary>
+    /**
     /// Defines settings required when adding a subscription
-    /// </summary>
+    */
     public class UniverseSettings
     {
-        /// <summary>
+        /**
         /// The resolution to be used
-        /// </summary>
+        */
         public Resolution Resolution;
 
-        /// <summary>
+        /**
         /// The leverage to be used
-        /// </summary>
+        */
         public BigDecimal Leverage;
 
-        /// <summary>
+        /**
         /// True to fill data forward, false otherwise
-        /// </summary>
+        */
         public boolean FillForward;
 
-        /// <summary>
+        /**
         /// True to allow extended market hours data, false otherwise
-        /// </summary>
+        */
         public boolean ExtendedMarketHours;
 
-        /// <summary>
+        /**
         /// Defines the minimum amount of time a security must be in
         /// the universe before being removed.
-        /// </summary>
-        public TimeSpan MinimumTimeInUniverse;
+        */
+        public Duration MinimumTimeInUniverse;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="UniverseSettings"/> class
-        /// </summary>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="leverage">The leverage to be used</param>
-        /// <param name="fillForward">True to fill data forward, false otherwise</param>
-        /// <param name="extendedMarketHours">True to allow exended market hours data, false otherwise</param>
-        /// <param name="minimumTimeInUniverse">Defines the minimum amount of time a security must remain in the universe before being removed</param>
-        public UniverseSettings(Resolution resolution, BigDecimal leverage, boolean fillForward, boolean extendedMarketHours, TimeSpan minimumTimeInUniverse) {
+        */
+         * @param resolution">The resolution
+         * @param leverage">The leverage to be used
+         * @param fillForward">True to fill data forward, false otherwise
+         * @param extendedMarketHours">True to allow exended market hours data, false otherwise
+         * @param minimumTimeInUniverse">Defines the minimum amount of time a security must remain in the universe before being removed
+        public UniverseSettings(Resolution resolution, BigDecimal leverage, boolean fillForward, boolean extendedMarketHours, Duration minimumTimeInUniverse) {
             Resolution = resolution;
             Leverage = leverage;
             FillForward = fillForward;

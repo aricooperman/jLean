@@ -23,99 +23,99 @@ using QuantConnect.Data.UniverseSelection;
 
 package com.quantconnect.lean.Data.Custom
 {
-    /// <summary>
+    /**
     /// Helper data type for FXCM's public macro economic sentiment API.
     /// Data source used to create: https://www.dailyfx.com/calendar
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Data sourced by Thomson Reuters
     /// DailyFX provides traders with an easy to use and customizable real-time calendar that updates automatically during 
     /// announcements.Keep track of significant events that traders care about.As soon as event data is released, the DailyFX 
     /// calendar automatically updates to provide traders with instantaneous information that they can use to formulate their trading decisions.
-    /// </remarks>
+    /// 
     public class DailyFx : BaseData
     {
         JsonSerializerSettings _jsonSerializerSettings;
 
-        /// <summary>
+        /**
         /// Title of the event.
-        /// </summary>
+        */
         @JsonProperty( "title")]
         public String Title;
 
-        /// <summary>
+        /**
         /// Date the event was displayed on DailyFX
-        /// </summary>
+        */
         @JsonProperty( "displayDate")]
         public DateTimeOffset DisplayDate; 
 
-        /// <summary>
+        /**
         /// Time of the day the event was displayed.
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         ///  This is dated 1970, ignore the date component.
-        /// </remarks>
+        /// 
         @JsonProperty( "displayTime")]
         public DateTimeOffset DisplayTime;
 
-        /// <summary>
+        /**
         /// Importance assignment from FxDaily API.
-        /// </summary>
+        */
         @JsonProperty( "importance")]
         public FxDailyImportance Importance;
 
-        /// <summary>
+        /**
         /// What is the perceived meaning of this announcement result?
-        /// </summary>
+        */
         @JsonProperty( "better")]
         [JsonConverter(typeof(DailyFxMeaningEnumConverter))]
         public FxDailyMeaning Meaning;
 
-        /// <summary>
+        /**
         /// Currency for this event.
-        /// </summary>
+        */
         @JsonProperty( "currency")]
         public String Currency;
 
-        /// <summary>
+        /**
         /// Realized value of the economic tracker
-        /// </summary>
+        */
         @JsonProperty( "actual")]
         public String Actual;
 
-        /// <summary>
+        /**
         /// Forecast value of the economic tracker
-        /// </summary>
+        */
         @JsonProperty( "forecast")]
         public String Forecast;
 
-        /// <summary>
+        /**
         /// Previous value of the economic tracker
-        /// </summary>
+        */
         @JsonProperty( "previous")]
         public String Previous;
 
-        /// <summary>
+        /**
         /// Is this a daily event?
-        /// </summary>
+        */
         @JsonProperty( "daily")]
         public boolean DailyEvent;
 
-        /// <summary>
+        /**
         /// Description and commentary on the event.
-        /// </summary>
+        */
         @JsonProperty( "commentary")]
         public String Commentary;
 
-        /// <summary>
+        /**
         /// Language for this event.
-        /// </summary>
+        */
         @JsonProperty( "language")]
         public String Language;
 
-        /// <summary>
+        /**
         /// Create a new basic FxDaily object.
-        /// </summary>
+        */
         public DailyFx() {
             _jsonSerializerSettings = new JsonSerializerSettings() {
                 DateFormatHandling = DateFormatHandling.IsoDateFormat,
@@ -124,17 +124,17 @@ package com.quantconnect.lean.Data.Custom
             };
         }
 
-        /// <summary>
+        /**
         /// Get the source URL for this date. 
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         ///     FXCM API allows up to 3mo blocks at a time, so we'll return the same URL for each
         ///     quarter and store the results in a local cache for speed.
-        /// </remarks>
-        /// <param name="config">Susbcription configuration</param>
-        /// <param name="date">Date we're seeking.</param>
-        /// <param name="isLiveMode">Live mode flag</param>
-        /// <returns>Subscription source.</returns>
+        /// 
+         * @param config">Susbcription configuration
+         * @param date">Date we're seeking.
+         * @param isLiveMode">Live mode flag
+        @returns Subscription source.
         public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             // Live mode just always get today's results, backtesting get all the results for the quarter.
             url = "https://content.dailyfx.com/getData?contenttype=calendarEvent&description=true&format=json_pretty";
@@ -147,14 +147,14 @@ package com.quantconnect.lean.Data.Custom
             return new SubscriptionDataSource(url, SubscriptionTransportMedium.Rest, FileFormat.Collection);
         }
 
-        /// <summary>
+        /**
         /// Create a new Daily FX Object
-        /// </summary>
-        /// <param name="config">Subscription data config which created this factory</param>
-        /// <param name="content">Line from a <seealso cref="SubscriptionDataSource"/> result</param>
-        /// <param name="date">Date of the request</param>
-        /// <param name="isLiveMode">Live mode</param>
-        /// <returns></returns>
+        */
+         * @param config">Subscription data config which created this factory
+         * @param content">Line from a <seealso cref="SubscriptionDataSource"/> result
+         * @param date">Date of the request
+         * @param isLiveMode">Live mode
+        @returns 
         public @Override BaseData Reader(SubscriptionDataConfig config, String content, DateTime date, boolean isLiveMode) {
             dailyfxList = JsonConvert.DeserializeObject<List<DailyFx>>(content, _jsonSerializerSettings);
 
@@ -167,7 +167,7 @@ package com.quantconnect.lean.Data.Custom
                 dailyfx.Value = 0;
                 try
                 {
-                    if( !string.IsNullOrEmpty(Actual)) {
+                    if( !StringUtils.isEmpty(Actual)) {
                         dailyfx.Value = new BigDecimal( RemoveSpecialCharacters(Actual));
                     }
                 }
@@ -179,18 +179,18 @@ package com.quantconnect.lean.Data.Custom
             return new BaseDataCollection(date, config.Symbol, dailyfxList);
         }
 
-        /// <summary>
+        /**
         /// Actual values from the API have lots of units, strip these to generate a "value" for the basedata.
-        /// </summary>
+        */
         private static String RemoveSpecialCharacters( String str) {
             return Regex.Replace(str, "[^a-zA-Z0-9_.]+", "", RegexOptions.Compiled);
         }
 
-        /// <summary>
+        /**
         /// Get the date search String for the quarter.
-        /// </summary>
-        /// <param name="date"></param>
-        /// <returns></returns>
+        */
+         * @param date">
+        @returns 
         private String GetQuarter(DateTime date) {
             start = date.toString( "yyyy", CultureInfo.InvariantCulture);
             end = start;
@@ -215,71 +215,71 @@ package com.quantconnect.lean.Data.Custom
             return String.format( "&startdate=%1$s&enddate=%2$s", start, end);
         }
 
-        /// <summary>
+        /**
         /// Pretty format output String for the DailyFx.
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         public @Override String toString() {
             return String.format( "DailyFx [%1$s %2$s %3$s {3} {4}]", Time.toString( "u"), Title, Currency, Importance, Meaning);
         }
     }
 
-    /// <summary>
+    /**
     /// FXDaily Importance Assignment.
-    /// </summary>
+    */
     public enum FxDailyImportance
     {
-        /// <summary>
+        /**
         /// Low importance
-        /// </summary>
+        */
         @JsonProperty( "low")]
         Low,
 
-        /// <summary>
+        /**
         /// Medium importance
-        /// </summary>
+        */
         @JsonProperty( "medium")]
         Medium,
 
-        /// <summary>
+        /**
         /// High importance
-        /// </summary>
+        */
         @JsonProperty( "high")]
         High
     }
 
-    /// <summary>
+    /**
     /// What is the meaning of the event?
-    /// </summary>
+    */
     public enum FxDailyMeaning
     {
-        /// <summary>
+        /**
         /// The impact is perceived to be neutral.
-        /// </summary>
+        */
         @JsonProperty( "NONE")]
         None,
 
-        /// <summary>
+        /**
         /// The economic impact is perceived to be better.
-        /// </summary>
+        */
         @JsonProperty( "TRUE")]
         Better,
 
-        /// <summary>
+        /**
         /// The economic impact is perceived to be worse.
-        /// </summary>
+        */
         @JsonProperty( "FALSE")]
         Worse
     }
 
-    /// <summary>
+    /**
     /// Helper to parse the Daily Fx API.
-    /// </summary>
+    */
     public class DailyFxMeaningEnumConverter : JsonConverter
     {
-        /// <summary>
+        /**
         /// Parse DailyFx API enum
-        /// </summary>
+        */
         public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
             enumString = ( String)reader.Value;
             FxDailyMeaning? meaning = null;
@@ -299,16 +299,16 @@ package com.quantconnect.lean.Data.Custom
             return meaning;
         }
 
-        /// <summary>
+        /**
         /// Write DailyFxEnum objects to JSON
-        /// </summary>
+        */
         public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
             throw new NotImplementedException( "DailyFx Enum Converter is ReadOnly");
         }
 
-        /// <summary>
+        /**
         /// Indicate if we can convert this object.
-        /// </summary>
+        */
         public @Override boolean CanConvert(Type objectType) {
             return objectType == typeof( String);
         }

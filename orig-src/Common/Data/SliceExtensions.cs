@@ -21,62 +21,62 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Data
 {
-    /// <summary>
+    /**
     /// Provides extension methods to slice enumerables
-    /// </summary>
+    */
     public static class SliceExtensions
     {
-        /// <summary>
+        /**
         /// Selects into the slice and returns the TradeBars that have data in order
-        /// </summary>
-        /// <param name="slices">The enumerable of slice</param>
-        /// <returns>An enumerable of TradeBars</returns>
+        */
+         * @param slices">The enumerable of slice
+        @returns An enumerable of TradeBars
         public static IEnumerable<TradeBars> TradeBars(this IEnumerable<Slice> slices) {
-            return slices.Where(x => x.Bars.Count > 0).Select(x => x.Bars);
+            return slices.Where(x -> x.Bars.Count > 0).Select(x -> x.Bars);
         }
 
-        /// <summary>
+        /**
         /// Selects into the slice and returns the Ticks that have data in order
-        /// </summary>
-        /// <param name="slices">The enumerable of slice</param>
-        /// <returns>An enumerable of Ticks</returns>
+        */
+         * @param slices">The enumerable of slice
+        @returns An enumerable of Ticks
         public static IEnumerable<Ticks> Ticks(this IEnumerable<Slice> slices) {
-            return slices.Where(x => x.Ticks.Count > 0).Select(x => x.Ticks);
+            return slices.Where(x -> x.Ticks.Count > 0).Select(x -> x.Ticks);
         }
 
-        /// <summary>
+        /**
         /// Gets an enumerable of TradeBar for the given symbol. This method does not verify
         /// that the specified symbol points to a TradeBar
-        /// </summary>
-        /// <param name="slices">The enumerable of slice</param>
-        /// <param name="symbol">The symbol to retrieve</param>
-        /// <returns>An enumerable of TradeBar for the matching symbol, of no TradeBar found for symbol, empty enumerable is returned</returns>
+        */
+         * @param slices">The enumerable of slice
+         * @param symbol">The symbol to retrieve
+        @returns An enumerable of TradeBar for the matching symbol, of no TradeBar found for symbol, empty enumerable is returned
         public static IEnumerable<TradeBar> Get(this IEnumerable<Slice> slices, Symbol symbol) {
-            return slices.TradeBars().Where(x => x.ContainsKey(symbol)).Select(x => x[symbol]);
+            return slices.TradeBars().Where(x -> x.ContainsKey(symbol)).Select(x -> x[symbol]);
         }
 
-        /// <summary>
+        /**
         /// Gets an enumerable of T for the given symbol. This method does not vify
         /// that the specified symbol points to a T
-        /// </summary>
+        */
         /// <typeparam name="T">The data type</typeparam>
-        /// <param name="dataDictionaries">The data dictionary enumerable to access</param>
-        /// <param name="symbol">The symbol to retrieve</param>
-        /// <returns>An enumerable of T for the matching symbol, if no T is found for symbol, empty enumerable is returned</returns>
+         * @param dataDictionaries">The data dictionary enumerable to access
+         * @param symbol">The symbol to retrieve
+        @returns An enumerable of T for the matching symbol, if no T is found for symbol, empty enumerable is returned
         public static IEnumerable<T> Get<T>(this IEnumerable<DataMap<T>> dataDictionaries, Symbol symbol)
             where T : BaseData
         {
-            return dataDictionaries.Where(x => x.ContainsKey(symbol)).Select(x => x[symbol]);
+            return dataDictionaries.Where(x -> x.ContainsKey(symbol)).Select(x -> x[symbol]);
         }
 
-        /// <summary>
+        /**
         /// Gets an enumerable of decimals by accessing the specified field on data for the symbol
-        /// </summary>
+        */
         /// <typeparam name="T">The data type</typeparam>
-        /// <param name="dataDictionaries">An enumerable of data dictionaries</param>
-        /// <param name="symbol">The symbol to retrieve</param>
-        /// <param name="field">The field to access</param>
-        /// <returns>An enumerable of decimals</returns>
+         * @param dataDictionaries">An enumerable of data dictionaries
+         * @param symbol">The symbol to retrieve
+         * @param field">The field to access
+        @returns An enumerable of decimals
         public static IEnumerable<decimal> Get<T>(this IEnumerable<DataMap<T>> dataDictionaries, Symbol symbol, String field) {
             Func<T, decimal> selector;
             if( typeof (DynamicData).IsAssignableFrom(typeof (T))) {
@@ -90,7 +90,7 @@ package com.quantconnect.lean.Data
                 // perform the selection on the last tick
                 // NOTE: This is a known bug, should be updated to perform the selection on each item in the list
                 dataSelector = (Func<Tick, decimal>) ExpressionBuilder.MakePropertyOrFieldSelector(typeof (Tick), field).Compile();
-                selector = ticks => dataSelector(((List<Tick>) (object) ticks).Last());
+                selector = ticks -> dataSelector(((List<Tick>) (object) ticks).Last());
             }
             else
             {
@@ -105,39 +105,39 @@ package com.quantconnect.lean.Data
             }
         }
 
-        /// <summary>
+        /**
         /// Gets the data dictionaries of the requested type in each slice
-        /// </summary>
+        */
         /// <typeparam name="T">The data type</typeparam>
-        /// <param name="slices">The enumerable of slice</param>
-        /// <returns>An enumerable of data dictionary of the requested type</returns>
+         * @param slices">The enumerable of slice
+        @returns An enumerable of data dictionary of the requested type
         public static IEnumerable<DataMap<T>> Get<T>(this IEnumerable<Slice> slices)
             where T : BaseData
         {
-            return slices.Select(x => x.Get<T>()).Where(x => x.Count > 0);
+            return slices.Select(x -> x.Get<T>()).Where(x -> x.Count > 0);
         }
 
-        /// <summary>
+        /**
         /// Gets an enumerable of T by accessing the slices for the requested symbol
-        /// </summary>
+        */
         /// <typeparam name="T">The data type</typeparam>
-        /// <param name="slices">The enumerable of slice</param>
-        /// <param name="symbol">The symbol to retrieve</param>
-        /// <returns>An enumerable of T by accessing each slice for the requested symbol</returns>
+         * @param slices">The enumerable of slice
+         * @param symbol">The symbol to retrieve
+        @returns An enumerable of T by accessing each slice for the requested symbol
         public static IEnumerable<T> Get<T>(this IEnumerable<Slice> slices, Symbol symbol)
             where T : BaseData
         {
-            return slices.Select(x => x.Get<T>()).Where(x => x.ContainsKey(symbol)).Select(x => x[symbol]);
+            return slices.Select(x -> x.Get<T>()).Where(x -> x.ContainsKey(symbol)).Select(x -> x[symbol]);
         }
 
-        /// <summary>
+        /**
         /// Gets an enumerable of BigDecimal by accessing the slice for the symbol and then retrieving the specified
         /// field on each piece of data
-        /// </summary>
-        /// <param name="slices">The enumerable of slice</param>
-        /// <param name="symbol">The symbol to retrieve</param>
-        /// <param name="field">The field selector used to access the dats</param>
-        /// <returns>An enumerable of decimal</returns>
+        */
+         * @param slices">The enumerable of slice
+         * @param symbol">The symbol to retrieve
+         * @param field">The field selector used to access the dats
+        @returns An enumerable of decimal
         public static IEnumerable<decimal> Get(this IEnumerable<Slice> slices, Symbol symbol, Func<BaseData, decimal> field) {
             foreach (slice in slices) {
                 dynamic item;
@@ -148,13 +148,13 @@ package com.quantconnect.lean.Data
             }
         }
 
-        /// <summary>
+        /**
         /// Converts the specified enumerable of decimals into a double array
-        /// </summary>
-        /// <param name="decimals">The enumerable of decimal</param>
-        /// <returns>Double array representing the enumerable of decimal</returns>
+        */
+         * @param decimals">The enumerable of decimal
+        @returns Double array representing the enumerable of decimal
         public static double[] ToDoubleArray(this IEnumerable<decimal> decimals) {
-            return decimals.Select(x => (double) x).ToArray();
+            return decimals.Select(x -> (double) x).ToArray();
         }
     }
 }

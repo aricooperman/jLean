@@ -45,7 +45,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
             Assert.IsTrue(aggregator.MoveNext());
             Assert.IsNotNull(aggregator.Current);
             Assert.AreEqual(2, aggregator.Current.Data.Count);
-            Assert.IsTrue(aggregator.Current.Data.All(x => x is ZipEntryName));
+            Assert.IsTrue(aggregator.Current.Data.All(x -> x is ZipEntryName));
             Assert.AreEqual(list.Last(), aggregator.Current.Underlying);
         }
     }

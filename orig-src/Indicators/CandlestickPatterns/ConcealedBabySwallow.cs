@@ -18,10 +18,10 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Concealed Baby Swallow candlestick pattern
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - first candle: black marubozu (very short shadows)
     /// - second candle: black marubozu(very short shadows)
@@ -31,43 +31,43 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
     /// The returned value is positive(+1): concealing baby swallow is always bullish;
     /// The user should consider that concealing baby swallow is significant when it appears in downtrend, while 
     /// this function does not consider it
-    /// </remarks>
+    /// 
     public class ConcealedBabySwallow : CandlestickPattern
     {
-        private readonly int _shadowVeryShortAveragePeriod;
+        private final int _shadowVeryShortAveragePeriod;
 
         private decimal[] _shadowVeryShortPeriodTotal = new decimal[4];
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ConcealedBabySwallow"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public ConcealedBabySwallow( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod + 3 + 1) {
             _shadowVeryShortAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ConcealedBabySwallow"/> class.
-        /// </summary>
+        */
         public ConcealedBabySwallow()
             : this( "CONCEALEDBABYSWALLOW") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _shadowVeryShortAveragePeriod) {
@@ -119,9 +119,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _shadowVeryShortPeriodTotal = new decimal[4];
             base.Reset();

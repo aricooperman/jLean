@@ -30,29 +30,29 @@ using QuantConnect.Orders;
 
 package com.quantconnect.lean.Brokerages.Fxcm
 {
-    /// <summary>
+    /**
     /// FXCM brokerage - Java API related functions and interface implementations
-    /// </summary>
+    */
     public partial class FxcmBrokerage
     {
         private IGateway _gateway;
 
-        private readonly object _locker = new object();
+        private final object _locker = new object();
         private String _currentRequest;
         private static final int ResponseTimeout = 5000;
         private boolean _isOrderUpdateOrCancelRejected;
         private boolean _isOrderSubmitRejected;
 
-        private readonly Map<String, TradingSecurity> _fxcmInstruments = new Map<String, TradingSecurity>();
-        private readonly Map<String, CollateralReport> _accounts = new Map<String, CollateralReport>();
-        private readonly Map<String, MarketDataSnapshot> _rates = new Map<String, MarketDataSnapshot>();
+        private final Map<String, TradingSecurity> _fxcmInstruments = new Map<String, TradingSecurity>();
+        private final Map<String, CollateralReport> _accounts = new Map<String, CollateralReport>();
+        private final Map<String, MarketDataSnapshot> _rates = new Map<String, MarketDataSnapshot>();
 
-        private readonly Map<String, ExecutionReport> _openOrders = new Map<String, ExecutionReport>();
-        private readonly Map<String, PositionReport> _openPositions = new Map<String, PositionReport>();
+        private final Map<String, ExecutionReport> _openOrders = new Map<String, ExecutionReport>();
+        private final Map<String, PositionReport> _openPositions = new Map<String, PositionReport>();
 
-        private readonly Map<String, Order> _mapRequestsToOrders = new Map<String, Order>();
-        private readonly Map<String, Order> _mapFxcmOrderIdsToOrders = new Map<String, Order>();
-        private readonly Map<String, AutoResetEvent> _mapRequestsToAutoResetEvents = new Map<String, AutoResetEvent>();
+        private final Map<String, Order> _mapRequestsToOrders = new Map<String, Order>();
+        private final Map<String, Order> _mapFxcmOrderIdsToOrders = new Map<String, Order>();
+        private final Map<String, AutoResetEvent> _mapRequestsToAutoResetEvents = new Map<String, AutoResetEvent>();
 
         private String _fxcmAccountCurrency = "USD";
 
@@ -112,12 +112,12 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 throw new TimeoutException( String.format( "FxcmBrokerage.LoadOpenPositions(): Operation took longer than %1$s seconds.", (decimal)ResponseTimeout / 1000));
         }
 
-        /// <summary>
+        /**
         /// Provides as public access to this data without requiring consumers to reference
         /// IKVM libraries
-        /// </summary>
+        */
         public List<Tick> GetBidAndAsk(List<String> fxcmSymbols) {
-            return GetQuotes(fxcmSymbols).Select(x => new Tick
+            return GetQuotes(fxcmSymbols).Select(x -> new Tick
             {
                 Symbol = _symbolMapper.GetLeanSymbol(
                     x.getInstrument().getSymbol(),
@@ -128,9 +128,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }).ToList();
         }
 
-        /// <summary>
+        /**
         /// Gets the quotes for the symbol
-        /// </summary>
+        */
         private List<MarketDataSnapshot> GetQuotes(List<String> fxcmSymbols) {
             // get current quotes for the instrument
             request = new MarketDataRequest();
@@ -149,13 +149,13 @@ package com.quantconnect.lean.Brokerages.Fxcm
             if( !autoResetEvent.WaitOne(ResponseTimeout))
                 throw new TimeoutException( String.format( "FxcmBrokerage.GetQuotes(): Operation took longer than %1$s seconds.", (decimal)ResponseTimeout / 1000));
 
-            return _rates.Where(x => fxcmSymbols.Contains(x.Key)).Select(x => x.Value).ToList();
+            return _rates.Where(x -> fxcmSymbols.Contains(x.Key)).Select(x -> x.Value).ToList();
         }
 
-        /// <summary>
+        /**
         /// Gets the current conversion rate into USD
-        /// </summary>
-        /// <remarks>Synchronous, blocking</remarks>
+        */
+        /// Synchronous, blocking
         private BigDecimal GetUsdConversion( String currency) {
             if( currency == "USD")
                 return 1m;
@@ -176,10 +176,10 @@ package com.quantconnect.lean.Brokerages.Fxcm
 
         #region IGenericMessageListener implementation
 
-        /// <summary>
+        /**
         /// Receives generic messages from the FXCM API
-        /// </summary>
-        /// <param name="message">Generic message received</param>
+        */
+         * @param message">Generic message received
         public void messageArrived(ITransportable message) {
             // Dispatch message to specific handler
 
@@ -219,9 +219,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// TradingSessionStatus message handler
-        /// </summary>
+        */
         private void OnTradingSessionStatus(TradingSessionStatus message) {
             if( message.getRequestID() == _currentRequest) {
                 // load instrument list into a dictionary
@@ -239,9 +239,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// CollateralReport message handler
-        /// </summary>
+        */
         private void OnCollateralReport(CollateralReport message) {
             // add the trading account to the account list
             _accounts[message.getAccount()] = message;
@@ -255,9 +255,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// MarketDataSnapshot message handler
-        /// </summary>
+        */
         private void OnMarketDataSnapshot(MarketDataSnapshot message) {
             // update the current prices for the instrument
             instrument = message.getInstrument();
@@ -286,9 +286,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// ExecutionReport message handler
-        /// </summary>
+        */
         private void OnExecutionReport(ExecutionReport message) {
             orderId = message.getOrderID();
             orderStatus = message.getFXCMOrdStatus();
@@ -358,9 +358,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// RequestForPositionsAck message handler
-        /// </summary>
+        */
         private void OnRequestForPositionsAck(RequestForPositionsAck message) {
             if( message.getRequestID() == _currentRequest) {
                 if( message.getTotalNumPosReports() == 0) {
@@ -370,9 +370,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// PositionReport message handler
-        /// </summary>
+        */
         private void OnPositionReport(PositionReport message) {
             if( message.getAccount() == _accountId) {
                 if( _openPositions.ContainsKey(message.getCurrency()) && message is ClosedPositionReport) {
@@ -393,9 +393,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
         }
 
-        /// <summary>
+        /**
         /// OrderCancelReject message handler
-        /// </summary>
+        */
         private void OnOrderCancelReject(OrderCancelReject message) {
             if( message.getRequestID() == _currentRequest) {
                 messageText = message.getFXCMErrorDetails().Replace( "\n", "");
@@ -413,10 +413,10 @@ package com.quantconnect.lean.Brokerages.Fxcm
 
         #region IStatusMessageListener implementation
 
-        /// <summary>
+        /**
         /// Receives status messages from the FXCM API
-        /// </summary>
-        /// <param name="message">Status message received</param>
+        */
+         * @param message">Status message received
         public void messageArrived(ISessionStatus message) {
             switch (message.getStatusCode()) {
                 case ISessionStatus.__Fields.STATUSCODE_READY:

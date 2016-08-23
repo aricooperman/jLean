@@ -17,11 +17,11 @@ using System;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// This indicator computes the Kaufman Adaptive Moving Average (KAMA).
     /// The Kaufman Adaptive Moving Average is calculated as explained here:
     /// http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:kaufman_s_adaptive_moving_average
-    /// </summary>
+    */
     public class KaufmanAdaptiveMovingAverage : WindowIndicator<IndicatorDataPoint>
     {
         private static final BigDecimal ConstMax = 2m / (30m + 1m);
@@ -32,37 +32,37 @@ package com.quantconnect.lean.Indicators
         private BigDecimal _prevKama;
         private BigDecimal _trailingValue;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="KaufmanAdaptiveMovingAverage"/> class using the specified name and period.
-        /// </summary> 
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="period">The period of the KAMA</param>
+        */ 
+         * @param name">The name of this indicator
+         * @param period">The period of the KAMA
         public KaufmanAdaptiveMovingAverage( String name, int period) 
             : base(name, period + 1) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="KaufmanAdaptiveMovingAverage"/> class using the specified period.
-        /// </summary> 
-        /// <param name="period">The period of the KAMA</param>
+        */ 
+         * @param period">The period of the KAMA
         public KaufmanAdaptiveMovingAverage(int period)
             : this( "KAMA" + period, period) {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <param name="window">The window for the input history</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The input given to the indicator
+         * @param window">The window for the input history
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             if( Samples < Period) {
                 if( Samples > 1) {
@@ -112,9 +112,9 @@ package com.quantconnect.lean.Indicators
             return _prevKama;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _sumRoc1 = 0;
             _periodRoc = 0;

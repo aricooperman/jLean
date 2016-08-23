@@ -21,9 +21,9 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Brokerages.Tradier
 {
-    /// <summary>
+    /**
     /// Tradier deserialization container for history
-    /// </summary>
+    */
     public class TradierEventContainer
     {
         /// Event Contents:
@@ -34,9 +34,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierEventContainer() { }
     }
 
-    /// <summary>
+    /**
     /// Events array container.
-    /// </summary>
+    */
     public class TradierEvents 
     { 
         /// Events List:
@@ -48,9 +48,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierEvents() { }
     }
 
-    /// <summary>
+    /**
     /// Tradier event model:
-    /// </summary>
+    */
     public class TradierEvent
     { 
         /// Tradier Event: Amount
@@ -82,9 +82,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierOptionEvent DividendEvent;
     }
 
-    /// <summary>
+    /**
     /// Common base class for events detail information:
-    /// </summary>
+    */
     public class TradierEventDetail 
     {
         /// Tradier Event: Description
@@ -99,9 +99,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierEventDetail() {  }
     }
 
-    /// <summary>
+    /**
     /// Trade event in history for tradier:
-    /// </summary>
+    */
     public class TradierTradeEvent : TradierEventDetail
     {
         /// Tradier Event: Comission
@@ -124,27 +124,27 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierTradeEvent() { }
     }
 
-    /// <summary>
+    /**
     /// Journal event in history:
-    /// </summary>
+    */
     public class TradierJournalEvent : TradierEventDetail
     {
         ///
         public TradierJournalEvent() { }
     }
 
-    /// <summary>
+    /**
     /// Dividend event in history:
-    /// </summary>
+    */
     public class TradierDividendEvent : TradierEventDetail
     {
         ///
         public TradierDividendEvent() { }
     }
 
-    /// <summary>
+    /**
     /// Option event record in history:
-    /// </summary>
+    */
     public class TradierOptionEvent : TradierEventDetail
     {
         ///

@@ -24,25 +24,25 @@ using RestSharp;
 
 package com.quantconnect.lean.Messaging
 {
-    /// <summary>
+    /**
     /// Provides a common transmit method for utilizing the QC streaming API
-    /// </summary>
+    */
     public static class StreamingApi
     {
-        /// <summary>
+        /**
         /// Gets a flag indicating whether or not the streaming api is enabled
-        /// </summary>
-        public static readonly boolean IsEnabled = Config.GetBool( "send-via-api");
+        */
+        public static final boolean IsEnabled = Config.GetBool( "send-via-api");
 
         // Client for sending asynchronous requests.
-        private static readonly RestClient Client = new RestClient( "http://streaming.quantconnect.com");
+        private static final RestClient Client = new RestClient( "http://streaming.quantconnect.com");
 
-        /// <summary>
+        /**
         /// Send a message to the QuantConnect Chart Streaming API.
-        /// </summary>
-        /// <param name="userId">User Id</param>
-        /// <param name="apiToken">API token for authentication</param>
-        /// <param name="packet">Packet to transmit</param>
+        */
+         * @param userId">User Id
+         * @param apiToken">API token for authentication
+         * @param packet">Packet to transmit
         public static void Transmit(int userId, String apiToken, Packet packet) {
             try
             {
@@ -84,20 +84,20 @@ package com.quantconnect.lean.Messaging
             }
         }
 
-        /// <summary>
+        /**
         /// Response object from the Streaming API.
-        /// </summary>
+        */
         private class Response
         {
-            /// <summary>
+            /**
             /// Type of response from the streaming api.
-            /// </summary>
-            /// <remarks>success or error</remarks>
+            */
+            /// success or error
             public String Type;
 
-            /// <summary>
+            /**
             /// Message description of the error or success state.
-            /// </summary>
+            */
             public String Message;
         }
     }

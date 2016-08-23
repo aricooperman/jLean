@@ -19,7 +19,7 @@ using QuantConnect.Data.Custom;
 
 package com.quantconnect.lean
 {
-    /// <summary>
+    /**
     /// QuantConnect University: Futures Example
     /// 
     /// QuantConnect allows importing generic data sources! This example demonstrates importing a futures
@@ -27,14 +27,14 @@ package com.quantconnect.lean
     /// 
     /// QuantConnect has a special deal with Quandl giving you access to Stevens Continuous Futurs (SCF) for free.
     /// If you'd like to download SCF for local backtesting, you can download it through Quandl.com.
-    /// </summary>
+    */
     public class QCUQuandlFutures : QCAlgorithm
     {
         String _crude = "SCF/CME_CL1_ON";
 
-        /// <summary>
+        /**
         /// Initialize the data and resolution you require for your strategy
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2000, 1, 1);
             SetEndDate(DateTime.Now.Date.AddDays(-1));
@@ -42,10 +42,10 @@ package com.quantconnect.lean
             AddData<QuandlFuture>(_crude, Resolution.Daily);
         }
 
-        /// <summary>
+        /**
         /// Data Event Handler: New data arrives here. "TradeBars" type is a dictionary of strings so you can access it by symbol.
-        /// </summary>
-        /// <param name="data">Data.</param>
+        */
+         * @param data">Data.
         public void OnData(Quandl data) {
             if( !Portfolio.HoldStock) {
                 SetHoldings(_crude, 1);
@@ -54,14 +54,14 @@ package com.quantconnect.lean
         }
     }
 
-    /// <summary>
+    /**
     /// Custom quandl data type for setting customized value column name. Value column is used for the primary trading calculations and charting.
-    /// </summary>
+    */
     public class QuandlFuture : Quandl
     {
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="QuantConnect.QuandlFuture"/> class.
-        /// </summary>
+        */
         public QuandlFuture()
             : base(valueColumnName: "Settle") {
         }

@@ -19,58 +19,58 @@ using Newtonsoft.Json.Converters;
 
 package com.quantconnect.lean.Packets
 {
-    /// <summary>
+    /**
     /// Algorithm status update information packet
-    /// </summary>
+    */
     public class AlgorithmStatusPacket : Packet
     {
-        /// <summary>
+        /**
         /// Current algorithm status
-        /// </summary>
+        */
         @JsonProperty( "eStatus")]
         [JsonConverter(typeof(StringEnumConverter))]
         public AlgorithmStatus Status;
 
-        /// <summary>
+        /**
         /// Chart we're subscribed to for live trading.
-        /// </summary>
+        */
         @JsonProperty( "sChartSubscription")]
         public String ChartSubscription;
 
-        /// <summary>
+        /**
         /// Optional message or reason for state change.
-        /// </summary>
+        */
         @JsonProperty( "sMessage")]
         public String Message;
 
-        /// <summary>
+        /**
         /// Algorithm Id associated with this status packet
-        /// </summary>
+        */
         @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId;
 
-        /// <summary>
+        /**
         /// Project Id associated with this status packet
-        /// </summary>
+        */
         @JsonProperty( "iProjectID")]
         public int ProjectId;
 
-        /// <summary>
+        /**
         /// The current state of the channel
-        /// </summary>
+        */
         @JsonProperty( "sChannelStatus")]
         public String ChannelStatus;
 
-        /// <summary>
+        /**
         /// Default constructor for JSON
-        /// </summary>
+        */
         public AlgorithmStatusPacket()
             : base(PacketType.AlgorithmStatus) {
         }
 
-        /// <summary>
+        /**
         /// Initialize algorithm state packet:
-        /// </summary>
+        */
         public AlgorithmStatusPacket( String algorithmId, int projectId, AlgorithmStatus status, String message = "")
             : base (PacketType.AlgorithmStatus) {
             Status = status;

@@ -18,28 +18,28 @@ using QuantConnect.Brokerages;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="ISecurityInitializer"/> that initializes a security
     /// by settings the <see cref="Security.FillModel"/>, <see cref="Security.FeeModel"/>, 
     /// <see cref="Security.SlippageModel"/>, and the <see cref="Security.SettlementModel"/> properties
-    /// </summary>
+    */
     public class BrokerageModelSecurityInitializer : ISecurityInitializer
     {
-        private readonly IBrokerageModel _brokerageModel;
+        private final IBrokerageModel _brokerageModel;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="BrokerageModelSecurityInitializer"/> class
         /// for the specified algorithm
-        /// </summary>
-        /// <param name="brokerageModel">The brokerage model used to initialize the security models</param>
+        */
+         * @param brokerageModel">The brokerage model used to initialize the security models
         public BrokerageModelSecurityInitializer(IBrokerageModel brokerageModel) {
             _brokerageModel = brokerageModel;
         }
 
-        /// <summary>
+        /**
         /// Initializes the specified security by setting up the models
-        /// </summary>
-        /// <param name="security">The security to be initialized</param>
+        */
+         * @param security">The security to be initialized
         public virtual void Initialize(Security security) {
             // set leverage and models
             security.SetLeverage(_brokerageModel.GetLeverage(security));

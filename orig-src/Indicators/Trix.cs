@@ -15,24 +15,24 @@
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// This indicator computes the TRIX (1-period ROC of a Triple EMA)
     /// The Accumulation/Distribution Oscillator is calculated as explained here:
     /// http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:trix
-    /// </summary>
+    */
     public class Trix : IndicatorBase<IndicatorDataPoint>
     {
-        private readonly int _period;
-        private readonly ExponentialMovingAverage _ema1;
-        private readonly ExponentialMovingAverage _ema2;
-        private readonly ExponentialMovingAverage _ema3;
-        private readonly RateOfChangePercent _roc;
+        private final int _period;
+        private final ExponentialMovingAverage _ema1;
+        private final ExponentialMovingAverage _ema2;
+        private final ExponentialMovingAverage _ema3;
+        private final RateOfChangePercent _roc;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Trix"/> class using the specified name and period.
-        /// </summary> 
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="period">The period of the indicator</param>
+        */ 
+         * @param name">The name of this indicator
+         * @param period">The period of the indicator
         public Trix( String name, int period)
             : base(name) {
             _period = period;
@@ -42,27 +42,27 @@ package com.quantconnect.lean.Indicators
             _roc = new RateOfChangePercent(name + "_ROCP1", 1);
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Trix"/> class using the specified period.
-        /// </summary> 
-        /// <param name="period">The period of the indicator</param>
+        */ 
+         * @param period">The period of the indicator
         public Trix(int period)
             : this( "TRIX" + period, period) {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples > 3 * (_period - 1) + 1; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _ema1.Update(input);
 
@@ -78,9 +78,9 @@ package com.quantconnect.lean.Indicators
             return _roc;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _ema1.Reset();
             _ema2.Reset();

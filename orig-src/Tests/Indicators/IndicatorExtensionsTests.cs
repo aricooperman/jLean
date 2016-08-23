@@ -67,7 +67,7 @@ package com.quantconnect.lean.Tests.Indicators
 
             data = Enumerable.Range(1, 10).ToList();
             window = Enumerable.Reverse(data).Take(period);
-            current = window.Sum(x => 2 * x * x) / (decimal)window.Sum(x => x);
+            current = window.Sum(x -> 2 * x * x) / (decimal)window.Sum(x -> x);
 
             foreach (item in data) {
                 value.Update(new IndicatorDataPoint(DateTime.UtcNow, new BigDecimal( 2 * item)));

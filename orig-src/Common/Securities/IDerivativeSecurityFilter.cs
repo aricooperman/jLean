@@ -19,17 +19,17 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Filters a set of derivative symbols using the underlying price data.
-    /// </summary>
+    */
     public interface IDerivativeSecurityFilter
     {
-        /// <summary>
+        /**
         /// Filters the input set of symbols using the underlying price data
-        /// </summary>
-        /// <param name="symbols">The derivative symbols to be filtered</param>
-        /// <param name="underlying">The underlying price data</param>
-        /// <returns>The filtered set of symbols</returns>
+        */
+         * @param symbols">The derivative symbols to be filtered
+         * @param underlying">The underlying price data
+        @returns The filtered set of symbols
         IEnumerable<Symbol> Filter(IEnumerable<Symbol> symbols, BaseData underlying);
     }
 }

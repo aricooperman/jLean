@@ -23,15 +23,15 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Util
 {
-    /// <summary>
+    /**
     /// Provides methods for creating new instances of objects
-    /// </summary>
+    */
     public static class ObjectActivator
     {
-        private static readonly object _lock = new object();
-        private static readonly object[] _emptyObjectArray = new object[0];
-        private static readonly Map<Type, MethodInvoker> _cloneMethodsByType = new Map<Type, MethodInvoker>();
-        private static readonly Map<Type, Func<object[], object>> _activatorsByType = new Map<Type, Func<object[], object>>();
+        private static final object _lock = new object();
+        private static final object[] _emptyObjectArray = new object[0];
+        private static final Map<Type, MethodInvoker> _cloneMethodsByType = new Map<Type, MethodInvoker>();
+        private static final Map<Type, Func<object[], object>> _activatorsByType = new Map<Type, Func<object[], object>>();
 
         static ObjectActivator() {
             // we can reuse the symbol instance in the clone since it's immutable
@@ -39,13 +39,13 @@ package com.quantconnect.lean.Util
             ((HashSet<Type>) CloneFactory.KnownImmutableTypes).Add(typeof (SecurityIdentifier));
         }
 
-        /// <summary>
+        /**
         /// Fast Object Creator from Generic Type:
         /// Modified from http://rogeralsing.com/2008/02/28/linq-expressions-creating-objects/
-        /// </summary>
-        /// <remarks>This assumes that the type has a parameterless, default constructor</remarks>
-        /// <param name="dataType">Type of the object we wish to create</param>
-        /// <returns>Method to return an instance of object</returns>
+        */
+        /// This assumes that the type has a parameterless, default constructor
+         * @param dataType">Type of the object we wish to create
+        @returns Method to return an instance of object
         public static Func<object[], object> GetActivator(Type dataType) {
             lock (_lock) {
                 // if we already have it, just use it
@@ -84,11 +84,11 @@ package com.quantconnect.lean.Util
             }
         }
 
-        /// <summary>
+        /**
         /// Clones the specified instance using reflection
-        /// </summary>
-        /// <param name="instanceToClone">The instance to be cloned</param>
-        /// <returns>A field/property wise, non-recursive clone of the instance</returns>
+        */
+         * @param instanceToClone">The instance to be cloned
+        @returns A field/property wise, non-recursive clone of the instance
         public static object Clone(object instanceToClone) {
             type = instanceToClone.GetType();
             MethodInvoker func;
@@ -97,16 +97,16 @@ package com.quantconnect.lean.Util
             }
 
             // public static T GetClone<T>(this T source, CloningFlags flags)
-            method = typeof (CloneFactory).GetMethods().FirstOrDefault(x => x.Name == "GetClone" && x.GetParameters().Length == 1);
+            method = typeof (CloneFactory).GetMethods().FirstOrDefault(x -> x.Name == "GetClone" && x.GetParameters().Length == 1);
             method = method.MakeGenericMethod(type);
             func = method.DelegateForCallMethod();
             _cloneMethodsByType[type] = func;
             return func(null, instanceToClone);
         }
 
-        /// <summary>
+        /**
         /// Clones the specified instance and then casts it to T before returning
-        /// </summary>
+        */
         public static T Clone<T>(T instanceToClone) where T : class
         {
             clone = Clone((object)instanceToClone) as T;

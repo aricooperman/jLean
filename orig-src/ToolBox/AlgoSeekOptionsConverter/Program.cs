@@ -44,7 +44,7 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
             resolutions = new[] {Resolution.Tick, Resolution.Minute, Resolution.Second, Resolution.Hour, Resolution.Daily};
             
             // for testing only process the smallest 2 files
-            files = Directory.EnumerateFiles(directory).OrderByDescending(x => new FileInfo(x).Length);
+            files = Directory.EnumerateFiles(directory).OrderByDescending(x -> new FileInfo(x).Length);
             Parallel.ForEach(files, options, file =>
             {
                 Log.Trace( "Begin tick/second/minute/hour/daily: " + file);

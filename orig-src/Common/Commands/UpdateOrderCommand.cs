@@ -19,42 +19,42 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Commands
 {
-    /// <summary>
+    /**
     /// Represents a command to update an order by id
-    /// </summary>
+    */
     public class UpdateOrderCommand : ICommand
     {
-        /// <summary>
+        /**
         /// Gets or sets the id of the order to update
-        /// </summary>
+        */
         public int OrderId { get; set; }
 
-        /// <summary>
+        /**
         /// Gets or sets the new quantity, specify null to not update the quantity
-        /// </summary>
+        */
         public int? Quantity { get; set; }
 
-        /// <summary>
+        /**
         /// Gets or sets the new limit price, specify null to not update the limit price.
         /// This will only be used if the order has a limit price (Limit/StopLimit orders)
-        /// </summary>
+        */
         public decimal? LimitPrice { get; set; }
 
-        /// <summary>
+        /**
         /// Gets or sets the new stop price, specify null to not update the stop price.
         /// This will onky be used if the order has a stop price (StopLimit/StopMarket orders)
-        /// </summary>
+        */
         public decimal? StopPrice { get; set; }
 
-        /// <summary>
+        /**
         /// Gets or sets the new tag for the order, specify null to not update the tag
-        /// </summary>
+        */
         public String Tag { get; set; }
 
-        /// <summary>
+        /**
         /// Runs this command against the specified algorithm instance
-        /// </summary>
-        /// <param name="algorithm">The algorithm to run this command against</param>
+        */
+         * @param algorithm">The algorithm to run this command against
         public CommandResultPacket Run(IAlgorithm algorithm) {
             ticket = algorithm.Transactions.UpdateOrder(new UpdateOrderRequest(algorithm.UtcTime, OrderId, new UpdateOrderFields
             {

@@ -21,9 +21,9 @@ using QuantConnect.Brokerages.Oanda.DataType.Communications;
 package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Represents a Transaction object with details about an Oanda transaction.
-    /// </summary>
+    */
     public class Transaction : Response
     {
         public long id { get; set; }
@@ -49,10 +49,10 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 		public String reason { get; set; }
 		public String expiry { get; set; }
 
-        /// <summary>
+        /**
         /// Gets a basic title for the type of transaction
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         public String GetTitle() {
             switch ( type ) {
                 case "CloseOrder":
@@ -65,10 +65,10 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
             return type;
         }
 
-        /// <summary>
+        /**
         /// 
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         public String GetReadableString() {
             String readable = units + " " + instrument + " at " + price;
             if(  pl != 0 ) {

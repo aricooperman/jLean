@@ -14,18 +14,18 @@ package com.quantconnect.lean.Views.WinForms
 {
     public partial class LeanWinForm : Form
     {
-        private readonly WebBrowser _monoBrowser;
-        private readonly AlgorithmNodePacket _job;
-        private readonly QueueLogHandler _logging;
-        private readonly EventMessagingHandler _messaging;
-        private readonly boolean _liveMode = false;
+        private final WebBrowser _monoBrowser;
+        private final AlgorithmNodePacket _job;
+        private final QueueLogHandler _logging;
+        private final EventMessagingHandler _messaging;
+        private final boolean _liveMode = false;
         //private GeckoWebBrowser _geckoBrowser;
 
-        /// <summary>
+        /**
         /// Create the UX.
-        /// </summary>
-        /// <param name="notificationHandler">Messaging system</param>
-        /// <param name="job">Job to use for URL generation</param>
+        */
+         * @param notificationHandler">Messaging system
+         * @param job">Job to use for URL generation
         public LeanWinForm(IMessagingHandler notificationHandler, AlgorithmNodePacket job) {
             InitializeComponent();
 
@@ -74,12 +74,12 @@ package com.quantconnect.lean.Views.WinForms
         }
 
 
-        /// <summary>
+        /**
         /// Get the URL for the embedded charting
-        /// </summary>
-        /// <param name="job">Job packet for the URL</param>
-        /// <param name="liveMode">Is this a live mode chart?</param>
-        /// <param name="holdReady">Hold the ready signal to inject data</param>
+        */
+         * @param job">Job packet for the URL
+         * @param liveMode">Is this a live mode chart?
+         * @param holdReady">Hold the ready signal to inject data
         private static String GetUrl(AlgorithmNodePacket job, boolean liveMode = false, boolean holdReady = false) {
             url = "";
             hold = holdReady == false ? "0" : "1";
@@ -92,33 +92,33 @@ package com.quantconnect.lean.Views.WinForms
             return url;
         }
 
-        /// <summary>
+        /**
         /// MONO BROWSER: Browser content has completely loaded.
-        /// </summary>
+        */
         private void MonoBrowserOnDocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs webBrowserDocumentCompletedEventArgs) {
             _messaging.OnConsumerReadyEvent();
         }
 
-        /// <summary>
+        /**
         /// GECKO BROWSER: Browser content has completely loaded.
-        /// </summary>
+        */
         //private void BrowserOnDomContentLoaded(object sender, DomEventArgs domEventArgs)
         //{
         //    _messaging.OnConsumerReadyEvent();
         //}
 
-        /// <summary>
+        /**
         /// Onload Form Initialization
-        /// </summary>
+        */
         private void LeanWinForm_Load(object sender, EventArgs e) {
             if( OS.IsWindows && !WBEmulator.IsBrowserEmulationSet()) {
                 WBEmulator.SetBrowserEmulationVersion();
             }
         }
 
-        /// <summary>
+        /**
         /// Update the status label at the bottom of the form
-        /// </summary>
+        */
         private void timer_Tick(object sender, EventArgs e) {
             StatisticsToolStripStatusLabel.Text = string.Concat( "Performance: CPU: ", OS.CpuUsage.NextValue().toString( "0.0"), "%",
                                                                 " Ram: ", OS.TotalPhysicalMemoryUsed, " Mb");
@@ -142,10 +142,10 @@ package com.quantconnect.lean.Views.WinForms
             }
         }
          
-        /// <summary>
+        /**
         /// Backtest result packet
-        /// </summary>
-        /// <param name="packet"></param>
+        */
+         * @param packet">
         private void MessagingOnBacktestResultEvent(BacktestResultPacket packet) {
             if( packet.Progress != 1) return;
 
@@ -190,42 +190,42 @@ package com.quantconnect.lean.Views.WinForms
             }
         }
 
-        /// <summary>
+        /**
         /// Display a handled error
-        /// </summary>
+        */
         private void MessagingOnHandledErrorEvent(HandledErrorPacket packet) {
-            hstack = (!string.IsNullOrEmpty(packet.StackTrace) ? (Environment.NewLine + " " + packet.StackTrace) : string.Empty);
+            hstack = (!StringUtils.isEmpty(packet.StackTrace) ? (Environment.NewLine + " " + packet.StackTrace) : string.Empty);
             _logging.Error(packet.Message + hstack);
         }
 
-        /// <summary>
+        /**
         /// Display a runtime error
-        /// </summary>
+        */
         private void MessagingOnRuntimeErrorEvent(RuntimeErrorPacket packet) {
-            rstack = (!string.IsNullOrEmpty(packet.StackTrace) ? (Environment.NewLine + " " + packet.StackTrace) : string.Empty);
+            rstack = (!StringUtils.isEmpty(packet.StackTrace) ? (Environment.NewLine + " " + packet.StackTrace) : string.Empty);
             _logging.Error(packet.Message + rstack);
         }
 
-        /// <summary>
+        /**
         /// Display a log packet
-        /// </summary>
+        */
         private void MessagingOnLogEvent(LogPacket packet) {
             _logging.Trace(packet.Message);
         }
 
-        /// <summary>
+        /**
         /// Display a debug packet
-        /// </summary>
-        /// <param name="packet"></param>
+        */
+         * @param packet">
         private void MessagingOnDebugEvent(DebugPacket packet) {
             _logging.Trace(packet.Message);
         }
 
-        /// <summary>
+        /**
         /// Closing the form exit the LEAN engine too.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
+        */
+         * @param sender">
+         * @param e">
         private void LeanWinForm_FormClosed(object sender, FormClosedEventArgs e) {
             Log.Trace( "LeanWinForm(): Form closed.");
             Environment.Exit(0);

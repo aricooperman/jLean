@@ -25,7 +25,7 @@ package com.quantconnect.lean.Tests.Indicators
         public void ComputesCorrectly() {
             roc = new RateOfChange(50); 
             double epsilon = 1e-3;
-            TestHelper.TestIndicator(roc, "spy_with_rocp50.txt", "Rate of Change % 50", (ind, expected) => Assert.AreEqual(expected, (double)ind.Current.Value * 100, epsilon));
+            TestHelper.TestIndicator(roc, "spy_with_rocp50.txt", "Rate of Change % 50", (ind, expected) -> Assert.AreEqual(expected, (double)ind.Current.Value * 100, epsilon));
         }
 
         [Test]

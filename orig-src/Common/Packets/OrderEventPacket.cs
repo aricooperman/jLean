@@ -19,33 +19,33 @@ using QuantConnect.Orders;
 
 package com.quantconnect.lean.Packets
 {
-    /// <summary>
+    /**
     /// Order event packet for passing updates on the state of an order to the portfolio. 
-    /// </summary>
-    /// <remarks>As an order is updated in pieces/partial fills the order fill price is passed back to the Algorithm Portfolio method</remarks>
+    */
+    /// As an order is updated in pieces/partial fills the order fill price is passed back to the Algorithm Portfolio method
     public class OrderEventPacket : Packet
     {
-        /// <summary>
+        /**
         /// Order event object
-        /// </summary>
+        */
         @JsonProperty( "oOrderEvent")]
         public OrderEvent Event;
 
-        /// <summary>
+        /**
         /// Algorithm id for this order event
-        /// </summary>
+        */
         @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId;
 
-        /// <summary>
+        /**
         /// Default constructor for JSON
-        /// </summary>
+        */
         public OrderEventPacket()
             : base (PacketType.OrderEvent) { }
 
-        /// <summary>
+        /**
         /// Create a new instance of the order event packet
-        /// </summary>
+        */
         public OrderEventPacket( String algorithmId, OrderEvent eventOrder)
             : base(PacketType.OrderEvent) {
             AlgorithmId = algorithmId;

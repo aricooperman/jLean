@@ -18,18 +18,18 @@ using System;
 
 package com.quantconnect.lean.Data.Consolidators
 {
-    /// <summary>
+    /**
     /// Represents a type that consumes BaseData instances and fires an event with consolidated
     /// and/or aggregated data.
-    /// </summary>
+    */
     /// <typeparam name="TInput">The type consumed by the consolidator</typeparam>
     public abstract class DataConsolidator<TInput> : IDataConsolidator
         where TInput : class, IBaseData
     {
-        /// <summary>
+        /**
         /// Updates this consolidator with the specified data
-        /// </summary>
-        /// <param name="data">The new data for the consolidator</param>
+        */
+         * @param data">The new data for the consolidator
         public void Update(BaseData data) {
             typedData = data as TInput;
             if( typedData == null ) {
@@ -38,62 +38,62 @@ package com.quantconnect.lean.Data.Consolidators
             Update(typedData);
         }
 
-        /// <summary>
+        /**
         /// Scans this consolidator to see if it should emit a bar due to time passing
-        /// </summary>
-        /// <param name="currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)</param>
+        */
+         * @param currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)
         public abstract void Scan(DateTime currentLocalTime);
 
-        /// <summary>
+        /**
         /// Event handler that fires when a new piece of data is produced
-        /// </summary>
+        */
         public event DataConsolidatedHandler DataConsolidated;
 
-        /// <summary>
+        /**
         /// Gets the most recently consolidated piece of data. This will be null if this consolidator
         /// has not produced any data yet.
-        /// </summary>
+        */
         public BaseData Consolidated
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets a clone of the data being currently consolidated
-        /// </summary>
+        */
         public abstract BaseData WorkingData
         {
             get;
         }
 
-        /// <summary>
+        /**
         /// Gets the type consumed by this consolidator
-        /// </summary>
+        */
         public Type InputType
         {
             get { return typeof (TInput); }
         }
 
-        /// <summary>
+        /**
         /// Gets the type produced by this consolidator
-        /// </summary>
+        */
         public abstract Type OutputType
         {
             get;
         }
 
-        /// <summary>
+        /**
         /// Updates this consolidator with the specified data. This method is
         /// responsible for raising the DataConsolidated event
-        /// </summary>
-        /// <param name="data">The new data for the consolidator</param>
+        */
+         * @param data">The new data for the consolidator
         public abstract void Update(TInput data);
 
-        /// <summary>
+        /**
         /// Event invocator for the DataConsolidated event. This should be invoked
         /// by derived classes when they have consolidated a new piece of data.
-        /// </summary>
-        /// <param name="consolidated">The newly consolidated data</param>
+        */
+         * @param consolidated">The newly consolidated data
         protected virtual void OnDataConsolidated(BaseData consolidated) {
             handler = DataConsolidated;
             if( handler != null ) handler(this, consolidated);

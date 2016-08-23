@@ -18,55 +18,55 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
-    /// <summary>
+    /**
     /// Closing Marubozu candlestick pattern indicator
-    /// </summary>
-    /// <remarks>
+    */
+    /// 
     /// Must have:
     /// - long white(black) real body
     /// - no or very short upper(lower) shadow
     /// The meaning of "long" and "very short" is specified with SetCandleSettings
     /// The returned value is positive(+1) when white(bullish), negative(-1) when black(bearish)
-    /// </remarks>
+    /// 
     public class ClosingMarubozu : CandlestickPattern
     {
-        private readonly int _bodyLongAveragePeriod;
-        private readonly int _shadowVeryShortAveragePeriod;
+        private final int _bodyLongAveragePeriod;
+        private final int _shadowVeryShortAveragePeriod;
 
         private BigDecimal _bodyLongPeriodTotal;
         private BigDecimal _shadowVeryShortPeriodTotal;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ClosingMarubozu"/> class using the specified name.
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
+        */
+         * @param name">The name of this indicator
         public ClosingMarubozu( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod) + 1) {
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
             _shadowVeryShortAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="ClosingMarubozu"/> class.
-        /// </summary>
+        */
         public ClosingMarubozu()
             : this( "CLOSINGMARUBOZU") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= Period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window">The window of data held in this indicator</param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param window">The window of data held in this indicator
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _bodyLongAveragePeriod) {
@@ -112,9 +112,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
             return value;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _bodyLongPeriodTotal = 0m;
             _shadowVeryShortPeriodTotal = 0m;

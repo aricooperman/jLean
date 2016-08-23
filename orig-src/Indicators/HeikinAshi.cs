@@ -18,48 +18,48 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// This indicator computes the Heikin-Ashi bar (HA)
     /// The Heikin-Ashi bar is calculated using the following formulas:
     /// HA_Close[0] = (Open[0] + High[0] + Low[0] + Close[0]) / 4
     /// HA_Open[0] = (HA_Open[1] + HA_Close[1]) / 2
     /// HA_High[0] = MAX(High[0], HA_Open[0], HA_Close[0])
     /// HA_Low[0] = MIN(Low[0], HA_Open[0], HA_Close[0])
-    /// </summary>
+    */
     public class HeikinAshi : TradeBarIndicator
     {
-        /// <summary>
+        /**
         /// Gets the Heikin-Ashi Open
-        /// </summary>
+        */
         public IndicatorBase<IndicatorDataPoint> Open { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the Heikin-Ashi High
-        /// </summary>
+        */
         public IndicatorBase<IndicatorDataPoint> High { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the Heikin-Ashi Low
-        /// </summary>
+        */
         public IndicatorBase<IndicatorDataPoint> Low { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the Heikin-Ashi Close
-        /// </summary>
+        */
         public IndicatorBase<IndicatorDataPoint> Close { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the Heikin-Ashi current TradeBar
-        /// </summary>
+        */
         public TradeBar CurrentBar
         {
             get {  return new TradeBar(Open.Current.Time, Symbol.Empty, Open, High, Low, Close, 0);}
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="HeikinAshi"/> class using the specified name.
-        /// </summary> 
-        /// <param name="name">The name of this indicator</param>
+        */ 
+         * @param name">The name of this indicator
         public HeikinAshi( String name)
             : base(name) {
             Open = new Identity(name + "_Open");
@@ -68,26 +68,26 @@ package com.quantconnect.lean.Indicators
             Close = new Identity(name + "_Close");
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="HeikinAshi"/> class.
-        /// </summary> 
+        */ 
         public HeikinAshi()
             : this( "HA") {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples > 1; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns> A new value for this indicator </returns>
+        */
+         * @param input">The input given to the indicator
+        @returns  A new value for this indicator 
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             if( !IsReady) {
                 Open.Update(new IndicatorDataPoint(input.Time, (input.Open + input.Close) / 2));
@@ -106,9 +106,9 @@ package com.quantconnect.lean.Indicators
             return Close;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             Open.Reset();
             High.Reset();

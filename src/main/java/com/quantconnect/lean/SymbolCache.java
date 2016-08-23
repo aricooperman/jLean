@@ -28,56 +28,56 @@ public class SymbolCache {
     private static Cache cache = new Cache();
 
     /// Adds a mapping for the specified ticker
-    /// <param name="ticker">The String ticker symbol</param>
-    /// <param name="symbol">The symbol object that maps to the String ticker symbol</param>
+     * @param ticker">The String ticker symbol
+     * @param symbol">The symbol object that maps to the String ticker symbol
     public static void set( String ticker, Symbol symbol ) {
         cache.symbols.put( ticker, symbol );
         cache.tickers.put( symbol, ticker );
     }
 
     /// Gets the Symbol object that is mapped to the specified String ticker symbol
-    /// <param name="ticker">The String ticker symbol</param>
-    /// <returns>The symbol object that maps to the specified String ticker symbol</returns>
+     * @param ticker">The String ticker symbol
+    @returns The symbol object that maps to the specified String ticker symbol
     public static Symbol getSymbol( String ticker ) {
         return tryGetSymbol( ticker )
                 .orElseThrow( () -> new RuntimeException( String.format( "We were unable to locate the ticker '%s'.", ticker ) ) );
     }
 
     /// Gets the Symbol object that is mapped to the specified String ticker symbol
-    /// <param name="ticker">The String ticker symbol</param>
-    /// <param name="symbol">The output symbol object</param>
-    /// <returns>The symbol object that maps to the specified String ticker symbol</returns>
+     * @param ticker">The String ticker symbol
+     * @param symbol">The output symbol object
+    @returns The symbol object that maps to the specified String ticker symbol
     public static Optional<Symbol> tryGetSymbol( String ticker ) {
         return cache.tryGetSymbol( ticker );
     }
 
     /// Gets the String ticker symbol that is mapped to the specified Symbol
-    /// <param name="symbol">The symbol object</param>
-    /// <returns>The String ticker symbol that maps to the specified symbol object</returns>
+     * @param symbol">The symbol object
+    @returns The String ticker symbol that maps to the specified symbol object
     public static String getTicker( Symbol symbol ) {
         final String ticker = cache.tickers.get( symbol );
         return ticker != null ? ticker : symbol.getId().toString();
     }
 
     /// Gets the String ticker symbol that is mapped to the specified Symbol
-    /// <param name="symbol">The symbol object</param>
-    /// <param name="ticker">The output String ticker symbol</param>
-    /// <returns>The String ticker symbol that maps to the specified symbol object</returns>
+     * @param symbol">The symbol object
+     * @param ticker">The output String ticker symbol
+    @returns The String ticker symbol that maps to the specified symbol object
     public static String tryGetTicker( Symbol symbol ) {
         return cache.tickers.get( symbol );
     }
 
     /// Removes the mapping for the specified symbol from the cache
-    /// <param name="symbol">The symbol whose mappings are to be removed</param>
-    /// <returns>True if the symbol mapping were removed from the cache</returns>
+     * @param symbol">The symbol whose mappings are to be removed
+    @returns True if the symbol mapping were removed from the cache
     public static boolean tryRemove( Symbol symbol ) {
         final String ticker = cache.tickers.remove( symbol );
         return ticker != null && cache.symbols.remove( ticker ) != null;
     }
 
     /// Removes the mapping for the specified symbol from the cache
-    /// <param name="ticker">The ticker whose mappings are to be removed</param>
-    /// <returns>True if the symbol mapping were removed from the cache</returns>
+     * @param ticker">The ticker whose mappings are to be removed
+    @returns True if the symbol mapping were removed from the cache
     public static boolean tryRemove( String ticker ) {
         final Symbol symbol = cache.symbols.remove( ticker );
         return symbol != null && cache.tickers.remove( symbol ) != null;
@@ -94,9 +94,9 @@ public class SymbolCache {
 
         /// Attempts to resolve the ticker to a Symbol via the cache. If not found in the
         /// cache then
-        /// <param name="ticker">The ticker to resolver to a symbol</param>
-        /// <param name="symbol">The resolves symbol</param>
-        /// <returns>True if we successfully resolved a symbol, false otherwise</returns>
+         * @param ticker">The ticker to resolver to a symbol
+         * @param symbol">The resolves symbol
+        @returns True if we successfully resolved a symbol, false otherwise
         public Optional<Symbol> tryGetSymbol( String ticker ) {
             return Optional.ofNullable( 
                     symbols.computeIfAbsent( ticker, t -> SecurityIdentifier.parse( t )

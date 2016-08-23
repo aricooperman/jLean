@@ -23,10 +23,10 @@ using QuantConnect.Orders;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// This algorithm demonstrates how you can get your symbol list each day from a remote server
     /// using the WebClient
-    /// </summary>
+    */
     public class EquitiesLabAlgorithm : QCAlgorithm
     {
         public static final String EquitiesLabKey = @"ENTER YOUR EQUITIES LAB KEY HERE";
@@ -52,15 +52,15 @@ package com.quantconnect.lean.Algorithm.CSharp
                     file = client.DownloadString(String.format(EquitiesLabUrlFormat, EquitiesLabKey, EquitiesLabScreener, date.toString( "yyyy-MM-dd")));
                     response = JsonConvert.DeserializeObject<EquitiesLabResponse>(file);
                     _todaysResponse = new EquitiesLabResponse();
-                    _todaysResponse.Securities = response.Securities.Where(x => ValidSymbols.Contains(x.Ticker)).ToList();
-                    return _todaysResponse.Securities.Select(x => x.Ticker);
+                    _todaysResponse.Securities = response.Securities.Where(x -> ValidSymbols.Contains(x.Ticker)).ToList();
+                    return _todaysResponse.Securities.Select(x -> x.Ticker);
                 }
             });
 
             // cancell all orders at EOD
             Schedule.Event( "Cancel Open Orders").EveryDay().At(Duration.ofHours(16)).Run(() =>
             {
-                foreach (ticket in Transactions.GetOrderTickets(x => x.Status.IsOpen())) {
+                foreach (ticket in Transactions.GetOrderTickets(x -> x.Status.IsOpen())) {
                     ticket.Cancel();
                 }
             });
@@ -71,7 +71,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 // leave a small buffer of cash
                 targetPercentage = 1m/(_todaysResponse.Securities.Count + 1);
 
-                foreach (target in _todaysResponse.Securities.Where(x => ValidSymbols.Contains(x.Ticker))) {
+                foreach (target in _todaysResponse.Securities.Where(x -> ValidSymbols.Contains(x.Ticker))) {
                     // rebalance portfolio to equal weights
                     SetHoldings(target.Ticker, targetPercentage);
                 }
@@ -80,7 +80,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
             else
             {
-                foreach (target in _todaysResponse.Securities.Where(x => ValidSymbols.Contains(x.Ticker))) {
+                foreach (target in _todaysResponse.Securities.Where(x -> ValidSymbols.Contains(x.Ticker))) {
                     // set stop loss / profit orders
                     security = Securities[target.Ticker];
                     if( !security.Invested) continue;
@@ -115,7 +115,7 @@ package com.quantconnect.lean.Algorithm.CSharp
             public BigDecimal StopGain;
         }
 
-        public static readonly HashSet<String> ValidSymbols = new HashSet<String>
+        public static final HashSet<String> ValidSymbols = new HashSet<String>
         {
             {"NP"},
             {"PKX"},

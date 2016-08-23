@@ -48,7 +48,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         private static void RunTestIndicator(TradeBarIndicator indicator) {
-            TestHelper.TestIndicator(indicator, "frama.txt", "Filt", (actual, expected) => {AssertResult(expected, actual.Current.Value);});
+            TestHelper.TestIndicator(indicator, "frama.txt", "Filt", (actual, expected) -> {AssertResult(expected, actual.Current.Value);});
         }
 
         private static void AssertResult(double expected, BigDecimal actual) {

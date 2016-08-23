@@ -349,14 +349,14 @@ package com.quantconnect.lean.Tests
 
                 // VisualBasic
                 // new AlgorithmStatisticsTestParameters( "BasicTemplateAlgorithm", basicTemplateStatistics, Language.VisualBasic),
-            }.Select(x => new TestCaseData(x).SetName(x.Language + "/" + x.Algorithm)).ToArray();
+            }.Select(x -> new TestCaseData(x).SetName(x.Language + "/" + x.Algorithm)).ToArray();
         }
 
         public class AlgorithmStatisticsTestParameters
         {
-            public readonly String Algorithm;
-            public readonly Map<String,String> Statistics;
-            public readonly Language Language;
+            public final String Algorithm;
+            public final Map<String,String> Statistics;
+            public final Language Language;
 
             public AlgorithmStatisticsTestParameters( String algorithm, Map<String,String> statistics, Language language) {
                 Algorithm = algorithm;

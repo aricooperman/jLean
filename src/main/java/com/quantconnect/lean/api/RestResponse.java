@@ -42,28 +42,28 @@ using Newtonsoft.Json;
 
 package com.quantconnect.lean.Api
 {
-    /// <summary>
+    /**
     /// Base API response class for the QuantConnect API.
-    /// </summary>
+    */
     public class RestResponse
     {
-        /// <summary>
+        /**
         /// JSON Constructor
-        /// </summary>
+        */
         public RestResponse() {
             Success = false;
             Errors = new List<String>();
         }
 
-        /// <summary>
+        /**
         /// Indicate if the API request was successful.
-        /// </summary>
+        */
         @JsonProperty( "success")]
         public boolean Success;
 
-        /// <summary>
+        /**
         /// List of errors with the API call.
-        /// </summary>
+        */
         @JsonProperty( "errors")]
         public List<String> Errors;
     }

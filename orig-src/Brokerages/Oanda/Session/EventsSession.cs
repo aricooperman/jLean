@@ -24,12 +24,12 @@ using QuantConnect.Brokerages.Oanda.DataType;
 package com.quantconnect.lean.Brokerages.Oanda.Session
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Initialise an events sessions for Oanda Brokerage.
-    /// </summary>
+    */
     public class EventsSession : StreamSession<Event>
     {
-        private readonly OandaBrokerage _brokerage;
+        private final OandaBrokerage _brokerage;
 
         public EventsSession(OandaBrokerage brokerage, int accountId)
             : base(accountId) {

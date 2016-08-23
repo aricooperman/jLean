@@ -18,15 +18,15 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Orders.Slippage
 {
-    /// <summary>
+    /**
     /// A slippage model that uses half of the bid/ask spread if available,
     /// if not available, zero slippage is assumed.
-    /// </summary>
+    */
     public class SpreadSlippageModel : ISlippageModel
     {
-        /// <summary>
+        /**
         /// Slippage Model. Return a BigDecimal cash slippage approximation on the order.
-        /// </summary>
+        */
         public virtual BigDecimal GetSlippageApproximation(Security asset, Order order) {
             lastData = asset.GetLastData();
             lastTick = lastData as Tick;

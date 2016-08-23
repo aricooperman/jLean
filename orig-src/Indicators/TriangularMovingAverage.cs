@@ -15,23 +15,23 @@
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// This indicator computes the Triangular Moving Average (TRIMA). 
     /// The Triangular Moving Average is calculated with the following formula:
     /// (1) When the period is even, TRIMA(x,period)=SMA(SMA(x,period/2),(period/2)+1)
     /// (2) When the period is odd,  TRIMA(x,period)=SMA(SMA(x,(period+1)/2),(period+1)/2)
-    /// </summary>
+    */
     public class TriangularMovingAverage : IndicatorBase<IndicatorDataPoint>
     {
-        private readonly int _period;
-        private readonly SimpleMovingAverage _sma1;
-        private readonly SimpleMovingAverage _sma2;
+        private final int _period;
+        private final SimpleMovingAverage _sma1;
+        private final SimpleMovingAverage _sma2;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="TriangularMovingAverage"/> class using the specified name and period.
-        /// </summary> 
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="period">The period of the indicator</param>
+        */ 
+         * @param name">The name of this indicator
+         * @param period">The period of the indicator
         public TriangularMovingAverage( String name, int period)
             : base(name) {
             _period = period;
@@ -43,27 +43,27 @@ package com.quantconnect.lean.Indicators
             _sma2 = new SimpleMovingAverage(name + "_2", periodSma2);
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="TriangularMovingAverage"/> class using the specified period.
-        /// </summary> 
-        /// <param name="period">The period of the indicator</param>
+        */ 
+         * @param period">The period of the indicator
         public TriangularMovingAverage(int period)
             : this( "TRIMA" + period, period) {
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples >= _period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _sma1.Update(input);
             _sma2.Update(_sma1.Current);
@@ -71,9 +71,9 @@ package com.quantconnect.lean.Indicators
             return _sma2;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _sma1.Reset();
             _sma2.Reset();

@@ -91,7 +91,7 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
 
             transactionHandler = new BacktestingTransactionHandler();
             transactionHandler.Initialize(algorithm, new BacktestingBrokerage(algorithm), new TestResultHandler(Console.WriteLine));
-            Task.Run(() => transactionHandler.Run());
+            Task.Run(() -> transactionHandler.Run());
 
             algorithm.Transactions.SetOrderProcessor(transactionHandler);
 
@@ -115,7 +115,7 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
         // Provides a test implementation that forces partial market order fills
 
 
-        /// <summary>
+        /**
         /// Provides an implementation of <see cref="IFillModel"/> that creates a specific
         /// number of partial fills for marke orders only. All other order types reuse the
         /// <see cref="ImmediateFillModel"/> behavior. This model will emit one partial fill
@@ -123,36 +123,36 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
         /// NOTE: If the desired number of fills is very large, then a few more fills may be issued
         /// due to rounding errors. This model does not hold internal state regarding orders/previous
         /// fills.
-        /// </summary>
+        */
         public class PartialMarketFillModel : ImmediateFillModel
         {
-            private readonly BigDecimal _percent;
-            private readonly IOrderProvider _orderProvider;
+            private final BigDecimal _percent;
+            private final IOrderProvider _orderProvider;
 
-            /// <summary>
+            /**
             /// Initializes a new instance of the <see cref="PartialMarketFillModel"/> class
-            /// </summary>
+            */
             /// <code>
             /// // split market orders into two fills
             /// Securities["SPY"].FillModel = new PartialMarketFillModel(Transactions, 2);
             /// </code>
-            /// <param name="orderProvider">The order provider used for getting order tickets</param>
-            /// <param name="numberOfFills"></param>
+             * @param orderProvider">The order provider used for getting order tickets
+             * @param numberOfFills">
             public PartialMarketFillModel(IOrderProvider orderProvider, int numberOfFills = 1) {
                 _orderProvider = orderProvider;
                 _percent = 1m / numberOfFills;
             }
 
-            /// <summary>
+            /**
             /// Performs partial market fills once per time step
-            /// </summary>
-            /// <param name="asset">The security being ordered</param>
-            /// <param name="order">The order</param>
-            /// <returns>The order fill</returns>
+            */
+             * @param asset">The security being ordered
+             * @param order">The order
+            @returns The order fill
             public @Override OrderEvent MarketFill(Security asset, MarketOrder order) {
                 currentUtcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
 
-                ticket = _orderProvider.GetOrderTickets(x => x.OrderId == order.Id).FirstOrDefault();
+                ticket = _orderProvider.GetOrderTickets(x -> x.OrderId == order.Id).FirstOrDefault();
                 if( ticket == null ) {
                     // if we can't find the ticket issue empty fills
                     return new OrderEvent(order, currentUtcTime, 0);

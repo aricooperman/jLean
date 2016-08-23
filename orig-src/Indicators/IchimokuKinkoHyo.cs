@@ -17,86 +17,86 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// This indicator computes the Ichimoku Kinko Hyo indicator. It consists of the following main indicators:
     /// Tenkan-sen: (Highest High + Lowest Low) / 2 for the specific period (normally 9)
     /// Kijun-sen: (Highest High + Lowest Low) / 2 for the specific period (normally 26)
     /// Senkou A Span: (Tenkan-sen + Kijun-sen )/ 2 from a specific number of periods ago (normally 26)
     /// Senkou B Span: (Highest High + Lowest Low) / 2 for the specific period (normally 52), from a specific number of periods ago (normally 26)
-    /// </summary>
+    */
     public class IchimokuKinkoHyo : TradeBarIndicator
     {
-        /// <summary>
+        /**
         /// The Tenkan-sen component of the Ichimoku indicator
-        /// </summary>
+        */
         public IndicatorBase<TradeBar> Tenkan { get; private set; }
 
-        /// <summary>
+        /**
         /// The Kijun-sen component of the Ichimoku indicator
-        /// </summary>
+        */
         public IndicatorBase<TradeBar> Kijun { get; private set; }
 
-        /// <summary>
+        /**
         /// The Senkou A Span component of the Ichimoku indicator
-        /// </summary>
+        */
         public IndicatorBase<TradeBar> SenkouA { get; private set; }
 
-        /// <summary>
+        /**
         /// The Senkou B Span component of the Ichimoku indicator
-        /// </summary>
+        */
         public IndicatorBase<TradeBar> SenkouB { get; private set; }
 
-        /// <summary>
+        /**
         /// The Tenkan-sen Maximum component of the Ichimoku indicator
-        /// </summary>
+        */
         public IndicatorBase<IndicatorDataPoint> TenkanMaximum { get; private set; }
-        /// <summary>
+        /**
         /// The Tenkan-sen Minimum component of the Ichimoku indicator
-        /// </summary>
+        */
         public IndicatorBase<IndicatorDataPoint> TenkanMinimum { get; private set; }
-        /// <summary>
+        /**
         /// The Kijun-sen Maximum component of the Ichimoku indicator
-        /// </summary>
+        */
         public IndicatorBase<IndicatorDataPoint> KijunMaximum { get; private set; }
-        /// <summary>
+        /**
         /// The Kijun-sen Minimum component of the Ichimoku indicator
-        /// </summary>
+        */
         public IndicatorBase<IndicatorDataPoint> KijunMinimum { get; private set; }
-        /// <summary>
+        /**
         /// The Senkou B Maximum component of the Ichimoku indicator
-        /// </summary>
+        */
         public IndicatorBase<IndicatorDataPoint> SenkouBMaximum { get; private set; }
-        /// <summary>
+        /**
         /// The Senkou B Minimum component of the Ichimoku indicator
-        /// </summary>
+        */
         public IndicatorBase<IndicatorDataPoint> SenkouBMinimum { get; private set; }
-        /// <summary>
+        /**
         /// The Delayed Tenkan Senkou A component of the Ichimoku indicator
-        /// </summary>
+        */
         public WindowIndicator<IndicatorDataPoint> DelayedTenkanSenkouA { get; private set; }
-        /// <summary>
+        /**
         /// The Delayed Kijun Senkou A component of the Ichimoku indicator
-        /// </summary>
+        */
         public WindowIndicator<IndicatorDataPoint> DelayedKijunSenkouA { get; private set; }
-        /// <summary>
+        /**
         /// The Delayed Maximum Senkou B component of the Ichimoku indicator
-        /// </summary>
+        */
         public WindowIndicator<IndicatorDataPoint> DelayedMaximumSenkouB { get; private set; }
-        /// <summary>
+        /**
         /// The Delayed Minimum Senkou B component of the Ichimoku indicator
-        /// </summary>
+        */
         public WindowIndicator<IndicatorDataPoint> DelayedMinimumSenkouB { get; private set; }
 
-        /// <summary>
+        /**
         /// Creates a new IchimokuKinkoHyo indicator from the specific periods
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="tenkanPeriod">The Tenkan-sen period</param>
-        /// <param name="kijunPeriod">The Kijun-sen period</param>
-        /// <param name="senkouAPeriod">The Senkou A Span period</param>
-        /// <param name="senkouBPeriod">The Senkou B Span period</param>
-        /// <param name="senkouADelayPeriod">The Senkou A Span delay</param>
-        /// <param name="senkouBDelayPeriod">The Senkou B Span delay</param>
+        */
+         * @param name">The name of this indicator
+         * @param tenkanPeriod">The Tenkan-sen period
+         * @param kijunPeriod">The Kijun-sen period
+         * @param senkouAPeriod">The Senkou A Span period
+         * @param senkouBPeriod">The Senkou B Span period
+         * @param senkouADelayPeriod">The Senkou A Span delay
+         * @param senkouBDelayPeriod">The Senkou B Span delay
         public IchimokuKinkoHyo( String name, int tenkanPeriod = 9, int kijunPeriod = 26, int senkouAPeriod = 26, int senkouBPeriod = 52, int senkouADelayPeriod = 26, int senkouBDelayPeriod = 26)
             : base(name) {
             TenkanMaximum = new Maximum(name + "_TenkanMax", tenkanPeriod);
@@ -113,8 +113,8 @@ package com.quantconnect.lean.Indicators
 
             SenkouA = new FunctionalIndicator<TradeBar>(
                 name + "_SenkouA",
-                input => computeSenkouA(senkouAPeriod, input),
-                senkouA => DelayedTenkanSenkouA.IsReady && DelayedKijunSenkouA.IsReady,
+                input -> computeSenkouA(senkouAPeriod, input),
+                senkouA -> DelayedTenkanSenkouA.IsReady && DelayedKijunSenkouA.IsReady,
                 () =>
                 {
                     Tenkan.Reset();
@@ -123,8 +123,8 @@ package com.quantconnect.lean.Indicators
 
             SenkouB = new FunctionalIndicator<TradeBar>(
                 name + "_SenkouB",
-                input => computeSenkouB(senkouBPeriod, input),
-                senkouA => DelayedMaximumSenkouB.IsReady && DelayedMinimumSenkouB.IsReady,
+                input -> computeSenkouB(senkouBPeriod, input),
+                senkouA -> DelayedMaximumSenkouB.IsReady && DelayedMinimumSenkouB.IsReady,
                 () =>
                 {
                     Tenkan.Reset();
@@ -134,8 +134,8 @@ package com.quantconnect.lean.Indicators
 
             Tenkan = new FunctionalIndicator<TradeBar>(
                 name + "_Tenkan",
-                input => ComputeTenkan(tenkanPeriod, input),
-                tenkan => TenkanMaximum.IsReady && TenkanMinimum.IsReady,
+                input -> ComputeTenkan(tenkanPeriod, input),
+                tenkan -> TenkanMaximum.IsReady && TenkanMinimum.IsReady,
                 () =>
                 {
                     TenkanMaximum.Reset();
@@ -144,8 +144,8 @@ package com.quantconnect.lean.Indicators
 
             Kijun = new FunctionalIndicator<TradeBar>(
                 name + "_Kijun",
-                input => ComputeKijun(kijunPeriod, input),
-                kijun => KijunMaximum.IsReady && KijunMinimum.IsReady,
+                input -> ComputeKijun(kijunPeriod, input),
+                kijun -> KijunMaximum.IsReady && KijunMinimum.IsReady,
                 () =>
                 {
                     KijunMaximum.Reset();
@@ -174,19 +174,19 @@ package com.quantconnect.lean.Indicators
             return kijun;
         }
 
-        /// <summary>
+        /**
         /// Returns true if all of the sub-components of the Ichimoku indicator is ready
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
 
             get { return Tenkan.IsReady && Kijun.IsReady && SenkouA.IsReady && SenkouB.IsReady; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
+        */
+         * @param input">The input given to the indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
 
 
@@ -207,9 +207,9 @@ package com.quantconnect.lean.Indicators
             return input.Close;
         }
         
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             base.Reset();
             TenkanMaximum.Reset();

@@ -21,9 +21,9 @@ using System;
 package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Represents whether a property is optional.
-    /// </summary>
+    */
 	public class IsOptionalAttribute : Attribute
 	{
 		public @Override String toString() {
@@ -31,9 +31,9 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 		}
 	}
 
-    /// <summary>
+    /**
     /// Represents maximum value of a property.
-    /// </summary>
+    */
 	public class MaxValueAttribute : Attribute
 	{
 		public object Value { get; set; }
@@ -42,9 +42,9 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 		}
 	}
 
-    /// <summary>
+    /**
     /// Represents minimum value of a property.
-    /// </summary>
+    */
 	public class MinValueAttribute : Attribute
 	{
 		public object Value { get; set; }
@@ -53,9 +53,9 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 		}
 	}
 
-    /// <summary>
+    /**
     /// Represents a financial instrument / product provided by Oanda.
-    /// </summary>
+    */
 	public class Instrument
     {
 		public boolean HasInstrument;

@@ -25,9 +25,9 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
 {
     class Program
     {
-        /// <summary>
+        /**
         /// Primary entry point to the program
-        /// </summary>
+        */
         private static void Main( String[] args) {
             if( args.Length != 4) {
                 Console.WriteLine( "Usage: FxcmDownloader SYMBOLS RESOLUTION FROMDATE TODATE");

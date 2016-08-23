@@ -18,40 +18,40 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary>
+    /**
     /// This indicator computes the Ultimate Oscillator (ULTOSC)
     /// The Ultimate Oscillator is calculated as explained here:
     /// http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:ultimate_oscillator
-    /// </summary>
+    */
     public class UltimateOscillator : TradeBarIndicator
     {
-        private readonly int _period;
+        private final int _period;
         private TradeBar _previousInput;
-        private readonly TrueRange _trueRange;
-        private readonly Sum _sumBuyingPressure1;
-        private readonly Sum _sumBuyingPressure2;
-        private readonly Sum _sumBuyingPressure3;
-        private readonly Sum _sumTrueRange1;
-        private readonly Sum _sumTrueRange2;
-        private readonly Sum _sumTrueRange3;
+        private final TrueRange _trueRange;
+        private final Sum _sumBuyingPressure1;
+        private final Sum _sumBuyingPressure2;
+        private final Sum _sumBuyingPressure3;
+        private final Sum _sumTrueRange1;
+        private final Sum _sumTrueRange2;
+        private final Sum _sumTrueRange3;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="UltimateOscillator"/> class using the specified parameters
-        /// </summary>
-        /// <param name="period1">The first period</param>
-        /// <param name="period2">The second period</param>
-        /// <param name="period3">The third period</param>
+        */
+         * @param period1">The first period
+         * @param period2">The second period
+         * @param period3">The third period
         public UltimateOscillator(int period1, int period2, int period3)
             : this( String.format( "ULTOSC(%1$s,%2$s,%3$s)", period1, period2, period3), period1, period2, period3) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="UltimateOscillator"/> class using the specified parameters
-        /// </summary>
-        /// <param name="name">The name of this indicator</param>
-        /// <param name="period1">The first period</param>
-        /// <param name="period2">The second period</param>
-        /// <param name="period3">The third period</param>
+        */
+         * @param name">The name of this indicator
+         * @param period1">The first period
+         * @param period2">The second period
+         * @param period3">The third period
         public UltimateOscillator( String name, int period1, int period2, int period3)
             : base(name) {
             _period = Math.Max(Math.Max(period1, period2), period3);
@@ -64,19 +64,19 @@ package com.quantconnect.lean.Indicators
             _sumTrueRange3 = new Sum(name + "_TR3", period3);
         }
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get { return Samples > _period; }
         }
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>A new value for this indicator</returns>
+        */
+         * @param input">The input given to the indicator
+        @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _trueRange.Update(input);
 
@@ -107,9 +107,9 @@ package com.quantconnect.lean.Indicators
             return 100m * (4 * average1 + 2 * average2 + average3) / 7;
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             _previousInput = null;
             _trueRange.Reset();

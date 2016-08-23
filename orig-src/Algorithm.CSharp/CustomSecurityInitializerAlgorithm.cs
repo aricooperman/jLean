@@ -19,12 +19,12 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// This algorithm shows how to set a custom security initializer.
     /// A security initializer is run immediately after a new security object
     /// has been created and can be used to security models and other settings,
     /// such as data normalization mode
-    /// </summary>
+    */
     public class CustomSecurityInitializerAlgorithm : QCAlgorithm
     {
         public @Override void Initialize() {
@@ -44,31 +44,31 @@ package com.quantconnect.lean.Algorithm.CSharp
             }
         }
 
-        /// <summary>
+        /**
         /// Our custom initializer that will set the data normalization mode.
         /// We sub-class the <see cref="BrokerageModelSecurityInitializer"/>
         /// so we can also take advantage of the default model/leverage setting
         /// behaviors
-        /// </summary>
+        */
         class CustomSecurityInitializer : BrokerageModelSecurityInitializer
         {
-            private readonly DataNormalizationMode _dataNormalizationMode;
+            private final DataNormalizationMode _dataNormalizationMode;
 
-            /// <summary>
+            /**
             /// Initializes a new instance of the <see cref="CustomSecurityInitializer"/> class
             /// with the specified normalization mode
-            /// </summary>
-            /// <param name="brokerageModel">The brokerage model used to get fill/fee/slippage/settlement models</param>
-            /// <param name="dataNormalizationMode">The desired data normalization mode</param>
+            */
+             * @param brokerageModel">The brokerage model used to get fill/fee/slippage/settlement models
+             * @param dataNormalizationMode">The desired data normalization mode
             public CustomSecurityInitializer(IBrokerageModel brokerageModel, DataNormalizationMode dataNormalizationMode)
                 : base(brokerageModel) {
                 _dataNormalizationMode = dataNormalizationMode;
             }
 
-            /// <summary>
+            /**
             /// Initializes the specified security by setting up the models
-            /// </summary>
-            /// <param name="security">The security to be initialized</param>
+            */
+             * @param security">The security to be initialized
             public @Override void Initialize(Security security) {
                 // first call the default implementation
                 base.Initialize(security);

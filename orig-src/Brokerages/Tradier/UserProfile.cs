@@ -21,9 +21,9 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Brokerages.Tradier
 {
-    /// <summary>
+    /**
     /// Model for a TradierUser returned from the API.
-    /// </summary>
+    */
     public class TradierUserContainer
     {
         /// User Profile Contents
@@ -34,9 +34,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         public TradierUserContainer() { }
     }
 
-    /// <summary>
+    /**
     /// User profile array:
-    /// </summary>
+    */
     public class TradierUser
     {
         /// Unique brokerage user id.
@@ -60,9 +60,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
     }
 
-    /// <summary>
+    /**
     /// Account only settings for a tradier user:
-    /// </summary>
+    */
     public class TradierUserAccount 
     {
         /// Users account number
@@ -93,9 +93,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "classification")]
         public TradierAccountClassification Classification { get; set; }
 
-        /// <summary>
+        /**
         /// Create a new account:
-        /// </summary>
+        */
         public TradierUserAccount() {
             AccountNumber = 0;
             DayTrader = false;

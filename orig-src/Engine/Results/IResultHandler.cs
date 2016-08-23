@@ -28,223 +28,223 @@ using QuantConnect.Statistics;
 
 package com.quantconnect.lean.Lean.Engine.Results
 {
-    /// <summary>
+    /**
     /// Handle the results of the backtest: where should we send the profit, portfolio updates:
     /// Backtester or the Live trading platform:
-    /// </summary>
+    */
     [InheritedExport(typeof(IResultHandler))]
     public interface IResultHandler
     {
-        /// <summary>
+        /**
         /// Put messages to process into the queue so they are processed by this thread.
-        /// </summary>
+        */
         ConcurrentQueue<Packet> Messages
         {
             get;
             set;
         }
 
-        /// <summary>
+        /**
         /// Charts collection for storing the master copy of user charting data.
-        /// </summary>
+        */
         ConcurrentMap<String, Chart> Charts
         {
             get;
             set;
         }
 
-        /// <summary>
+        /**
         /// Sampling period for timespans between resamples of the charting equity.
-        /// </summary>
-        /// <remarks>Specifically critical for backtesting since with such long timeframes the sampled data can get extreme.</remarks>
-        TimeSpan ResamplePeriod
+        */
+        /// Specifically critical for backtesting since with such long timeframes the sampled data can get extreme.
+        Duration ResamplePeriod
         {
             get;
         }
 
-        /// <summary>
+        /**
         /// How frequently the backtests push messages to the browser.
-        /// </summary>
-        /// <remarks>Update frequency of notification packets</remarks>
-        TimeSpan NotificationPeriod
+        */
+        /// Update frequency of notification packets
+        Duration NotificationPeriod
         {
             get;
         }
 
-        /// <summary>
+        /**
         /// Boolean flag indicating the result hander thread is busy. 
         /// False means it has completely finished and ready to dispose.
-        /// </summary>
+        */
         boolean IsActive
         {
             get;
         }
 
-        /// <summary>
+        /**
         /// Initialize the result handler with this result packet.
-        /// </summary>
-        /// <param name="job">Algorithm job packet for this result handler</param>
-        /// <param name="messagingHandler"></param>
-        /// <param name="api"></param>
-        /// <param name="dataFeed"></param>
-        /// <param name="setupHandler"></param>
-        /// <param name="transactionHandler"></param>
+        */
+         * @param job">Algorithm job packet for this result handler
+         * @param messagingHandler">
+         * @param api">
+         * @param dataFeed">
+         * @param setupHandler">
+         * @param transactionHandler">
         void Initialize(AlgorithmNodePacket job, IMessagingHandler messagingHandler, IApi api, IDataFeed dataFeed, ISetupHandler setupHandler, ITransactionHandler transactionHandler);
 
-        /// <summary>
+        /**
         /// Primary result thread entry point to process the result message queue and send it to whatever endpoint is set.
-        /// </summary>
+        */
         void Run();
 
-        /// <summary>
+        /**
         /// Process debug messages with the preconfigured settings.
-        /// </summary>
-        /// <param name="message">String debug message</param>
+        */
+         * @param message">String debug message
         void DebugMessage( String message);
 
-        /// <summary>
+        /**
         /// Send a list of security types to the browser
-        /// </summary>
-        /// <param name="types">Security types list inside algorithm</param>
+        */
+         * @param types">Security types list inside algorithm
         void SecurityType(List<SecurityType> types);
 
-        /// <summary>
+        /**
         /// Send a logging message to the log list for storage.
-        /// </summary>
-        /// <param name="message">Message we'd in the log.</param>
+        */
+         * @param message">Message we'd in the log.
         void LogMessage( String message);
 
-        /// <summary>
+        /**
         /// Send an error message back to the browser highlighted in red with a stacktrace.
-        /// </summary>
-        /// <param name="error">Error message we'd like shown in console.</param>
-        /// <param name="stacktrace">Stacktrace information string</param>
+        */
+         * @param error">Error message we'd like shown in console.
+         * @param stacktrace">Stacktrace information string
         void ErrorMessage( String error, String stacktrace = "");
 
-        /// <summary>
+        /**
         /// Send a runtime error message back to the browser highlighted with in red 
-        /// </summary>
-        /// <param name="message">Error message.</param>
-        /// <param name="stacktrace">Stacktrace information string</param>
+        */
+         * @param message">Error message.
+         * @param stacktrace">Stacktrace information string
         void RuntimeError( String message, String stacktrace = "");
 
-        /// <summary>
+        /**
         /// Add a sample to the chart specified by the chartName, and seriesName.
-        /// </summary>
-        /// <param name="chartName">String chart name to place the sample.</param>
-        /// <param name="seriesName">Series name for the chart.</param>
-        /// <param name="seriesType">Series type for the chart.</param>
-        /// <param name="time">Time for the sample</param>
-        /// <param name="value">Value for the chart sample.</param>
-        /// <param name="unit">Unit for the sample chart</param>
-        /// <param name="seriesIndex">Index of the series we're sampling</param>
-        /// <remarks>Sample can be used to create new charts or sample equity - daily performance.</remarks>
+        */
+         * @param chartName">String chart name to place the sample.
+         * @param seriesName">Series name for the chart.
+         * @param seriesType">Series type for the chart.
+         * @param time">Time for the sample
+         * @param value">Value for the chart sample.
+         * @param unit">Unit for the sample chart
+         * @param seriesIndex">Index of the series we're sampling
+        /// Sample can be used to create new charts or sample equity - daily performance.
         void Sample( String chartName, String seriesName, int seriesIndex, SeriesType seriesType, DateTime time, BigDecimal value, String unit = "$");
 
-        /// <summary>
+        /**
         /// Wrapper methond on sample to create the equity chart.
-        /// </summary>
-        /// <param name="time">Time of the sample.</param>
-        /// <param name="value">Equity value at this moment in time.</param>
+        */
+         * @param time">Time of the sample.
+         * @param value">Equity value at this moment in time.
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
         void SampleEquity(DateTime time, BigDecimal value);
 
-        /// <summary>
+        /**
         /// Sample the current daily performance directly with a time-value pair.
-        /// </summary>
-        /// <param name="time">Current backtest date.</param>
-        /// <param name="value">Current daily performance value.</param>
+        */
+         * @param time">Current backtest date.
+         * @param value">Current daily performance value.
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
         void SamplePerformance(DateTime time, BigDecimal value);
 
-        /// <summary>
+        /**
         /// Sample the current benchmark performance directly with a time-value pair.
-        /// </summary>
-        /// <param name="time">Current backtest date.</param>
-        /// <param name="value">Current benchmark value.</param>
+        */
+         * @param time">Current backtest date.
+         * @param value">Current benchmark value.
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
         void SampleBenchmark(DateTime time, BigDecimal value);
 
-        /// <summary>
+        /**
         /// Sample the asset prices to generate plots.
-        /// </summary>
-        /// <param name="symbol">Symbol we're sampling.</param>
-        /// <param name="time">Time of sample</param>
-        /// <param name="value">Value of the asset price</param>
+        */
+         * @param symbol">Symbol we're sampling.
+         * @param time">Time of sample
+         * @param value">Value of the asset price
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
         void SampleAssetPrices(Symbol symbol, DateTime time, BigDecimal value);
 
-        /// <summary>
+        /**
         /// Add a range of samples from the users algorithms to the end of our current list.
-        /// </summary>
-        /// <param name="samples">Chart updates since the last request.</param>
+        */
+         * @param samples">Chart updates since the last request.
         /// <seealso cref="Sample( String,string,int,SeriesType,DateTime,decimal,string)"/>
         void SampleRange(List<Chart> samples);
 
-        /// <summary>
+        /**
         /// Set the algorithm of the result handler after its been initialized.
-        /// </summary>
-        /// <param name="algorithm">Algorithm object matching IAlgorithm interface</param>
+        */
+         * @param algorithm">Algorithm object matching IAlgorithm interface
         void SetAlgorithm(IAlgorithm algorithm);
 
-        /// <summary>
+        /**
         /// Save the snapshot of the total results to storage.
-        /// </summary>
-        /// <param name="packet">Packet to store.</param>
-        /// <param name="async">Store the packet asyncronously to speed up the thread.</param>
-        /// <remarks>Async creates crashes in Mono 3.10 if the thread disappears before the upload is complete so it is disabled for now.</remarks>
+        */
+         * @param packet">Packet to store.
+         * @param async">Store the packet asyncronously to speed up the thread.
+        /// Async creates crashes in Mono 3.10 if the thread disappears before the upload is complete so it is disabled for now.
         void StoreResult(Packet packet, boolean async = false);
 
-        /// <summary>
+        /**
         /// Post the final result back to the controller worker if backtesting, or to console if local.
-        /// </summary>
-        /// <param name="job">Lean AlgorithmJob task</param>
-        /// <param name="orders">Collection of orders from the algorithm</param>
-        /// <param name="profitLoss">Collection of time-profit values for the algorithm</param>
-        /// <param name="holdings">Current holdings state for the algorithm</param>
-        /// <param name="statisticsResults">Statistics information for the algorithm (empty if not finished)</param>
-        /// <param name="banner">Runtime statistics banner information</param>
+        */
+         * @param job">Lean AlgorithmJob task
+         * @param orders">Collection of orders from the algorithm
+         * @param profitLoss">Collection of time-profit values for the algorithm
+         * @param holdings">Current holdings state for the algorithm
+         * @param statisticsResults">Statistics information for the algorithm (empty if not finished)
+         * @param banner">Runtime statistics banner information
         void SendFinalResult(AlgorithmNodePacket job, Map<Integer, Order> orders, Map<DateTime, decimal> profitLoss, Map<String, Holding> holdings, StatisticsResults statisticsResults, Map<String,String> banner);
 
-        /// <summary>
+        /**
         /// Send a algorithm status update to the user of the algorithms running state.
-        /// </summary>
-        /// <param name="status">Status enum of the algorithm.</param>
-        /// <param name="message">Optional String message describing reason for status change.</param>
+        */
+         * @param status">Status enum of the algorithm.
+         * @param message">Optional String message describing reason for status change.
         void SendStatusUpdate(AlgorithmStatus status, String message = "");
 
-        /// <summary>
+        /**
         /// Set the chart name:
-        /// </summary>
-        /// <param name="symbol">Symbol of the chart we want.</param>
+        */
+         * @param symbol">Symbol of the chart we want.
         void SetChartSubscription( String symbol);
 
-        /// <summary>
+        /**
         /// Set a dynamic runtime statistic to show in the (live) algorithm header
-        /// </summary>
-        /// <param name="key">Runtime headline statistic name</param>
-        /// <param name="value">Runtime headline statistic value</param>
+        */
+         * @param key">Runtime headline statistic name
+         * @param value">Runtime headline statistic value
         void RuntimeStatistic( String key, String value);
 
-        /// <summary>
+        /**
         /// Send a new order event.
-        /// </summary>
-        /// <param name="newEvent">Update, processing or cancellation of an order, update the IDE in live mode or ignore in backtesting.</param>
+        */
+         * @param newEvent">Update, processing or cancellation of an order, update the IDE in live mode or ignore in backtesting.
         void OrderEvent(OrderEvent newEvent);
 
-        /// <summary>
+        /**
         /// Terminate the result thread and apply any required exit proceedures.
-        /// </summary>
+        */
         void Exit();
 
-        /// <summary>
+        /**
         /// Purge/clear any outstanding messages in message queue.
-        /// </summary>
+        */
         void PurgeQueue();
 
-        /// <summary>
+        /**
         /// Process any synchronous events in here that are primarily triggered from the algorithm loop
-        /// </summary>
+        */
         void ProcessSynchronousEvents( boolean forceProcess = false);
     }
 }

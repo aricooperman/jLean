@@ -21,7 +21,7 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// 3.0 CUSTOM DATA SOURCE: USE YOUR OWN MARKET DATA (OPTIONS, FOREX, FUTURES, DERIVATIVES etc).
     /// 
     /// The new QuantConnect Lean Backtesting Engine is incredibly flexible and allows you to define your own data source. 
@@ -31,7 +31,7 @@ package com.quantconnect.lean.Algorithm.Examples
     /// 
     /// We load the "Nifty" data as a tradable security we're calling "NIFTY".
     /// 
-    /// </summary>
+    */
     public class CustomDataNIFTYAlgorithm : QCAlgorithm
     {
         //Create variables for analyzing Nifty
@@ -39,9 +39,9 @@ package com.quantconnect.lean.Algorithm.Examples
         List<CorrelationPair> prices = new List<CorrelationPair>();
         int minimumCorrelationHistory = 50;
 
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2008, 1, 8);
             SetEndDate(2014, 7, 25);
@@ -54,21 +54,21 @@ package com.quantconnect.lean.Algorithm.Examples
             AddData<Nifty>( "NIFTY");
         }
 
-        /// <summary>
+        /**
         /// Event Handler for Nifty Data Events: These Nifty objects are created from our 
         /// "Nifty" type below and fired into this event handler.
-        /// </summary>
-        /// <param name="data">One(1) Nifty Object, streamed into our algorithm synchronised in time with our other data streams</param>
+        */
+         * @param data">One(1) Nifty Object, streamed into our algorithm synchronised in time with our other data streams
         public void OnData(DollarRupee data) {
             today = new CorrelationPair(data.Time);
             today.CurrencyPrice = Convert.ToDouble(data.Close);
         }
 
-        /// <summary>
+        /**
         /// OnData is the primary entry point for youm algorithm. New data is piped into your algorithm here
         /// via TradeBars objects.
-        /// </summary>
-        /// <param name="data">TradeBars IDictionary object</param>
+        */
+         * @param data">TradeBars IDictionary object
         public void OnData(Nifty data) {
             try
             {
@@ -108,10 +108,10 @@ package com.quantconnect.lean.Algorithm.Examples
             }
         }
 
-        /// <summary>
+        /**
         /// End of a trading day event handler. This method is called at the end of the algorithm day (or multiple times if trading multiple assets).
-        /// </summary>
-        /// <remarks>Method is called 10 minutes before closing to allow user to close out position.</remarks>
+        */
+        /// Method is called 10 minutes before closing to allow user to close out position.
         public @Override void OnEndOfDay() {
             //if(niftyData != null ) {
                 Plot( "Nifty Closing Price", today.NiftyPrice);
@@ -119,46 +119,46 @@ package com.quantconnect.lean.Algorithm.Examples
         }
     }
 
-    /// <summary>
+    /**
     /// NIFTY Custom Data Class
-    /// </summary>
+    */
     public class Nifty : BaseData
     {
-        /// <summary>
+        /**
         /// Opening Price
-        /// </summary>
+        */
         public BigDecimal Open = 0;
-        /// <summary>
+        /**
         /// High Price
-        /// </summary>
+        */
         public BigDecimal High = 0;
-        /// <summary>
+        /**
         /// Low Price
-        /// </summary>
+        */
         public BigDecimal Low = 0;
-        /// <summary>
+        /**
         /// Closing Price
-        /// </summary>
+        */
         public BigDecimal Close = 0;
 
-        /// <summary>
+        /**
         /// Default initializer for NIFTY.
-        /// </summary>
+        */
         public Nifty() {
             Symbol = "NIFTY";
         }
 
-        /// <summary>
+        /**
         /// Return the URL String source of the file. This will be converted to a stream 
-        /// </summary>
+        */
         public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             return new SubscriptionDataSource( "https://www.dropbox.com/s/rsmg44jr6wexn2h/CNXNIFTY.csv?dl=1", SubscriptionTransportMedium.RemoteFile);
         }
 
-        /// <summary>
+        /**
         /// Reader converts each line of the data source into BaseData objects. Each data type creates its own factory method, and returns a new instance of the object 
         /// each time it is called. 
-        /// </summary>
+        */
         public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
             //New Nifty object
             Nifty index = new Nifty();
@@ -187,46 +187,46 @@ package com.quantconnect.lean.Algorithm.Examples
     }
 
 
-    /// <summary>
+    /**
     /// Dollar Rupe is a custom data type we create for this algorithm
-    /// </summary>
+    */
     public class DollarRupee : BaseData
     {
-        /// <summary>
+        /**
         /// Open Price 
-        /// </summary>
+        */
         public BigDecimal Open = 0;
-        /// <summary>
+        /**
         /// High Price
-        /// </summary>
+        */
         public BigDecimal High = 0;
-        /// <summary>
+        /**
         /// Low Price
-        /// </summary>
+        */
         public BigDecimal Low = 0;
-        /// <summary>
+        /**
         /// Closing Price
-        /// </summary>
+        */
         public BigDecimal Close = 0;
 
-        /// <summary>
+        /**
         /// Default constructor for the custom data class.
-        /// </summary>
+        */
         public DollarRupee() {
             Symbol = "USDINR";
         }
 
-        /// <summary>
+        /**
         /// Return the URL String source of the file. This will be converted to a stream 
-        /// </summary>
+        */
         public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             return new SubscriptionDataSource( "https://www.dropbox.com/s/m6ecmkg9aijwzy2/USDINR.csv?dl=1", SubscriptionTransportMedium.RemoteFile);
         }
 
-        /// <summary>
+        /**
         /// Reader converts each line of the data source into BaseData objects. Each data type creates its own factory method, and returns a new instance of the object 
         /// each time it is called. 
-        /// </summary>
+        */
         public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
             //New USDINR object
             DollarRupee currency = new DollarRupee();
@@ -248,34 +248,34 @@ package com.quantconnect.lean.Algorithm.Examples
         }
     }
 
-    /// <summary>
+    /**
     /// Correlation Pair is a helper class to combine two data points which we'll use to perform the correlation. 
-    /// </summary>
+    */
     public class CorrelationPair
     {
-        /// <summary>
+        /**
         /// Date of the correlation pair
-        /// </summary>
+        */
         public DateTime Date = new DateTime();
 
-        /// <summary>
+        /**
         /// Nifty price for this correlation pair
-        /// </summary>
+        */
         public double NiftyPrice = 0;
 
-        /// <summary>
+        /**
         /// Currency price for this correlation pair
-        /// </summary>
+        */
         public double CurrencyPrice = 0;
 
-        /// <summary>
+        /**
         /// Default initializer
-        /// </summary>
+        */
         public CorrelationPair() { }
 
-        /// <summary>
+        /**
         /// Date based correlation pair initializer
-        /// </summary>
+        */
         public CorrelationPair(DateTime date) {
             Date = date.Date;
         }

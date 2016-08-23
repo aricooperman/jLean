@@ -17,14 +17,14 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Orders.Slippage
 {
-    /// <summary>
+    /**
     /// Represents a model that simulates market order slippage
-    /// </summary>
+    */
     public interface ISlippageModel
     {
-        /// <summary>
+        /**
         /// Slippage Model. Return a BigDecimal cash slippage approximation on the order.
-        /// </summary>
+        */
         BigDecimal GetSlippageApproximation(Security asset, Order order);
     }
 }

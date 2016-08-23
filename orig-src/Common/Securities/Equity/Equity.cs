@@ -21,25 +21,25 @@ using QuantConnect.Orders.Slippage;
 
 package com.quantconnect.lean.Securities.Equity 
 {
-    /// <summary>
+    /**
     /// Equity Security Type : Extension of the underlying Security class for equity specific behaviours.
-    /// </summary>
+    */
     /// <seealso cref="Security"/>
     public class Equity : Security
     {
-        /// <summary>
+        /**
         /// The default number of days required to settle an equity sale
-        /// </summary>
+        */
         public static final int DefaultSettlementDays = 3;
 
-        /// <summary>
+        /**
         /// The default time of day for settlement
-        /// </summary>
-        public static readonly TimeSpan DefaultSettlementTime = new TimeSpan(8, 0, 0);
+        */
+        public static final Duration DefaultSettlementTime = new TimeSpan(8, 0, 0);
 
-        /// <summary>
+        /**
         /// Construct the Equity Object
-        /// </summary>
+        */
         public Equity(Symbol symbol, SecurityExchangeHours exchangeHours, Cash quoteCurrency, SymbolProperties symbolProperties)
             : base(symbol,
                 quoteCurrency,
@@ -58,9 +58,9 @@ package com.quantconnect.lean.Securities.Equity
             Holdings = new EquityHolding(this);
         }
 
-        /// <summary>
+        /**
         /// Construct the Equity Object
-        /// </summary>
+        */
         public Equity(SecurityExchangeHours exchangeHours, SubscriptionDataConfig config, Cash quoteCurrency, SymbolProperties symbolProperties)
             : base(
                 config,

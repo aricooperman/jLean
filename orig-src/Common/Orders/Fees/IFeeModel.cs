@@ -17,18 +17,18 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Orders.Fees
 {
-    /// <summary>
+    /**
     /// Represents a model the simulates order fees
-    /// </summary>
+    */
     public interface IFeeModel
     {
-        /// <summary>
+        /**
         /// Gets the order fee associated with the specified order. This returns the cost
         /// of the transaction in the account currency
-        /// </summary>
-        /// <param name="security">The security matching the order</param>
-        /// <param name="order">The order to compute fees for</param>
-        /// <returns>The cost of the order in units of the account currency</returns>
+        */
+         * @param security">The security matching the order
+         * @param order">The order to compute fees for
+        @returns The cost of the order in units of the account currency
         BigDecimal GetOrderFee(Security security, Order order);
     }
 }

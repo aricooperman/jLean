@@ -50,7 +50,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader.OandaRestLibrary
 			return null;
 		}
 
-		private static readonly Map<EEnvironment, Map<EServer,String>> Servers = new Map<EEnvironment, Map<EServer,String>>
+		private static final Map<EEnvironment, Map<EServer,String>> Servers = new Map<EEnvironment, Map<EServer,String>>
 			{
 				{EEnvironment.Sandbox, new Map<EServer,String>
 					{

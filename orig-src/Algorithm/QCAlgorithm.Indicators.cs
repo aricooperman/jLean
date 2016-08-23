@@ -24,28 +24,28 @@ package com.quantconnect.lean.Algorithm
 {
     public partial class QCAlgorithm
     {
-        /// <summary>
+        /**
         /// Creates a new Identity indicator for the symbol The indicator will be automatically
         /// updated on the symbol's subscription resolution
-        /// </summary>
-        /// <param name="symbol">The symbol whose values we want as an indicator</param>
-        /// <param name="selector">Selects a value from the BaseData, if null defaults to the .Value property (x => x.Value)</param>
-        /// <param name="fieldName">The name of the field being selected</param>
-        /// <returns>A new Identity indicator for the specified symbol and selector</returns>
+        */
+         * @param symbol">The symbol whose values we want as an indicator
+         * @param selector">Selects a value from the BaseData, if null defaults to the .Value property (x -> x.Value)
+         * @param fieldName">The name of the field being selected
+        @returns A new Identity indicator for the specified symbol and selector
         public Identity Identity(Symbol symbol, Func<BaseData, decimal> selector = null, String fieldName = null ) {
             resolution = GetSubscription(symbol).Resolution;
             return Identity(symbol, resolution, selector, fieldName);
         }
 
-        /// <summary>
+        /**
         /// Creates a new Identity indicator for the symbol The indicator will be automatically
         /// updated on the symbol's subscription resolution
-        /// </summary>
-        /// <param name="symbol">The symbol whose values we want as an indicator</param>
-        /// <param name="resolution">The desired resolution of the data</param>
-        /// <param name="selector">Selects a value from the BaseData, if null defaults to the .Value property (x => x.Value)</param>
-        /// <param name="fieldName">The name of the field being selected</param>
-        /// <returns>A new Identity indicator for the specified symbol and selector</returns>
+        */
+         * @param symbol">The symbol whose values we want as an indicator
+         * @param resolution">The desired resolution of the data
+         * @param selector">Selects a value from the BaseData, if null defaults to the .Value property (x -> x.Value)
+         * @param fieldName">The name of the field being selected
+        @returns A new Identity indicator for the specified symbol and selector
         public Identity Identity(Symbol symbol, Resolution resolution, Func<BaseData, decimal> selector = null, String fieldName = null ) {
             String name = CreateIndicatorName(symbol, fieldName ?? "close", resolution);
             identity = new Identity(name);
@@ -53,35 +53,35 @@ package com.quantconnect.lean.Algorithm
             return identity;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Identity indicator for the symbol The indicator will be automatically
         /// updated on the symbol's subscription resolution
-        /// </summary>
-        /// <param name="symbol">The symbol whose values we want as an indicator</param>
-        /// <param name="resolution">The desired resolution of the data</param>
-        /// <param name="selector">Selects a value from the BaseData, if null defaults to the .Value property (x => x.Value)</param>
-        /// <param name="fieldName">The name of the field being selected</param>
-        /// <returns>A new Identity indicator for the specified symbol and selector</returns>
-        public Identity Identity(Symbol symbol, TimeSpan resolution, Func<BaseData, decimal> selector = null, String fieldName = null ) {
+        */
+         * @param symbol">The symbol whose values we want as an indicator
+         * @param resolution">The desired resolution of the data
+         * @param selector">Selects a value from the BaseData, if null defaults to the .Value property (x -> x.Value)
+         * @param fieldName">The name of the field being selected
+        @returns A new Identity indicator for the specified symbol and selector
+        public Identity Identity(Symbol symbol, Duration resolution, Func<BaseData, decimal> selector = null, String fieldName = null ) {
             String name = String.format( "%1$s(%2$s_%3$s)", symbol, fieldName ?? "close", resolution);
             identity = new Identity(name);
             RegisterIndicator(symbol, identity, ResolveConsolidator(symbol, resolution), selector);
             return identity;
         }
 
-        /// <summary>
+        /**
         /// Creates a new IchimokuKinkoHyo indicator for the symbol. The indicator will be automatically
         /// updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose ICHIMOKU we want</param>
-        /// <param name="tenkanPeriod">The period to calculate the Tenkan-sen period</param>
-        /// <param name="kijunPeriod">The period to calculate the Kijun-sen period</param>
-        /// <param name="senkouAPeriod">The period to calculate the Tenkan-sen period</param>
-        /// <param name="senkouBPeriod">The period to calculate the Tenkan-sen period</param>
-        /// <param name="senkouADelayPeriod">The period to calculate the Tenkan-sen period</param>
-        /// <param name="senkouBDelayPeriod">The period to calculate the Tenkan-sen period</param>
-        /// <param name="resolution">The resolution</param>
-        /// <returns>A new IchimokuKinkoHyo indicator with the specified periods and delays</returns>
+        */
+         * @param symbol">The symbol whose ICHIMOKU we want
+         * @param tenkanPeriod">The period to calculate the Tenkan-sen period
+         * @param kijunPeriod">The period to calculate the Kijun-sen period
+         * @param senkouAPeriod">The period to calculate the Tenkan-sen period
+         * @param senkouBPeriod">The period to calculate the Tenkan-sen period
+         * @param senkouADelayPeriod">The period to calculate the Tenkan-sen period
+         * @param senkouBDelayPeriod">The period to calculate the Tenkan-sen period
+         * @param resolution">The resolution
+        @returns A new IchimokuKinkoHyo indicator with the specified periods and delays
         public IchimokuKinkoHyo ICHIMOKU(Symbol symbol, int tenkanPeriod, int kijunPeriod, int senkouAPeriod, int senkouBPeriod, int senkouADelayPeriod, int senkouBDelayPeriod, Resolution? resolution = null ) {
             name = CreateIndicatorName(symbol, String.format( "ICHIMOKU(%1$s,%2$s)", tenkanPeriod, kijunPeriod), resolution);
             ichimoku = new IchimokuKinkoHyo(name, tenkanPeriod, kijunPeriod, senkouAPeriod, senkouBPeriod, senkouADelayPeriod, senkouBDelayPeriod);
@@ -89,16 +89,16 @@ package com.quantconnect.lean.Algorithm
             return ichimoku;
         }
 
-        /// <summary>
+        /**
         /// Creates a new AverageTrueRange indicator for the symbol. The indicator will be automatically
         /// updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose ATR we want</param>
-        /// <param name="period">The smoothing period used to smooth the computed TrueRange values</param>
-        /// <param name="type">The type of smoothing to use</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>A new AverageTrueRange indicator with the specified smoothing type and period</returns>
+        */
+         * @param symbol">The symbol whose ATR we want
+         * @param period">The smoothing period used to smooth the computed TrueRange values
+         * @param type">The type of smoothing to use
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns A new AverageTrueRange indicator with the specified smoothing type and period
         public AverageTrueRange ATR(Symbol symbol, int period, MovingAverageType type = MovingAverageType.Simple, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             String name = CreateIndicatorName(symbol, "ATR" + period, resolution);
             atr = new AverageTrueRange(name, period, type);
@@ -106,15 +106,15 @@ package com.quantconnect.lean.Algorithm
             return atr;
         }
 
-        /// <summary>
+        /**
         /// Creates an ExponentialMovingAverage indicator for the symbol. The indicator will be automatically
         /// updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose EMA we want</param>
-        /// <param name="period">The period of the EMA</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The ExponentialMovingAverage for the given parameters</returns>
+        */
+         * @param symbol">The symbol whose EMA we want
+         * @param period">The period of the EMA
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The ExponentialMovingAverage for the given parameters
         public ExponentialMovingAverage EMA(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             String name = CreateIndicatorName(symbol, "EMA" + period, resolution);
             ema = new ExponentialMovingAverage(name, period);
@@ -122,15 +122,15 @@ package com.quantconnect.lean.Algorithm
             return ema;
         }
 
-        /// <summary>
+        /**
         /// Creates an SimpleMovingAverage indicator for the symbol. The indicator will be automatically
         /// updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose SMA we want</param>
-        /// <param name="period">The period of the SMA</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The SimpleMovingAverage for the given parameters</returns>
+        */
+         * @param symbol">The symbol whose SMA we want
+         * @param period">The period of the SMA
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The SimpleMovingAverage for the given parameters
         public SimpleMovingAverage SMA(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             String name = CreateIndicatorName(symbol, "SMA" + period, resolution);
             sma = new SimpleMovingAverage(name, period);
@@ -138,17 +138,17 @@ package com.quantconnect.lean.Algorithm
             return sma;
         }
 
-        /// <summary>
+        /**
         /// Creates a MACD indicator for the symbol. The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose MACD we want</param>
-        /// <param name="fastPeriod">The period for the fast moving average</param>
-        /// <param name="slowPeriod">The period for the slow moving average</param>
-        /// <param name="signalPeriod">The period for the signal moving average</param>
-        /// <param name="type">The type of moving average to use for the MACD</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The moving average convergence divergence between the fast and slow averages</returns>
+        */
+         * @param symbol">The symbol whose MACD we want
+         * @param fastPeriod">The period for the fast moving average
+         * @param slowPeriod">The period for the slow moving average
+         * @param signalPeriod">The period for the signal moving average
+         * @param type">The type of moving average to use for the MACD
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The moving average convergence divergence between the fast and slow averages
         public MovingAverageConvergenceDivergence MACD(Symbol symbol, int fastPeriod, int slowPeriod, int signalPeriod, MovingAverageType type = MovingAverageType.Simple, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, String.format( "MACD(%1$s,%2$s)", fastPeriod, slowPeriod), resolution);
             macd = new MovingAverageConvergenceDivergence(name, fastPeriod, slowPeriod, signalPeriod, type);
@@ -156,15 +156,15 @@ package com.quantconnect.lean.Algorithm
             return macd;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Maximum indicator to compute the maximum value
-        /// </summary>
-        /// <param name="symbol">The symbol whose max we want</param>
-        /// <param name="period">The look back period over which to compute the max value</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null and the symbol is of type TradeBar defaults to the High property, 
-        /// otherwise it defaults to Value property of BaseData (x => x.Value)</param>
-        /// <returns>A Maximum indicator that compute the max value and the periods since the max value</returns>
+        */
+         * @param symbol">The symbol whose max we want
+         * @param period">The look back period over which to compute the max value
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null and the symbol is of type TradeBar defaults to the High property, 
+        /// otherwise it defaults to Value property of BaseData (x -> x.Value)
+        @returns A Maximum indicator that compute the max value and the periods since the max value
         public Maximum MAX(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "MAX" + period, resolution);
             max = new Maximum(name, period);
@@ -173,8 +173,8 @@ package com.quantconnect.lean.Algorithm
             if( selector == null ) {
                 subscription = GetSubscription(symbol);
                 if( typeof(TradeBar).IsAssignableFrom(subscription.Type)) {
-                    // if we have trade bar data we'll use the High property, if not x => x.Value will be set in RegisterIndicator
-                    selector = x => ((TradeBar)x).High;
+                    // if we have trade bar data we'll use the High property, if not x -> x.Value will be set in RegisterIndicator
+                    selector = x -> ((TradeBar)x).High;
                 }
             }
 
@@ -182,15 +182,15 @@ package com.quantconnect.lean.Algorithm
             return max;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Minimum indicator to compute the minimum value
-        /// </summary>
-        /// <param name="symbol">The symbol whose min we want</param>
-        /// <param name="period">The look back period over which to compute the min value</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null and the symbol is of type TradeBar defaults to the Low property, 
-        /// otherwise it defaults to Value property of BaseData (x => x.Value)</param>
-        /// <returns>A Minimum indicator that compute the in value and the periods since the min value</returns>
+        */
+         * @param symbol">The symbol whose min we want
+         * @param period">The look back period over which to compute the min value
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null and the symbol is of type TradeBar defaults to the Low property, 
+        /// otherwise it defaults to Value property of BaseData (x -> x.Value)
+        @returns A Minimum indicator that compute the in value and the periods since the min value
         public Minimum MIN(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "MIN" + period, resolution);
             min = new Minimum(name, period);
@@ -199,8 +199,8 @@ package com.quantconnect.lean.Algorithm
             if( selector == null ) {
                 subscription = GetSubscription(symbol);
                 if( typeof (TradeBar).IsAssignableFrom(subscription.Type)) {
-                    // if we have trade bar data we'll use the Low property, if not x => x.Value will be set in RegisterIndicator
-                    selector = x => ((TradeBar) x).Low;
+                    // if we have trade bar data we'll use the Low property, if not x -> x.Value will be set in RegisterIndicator
+                    selector = x -> ((TradeBar) x).Low;
                 }
             }
 
@@ -208,27 +208,27 @@ package com.quantconnect.lean.Algorithm
             return min;
         }
 
-        /// <summary>
+        /**
         /// Creates a new AroonOscillator indicator which will compute the AroonUp and AroonDown (as well as the delta)
-        /// </summary>
-        /// <param name="symbol">The symbol whose Aroon we seek</param>
-        /// <param name="period">The look back period for computing number of periods since maximum and minimum</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>An AroonOscillator configured with the specied periods</returns>
+        */
+         * @param symbol">The symbol whose Aroon we seek
+         * @param period">The look back period for computing number of periods since maximum and minimum
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns An AroonOscillator configured with the specied periods
         public AroonOscillator AROON(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             return AROON(symbol, period, period, resolution, selector);
         }
         
-        /// <summary>
+        /**
         /// Creates a new AroonOscillator indicator which will compute the AroonUp and AroonDown (as well as the delta)
-        /// </summary>
-        /// <param name="symbol">The symbol whose Aroon we seek</param>
-        /// <param name="upPeriod">The look back period for computing number of periods since maximum</param>
-        /// <param name="downPeriod">The look back period for computing number of periods since minimum</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>An AroonOscillator configured with the specified periods</returns>
+        */
+         * @param symbol">The symbol whose Aroon we seek
+         * @param upPeriod">The look back period for computing number of periods since maximum
+         * @param downPeriod">The look back period for computing number of periods since minimum
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns An AroonOscillator configured with the specified periods
         public AroonOscillator AROON(Symbol symbol, int upPeriod, int downPeriod, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, String.format( "AROON(%1$s,%2$s)", upPeriod, downPeriod), resolution);
             aroon = new AroonOscillator(name, upPeriod, downPeriod);
@@ -236,15 +236,15 @@ package com.quantconnect.lean.Algorithm
             return aroon;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Momentum indicator. This will compute the absolute n-period change in the security.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose momentum we want</param>
-        /// <param name="period">The period over which to compute the momentum</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The momentum indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose momentum we want
+         * @param period">The period over which to compute the momentum
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The momentum indicator for the requested symbol over the specified period
         public Momentum MOM(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             String name = CreateIndicatorName(symbol, "MOM" + period, resolution);
             momentum = new Momentum(name, period);
@@ -252,15 +252,15 @@ package com.quantconnect.lean.Algorithm
             return momentum;
         }
 
-        /// <summary>
+        /**
         /// Creates a new MomentumPercent indicator. This will compute the n-period percent change in the security.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose momentum we want</param>
-        /// <param name="period">The period over which to compute the momentum</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The momentum indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose momentum we want
+         * @param period">The period over which to compute the momentum
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The momentum indicator for the requested symbol over the specified period
         public MomentumPercent MOMP(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             String name = CreateIndicatorName(symbol, "MOMP" + period, resolution);
             momentum = new MomentumPercent(name, period);
@@ -268,16 +268,16 @@ package com.quantconnect.lean.Algorithm
             return momentum;
         }
 
-        /// <summary>
+        /**
         /// Creates a new RelativeStrengthIndex indicator. This will produce an oscillator that ranges from 0 to 100 based
         /// on the ratio of average gains to average losses over the specified period.
-        /// </summary>
-        /// <param name="symbol">The symbol whose RSI we want</param>
-        /// <param name="period">The period over which to compute the RSI</param>
-        /// <param name="movingAverageType">The type of moving average to use in computing the average gain/loss values</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The RelativeStrengthIndex indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose RSI we want
+         * @param period">The period over which to compute the RSI
+         * @param movingAverageType">The type of moving average to use in computing the average gain/loss values
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The RelativeStrengthIndex indicator for the requested symbol over the specified period
         public RelativeStrengthIndex RSI(Symbol symbol, int period, MovingAverageType movingAverageType = MovingAverageType.Simple, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "RSI" + period, resolution);
             rsi = new RelativeStrengthIndex(name, period, movingAverageType);
@@ -285,16 +285,16 @@ package com.quantconnect.lean.Algorithm
             return rsi;
         }
 
-        /// <summary>
+        /**
         /// Creates a new CommodityChannelIndex indicator. The indicator will be automatically
         /// updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose CCI we want</param>
-        /// <param name="period">The period over which to compute the CCI</param>
-        /// <param name="movingAverageType">The type of moving average to use in computing the typical price averge</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The CommodityChannelIndex indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose CCI we want
+         * @param period">The period over which to compute the CCI
+         * @param movingAverageType">The type of moving average to use in computing the typical price averge
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The CommodityChannelIndex indicator for the requested symbol over the specified period
         public CommodityChannelIndex CCI(Symbol symbol, int period, MovingAverageType movingAverageType = MovingAverageType.Simple, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "CCI" + period, resolution);
             cci = new CommodityChannelIndex(name, period, movingAverageType);
@@ -302,15 +302,15 @@ package com.quantconnect.lean.Algorithm
             return cci;
         }
 
-        /// <summary>
+        /**
         /// Creates a new MoneyFlowIndex indicator. The indicator will be automatically
         /// updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose MFI we want</param>
-        /// <param name="period">The period over which to compute the MFI</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The MoneyFlowIndex indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose MFI we want
+         * @param period">The period over which to compute the MFI
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The MoneyFlowIndex indicator for the requested symbol over the specified period
         public MoneyFlowIndex MFI(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "MFI" + period, resolution);
             mfi = new MoneyFlowIndex(name, period);
@@ -318,14 +318,14 @@ package com.quantconnect.lean.Algorithm
             return mfi;
         }
 
-        /// <summary>
+        /**
         /// Creates a new StandardDeviation indicator. This will return the population standard deviation of samples over the specified period.
-        /// </summary>
-        /// <param name="symbol">The symbol whose STD we want</param>
-        /// <param name="period">The period over which to compute the STD</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The StandardDeviation indicator for the requested symbol over the speified period</returns>
+        */
+         * @param symbol">The symbol whose STD we want
+         * @param period">The period over which to compute the STD
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The StandardDeviation indicator for the requested symbol over the speified period
         public StandardDeviation STD(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "STD" + period, resolution);
             std = new StandardDeviation(name, period);
@@ -333,16 +333,16 @@ package com.quantconnect.lean.Algorithm
             return std;
         }
 
-        /// <summary>
+        /**
         /// Creates a new BollingerBands indicator which will compute the MiddleBand, UpperBand, LowerBand, and StandardDeviation
-        /// </summary>
-        /// <param name="symbol">The symbol whose BollingerBands we seek</param>
-        /// <param name="period">The period of the standard deviation and moving average (middle band)</param>
-        /// <param name="k">The number of standard deviations specifying the distance between the middle band and upper or lower bands</param>
-        /// <param name="movingAverageType">The type of moving average to be used</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>A BollingerBands configured with the specied period</returns>
+        */
+         * @param symbol">The symbol whose BollingerBands we seek
+         * @param period">The period of the standard deviation and moving average (middle band)
+         * @param k">The number of standard deviations specifying the distance between the middle band and upper or lower bands
+         * @param movingAverageType">The type of moving average to be used
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns A BollingerBands configured with the specied period
         public BollingerBands BB(Symbol symbol, int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, String.format( "BB(%1$s,%2$s)", period, k), resolution);
             bb = new BollingerBands(name, period, k, movingAverageType);
@@ -350,15 +350,15 @@ package com.quantconnect.lean.Algorithm
             return bb;
         }
 
-        /// <summary>
+        /**
         /// Creates a new RateOfChange indicator. This will compute the n-period rate of change in the security.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose RateOfChange we want</param>
-        /// <param name="period">The period over which to compute the RateOfChange</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The RateOfChange indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose RateOfChange we want
+         * @param period">The period over which to compute the RateOfChange
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The RateOfChange indicator for the requested symbol over the specified period
         public RateOfChange ROC(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             String name = CreateIndicatorName(symbol, "ROC" + period, resolution);
             rateofchange = new RateOfChange(name, period);
@@ -366,15 +366,15 @@ package com.quantconnect.lean.Algorithm
             return rateofchange;
         }
 
-        /// <summary>
+        /**
         /// Creates a new RateOfChangePercent indicator. This will compute the n-period percentage rate of change in the security.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose RateOfChangePercent we want</param>
-        /// <param name="period">The period over which to compute the RateOfChangePercent</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The RateOfChangePercent indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose RateOfChangePercent we want
+         * @param period">The period over which to compute the RateOfChangePercent
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The RateOfChangePercent indicator for the requested symbol over the specified period
         public RateOfChangePercent ROCP(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             String name = CreateIndicatorName(symbol, "ROCP" + period, resolution);
             rateofchangepercent = new RateOfChangePercent(name, period);
@@ -382,16 +382,16 @@ package com.quantconnect.lean.Algorithm
             return rateofchangepercent;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Williams %R indicator. This will compute the percentage change of
         /// the current closing price in relation to the high and low of the past N periods.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose Williams %R we want</param>
-        /// <param name="period">The period over which to compute the Williams %R</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The rateofchangepercent indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose Williams %R we want
+         * @param period">The period over which to compute the Williams %R
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The rateofchangepercent indicator for the requested symbol over the specified period
         public WilliamsPercentR WILR(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             String name = CreateIndicatorName(symbol, "WILR" + period, resolution);
             williamspercentr = new WilliamsPercentR(name, period);
@@ -399,15 +399,15 @@ package com.quantconnect.lean.Algorithm
             return williamspercentr;
         }
 
-        /// <summary>
+        /**
         /// Creates a new LinearWeightedMovingAverage indicator.  This indicator will linearly distribute
         /// the weights across the periods.  
-        /// </summary>
-        /// <param name="symbol">The symbol whose LWMA we want</param>
-        /// <param name="period">The period over which to compute the LWMA</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns></returns>
+        */
+         * @param symbol">The symbol whose LWMA we want
+         * @param period">The period over which to compute the LWMA
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns 
         public LinearWeightedMovingAverage LWMA(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             String name = CreateIndicatorName(symbol, "LWMA" + period, resolution);
             lwma = new LinearWeightedMovingAverage(name, period);
@@ -415,15 +415,15 @@ package com.quantconnect.lean.Algorithm
             return lwma;
         }
 
-        /// <summary>
+        /**
         /// Creates a new On Balance Volume indicator. This will compute the cumulative total volume
         /// based on whether the close price being higher or lower than the previous period.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose On Balance Volume we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The On Balance Volume indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose On Balance Volume we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The On Balance Volume indicator for the requested symbol.
         public OnBalanceVolume OBV(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "OBV", resolution);
             onBalanceVolume = new OnBalanceVolume(name);
@@ -431,15 +431,15 @@ package com.quantconnect.lean.Algorithm
             return onBalanceVolume;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Average Directional Index indicator. 
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose Average Directional Index we seek</param>
-        /// <param name="resolution">The resolution.</param> 
-        /// <param name="period">The period over which to compute the Average Directional Index</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The Average Directional Index indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose Average Directional Index we seek
+         * @param resolution">The resolution. 
+         * @param period">The period over which to compute the Average Directional Index
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The Average Directional Index indicator for the requested symbol.
         public AverageDirectionalIndex ADX(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "ADX", resolution);
             averageDirectionalIndex = new AverageDirectionalIndex(name, period);
@@ -447,17 +447,17 @@ package com.quantconnect.lean.Algorithm
             return averageDirectionalIndex;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Keltner Channels indicator. 
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose Keltner Channel we seek</param>
-        /// <param name="period">The period over which to compute the Keltner Channels</param>
-        /// <param name="k">The number of multiples of the <see cref="AverageTrueRange"/> from the middle band of the Keltner Channels</param>
-        /// <param name="movingAverageType">Specifies the type of moving average to be used as the middle line of the Keltner Channel</param>
-        /// <param name="resolution">The resolution.</param> 
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The Keltner Channel indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose Keltner Channel we seek
+         * @param period">The period over which to compute the Keltner Channels
+         * @param k">The number of multiples of the <see cref="AverageTrueRange"/> from the middle band of the Keltner Channels
+         * @param movingAverageType">Specifies the type of moving average to be used as the middle line of the Keltner Channel
+         * @param resolution">The resolution. 
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The Keltner Channel indicator for the requested symbol.
         public KeltnerChannels KCH(Symbol symbol, int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "KCH", resolution);
             keltnerChannels = new KeltnerChannels(name, period, k, movingAverageType);
@@ -465,16 +465,16 @@ package com.quantconnect.lean.Algorithm
             return keltnerChannels;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Donchian Channel indicator which will compute the Upper Band and Lower Band.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose Donchian Channel we seek.</param>
-        /// <param name="upperPeriod">The period over which to compute the upper Donchian Channel.</param>
-        /// <param name="lowerPeriod">The period over which to compute the lower Donchian Channel.</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The Donchian Channel indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose Donchian Channel we seek.
+         * @param upperPeriod">The period over which to compute the upper Donchian Channel.
+         * @param lowerPeriod">The period over which to compute the lower Donchian Channel.
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The Donchian Channel indicator for the requested symbol.
         public DonchianChannel DCH(Symbol symbol, int upperPeriod, int lowerPeriod, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "DCH", resolution);
             donchianChannel = new DonchianChannel(name, upperPeriod, lowerPeriod);
@@ -482,28 +482,28 @@ package com.quantconnect.lean.Algorithm
             return donchianChannel;
         }
 
-        /// <summary>
+        /**
         /// Overload shorthand to create a new symmetric Donchian Channel indicator which
         /// has the upper and lower channels set to the same period length.
-        /// </summary>
-        /// <param name="symbol">The symbol whose Donchian Channel we seek.</param>
-        /// <param name="period">The period over which to compute the Donchian Channel.</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The Donchian Channel indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose Donchian Channel we seek.
+         * @param period">The period over which to compute the Donchian Channel.
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The Donchian Channel indicator for the requested symbol.
         public DonchianChannel DCH(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             return DCH(symbol, period, period, resolution, selector);
         }
 
-        /// <summary>
+        /**
         /// Creates a new Stochastic indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose stochastic we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="period">The period of the stochastic. Normally 14</param>
-        /// <param name="kPeriod">The sum period of the stochastic. Normally 14</param>
-        /// <param name="dPeriod">The sum period of the stochastic. Normally 3</param>
-        /// <returns>Stochastic indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose stochastic we seek
+         * @param resolution">The resolution.
+         * @param period">The period of the stochastic. Normally 14
+         * @param kPeriod">The sum period of the stochastic. Normally 14
+         * @param dPeriod">The sum period of the stochastic. Normally 3
+        @returns Stochastic indicator for the requested symbol.
         public Stochastic STO(Symbol symbol, int period, int kPeriod, int dPeriod, Resolution? resolution = null ) {
             String name = CreateIndicatorName(symbol, "STO", resolution);
             stoch = new Stochastic(name, period, kPeriod, dPeriod);
@@ -511,24 +511,24 @@ package com.quantconnect.lean.Algorithm
             return stoch;
         }
 
-        /// <summary>
+        /**
         /// Overload short hand to create a new Stochastic indicator; defaulting to the 3 period for dStoch
-        /// </summary>
-        /// <param name="symbol">The symbol whose stochastic we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="period">The period of the stochastic. Normally 14</param>
-        /// <returns>Stochastic indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose stochastic we seek
+         * @param resolution">The resolution.
+         * @param period">The period of the stochastic. Normally 14
+        @returns Stochastic indicator for the requested symbol.
         public Stochastic STO(Symbol symbol, int period, Resolution? resolution = null ) {
             return STO(symbol, period, period, 3, resolution);
         }
 
-        /// <summary>
+        /**
         /// Creates a new LogReturn indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose log return we seek</param>
-        /// <param name="period">The period of the log return.</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <returns>log return indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose log return we seek
+         * @param period">The period of the log return.
+         * @param resolution">The resolution.
+        @returns log return indicator for the requested symbol.
         public LogReturn LOGR(Symbol symbol, int period, Resolution? resolution = null ) {
             String name = CreateIndicatorName(symbol, "LOGR", resolution);
             logr = new LogReturn(name, period);
@@ -536,14 +536,14 @@ package com.quantconnect.lean.Algorithm
             return logr;
         }
 
-        /// <summary>
+        /**
         /// Creates and registers a new Least Squares Moving Average instance.
-        /// </summary>
-        /// <param name="symbol">The symbol whose LSMA we seek.</param>
-        /// <param name="period">The LSMA period. Normally 14.</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar.</param>
-        /// <returns>A LeastSquaredMovingAverage configured with the specified period</returns>
+        */
+         * @param symbol">The symbol whose LSMA we seek.
+         * @param period">The LSMA period. Normally 14.
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar.
+        @returns A LeastSquaredMovingAverage configured with the specified period
         public LeastSquaresMovingAverage LSMA(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "LSMA" + period, resolution);
             lsma = new LeastSquaresMovingAverage(name, period);
@@ -551,16 +551,16 @@ package com.quantconnect.lean.Algorithm
             return lsma;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Parabolic SAR indicator
-        /// </summary>
-        /// <param name="symbol">The symbol whose PSAR we seek</param>
-        /// <param name="afStart">Acceleration factor start value. Normally 0.02</param>
-        /// <param name="afIncrement">Acceleration factor increment value. Normally 0.02</param>
-        /// <param name="afMax">Acceleration factor max value. Normally 0.2</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>A ParabolicStopAndReverse configured with the specified periods</returns>
+        */
+         * @param symbol">The symbol whose PSAR we seek
+         * @param afStart">Acceleration factor start value. Normally 0.02
+         * @param afIncrement">Acceleration factor increment value. Normally 0.02
+         * @param afMax">Acceleration factor max value. Normally 0.2
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns A ParabolicStopAndReverse configured with the specified periods
         public ParabolicStopAndReverse PSAR(Symbol symbol, BigDecimal afStart = 0.02m, BigDecimal afIncrement = 0.02m, BigDecimal afMax = 0.2m, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, String.format( "PSAR(%1$s,%2$s,%3$s)", afStart, afIncrement, afMax), resolution);
             psar = new ParabolicStopAndReverse(name, afStart, afIncrement, afMax);
@@ -568,14 +568,14 @@ package com.quantconnect.lean.Algorithm
             return psar;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Balance Of Power indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose Balance Of Power we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The Balance Of Power indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose Balance Of Power we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The Balance Of Power indicator for the requested symbol.
         public BalanceOfPower BOP(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "BOP", resolution);
             bop = new BalanceOfPower(name);
@@ -583,14 +583,14 @@ package com.quantconnect.lean.Algorithm
             return bop;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Variance indicator. This will return the population variance of samples over the specified period.
-        /// </summary>
-        /// <param name="symbol">The symbol whose VAR we want</param>
-        /// <param name="period">The period over which to compute the VAR</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The Variance indicator for the requested symbol over the speified period</returns>
+        */
+         * @param symbol">The symbol whose VAR we want
+         * @param period">The period over which to compute the VAR
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The Variance indicator for the requested symbol over the speified period
         public Variance VAR(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "VAR" + period, resolution);
             variance = new Variance(name, period);
@@ -598,13 +598,13 @@ package com.quantconnect.lean.Algorithm
             return variance;
         }
 
-        /// <summary>
+        /**
         /// Creates a new AccumulationDistribution indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose AD we want</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The AccumulationDistribution indicator for the requested symbol over the speified period</returns>
+        */
+         * @param symbol">The symbol whose AD we want
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The AccumulationDistribution indicator for the requested symbol over the speified period
         public AccumulationDistribution AD(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "AD", resolution);
             ad = new AccumulationDistribution(name);
@@ -612,15 +612,15 @@ package com.quantconnect.lean.Algorithm
             return ad;
         }
 
-        /// <summary>
+        /**
         /// Creates a new AccumulationDistributionOscillator indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose ADOSC we want</param>
-        /// <param name="fastPeriod">The fast moving average period</param>
-        /// <param name="slowPeriod">The slow moving average period</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The AccumulationDistributionOscillator indicator for the requested symbol over the speified period</returns>
+        */
+         * @param symbol">The symbol whose ADOSC we want
+         * @param fastPeriod">The fast moving average period
+         * @param slowPeriod">The slow moving average period
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The AccumulationDistributionOscillator indicator for the requested symbol over the speified period
         public AccumulationDistributionOscillator ADOSC(Symbol symbol, int fastPeriod, int slowPeriod, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, String.format( "ADOSC(%1$s,%2$s)", fastPeriod, slowPeriod), resolution);
             adOsc = new AccumulationDistributionOscillator(name, fastPeriod, slowPeriod);
@@ -628,13 +628,13 @@ package com.quantconnect.lean.Algorithm
             return adOsc;
         }
 
-        /// <summary>
+        /**
         /// Creates a new TrueRange indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose TR we want</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The TrueRange indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose TR we want
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The TrueRange indicator for the requested symbol.
         public TrueRange TR(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "TR", resolution);
             tr = new TrueRange(name);
@@ -642,14 +642,14 @@ package com.quantconnect.lean.Algorithm
             return tr;
         }
 
-        /// <summary>
+        /**
         /// Creates a new ChandeMomentumOscillator indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose CMO we want</param>
-        /// <param name="period">The period over which to compute the CMO</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The ChandeMomentumOscillator indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose CMO we want
+         * @param period">The period over which to compute the CMO
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The ChandeMomentumOscillator indicator for the requested symbol over the specified period
         public ChandeMomentumOscillator CMO(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "CMO" + period, resolution);
             cmo = new ChandeMomentumOscillator(name, period);
@@ -657,14 +657,14 @@ package com.quantconnect.lean.Algorithm
             return cmo;
         }
 
-        /// <summary>
+        /**
         /// Creates a new DoubleExponentialMovingAverage indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose DEMA we want</param>
-        /// <param name="period">The period over which to compute the DEMA</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The DoubleExponentialMovingAverage indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose DEMA we want
+         * @param period">The period over which to compute the DEMA
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The DoubleExponentialMovingAverage indicator for the requested symbol over the specified period
         public DoubleExponentialMovingAverage DEMA(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "DEMA" + period, resolution);
             dema = new DoubleExponentialMovingAverage(name, period);
@@ -672,14 +672,14 @@ package com.quantconnect.lean.Algorithm
             return dema;
         }
 
-        /// <summary>
+        /**
         /// Creates a new TripleExponentialMovingAverage indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose TEMA we want</param>
-        /// <param name="period">The period over which to compute the TEMA</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The TripleExponentialMovingAverage indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose TEMA we want
+         * @param period">The period over which to compute the TEMA
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The TripleExponentialMovingAverage indicator for the requested symbol over the specified period
         public TripleExponentialMovingAverage TEMA(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "TEMA" + period, resolution);
             tema = new TripleExponentialMovingAverage(name, period);
@@ -687,14 +687,14 @@ package com.quantconnect.lean.Algorithm
             return tema;
         }
 
-        /// <summary>
+        /**
         /// Creates a new TriangularMovingAverage indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose TRIMA we want</param>
-        /// <param name="period">The period over which to compute the TRIMA</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The TriangularMovingAverage indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose TRIMA we want
+         * @param period">The period over which to compute the TRIMA
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The TriangularMovingAverage indicator for the requested symbol over the specified period
         public TriangularMovingAverage TRIMA(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "TRIMA" + period, resolution);
             trima = new TriangularMovingAverage(name, period);
@@ -702,14 +702,14 @@ package com.quantconnect.lean.Algorithm
             return trima;
         }
 
-        /// <summary>
+        /**
         /// Creates a new RateOfChangeRatio indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose ROCR we want</param>
-        /// <param name="period">The period over which to compute the ROCR</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The RateOfChangeRatio indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose ROCR we want
+         * @param period">The period over which to compute the ROCR
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The RateOfChangeRatio indicator for the requested symbol over the specified period
         public RateOfChangeRatio ROCR(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "ROCR" + period, resolution);
             rocr = new RateOfChangeRatio(name, period);
@@ -717,14 +717,14 @@ package com.quantconnect.lean.Algorithm
             return rocr;
         }
 
-        /// <summary>
+        /**
         /// Creates a new MeanAbsoluteDeviation indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose MeanAbsoluteDeviation we want</param>
-        /// <param name="period">The period over which to compute the MeanAbsoluteDeviation</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The MeanAbsoluteDeviation indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose MeanAbsoluteDeviation we want
+         * @param period">The period over which to compute the MeanAbsoluteDeviation
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The MeanAbsoluteDeviation indicator for the requested symbol over the specified period
         public MeanAbsoluteDeviation MAD(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "MAD" + period, resolution);
             mad = new MeanAbsoluteDeviation(name, period);
@@ -732,15 +732,15 @@ package com.quantconnect.lean.Algorithm
             return mad;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Momersion indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose Momersion we want</param>
-        /// <param name="minPeriod">The minimum period over which to compute the Momersion</param>
-        /// <param name="fullPeriod">The full period over which to compute the Momersion</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The Momersion indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose Momersion we want
+         * @param minPeriod">The minimum period over which to compute the Momersion
+         * @param fullPeriod">The full period over which to compute the Momersion
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The Momersion indicator for the requested symbol over the specified period
         public MomersionIndicator MOMERSION(Symbol symbol, int minPeriod, int fullPeriod, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, String.format( "MOMERSION(%1$s,%2$s)", minPeriod, fullPeriod), resolution);
             momersion = new MomersionIndicator(name, minPeriod, fullPeriod);
@@ -748,14 +748,14 @@ package com.quantconnect.lean.Algorithm
             return momersion;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Sum indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose Sum we want</param>
-        /// <param name="period">The period over which to compute the Sum</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The Sum indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose Sum we want
+         * @param period">The period over which to compute the Sum
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The Sum indicator for the requested symbol over the specified period
         public Sum SUM(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "SUM" + period, resolution);
             sum = new Sum(name, period);
@@ -763,15 +763,15 @@ package com.quantconnect.lean.Algorithm
             return sum;
         }
 
-        /// <summary>
+        /**
         /// Creates a new T3MovingAverage indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose T3 we want</param>
-        /// <param name="period">The period over which to compute the T3</param>
-        /// <param name="volumeFactor">The volume factor to be used for the T3 (value must be in the [0,1] range, defaults to 0.7)</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The T3MovingAverage indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose T3 we want
+         * @param period">The period over which to compute the T3
+         * @param volumeFactor">The volume factor to be used for the T3 (value must be in the [0,1] range, defaults to 0.7)
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The T3MovingAverage indicator for the requested symbol over the specified period
         public T3MovingAverage T3(Symbol symbol, int period, BigDecimal volumeFactor = 0.7m, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, String.format( "T3(%1$s,%2$s)", period, volumeFactor), resolution);
             t3 = new T3MovingAverage(name, period, volumeFactor);
@@ -779,14 +779,14 @@ package com.quantconnect.lean.Algorithm
             return t3;
         }
 
-        /// <summary>
+        /**
         /// Creates a new NormalizedAverageTrueRange indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose NATR we want</param>
-        /// <param name="period">The period over which to compute the NATR</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The NormalizedAverageTrueRange indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose NATR we want
+         * @param period">The period over which to compute the NATR
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The NormalizedAverageTrueRange indicator for the requested symbol over the specified period
         public NormalizedAverageTrueRange NATR(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "NATR" + period, resolution);
             natr = new NormalizedAverageTrueRange(name, period);
@@ -794,13 +794,13 @@ package com.quantconnect.lean.Algorithm
             return natr;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Heikin-Ashi indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose Heikin-Ashi we want</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The Heikin-Ashi indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose Heikin-Ashi we want
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The Heikin-Ashi indicator for the requested symbol over the specified period
         public HeikinAshi HeikinAshi(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "HA", resolution);
             ha = new HeikinAshi(name);
@@ -808,14 +808,14 @@ package com.quantconnect.lean.Algorithm
             return ha;
         }
 
-        /// <summary>
+        /**
         /// Creates a new AverageDirectionalMovementIndexRating indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose ADXR we want</param>
-        /// <param name="period">The period over which to compute the ADXR</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The AverageDirectionalMovementIndexRating indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose ADXR we want
+         * @param period">The period over which to compute the ADXR
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The AverageDirectionalMovementIndexRating indicator for the requested symbol over the specified period
         public AverageDirectionalMovementIndexRating ADXR(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "ADXR" + period, resolution);
             adxr = new AverageDirectionalMovementIndexRating(name, period);
@@ -823,14 +823,14 @@ package com.quantconnect.lean.Algorithm
             return adxr;
         }
 
-        /// <summary>
+        /**
         /// Creates a new KaufmanAdaptiveMovingAverage indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose KAMA we want</param>
-        /// <param name="period">The period over which to compute the KAMA</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The KaufmanAdaptiveMovingAverage indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose KAMA we want
+         * @param period">The period over which to compute the KAMA
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The KaufmanAdaptiveMovingAverage indicator for the requested symbol over the specified period
         public KaufmanAdaptiveMovingAverage KAMA(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "KAMA" + period, resolution);
             kama = new KaufmanAdaptiveMovingAverage(name, period);
@@ -838,14 +838,14 @@ package com.quantconnect.lean.Algorithm
             return kama;
         }
 
-        /// <summary>
+        /**
         /// Creates a new MidPoint indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose MIDPOINT we want</param>
-        /// <param name="period">The period over which to compute the MIDPOINT</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The MidPoint indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose MIDPOINT we want
+         * @param period">The period over which to compute the MIDPOINT
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The MidPoint indicator for the requested symbol over the specified period
         public MidPoint MIDPOINT(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "MIDPOINT" + period, resolution);
             midpoint = new MidPoint(name, period);
@@ -853,16 +853,16 @@ package com.quantconnect.lean.Algorithm
             return midpoint;
         }
 
-        /// <summary>
+        /**
         /// Creates a new UltimateOscillator indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose ULTOSC we want</param>
-        /// <param name="period1">The first period over which to compute the ULTOSC</param>
-        /// <param name="period2">The second period over which to compute the ULTOSC</param>
-        /// <param name="period3">The third period over which to compute the ULTOSC</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The UltimateOscillator indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose ULTOSC we want
+         * @param period1">The first period over which to compute the ULTOSC
+         * @param period2">The second period over which to compute the ULTOSC
+         * @param period3">The third period over which to compute the ULTOSC
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The UltimateOscillator indicator for the requested symbol over the specified period
         public UltimateOscillator ULTOSC(Symbol symbol, int period1, int period2, int period3, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, String.format( "ULTOSC(%1$s,%2$s,%3$s)", period1, period2, period3), resolution);
             ultosc = new UltimateOscillator(name, period1, period2, period3);
@@ -870,14 +870,14 @@ package com.quantconnect.lean.Algorithm
             return ultosc;
         }
 
-        /// <summary>
+        /**
         /// Creates a new Trix indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose TRIX we want</param>
-        /// <param name="period">The period over which to compute the TRIX</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The Trix indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose TRIX we want
+         * @param period">The period over which to compute the TRIX
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The Trix indicator for the requested symbol over the specified period
         public Trix TRIX(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, "TRIX" + period, resolution);
             trix = new Trix(name, period);
@@ -885,14 +885,14 @@ package com.quantconnect.lean.Algorithm
             return trix;
         }
 
-        /// <summary>
+        /**
         /// Creates a new MidPrice indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose MIDPRICE we want</param>
-        /// <param name="period">The period over which to compute the MIDPRICE</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The MidPrice indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose MIDPRICE we want
+         * @param period">The period over which to compute the MIDPRICE
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The MidPrice indicator for the requested symbol over the specified period
         public MidPrice MIDPRICE(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "MIDPRICE" + period, resolution);
             midprice = new MidPrice(name, period);
@@ -900,16 +900,16 @@ package com.quantconnect.lean.Algorithm
             return midprice;
         }
 
-        /// <summary>
+        /**
         /// Creates a new AbsolutePriceOscillator indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose APO we want</param>
-        /// <param name="fastPeriod">The fast moving average period</param>
-        /// <param name="slowPeriod">The slow moving average period</param>
-        /// <param name="movingAverageType">The type of moving average to use</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The AbsolutePriceOscillator indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose APO we want
+         * @param fastPeriod">The fast moving average period
+         * @param slowPeriod">The slow moving average period
+         * @param movingAverageType">The type of moving average to use
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The AbsolutePriceOscillator indicator for the requested symbol over the specified period
         public AbsolutePriceOscillator APO(Symbol symbol, int fastPeriod, int slowPeriod, MovingAverageType movingAverageType, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, String.format( "APO(%1$s,%2$s)", fastPeriod, slowPeriod), resolution);
             apo = new AbsolutePriceOscillator(name, fastPeriod, slowPeriod, movingAverageType);
@@ -917,16 +917,16 @@ package com.quantconnect.lean.Algorithm
             return apo;
         }
 
-        /// <summary>
+        /**
         /// Creates a new PercentagePriceOscillator indicator.
-        /// </summary>
-        /// <param name="symbol">The symbol whose PPO we want</param>
-        /// <param name="fastPeriod">The fast moving average period</param>
-        /// <param name="slowPeriod">The slow moving average period</param>
-        /// <param name="movingAverageType">The type of moving average to use</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The PercentagePriceOscillator indicator for the requested symbol over the specified period</returns>
+        */
+         * @param symbol">The symbol whose PPO we want
+         * @param fastPeriod">The fast moving average period
+         * @param slowPeriod">The slow moving average period
+         * @param movingAverageType">The type of moving average to use
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The PercentagePriceOscillator indicator for the requested symbol over the specified period
         public PercentagePriceOscillator PPO(Symbol symbol, int fastPeriod, int slowPeriod, MovingAverageType movingAverageType, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             name = CreateIndicatorName(symbol, String.format( "PPO(%1$s,%2$s)", fastPeriod, slowPeriod), resolution);
             ppo = new PercentagePriceOscillator(name, fastPeriod, slowPeriod, movingAverageType);
@@ -934,15 +934,15 @@ package com.quantconnect.lean.Algorithm
             return ppo;
         }
 
-        /// <summary>
+        /**
         /// Creates an VolumeWeightedAveragePrice (VWAP) indicator for the symbol. The indicator will be automatically
         /// updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose VWAP we want</param>
-        /// <param name="period">The period of the VWAP</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The VolumeWeightedAveragePrice for the given parameters</returns>
+        */
+         * @param symbol">The symbol whose VWAP we want
+         * @param period">The period of the VWAP
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The VolumeWeightedAveragePrice for the given parameters
         public VolumeWeightedAveragePriceIndicator VWAP(Symbol symbol, int period, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = CreateIndicatorName(symbol, "VWAP" + period, resolution);
             vwap = new VolumeWeightedAveragePriceIndicator(name, period);
@@ -950,16 +950,16 @@ package com.quantconnect.lean.Algorithm
             return vwap;
         }
 
-        /// <summary>
+        /**
         /// Creates an FractalAdaptiveMovingAverage (FRAMA) indicator for the symbol. The indicator will be automatically
         /// updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose FRAMA we want</param>
-        /// <param name="period">The period of the FRAMA</param>
-        /// <param name="longPeriod">The long period of the FRAMA</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The FRAMA for the given parameters</returns>
+        */
+         * @param symbol">The symbol whose FRAMA we want
+         * @param period">The period of the FRAMA
+         * @param longPeriod">The long period of the FRAMA
+         * @param resolution">The resolution
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The FRAMA for the given parameters
         public FractalAdaptiveMovingAverage FRAMA(Symbol symbol, int period, int longPeriod = 198, Resolution? resolution = null ) {
             name = CreateIndicatorName(symbol, "FRAMA" + period, resolution);
             frama = new FractalAdaptiveMovingAverage(name, period, longPeriod);
@@ -967,17 +967,17 @@ package com.quantconnect.lean.Algorithm
             return frama;
         }
 
-        /// <summary>
+        /**
         /// Creates Swiss Army Knife transformation for the symbol. The indicator will be automatically
         /// updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol to use for calculations</param>
-        /// <param name="period">The period of the calculation</param>
-        /// <param name="delta">The delta scale of the BandStop or BandPass</param>
-        /// <param name="tool">The tool os the Swiss Army Knife</param>
-        /// <param name="resolution">The resolution</param>
-        /// <param name="selector">elects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
-        /// <returns>The calculation using the given tool</returns>
+        */
+         * @param symbol">The symbol to use for calculations
+         * @param period">The period of the calculation
+         * @param delta">The delta scale of the BandStop or BandPass
+         * @param tool">The tool os the Swiss Army Knife
+         * @param resolution">The resolution
+         * @param selector">elects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
+        @returns The calculation using the given tool
         public SwissArmyKnife SWISS(Symbol symbol, int period, double delta, SwissArmyKnifeTool tool, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
             String name = CreateIndicatorName(symbol, "SWISS" + period, resolution);
             swiss = new SwissArmyKnife(name, period, delta, tool);
@@ -985,41 +985,41 @@ package com.quantconnect.lean.Algorithm
             return swiss;
         }
 
-        /// <summary>
+        /**
         /// Creates and registers a new consolidator to receive automatic updates at the specified resolution as well as configures
         /// the indicator to receive updates from the consolidator.
-        /// </summary>
-        /// <param name="symbol">The symbol to register against</param>
-        /// <param name="indicator">The indicator to receive data from the consolidator</param>
-        /// <param name="resolution">The resolution at which to send data to the indicator, null to use the same resolution as the subscription</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
+        */
+         * @param symbol">The symbol to register against
+         * @param indicator">The indicator to receive data from the consolidator
+         * @param resolution">The resolution at which to send data to the indicator, null to use the same resolution as the subscription
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
         public void RegisterIndicator(Symbol symbol, IndicatorBase<IndicatorDataPoint> indicator, Resolution? resolution = null, Func<BaseData, decimal> selector = null ) {
-            RegisterIndicator(symbol, indicator, ResolveConsolidator(symbol, resolution), selector ?? (x => x.Value));
+            RegisterIndicator(symbol, indicator, ResolveConsolidator(symbol, resolution), selector ?? (x -> x.Value));
         }
 
-        /// <summary>
+        /**
         /// Creates and registers a new consolidator to receive automatic updates at the specified resolution as well as configures
         /// the indicator to receive updates from the consolidator.
-        /// </summary>
-        /// <param name="symbol">The symbol to register against</param>
-        /// <param name="indicator">The indicator to receive data from the consolidator</param>
-        /// <param name="resolution">The resolution at which to send data to the indicator, null to use the same resolution as the subscription</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
+        */
+         * @param symbol">The symbol to register against
+         * @param indicator">The indicator to receive data from the consolidator
+         * @param resolution">The resolution at which to send data to the indicator, null to use the same resolution as the subscription
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
         public void RegisterIndicator(Symbol symbol, IndicatorBase<IndicatorDataPoint> indicator, TimeSpan? resolution = null, Func<BaseData, decimal> selector = null ) {
-            RegisterIndicator(symbol, indicator, ResolveConsolidator(symbol, resolution), selector ?? (x => x.Value));
+            RegisterIndicator(symbol, indicator, ResolveConsolidator(symbol, resolution), selector ?? (x -> x.Value));
         }
 
-        /// <summary>
+        /**
         /// Registers the consolidator to receive automatic updates as well as configures the indicator to receive updates
         /// from the consolidator.
-        /// </summary>
-        /// <param name="symbol">The symbol to register against</param>
-        /// <param name="indicator">The indicator to receive data from the consolidator</param>
-        /// <param name="consolidator">The consolidator to receive raw subscription data</param>
-        /// <param name="selector">Selects a value from the BaseData send into the indicator, if null defaults to the Value property of BaseData (x => x.Value)</param>
+        */
+         * @param symbol">The symbol to register against
+         * @param indicator">The indicator to receive data from the consolidator
+         * @param consolidator">The consolidator to receive raw subscription data
+         * @param selector">Selects a value from the BaseData send into the indicator, if null defaults to the Value property of BaseData (x -> x.Value)
         public void RegisterIndicator(Symbol symbol, IndicatorBase<IndicatorDataPoint> indicator, IDataConsolidator consolidator, Func<BaseData, decimal> selector = null ) {
             // default our selector to the Value property on BaseData
-            selector = selector ?? (x => x.Value);
+            selector = selector ?? (x -> x.Value);
 
             // register the consolidator for automatic updates via SubscriptionManager
             SubscriptionManager.AddConsolidator(symbol, consolidator);
@@ -1032,60 +1032,60 @@ package com.quantconnect.lean.Algorithm
             };
         }
 
-        /// <summary>
+        /**
         /// Registers the consolidator to receive automatic updates as well as configures the indicator to receive updates
         /// from the consolidator.
-        /// </summary>
-        /// <param name="symbol">The symbol to register against</param>
-        /// <param name="indicator">The indicator to receive data from the consolidator</param>
-        /// <param name="resolution">The resolution at which to send data to the indicator, null to use the same resolution as the subscription</param>
+        */
+         * @param symbol">The symbol to register against
+         * @param indicator">The indicator to receive data from the consolidator
+         * @param resolution">The resolution at which to send data to the indicator, null to use the same resolution as the subscription
         public void RegisterIndicator<T>(Symbol symbol, IndicatorBase<T> indicator, Resolution? resolution = null )
             where T : BaseData
         {
             RegisterIndicator(symbol, indicator, ResolveConsolidator(symbol, resolution));
         }
 
-        /// <summary>
+        /**
         /// Registers the consolidator to receive automatic updates as well as configures the indicator to receive updates
         /// from the consolidator.
-        /// </summary>
-        /// <param name="symbol">The symbol to register against</param>
-        /// <param name="indicator">The indicator to receive data from the consolidator</param>
-        /// <param name="resolution">The resolution at which to send data to the indicator, null to use the same resolution as the subscription</param>
-        /// <param name="selector">Selects a value from the BaseData send into the indicator, if null defaults to a cast (x => (T)x)</param>
+        */
+         * @param symbol">The symbol to register against
+         * @param indicator">The indicator to receive data from the consolidator
+         * @param resolution">The resolution at which to send data to the indicator, null to use the same resolution as the subscription
+         * @param selector">Selects a value from the BaseData send into the indicator, if null defaults to a cast (x -> (T)x)
         public void RegisterIndicator<T>(Symbol symbol, IndicatorBase<T> indicator, Resolution? resolution, Func<BaseData, T> selector)
             where T : BaseData
         {
             RegisterIndicator(symbol, indicator, ResolveConsolidator(symbol, resolution), selector);
         }
 
-        /// <summary>
+        /**
         /// Registers the consolidator to receive automatic updates as well as configures the indicator to receive updates
         /// from the consolidator.
-        /// </summary>
-        /// <param name="symbol">The symbol to register against</param>
-        /// <param name="indicator">The indicator to receive data from the consolidator</param>
-        /// <param name="resolution">The resolution at which to send data to the indicator, null to use the same resolution as the subscription</param>
-        /// <param name="selector">Selects a value from the BaseData send into the indicator, if null defaults to a cast (x => (T)x)</param>
+        */
+         * @param symbol">The symbol to register against
+         * @param indicator">The indicator to receive data from the consolidator
+         * @param resolution">The resolution at which to send data to the indicator, null to use the same resolution as the subscription
+         * @param selector">Selects a value from the BaseData send into the indicator, if null defaults to a cast (x -> (T)x)
         public void RegisterIndicator<T>(Symbol symbol, IndicatorBase<T> indicator, TimeSpan? resolution, Func<BaseData, T> selector = null )
             where T : BaseData
         {
             RegisterIndicator(symbol, indicator, ResolveConsolidator(symbol, resolution), selector);
         }
 
-        /// <summary>
+        /**
         /// Registers the consolidator to receive automatic updates as well as configures the indicator to receive updates
         /// from the consolidator.
-        /// </summary>
-        /// <param name="symbol">The symbol to register against</param>
-        /// <param name="indicator">The indicator to receive data from the consolidator</param>
-        /// <param name="consolidator">The consolidator to receive raw subscription data</param>
-        /// <param name="selector">Selects a value from the BaseData send into the indicator, if null defaults to a cast (x => (T)x)</param>
+        */
+         * @param symbol">The symbol to register against
+         * @param indicator">The indicator to receive data from the consolidator
+         * @param consolidator">The consolidator to receive raw subscription data
+         * @param selector">Selects a value from the BaseData send into the indicator, if null defaults to a cast (x -> (T)x)
         public void RegisterIndicator<T>(Symbol symbol, IndicatorBase<T> indicator, IDataConsolidator consolidator, Func<BaseData, T> selector = null ) 
             where T : BaseData
         {
             // assign default using cast
-            selector = selector ?? (x => (T) x);
+            selector = selector ?? (x -> (T) x);
 
             // register the consolidator for automatic updates via SubscriptionManager
             SubscriptionManager.AddConsolidator(symbol, consolidator);
@@ -1107,12 +1107,12 @@ package com.quantconnect.lean.Algorithm
             };
         }
 
-        /// <summary>
+        /**
         /// Gets the default consolidator for the specified symbol and resolution
-        /// </summary>
-        /// <param name="symbol">The symbo whose data is to be consolidated</param>
-        /// <param name="resolution">The resolution for the consolidator, if null, uses the resolution from subscription</param>
-        /// <returns>The new default consolidator</returns>
+        */
+         * @param symbol">The symbo whose data is to be consolidated
+         * @param resolution">The resolution for the consolidator, if null, uses the resolution from subscription
+        @returns The new default consolidator
         public IDataConsolidator ResolveConsolidator(Symbol symbol, Resolution? resolution) {
             subscription = GetSubscription(symbol);
 
@@ -1137,12 +1137,12 @@ package com.quantconnect.lean.Algorithm
             return ResolveConsolidator(symbol, timeSpan);
         }
 
-        /// <summary>
+        /**
         /// Gets the default consolidator for the specified symbol and resolution
-        /// </summary>
-        /// <param name="symbol">The symbo whose data is to be consolidated</param>
-        /// <param name="timeSpan">The requested time span for the consolidator, if null, uses the resolution from subscription</param>
-        /// <returns>The new default consolidator</returns>
+        */
+         * @param symbol">The symbo whose data is to be consolidated
+         * @param timeSpan">The requested time span for the consolidator, if null, uses the resolution from subscription
+        @returns The new default consolidator
         public IDataConsolidator ResolveConsolidator(Symbol symbol, TimeSpan? timeSpan) {
             subscription = GetSubscription(symbol);
 
@@ -1183,18 +1183,18 @@ package com.quantconnect.lean.Algorithm
             return new BaseDataConsolidator(timeSpan.Value);
         }
 
-        /// <summary>
+        /**
         /// Gets the SubscriptionDataConfig for the specified symbol
-        /// </summary>
+        */
         /// <exception cref="InvalidOperationException">Thrown if no configuration is found for the requested symbol</exception>
-        /// <param name="symbol">The symbol to retrieve configuration for</param>
-        /// <returns>The SubscriptionDataConfig for the specified symbol</returns>
+         * @param symbol">The symbol to retrieve configuration for
+        @returns The SubscriptionDataConfig for the specified symbol
         protected SubscriptionDataConfig GetSubscription(Symbol symbol) {
             SubscriptionDataConfig subscription;
             try
             {
                 // find our subscription to this symbol
-                subscription = SubscriptionManager.Subscriptions.First(x => x.Symbol == symbol);
+                subscription = SubscriptionManager.Subscriptions.First(x -> x.Symbol == symbol);
             }
             catch (InvalidOperationException) {
                 // this will happen if we did not find the subscription, let's give the user a decent error message
@@ -1203,13 +1203,13 @@ package com.quantconnect.lean.Algorithm
             return subscription;
         }
 
-        /// <summary>
+        /**
         /// Creates a new name for an indicator created with the convenience functions (SMA, EMA, ect...)
-        /// </summary>
-        /// <param name="symbol">The symbol this indicator is registered to</param>
-        /// <param name="type">The indicator type, for example, 'SMA5'</param>
-        /// <param name="resolution">The resolution requested</param>
-        /// <returns>A unique for the given parameters</returns>
+        */
+         * @param symbol">The symbol this indicator is registered to
+         * @param type">The indicator type, for example, 'SMA5'
+         * @param resolution">The resolution requested
+        @returns A unique for the given parameters
         public String CreateIndicatorName(Symbol symbol, String type, Resolution? resolution) {
             if( !resolution.HasValue) {
                 resolution = GetSubscription(symbol).Resolution;

@@ -18,9 +18,9 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Algorithm.CSharp
 {
-    /// <summary>
+    /**
     /// Algorithm used for regression tests purposes
-    /// </summary>
+    */
     public class RegressionAlgorithm : QCAlgorithm
     {
         public @Override void Initialize() {
@@ -38,7 +38,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
         private DateTime lastTradeTradeBars;
         private DateTime lastTradeTicks;
-        private TimeSpan tradeEvery = Duration.ofMinutes(1);
+        private Duration tradeEvery = Duration.ofMinutes(1);
         public void OnData(TradeBars data) {
             if( Time - lastTradeTradeBars < tradeEvery) return;
             lastTradeTradeBars = Time;

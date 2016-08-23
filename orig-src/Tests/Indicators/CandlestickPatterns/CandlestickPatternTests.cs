@@ -25,7 +25,7 @@ package com.quantconnect.lean.Tests.Indicators.CandlestickPatterns
     [TestFixture]
     public class CandlestickPatternTests
     {
-        private readonly string[] _testFileNames =
+        private final string[] _testFileNames =
         {
             "spy_candle_patterns.txt", "ewz_candle_patterns.txt", "eurusd_candle_patterns.txt"
         };

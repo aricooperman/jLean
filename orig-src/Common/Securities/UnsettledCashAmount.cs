@@ -18,29 +18,29 @@ using System;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Represents a pending cash amount waiting for settlement time
-    /// </summary>
+    */
     public class UnsettledCashAmount
     {
-        /// <summary>
+        /**
         /// The settlement time (in UTC)
-        /// </summary>
+        */
         public DateTime SettlementTimeUtc { get; private set; }
 
-        /// <summary>
+        /**
         /// The currency symbol
-        /// </summary>
+        */
         public String Currency { get; private set; }
 
-        /// <summary>
+        /**
         /// The amount of cash
-        /// </summary>
+        */
         public BigDecimal Amount { get; private set; }
 
-        /// <summary>
+        /**
         /// Creates a new instance of the <see cref="UnsettledCashAmount"/> class
-        /// </summary>
+        */
         public UnsettledCashAmount(DateTime settlementTimeUtc, String currency, BigDecimal amount) {
             SettlementTimeUtc = settlementTimeUtc;
             Currency = currency;

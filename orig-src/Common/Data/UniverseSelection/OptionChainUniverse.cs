@@ -25,43 +25,43 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Data.UniverseSelection
 {
-    /// <summary>
+    /**
     /// Defines a universe for a single option chain
-    /// </summary>
+    */
     public class OptionChainUniverse : Universe
     {
-        private static readonly IReadOnlyList<TickType> QuotesAndTrades = new[] { TickType.Quote, TickType.Trade };
+        private static final IReadOnlyList<TickType> QuotesAndTrades = new[] { TickType.Quote, TickType.Trade };
 
         private BaseData _underlying;
-        private readonly Option _option;
-        private readonly UniverseSettings _universeSettings;
+        private final Option _option;
+        private final UniverseSettings _universeSettings;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="OptionChainUniverse"/> class
-        /// </summary>
-        /// <param name="option">The canonical option chain security</param>
-        /// <param name="universeSettings">The universe settings to be used for new subscriptions</param>
-        /// <param name="securityInitializer">The security initializer to use on newly created securities</param>
+        */
+         * @param option">The canonical option chain security
+         * @param universeSettings">The universe settings to be used for new subscriptions
+         * @param securityInitializer">The security initializer to use on newly created securities
         public OptionChainUniverse(Option option, UniverseSettings universeSettings, ISecurityInitializer securityInitializer = null )
             : base(option.SubscriptionDataConfig, securityInitializer) {
             _option = option;
             _universeSettings = universeSettings;
         }
 
-        /// <summary>
+        /**
         /// Gets the settings used for subscriptons added for this universe
-        /// </summary>
+        */
         public @Override UniverseSettings UniverseSettings
         {
             get { return _universeSettings; }
         }
 
-        /// <summary>
+        /**
         /// Performs universe selection using the data specified
-        /// </summary>
-        /// <param name="utcTime">The current utc time</param>
-        /// <param name="data">The symbols to remain in the universe</param>
-        /// <returns>The data that passes the filter</returns>
+        */
+         * @param utcTime">The current utc time
+         * @param data">The symbols to remain in the universe
+        @returns The data that passes the filter
         public @Override IEnumerable<Symbol> SelectSymbols(DateTime utcTime, BaseDataCollection data) {
             optionsUniverseDataCollection = data as OptionChainUniverseDataCollection;
             if( optionsUniverseDataCollection == null ) {
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Data.UniverseSelection
                 return Unchanged;
             }
 
-            availableContracts = optionsUniverseDataCollection.Data.Select(x => x.Symbol);
+            availableContracts = optionsUniverseDataCollection.Data.Select(x -> x.Symbol);
             results = _option.ContractFilter.Filter(availableContracts, _underlying).ToHashSet();
 
             // we save off the filtered results to the universe data collection for later
@@ -87,16 +87,16 @@ package com.quantconnect.lean.Data.UniverseSelection
             return results;
         }
 
-        /// <summary>
+        /**
         /// Gets the subscriptions to be added for the specified security
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// In most cases the default implementaon of returning the security's configuration is
         /// sufficient. It's when we want multiple subscriptions (trade/quote data) that we'll need
         /// to @Override this
-        /// </remarks>
-        /// <param name="security">The security to get subscriptions for</param>
-        /// <returns>All subscriptions required by this security</returns>
+        /// 
+         * @param security">The security to get subscriptions for
+        @returns All subscriptions required by this security
         public @Override IEnumerable<SubscriptionDataConfig> GetSubscriptions(Security security) {
             config = security.SubscriptionDataConfig;
 
@@ -114,21 +114,21 @@ package com.quantconnect.lean.Data.UniverseSelection
             }
 
             // we want to return both quote and trade subscriptions
-            return QuotesAndTrades.Select(x => new SubscriptionDataConfig(config,
+            return QuotesAndTrades.Select(x -> new SubscriptionDataConfig(config,
                 tickType: x,
                 objectType: GetDataType(config.Resolution, x),
                 isFilteredSubscription: true
                 ));
         }
 
-        /// <summary>
+        /**
         /// Creates and configures a security for the specified symbol
-        /// </summary>
-        /// <param name="symbol">The symbol of the security to be created</param>
-        /// <param name="algorithm">The algorithm instance</param>
-        /// <param name="marketHoursDatabase">The market hours database</param>
-        /// <param name="symbolPropertiesDatabase">The symbol properties database</param>
-        /// <returns>The newly initialized security object</returns>
+        */
+         * @param symbol">The symbol of the security to be created
+         * @param algorithm">The algorithm instance
+         * @param marketHoursDatabase">The market hours database
+         * @param symbolPropertiesDatabase">The symbol properties database
+        @returns The newly initialized security object
         public @Override Security CreateSecurity(Symbol symbol, IAlgorithm algorithm, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase) {
             // set the underlying security and pricing model from the canonical security
             option = (Option)base.CreateSecurity(symbol, algorithm, marketHoursDatabase, symbolPropertiesDatabase);
@@ -137,15 +137,15 @@ package com.quantconnect.lean.Data.UniverseSelection
             return option;
         }
 
-        /// <summary>
+        /**
         /// Determines whether or not the specified security can be removed from
         /// this universe. This is useful to prevent securities from being taken
         /// out of a universe before the algorithm has had enough time to make
         /// decisions on the security
-        /// </summary>
-        /// <param name="utcTime">The current utc time</param>
-        /// <param name="security">The security to check if its ok to remove</param>
-        /// <returns>True if we can remove the security, false otherwise</returns>
+        */
+         * @param utcTime">The current utc time
+         * @param security">The security to check if its ok to remove
+        @returns True if we can remove the security, false otherwise
         public @Override boolean CanRemoveMember(DateTime utcTime, Security security) {
             // if we haven't begun receiving data for this security then it's safe to remove
             lastData = security.Cache.GetData();
@@ -163,9 +163,9 @@ package com.quantconnect.lean.Data.UniverseSelection
             return false;
         }
 
-        /// <summary>
+        /**
         /// Gets the data type required for the specified combination of resolution and tick type
-        /// </summary>
+        */
         private static Type GetDataType(Resolution resolution, TickType tickType) {
             if( resolution == Resolution.Tick) return typeof(Tick);
             if( tickType == TickType.Quote) return typeof(QuoteBar);

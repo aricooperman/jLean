@@ -170,7 +170,7 @@ package com.quantconnect.lean.Tests.Common.Util
                 new LeanDataTestParameters(Symbols.DE10YBEUR, date, Resolution.Hour, TickType.Quote, "de10ybeur.zip", "de10ybeur.csv", "cfd/fxcm/hour"),
                 new LeanDataTestParameters(Symbols.DE10YBEUR, date, Resolution.Daily, TickType.Quote, "de10ybeur.zip", "de10ybeur.csv", "cfd/fxcm/daily"),
 
-            }.Select(x => new TestCaseData(x).SetName(x.Name)).ToArray();
+            }.Select(x -> new TestCaseData(x).SetName(x.Name)).ToArray();
         }
 
         private static TestCaseData[] GetLeanDataLineTestParameters() {
@@ -218,22 +218,22 @@ package com.quantconnect.lean.Tests.Common.Util
                     "34200000,1,2,3,4"),
                 new LeanDataLineTestParameters(new TradeBar(time.Date, Symbols.DE10YBEUR, 1, 2, 3, 4, 0, Duration.ofDays(1)), SecurityType.Cfd, Resolution.Daily,
                     "20160218 00:00,1,2,3,4"),
-            }.Select(x => new TestCaseData(x).SetName(x.Name)).ToArray();
+            }.Select(x -> new TestCaseData(x).SetName(x.Name)).ToArray();
         }
 
         public class LeanDataTestParameters
         {
-            public readonly String Name;
-            public readonly Symbol Symbol;
-            public readonly DateTime Date;
-            public readonly Resolution Resolution;
-            public readonly TickType TickType;
-            public readonly Type BaseDataType;
-            public readonly SubscriptionDataConfig Config;
-            public readonly String ExpectedZipFileName;
-            public readonly String ExpectedZipEntryName;
-            public readonly String ExpectedRelativeZipFilePath;
-            public readonly String ExpectedZipFilePath;
+            public final String Name;
+            public final Symbol Symbol;
+            public final DateTime Date;
+            public final Resolution Resolution;
+            public final TickType TickType;
+            public final Type BaseDataType;
+            public final SubscriptionDataConfig Config;
+            public final String ExpectedZipFileName;
+            public final String ExpectedZipEntryName;
+            public final String ExpectedRelativeZipFilePath;
+            public final String ExpectedZipFilePath;
             public SecurityType SecurityType { get { return Symbol.ID.SecurityType; } }
 
             public LeanDataTestParameters(Symbol symbol, DateTime date, Resolution resolution, TickType tickType, String expectedZipFileName, String expectedZipEntryName, String expectedRelativeZipFileDirectory = "") {
@@ -258,13 +258,13 @@ package com.quantconnect.lean.Tests.Common.Util
 
         public class LeanDataLineTestParameters
         {
-            public readonly String Name;
-            public readonly BaseData Data;
-            public readonly SecurityType SecurityType;
-            public readonly Resolution Resolution;
-            public readonly String ExpectedLine;
-            public readonly SubscriptionDataConfig Config;
-            public readonly TickType TickType;
+            public final String Name;
+            public final BaseData Data;
+            public final SecurityType SecurityType;
+            public final Resolution Resolution;
+            public final String ExpectedLine;
+            public final SubscriptionDataConfig Config;
+            public final TickType TickType;
 
             public LeanDataLineTestParameters(BaseData data, SecurityType securityType, Resolution resolution, String expectedLine) {
                 Data = data;

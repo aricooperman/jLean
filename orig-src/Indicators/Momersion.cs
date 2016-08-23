@@ -19,36 +19,36 @@ using System.Linq;
 
 package com.quantconnect.lean.Indicators
 {
-    /// <summary> 
+    /** 
     /// Oscillator indicator that measures momentum and mean-reversion over a specified
     /// period n.
     /// Source: Harris, Michael. "Momersion Indicator." Price Action Lab.,
     ///             13 Aug. 2015. Web. http://www.priceactionlab.com/Blog/2015/08/momersion-indicator/.
-    /// </summary>
+    */
     public class MomersionIndicator : WindowIndicator<IndicatorDataPoint>
     {
-        /// <summary>
+        /**
         /// The minimum observations needed to consider the indicator ready. After that observation
         /// number is reached, the indicator will continue gathering data until the full period.
-        /// </summary>
+        */
         private int? _minPeriod;
 
-        /// <summary>
+        /**
         /// The final full period used to estimate the indicator.
-        /// </summary>
+        */
         private int _fullPeriod;
 
-        /// <summary>
+        /**
         /// The rolling window used to store the momentum.
-        /// </summary>
+        */
         private RollingWindow<decimal> _multipliedDiffWindow;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="MomersionIndicator"/> class.
-        /// </summary>
-        /// <param name="name">The name.</param>
-        /// <param name="minPeriod">The minimum period.</param>
-        /// <param name="fullPeriod">The full period.</param>
+        */
+         * @param name">The name.
+         * @param minPeriod">The minimum period.
+         * @param fullPeriod">The full period.
         /// <exception cref="System.ArgumentException">The minimum period should be greater of 3.;minPeriod</exception>
         public MomersionIndicator( String name, int? minPeriod, int fullPeriod)
             : base(name, 3) {
@@ -60,27 +60,27 @@ package com.quantconnect.lean.Indicators
             _minPeriod = minPeriod;
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="MomersionIndicator"/> class.
-        /// </summary>
-        /// <param name="minPeriod">The minimum period.</param>
-        /// <param name="fullPeriod">The full period.</param>
+        */
+         * @param minPeriod">The minimum period.
+         * @param fullPeriod">The full period.
         public MomersionIndicator(int minPeriod, int fullPeriod)
             : this( "Momersion_" + fullPeriod, minPeriod, fullPeriod) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="MomersionIndicator"/> class.
-        /// </summary>
-        /// <param name="fullPeriod">The full period.</param>
+        */
+         * @param fullPeriod">The full period.
         public MomersionIndicator(int fullPeriod)
             : this( "Momersion_" + fullPeriod, null, fullPeriod) {
         }
         
 
-        /// <summary>
+        /**
         /// Gets a flag indicating when this indicator is ready and fully initialized
-        /// </summary>
+        */
         public @Override boolean IsReady
         {
             get
@@ -95,23 +95,23 @@ package com.quantconnect.lean.Indicators
             }
         }
 
-        /// <summary>
+        /**
         /// Resets this indicator to its initial state
-        /// </summary>
+        */
         public @Override void Reset() {
             base.Reset();
             _multipliedDiffWindow.Reset();
         }
 
 
-        /// <summary>
+        /**
         /// Computes the next value of this indicator from the given state
-        /// </summary>
-        /// <param name="window"></param>
-        /// <param name="input">The input given to the indicator</param>
-        /// <returns>
+        */
+         * @param window">
+         * @param input">The input given to the indicator
+        @returns 
         /// A new value for this indicator
-        /// </returns>
+        /// 
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             int Mc = 0;
             int MRc = 0;
@@ -122,9 +122,9 @@ package com.quantconnect.lean.Indicators
             // Estimate the indicator if less than 50% of observation are zero. Avoid division by
             // zero and estimations with few real observations in case of forward filled data.
             if( this.IsReady &&
-                _multipliedDiffWindow.Count(obs => obs == 0) < 0.5 * _multipliedDiffWindow.Count) {
-                Mc = _multipliedDiffWindow.Count(obs => obs > 0);
-                MRc = _multipliedDiffWindow.Count(obs => obs < 0);
+                _multipliedDiffWindow.Count(obs -> obs == 0) < 0.5 * _multipliedDiffWindow.Count) {
+                Mc = _multipliedDiffWindow.Count(obs -> obs > 0);
+                MRc = _multipliedDiffWindow.Count(obs -> obs < 0);
                 momersion = 100m * Mc / (Mc + MRc);
             }
             return momersion;

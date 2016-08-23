@@ -19,18 +19,18 @@ using System.Xml.Linq;
 
 package com.quantconnect.lean.Util
 {
-    /// <summary>
+    /**
     /// Provides extension methods for the XML to LINQ types
-    /// </summary>
+    */
     public static class XElementExtensions
     {
-        /// <summary>
+        /**
         /// Gets the value from the element and converts it to the specified type.
-        /// </summary>
+        */
         /// <typeparam name="T">The output type</typeparam>
-        /// <param name="element">The element to access</param>
-        /// <param name="name">The attribute name to access on the element</param>
-        /// <returns>The converted value</returns>
+         * @param element">The element to access
+         * @param name">The attribute name to access on the element
+        @returns The converted value
         public static T Get<T>(this XElement element, String name) 
             where T : IConvertible
         {

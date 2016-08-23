@@ -53,10 +53,10 @@ public class OrderTypes {
         /// Sell Order
         Sell,
         /// Default Value - No Order Direction
-        /// <remarks>
+        /// 
         /// Unfortunately this does not have a value of zero because
         /// there are backtests saved that reference the values in this order
-        /// </remarks>
+        /// 
         Hold
     }
 

@@ -21,16 +21,16 @@ using QuantConnect.Orders;
 
 package com.quantconnect.lean.Algorithm.Examples
 {
-    /// <summary>
+    /**
     /// This algorithm showcases two margin related event handlers.
     /// OnMarginCallWarning: Fired when a portfolio's remaining margin dips below 5% of the total portfolio value
     /// OnMarginCall: Fired immediately before margin call orders are execued, this gives the algorithm a change to regain margin on its own through liquidation
-    /// </summary>
+    */
     public class MarginCallEventsAlgorithm : QCAlgorithm
     {
-        /// <summary>
+        /**
         /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
-        /// </summary>
+        */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 01);  //Set Start Date
             SetEndDate(2013, 12, 11);    //Set End Date
@@ -42,10 +42,10 @@ package com.quantconnect.lean.Algorithm.Examples
             Securities["SPY"].SetLeverage(100);
         }
 
-        /// <summary>
+        /**
         /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
-        /// </summary>
-        /// <param name="data">TradeBars IDictionary object with your stock data</param>
+        */
+         * @param data">TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             if( !Portfolio.Invested) {
                 Liquidate();
@@ -53,10 +53,10 @@ package com.quantconnect.lean.Algorithm.Examples
             }
         }
 
-        /// <summary>
+        /**
         /// Margin call event handler. This method is called right before the margin call orders are placed in the market.
-        /// </summary>
-        /// <param name="requests">The orders to be executed to bring this algorithm within margin limits</param>
+        */
+         * @param requests">The orders to be executed to bring this algorithm within margin limits
         public @Override void OnMarginCall(List<SubmitOrderRequest> requests) {
             // this code gets called BEFORE the orders are placed, so we can try to liquidate some of our positions
             // before we get the margin call orders executed. We could also modify these orders by changing their
@@ -69,9 +69,9 @@ package com.quantconnect.lean.Algorithm.Examples
             }
         }
 
-        /// <summary>
+        /**
         /// Margin call warning event handler. This method is called when Portoflio.MarginRemaining is under 5% of your Portfolio.TotalPortfolioValue
-        /// </summary>
+        */
         public @Override void OnMarginCallWarning() {
             // this code gets called when the margin remaining drops below 5% of our total portfolio value, it gives the algorithm
             // a chance to prevent a margin call from occurring

@@ -20,19 +20,19 @@ using System.IO;
 
 package com.quantconnect.lean 
 {
-    /// <summary>
+    /**
     /// Operating systems class for managing anything that is operation system specific.
-    /// </summary>
-    /// <remarks>Good design should remove the need for this function. Over time it should disappear.</remarks>
+    */
+    /// Good design should remove the need for this function. Over time it should disappear.
     public static class OS 
     {
         private static PerformanceCounter _ramTotalCounter;
         private static PerformanceCounter _ramAvailableBytes;
         private static PerformanceCounter _cpuUsageCounter;
 
-        /// <summary>
+        /**
         /// Total Physical Ram on the Machine:
-        /// </summary>
+        */
         private static PerformanceCounter RamTotalCounter 
         {
             get 
@@ -50,9 +50,9 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Memory free on the machine available for use:
-        /// </summary>
+        */
         public static PerformanceCounter RamAvailableBytes 
         {
             get 
@@ -70,9 +70,9 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Total CPU usage as a percentage
-        /// </summary>
+        */
         public static PerformanceCounter CpuUsage
         {
             get
@@ -84,9 +84,9 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Global Flag :: Operating System
-        /// </summary>
+        */
         public static boolean IsLinux 
         {
             get
@@ -96,9 +96,9 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Global Flag :: Operating System
-        /// </summary>
+        */
         public static boolean IsWindows
         {
             get 
@@ -108,9 +108,9 @@ package com.quantconnect.lean
         }
 
 
-        /// <summary>
+        /**
         /// Character Separating directories in this OS:
-        /// </summary>
+        */
         public static String PathSeparation 
         {
             get
@@ -119,9 +119,9 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Get the drive space remaining on windows and linux in MB
-        /// </summary>
+        */
         public static long DriveSpaceRemaining 
         { 
             get 
@@ -131,9 +131,9 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Get the drive space remaining on windows and linux in MB
-        /// </summary>
+        */
         public static long DriveSpaceUsed
         {
             get
@@ -144,9 +144,9 @@ package com.quantconnect.lean
         }
 
 
-        /// <summary>
+        /**
         /// Total space on the drive
-        /// </summary>
+        */
         public static long DriveTotalSpace
         {
             get
@@ -156,18 +156,18 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Get the drive.
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         private static DriveInfo GetDrive() {
             drives = DriveInfo.GetDrives();
             return drives[0];
         }
 
-        /// <summary>
+        /**
         /// Get the RAM remaining on the machine:
-        /// </summary>
+        */
         public static long ApplicationMemoryUsed 
         {
             get
@@ -177,18 +177,18 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Get the RAM remaining on the machine:
-        /// </summary>
+        */
         public static long TotalPhysicalMemory {
             get {
                 return (long)(RamTotalCounter.NextValue() / (1024*1024));
             }
         }
 
-        /// <summary>
+        /**
         /// Get the RAM used on the machine:
-        /// </summary>
+        */
         public static long TotalPhysicalMemoryUsed
         {
             get 
@@ -197,17 +197,17 @@ package com.quantconnect.lean
             }
         }
 
-        /// <summary>
+        /**
         /// Gets the RAM remaining on the machine
-        /// </summary>
+        */
         private static long FreePhysicalMemory
         {
             get { return TotalPhysicalMemory - TotalPhysicalMemoryUsed; }
         }
 
-        /// <summary>
+        /**
         /// Gets the statistics of the machine, including CPU% and RAM
-        /// </summary>
+        */
         public static Map<String,String> GetServerStatistics() {
             return new Map<String,String>
             {

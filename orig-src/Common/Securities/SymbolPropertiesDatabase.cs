@@ -21,28 +21,28 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Securities
 {
-    /// <summary>
+    /**
     /// Provides access to specific properties for various symbols
-    /// </summary>
+    */
     public class SymbolPropertiesDatabase
     {
         private static SymbolPropertiesDatabase _dataFolderSymbolPropertiesDatabase;
-        private static readonly object DataFolderSymbolPropertiesDatabaseLock = new object();
+        private static final object DataFolderSymbolPropertiesDatabaseLock = new object();
 
-        private readonly IReadOnlyMap<SecurityDatabaseKey, SymbolProperties> _entries;
+        private final IReadOnlyMap<SecurityDatabaseKey, SymbolProperties> _entries;
 
         private SymbolPropertiesDatabase(IReadOnlyMap<SecurityDatabaseKey, SymbolProperties> entries) {
             _entries = entries.ToDictionary();
         }
 
-        /// <summary>
+        /**
         /// Gets the symbol properties for the specified market/symbol/security-type
-        /// </summary>
-        /// <param name="market">The market the exchange resides in, i.e, 'usa', 'fxcm', ect...</param>
-        /// <param name="symbol">The particular symbol being traded</param>
-        /// <param name="securityType">The security type of the symbol</param>
-        /// <param name="defaultQuoteCurrency">Specifies the quote currency to be used when returning a default instance of an entry is not found in the database</param>
-        /// <returns>The symbol properties matching the specified market/symbol/security-type or null if not found</returns>
+        */
+         * @param market">The market the exchange resides in, i.e, 'usa', 'fxcm', ect...
+         * @param symbol">The particular symbol being traded
+         * @param securityType">The security type of the symbol
+         * @param defaultQuoteCurrency">Specifies the quote currency to be used when returning a default instance of an entry is not found in the database
+        @returns The symbol properties matching the specified market/symbol/security-type or null if not found
         public SymbolProperties GetSymbolProperties( String market, String symbol, SecurityType securityType, String defaultQuoteCurrency) {
             SymbolProperties symbolProperties;
             key = new SecurityDatabaseKey(market, symbol, securityType);
@@ -58,11 +58,11 @@ package com.quantconnect.lean.Securities
             return symbolProperties;
         }
 
-        /// <summary>
+        /**
         /// Gets the instance of the <see cref="SymbolPropertiesDatabase"/> class produced by reading in the symbol properties
         /// data found in /Data/symbol-properties/
-        /// </summary>
-        /// <returns>A <see cref="SymbolPropertiesDatabase"/> class that represents the data in the symbol-properties folder</returns>
+        */
+        @returns A <see cref="SymbolPropertiesDatabase"/> class that represents the data in the symbol-properties folder
         public static SymbolPropertiesDatabase FromDataFolder() {
             lock (DataFolderSymbolPropertiesDatabaseLock) {
                 if( _dataFolderSymbolPropertiesDatabase == null ) {
@@ -73,11 +73,11 @@ package com.quantconnect.lean.Securities
             return _dataFolderSymbolPropertiesDatabase;
         }
 
-        /// <summary>
+        /**
         /// Creates a new instance of the <see cref="SymbolPropertiesDatabase"/> class by reading the specified csv file
-        /// </summary>
-        /// <param name="file">The csv file to be read</param>
-        /// <returns>A new instance of the <see cref="SymbolPropertiesDatabase"/> class representing the data in the specified file</returns>
+        */
+         * @param file">The csv file to be read
+        @returns A new instance of the <see cref="SymbolPropertiesDatabase"/> class representing the data in the specified file
         private static SymbolPropertiesDatabase FromCsvFile( String file) {
             entries = new Map<SecurityDatabaseKey, SymbolProperties>();
 
@@ -86,7 +86,7 @@ package com.quantconnect.lean.Securities
             }
 
             // skip the first header line, also skip #'s as these are comment lines
-            foreach (line in File.ReadLines(file).Where(x => !x.StartsWith( "#") && !string.IsNullOrWhiteSpace(x)).Skip(1)) {
+            foreach (line in File.ReadLines(file).Where(x -> !x.StartsWith( "#") && !string.IsNullOrWhiteSpace(x)).Skip(1)) {
                 SecurityDatabaseKey key;
                 entry = FromCsvLine(line, out key);
                 if( entries.ContainsKey(key)) {
@@ -99,12 +99,12 @@ package com.quantconnect.lean.Securities
             return new SymbolPropertiesDatabase(entries);
         }
 
-        /// <summary>
+        /**
         /// Creates a new instance of <see cref="SymbolProperties"/> from the specified csv line
-        /// </summary>
-        /// <param name="line">The csv line to be parsed</param>
-        /// <param name="key">The key used to uniquely identify this security</param>
-        /// <returns>A new <see cref="SymbolProperties"/> for the specified csv line</returns>
+        */
+         * @param line">The csv line to be parsed
+         * @param key">The key used to uniquely identify this security
+        @returns A new <see cref="SymbolProperties"/> for the specified csv line
         private static SymbolProperties FromCsvLine( String line, out SecurityDatabaseKey key) {
             csv = line.split(',');
 

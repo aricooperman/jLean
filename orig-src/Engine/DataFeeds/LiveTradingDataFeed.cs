@@ -36,14 +36,14 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IDataFeed"/> that is designed to deal with
     /// live, remote data sources
-    /// </summary>
+    */
     public class LiveTradingDataFeed : IDataFeed
     {
         private SecurityChanges _changes = SecurityChanges.None;
-        private static readonly Symbol DataQueueHandlerSymbol = Symbol.Create( "data-queue-handler-symbol", SecurityType.Base, Market.USA);
+        private static final Symbol DataQueueHandlerSymbol = Symbol.Create( "data-queue-handler-symbol", SecurityType.Base, Market.USA);
 
         private LiveNodePacket _job;
         private IAlgorithm _algorithm;
@@ -63,25 +63,25 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         private UniverseSelection _universeSelection;
         private DateTime _frontierUtc;
 
-        /// <summary>
+        /**
         /// Gets all of the current subscriptions this data feed is processing
-        /// </summary>
+        */
         public IEnumerable<Subscription> Subscriptions
         {
             get { return _subscriptions; }
         }
 
-        /// <summary>
+        /**
         /// Public flag indicator that the thread is still busy.
-        /// </summary>
+        */
         public boolean IsActive
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Initializes the data feed for the specified job and algorithm
-        /// </summary>
+        */
         public void Initialize(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler resultHandler, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider) {
             if( !(job is LiveNodePacket)) {
                 throw new ArgumentException( "The LiveTradingDataFeed requires a LiveNodePacket.");
@@ -106,12 +106,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             _universeSelection = new UniverseSelection(this, algorithm, job.Controls);
 
             // run the exchanges
-            Task.Run(() => _exchange.Start(_cancellationTokenSource.Token));
-            Task.Run(() => _customExchange.Start(_cancellationTokenSource.Token));
+            Task.Run(() -> _exchange.Start(_cancellationTokenSource.Token));
+            Task.Run(() -> _customExchange.Start(_cancellationTokenSource.Token));
 
             // this value will be modified via calls to AddSubscription/RemoveSubscription
             ffres = Time.OneMinute;
-            _fillForwardResolution = Ref.Create(() => ffres, v => ffres = v);
+            _fillForwardResolution = Ref.Create(() -> ffres, v -> ffres = v);
 
             // wire ourselves up to receive notifications when universes are added/removed
             start = _timeProvider.GetUtcNow();
@@ -142,15 +142,15 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             };
         }
 
-        /// <summary>
+        /**
         /// Adds a new subscription to provide data for the specified security.
-        /// </summary>
-        /// <param name="universe">The universe the subscription is to be added to</param>
-        /// <param name="security">The security to add a subscription for</param>
-        /// <param name="config">The subscription config to be added</param>
-        /// <param name="utcStartTime">The start time of the subscription</param>
-        /// <param name="utcEndTime">The end time of the subscription</param>
-        /// <returns>True if the subscription was created and added successfully, false otherwise</returns>
+        */
+         * @param universe">The universe the subscription is to be added to
+         * @param security">The security to add a subscription for
+         * @param config">The subscription config to be added
+         * @param utcStartTime">The start time of the subscription
+         * @param utcEndTime">The end time of the subscription
+        @returns True if the subscription was created and added successfully, false otherwise
         public boolean AddSubscription(Universe universe, Security security, SubscriptionDataConfig config, DateTime utcStartTime, DateTime utcEndTime) {
             // create and add the subscription to our collection
             subscription = CreateSubscription(universe, security, config, utcStartTime, utcEndTime);
@@ -180,11 +180,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return true;
         }
 
-        /// <summary>
+        /**
         /// Removes the subscription from the data feed, if it exists
-        /// </summary>
-        /// <param name="configuration">The configuration of the subscription to remove</param>
-        /// <returns>True if the subscription was successfully removed, false otherwise</returns>
+        */
+         * @param configuration">The configuration of the subscription to remove
+        @returns True if the subscription was successfully removed, false otherwise
         public boolean RemoveSubscription(SubscriptionDataConfig configuration) {
             // remove the subscription from our collection
             Subscription subscription;
@@ -218,9 +218,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return true;
         }
 
-        /// <summary>
+        /**
         /// Primary entry point.
-        /// </summary>
+        */
         public void Run() {
             IsActive = true;
 
@@ -292,9 +292,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             IsActive = false;
         }
 
-        /// <summary>
+        /**
         /// External controller calls to signal a terminate of the thread.
-        /// </summary>
+        */
         public void Exit() {
             if( _subscriptions != null ) {
                 // remove each subscription from our collection
@@ -318,34 +318,34 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             if( _bridge != null ) _bridge.Dispose();
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="IDataQueueHandler"/> to use. By default this will try to load
         /// the type specified in the configuration via the 'data-queue-handler'
-        /// </summary>
-        /// <returns>The loaded <see cref="IDataQueueHandler"/></returns>
+        */
+        @returns The loaded <see cref="IDataQueueHandler"/>
         protected virtual IDataQueueHandler GetDataQueueHandler() {
             return Composer.Instance.GetExportedValueByTypeName<IDataQueueHandler>(Config.Get( "data-queue-handler", "LiveDataQueue"));
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="ITimeProvider"/> to use. By default this will load the
         /// <see cref="RealTimeProvider"/> which use's the system's <see cref="DateTime.UtcNow"/>
         /// for the current time
-        /// </summary>
-        /// <returns>he loaded <see cref="ITimeProvider"/></returns>
+        */
+        @returns he loaded <see cref="ITimeProvider"/>
         protected virtual ITimeProvider GetTimeProvider() {
             return new RealTimeProvider();
         }
 
-        /// <summary>
+        /**
         /// Creates a new subscription for the specified security
-        /// </summary>
-        /// <param name="universe"></param>
-        /// <param name="security">The security to create a subscription for</param>
-        /// <param name="config">The subscription config to be added</param>
-        /// <param name="utcStartTime">The start time of the subscription in UTC</param>
-        /// <param name="utcEndTime">The end time of the subscription in UTC</param>
-        /// <returns>A new subscription instance of the specified security</returns>
+        */
+         * @param universe">
+         * @param security">The security to create a subscription for
+         * @param config">The subscription config to be added
+         * @param utcStartTime">The start time of the subscription in UTC
+         * @param utcEndTime">The end time of the subscription in UTC
+        @returns A new subscription instance of the specified security
         protected Subscription CreateSubscription(Universe universe, Security security, SubscriptionDataConfig config, DateTime utcStartTime, DateTime utcEndTime) {
             Subscription subscription = null;
             try
@@ -430,12 +430,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return subscription;
         }
 
-        /// <summary>
+        /**
         /// Creates a new subscription for universe selection
-        /// </summary>
-        /// <param name="universe">The universe to add a subscription for</param>
-        /// <param name="startTimeUtc">The start time of the subscription in utc</param>
-        /// <param name="endTimeUtc">The end time of the subscription in utc</param>
+        */
+         * @param universe">The universe to add a subscription for
+         * @param startTimeUtc">The start time of the subscription in utc
+         * @param endTimeUtc">The end time of the subscription in utc
         protected virtual Subscription CreateUniverseSubscription(Universe universe, DateTime startTimeUtc, DateTime endTimeUtc) {
             // TODO : Consider moving the creating of universe subscriptions to a separate, testable class
 
@@ -461,7 +461,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
 
                 // spoof a tick on the requested interval to trigger the universe selection function
                 enumerator = userDefined.GetTriggerTimes(startTimeUtc, endTimeUtc, marketHoursDatabase)
-                    .Select(dt => new Tick { Time = dt }).GetEnumerator();
+                    .Select(dt -> new Tick { Time = dt }).GetEnumerator();
 
                 enumerator = new FrontierAwareEnumerator(enumerator, _timeProvider, tzOffsetProvider);
 
@@ -514,11 +514,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return subscription;
         }
 
-        /// <summary>
+        /**
         /// Provides an <see cref="IEnumerator{BaseData}"/> that will continually dequeue data
         /// from the data queue handler while we're not cancelled
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         private IEnumerator<BaseData> GetNextTicksEnumerator() {
             while (!_cancellationTokenSource.IsCancellationRequested) {
                 int ticks = 0;
@@ -532,64 +532,64 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             Log.Trace( "LiveTradingDataFeed.GetNextTicksEnumerator(): Exiting enumerator thread...");
         }
 
-        /// <summary>
+        /**
         /// Updates the fill forward resolution by checking all existing subscriptions and
         /// selecting the smallest resoluton not equal to tick
-        /// </summary>
+        */
         private void UpdateFillForwardResolution() {
             _fillForwardResolution.Value = _subscriptions
-                .Where(x => !x.Configuration.IsInternalFeed)
-                .Select(x => x.Configuration.Resolution)
-                .Where(x => x != Resolution.Tick)
+                .Where(x -> !x.Configuration.IsInternalFeed)
+                .Select(x -> x.Configuration.Resolution)
+                .Where(x -> x != Resolution.Tick)
                 .DefaultIfEmpty(Resolution.Minute)
                 .Min().ToTimeSpan();
         }
 
-        /// <summary>
+        /**
         /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>1</filterpriority>
         public IEnumerator<TimeSlice> GetEnumerator() {
             return _bridge.GetConsumingEnumerable(_cancellationTokenSource.Token).GetEnumerator();
         }
 
-        /// <summary>
+        /**
         /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
 
-        /// <summary>
+        /**
         /// Overrides methods of the base data exchange implementation
-        /// </summary>
+        */
         class EnumeratorHandler : BaseDataExchange.EnumeratorHandler
         {
-            private readonly EnqueueableEnumerator<BaseData> _enqueueable;
+            private final EnqueueableEnumerator<BaseData> _enqueueable;
             public EnumeratorHandler(Symbol symbol, IEnumerator<BaseData> enumerator, EnqueueableEnumerator<BaseData> enqueueable)
                 : base(symbol, enumerator, true) {
                 _enqueueable = enqueueable;
             }
-            /// <summary>
+            /**
             /// Returns true if this enumerator should move next
-            /// </summary>
+            */
             public @Override boolean ShouldMoveNext() { return true; }
-            /// <summary>
+            /**
             /// Calls stop on the internal enqueueable enumerator
-            /// </summary>
+            */
             public @Override void OnEnumeratorFinished() { _enqueueable.Stop(); }
-            /// <summary>
+            /**
             /// Enqueues the data
-            /// </summary>
-            /// <param name="data">The data to be handled</param>
+            */
+             * @param data">The data to be handled
             public @Override void HandleData(BaseData data) {
                 _enqueueable.Enqueue(data);
             }

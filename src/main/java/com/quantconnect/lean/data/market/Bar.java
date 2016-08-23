@@ -38,10 +38,10 @@ public class Bar implements IBar, Cloneable {
     public Bar() { }
 
     /// Initializer to setup a bar with a given information.
-    /// <param name="open">Decimal Opening Price</param>
-    /// <param name="high">Decimal High Price of this bar</param>
-    /// <param name="low">Decimal Low Price of this bar</param>
-    /// <param name="close">Decimal Close price of this bar</param>
+     * @param open">Decimal Opening Price
+     * @param high">Decimal High Price of this bar
+     * @param low">Decimal Low Price of this bar
+     * @param close">Decimal Close price of this bar
     public Bar( BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close ) {
         this.open = open;
         this.high = high;
@@ -82,7 +82,7 @@ public class Bar implements IBar, Cloneable {
     }
 
     /// Updates the bar with a new value. This will aggregate the OHLC bar
-    /// <param name="value">The new value</param>
+     * @param value">The new value
     public void update( BigDecimal value ) {
         // Do not accept zero as a new value
         if( value.signum() == 0) 

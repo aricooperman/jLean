@@ -22,31 +22,31 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Brokerages.Oanda
 {
-    /// <summary>
+    /**
     /// Provides an implementations of <see cref="IBrokerageFactory"/> that produces a <see cref="OandaBrokerage"/>
-    /// </summary>
+    */
     public class OandaBrokerageFactory: BrokerageFactory
     {
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="OandaBrokerageFactory"/> class.
-        /// </summary>
+        */
         public OandaBrokerageFactory() 
             : base(typeof(OandaBrokerage)) {
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         public @Override void Dispose() {
         }
 
-        /// <summary>
+        /**
         /// Gets the brokerage data required to run the brokerage from configuration/disk
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
-        /// </remarks>
+        /// 
         public @Override Map<String,String> BrokerageData
         {
             get
@@ -60,20 +60,20 @@ package com.quantconnect.lean.Brokerages.Oanda
             }
         }
 
-        /// <summary>
+        /**
         /// Gets a new instance of the <see cref="OandaBrokerageModel"/>
-        /// </summary>
+        */
         public @Override IBrokerageModel BrokerageModel
         {
             get { return new OandaBrokerageModel(); }
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="IBrokerage"/> instance
-        /// </summary>
-        /// <param name="job">The job packet to create the brokerage for</param>
-        /// <param name="algorithm">The algorithm instance</param>
-        /// <returns>A new brokerage instance</returns>
+        */
+         * @param job">The job packet to create the brokerage for
+         * @param algorithm">The algorithm instance
+        @returns A new brokerage instance
         public @Override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm) {
             errors = new List<String>();
 

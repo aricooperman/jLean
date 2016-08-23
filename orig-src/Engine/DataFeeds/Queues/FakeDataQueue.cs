@@ -27,22 +27,22 @@ using Timer = System.Timers.Timer;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
 {
-    /// <summary>
+    /**
     /// This is an implementation of <see cref="IDataQueueHandler"/> used for testing
-    /// </summary>
+    */
     public class FakeDataQueue : IDataQueueHandler
     {
         private int count;
-        private readonly Random _random = new Random();
+        private final Random _random = new Random();
 
-        private readonly Timer _timer;
-        private readonly ConcurrentQueue<BaseData> _ticks;
-        private readonly HashSet<Symbol> _symbols;
-        private readonly object _sync = new object();
+        private final Timer _timer;
+        private final ConcurrentQueue<BaseData> _ticks;
+        private final HashSet<Symbol> _symbols;
+        private final object _sync = new object();
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FakeDataQueue"/> class to randomly emit data for each symbol
-        /// </summary>
+        */
         public FakeDataQueue() {
             _ticks = new ConcurrentQueue<BaseData>();
             _symbols = new HashSet<Symbol>();
@@ -73,10 +73,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
             };
         }
 
-        /// <summary>
+        /**
         /// Get the next ticks from the live trading data queue
-        /// </summary>
-        /// <returns>IEnumerable list of ticks since the last update.</returns>
+        */
+        @returns IEnumerable list of ticks since the last update.
         public IEnumerable<BaseData> GetNextTicks() {
             BaseData tick;
             while (_ticks.TryDequeue(out tick)) {
@@ -85,11 +85,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
             }
         }
 
-        /// <summary>
+        /**
         /// Adds the specified symbols to the subscription
-        /// </summary>
-        /// <param name="job">Job we're subscribing for:</param>
-        /// <param name="symbols">The symbols to be added keyed by SecurityType</param>
+        */
+         * @param job">Job we're subscribing for:
+         * @param symbols">The symbols to be added keyed by SecurityType
         public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             foreach (symbol in symbols) {
                 lock (_sync) {
@@ -98,11 +98,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
             }
         }
 
-        /// <summary>
+        /**
         /// Removes the specified symbols to the subscription
-        /// </summary>
-        /// <param name="job">Job we're processing.</param>
-        /// <param name="symbols">The symbols to be removed keyed by SecurityType</param>
+        */
+         * @param job">Job we're processing.
+         * @param symbols">The symbols to be removed keyed by SecurityType
         public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             foreach (symbol in symbols) {
                 lock (_sync) {
@@ -111,9 +111,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
             }
         }
 
-        /// <summary>
+        /**
         /// Pumps a bunch of ticks into the queue
-        /// </summary>
+        */
         private void PopulateQueue() {
             List<Symbol> symbols;
             lock (_sync) {

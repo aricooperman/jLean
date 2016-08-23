@@ -22,164 +22,164 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Data
 {
-    /// <summary>
+    /**
     /// Provides a data structure for all of an algorithm's data at a single time step
-    /// </summary>
+    */
     public class Slice : IEnumerable<KeyValuePair<Symbol, BaseData>>
     {
-        private readonly Ticks _ticks;
-        private readonly TradeBars _bars;
-        private readonly QuoteBars _quoteBars;
-        private readonly OptionChains _optionChains;
+        private final Ticks _ticks;
+        private final TradeBars _bars;
+        private final QuoteBars _quoteBars;
+        private final OptionChains _optionChains;
 
         // aux data
-        private readonly Splits _splits;
-        private readonly Dividends _dividends;
-        private readonly Delistings _delistings;
-        private readonly SymbolChangedEvents _symbolChangedEvents;
+        private final Splits _splits;
+        private final Dividends _dividends;
+        private final Delistings _delistings;
+        private final SymbolChangedEvents _symbolChangedEvents;
 
         // String -> data   for non-tick data
         // String -> list{data} for tick data
-        private readonly Lazy<DataMap<SymbolData>> _data;
+        private final Lazy<DataMap<SymbolData>> _data;
         // Quandl -> DataDictonary<Quandl>
-        private readonly Map<Type, Lazy<object>> _dataByType;
+        private final Map<Type, Lazy<object>> _dataByType;
 
-        /// <summary>
+        /**
         /// Gets the timestamp for this slice of data
-        /// </summary>
+        */
         public DateTime Time
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets whether or not this slice has data
-        /// </summary>
+        */
         public boolean HasData
         {
             get; private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="TradeBars"/> for this slice of data
-        /// </summary>
+        */
         public TradeBars Bars
         {
             get { return _bars; }
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="QuoteBars"/> for this slice of data
-        /// </summary>
+        */
         public QuoteBars QuoteBars
         {
             get { return _quoteBars; }
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="Ticks"/> for this slice of data
-        /// </summary>
+        */
         public Ticks Ticks
         {
             get { return _ticks; }
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="OptionChains"/> for this slice of data
-        /// </summary>
+        */
         public OptionChains OptionChains
         {
             get { return _optionChains; }
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="Splits"/> for this slice of data
-        /// </summary>
+        */
         public Splits Splits
         {
             get { return _splits; }
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="Dividends"/> for this slice of data
-        /// </summary>
+        */
         public Dividends Dividends
         {
             get { return _dividends; }
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="Delistings"/> for this slice of data
-        /// </summary>
+        */
         public Delistings Delistings
         {
             get { return _delistings; }
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="QuantConnect.Data.Market.SymbolChangedEvents"/> for this slice of data
-        /// </summary>
+        */
         public SymbolChangedEvents SymbolChangedEvents
         {
             get { return _symbolChangedEvents; }
         }
 
-        /// <summary>
+        /**
         /// Gets the number of symbols held in this slice
-        /// </summary>
+        */
         public int Count
         {
             get { return _data.Value.Count; }
         }
 
-        /// <summary>
+        /**
         /// Gets all the symbols in this slice
-        /// </summary>
+        */
         public IReadOnlyList<Symbol> Keys
         {
             get { return new List<Symbol>(_data.Value.Keys); }
         }
 
-        /// <summary>
+        /**
         /// Gets a list of all the data in this slice
-        /// </summary>
+        */
         public IReadOnlyList<BaseData> Values
         {
-            get { return GetKeyValuePairEnumerable().Select(x => x.Value).ToList(); }
+            get { return GetKeyValuePairEnumerable().Select(x -> x.Value).ToList(); }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Slice"/> class, lazily
         /// instantiating the <see cref="Slice.Bars"/> and <see cref="Slice.Ticks"/>
         /// collections on demand
-        /// </summary>
-        /// <param name="time">The timestamp for this slice of data</param>
-        /// <param name="data">The raw data in this slice</param>
+        */
+         * @param time">The timestamp for this slice of data
+         * @param data">The raw data in this slice
         public Slice(DateTime time, IEnumerable<BaseData> data)
             : this(time, data, null, null, null, null, null, null, null, null ) {
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Slice"/> class
-        /// </summary>
-        /// <param name="time">The timestamp for this slice of data</param>
-        /// <param name="data">The raw data in this slice</param>
-        /// <param name="tradeBars">The trade bars for this slice</param>
-        /// <param name="quoteBars">The quote bars for this slice</param>
-        /// <param name="ticks">This ticks for this slice</param>
-        /// <param name="optionChains">The option chains for this slice</param>
-        /// <param name="splits">The splits for this slice</param>
-        /// <param name="dividends">The dividends for this slice</param>
-        /// <param name="delistings">The delistings for this slice</param>
-        /// <param name="symbolChanges">The symbol changed events for this slice</param>
-        /// <param name="hasData">true if this slice contains data</param>
+        */
+         * @param time">The timestamp for this slice of data
+         * @param data">The raw data in this slice
+         * @param tradeBars">The trade bars for this slice
+         * @param quoteBars">The quote bars for this slice
+         * @param ticks">This ticks for this slice
+         * @param optionChains">The option chains for this slice
+         * @param splits">The splits for this slice
+         * @param dividends">The dividends for this slice
+         * @param delistings">The delistings for this slice
+         * @param symbolChanges">The symbol changed events for this slice
+         * @param hasData">true if this slice contains data
         public Slice(DateTime time, IEnumerable<BaseData> data, TradeBars tradeBars, QuoteBars quoteBars, Ticks ticks, OptionChains optionChains, Splits splits, Dividends dividends, Delistings delistings, SymbolChangedEvents symbolChanges, bool? hasData = null ) {
             Time = time;
 
             _dataByType = new Map<Type, Lazy<object>>();
 
             // market data
-            _data = new Lazy<DataMap<SymbolData>>(() => CreateDynamicDataDictionary(data));
+            _data = new Lazy<DataMap<SymbolData>>(() -> CreateDynamicDataDictionary(data));
 
             HasData = hasData ?? _data.Value.Count > 0;
 
@@ -195,14 +195,14 @@ package com.quantconnect.lean.Data
             _symbolChangedEvents = CreateCollection<SymbolChangedEvents, SymbolChangedEvent>(symbolChanges);
         }
 
-        /// <summary>
+        /**
         /// Gets the data corresponding to the specified symbol. If the requested data
         /// is of <see cref="MarketDataType.Tick"/>, then a <see cref="List{Tick}"/> will
         /// be returned, otherwise, it will be the subscribed type, for example, <see cref="TradeBar"/>
         /// or event <see cref="Quandl"/> for custom data.
-        /// </summary>
-        /// <param name="symbol">The data's symbols</param>
-        /// <returns>The data for the specified symbol</returns>
+        */
+         * @param symbol">The data's symbols
+        @returns The data for the specified symbol
         public dynamic this[Symbol symbol]
         {
             get
@@ -215,22 +215,22 @@ package com.quantconnect.lean.Data
             }
         }
 
-        /// <summary>
+        /**
         /// Gets the <see cref="DataDictionary{T}"/> for all data of the specified type
-        /// </summary>
+        */
         /// <typeparam name="T">The type of data we want, for example, <see cref="TradeBar"/> or <see cref="Quandl"/>, ect...</typeparam>
-        /// <returns>The <see cref="DataDictionary{T}"/> containing the data of the specified type</returns>
+        @returns The <see cref="DataDictionary{T}"/> containing the data of the specified type
         public DataMap<T> Get<T>()
             where T : BaseData
         {
             Lazy<object> dictionary;
             if( !_dataByType.TryGetValue(typeof(T), out dictionary)) {
                 if( typeof(T) == typeof(Tick)) {
-                    dictionary = new Lazy<object>(() => new DataMap<T>(_data.Value.Values.SelectMany<dynamic, dynamic>(x => x.GetData()).OfType<T>(), x => x.Symbol));
+                    dictionary = new Lazy<object>(() -> new DataMap<T>(_data.Value.Values.SelectMany<dynamic, dynamic>(x -> x.GetData()).OfType<T>(), x -> x.Symbol));
                 }
                 else
                 {
-                    dictionary = new Lazy<object>(() => new DataMap<T>(_data.Value.Values.Select(x => x.GetData()).OfType<T>(), x => x.Symbol));
+                    dictionary = new Lazy<object>(() -> new DataMap<T>(_data.Value.Values.Select(x -> x.GetData()).OfType<T>(), x -> x.Symbol));
                 }
 
                 _dataByType[typeof(T)] = dictionary;
@@ -238,33 +238,33 @@ package com.quantconnect.lean.Data
             return (DataMap<T>)dictionary.Value;
         }
 
-        /// <summary>
+        /**
         /// Gets the data of the specified symbol and type.
-        /// </summary>
+        */
         /// <typeparam name="T">The type of data we seek</typeparam>
-        /// <param name="symbol">The specific symbol was seek</param>
-        /// <returns>The data for the requested symbol</returns>
+         * @param symbol">The specific symbol was seek
+        @returns The data for the requested symbol
         public T Get<T>(Symbol symbol)
             where T : BaseData
         {
             return Get<T>()[symbol];
         }
 
-        /// <summary>
+        /**
         /// Determines whether this instance contains data for the specified symbol
-        /// </summary>
-        /// <param name="symbol">The symbol we seek data for</param>
-        /// <returns>True if this instance contains data for the symbol, false otherwise</returns>
+        */
+         * @param symbol">The symbol we seek data for
+        @returns True if this instance contains data for the symbol, false otherwise
         public boolean ContainsKey(Symbol symbol) {
             return _data.Value.ContainsKey(symbol);
         }
 
-        /// <summary>
+        /**
         /// Gets the data associated with the specified symbol
-        /// </summary>
-        /// <param name="symbol">The symbol we want data for</param>
-        /// <param name="data">The data for the specifed symbol, or null if no data was found</param>
-        /// <returns>True if data was found, false otherwise</returns>
+        */
+         * @param symbol">The symbol we want data for
+         * @param data">The data for the specifed symbol, or null if no data was found
+        @returns True if data was found, false otherwise
         public boolean TryGetValue(Symbol symbol, out dynamic data) {
             data = null;
             SymbolData symbolData;
@@ -275,9 +275,9 @@ package com.quantconnect.lean.Data
             return false;
         }
 
-        /// <summary>
+        /**
         /// Produces the dynamic data dictionary from the input data
-        /// </summary>
+        */
         private static DataMap<SymbolData> CreateDynamicDataDictionary(IEnumerable<BaseData> data) {
             allData = new DataMap<SymbolData>();
             foreach (datum in data) {
@@ -314,25 +314,25 @@ package com.quantconnect.lean.Data
             return allData;
         }
 
-        /// <summary>
+        /**
         /// Returns the input ticks if non-null, otherwise produces one fom the dynamic data dictionary
-        /// </summary>
+        */
         private Ticks CreateTicksCollection(Ticks ticks) {
             if( ticks != null ) return ticks;
             ticks = new Ticks(Time);
-            foreach (listTicks in _data.Value.Values.Select(x => x.GetData()).OfType<List<Tick>>().Where(x => x.Count != 0)) {
+            foreach (listTicks in _data.Value.Values.Select(x -> x.GetData()).OfType<List<Tick>>().Where(x -> x.Count != 0)) {
                 ticks[listTicks[0].Symbol] = listTicks;
             }
             return ticks;
         }
 
-        /// <summary>
+        /**
         /// Returns the input collection if onon-null, otherwise produces one from the dynamic data dictionary
-        /// </summary>
+        */
         /// <typeparam name="T">The data dictionary type</typeparam>
         /// <typeparam name="TItem">The item type of the data Map</typeparam>
-        /// <param name="collection">The input collection, if non-null, returned immediately</param>
-        /// <returns>The data dictionary of <typeparamref name="TItem"/> containing all the data of that type in this slice</returns>
+         * @param collection">The input collection, if non-null, returned immediately
+        @returns The data dictionary of <typeparamref name="TItem"/> containing all the data of that type in this slice
         private T CreateCollection<T, TItem>(T collection)
             where T : DataMap<TItem>, new()
             where TItem : BaseData
@@ -342,29 +342,29 @@ package com.quantconnect.lean.Data
 #pragma warning disable 618 // This assignment is left here until the Time property is removed.
             collection.Time = Time;
 #pragma warning restore 618
-            foreach (item in _data.Value.Values.Select(x => x.GetData()).OfType<TItem>()) {
+            foreach (item in _data.Value.Values.Select(x -> x.GetData()).OfType<TItem>()) {
                 collection[item.Symbol] = item;
             }
             return collection;
         }
 
-        /// <summary>
+        /**
         /// Returns an enumerator that iterates through the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>1</filterpriority>
         public IEnumerator<KeyValuePair<Symbol, BaseData>> GetEnumerator() {
             return GetKeyValuePairEnumerable().GetEnumerator();
         }
 
-        /// <summary>
+        /**
         /// Returns an enumerator that iterates through a collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
@@ -372,20 +372,20 @@ package com.quantconnect.lean.Data
 
         private IEnumerable<KeyValuePair<Symbol, BaseData>> GetKeyValuePairEnumerable() {
             // this will not enumerate auxilliary data!
-            return _data.Value.Select(kvp => new KeyValuePair<Symbol, BaseData>(kvp.Key, kvp.Value.GetData()));
+            return _data.Value.Select(kvp -> new KeyValuePair<Symbol, BaseData>(kvp.Key, kvp.Value.GetData()));
         }
 
         private enum SubscriptionType { TradeBar, Tick, Custom };
         private class SymbolData
         {
             public SubscriptionType Type;
-            public readonly Symbol Symbol;
+            public final Symbol Symbol;
 
             // data
             public BaseData Custom;
             public TradeBar TradeBar;
-            public readonly List<Tick> Ticks;
-            public readonly List<BaseData> AuxilliaryData;
+            public final List<Tick> Ticks;
+            public final List<BaseData> AuxilliaryData;
 
             public SymbolData(Symbol symbol) {
                 Symbol = symbol;

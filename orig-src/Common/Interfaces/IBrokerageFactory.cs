@@ -21,38 +21,38 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Interfaces
 {
-    /// <summary>
+    /**
     /// Defines factory types for brokerages. Every IBrokerage is expected to also implement an IBrokerageFactory.
-    /// </summary>
+    */
     [InheritedExport(typeof(IBrokerageFactory))]
     public interface IBrokerageFactory : IDisposable
     {
-        /// <summary>
+        /**
         /// Gets the type of brokerage produced by this factory
-        /// </summary>
+        */
         Type BrokerageType { get; }
 
-        /// <summary>
+        /**
         /// Gets the brokerage data required to run the brokerage from configuration/disk
-        /// </summary>
-        /// <remarks>
+        */
+        /// 
         /// The implementation of this property will create the brokerage data dictionary required for
         /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
-        /// </remarks>
+        /// 
         Map<String,String> BrokerageData { get; }
 
-        /// <summary>
+        /**
         /// Gets a brokerage model that can be used to model this brokerage's unique
         /// behaviors
-        /// </summary>
+        */
         IBrokerageModel BrokerageModel { get; }
 
-        /// <summary>
+        /**
         /// Creates a new IBrokerage instance
-        /// </summary>
-        /// <param name="job">The job packet to create the brokerage for</param>
-        /// <param name="algorithm">The algorithm instance</param>
-        /// <returns>A new brokerage instance</returns>
+        */
+         * @param job">The job packet to create the brokerage for
+         * @param algorithm">The algorithm instance
+        @returns A new brokerage instance
         IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm);
     }
 }

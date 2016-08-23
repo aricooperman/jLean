@@ -22,42 +22,42 @@ using QuantConnect.Packets;
 
 package com.quantconnect.lean.Messaging
 {
-    /// <summary>
+    /**
     /// Desktop implementation of messaging system for Lean Engine
-    /// </summary>
+    */
     public class EventMessagingHandler : IMessagingHandler
     {
         private AlgorithmNodePacket _job;
         private volatile boolean _loaded;
         private Queue<Packet> _queue; 
 
-        /// <summary>
+        /**
         /// Gets or sets whether this messaging handler has any current subscribers.
         /// When set to false, messages won't be sent.
-        /// </summary>
+        */
         public boolean HasSubscribers
         {
             get;
             set;
         }
 
-        /// <summary>
+        /**
         /// Initialize the Messaging System Plugin. 
-        /// </summary>
+        */
         public void Initialize() {
             _queue = new Queue<Packet>();
 
-            ConsumerReadyEvent += () => { _loaded = true; };
+            ConsumerReadyEvent += () -> { _loaded = true; };
         }
 
         public void LoadingComplete() {
             _loaded = true;
         }
 
-        /// <summary>
+        /**
         /// Set the user communication channel
-        /// </summary>
-        /// <param name="job"></param>
+        */
+         * @param job">
         public void SetAuthentication(AlgorithmNodePacket job) {
             _job = job;
         }
@@ -80,9 +80,9 @@ package com.quantconnect.lean.Messaging
         public delegate void ConsumerReadyEventRaised();
         public event ConsumerReadyEventRaised ConsumerReadyEvent;
 
-        /// <summary>
+        /**
         /// Send any message with a base type of Packet.
-        /// </summary>
+        */
         public void Send(Packet packet) {
             //Until we're loaded queue it up
             if( !_loaded) {
@@ -99,10 +99,10 @@ package com.quantconnect.lean.Messaging
             ProcessPacket(packet);
         }
         
-        /// <summary>
+        /**
         /// Send any notification with a base type of Notification.
-        /// </summary>
-        /// <param name="notification">The notification to be sent.</param>
+        */
+         * @param notification">The notification to be sent.
         public void SendNotification(Notification notification) {
             type = notification.GetType();
             if( type == typeof (NotificationEmail) || type == typeof (NotificationWeb) || type == typeof (NotificationSms)) {
@@ -112,9 +112,9 @@ package com.quantconnect.lean.Messaging
             notification.Send();
         }
 
-        /// <summary>
+        /**
         /// Packet processing implementation
-        /// </summary>
+        */
         private void ProcessPacket(Packet packet) {
             //Packets we handled in the UX.
             switch (packet.Type) {
@@ -149,9 +149,9 @@ package com.quantconnect.lean.Messaging
             }
         }
 
-        /// <summary>
+        /**
         /// Raise a debug event safely
-        /// </summary>
+        */
         protected virtual void OnDebugEvent(DebugPacket packet) {
             handler = DebugEvent;
 
@@ -160,9 +160,9 @@ package com.quantconnect.lean.Messaging
             }
         }
 
-        /// <summary>
+        /**
         /// Handler for consumer ready code.
-        /// </summary>
+        */
         public virtual void OnConsumerReadyEvent() {
             handler = ConsumerReadyEvent;
             if( handler != null ) {
@@ -170,9 +170,9 @@ package com.quantconnect.lean.Messaging
             }
         }
 
-        /// <summary>
+        /**
         /// Raise a log event safely
-        /// </summary>
+        */
         protected virtual void OnLogEvent(LogPacket packet) {
             handler = LogEvent;
             if( handler != null ) {
@@ -180,9 +180,9 @@ package com.quantconnect.lean.Messaging
             }
         }
 
-        /// <summary>
+        /**
         /// Raise a handled error event safely
-        /// </summary>
+        */
         protected virtual void OnHandledErrorEvent(HandledErrorPacket packet) {
             handler = HandledErrorEvent;
             if( handler != null ) {
@@ -190,9 +190,9 @@ package com.quantconnect.lean.Messaging
             }
         }
 
-        /// <summary>
+        /**
         /// Raise runtime error safely
-        /// </summary>
+        */
         protected virtual void OnRuntimeErrorEvent(RuntimeErrorPacket packet) {
             handler = RuntimeErrorEvent;
             if( handler != null ) {
@@ -200,9 +200,9 @@ package com.quantconnect.lean.Messaging
             }
         }
 
-        /// <summary>
+        /**
         /// Raise a backtest result event safely.
-        /// </summary>
+        */
         protected virtual void OnBacktestResultEvent(BacktestResultPacket packet) {
             handler = BacktestResultEvent;
             if( handler != null ) {

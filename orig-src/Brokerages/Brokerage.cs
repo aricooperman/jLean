@@ -22,79 +22,79 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Brokerages
 {
-    /// <summary>
+    /**
     /// Represents the base Brokerage implementation. This provides logging on brokerage events.
-    /// </summary>
+    */
     public abstract class Brokerage : IBrokerage
     {
-        /// <summary>
+        /**
         /// Event that fires each time an order is filled
-        /// </summary>
+        */
         public event EventHandler<OrderEvent> OrderStatusChanged;
 
-        /// <summary>
+        /**
         /// Event that fires each time a user's brokerage account is changed
-        /// </summary>
+        */
         public event EventHandler<AccountEvent> AccountChanged;
 
-        /// <summary>
+        /**
         /// Event that fires when an error is encountered in the brokerage
-        /// </summary>
+        */
         public event EventHandler<BrokerageMessageEvent> Message;
 
-        /// <summary>
+        /**
         /// Gets the name of the brokerage
-        /// </summary>
+        */
         public String Name { get; private set; }
 
-        /// <summary>
+        /**
         /// Returns true if we're currently connected to the broker
-        /// </summary>
+        */
         public abstract boolean IsConnected { get; }
 
-        /// <summary>
+        /**
         /// Creates a new Brokerage instance with the specified name
-        /// </summary>
-        /// <param name="name">The name of the brokerage</param>
+        */
+         * @param name">The name of the brokerage
         protected Brokerage( String name) {
             Name = name;
         }
 
-        /// <summary>
+        /**
         /// Places a new order and assigns a new broker ID to the order
-        /// </summary>
-        /// <param name="order">The order to be placed</param>
-        /// <returns>True if the request for a new order has been placed, false otherwise</returns>
+        */
+         * @param order">The order to be placed
+        @returns True if the request for a new order has been placed, false otherwise
         public abstract boolean PlaceOrder(Order order);
 
-        /// <summary>
+        /**
         /// Updates the order with the same id
-        /// </summary>
-        /// <param name="order">The new order information</param>
-        /// <returns>True if the request was made for the order to be updated, false otherwise</returns>
+        */
+         * @param order">The new order information
+        @returns True if the request was made for the order to be updated, false otherwise
         public abstract boolean UpdateOrder(Order order);
 
-        /// <summary>
+        /**
         /// Cancels the order with the specified ID
-        /// </summary>
-        /// <param name="order">The order to cancel</param>
-        /// <returns>True if the request was made for the order to be canceled, false otherwise</returns>
+        */
+         * @param order">The order to cancel
+        @returns True if the request was made for the order to be canceled, false otherwise
         public abstract boolean CancelOrder(Order order);
 
-        /// <summary>
+        /**
         /// Connects the client to the broker's remote servers
-        /// </summary>
+        */
         public abstract void Connect();
 
-        /// <summary>
+        /**
         /// Disconnects the client from the broker's remote servers
-        /// </summary>
+        */
         public abstract void Disconnect();
 
-        /// <summary>
+        /**
         /// Event invocator for the OrderFilled event
-        /// </summary>
-        /// <param name="e">The OrderEvent</param>
+        */
+         * @param e">The OrderEvent
         protected virtual void OnOrderEvent(OrderEvent e) {
             try
             {
@@ -108,10 +108,10 @@ package com.quantconnect.lean.Brokerages
             }
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the AccountChanged event
-        /// </summary>
-        /// <param name="e">The AccountEvent</param>
+        */
+         * @param e">The AccountEvent
         protected virtual void OnAccountChanged(AccountEvent e) {
             try
             {
@@ -125,10 +125,10 @@ package com.quantconnect.lean.Brokerages
             }
         }
 
-        /// <summary>
+        /**
         /// Event invocator for the Message event
-        /// </summary>
-        /// <param name="e">The error</param>
+        */
+         * @param e">The error
         protected virtual void OnMessage(BrokerageMessageEvent e) {
             try
             {
@@ -148,28 +148,28 @@ package com.quantconnect.lean.Brokerages
             }
         }
 
-        /// <summary>
+        /**
         /// Gets all open orders on the account. 
         /// NOTE: The order objects returned do not have QC order IDs.
-        /// </summary>
-        /// <returns>The open orders returned from IB</returns>
+        */
+        @returns The open orders returned from IB
         public abstract List<Order> GetOpenOrders();
 
-        /// <summary>
+        /**
         /// Gets all holdings for the account
-        /// </summary>
-        /// <returns>The current holdings from the account</returns>
+        */
+        @returns The current holdings from the account
         public abstract List<Holding> GetAccountHoldings();
 
-        /// <summary>
+        /**
         /// Gets the current cash balance for each currency held in the brokerage account
-        /// </summary>
-        /// <returns>The current cash balance for each currency available for trading</returns>
+        */
+        @returns The current cash balance for each currency available for trading
         public abstract List<Cash> GetCashBalance();
 
-        /// <summary>
+        /**
         /// Specifies whether the brokerage will instantly update account balances
-        /// </summary>
+        */
         public virtual boolean AccountInstantlyUpdated
         {
             get { return false; }

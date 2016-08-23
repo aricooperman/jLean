@@ -21,38 +21,38 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
-    /// <summary>
+    /**
     /// Provides augmentation of how often an enumerator can be called. Time is measured using
     /// an <see cref="ITimeProvider"/> instance and calls to the underlying enumerator are limited
     /// to a minimum time between each call.
-    /// </summary>
+    */
     public class RateLimitEnumerator : IEnumerator<BaseData>
     {
         private BaseData _current;
         private DateTime _lastCallTime;
 
-        private readonly ITimeProvider _timeProvider;
-        private readonly IEnumerator<BaseData> _enumerator;
-        private readonly TimeSpan _minimumTimeBetweenCalls;
+        private final ITimeProvider _timeProvider;
+        private final IEnumerator<BaseData> _enumerator;
+        private final Duration _minimumTimeBetweenCalls;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="RateLimitEnumerator"/> class
-        /// </summary>
-        /// <param name="enumerator">The underlying enumerator to place rate limits on</param>
-        /// <param name="timeProvider">Time provider used for determing the time between calls</param>
-        /// <param name="minimumTimeBetweenCalls">The minimum time allowed between calls to the underlying enumerator</param>
-        public RateLimitEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, TimeSpan minimumTimeBetweenCalls) {
+        */
+         * @param enumerator">The underlying enumerator to place rate limits on
+         * @param timeProvider">Time provider used for determing the time between calls
+         * @param minimumTimeBetweenCalls">The minimum time allowed between calls to the underlying enumerator
+        public RateLimitEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, Duration minimumTimeBetweenCalls) {
             _enumerator = enumerator;
             _timeProvider = timeProvider;
             _minimumTimeBetweenCalls = minimumTimeBetweenCalls;
         }
 
-        /// <summary>
+        /**
         /// Advances the enumerator to the next element of the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// </returns>
+        /// 
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public boolean MoveNext() {
             // determine time since last successful call, do this on units of the minimum time
@@ -81,40 +81,40 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             return true;
         }
 
-        /// <summary>
+        /**
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
-        /// </summary>
+        */
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             _enumerator.Reset();
         }
 
-        /// <summary>
+        /**
         /// Gets the element in the collection at the current position of the enumerator.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The element in the collection at the current position of the enumerator.
-        /// </returns>
+        /// 
         public BaseData Current
         {
             get { return _current; }
         }
 
-        /// <summary>
+        /**
         /// Gets the current element in the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The current element in the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return _current; }
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             _enumerator.Dispose();

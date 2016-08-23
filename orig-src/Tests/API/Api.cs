@@ -31,31 +31,31 @@ package com.quantconnect.lean.Tests.API
         private int _testAccount = 1;
         private String _testToken = "ec87b337ac970da4cbea648f24f1c851";
 
-        /// <summary>
+        /**
         /// Test successfully authenticates with the API using valid credentials.
-        /// </summary>
+        */
         [Test]
         public void AuthenticatesSuccessfully() {
             connection = new ApiConnection(_testAccount, _testToken);
             Assert.IsTrue(connection.Connected);
         }
 
-        /// <summary>
+        /**
         /// Rejects invalid credentials
-        /// </summary>
+        */
         [Test]
         public void RejectsInvalidCredentials() {
             connection = new ApiConnection(_testAccount, "");
             Assert.IsFalse(connection.Connected);
         }
 
-        /// <summary>
+        /**
         /// Tests all the API methods linked to a project id.
         ///  - Creates project,
         ///  - Adds files to project,
         ///  - Updates the files, makes sure they are still present,
         ///  - Builds the project, 
-        /// </summary>
+        */
         [Test]
         public void CreatesProjectCompilesAndBacktestsProject() {
             // Initialize the test:
@@ -174,9 +174,9 @@ package com.quantconnect.lean.Tests.API
         }
 
 
-        /// <summary>
+        /**
         /// Live algorithm tests
-        /// </summary>
+        */
         [Test]
         public void ListAccountLiveAlgorithms() {
             api = CreateApiAccessor();
@@ -188,33 +188,33 @@ package com.quantconnect.lean.Tests.API
         }
 
 
-        /// <summary>
+        /**
         /// Create an authenticated API accessor object.
-        /// </summary>
-        /// <returns></returns>
+        */
+        @returns 
         private IApi CreateApiAccessor() {
             return CreateApiAccessor(_testAccount, _testToken);
         }
 
-        /// <summary>
+        /**
         /// Create an API Class with the specified credentials
-        /// </summary>
-        /// <param name="uid">User id</param>
-        /// <param name="token">Token string</param>
-        /// <returns>API class for placing calls</returns>
+        */
+         * @param uid">User id
+         * @param token">Token string
+        @returns API class for placing calls
         private IApi CreateApiAccessor(int uid, String token) {
             api = new Api.Api();
             api.Initialize(uid, token);
             return api;
         }
 
-        /// <summary>
+        /**
         /// Wait for the compiler to respond to a specified compile request
-        /// </summary>
-        /// <param name="api">API Method</param>
-        /// <param name="projectId"></param>
-        /// <param name="compileId"></param>
-        /// <returns></returns>
+        */
+         * @param api">API Method
+         * @param projectId">
+         * @param compileId">
+        @returns 
         private Compile WaitForCompilerResponse(IApi api, int projectId, String compileId) {
             compile = new Compile();
             finish = DateTime.Now.AddSeconds(30);
@@ -226,13 +226,13 @@ package com.quantconnect.lean.Tests.API
             return compile;
         }
 
-        /// <summary>
+        /**
         /// Wait for the backtest to complete
-        /// </summary>
-        /// <param name="api">IApi Object to make requests</param>
-        /// <param name="projectId">Project id to scan</param>
-        /// <param name="backtestId">Backtest id previously started</param>
-        /// <returns>Completed backtest object</returns>
+        */
+         * @param api">IApi Object to make requests
+         * @param projectId">Project id to scan
+         * @param backtestId">Backtest id previously started
+        @returns Completed backtest object
         private Backtest WaitForBacktestCompletion(IApi api, int projectId, String backtestId) {
             result = new Backtest();
             finish = DateTime.Now.AddSeconds(60);

@@ -31,8 +31,8 @@ package com.quantconnect.lean.Tests.Common.Securities
         public void NotifiesWhenSecurityAdded() {
             manager = new UniverseManager();
 
-            universe = new FuncUniverse(CreateTradeBarConfig(), new UniverseSettings(Resolution.Minute, 2, true, false, TimeSpan.Zero), SecurityInitializer.Null,
-                data => data.Select(x => x.Symbol)
+            universe = new FuncUniverse(CreateTradeBarConfig(), new UniverseSettings(Resolution.Minute, 2, true, false, Duration.ZERO), SecurityInitializer.Null,
+                data -> data.Select(x -> x.Symbol)
                 );
 
             manager.CollectionChanged += (sender, args) =>
@@ -54,8 +54,8 @@ package com.quantconnect.lean.Tests.Common.Securities
         public void NotifiesWhenSecurityAddedViaIndexer() {
             manager = new UniverseManager();
 
-            universe = new FuncUniverse(CreateTradeBarConfig(), new UniverseSettings(Resolution.Minute, 2, true, false, TimeSpan.Zero), SecurityInitializer.Null,
-                data => data.Select(x => x.Symbol)
+            universe = new FuncUniverse(CreateTradeBarConfig(), new UniverseSettings(Resolution.Minute, 2, true, false, Duration.ZERO), SecurityInitializer.Null,
+                data -> data.Select(x -> x.Symbol)
                 );
 
             manager.CollectionChanged += (sender, args) =>
@@ -77,8 +77,8 @@ package com.quantconnect.lean.Tests.Common.Securities
         public void NotifiesWhenSecurityRemoved() {
             manager = new UniverseManager();
 
-            universe = new FuncUniverse(CreateTradeBarConfig(), new UniverseSettings(Resolution.Minute, 2, true, false, TimeSpan.Zero), SecurityInitializer.Null,
-                data => data.Select(x => x.Symbol)
+            universe = new FuncUniverse(CreateTradeBarConfig(), new UniverseSettings(Resolution.Minute, 2, true, false, Duration.ZERO), SecurityInitializer.Null,
+                data -> data.Select(x -> x.Symbol)
                 );
 
             manager.Add(universe.Configuration.Symbol, universe);

@@ -37,7 +37,7 @@ public class SubscriptionManager {
     private final List<SubscriptionDataConfig> subscriptions;
 
     /// Initialise the Generic Data Manager Class
-    /// <param name="timeKeeper">The algoritm's time keeper</param>
+     * @param timeKeeper">The algoritm's time keeper
     public SubscriptionManager( TimeKeeper timeKeeper ) {
         this.timeKeeper = timeKeeper;
         //Generic Type Data Holder:
@@ -50,15 +50,15 @@ public class SubscriptionManager {
     }
 
     /// Add Market Data Required (Overloaded method for backwards compatibility).
-    /// <param name="symbol">Symbol of the asset we're like</param>
-    /// <param name="resolution">Resolution of Asset Required</param>
-    /// <param name="timeZone">The time zone the subscription's data is time stamped in</param>
-    /// <param name="exchangeTimeZone">Specifies the time zone of the exchange for the security this subscription is for. This
-    /// is this output time zone, that is, the time zone that will be used on BaseData instances</param>
-    /// <param name="isCustomData">True if this is custom user supplied data, false for normal QC data</param>
-    /// <param name="fillDataForward">when there is no data pass the last tradebar forward</param>
-    /// <param name="extendedMarketHours">Request premarket data as well when true </param>
-    /// <returns>The newly created <see cref="SubscriptionDataConfig"/></returns>
+     * @param symbol">Symbol of the asset we're like
+     * @param resolution">Resolution of Asset Required
+     * @param timeZone">The time zone the subscription's data is time stamped in
+     * @param exchangeTimeZone">Specifies the time zone of the exchange for the security this subscription is for. This
+    /// is this output time zone, that is, the time zone that will be used on BaseData instances
+     * @param isCustomData">True if this is custom user supplied data, false for normal QC data
+     * @param fillDataForward">when there is no data pass the last tradebar forward
+     * @param extendedMarketHours">Request premarket data as well when true 
+    @returns The newly created <see cref="SubscriptionDataConfig"/>
     public SubscriptionDataConfig add( Symbol symbol, Resolution resolution, ZoneId timeZone, ZoneId exchangeTimeZone ) {
         return add( symbol, resolution, timeZone, exchangeTimeZone, false, true, false );
     }
@@ -75,18 +75,18 @@ public class SubscriptionManager {
     }
 
     /// Add Market Data Required - generic data typing support as long as Type implements BaseData.
-    /// <param name="dataType">Set the type of the data we're subscribing to.</param>
-    /// <param name="symbol">Symbol of the asset we're like</param>
-    /// <param name="resolution">Resolution of Asset Required</param>
-    /// <param name="dataTimeZone">The time zone the subscription's data is time stamped in</param>
-    /// <param name="exchangeTimeZone">Specifies the time zone of the exchange for the security this subscription is for. This
-    /// is this output time zone, that is, the time zone that will be used on BaseData instances</param>
-    /// <param name="isCustomData">True if this is custom user supplied data, false for normal QC data</param>
-    /// <param name="fillDataForward">when there is no data pass the last tradebar forward</param>
-    /// <param name="extendedMarketHours">Request premarket data as well when true </param>
-    /// <param name="isInternalFeed">Set to true to prevent data from this subscription from being sent into the algorithm's OnData events</param>
-    /// <param name="isFilteredSubscription">True if this subscription should have filters applied to it (market hours/user filters from security), false otherwise</param>
-    /// <returns>The newly created <see cref="SubscriptionDataConfig"/></returns>
+     * @param dataType">Set the type of the data we're subscribing to.
+     * @param symbol">Symbol of the asset we're like
+     * @param resolution">Resolution of Asset Required
+     * @param dataTimeZone">The time zone the subscription's data is time stamped in
+     * @param exchangeTimeZone">Specifies the time zone of the exchange for the security this subscription is for. This
+    /// is this output time zone, that is, the time zone that will be used on BaseData instances
+     * @param isCustomData">True if this is custom user supplied data, false for normal QC data
+     * @param fillDataForward">when there is no data pass the last tradebar forward
+     * @param extendedMarketHours">Request premarket data as well when true 
+     * @param isInternalFeed">Set to true to prevent data from this subscription from being sent into the algorithm's OnData events
+     * @param isFilteredSubscription">True if this subscription should have filters applied to it (market hours/user filters from security), false otherwise
+    @returns The newly created <see cref="SubscriptionDataConfig"/>
     public SubscriptionDataConfig add( Class<? extends BaseData> dataType, Symbol symbol, Resolution resolution, ZoneId dataTimeZone, ZoneId exchangeTimeZone, 
             boolean isCustomData ) {
         return add( dataType, symbol, resolution, dataTimeZone, exchangeTimeZone, isCustomData, true, false, false, true );
@@ -114,8 +114,8 @@ public class SubscriptionManager {
     }
 
     /// Add a consolidator for the symbol
-    /// <param name="symbol">Symbol of the asset to consolidate</param>
-    /// <param name="consolidator">The consolidator</param>
+     * @param symbol">Symbol of the asset to consolidate
+     * @param consolidator">The consolidator
     public void addConsolidator( Symbol symbol, IDataConsolidator consolidator ) {
         //Find the right subscription and add the consolidator to it
         for( int i = 0; i < subscriptions.size(); i++ ) {

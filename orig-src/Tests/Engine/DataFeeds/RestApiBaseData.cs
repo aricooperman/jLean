@@ -22,9 +22,9 @@ using QuantConnect.Data.Market;
 
 package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Custom data type that causes rest api calls
-    /// </summary>
+    */
     public class RestApiBaseData : TradeBar
     {
         public static int ReaderCount = 0;
@@ -51,7 +51,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             public double alpha;
             public double beta;
 
-            public RestApiBaseData ToBaseData(ZoneId timeZone, TimeSpan period, Symbol sym) {
+            public RestApiBaseData ToBaseData(ZoneId timeZone, Duration period, Symbol sym) {
                 dateTime = QuantConnect.Time.UnixTimeStampToDateTime(time).ConvertFromUtc(timeZone).Subtract(period);
                 return new RestApiBaseData
                 {

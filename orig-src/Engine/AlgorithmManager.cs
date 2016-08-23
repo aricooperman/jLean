@@ -37,72 +37,72 @@ using QuantConnect.Util;
 
 package com.quantconnect.lean.Lean.Engine
 {
-    /// <summary>
+    /**
     /// Algorithm manager class executes the algorithm and generates and passes through the algorithm events.
-    /// </summary>
+    */
     public class AlgorithmManager
     {
         private DateTime _previousTime;
         private IAlgorithm _algorithm;
-        private readonly object _lock = new object();
+        private final object _lock = new object();
         private String _algorithmId = "";
         private DateTime _currentTimeStepTime;
-        private readonly TimeSpan _timeLoopMaximum = Duration.ofMinutes(Config.GetDouble( "algorithm-manager-time-loop-maximum", 10));
+        private final Duration _timeLoopMaximum = Duration.ofMinutes(Config.GetDouble( "algorithm-manager-time-loop-maximum", 10));
         private long _dataPointCount;
 
-        /// <summary>
+        /**
         /// Publicly accessible algorithm status
-        /// </summary>
+        */
         public AlgorithmStatus State
         {
             get { return _algorithm == null ? AlgorithmStatus.Running : _algorithm.Status; }
         }
 
-        /// <summary>
+        /**
         /// Public access to the currently running algorithm id.
-        /// </summary>
+        */
         public String AlgorithmId
         {
             get { return _algorithmId; }
         }
 
-        /// <summary>
+        /**
         /// Gets the amount of time spent on the current time step
-        /// </summary>
-        public TimeSpan CurrentTimeStepElapsed
+        */
+        public Duration CurrentTimeStepElapsed
         {
-            get { return _currentTimeStepTime == DateTime.MinValue ? TimeSpan.Zero : DateTime.UtcNow - _currentTimeStepTime; }
+            get { return _currentTimeStepTime == DateTime.MinValue ? Duration.ZERO : DateTime.UtcNow - _currentTimeStepTime; }
         }
 
-        /// <summary>
+        /**
         /// Gets a function used with the Isolator for verifying we're not spending too much time in each
         /// algo manager timer loop
-        /// </summary>
-        public readonly Func<String> TimeLoopWithinLimits;
+        */
+        public final Func<String> TimeLoopWithinLimits;
 
-        private readonly boolean _liveMode;
+        private final boolean _liveMode;
 
-        /// <summary>
+        /**
         /// Quit state flag for the running algorithm. When true the user has requested the backtest stops through a Quit() method.
-        /// </summary>
+        */
         /// <seealso cref="QCAlgorithm.Quit"/>
         public boolean QuitState
         {
             get { return State == AlgorithmStatus.Deleted; }
         }
 
-        /// <summary>
+        /**
         /// Gets the number of data points processed per second
-        /// </summary>
+        */
         public long DataPoints
         {
             get { return _dataPointCount; }
         }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="AlgorithmManager"/> class
-        /// </summary>
-        /// <param name="liveMode">True if we're running in live mode, false for backtest mode</param>
+        */
+         * @param liveMode">True if we're running in live mode, false for backtest mode
         public AlgorithmManager( boolean liveMode) {
             TimeLoopWithinLimits = () =>
             {
@@ -114,18 +114,18 @@ package com.quantconnect.lean.Lean.Engine
             _liveMode = liveMode;
         }
 
-        /// <summary>
+        /**
         /// Launch the algorithm manager to run this strategy
-        /// </summary>
-        /// <param name="job">Algorithm job</param>
-        /// <param name="algorithm">Algorithm instance</param>
-        /// <param name="feed">Datafeed object</param>
-        /// <param name="transactions">Transaction manager object</param>
-        /// <param name="results">Result handler object</param>
-        /// <param name="realtime">Realtime processing object</param>
-        /// <param name="commands">The command queue for relaying extenal commands to the algorithm</param>
-        /// <param name="token">Cancellation token</param>
-        /// <remarks>Modify with caution</remarks>
+        */
+         * @param job">Algorithm job
+         * @param algorithm">Algorithm instance
+         * @param feed">Datafeed object
+         * @param transactions">Transaction manager object
+         * @param results">Result handler object
+         * @param realtime">Realtime processing object
+         * @param commands">The command queue for relaying extenal commands to the algorithm
+         * @param token">Cancellation token
+        /// Modify with caution
         public void Run(AlgorithmNodePacket job, IAlgorithm algorithm, IDataFeed feed, ITransactionHandler transactions, IResultHandler results, IRealTimeHandler realtime, ICommandQueueHandler commands, CancellationToken token) {
             //Initialize:
             _dataPointCount = 0;
@@ -161,8 +161,8 @@ package com.quantconnect.lean.Lean.Engine
 
             // Algorithm 3.0 data accessors
             hasOnDataSlice = algorithm.GetType().GetMethods()
-                .Where(x => x.Name == "OnData" && x.GetParameters().Length == 1 && x.GetParameters()[0].ParameterType == typeof (Slice))
-                .FirstOrDefault(x => x.DeclaringType == algorithm.GetType()) != null;
+                .Where(x -> x.Name == "OnData" && x.GetParameters().Length == 1 && x.GetParameters()[0].ParameterType == typeof (Slice))
+                .FirstOrDefault(x -> x.DeclaringType == algorithm.GetType()) != null;
 
             //Go through the subscription types and create invokers to trigger the event handlers for each custom type:
             foreach (config in algorithm.SubscriptionManager.Subscriptions) {
@@ -265,7 +265,7 @@ package com.quantconnect.lean.Lean.Engine
                     }
                     foreach (symbol in timeSlice.Slice.SymbolChangedEvents.Keys) {
                         // cancel all orders for the old symbol
-                        foreach (ticket in transactions.GetOrderTickets(x => x.Status.IsOpen() && x.Symbol == symbol)) {
+                        foreach (ticket in transactions.GetOrderTickets(x -> x.Status.IsOpen() && x.Symbol == symbol)) {
                             ticket.Cancel( "Open order cancelled on symbol changed event");
                         }
                     }
@@ -408,7 +408,7 @@ package com.quantconnect.lean.Lean.Engine
                         // apply the split to open orders as well in raw mode, all other modes are split adjusted
                         if( _liveMode || algorithm.Securities[split.Symbol].DataNormalizationMode == DataNormalizationMode.Raw) {
                             // in live mode we always want to have our order match the order at the brokerage, so apply the split to the orders
-                            openOrders = transactions.GetOrderTickets(ticket => ticket.Status.IsOpen() && ticket.Symbol == split.Symbol);
+                            openOrders = transactions.GetOrderTickets(ticket -> ticket.Status.IsOpen() && ticket.Symbol == split.Symbol);
                             algorithm.BrokerageModel.ApplySplit(openOrders.ToList(), split);
                         }
                     }
@@ -576,9 +576,9 @@ package com.quantconnect.lean.Lean.Engine
             results.SamplePerformance(_previousTime, Math.Round((algorithm.Portfolio.TotalPortfolioValue - portfolioValue)*100/portfolioValue, 10));
         } // End of Run();
 
-        /// <summary>
+        /**
         /// Set the quit state.
-        /// </summary>
+        */
         public void SetStatus(AlgorithmStatus state) {
             lock (_lock) {
                 //We don't want anyone elseto set our internal state to "Running". 
@@ -602,16 +602,16 @@ package com.quantconnect.lean.Lean.Engine
             start = DateTime.UtcNow.Ticks;
             nextStatusTime = DateTime.UtcNow.AddSeconds(1);
             minimumIncrement = algorithm.UniverseManager
-                .Select(x => x.Value.Configuration.Resolution.ToTimeSpan())
+                .Select(x -> x.Value.Configuration.Resolution.ToTimeSpan())
                 .DefaultIfEmpty(Time.OneSecond)
                 .Min();
 
-            minimumIncrement = minimumIncrement == TimeSpan.Zero ? Time.OneSecond : minimumIncrement;
+            minimumIncrement = minimumIncrement == Duration.ZERO ? Time.OneSecond : minimumIncrement;
 
             if( historyRequests.Count != 0) {
                 // rewrite internal feed requests
-                subscriptions = algorithm.SubscriptionManager.Subscriptions.Where(x => !x.IsInternalFeed).ToList();
-                minResolution = subscriptions.Count > 0 ? subscriptions.Min(x => x.Resolution) : Resolution.Second;
+                subscriptions = algorithm.SubscriptionManager.Subscriptions.Where(x -> !x.IsInternalFeed).ToList();
+                minResolution = subscriptions.Count > 0 ? subscriptions.Min(x -> x.Resolution) : Resolution.Second;
                 foreach (request in historyRequests) {
                     Security security;
                     if( algorithm.Securities.TryGetValue(request.Symbol, out security) && security.IsInternalFeed()) {
@@ -623,9 +623,9 @@ package com.quantconnect.lean.Lean.Engine
                 }
 
                 // rewrite all to share the same fill forward resolution
-                if( historyRequests.Any(x => x.FillForwardResolution.HasValue)) {
-                    minResolution = historyRequests.Where(x => x.FillForwardResolution.HasValue).Min(x => x.FillForwardResolution.Value);
-                    foreach (request in historyRequests.Where(x => x.FillForwardResolution.HasValue)) {
+                if( historyRequests.Any(x -> x.FillForwardResolution.HasValue)) {
+                    minResolution = historyRequests.Where(x -> x.FillForwardResolution.HasValue).Min(x -> x.FillForwardResolution.Value);
+                    foreach (request in historyRequests.Where(x -> x.FillForwardResolution.HasValue)) {
                         request.FillForwardResolution = minResolution;
                     }
                 }
@@ -699,7 +699,7 @@ package com.quantconnect.lean.Lean.Engine
                     if( lastHistoryTimeUtc.HasValue) {
                         // make sure there's no historical data, this only matters for the handover
                         hasHistoricalData = false;
-                        foreach (data in timeSlice.Slice.Ticks.Values.SelectMany(x => x).Concat<BaseData>(timeSlice.Slice.Bars.Values)) {
+                        foreach (data in timeSlice.Slice.Ticks.Values.SelectMany(x -> x).Concat<BaseData>(timeSlice.Slice.Bars.Values)) {
                             // check if any ticks in the list are on or after our last warmup point, if so, skip this data
                             if( data.EndTime.ConvertToUtc(algorithm.Securities[data.Symbol].Exchange.TimeZone) >= lastHistoryTimeUtc) {
                                 hasHistoricalData = true;
@@ -734,14 +734,14 @@ package com.quantconnect.lean.Lean.Engine
             }
         }
 
-        /// <summary>
+        /**
         /// Adds a method invoker if the method exists to the method invokers dictionary
-        /// </summary>
+        */
         /// <typeparam name="T">The data type to check for 'OnData(T data)</typeparam>
-        /// <param name="algorithm">The algorithm instance</param>
-        /// <param name="methodInvokers">The dictionary of method invokers</param>
-        /// <param name="methodName">The name of the method to search for</param>
-        /// <returns>True if the method existed and was added to the collection</returns>
+         * @param algorithm">The algorithm instance
+         * @param methodInvokers">The dictionary of method invokers
+         * @param methodName">The name of the method to search for
+        @returns True if the method existed and was added to the collection
         private boolean AddMethodInvoker<T>(IAlgorithm algorithm, Map<Type, MethodInvoker> methodInvokers, String methodName = "OnData") {
             newSplitMethodInfo = algorithm.GetType().GetMethod(methodName, new[] {typeof (T)});
             if( newSplitMethodInfo != null ) {
@@ -751,12 +751,12 @@ package com.quantconnect.lean.Lean.Engine
             return false;
         }
 
-        /// <summary>
+        /**
         /// Performs delisting logic for the securities specified in <paramref name="newDelistings"/> that are marked as <see cref="DelistingType.Delisted"/>. 
         /// This includes liquidating the position and removing the security from the algorithm's collection.
         /// If we're unable to liquidate the position (maybe daily data or EOD already) then we'll add it to the <paramref name="delistingTickets"/>
         /// for the algo manager time loop to check later
-        /// </summary>
+        */
         private static void HandleDelistedSymbols(IAlgorithm algorithm, Delistings newDelistings, ICollection<OrderTicket> delistingTickets) {
             foreach (delisting in newDelistings.Values) {
                 // submit an order to liquidate on market close
@@ -779,9 +779,9 @@ package com.quantconnect.lean.Lean.Engine
             }
         }
 
-        /// <summary>
+        /**
         /// Samples the benchmark in a  try/catch block
-        /// </summary>
+        */
         private void SampleBenchmark(IAlgorithm algorithm, IResultHandler results, DateTime time) {
             try
             {

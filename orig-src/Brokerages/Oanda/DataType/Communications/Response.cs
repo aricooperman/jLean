@@ -23,9 +23,9 @@ using QuantConnect.Brokerages.Oanda.Framework;
 package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
-    /// <summary>
+    /**
     /// Represents the Restful web response from Oanda.
-    /// </summary>
+    */
 	public class Response
 	{
 		public @Override String toString() {

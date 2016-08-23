@@ -22,13 +22,13 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Tests.Brokerages
 {
-    /// <summary>
+    /**
     /// Provides a test implementation of order mapping
-    /// </summary>
+    */
     public class OrderProvider : IOrderProvider
     {
         private static int _orderID;
-        private readonly IList<Order> _orders;
+        private final IList<Order> _orders;
 
         public OrderProvider(IList<Order> orders) {
             _orders = orders;
@@ -49,11 +49,11 @@ package com.quantconnect.lean.Tests.Brokerages
         }
 
         public Order GetOrderById(int orderId) {
-            return _orders.FirstOrDefault(x => x.Id == orderId);
+            return _orders.FirstOrDefault(x -> x.Id == orderId);
         }
 
         public Order GetOrderByBrokerageId( String brokerageId) {
-            return _orders.FirstOrDefault(x => x.BrokerId.Contains(brokerageId));
+            return _orders.FirstOrDefault(x -> x.BrokerId.Contains(brokerageId));
         }
 
         public IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null ) {

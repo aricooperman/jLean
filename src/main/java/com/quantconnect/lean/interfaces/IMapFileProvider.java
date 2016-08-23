@@ -26,7 +26,7 @@ import com.quantconnect.lean.data.auxiliary.MapFileResolver;
 public interface IMapFileProvider {
     /// Gets a <see cref="MapFileResolver"/> representing all the map
     /// files for the specified market
-    /// <param name="market">The equity market, for example, 'usa'</param>
-    /// <returns>A <see cref="MapFileResolver"/> containing all map files for the specified market</returns>
+     * @param market">The equity market, for example, 'usa'
+    @returns A <see cref="MapFileResolver"/> containing all map files for the specified market
     MapFileResolver get( String market );
 }

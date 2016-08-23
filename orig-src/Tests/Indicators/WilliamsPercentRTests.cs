@@ -24,7 +24,7 @@ package com.quantconnect.lean.Tests.Indicators
         [Test]
         public void ComputesCorrectly() {
             wilr = new WilliamsPercentR(14);
-            TestHelper.TestIndicator(wilr, "spy_with_williamsR14.txt", "Williams %R 14", (ind, expected) => Assert.AreEqual(expected, (double) ind.Current.Value, 1e-3));
+            TestHelper.TestIndicator(wilr, "spy_with_williamsR14.txt", "Williams %R 14", (ind, expected) -> Assert.AreEqual(expected, (double) ind.Current.Value, 1e-3));
         }
 
         [Test]

@@ -24,7 +24,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Auxiliary
     [TestFixture]
     public class MapFileResolverTests
     {
-        private readonly MapFileResolver _resolver = CreateMapFileResolver();
+        private final MapFileResolver _resolver = CreateMapFileResolver();
 
         [Test]
         public void ResolvesStraightMapping() {

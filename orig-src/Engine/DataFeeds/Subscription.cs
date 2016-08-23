@@ -24,83 +24,83 @@ using QuantConnect.Securities;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
-    /// <summary>
+    /**
     /// Represents the data required for a data feed to process a single subsciption
-    /// </summary>
+    */
     public class Subscription : IEnumerator<BaseData>
     {
-        private readonly IEnumerator<BaseData> _enumerator;
+        private final IEnumerator<BaseData> _enumerator;
 
-        /// <summary>
+        /**
         /// Gets the universe for this subscription
-        /// </summary>
+        */
         public Universe Universe
         {
             get;
             private set;
         }
 
-        /// <summary>
+        /**
         /// Gets the security this subscription points to
-        /// </summary>
-        public readonly Security Security;
+        */
+        public final Security Security;
 
-        /// <summary>
+        /**
         /// Gets the configuration for this subscritions
-        /// </summary>
-        public readonly SubscriptionDataConfig Configuration;
+        */
+        public final SubscriptionDataConfig Configuration;
 
-        /// <summary>
+        /**
         /// Gets the data time zone associated with this subscription
-        /// </summary>
+        */
         public ZoneId TimeZone
         {
             get { return Security.Exchange.TimeZone; }
         }
 
-        /// <summary>
+        /**
         /// Gets the offset provider for time zone conversions to and from the data's local time
-        /// </summary>
-        public readonly TimeZoneOffsetProvider OffsetProvider;
+        */
+        public final TimeZoneOffsetProvider OffsetProvider;
 
-        /// <summary>
+        /**
         /// Gets the most current value from the subscription source
-        /// </summary>
+        */
         public BigDecimal RealtimePrice { get; set; }
 
-        /// <summary>
+        /**
         /// Gets true if this subscription is finished, false otherwise
-        /// </summary>
+        */
         public boolean EndOfStream { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets true if this subscription is used in universe selection
-        /// </summary>
+        */
         public boolean IsUniverseSelectionSubscription { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the start time of this subscription in UTC
-        /// </summary>
+        */
         public DateTime UtcStartTime { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the end time of this subscription in UTC
-        /// </summary>
+        */
         public DateTime UtcEndTime { get; private set; }
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="Subscription"/> class with a universe
-        /// </summary>
-        /// <param name="universe">Specified for universe subscriptions</param>
-        /// <param name="security">The security this subscription is for</param>
-        /// <param name="configuration">The subscription configuration that was used to generate the enumerator</param>
-        /// <param name="enumerator">The subscription's data source</param>
-        /// <param name="timeZoneOffsetProvider">The offset provider used to convert data local times to utc</param>
-        /// <param name="utcStartTime">The start time of the subscription</param>
-        /// <param name="utcEndTime">The end time of the subscription</param>
-        /// <param name="isUniverseSelectionSubscription">True if this is a subscription for universe selection,
+        */
+         * @param universe">Specified for universe subscriptions
+         * @param security">The security this subscription is for
+         * @param configuration">The subscription configuration that was used to generate the enumerator
+         * @param enumerator">The subscription's data source
+         * @param timeZoneOffsetProvider">The offset provider used to convert data local times to utc
+         * @param utcStartTime">The start time of the subscription
+         * @param utcEndTime">The end time of the subscription
+         * @param isUniverseSelectionSubscription">True if this is a subscription for universe selection,
         /// that is, the configuration is used to produce the used to perform universe selection, false for a
-        /// normal data subscription, i.e, SPY</param>
+        /// normal data subscription, i.e, SPY
         public Subscription(Universe universe,
             Security security,
             SubscriptionDataConfig configuration,
@@ -120,12 +120,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             UtcEndTime = utcEndTime;
         }
 
-        /// <summary>
+        /**
         /// Advances the enumerator to the next element of the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// </returns>
+        /// 
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public virtual boolean MoveNext() {
             if( EndOfStream) {
@@ -138,49 +138,49 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             return moveNext;
         }
 
-        /// <summary>
+        /**
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
-        /// </summary>
+        */
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             _enumerator.Reset();
         }
 
-        /// <summary>
+        /**
         /// Gets the element in the collection at the current position of the enumerator.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The element in the collection at the current position of the enumerator.
-        /// </returns>
+        /// 
         public BaseData Current { get; private set; }
 
-        /// <summary>
+        /**
         /// Gets the current element in the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The current element in the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             EndOfStream = true;
             _enumerator.Dispose();
         }
 
-        /// <summary>
+        /**
         /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         public @Override int hashCode() {
             return Configuration.Symbol.hashCode();

@@ -21,29 +21,29 @@ using QuantConnect.Indicators.CandlestickPatterns;
 
 package com.quantconnect.lean.Algorithm
 {
-    /// <summary>
+    /**
     /// Provides helpers for using candlestick patterns
-    /// </summary>
+    */
     public class CandlestickPatterns
     {
-        private readonly QCAlgorithm _algorithm;
+        private final QCAlgorithm _algorithm;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="CandlestickPatterns"/> class
-        /// </summary>
-        /// <param name="algorithm">The algorithm instance</param>
+        */
+         * @param algorithm">The algorithm instance
         public CandlestickPatterns(QCAlgorithm algorithm) {
             _algorithm = algorithm;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.TwoCrows"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public TwoCrows TwoCrows(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "TWOCROWS", resolution);
             pattern = new TwoCrows(name);
@@ -51,14 +51,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.ThreeBlackCrows"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public ThreeBlackCrows ThreeBlackCrows(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "THREEBLACKCROWS", resolution);
             pattern = new ThreeBlackCrows(name);
@@ -66,14 +66,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.ThreeInside"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public ThreeInside ThreeInside(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "THREEINSIDE", resolution);
             pattern = new ThreeInside(name);
@@ -81,14 +81,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.ThreeLineStrike"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public ThreeLineStrike ThreeLineStrike(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "THREELINESTRIKE", resolution);
             pattern = new ThreeLineStrike(name);
@@ -96,14 +96,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.ThreeOutside"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public ThreeOutside ThreeOutside(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "THREEOUTSIDE", resolution);
             pattern = new ThreeOutside(name);
@@ -111,14 +111,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.ThreeStarsInSouth"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public ThreeStarsInSouth ThreeStarsInSouth(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "THREESTARSINSOUTH", resolution);
             pattern = new ThreeStarsInSouth(name);
@@ -126,14 +126,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.ThreeWhiteSoldiers"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public ThreeWhiteSoldiers ThreeWhiteSoldiers(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "THREEWHITESOLDIERS", resolution);
             pattern = new ThreeWhiteSoldiers(name);
@@ -141,15 +141,15 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.AbandonedBaby"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param penetration">Percentage of penetration of a candle within another candle
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public AbandonedBaby AbandonedBaby(Symbol symbol, BigDecimal penetration = 0.3m, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "ABANDONEDBABY", resolution);
             pattern = new AbandonedBaby(name, penetration);
@@ -157,14 +157,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.AdvanceBlock"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public AdvanceBlock AdvanceBlock(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "ADVANCEBLOCK", resolution);
             pattern = new AdvanceBlock(name);
@@ -172,14 +172,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.BeltHold"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public BeltHold BeltHold(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "BELTHOLD", resolution);
             pattern = new BeltHold(name);
@@ -187,14 +187,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Breakaway"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Breakaway Breakaway(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "BREAKAWAY", resolution);
             pattern = new Breakaway(name);
@@ -202,14 +202,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.ClosingMarubozu"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public ClosingMarubozu ClosingMarubozu(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "CLOSINGMARUBOZU", resolution);
             pattern = new ClosingMarubozu(name);
@@ -217,14 +217,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.ConcealedBabySwallow"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public ConcealedBabySwallow ConcealedBabySwallow(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "CONCEALEDBABYSWALLOW", resolution);
             pattern = new ConcealedBabySwallow(name);
@@ -232,14 +232,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Counterattack"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Counterattack Counterattack(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "COUNTERATTACK", resolution);
             pattern = new Counterattack(name);
@@ -247,15 +247,15 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.DarkCloudCover"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param penetration">Percentage of penetration of a candle within another candle
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public DarkCloudCover DarkCloudCover(Symbol symbol, BigDecimal penetration = 0.5m, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "DARKCLOUDCOVER", resolution);
             pattern = new DarkCloudCover(name, penetration);
@@ -263,14 +263,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Doji"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Doji Doji(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "DOJI", resolution);
             pattern = new Doji(name);
@@ -278,14 +278,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.DojiStar"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public DojiStar DojiStar(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "DOJISTAR", resolution);
             pattern = new DojiStar(name);
@@ -293,14 +293,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.DragonflyDoji"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public DragonflyDoji DragonflyDoji(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "DRAGONFLYDOJI", resolution);
             pattern = new DragonflyDoji(name);
@@ -308,14 +308,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Engulfing"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Engulfing Engulfing(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "ENGULFING", resolution);
             pattern = new Engulfing(name);
@@ -323,15 +323,15 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.EveningDojiStar"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param penetration">Percentage of penetration of a candle within another candle
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public EveningDojiStar EveningDojiStar(Symbol symbol, BigDecimal penetration = 0.3m, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "EVENINGDOJISTAR", resolution);
             pattern = new EveningDojiStar(name, penetration);
@@ -339,15 +339,15 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.EveningStar"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param penetration">Percentage of penetration of a candle within another candle
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public EveningStar EveningStar(Symbol symbol, BigDecimal penetration = 0.3m, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "EVENINGSTAR", resolution);
             pattern = new EveningStar(name, penetration);
@@ -355,14 +355,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.GapSideBySideWhite"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public GapSideBySideWhite GapSideBySideWhite(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "GAPSIDEBYSIDEWHITE", resolution);
             pattern = new GapSideBySideWhite(name);
@@ -370,14 +370,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.GravestoneDoji"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public GravestoneDoji GravestoneDoji(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "GRAVESTONEDOJI", resolution);
             pattern = new GravestoneDoji(name);
@@ -385,14 +385,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Hammer"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Hammer Hammer(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "HAMMER", resolution);
             pattern = new Hammer(name);
@@ -400,14 +400,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.HangingMan"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public HangingMan HangingMan(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "HANGINGMAN", resolution);
             pattern = new HangingMan(name);
@@ -415,14 +415,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Harami"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Harami Harami(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "HARAMI", resolution);
             pattern = new Harami(name);
@@ -430,14 +430,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.HaramiCross"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public HaramiCross HaramiCross(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "HARAMICROSS", resolution);
             pattern = new HaramiCross(name);
@@ -445,14 +445,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.HighWaveCandle"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public HighWaveCandle HighWaveCandle(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "HIGHWAVECANDLE", resolution);
             pattern = new HighWaveCandle(name);
@@ -460,14 +460,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Hikkake"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Hikkake Hikkake(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "HIKKAKE", resolution);
             pattern = new Hikkake(name);
@@ -475,14 +475,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.HikkakeModified"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public HikkakeModified HikkakeModified(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "HIKKAKEMODIFIED", resolution);
             pattern = new HikkakeModified(name);
@@ -490,14 +490,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.HomingPigeon"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public HomingPigeon HomingPigeon(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "HOMINGPIGEON", resolution);
             pattern = new HomingPigeon(name);
@@ -505,14 +505,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.IdenticalThreeCrows"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public IdenticalThreeCrows IdenticalThreeCrows(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "IDENTICALTHREECROWS", resolution);
             pattern = new IdenticalThreeCrows(name);
@@ -520,14 +520,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.InNeck"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public InNeck InNeck(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "INNECK", resolution);
             pattern = new InNeck(name);
@@ -535,14 +535,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.InvertedHammer"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public InvertedHammer InvertedHammer(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "INVERTEDHAMMER", resolution);
             pattern = new InvertedHammer(name);
@@ -550,14 +550,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Kicking"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Kicking Kicking(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "KICKING", resolution);
             pattern = new Kicking(name);
@@ -565,14 +565,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.KickingByLength"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public KickingByLength KickingByLength(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "KICKINGBYLENGTH", resolution);
             pattern = new KickingByLength(name);
@@ -580,14 +580,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.LadderBottom"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public LadderBottom LadderBottom(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "LADDERBOTTOM", resolution);
             pattern = new LadderBottom(name);
@@ -595,14 +595,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.LongLeggedDoji"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public LongLeggedDoji LongLeggedDoji(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "LONGLEGGEDDOJI", resolution);
             pattern = new LongLeggedDoji(name);
@@ -610,14 +610,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.LongLineCandle"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public LongLineCandle LongLineCandle(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "LONGLINECANDLE", resolution);
             pattern = new LongLineCandle(name);
@@ -625,14 +625,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Marubozu"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Marubozu Marubozu(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "MARUBOZU", resolution);
             pattern = new Marubozu(name);
@@ -640,14 +640,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.MatchingLow"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public MatchingLow MatchingLow(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "MATCHINGLOW", resolution);
             pattern = new MatchingLow(name);
@@ -655,15 +655,15 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.MatHold"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param penetration">Percentage of penetration of a candle within another candle
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public MatHold MatHold(Symbol symbol, BigDecimal penetration = 0.5m, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "MATHOLD", resolution);
             pattern = new MatHold(name, penetration);
@@ -671,15 +671,15 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.MorningDojiStar"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param penetration">Percentage of penetration of a candle within another candle
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public MorningDojiStar MorningDojiStar(Symbol symbol, BigDecimal penetration = 0.3m, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "MORNINGDOJISTAR", resolution);
             pattern = new MorningDojiStar(name, penetration);
@@ -687,15 +687,15 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.MorningStar"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="penetration">Percentage of penetration of a candle within another candle</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param penetration">Percentage of penetration of a candle within another candle
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public MorningStar MorningStar(Symbol symbol, BigDecimal penetration = 0.3m, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "MORNINGSTAR", resolution);
             pattern = new MorningStar(name, penetration);
@@ -703,14 +703,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.OnNeck"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public OnNeck OnNeck(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "ONNECK", resolution);
             pattern = new OnNeck(name);
@@ -718,14 +718,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Piercing"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Piercing Piercing(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "PIERCING", resolution);
             pattern = new Piercing(name);
@@ -733,14 +733,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.RickshawMan"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public RickshawMan RickshawMan(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "RICKSHAWMAN", resolution);
             pattern = new RickshawMan(name);
@@ -748,14 +748,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.RiseFallThreeMethods"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public RiseFallThreeMethods RiseFallThreeMethods(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "RISEFALLTHREEMETHODS", resolution);
             pattern = new RiseFallThreeMethods(name);
@@ -763,14 +763,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.SeparatingLines"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public SeparatingLines SeparatingLines(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "SEPARATINGLINES", resolution);
             pattern = new SeparatingLines(name);
@@ -778,14 +778,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.ShootingStar"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public ShootingStar ShootingStar(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "SHOOTINGSTAR", resolution);
             pattern = new ShootingStar(name);
@@ -793,14 +793,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.ShortLineCandle"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public ShortLineCandle ShortLineCandle(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "SHORTLINECANDLE", resolution);
             pattern = new ShortLineCandle(name);
@@ -808,14 +808,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.SpinningTop"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public SpinningTop SpinningTop(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "SPINNINGTOP", resolution);
             pattern = new SpinningTop(name);
@@ -823,14 +823,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.StalledPattern"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public StalledPattern StalledPattern(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "STALLEDPATTERN", resolution);
             pattern = new StalledPattern(name);
@@ -838,14 +838,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.StickSandwich"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public StickSandwich StickSandwich(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "STICKSANDWICH", resolution);
             pattern = new StickSandwich(name);
@@ -853,14 +853,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Takuri"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Takuri Takuri(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "TAKURI", resolution);
             pattern = new Takuri(name);
@@ -868,14 +868,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.TasukiGap"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public TasukiGap TasukiGap(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "TASUKIGAP", resolution);
             pattern = new TasukiGap(name);
@@ -883,14 +883,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Thrusting"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Thrusting Thrusting(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "THRUSTING", resolution);
             pattern = new Thrusting(name);
@@ -898,14 +898,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.Tristar"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public Tristar Tristar(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "TRISTAR", resolution);
             pattern = new Tristar(name);
@@ -913,14 +913,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.UniqueThreeRiver"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public UniqueThreeRiver UniqueThreeRiver(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "UNIQUETHREERIVER", resolution);
             pattern = new UniqueThreeRiver(name);
@@ -928,14 +928,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.UpsideGapTwoCrows"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public UpsideGapTwoCrows UpsideGapTwoCrows(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "UPSIDEGAPTWOCROWS", resolution);
             pattern = new UpsideGapTwoCrows(name);
@@ -943,14 +943,14 @@ package com.quantconnect.lean.Algorithm
             return pattern;
         }
 
-        /// <summary>
+        /**
         /// Creates a new <see cref="Indicators.CandlestickPatterns.UpDownGapThreeMethods"/> pattern indicator.
         /// The indicator will be automatically updated on the given resolution.
-        /// </summary>
-        /// <param name="symbol">The symbol whose pattern we seek</param>
-        /// <param name="resolution">The resolution.</param>
-        /// <param name="selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar</param>
-        /// <returns>The pattern indicator for the requested symbol.</returns>
+        */
+         * @param symbol">The symbol whose pattern we seek
+         * @param resolution">The resolution.
+         * @param selector">Selects a value from the BaseData to send into the indicator, if null defaults to casting the input value to a TradeBar
+        @returns The pattern indicator for the requested symbol.
         public UpDownGapThreeMethods UpDownGapThreeMethods(Symbol symbol, Resolution? resolution = null, Func<BaseData, TradeBar> selector = null ) {
             name = _algorithm.CreateIndicatorName(symbol, "UPDOWNGAPTHREEMETHODS", resolution);
             pattern = new UpDownGapThreeMethods(name);

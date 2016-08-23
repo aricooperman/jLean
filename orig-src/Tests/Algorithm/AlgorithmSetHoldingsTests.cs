@@ -32,7 +32,7 @@ package com.quantconnect.lean.Tests.Algorithm
         public enum FeeType { None, Small, Large, InteractiveBrokers }
         public enum PriceMovement { Static, RisingSmall, FallingSmall, RisingLarge, FallingLarge }
 
-        private readonly Map<FeeType, IFeeModel> _feeModels = new Map<FeeType, IFeeModel>
+        private final Map<FeeType, IFeeModel> _feeModels = new Map<FeeType, IFeeModel>
         {
             { FeeType.None, new ConstantFeeModel(0) },
             { FeeType.Small, new ConstantFeeModel(1) },
@@ -40,7 +40,7 @@ package com.quantconnect.lean.Tests.Algorithm
             { FeeType.InteractiveBrokers, new InteractiveBrokersFeeModel() }
         };
 
-        private readonly Symbol _symbol = Symbols.SPY;
+        private final Symbol _symbol = Symbols.SPY;
         private static final BigDecimal Cash = 100000m;
         private static final BigDecimal VeryLowPrice = 155m;
         private static final BigDecimal LowPrice = 159m;
@@ -95,8 +95,8 @@ package com.quantconnect.lean.Tests.Algorithm
                 Permuter<object>.Permute(data, permutations);
 
                 ret = permutations
-                    .Where(row => (Position)row[0] != (Position)row[1])     // initialPosition != finalPosition
-                    .Select(row => new TestCaseData(row).SetName( String.Join( "_", row)))
+                    .Where(row -> (Position)row[0] != (Position)row[1])     // initialPosition != finalPosition
+                    .Select(row -> new TestCaseData(row).SetName( String.Join( "_", row)))
                     .ToArray();
 
                 return ret;

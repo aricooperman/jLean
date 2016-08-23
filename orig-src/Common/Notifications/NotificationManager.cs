@@ -18,27 +18,27 @@ using System.Collections.Concurrent;
 
 package com.quantconnect.lean.Notifications
 {
-    /// <summary>
+    /**
     /// Local/desktop implementation of messaging system for Lean Engine.
-    /// </summary>
+    */
     public class NotificationManager
     {
         private int _count;
         private DateTime _resetTime;
         private static final int _rateLimit = 30;
-        private readonly boolean _liveMode;
+        private final boolean _liveMode;
 
-        /// <summary>
+        /**
         /// Public access to the messages
-        /// </summary>
+        */
         public ConcurrentQueue<Notification> Messages
         {
             get; set;
         }
 
-        /// <summary>
+        /**
         /// Initialize the messaging system
-        /// </summary>
+        */
         public NotificationManager( boolean liveMode) {
             _count = 0;
             _liveMode = liveMode;
@@ -46,10 +46,10 @@ package com.quantconnect.lean.Notifications
             Messages = new ConcurrentQueue<Notification>();
         }
 
-        /// <summary>
+        /**
         /// Maintain a rate limit of the notification messages per hour send of roughly 20 messages per hour.
-        /// </summary>
-        /// <returns>True on under rate limit and acceptable to send message</returns>
+        */
+        @returns True on under rate limit and acceptable to send message
         private boolean Allow() {
             if( DateTime.Now > _resetTime) {
                 _count = 0;
@@ -63,13 +63,13 @@ package com.quantconnect.lean.Notifications
             return false;
         }
 
-        /// <summary>
+        /**
         /// Send an email to the address specified for live trading notifications.
-        /// </summary>
-        /// <param name="subject">Subject of the email</param>
-        /// <param name="message">Message body, up to 10kb</param>
-        /// <param name="data">Data attachment (optional)</param>
-        /// <param name="address">Email address to send to</param>
+        */
+         * @param subject">Subject of the email
+         * @param message">Message body, up to 10kb
+         * @param data">Data attachment (optional)
+         * @param address">Email address to send to
         public boolean Email( String address, String subject, String message, String data = "") {
             if( !_liveMode) return false;
             allow = Allow();
@@ -82,11 +82,11 @@ package com.quantconnect.lean.Notifications
             return allow;
         }
 
-        /// <summary>
+        /**
         /// Send an SMS to the phone number specified
-        /// </summary>
-        /// <param name="phoneNumber">Phone number to send to</param>
-        /// <param name="message">Message to send</param>
+        */
+         * @param phoneNumber">Phone number to send to
+         * @param message">Message to send
         public boolean Sms( String phoneNumber, String message) {
             if( !_liveMode) return false;
             allow = Allow();
@@ -97,11 +97,11 @@ package com.quantconnect.lean.Notifications
             return allow;
         }
 
-        /// <summary>
+        /**
         /// Place REST POST call to the specified address with the specified DATA.
-        /// </summary>
-        /// <param name="address">Endpoint address</param>
-        /// <param name="data">Data to send in body JSON encoded (optional)</param>
+        */
+         * @param address">Endpoint address
+         * @param data">Data to send in body JSON encoded (optional)
         public boolean Web( String address, object data = null ) {
             if( !_liveMode) return false;
             allow = Allow();

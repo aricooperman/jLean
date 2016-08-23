@@ -28,7 +28,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "TenkanMaximum",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).TenkanMaximum.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).TenkanMaximum.Current.Value)
                 );
         }
 
@@ -39,7 +39,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "TenkanMinimum",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).TenkanMinimum.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).TenkanMinimum.Current.Value)
                 );
         }
 
@@ -50,7 +50,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "Tenkan",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).Tenkan.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).Tenkan.Current.Value)
                 );
         }
         [Test]
@@ -60,7 +60,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "KijunMaximum",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).KijunMaximum.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).KijunMaximum.Current.Value)
                 );
         }
         [Test]
@@ -70,7 +70,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "KijunMinimum",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).KijunMinimum.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).KijunMinimum.Current.Value)
                 );
         }
         [Test]
@@ -81,7 +81,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "Kijun",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).Kijun.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).Kijun.Current.Value)
                 );
         }
         [Test]
@@ -91,7 +91,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "DelayedTenkanSenkouA",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).DelayedTenkanSenkouA.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).DelayedTenkanSenkouA.Current.Value)
                 );
         }
 
@@ -103,7 +103,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "DelayedKijunSenkouA",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).DelayedKijunSenkouA.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).DelayedKijunSenkouA.Current.Value)
                 );
         }
 
@@ -114,7 +114,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "Senkou A",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).SenkouA.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).SenkouA.Current.Value)
                 );
         }
         [Test]
@@ -124,7 +124,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "SenkouBMaximum",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).SenkouBMaximum.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).SenkouBMaximum.Current.Value)
                 );
         }
 
@@ -135,7 +135,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "SenkouBMinimum",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).SenkouBMinimum.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).SenkouBMinimum.Current.Value)
                 );
         }
 
@@ -146,7 +146,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "DelayedMaximumSenkouB",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).DelayedMaximumSenkouB.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).DelayedMaximumSenkouB.Current.Value)
                 );
         }
 
@@ -157,7 +157,7 @@ package com.quantconnect.lean.Tests.Indicators
                 ichimoku,
                 "spy_with_ichimoku.csv",
                 "DelayedMinimumSenkouB",
-                (ind, expected) => Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).DelayedMinimumSenkouB.Current.Value)
+                (ind, expected) -> Assert.AreEqual(expected, (double)((IchimokuKinkoHyo)ind).DelayedMinimumSenkouB.Current.Value)
                 );
         }
 

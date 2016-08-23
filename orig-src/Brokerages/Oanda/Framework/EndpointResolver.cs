@@ -20,17 +20,17 @@ using System;
 
 package com.quantconnect.lean.Brokerages.Oanda.Framework
 {
-    /// <summary>
+    /**
     /// Helper class to resolve the endpoint for the Oanda RESTful call.
-    /// </summary>
+    */
     public static class EndpointResolver
     {
-        /// <summary>
+        /**
         /// Resolves the endpoint.
-        /// </summary>
-        /// <param name="environment">The environment.</param>
-        /// <param name="server">The server.</param>
-        /// <returns></returns>
+        */
+         * @param environment">The environment.
+         * @param server">The server.
+        @returns 
         public static String ResolveEndpoint(Environment environment, Server server) {
             switch (environment) {
                 case Environment.Sandbox:

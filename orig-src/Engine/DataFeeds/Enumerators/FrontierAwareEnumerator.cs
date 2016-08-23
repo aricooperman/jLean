@@ -20,41 +20,41 @@ using QuantConnect.Data;
 
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
-    /// <summary>
+    /**
     /// Provides an implementation of <see cref="IEnumerator{BaseData}"/> that will not emit
     /// data ahead of the frontier as specified by an instance of <see cref="ITimeProvider"/>.
     /// An instance of <see cref="TimeZoneOffsetProvider"/> is used to convert between UTC
     /// and the data's native time zone
-    /// </summary>
+    */
     public class FrontierAwareEnumerator : IEnumerator<BaseData>
     {
         private BaseData _current;
         private boolean _needsMoveNext = true;
 
-        private readonly ITimeProvider _timeProvider;
-        private readonly IEnumerator<BaseData> _enumerator;
-        private readonly TimeZoneOffsetProvider _offsetProvider;
+        private final ITimeProvider _timeProvider;
+        private final IEnumerator<BaseData> _enumerator;
+        private final TimeZoneOffsetProvider _offsetProvider;
 
         private BaseData _lastEmittedValue;
 
-        /// <summary>
+        /**
         /// Initializes a new instance of the <see cref="FrontierAwareEnumerator"/> class
-        /// </summary>
-        /// <param name="enumerator">The underlying enumerator to make frontier aware</param>
-        /// <param name="timeProvider">The time provider used for resolving the current frontier time</param>
-        /// <param name="offsetProvider">An offset provider used for converting the frontier UTC time into the data's native time zone</param>
+        */
+         * @param enumerator">The underlying enumerator to make frontier aware
+         * @param timeProvider">The time provider used for resolving the current frontier time
+         * @param offsetProvider">An offset provider used for converting the frontier UTC time into the data's native time zone
         public FrontierAwareEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, TimeZoneOffsetProvider offsetProvider) {
             _enumerator = enumerator;
             _timeProvider = timeProvider;
             _offsetProvider = offsetProvider;
         }
 
-        /// <summary>
+        /**
         /// Advances the enumerator to the next element of the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// </returns>
+        /// 
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public boolean MoveNext() {
             underlyingCurrent = _enumerator.Current;
@@ -113,40 +113,40 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             return true;
         }
 
-        /// <summary>
+        /**
         /// Sets the enumerator to its initial position, which is before the first element in the collection.
-        /// </summary>
+        */
         /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             _enumerator.Reset();
         }
 
-        /// <summary>
+        /**
         /// Gets the element in the collection at the current position of the enumerator.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The element in the collection at the current position of the enumerator.
-        /// </returns>
+        /// 
         public BaseData Current
         {
             get { return _current; }
         }
 
-        /// <summary>
+        /**
         /// Gets the current element in the collection.
-        /// </summary>
-        /// <returns>
+        */
+        @returns 
         /// The current element in the collection.
-        /// </returns>
+        /// 
         /// <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
-        /// <summary>
+        /**
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        */
         /// <filterpriority>2</filterpriority>
         public void Dispose() {
             _enumerator.Dispose();

@@ -181,7 +181,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
 
             throw new Exception( "(Lookup Table) NOT HANDLED:" + e.textLine);
         }
-        protected virtual void OnLookupEvent(LookupEventArgs e) {
+        protected void OnLookupEvent(LookupEventArgs e) {
             if( LookupEvent != null ) LookupEvent(this, e);
         }
 

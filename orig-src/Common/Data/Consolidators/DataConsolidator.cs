@@ -19,17 +19,17 @@ using System;
 package com.quantconnect.lean.Data.Consolidators
 {
     /**
-    /// Represents a type that consumes BaseData instances and fires an event with consolidated
-    /// and/or aggregated data.
+     * Represents a type that consumes BaseData instances and fires an event with consolidated
+     * and/or aggregated data.
     */
-    /// <typeparam name="TInput">The type consumed by the consolidator</typeparam>
+     * <typeparam name="TInput The type consumed by the consolidator</typeparam>
     public abstract class DataConsolidator<TInput> : IDataConsolidator
         where TInput : class, IBaseData
     {
         /**
-        /// Updates this consolidator with the specified data
+         * Updates this consolidator with the specified data
         */
-         * @param data">The new data for the consolidator
+         * @param data The new data for the consolidator
         public void Update(BaseData data) {
             typedData = data as TInput;
             if( typedData == null ) {
@@ -39,19 +39,19 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Scans this consolidator to see if it should emit a bar due to time passing
+         * Scans this consolidator to see if it should emit a bar due to time passing
         */
-         * @param currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)
+         * @param currentLocalTime The current time in the local time zone (same as <see cref="BaseData.Time"/>)
         public abstract void Scan(DateTime currentLocalTime);
 
         /**
-        /// Event handler that fires when a new piece of data is produced
+         * Event handler that fires when a new piece of data is produced
         */
         public event DataConsolidatedHandler DataConsolidated;
 
         /**
-        /// Gets the most recently consolidated piece of data. This will be null if this consolidator
-        /// has not produced any data yet.
+         * Gets the most recently consolidated piece of data. This will be null if this consolidator
+         * has not produced any data yet.
         */
         public BaseData Consolidated
         {
@@ -59,7 +59,7 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Gets a clone of the data being currently consolidated
+         * Gets a clone of the data being currently consolidated
         */
         public abstract BaseData WorkingData
         {
@@ -67,7 +67,7 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Gets the type consumed by this consolidator
+         * Gets the type consumed by this consolidator
         */
         public Type InputType
         {
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Gets the type produced by this consolidator
+         * Gets the type produced by this consolidator
         */
         public abstract Type OutputType
         {
@@ -83,18 +83,18 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Updates this consolidator with the specified data. This method is
-        /// responsible for raising the DataConsolidated event
+         * Updates this consolidator with the specified data. This method is
+         * responsible for raising the DataConsolidated event
         */
-         * @param data">The new data for the consolidator
+         * @param data The new data for the consolidator
         public abstract void Update(TInput data);
 
         /**
-        /// Event invocator for the DataConsolidated event. This should be invoked
-        /// by derived classes when they have consolidated a new piece of data.
+         * Event invocator for the DataConsolidated event. This should be invoked
+         * by derived classes when they have consolidated a new piece of data.
         */
-         * @param consolidated">The newly consolidated data
-        protected virtual void OnDataConsolidated(BaseData consolidated) {
+         * @param consolidated The newly consolidated data
+        protected void OnDataConsolidated(BaseData consolidated) {
             handler = DataConsolidated;
             if( handler != null ) handler(this, consolidated);
 

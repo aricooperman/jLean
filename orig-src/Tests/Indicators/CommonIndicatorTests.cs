@@ -24,13 +24,13 @@ package com.quantconnect.lean.Tests.Indicators
     public abstract class CommonIndicatorTests<T> 
         where T : BaseData, new() {
         [Test]
-        public virtual void ComparesAgainstExternalData() {
+        public void ComparesAgainstExternalData() {
             indicator = CreateIndicator();
             RunTestIndicator(indicator);
         }
 
         [Test]
-        public virtual void ComparesAgainstExternalDataAfterReset() {
+        public void ComparesAgainstExternalDataAfterReset() {
             indicator = CreateIndicator();
             RunTestIndicator(indicator);
             indicator.Reset();
@@ -38,7 +38,7 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         [Test]
-        public virtual void ResetsProperly() {
+        public void ResetsProperly() {
             indicator = CreateIndicator();
             if( indicator is IndicatorBase<IndicatorDataPoint>)
                 TestHelper.TestIndicatorReset(indicator as IndicatorBase<IndicatorDataPoint>, TestFileName);
@@ -49,9 +49,9 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         /**
-        /// Executes a test of the specified indicator
+         * Executes a test of the specified indicator
         */
-        protected virtual void RunTestIndicator(IndicatorBase<T> indicator) {
+        protected void RunTestIndicator(IndicatorBase<T> indicator) {
             if( indicator is IndicatorBase<IndicatorDataPoint>)
                 TestHelper.TestIndicator(indicator as IndicatorBase<IndicatorDataPoint>, TestFileName, TestColumnName, Assertion as Action<IndicatorBase<IndicatorDataPoint>, double>);
             else if( indicator is IndicatorBase<TradeBar>)
@@ -61,25 +61,25 @@ package com.quantconnect.lean.Tests.Indicators
         }
 
         /**
-        /// Returns a custom assertion function, parameters are the indicator and the expected value from the file
+         * Returns a custom assertion function, parameters are the indicator and the expected value from the file
         */
-        protected virtual Action<IndicatorBase<T>, double> Assertion
+        protected Action<IndicatorBase<T>, double> Assertion
         {
             get { return (indicator, expected) -> Assert.AreEqual(expected, (double) indicator.Current.Value, 1e-3); }
         }
 
         /**
-        /// Returns a new instance of the indicator to test
+         * Returns a new instance of the indicator to test
         */
         protected abstract IndicatorBase<T> CreateIndicator();
 
         /**
-        /// Returns the CSV file name containing test data for the indicator
+         * Returns the CSV file name containing test data for the indicator
         */
         protected abstract String TestFileName { get; }
 
         /**
-        /// Returns the name of the column of the CSV file corresponding to the precalculated data for the indicator
+         * Returns the name of the column of the CSV file corresponding to the precalculated data for the indicator
         */
         protected abstract String TestColumnName { get; }
     }

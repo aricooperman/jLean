@@ -23,7 +23,7 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     /**
-    /// Custom data type that causes rest api calls
+     * Custom data type that causes rest api calls
     */
     public class RestApiBaseData : TradeBar
     {

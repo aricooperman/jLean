@@ -23,8 +23,8 @@ using QuantConnect.Indicators;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// In this algorithm we demonstrate how to perform some technical analysis as
-    /// part of your coarse fundamental universe selection
+     * In this algorithm we demonstrate how to perform some technical analysis as
+     * part of your coarse fundamental universe selection
     */
     public class EmaCrossUniverseSelectionAlgorithm : QCAlgorithm
     {
@@ -62,7 +62,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             UniverseSettings.Leverage = 2.0m;
@@ -89,9 +89,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">TradeBars dictionary object keyed by symbol containing the stock data
+         * @param data TradeBars dictionary object keyed by symbol containing the stock data
         public void OnData(TradeBars data) {
             if( _changes == SecurityChanges.None) return;
 
@@ -109,9 +109,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Event fired each time the we add/remove securities from the data feed
+         * Event fired each time the we add/remove securities from the data feed
         */
-         * @param changes">Object containing AddedSecurities and RemovedSecurities
+         * @param changes Object containing AddedSecurities and RemovedSecurities
         public @Override void OnSecuritiesChanged(SecurityChanges changes) {
             _changes = changes;
         }

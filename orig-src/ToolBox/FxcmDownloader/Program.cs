@@ -26,7 +26,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
     class Program
     {
         /**
-        /// Primary entry point to the program
+         * Primary entry point to the program
         */
         private static void Main( String[] args) {
             if( args.Length != 4) {
@@ -67,7 +67,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
 
                 foreach (ticker in tickers) {
                     if( !downloader.HasSymbol(ticker))
-                        throw new ArgumentException( "The symbol " + ticker + " is not available.");
+                        throw new IllegalArgumentException( "The symbol " + ticker + " is not available.");
                 }
 
                 foreach (ticker in tickers) {

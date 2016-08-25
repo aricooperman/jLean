@@ -22,7 +22,7 @@ using QuantConnect.Logging;
 package com.quantconnect.lean
 {
     /**
-    /// Provides an implementation of <see cref="TextWriter"/> to write to a zip file
+     * Provides an implementation of <see cref="TextWriter"/> to write to a zip file
     */
     public class ZipStreamWriter : TextWriter
     {
@@ -33,22 +33,22 @@ package com.quantconnect.lean
         private StreamWriter _writer;
 
         /**
-        /// When overridden in a derived class, returns the character encoding in which the output is written.
+         * When overridden in a derived class, returns the character encoding in which the output is written.
         */
         @returns 
-        /// The character encoding in which the output is written.
-        /// 
-        /// <filterpriority>1</filterpriority>
+         * The character encoding in which the output is written.
+         * 
+         * <filterpriority>1</filterpriority>
         public @Override Encoding Encoding
         {
             get { return Encoding.Default; }
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ZipStreamWriter"/> class
+         * Initializes a new instance of the <see cref="ZipStreamWriter"/> class
         */
-         * @param filename">The output zip file name
-         * @param zipEntry">The file name in the zip file
+         * @param filename The output zip file name
+         * @param zipEntry The file name in the zip file
         public ZipStreamWriter( String filename, String zipEntry) {
             _filename = filename;
             _zipEntry = zipEntry;
@@ -69,29 +69,29 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Writes a character to the text String or stream.
+         * Writes a character to the text String or stream.
         */
-         * @param value">The character to write to the text stream. 
-        /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
-        /// <filterpriority>1</filterpriority>
+         * @param value The character to write to the text stream. 
+         * <exception cref="T:System.ObjectDisposedException The <see cref="T:System.IO.TextWriter"/> is closed. </exception>
+         * <exception cref="T:System.IO.IOException An I/O error occurs. </exception>
+         * <filterpriority>1</filterpriority>
         public @Override void Write(char value) {
             _writer.Write(value);
         }
 
         /**
-        /// Writes a String followed by a line terminator to the text String or stream.
+         * Writes a String followed by a line terminator to the text String or stream.
         */
-         * @param value">The String to write. If <paramref name="value"/> is null, only the line terminator is written. 
-        /// <exception cref="T:System.ObjectDisposedException">The <see cref="T:System.IO.TextWriter"/> is closed. </exception>
-        /// <exception cref="T:System.IO.IOException">An I/O error occurs. </exception>
-        /// <filterpriority>1</filterpriority>
+         * @param value The String to write. If <paramref name="value"/> is null, only the line terminator is written. 
+         * <exception cref="T:System.ObjectDisposedException The <see cref="T:System.IO.TextWriter"/> is closed. </exception>
+         * <exception cref="T:System.IO.IOException An I/O error occurs. </exception>
+         * <filterpriority>1</filterpriority>
         public @Override void WriteLine( String value) {
             _writer.WriteLine(value);
         }
 
         /**
-        /// Clears all buffers for the current writer and causes any buffered data to be written to the underlying device.
+         * Clears all buffers for the current writer and causes any buffered data to be written to the underlying device.
         */
         public @Override void Flush() {
             _writer.Flush();
@@ -107,9 +107,9 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Releases the unmanaged resources used by the <see cref="T:System.IO.TextWriter"/> and optionally releases the managed resources.
+         * Releases the unmanaged resources used by the <see cref="T:System.IO.TextWriter"/> and optionally releases the managed resources.
         */
-         * @param disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources. 
+         * @param disposing true to release both managed and unmanaged resources; false to release only unmanaged resources. 
         protected @Override void Dispose( boolean disposing) {
             if( _writer == null || !disposing)
                 return;

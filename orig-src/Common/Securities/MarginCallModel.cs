@@ -21,34 +21,34 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Represents the model responsible for picking which orders should be executed during a margin call
+     * Represents the model responsible for picking which orders should be executed during a margin call
     */
-    /// 
-    /// This is a default implementation that orders the generated margin call orders by the unrealized
-    /// profit (losers first) and executes each order synchronously until we're within the margin requirements
-    /// 
+     * 
+     * This is a default implementation that orders the generated margin call orders by the unrealized
+     * profit (losers first) and executes each order synchronously until we're within the margin requirements
+     * 
     public class MarginCallModel
     {
         /**
-        /// Gets the portfolio that margin calls will be transacted against
+         * Gets the portfolio that margin calls will be transacted against
         */
         protected SecurityPortfolioManager Portfolio { get; private set; }
 
         /**
-        /// Initializes a new instance of the <see cref="MarginCallModel"/> class
+         * Initializes a new instance of the <see cref="MarginCallModel"/> class
         */
-         * @param portfolio">The portfolio object to receive margin calls
+         * @param portfolio The portfolio object to receive margin calls
         public MarginCallModel(SecurityPortfolioManager portfolio) {
             Portfolio = portfolio;
         }
 
         /**
-        /// Executes synchronous orders to bring the account within margin requirements.
+         * Executes synchronous orders to bring the account within margin requirements.
         */
-         * @param generatedMarginCallOrders">These are the margin call orders that were generated
-        /// by individual security margin models.
+         * @param generatedMarginCallOrders These are the margin call orders that were generated
+         * by individual security margin models.
         @returns The list of orders that were actually executed
-        public virtual List<OrderTicket> ExecuteMarginCall(IEnumerable<SubmitOrderRequest> generatedMarginCallOrders) {
+        public List<OrderTicket> ExecuteMarginCall(IEnumerable<SubmitOrderRequest> generatedMarginCallOrders) {
             // if our margin used is back under the portfolio value then we can stop liquidating
             if( Portfolio.MarginRemaining >= 0) {
                 return new List<OrderTicket>();

@@ -33,12 +33,12 @@ using Order = QuantConnect.Orders.Order;
 package com.quantconnect.lean.Brokerages.Oanda
 {
     /**
-    /// Oanda Brokerage - REST API related functions
+     * Oanda Brokerage - REST API related functions
     */
     public partial class OandaBrokerage
     {
         /**
-        /// Gets the list of available tradable instruments/products from Oanda
+         * Gets the list of available tradable instruments/products from Oanda
         */
         @returns 
         private List<Instrument> GetInstruments(List<String> instrumentNames = null ) {
@@ -108,12 +108,12 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Event handler for streaming events
+         * Event handler for streaming events
         */
-         * @param data">The event object
+         * @param data The event object
         private void OnEventReceived(Event data) {
             if( data.IsHeartbeat()) {
-                lock (_lockerConnectionMonitor) {
+                synchronized(_lockerConnectionMonitor) {
                     _lastHeartbeatUtcTime = DateTime.UtcNow;
                 }
                 return;
@@ -141,10 +141,10 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Modify the specified order, updating it with the parameters provided
+         * Modify the specified order, updating it with the parameters provided
         */
-         * @param orderId">the identifier of the order to update
-         * @param requestParams">the parameters to update (name, value pairs)
+         * @param orderId the identifier of the order to update
+         * @param requestParams the parameters to update (name, value pairs)
         private void UpdateOrder(long orderId, Map<String,String> requestParams) {
             orderRequest = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId + "/orders/" + orderId;
 
@@ -164,9 +164,9 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Retrieves the current rate for each of a list of instruments
+         * Retrieves the current rate for each of a list of instruments
         */
-         * @param instruments">the list of instruments to check
+         * @param instruments the list of instruments to check
         @returns List of Price objects with the current price for each instrument
         public List<Price> GetRates(List<String> instruments) {
             requestBuilder = new StringBuilder(EndpointResolver.ResolveEndpoint(_environment, Server.Rates) + "prices?instruments=");
@@ -177,9 +177,9 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Posts an order on the given account with the given parameters
+         * Posts an order on the given account with the given parameters
         */
-         * @param requestParams">the parameters to use in the request
+         * @param requestParams the parameters to use in the request
         @returns PostOrderResponse with details of the results (throws if if fails)
         private PostOrderResponse PostOrderAsync(Map<String,String> requestParams) {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId + "/orders";
@@ -187,9 +187,9 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Retrieves the list of open orders belonging to the account
+         * Retrieves the list of open orders belonging to the account
         */
-         * @param requestParams">optional additional parameters for the request (name, value pairs)
+         * @param requestParams optional additional parameters for the request (name, value pairs)
         @returns List of Order objects (or empty list, if no orders)
         private List<DataType.Order> GetOrderList(Map<String,String> requestParams = null ) {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + _accountId + "/orders";
@@ -213,10 +213,10 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Initializes a streaming rates session with the given instruments on the given account
+         * Initializes a streaming rates session with the given instruments on the given account
         */
-         * @param instruments">list of instruments to stream rates for
-         * @param accountId">the account ID you want to stream on
+         * @param instruments list of instruments to stream rates for
+         * @param accountId the account ID you want to stream on
         @returns the WebResponse object that can be used to retrieve the rates as they stream
         public WebResponse StartRatesSession(List<Instrument> instruments, int accountId) {
             instrumentList = String.join( ",", instruments.Select(x -> x.instrument));
@@ -242,9 +242,9 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
         
         /**
-        /// Initializes a streaming events session which will stream events for the given accounts
+         * Initializes a streaming events session which will stream events for the given accounts
         */
-         * @param accountId">the account IDs you want to stream on
+         * @param accountId the account IDs you want to stream on
         @returns the WebResponse object that can be used to retrieve the events as they stream
         public WebResponse StartEventsSession(List<Integer> accountId = null ) {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.StreamingEvents) + "events";
@@ -272,12 +272,12 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Primary (internal) request handler
+         * Primary (internal) request handler
         */
-        /// <typeparam name="T">The response type</typeparam>
-         * @param requestString">the request to make
-         * @param method">method for the request (defaults to GET)
-         * @param requestParams">optional parameters (note that if provided, it's assumed the requestString doesn't contain any)
+         * <typeparam name="T The response type</typeparam>
+         * @param requestString the request to make
+         * @param method method for the request (defaults to GET)
+         * @param requestParams optional parameters (note that if provided, it's assumed the requestString doesn't contain any)
         @returns response via type T
         private T MakeRequest<T>( String requestString, String method = "GET", Map<String,String> requestParams = null ) {
             if( requestParams != null && requestParams.Count > 0) {
@@ -306,12 +306,12 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Secondary (internal) request handler. differs from primary in that parameters are placed in the body instead of the request string
+         * Secondary (internal) request handler. differs from primary in that parameters are placed in the body instead of the request string
         */
-        /// <typeparam name="T">response type</typeparam>
-         * @param method">method to use (usually POST or PATCH)
-         * @param requestParams">the parameters to pass in the request body
-         * @param requestString">the request to make
+         * <typeparam name="T response type</typeparam>
+         * @param method method to use (usually POST or PATCH)
+         * @param requestParams the parameters to pass in the request body
+         * @param requestString the request to make
         @returns response, via type T
         private T MakeRequestWithBody<T>( String requestString, String method, Map<String,String> requestParams) {
             // Create the body
@@ -343,9 +343,9 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Retrieves the current non-zero positions for a given account
+         * Retrieves the current non-zero positions for a given account
         */
-         * @param accountId">positions will be retrieved for this account id
+         * @param accountId positions will be retrieved for this account id
         @returns List of Position objects with the details for each position (or empty list iff no positions)
         private List<Position> GetPositions(int accountId) {
             requestString = EndpointResolver.ResolveEndpoint(_environment, Server.Account) + "accounts/" + accountId + "/positions";
@@ -356,17 +356,17 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Helper function to create the parameter String out of a dictionary of parameters
+         * Helper function to create the parameter String out of a dictionary of parameters
         */
-         * @param requestParams">the parameters to convert
+         * @param requestParams the parameters to convert
         @returns string containing all the parameters for use in requests
         private static String CreateParamString(Map<String,String> requestParams) {
             return String.join( "&", requestParams.Select(x -> WebUtility.UrlEncode(x.Key) + "=" + WebUtility.UrlEncode(x.Value)));
         }
 
         /**
-        /// Converts the specified Oanda order into a qc order.
-        /// The 'task' will have a value if we needed to issue a rest call for the stop price, otherwise it will be null
+         * Converts the specified Oanda order into a qc order.
+         * The 'task' will have a value if we needed to issue a rest call for the stop price, otherwise it will be null
         */
         private Order ConvertOrder(DataType.Order order) {
             Order qcOrder;
@@ -420,12 +420,12 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Converts the Oanda order quantity into a qc quantity
+         * Converts the Oanda order quantity into a qc quantity
         */
-        /// 
-        /// Oanda quantities are always positive and use the direction to denote +/-, where as qc
-        /// order quantities determine the direction
-        /// 
+         * 
+         * Oanda quantities are always positive and use the direction to denote +/-, where as qc
+         * order quantities determine the direction
+         * 
         private int ConvertQuantity(DataType.Order order) {
             switch (order.side) {
                 case "buy":
@@ -440,9 +440,9 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Converts the Oanda position into a QuantConnect holding.
+         * Converts the Oanda position into a QuantConnect holding.
         */
-         * @param position">The position.
+         * @param position The position.
         @returns 
         private Holding ConvertHolding(Position position) {
             securityType = _symbolMapper.GetBrokerageSecurityType(position.instrument);
@@ -459,9 +459,9 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Gets the current conversion rate into USD
+         * Gets the current conversion rate into USD
         */
-        /// Synchronous, blocking
+         * Synchronous, blocking
         private BigDecimal GetUsdConversion( String currency) {
             if( currency == "USD")
                 return 1m;

@@ -28,7 +28,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
         internal ClientStatsEventArgs( String line) {
             fields = line.split(',');
 
-            lock (this) {
+            synchronized(this) {
                 switch (fields[2]) {
                     case "0": _type = PortType.Admin; break;
                     case "1": _type = PortType.Level1; break;
@@ -46,15 +46,15 @@ package com.quantconnect.lean.ToolBox.IQFeed
             }
         }
 
-        public PortType type { get { lock (this) return _type; } }
-        public int clientId { get { lock (this) return _clientId; } }
-        public String clientName { get { lock (this) return _clientName; } }
-        public DateTime startTime { get { lock (this) return _startTime; } }
-        public int symbolsWatched { get { lock (this) return _symbolsWatched; } }
-        public int regionalSymbolsWatched { get { lock (this) return _regionalSymbolsWatched; } }
-        public double kbReceived { get { lock (this) return _kbReceived; } }
-        public double kbSent { get { lock (this) return _kbSent; } }
-        public double kbQueued { get { lock (this) return _kbQueued; } }
+        public PortType type { get { synchronized(this) return _type; } }
+        public int clientId { get { synchronized(this) return _clientId; } }
+        public String clientName { get { synchronized(this) return _clientName; } }
+        public DateTime startTime { get { synchronized(this) return _startTime; } }
+        public int symbolsWatched { get { synchronized(this) return _symbolsWatched; } }
+        public int regionalSymbolsWatched { get { synchronized(this) return _regionalSymbolsWatched; } }
+        public double kbReceived { get { synchronized(this) return _kbReceived; } }
+        public double kbSent { get { synchronized(this) return _kbSent; } }
+        public double kbQueued { get { synchronized(this) return _kbQueued; } }
 
         #region private
         private PortType _type;
@@ -182,13 +182,13 @@ package com.quantconnect.lean.ToolBox.IQFeed
 
             throw new Exception( "(Admin) NOT HANDLED:" + e.textLine);
          }
-        protected virtual void OnClientStatsEvent(ClientStatsEventArgs e) {
+        protected void OnClientStatsEvent(ClientStatsEventArgs e) {
             if( ClientStatsEvent != null ) ClientStatsEvent(this, e);
         }
-        protected virtual void OnConnectedEvent(ConnectedEventArgs e) {
+        protected void OnConnectedEvent(ConnectedEventArgs e) {
             if( ConnectedEvent != null ) ConnectedEvent(this, e);
         }
-        protected virtual void OnDisconnectedEvent(DisconnectedEventArgs e) {
+        protected void OnDisconnectedEvent(DisconnectedEventArgs e) {
             if( DisconnectedEvent != null ) DisconnectedEvent(this, e);
         }
 

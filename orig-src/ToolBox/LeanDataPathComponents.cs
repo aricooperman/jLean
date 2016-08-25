@@ -19,7 +19,7 @@ using System.IO;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Type representing the various pieces of information emebedded into a lean data file path
+     * Type representing the various pieces of information emebedded into a lean data file path
     */
     public class LeanDataPathComponents
     {
@@ -31,7 +31,7 @@ package com.quantconnect.lean.ToolBox
         public final Symbol Symbol; // for options this is a 'canonical' symbol using info derived from the path
 
         /**
-        /// Initializes a new instance of the <see cref="LeanDataPathComponents"/> class
+         * Initializes a new instance of the <see cref="LeanDataPathComponents"/> class
         */
         public LeanDataPathComponents(SecurityType securityType, String market, Resolution resolution, Symbol symbol, String filename, DateTime date) {
             Date = date;
@@ -43,9 +43,9 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Parses the specified path into a new instance of the <see cref="LeanDataPathComponents"/> class
+         * Parses the specified path into a new instance of the <see cref="LeanDataPathComponents"/> class
         */
-         * @param path">The path to be parsed
+         * @param path The path to be parsed
         @returns A new instance of the <see cref="LeanDataPathComponents"/> class representing the specified path
         public static LeanDataPathComponents Parse( String path) {
             //"../Data/equity/usa/hour/spy.zip"

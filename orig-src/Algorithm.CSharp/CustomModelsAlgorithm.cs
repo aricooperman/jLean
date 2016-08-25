@@ -25,7 +25,7 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// This algorithm shows how you can define your own custom models.
+     * This algorithm shows how you can define your own custom models.
     */
     public class CustomModelsAlgorithm : QCAlgorithm
     {

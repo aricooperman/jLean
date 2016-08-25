@@ -31,7 +31,7 @@ using TimeZone = java.util.TimeZone;
 package com.quantconnect.lean.ToolBox.FxcmDownloader
 {
     /**
-    /// FXCM Data Downloader class
+     * FXCM Data Downloader class
     */
     public class FxcmDataDownloader : IDataDownloader, IGenericMessageListener, IStatusMessageListener
     {
@@ -51,7 +51,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         private final IList<BaseData> _currentBaseData = new List<BaseData>();
 
         /**
-        /// Initializes a new instance of the <see cref="FxcmDataDownloader"/> class
+         * Initializes a new instance of the <see cref="FxcmDataDownloader"/> class
         */
         public FxcmDataDownloader( String server, String terminal, String userName, String password) {
             _server = server;
@@ -61,9 +61,9 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         }
 
         /**
-        /// Converts a Java Date value to a UTC DateTime value
+         * Converts a Java Date value to a UTC DateTime value
         */
-         * @param javaDate">The Java date
+         * @param javaDate The Java date
         @returns A UTC DateTime value
         private static DateTime FromJavaDateUtc(Date javaDate) {
             cal = Calendar.getInstance();
@@ -82,9 +82,9 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         }
 
         /**
-        /// Converts a Java Date value to a UTC DateTime value
+         * Converts a Java Date value to a UTC DateTime value
         */
-         * @param utcDateTime">The UTC DateTime value
+         * @param utcDateTime The UTC DateTime value
         @returns A UTC Java Date value
         private static Date ToJavaDateUtc(DateTime utcDateTime) {
             cal = Calendar.getInstance();
@@ -102,40 +102,40 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         }
 
         /**
-        /// Checks if downloader can get the data for the Lean symbol
+         * Checks if downloader can get the data for the Lean symbol
         */
-         * @param symbol">The Lean symbol
+         * @param symbol The Lean symbol
         @returns Returns true if the symbol is available
         public boolean HasSymbol( String symbol) {
             return _symbolMapper.IsKnownLeanSymbol(Symbol.Create(symbol, GetSecurityType(symbol), Market.FXCM));
         }
 
         /**
-        /// Gets the security type for the specified Lean symbol
+         * Gets the security type for the specified Lean symbol
         */
-         * @param symbol">The Lean symbol
+         * @param symbol The Lean symbol
         @returns The security type
         public SecurityType GetSecurityType( String symbol) {
             return _symbolMapper.GetLeanSecurityType(symbol);
         }
 
         /**
-        /// Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
+         * Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
         */
-         * @param symbol">Symbol for the data we're looking for.
-         * @param resolution">Resolution of the data request
-         * @param startUtc">Start time of the data in UTC
-         * @param endUtc">End time of the data in UTC
+         * @param symbol Symbol for the data we're looking for.
+         * @param resolution Resolution of the data request
+         * @param startUtc Start time of the data in UTC
+         * @param endUtc End time of the data in UTC
         @returns Enumerable of base data for this symbol
         public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
             if( !_symbolMapper.IsKnownLeanSymbol(symbol))
-                throw new ArgumentException( "Invalid symbol requested: " + symbol.Value);
+                throw new IllegalArgumentException( "Invalid symbol requested: " + symbol.Value);
 
             if( symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
                 throw new NotSupportedException( "SecurityType not available: " + symbol.ID.SecurityType);
 
             if( endUtc <= startUtc)
-                throw new ArgumentException( "The end date must be greater than the start date.");
+                throw new IllegalArgumentException( "The end date must be greater than the start date.");
 
             Console.WriteLine( "Logging in...");
 
@@ -187,7 +187,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
 
 
                 AutoResetEvent autoResetEvent;
-                lock (_locker) {
+                synchronized(_locker) {
                     _currentRequest = _gateway.sendMessage(mdr);
                     autoResetEvent = new AutoResetEvent(false);
                     _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
@@ -260,7 +260,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
             // Note: requestTradingSessionStatus() MUST be called just after login
 
             AutoResetEvent autoResetEvent;
-            lock (_locker) {
+            synchronized(_locker) {
                 _currentRequest = _gateway.requestTradingSessionStatus();
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
@@ -272,12 +272,12 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         #region IGenericMessageListener implementation
 
         /**
-        /// Receives generic messages from the FXCM API
+         * Receives generic messages from the FXCM API
         */
-         * @param message">Generic message received
+         * @param message Generic message received
         public void messageArrived(ITransportable message) {
             // Dispatch message to specific handler
-            lock (_locker) {
+            synchronized(_locker) {
                 if( message is TradingSessionStatus)
                     OnTradingSessionStatus((TradingSessionStatus)message);
 
@@ -287,7 +287,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         }
 
         /**
-        /// TradingSessionStatus message handler
+         * TradingSessionStatus message handler
         */
         private void OnTradingSessionStatus(TradingSessionStatus message) {
             if( message.getRequestID() == _currentRequest) {
@@ -304,7 +304,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         }
 
         /**
-        /// MarketDataSnapshot message handler
+         * MarketDataSnapshot message handler
         */
         private void OnMarketDataSnapshot(MarketDataSnapshot message) {
             if( message.getRequestID() == _currentRequest) {
@@ -349,9 +349,9 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         #region IStatusMessageListener implementation
 
         /**
-        /// Receives status messages from the FXCM API
+         * Receives status messages from the FXCM API
         */
-         * @param message">Status message received
+         * @param message Status message received
         public void messageArrived(ISessionStatus message) {
         }
 
@@ -361,7 +361,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
 
 
         /**
-        /// Aggregates a list of ticks at the requested resolution
+         * Aggregates a list of ticks at the requested resolution
         */
          * @param symbol">
          * @param ticks">
@@ -387,7 +387,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
         #region Console Helper
 
         /**
-        /// Draw a progress bar 
+         * Draw a progress bar 
         */
          * @param complete">
          * @param maxVal">

@@ -20,19 +20,19 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Rising/Falling Three Methods candlestick pattern
+     * Rising/Falling Three Methods candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - first candle: long white (black) candlestick
-    /// - then: group of falling(rising) small real body candlesticks(commonly black (white)) that hold within
-    /// the prior long candle's range: ideally they should be three but two or more than three are ok too
-    /// - final candle: long white(black) candle that opens above(below) the previous small candle's close 
-    /// and closes above(below) the first long candle's close
-    /// The meaning of "short" and "long" is specified with SetCandleSettings; here only patterns with 3 small candles
-    /// are considered;
-    /// The returned value is positive(+1) or negative(-1)
-    /// 
+     * 
+     * Must have:
+     * - first candle: long white (black) candlestick
+     * - then: group of falling(rising) small real body candlesticks(commonly black (white)) that hold within
+     * the prior long candle's range: ideally they should be three but two or more than three are ok too
+     * - final candle: long white(black) candle that opens above(below) the previous small candle's close 
+     * and closes above(below) the first long candle's close
+     * The meaning of "short" and "long" is specified with SetCandleSettings; here only patterns with 3 small candles
+     * are considered;
+     * The returned value is positive(+1) or negative(-1)
+     * 
     public class RiseFallThreeMethods : CandlestickPattern
     {
         private final int _bodyShortAveragePeriod;
@@ -41,9 +41,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private decimal[] _bodyPeriodTotal = new decimal[5];
 
         /**
-        /// Initializes a new instance of the <see cref="RiseFallThreeMethods"/> class using the specified name.
+         * Initializes a new instance of the <see cref="RiseFallThreeMethods"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public RiseFallThreeMethods( String name)
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 4 + 1) {
             _bodyShortAveragePeriod = CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod;
@@ -51,14 +51,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="RiseFallThreeMethods"/> class.
+         * Initializes a new instance of the <see cref="RiseFallThreeMethods"/> class.
         */
         public RiseFallThreeMethods()
             : this( "RISEFALLTHREEMETHODS") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -66,10 +66,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -84,7 +84,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _bodyPeriodTotal[0] += GetCandleRange(CandleSettingType.BodyLong, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -114,7 +114,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = (int)GetCandleColor(window[4]);
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -134,7 +134,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _bodyPeriodTotal = new decimal[5];

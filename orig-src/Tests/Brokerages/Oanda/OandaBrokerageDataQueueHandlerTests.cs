@@ -51,7 +51,7 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
             Thread.Sleep(20000);
 
             foreach (tick in brokerage.GetNextTicks()) {
-                Log.Trace( "%1$s: %2$s - %3$s / {3}", tick.Time, tick.Symbol.Value, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
+                Log.Trace( "%1$s: %2$s - %3$s / %4$s", tick.Time, tick.Symbol.Value, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
             }
 
             brokerage.Unsubscribe(null, new List<Symbol>
@@ -65,7 +65,7 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
             Thread.Sleep(20000);
 
             foreach (tick in brokerage.GetNextTicks()) {
-                Log.Trace( "%1$s: %2$s - %3$s / {3}", tick.Time, tick.Symbol.Value, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
+                Log.Trace( "%1$s: %2$s - %3$s / %4$s", tick.Time, tick.Symbol.Value, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
             }
 
             Thread.Sleep(5000);

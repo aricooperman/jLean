@@ -18,13 +18,13 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Securities.Forex 
 {
     /**
-    /// Forex packet by packet data filtering mechanism for dynamically detecting bad ticks.
+     * Forex packet by packet data filtering mechanism for dynamically detecting bad ticks.
     */
-    /// <seealso cref="SecurityDataFilter"/>
+     * <seealso cref="SecurityDataFilter"/>
     public class ForexDataFilter : SecurityDataFilter
     {
         /**
-        /// Initialize forex data filter class:
+         * Initialize forex data filter class:
         */
         public ForexDataFilter()
             : base() {
@@ -32,10 +32,10 @@ package com.quantconnect.lean.Securities.Forex
         }
 
         /**
-        /// Forex data filter: a true value means accept the packet, a false means fail.
+         * Forex data filter: a true value means accept the packet, a false means fail.
         */
-         * @param data">Data object we're scanning to filter
-         * @param vehicle">Security asset
+         * @param data Data object we're scanning to filter
+         * @param vehicle Security asset
         public @Override boolean Filter(Security vehicle, BaseData data) {
             //FX data is from FXCM and fairly clean already. Accept all packets.
             return true;

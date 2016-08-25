@@ -18,19 +18,19 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Two Crows candlestick pattern indicator
+     * Two Crows candlestick pattern indicator
     */
-    /// 
-    /// Must have:
-    /// - first candle: long white candle
-    /// - second candle: black real body
-    /// - gap between the first and the second candle's real bodies
-    /// - third candle: black candle that opens within the second real body and closes within the first real body
-    /// The meaning of "long" is specified with SetCandleSettings
-    /// The returned value is negative (-1): two crows is always bearish;
-    /// The user should consider that two crows is significant when it appears in an uptrend, while this function
-    /// does not consider the trend.
-    /// 
+     * 
+     * Must have:
+     * - first candle: long white candle
+     * - second candle: black real body
+     * - gap between the first and the second candle's real bodies
+     * - third candle: black candle that opens within the second real body and closes within the first real body
+     * The meaning of "long" is specified with SetCandleSettings
+     * The returned value is negative (-1): two crows is always bearish;
+     * The user should consider that two crows is significant when it appears in an uptrend, while this function
+     * does not consider the trend.
+     * 
     public class TwoCrows : CandlestickPattern
     {
         private final int _bodyLongAveragePeriod;
@@ -38,23 +38,23 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _bodyLongPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="TwoCrows"/> class using the specified name.
+         * Initializes a new instance of the <see cref="TwoCrows"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public TwoCrows( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod + 2 + 1) {
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="TwoCrows"/> class.
+         * Initializes a new instance of the <see cref="TwoCrows"/> class.
         */
         public TwoCrows()
             : this( "TWOCROWS") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -62,17 +62,17 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
                 if( Samples >= Period - _bodyLongAveragePeriod - 2 && Samples < Period - 2) {
                     _bodyLongPeriodTotal += GetCandleRange(CandleSettingType.BodyLong, input);
                 }
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -94,7 +94,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = -1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -106,10 +106,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
-            _bodyLongPeriodTotal = 0m;
+            _bodyLongPeriodTotal = BigDecimal.ZERO;
             base.Reset();
         }
     }

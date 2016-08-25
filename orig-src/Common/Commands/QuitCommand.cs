@@ -16,12 +16,12 @@
 package com.quantconnect.lean.Commands
 {
     /**
-    /// Represents a command that will terminate the algorithm
+     * Represents a command that will terminate the algorithm
     */
     public sealed class QuitCommand : AlgorithmStatusCommand
     {
         /**
-        /// Initializes a new instance of the <see cref="QuitCommand"/>
+         * Initializes a new instance of the <see cref="QuitCommand"/>
         */
         public QuitCommand()
             : base(AlgorithmStatus.Stopped) {

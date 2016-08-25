@@ -22,37 +22,37 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages.Tradier
 {
     /**
-    /// Model for a TradierUser returned from the API.
+     * Model for a TradierUser returned from the API.
     */
     public class TradierUserContainer
     {
-        /// User Profile Contents
+         * User Profile Contents
         @JsonProperty( "profile")]
         public TradierUser Profile;
 
-        /// Constructor: Create user from tradier data.
+         * Constructor: Create user from tradier data.
         public TradierUserContainer() { }
     }
 
     /**
-    /// User profile array:
+     * User profile array:
     */
     public class TradierUser
     {
-        /// Unique brokerage user id.
+         * Unique brokerage user id.
         @JsonProperty( "id")]
         public String Id { get; set; }
 
-        /// Name of user:
+         * Name of user:
         @JsonProperty( "name")]
         public String Name { get; set; }
 
-        /// Array of user account details:
+         * Array of user account details:
         @JsonProperty( "account")]
         [JsonConverter(typeof(SingleValueListConverter<TradierUserAccount>))]
         public List<TradierUserAccount> Accounts { get; set; }
 
-        /// Empty Constructor
+         * Empty Constructor
         public TradierUser() {
             Id = "";
             Name = "";
@@ -61,40 +61,40 @@ package com.quantconnect.lean.Brokerages.Tradier
     }
 
     /**
-    /// Account only settings for a tradier user:
+     * Account only settings for a tradier user:
     */
     public class TradierUserAccount 
     {
-        /// Users account number
+         * Users account number
         @JsonProperty( "account_number")]
         public long AccountNumber { get; set; }
 
-        /// Pattern Trader:
+         * Pattern Trader:
         @JsonProperty( "day_trader")]
         public boolean DayTrader { get; set; }
 
-        /// Options level permissions on account.
+         * Options level permissions on account.
         @JsonProperty( "option_level")]
         public int OptionLevel { get; set; }
 
-        /// Cash or Margin Account:
+         * Cash or Margin Account:
         @JsonProperty( "type")]
         public TradierAccountType Type { get; set; }
 
-        /// Date time of the last update:
+         * Date time of the last update:
         @JsonProperty( "last_update_date")]
         public DateTime LastUpdated { get; set; }
 
-        /// Status of the users account:
+         * Status of the users account:
         @JsonProperty( "status")]
         public TradierAccountStatus Status { get; set; }
 
-        /// Type of user account
+         * Type of user account
         @JsonProperty( "classification")]
         public TradierAccountClassification Classification { get; set; }
 
         /**
-        /// Create a new account:
+         * Create a new account:
         */
         public TradierUserAccount() {
             AccountNumber = 0;

@@ -19,7 +19,7 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Represents a simple, constant margining model by specifying the percentages of required margin.
+     * Represents a simple, constant margining model by specifying the percentages of required margin.
     */
     public class SecurityMarginModel : ISecurityMarginModel
     {
@@ -27,19 +27,19 @@ package com.quantconnect.lean.Securities
         private BigDecimal _maintenanceMarginRequirement;
 
         /**
-        /// Initializes a new instance of the <see cref="SecurityMarginModel"/>
+         * Initializes a new instance of the <see cref="SecurityMarginModel"/>
         */
-         * @param initialMarginRequirement">The percentage of an order's absolute cost
-        /// that must be held in free cash in order to place the order
-         * @param maintenanceMarginRequirement">The percentage of the holding's absolute
-        /// cost that must be held in free cash in order to avoid a margin call
+         * @param initialMarginRequirement The percentage of an order's absolute cost
+         * that must be held in free cash in order to place the order
+         * @param maintenanceMarginRequirement The percentage of the holding's absolute
+         * cost that must be held in free cash in order to avoid a margin call
         public SecurityMarginModel( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement) {
             if( initialMarginRequirement < 0 || initialMarginRequirement > 1) {
-                throw new ArgumentException( "Initial margin requirement must be between 0 and 1");
+                throw new IllegalArgumentException( "Initial margin requirement must be between 0 and 1");
             }
 
             if( maintenanceMarginRequirement < 0 || maintenanceMarginRequirement > 1) {
-                throw new ArgumentException( "Maintenance margin requirement must be between 0 and 1");
+                throw new IllegalArgumentException( "Maintenance margin requirement must be between 0 and 1");
             }
 
             _initialMarginRequirement = initialMarginRequirement;
@@ -47,12 +47,12 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Initializes a new instance of the <see cref="SecurityMarginModel"/>
+         * Initializes a new instance of the <see cref="SecurityMarginModel"/>
         */
-         * @param leverage">The leverage
+         * @param leverage The leverage
         public SecurityMarginModel( BigDecimal leverage) {
             if( leverage < 1) {
-                throw new ArgumentException( "Leverage must be greater than or equal to 1.");
+                throw new IllegalArgumentException( "Leverage must be greater than or equal to 1.");
             }
 
             _initialMarginRequirement = 1/leverage;
@@ -60,25 +60,25 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Gets the current leverage of the security
+         * Gets the current leverage of the security
         */
-         * @param security">The security to get leverage for
+         * @param security The security to get leverage for
         @returns The current leverage in the security
-        public virtual BigDecimal GetLeverage(Security security) {
+        public BigDecimal GetLeverage(Security security) {
             return 1/GetMaintenanceMarginRequirement(security);
         }
 
         /**
-        /// Sets the leverage for the applicable securities, i.e, equities
+         * Sets the leverage for the applicable securities, i.e, equities
         */
-        /// 
-        /// This is added to maintain backwards compatibility with the old margin/leverage system
-        /// 
+         * 
+         * This is added to maintain backwards compatibility with the old margin/leverage system
+         * 
          * @param security">
-         * @param leverage">The new leverage
-        public virtual void SetLeverage(Security security, BigDecimal leverage) {
+         * @param leverage The new leverage
+        public void SetLeverage(Security security, BigDecimal leverage) {
             if( leverage < 1) {
-                throw new ArgumentException( "Leverage must be greater than or equal to 1.");
+                throw new IllegalArgumentException( "Leverage must be greater than or equal to 1.");
             }
 
             BigDecimal margin = 1/leverage;
@@ -87,12 +87,12 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Gets the total margin required to execute the specified order in units of the account currency including fees
+         * Gets the total margin required to execute the specified order in units of the account currency including fees
         */
-         * @param security">The security to compute initial margin for
-         * @param order">The order to be executed
+         * @param security The security to compute initial margin for
+         * @param order The order to be executed
         @returns The total margin in terms of the currency quoted in the order
-        public virtual BigDecimal GetInitialMarginRequiredForOrder(Security security, Order order) {
+        public BigDecimal GetInitialMarginRequiredForOrder(Security security, Order order) {
             //Get the order value from the non-abstract order classes (MarketOrder, LimitOrder, StopMarketOrder)
             //Market order is approximated from the current security price and set in the MarketOrder Method in QCAlgorithm.
             orderFees = security.FeeModel.GetOrderFee(security, order);
@@ -102,22 +102,22 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Gets the margin currently alloted to the specified holding
+         * Gets the margin currently alloted to the specified holding
         */
-         * @param security">The security to compute maintenance margin for
+         * @param security The security to compute maintenance margin for
         @returns The maintenance margin required for the 
-        public virtual BigDecimal GetMaintenanceMargin(Security security) {
+        public BigDecimal GetMaintenanceMargin(Security security) {
             return security.Holdings.AbsoluteHoldingsCost*GetMaintenanceMarginRequirement(security);
         }
 
         /**
-        /// Gets the margin cash available for a trade
+         * Gets the margin cash available for a trade
         */
-         * @param portfolio">The algorithm's portfolio
-         * @param security">The security to be traded
-         * @param direction">The direction of the trade
+         * @param portfolio The algorithm's portfolio
+         * @param security The security to be traded
+         * @param direction The direction of the trade
         @returns The margin available for the trade
-        public virtual BigDecimal GetMarginRemaining(SecurityPortfolioManager portfolio, Security security, OrderDirection direction) {
+        public BigDecimal GetMarginRemaining(SecurityPortfolioManager portfolio, Security security, OrderDirection direction) {
             holdings = security.Holdings;
 
             if( direction == OrderDirection.Hold) {
@@ -160,14 +160,14 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Generates a new order for the specified security taking into account the total margin
-        /// used by the account. Returns null when no margin call is to be issued.
+         * Generates a new order for the specified security taking into account the total margin
+         * used by the account. Returns null when no margin call is to be issued.
         */
-         * @param security">The security to generate a margin call order for
-         * @param netLiquidationValue">The net liquidation value for the entire account
-         * @param totalMargin">The total margin used by the account in units of base currency
+         * @param security The security to generate a margin call order for
+         * @param netLiquidationValue The net liquidation value for the entire account
+         * @param totalMargin The total margin used by the account in units of base currency
         @returns An order object representing a liquidation order to be executed to bring the account within margin requirements
-        public virtual SubmitOrderRequest GenerateMarginCallOrder(Security security, BigDecimal netLiquidationValue, BigDecimal totalMargin) {
+        public SubmitOrderRequest GenerateMarginCallOrder(Security security, BigDecimal netLiquidationValue, BigDecimal totalMargin) {
             // leave a buffer in default implementation
             static final BigDecimal marginBuffer = 0.10m;
 
@@ -179,7 +179,7 @@ package com.quantconnect.lean.Securities
                 return null;
             }
 
-            if( security.QuoteCurrency.ConversionRate == 0m) {
+            if( security.QuoteCurrency.ConversionRate == BigDecimal.ZERO) {
                 // check for div 0 - there's no conv rate, so we can't place an order
                 return null;
             }
@@ -202,16 +202,16 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// The percentage of an order's absolute cost that must be held in free cash in order to place the order
+         * The percentage of an order's absolute cost that must be held in free cash in order to place the order
         */
-        protected virtual BigDecimal GetInitialMarginRequirement(Security security) {
+        protected BigDecimal GetInitialMarginRequirement(Security security) {
             return _initialMarginRequirement;
         }
 
         /**
-        /// The percentage of the holding's absolute cost that must be held in free cash in order to avoid a margin call
+         * The percentage of the holding's absolute cost that must be held in free cash in order to avoid a margin call
         */
-        protected virtual BigDecimal GetMaintenanceMarginRequirement(Security security) {
+        protected BigDecimal GetMaintenanceMarginRequirement(Security security) {
             return _maintenanceMarginRequirement;
         }
     }

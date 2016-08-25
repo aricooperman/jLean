@@ -18,19 +18,19 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Three Black Crows candlestick pattern
+     * Three Black Crows candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - three consecutive and declining black candlesticks
-    /// - each candle must have no or very short lower shadow
-    /// - each candle after the first must open within the prior candle's real body
-    /// - the first candle's close should be under the prior white candle's high
-    /// The meaning of "very short" is specified with SetCandleSettings
-    /// The returned value is negative (-1): three black crows is always bearish;
-    /// The user should consider that 3 black crows is significant when it appears after a mature advance or at high levels,
-    /// while this function does not consider it
-    /// 
+     * 
+     * Must have:
+     * - three consecutive and declining black candlesticks
+     * - each candle must have no or very short lower shadow
+     * - each candle after the first must open within the prior candle's real body
+     * - the first candle's close should be under the prior white candle's high
+     * The meaning of "very short" is specified with SetCandleSettings
+     * The returned value is negative (-1): three black crows is always bearish;
+     * The user should consider that 3 black crows is significant when it appears after a mature advance or at high levels,
+     * while this function does not consider it
+     * 
     public class ThreeBlackCrows : CandlestickPattern
     {
         private final int _shadowVeryShortAveragePeriod;
@@ -38,23 +38,23 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private decimal[] _shadowVeryShortPeriodTotal = new decimal[3];
 
         /**
-        /// Initializes a new instance of the <see cref="ThreeBlackCrows"/> class using the specified name.
+         * Initializes a new instance of the <see cref="ThreeBlackCrows"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public ThreeBlackCrows( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod + 3 + 1) {
             _shadowVeryShortAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ThreeBlackCrows"/> class.
+         * Initializes a new instance of the <see cref="ThreeBlackCrows"/> class.
         */
         public ThreeBlackCrows()
             : this( "THREEBLACKCROWS") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -62,10 +62,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _shadowVeryShortPeriodTotal[0] += GetCandleRange(CandleSettingType.ShadowVeryShort, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -107,7 +107,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = -1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -121,7 +121,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _shadowVeryShortPeriodTotal = new decimal[3];

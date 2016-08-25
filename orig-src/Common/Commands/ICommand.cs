@@ -19,14 +19,14 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Commands
 {
     /**
-    /// Represents a command that can be run against a single algorithm
+     * Represents a command that can be run against a single algorithm
     */
     public interface ICommand
     {
         /**
-        /// Runs this command against the specified algorithm instance
+         * Runs this command against the specified algorithm instance
         */
-         * @param algorithm">The algorithm to run this command against
+         * @param algorithm The algorithm to run this command against
         CommandResultPacket Run(IAlgorithm algorithm);
     }
 }

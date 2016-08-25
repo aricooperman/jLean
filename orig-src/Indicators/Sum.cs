@@ -16,21 +16,21 @@
 
 package com.quantconnect.lean.Indicators {
     /**
-    /// Represents an indictor capable of tracking the sum for the given period
+     * Represents an indictor capable of tracking the sum for the given period
     */
     public class Sum : WindowIndicator<IndicatorDataPoint> {
         /**The sum for the given period</summary>
         private BigDecimal _sum;
 
         /**
-        ///     Gets a flag indicating when this indicator is ready and fully initialized
+         *     Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady {
             get { return Samples >= Period; }
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _sum = 0.0m;
@@ -38,27 +38,27 @@ package com.quantconnect.lean.Indicators {
         }
 
         /**
-        ///     Initializes a new instance of the Sum class with the specified name and period
+         *     Initializes a new instance of the Sum class with the specified name and period
         */
-         * @param name">The name of this indicator
-         * @param period">The period of the SMA
+         * @param name The name of this indicator
+         * @param period The period of the SMA
         public Sum( String name, int period)
             : base(name, period) {
         }
 
         /**
-        ///     Initializes a new instance of the Sum class with the default name and period
+         *     Initializes a new instance of the Sum class with the default name and period
         */
-         * @param period">The period of the SMA
+         * @param period The period of the SMA
         public Sum(int period)
             : this( "SUM" + period, period) {
         }
 
         /**
-        ///     Computes the next value for this indicator from the given state.
+         *     Computes the next value for this indicator from the given state.
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input value to this indicator on this time step
+         * @param window The window of data held in this indicator
+         * @param input The input value to this indicator on this time step
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             _sum += input.Value;

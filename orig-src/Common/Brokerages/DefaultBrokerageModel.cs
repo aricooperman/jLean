@@ -28,15 +28,15 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages
 {
     /**
-    /// Provides a default implementation of <see cref="IBrokerageModel"/> that allows all orders and uses
-    /// the default transaction models
+     * Provides a default implementation of <see cref="IBrokerageModel"/> that allows all orders and uses
+     * the default transaction models
     */
     public class DefaultBrokerageModel : IBrokerageModel
     {
         /**
-        /// The default markets for the backtesting brokerage
+         * The default markets for the backtesting brokerage
         */
-        public static final IReadOnlyMap<SecurityType,String> DefaultMarketMap = new Map<SecurityType,String>
+        public static final ImmutableMap<SecurityType,String> DefaultMarketMap = new Map<SecurityType,String>
         {
             {SecurityType.Base, Market.USA},
             {SecurityType.Equity, Market.USA},
@@ -46,97 +46,97 @@ package com.quantconnect.lean.Brokerages
         }.ToReadOnlyDictionary();
 
         /**
-        /// Gets or sets the account type used by this model
+         * Gets or sets the account type used by this model
         */
-        public virtual AccountType AccountType
+        public AccountType AccountType
         {
             get; 
             private set;
         }
 
         /**
-        /// Gets a map of the default markets to be used for each security type
+         * Gets a map of the default markets to be used for each security type
         */
-        public virtual IReadOnlyMap<SecurityType,String> DefaultMarkets
+        public ImmutableMap<SecurityType,String> DefaultMarkets
         {
             get { return DefaultMarketMap; }
         }
 
         /**
-        /// Initializes a new instance of the <see cref="DefaultBrokerageModel"/> class
+         * Initializes a new instance of the <see cref="DefaultBrokerageModel"/> class
         */
-         * @param accountType">The type of account to be modelled, defaults to 
-        /// <see cref="QuantConnect.AccountType.Margin"/>
+         * @param accountType The type of account to be modelled, defaults to 
+         * <see cref="QuantConnect.AccountType.Margin"/>
         public DefaultBrokerageModel(AccountType accountType = AccountType.Margin) {
             AccountType = accountType;
         }
 
         /**
-        /// Returns true if the brokerage could accept this order. This takes into account
-        /// order type, security type, and order size limits.
+         * Returns true if the brokerage could accept this order. This takes into account
+         * order type, security type, and order size limits.
         */
-        /// 
-        /// For example, a brokerage may have no connectivity at certain times, or an order rate/size limit
-        /// 
-         * @param security">The security being ordered
-         * @param order">The order to be processed
-         * @param message">If this function returns false, a brokerage message detailing why the order may not be submitted
+         * 
+         * For example, a brokerage may have no connectivity at certain times, or an order rate/size limit
+         * 
+         * @param security The security being ordered
+         * @param order The order to be processed
+         * @param message If this function returns false, a brokerage message detailing why the order may not be submitted
         @returns True if the brokerage could process the order, false otherwise
-        public virtual boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
+        public boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
             message = null;
             return true;
         }
 
         /**
-        /// Returns true if the brokerage would allow updating the order as specified by the request
+         * Returns true if the brokerage would allow updating the order as specified by the request
         */
-         * @param security">The security of the order
-         * @param order">The order to be updated
-         * @param request">The requested update to be made to the order
-         * @param message">If this function returns false, a brokerage message detailing why the order may not be updated
+         * @param security The security of the order
+         * @param order The order to be updated
+         * @param request The requested update to be made to the order
+         * @param message If this function returns false, a brokerage message detailing why the order may not be updated
         @returns True if the brokerage would allow updating the order, false otherwise
-        public virtual boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message) {
+        public boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message) {
             message = null;
             return true;
         }
 
         /**
-        /// Returns true if the brokerage would be able to execute this order at this time assuming
-        /// market prices are sufficient for the fill to take place. This is used to emulate the 
-        /// brokerage fills in backtesting and paper trading. For example some brokerages may not perform
-        /// executions during extended market hours. This is not intended to be checking whether or not
-        /// the exchange is open, that is handled in the Security.Exchange property.
+         * Returns true if the brokerage would be able to execute this order at this time assuming
+         * market prices are sufficient for the fill to take place. This is used to emulate the 
+         * brokerage fills in backtesting and paper trading. For example some brokerages may not perform
+         * executions during extended market hours. This is not intended to be checking whether or not
+         * the exchange is open, that is handled in the Security.Exchange property.
         */
-         * @param security">The security being traded
-         * @param order">The order to test for execution
+         * @param security The security being traded
+         * @param order The order to test for execution
         @returns True if the brokerage would be able to perform the execution, false otherwise
-        public virtual boolean CanExecuteOrder(Security security, Order order) {
+        public boolean CanExecuteOrder(Security security, Order order) {
             return true;
         }
 
         /**
-        /// Applies the split to the specified order ticket
+         * Applies the split to the specified order ticket
         */
-        /// 
-        /// This default implementation will update the orders to maintain a similar market value
-        /// 
-         * @param tickets">The open tickets matching the split event
-         * @param split">The split event data
-        public virtual void ApplySplit(List<OrderTicket> tickets, Split split) {
+         * 
+         * This default implementation will update the orders to maintain a similar market value
+         * 
+         * @param tickets The open tickets matching the split event
+         * @param split The split event data
+        public void ApplySplit(List<OrderTicket> tickets, Split split) {
             // by default we'll just update the orders to have the same notional value
             splitFactor = split.splitFactor;
             tickets.ForEach(ticket -> ticket.Update(new UpdateOrderFields
             {
-                Quantity = (int?) (ticket.Quantity/splitFactor),
-                LimitPrice = ticket.OrderType.IsLimitOrder() ? ticket.Get(OrderField.LimitPrice)*splitFactor : (decimal?) null,
-                StopPrice = ticket.OrderType.IsStopOrder() ? ticket.Get(OrderField.StopPrice)*splitFactor : (decimal?) null
+                Quantity = (OptionalInt) (ticket.Quantity/splitFactor),
+                LimitPrice = ticket.OrderType.IsLimitOrder() ? ticket.Get(OrderField.LimitPrice)*splitFactor : (Optional<BigDecimal>) null,
+                StopPrice = ticket.OrderType.IsStopOrder() ? ticket.Get(OrderField.StopPrice)*splitFactor : (Optional<BigDecimal>) null
             }));
         }
 
         /**
-        /// Gets the brokerage's leverage for the specified security
+         * Gets the brokerage's leverage for the specified security
         */
-         * @param security">The security's whose leverage we seek
+         * @param security The security's whose leverage we seek
         @returns The leverage for the specified security
         public BigDecimal GetLeverage(Security security) {
             switch (security.Type) {
@@ -157,20 +157,20 @@ package com.quantconnect.lean.Brokerages
         }
 
         /**
-        /// Gets a new fill model that represents this brokerage's fill behavior
+         * Gets a new fill model that represents this brokerage's fill behavior
         */
-         * @param security">The security to get fill model for
+         * @param security The security to get fill model for
         @returns The new fill model for this brokerage
-        public virtual IFillModel GetFillModel(Security security) {
+        public IFillModel GetFillModel(Security security) {
             return new ImmediateFillModel();
         }
 
         /**
-        /// Gets a new fee model that represents this brokerage's fee structure
+         * Gets a new fee model that represents this brokerage's fee structure
         */
-         * @param security">The security to get a fee model for
+         * @param security The security to get a fee model for
         @returns The new fee model for this brokerage
-        public virtual IFeeModel GetFeeModel(Security security) {
+        public IFeeModel GetFeeModel(Security security) {
             switch (security.Type) {
                 case SecurityType.Base:
                     return new ConstantFeeModel(0m);
@@ -189,11 +189,11 @@ package com.quantconnect.lean.Brokerages
         }
 
         /**
-        /// Gets a new slippage model that represents this brokerage's fill slippage behavior
+         * Gets a new slippage model that represents this brokerage's fill slippage behavior
         */
-         * @param security">The security to get a slippage model for
+         * @param security The security to get a slippage model for
         @returns The new slippage model for this brokerage
-        public virtual ISlippageModel GetSlippageModel(Security security) {
+        public ISlippageModel GetSlippageModel(Security security) {
             switch (security.Type) {
                 case SecurityType.Base:
                 case SecurityType.Equity:
@@ -212,12 +212,12 @@ package com.quantconnect.lean.Brokerages
         }
 
         /**
-        /// Gets a new settlement model for the security
+         * Gets a new settlement model for the security
         */
-         * @param security">The security to get a settlement model for
-         * @param accountType">The account type
+         * @param security The security to get a settlement model for
+         * @param accountType The account type
         @returns The settlement model for this brokerage
-        public virtual ISettlementModel GetSettlementModel(Security security, AccountType accountType) {
+        public ISettlementModel GetSettlementModel(Security security, AccountType accountType) {
             if( accountType == AccountType.Cash) {
                 switch (security.Type) {
                     case SecurityType.Equity:

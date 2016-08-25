@@ -23,8 +23,8 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
     class Program
     {
         /**
-        /// QuantConnect Google Downloader For LEAN Algorithmic Trading Engine.
-        /// Original by @chrisdk2015, tidied by @jaredbroad
+         * QuantConnect Google Downloader For LEAN Algorithmic Trading Engine.
+         * Original by @chrisdk2015, tidied by @jaredbroad
         */
         public static void Main( String[] args) {
             if( args.Length != 4) {

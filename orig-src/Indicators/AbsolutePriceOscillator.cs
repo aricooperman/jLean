@@ -16,32 +16,32 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the Absolute Price Oscillator (APO)
-    /// The Absolute Price Oscillator is calculated using the following formula:
-    /// APO[i] = FastMA[i] - SlowMA[i]
+     * This indicator computes the Absolute Price Oscillator (APO)
+     * The Absolute Price Oscillator is calculated using the following formula:
+     * APO[i] = FastMA[i] - SlowMA[i]
     */
-    /// 
-    /// The Absolute Price Oscillator is the same as a MACD with the signal period equal to the slow period.
-    /// 
+     * 
+     * The Absolute Price Oscillator is the same as a MACD with the signal period equal to the slow period.
+     * 
     public class AbsolutePriceOscillator : MovingAverageConvergenceDivergence
     {
         /**
-        /// Initializes a new instance of the <see cref="AbsolutePriceOscillator"/> class using the specified name and parameters.
+         * Initializes a new instance of the <see cref="AbsolutePriceOscillator"/> class using the specified name and parameters.
         */ 
-         * @param name">The name of this indicator
-         * @param fastPeriod">The fast moving average period
-         * @param slowPeriod">The slow moving average period
-         * @param movingAverageType">The type of moving average to use
+         * @param name The name of this indicator
+         * @param fastPeriod The fast moving average period
+         * @param slowPeriod The slow moving average period
+         * @param movingAverageType The type of moving average to use
         public AbsolutePriceOscillator( String name, int fastPeriod, int slowPeriod, MovingAverageType movingAverageType = MovingAverageType.Simple)
             : base(name, fastPeriod, slowPeriod, slowPeriod, movingAverageType) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="AbsolutePriceOscillator"/> class using the specified parameters.
+         * Initializes a new instance of the <see cref="AbsolutePriceOscillator"/> class using the specified parameters.
         */ 
-         * @param fastPeriod">The fast moving average period
-         * @param slowPeriod">The slow moving average period
-         * @param movingAverageType">The type of moving average to use
+         * @param fastPeriod The fast moving average period
+         * @param slowPeriod The slow moving average period
+         * @param movingAverageType The type of moving average to use
         public AbsolutePriceOscillator(int fastPeriod, int slowPeriod, MovingAverageType movingAverageType = MovingAverageType.Simple)
             : this( String.format( "APO(%1$s,%2$s)", fastPeriod, slowPeriod), fastPeriod, slowPeriod, movingAverageType) {
         }

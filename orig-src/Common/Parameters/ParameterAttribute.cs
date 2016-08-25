@@ -23,14 +23,14 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Parameters
 {
     /**
-    /// Specifies a field or property is a parameter that can be set
-    /// from an <see cref="AlgorithmNodePacket.Parameters"/> dictionary
+     * Specifies a field or property is a parameter that can be set
+     * from an <see cref="AlgorithmNodePacket.Parameters"/> dictionary
     */
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property)]
     public class ParameterAttribute : Attribute
     {
         /**
-        /// Specifies the binding flags used by this implementation to resolve parameter attributes
+         * Specifies the binding flags used by this implementation to resolve parameter attributes
         */
         public static final BindingFlags BindingFlags = System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Instance;
 
@@ -38,25 +38,25 @@ package com.quantconnect.lean.Parameters
         private static final String ParameterAttributeFullName = typeof (ParameterAttribute).FullName;
         
         /**
-        /// Gets the name of this parameter
+         * Gets the name of this parameter
         */
         public String Name { get; private set; }
 
         /**
-        /// Initializes a new instance of the <see cref="ParameterAttribute"/> class
+         * Initializes a new instance of the <see cref="ParameterAttribute"/> class
         */
-         * @param name">The name of the parameter. If null is specified
-        /// then the field or property name will be used
+         * @param name The name of the parameter. If null is specified
+         * then the field or property name will be used
         public ParameterAttribute( String name = null ) {
             Name = name;
         }
 
         /**
-        /// Uses reflections to inspect the instance for any parameter attributes.
-        /// If a value is found in the parameters dictionary, it is set.
+         * Uses reflections to inspect the instance for any parameter attributes.
+         * If a value is found in the parameters dictionary, it is set.
         */
-         * @param parameters">The parameters Map
-         * @param instance">The instance to set parameters on
+         * @param parameters The parameters Map
+         * @param instance The instance to set parameters on
         public static void ApplyAttributes(Map<String,String> parameters, object instance) {
             if( instance == null ) throw new ArgumentNullException( "instance");
 
@@ -108,9 +108,9 @@ package com.quantconnect.lean.Parameters
         }
 
         /**
-        /// Resolves all parameter attributes from the specified compiled assembly path
+         * Resolves all parameter attributes from the specified compiled assembly path
         */
-         * @param assembly">The assembly to inspect
+         * @param assembly The assembly to inspect
         @returns Parameters dictionary keyed by parameter name with a value of the member type
         public static Map<String,String> GetParametersFromAssembly(Assembly assembly) {
             parameters = new Map<String,String>();

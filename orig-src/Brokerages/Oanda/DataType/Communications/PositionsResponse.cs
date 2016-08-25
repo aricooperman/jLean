@@ -22,7 +22,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
     /**
-    /// Represents the current active positions from Oanda.
+     * Represents the current active positions from Oanda.
     */
     public class PositionsResponse
     {

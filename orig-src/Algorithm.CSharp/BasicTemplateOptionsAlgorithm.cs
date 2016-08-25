@@ -23,9 +23,9 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// This example demonstrates how to add options for a given underlying equity security.
-    /// It also shows how you can prefilter contracts easily based on strikes and expirations.
-    /// It also shows how you can inspect the option chain to pick a specific option contract to trade.
+     * This example demonstrates how to add options for a given underlying equity security.
+     * It also shows how you can prefilter contracts easily based on strikes and expirations.
+     * It also shows how you can inspect the option chain to pick a specific option contract to trade.
     */
     public class BasicTemplateOptionsAlgorithm : QCAlgorithm
     {
@@ -49,9 +49,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Event - v3.0 DATA EVENT HANDLER: (Pattern) Basic template for user to @Override for receiving all subscription data in a single event
+         * Event - v3.0 DATA EVENT HANDLER: (Pattern) Basic template for user to @Override for receiving all subscription data in a single event
         */
-         * @param slice">The current slice of data keyed by symbol string
+         * @param slice The current slice of data keyed by symbol string
         public @Override void OnData(Slice slice) {
             if( !Portfolio.Invested) {
                 OptionChain chain;
@@ -75,10 +75,10 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Order fill event handler. On an order fill update the resulting information is passed to this method.
+         * Order fill event handler. On an order fill update the resulting information is passed to this method.
         */
-         * @param orderEvent">Order event details containing details of the evemts
-        /// This method can be called asynchronously and so should only be used by seasoned C# experts. Ensure you use proper locks on thread-unsafe objects
+         * @param orderEvent Order event details containing details of the evemts
+         * This method can be called asynchronously and so should only be used by seasoned C# experts. Ensure you use proper locks on thread-unsafe objects
         public @Override void OnOrderEvent(OrderEvent orderEvent) {
             Log(orderEvent.toString());
         }

@@ -37,12 +37,12 @@ using RestSharp;
 package com.quantconnect.lean.Brokerages.Tradier
 {
     /**
-    /// Tradier Class: 
-    ///  - Handle authentication.
-    ///  - Data requests.
-    ///  - Rate limiting.
-    ///  - Placing orders.
-    ///  - Getting user data.
+     * Tradier Class: 
+     *  - Handle authentication.
+     *  - Data requests.
+     *  - Rate limiting.
+     *  - Placing orders.
+     *  - Getting user data.
     */
     public class TradierBrokerage : Brokerage
     {
@@ -74,24 +74,24 @@ package com.quantconnect.lean.Brokerages.Tradier
         private final object _fillLock = new object();
         private final DateTime _initializationDateTime = DateTime.Now;
         private final ConcurrentMap<long, TradierCachedOpenOrder> _cachedOpenOrdersByTradierOrderID;
-        // this is used to block reentrance when doing look ups for orders with IDs we don't have cached
+        // this is used to bsynchronizedreentrance when doing look ups for orders with IDs we don't have cached
         private final HashSet<long> _reentranceGuardByTradierOrderID = new HashSet<long>();
         private final FixedSizeHashQueue<long> _filledTradierOrderIDs = new FixedSizeHashQueue<long>(10000); 
         // this is used to handle the zero crossing case, when the first order is filled we'll submit the next order
         private final ConcurrentMap<long, ContingentOrderQueue> _contingentOrdersByQCOrderID = new ConcurrentMap<long, ContingentOrderQueue>();
-        // this is used to block reentrance when handling contingent orders
+        // this is used to bsynchronizedreentrance when handling contingent orders
         private final HashSet<long> _contingentReentranceGuardByQCOrderID = new HashSet<long>();
         private final HashSet<long> _unknownTradierOrderIDs = new HashSet<long>(); 
         private final FixedSizeHashQueue<long> _verifiedUnknownTradierOrderIDs = new FixedSizeHashQueue<long>(1000);
         private final FixedSizeHashQueue<Integer> _cancelledQcOrderIDs = new FixedSizeHashQueue<Integer>(10000);  
 
         /**
-        /// Event fired when our session has been refreshed/tokens updated
+         * Event fired when our session has been refreshed/tokens updated
         */
         public event EventHandler<TokenResponse> SessionRefreshed;
 
         /**
-        /// When we expect this access token to expire, leaves an hour of padding
+         * When we expect this access token to expire, leaves an hour of padding
         */
         private DateTime ExpectedExpiry
         {
@@ -99,22 +99,22 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Access Token Access:
+         * Access Token Access:
         */
         public String AccessToken { get; private set; }
 
         /**
-        /// Refresh Token Access:
+         * Refresh Token Access:
         */
         public String RefreshToken { get; private set; }
 
         /**
-        /// The QC User id, used for refreshing the session
+         * The QC User id, used for refreshing the session
         */
         public int UserId { get; private set; }
 
         /**
-        /// Get the last String returned
+         * Get the last String returned
         */
         public String LastResponse
         {
@@ -122,7 +122,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Create a new Tradier Object:
+         * Create a new Tradier Object:
         */
         public TradierBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider, long accountID)
             : base( "Tradier Brokerage") {
@@ -151,13 +151,13 @@ package com.quantconnect.lean.Brokerages.Tradier
         #region Tradier client implementation
 
         /**
-        /// Set the access token and login information for the tradier brokerage 
+         * Set the access token and login information for the tradier brokerage 
         */
-         * @param userId">Userid for this brokerage
-         * @param accessToken">Viable access token
-         * @param refreshToken">Our refresh token
-         * @param issuedAt">When the token was issued
-         * @param lifeSpan">Life span for our token.
+         * @param userId Userid for this brokerage
+         * @param accessToken Viable access token
+         * @param refreshToken Our refresh token
+         * @param issuedAt When the token was issued
+         * @param lifeSpan Life span for our token.
         public void SetTokens(int userId, String accessToken, String refreshToken, DateTime issuedAt, Duration lifeSpan) {
             AccessToken = accessToken;
             RefreshToken = refreshToken;
@@ -184,7 +184,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Execute a authenticated call:
+         * Execute a authenticated call:
         */
         public T Execute<T>(RestRequest request, TradierApiRequestType type, String rootName = "", int attempts = 0, int max = 10) where T : new() {
             response = default(T);
@@ -196,7 +196,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                 Log.Trace(method + "(): Begin attempt " + attempts);
             }
 
-            lock (_lockAccessCredentials) {
+            synchronized(_lockAccessCredentials) {
                 client = new RestClient(RequestEndpoint);
                 client.AddDefaultHeader( "Accept", "application/json");
                 client.AddDefaultHeader( "Authorization", "Bearer " + AccessToken);
@@ -300,7 +300,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Verify we have a user session; or refresh the access token.
+         * Verify we have a user session; or refresh the access token.
         */
         public boolean RefreshSession() {
             //Send: 
@@ -308,7 +308,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             // Or: {"success":false}
             raw = "";
             boolean success;
-            lock (_lockAccessCredentials) {
+            synchronized(_lockAccessCredentials) {
                 try
                 {
                     //Create the client for connection:
@@ -357,11 +357,11 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Using this auth token get the tradier user:
+         * Using this auth token get the tradier user:
         */
-        /// 
-        /// Returns null if the request was unsucessful
-        /// 
+         * 
+         * Returns null if the request was unsucessful
+         * 
         @returns Tradier user model:
         public TradierUser GetUserProfile() {
             request = new RestRequest( "user/profile", Method.GET);
@@ -370,11 +370,11 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get all the users balance information:
+         * Get all the users balance information:
         */
-        /// 
-        /// Returns null if the request was unsucessful
-        /// 
+         * 
+         * Returns null if the request was unsucessful
+         * 
         @returns Balance
         public TradierBalanceDetails GetBalanceDetails(long accountId) {
             request = new RestRequest( "accounts/{accountId}/balances", Method.GET);
@@ -385,11 +385,11 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get a list of the tradier positions for this account:
+         * Get a list of the tradier positions for this account:
         */
-        /// 
-        /// Returns null if the request was unsucessful
-        /// 
+         * 
+         * Returns null if the request was unsucessful
+         * 
         @returns Array of the symbols we hold.
         public List<TradierPosition> GetPositions() {
             request = new RestRequest( "accounts/{accountId}/positions", Method.GET);
@@ -406,11 +406,11 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get a list of historical events for this account:
+         * Get a list of historical events for this account:
         */
-        /// 
-        /// Returns null if the request was unsucessful
-        /// 
+         * 
+         * Returns null if the request was unsucessful
+         * 
         public List<TradierEvent> GetAccountEvents(long accountId) {
             request = new RestRequest( "accounts/{accountId}/history", Method.GET);
             request.AddUrlSegment( "accountId", accountId.toString());
@@ -427,7 +427,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// GainLoss of recent trades for this account:
+         * GainLoss of recent trades for this account:
         */
         public List<TradierGainLoss> GetGainLoss(long accountId) {
             request = new RestRequest( "accounts/{accountId}/gainloss");
@@ -445,7 +445,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get Intraday and pending orders for users account: accounts/{account_id}/orders
+         * Get Intraday and pending orders for users account: accounts/{account_id}/orders
         */
         public List<TradierOrder> GetIntradayAndPendingOrders() {
             request = new RestRequest( "accounts/{accountId}/orders");
@@ -462,7 +462,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get information about a specific order: accounts/{account_id}/orders/{id}
+         * Get information about a specific order: accounts/{account_id}/orders/{id}
         */
         public TradierOrderDetailed GetOrder(long orderId) {
             request = new RestRequest( "accounts/{accountId}/orders/" + orderId);
@@ -476,8 +476,8 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Place Order through API.
-        /// accounts/{account-id}/orders
+         * Place Order through API.
+         * accounts/{account-id}/orders
         */
         public TradierOrderResponse PlaceOrder(long accountId,
             TradierOrderClass classification,
@@ -513,7 +513,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Update an exiting Tradier Order:
+         * Update an exiting Tradier Order:
         */
         public TradierOrderResponse ChangeOrder(long accountId,
             long orderId,
@@ -538,7 +538,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Cancel the order with this account and id number
+         * Cancel the order with this account and id number
         */
         public TradierOrderResponse CancelOrder(long accountId, long orderId) {
             //Compose Request:
@@ -552,7 +552,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// List of quotes for symbols 
+         * List of quotes for symbols 
         */
         public List<TradierQuote> GetQuotes(List<String> symbols) {
             if( symbols.Count == 0) {
@@ -569,7 +569,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get the historical bars for this period
+         * Get the historical bars for this period
         */
         public List<TradierTimeSeries> GetTimeSeries( String symbol, DateTime start, DateTime end, TradierTimeSeriesIntervals interval) {
             //Send Request:
@@ -583,7 +583,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get full daily, weekly or monthly bars of historical periods:
+         * Get full daily, weekly or monthly bars of historical periods:
         */
         public List<TradierHistoryBar> GetHistoricalData( String symbol,
             DateTime start,
@@ -599,7 +599,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get the current market status
+         * Get the current market status
         */
         public TradierMarketStatus GetMarketStatus() {
             request = new RestRequest( "markets/clock", Method.GET);
@@ -607,7 +607,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get the list of days status for this calendar month, year:
+         * Get the list of days status for this calendar month, year:
         */
         public List<TradierCalendarDay> GetMarketCalendar(int month, int year) {
             request = new RestRequest( "markets/calendar", Method.GET);
@@ -618,7 +618,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get the list of days status for this calendar month, year:
+         * Get the list of days status for this calendar month, year:
         */
         public List<TradierSearchResult> Search( String query, boolean includeIndexes = true) {
             request = new RestRequest( "markets/search", Method.GET);
@@ -629,7 +629,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get the list of days status for this calendar month, year:
+         * Get the list of days status for this calendar month, year:
         */
         public List<TradierSearchResult> LookUpSymbol( String query, boolean includeIndexes = true) {
             request = new RestRequest( "markets/lookup", Method.GET);
@@ -640,7 +640,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get the current market status
+         * Get the current market status
         */
         public TradierStreamSession CreateStreamSession() {
             request = new RestRequest( "markets/events/session", Method.POST);
@@ -648,9 +648,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Connect to tradier API strea:
+         * Connect to tradier API strea:
         */
-         * @param symbols">symbol list
+         * @param symbols symbol list
         @returns 
         public IEnumerable<TradierStreamData> Stream(List<String> symbols) {
             boolean success;
@@ -750,7 +750,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Convert the C# Enums back to the Tradier API Equivalent:
+         * Convert the C# Enums back to the Tradier API Equivalent:
         */
         private String GetEnumDescription(Enum value) {
             // Get the Description attribute value for the enum value
@@ -767,7 +767,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Get the rype inside the nested root:
+         * Get the rype inside the nested root:
         */
         private T DeserializeRemoveRoot<T>( String json, String rootName) {
             obj = default(T);
@@ -786,9 +786,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Event invocator for the SessionRefreshed event
+         * Event invocator for the SessionRefreshed event
         */
-        protected virtual void OnSessionRefreshed(TokenResponse e) {
+        protected void OnSessionRefreshed(TokenResponse e) {
             handler = SessionRefreshed;
             if( handler != null ) handler(this, e);
         }
@@ -798,7 +798,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         #region IBrokerage implementation
 
         /**
-        /// Returns true if we're currently connected to the broker
+         * Returns true if we're currently connected to the broker
         */
         public @Override boolean IsConnected
         {
@@ -806,8 +806,8 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Gets all open orders on the account. 
-        /// NOTE: The order objects returned do not have QC order IDs.
+         * Gets all open orders on the account. 
+         * NOTE: The order objects returned do not have QC order IDs.
         */
         @returns The open orders returned from IB
         public @Override List<Order> GetOpenOrders() {
@@ -824,7 +824,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Gets all holdings for the account
+         * Gets all holdings for the account
         */
         @returns The current holdings from the account
         public @Override List<Holding> GetAccountHoldings() {
@@ -841,7 +841,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Gets the current cash balance for each currency held in the brokerage account
+         * Gets the current cash balance for each currency held in the brokerage account
         */
         @returns The current cash balance for each currency available for trading
         public @Override List<Cash> GetCashBalance() {
@@ -852,9 +852,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Places a new order and assigns a new broker ID to the order
+         * Places a new order and assigns a new broker ID to the order
         */
-         * @param order">The order to be placed
+         * @param order The order to be placed
         @returns True if the request for a new order has been placed, false otherwise
         public @Override boolean PlaceOrder(Order order) {
             Log.Trace( "TradierBrokerage.PlaceOrder(): " + order);
@@ -963,9 +963,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Updates the order with the same id
+         * Updates the order with the same id
         */
-         * @param order">The new order information
+         * @param order The new order information
         @returns True if the request was made for the order to be updated, false otherwise
         public @Override boolean UpdateOrder(Order order) {
             Log.Trace( "TradierBrokerage.UpdateOrder(): " + order);
@@ -1040,9 +1040,9 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Cancels the order with the specified ID
+         * Cancels the order with the specified ID
         */
-         * @param order">The order to cancel
+         * @param order The order to cancel
         @returns True if the request was made for the order to be canceled, false otherwise
         public @Override boolean CancelOrder(Order order) {
             Log.Trace( "TradierBrokerage.CancelOrder(): " + order);
@@ -1079,7 +1079,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Connects the client to the broker's remote servers
+         * Connects the client to the broker's remote servers
         */
         public @Override void Connect() {
             if( IsConnected) return;
@@ -1087,16 +1087,16 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Disconnects the client from the broker's remote servers
+         * Disconnects the client from the broker's remote servers
         */
         public @Override void Disconnect() {
             // NOP - token will eventually expire
         }
 
         /**
-        /// Event invocator for the Message event
+         * Event invocator for the Message event
         */
-         * @param e">The error
+         * @param e The error
         protected @Override void OnMessage(BrokerageMessageEvent e) {
             message = e;
             if( Exchange.DateTimeIsOpen(DateTime.Now) && ErrorsDuringMarketHours.Contains(e.Code)) {
@@ -1117,7 +1117,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                     );
             }
 
-            Log.Trace( String.format( "TradierBrokerage.TradierPlaceOrder(): %1$s to %2$s %3$s units of {3}{4}", 
+            Log.Trace( String.format( "TradierBrokerage.TradierPlaceOrder(): %1$s to %2$s %3$s units of %4$s%5$s", 
                 order.Type, order.Direction, order.Quantity, order.Symbol, stopLimit)
                 );
  
@@ -1149,17 +1149,17 @@ package com.quantconnect.lean.Brokerages.Tradier
                     Symbol = order.Symbol,
                     Type = order.Type,
                     TransactionDate = DateTime.Now,
-                    AverageFillPrice = 0m,
+                    AverageFillPrice = BigDecimal.ZERO,
                     Class = classification,
                     CreatedDate = DateTime.Now,
                     Direction = order.Direction,
                     Duration = order.Duration,
-                    LastFillPrice = 0m,
-                    LastFillQuantity = 0m,
+                    LastFillPrice = BigDecimal.ZERO,
+                    LastFillQuantity = BigDecimal.ZERO,
                     Legs = new List<TradierOrderLeg>(),
                     NumberOfLegs = 0,
                     Price = order.Price,
-                    QuantityExecuted = 0m,
+                    QuantityExecuted = BigDecimal.ZERO,
                     RemainingQuantity = order.Quantity,
                     StopPrice = order.Stop
                 });
@@ -1206,7 +1206,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Checks for fill events by polling FetchOrders for pending orders and diffing against the last orders seen
+         * Checks for fill events by polling FetchOrders for pending orders and diffing against the last orders seen
         */
         private void CheckForFills() {
             // reentrance guard
@@ -1238,7 +1238,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                     }
 
                     // if we made it here this may be a canceled order via another portal, so we need to figure this one 
-                    // out with its own rest call, do this async to not block this thread
+                    // out with its own rest call, do this async to not bsynchronizedthis thread
                     if( !_reentranceGuardByTradierOrderID.Add(cachedOrder.Key)) {
                         // we don't want to reenter this task, so we'll use a hashset to keep track of what orders are currently in there
                         continue;
@@ -1380,7 +1380,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                             // we've finished with this contingent order
                             _contingentOrdersByQCOrderID.TryRemove(qcOrder.Id, out contingent);
                         }
-                        // fire this off in a task so we don't block this thread
+                        // fire this off in a task so we don't bsynchronizedthis thread
                         if( order != null ) {
                             // if we have a contingent that needs to be submitted then we can't respect the 'Filled' state from the order
                             // because the QC order hasn't been technically filled yet, so mark it as 'PartiallyFilled'
@@ -1447,7 +1447,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         #region Conversion routines
 
         /**
-        /// Returns true if the specified order is considered open, otherwise false
+         * Returns true if the specified order is considered open, otherwise false
         */
         protected static boolean OrderIsOpen(TradierOrder order) {
             return order.Status != TradierOrderStatus.Filled
@@ -1457,14 +1457,14 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Returns true if the specified order is considered close, otherwise false
+         * Returns true if the specified order is considered close, otherwise false
         */
         protected static boolean OrderIsClosed(TradierOrder order) {
             return !OrderIsOpen(order);
         }
 
         /**
-        /// Returns true if the specified tradier order direction represents a short position
+         * Returns true if the specified tradier order direction represents a short position
         */
         protected static boolean IsShort(TradierOrderDirection direction) {
             switch (direction) {
@@ -1485,8 +1485,8 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Converts the specified tradier order into a qc order.
-        /// The 'task' will have a value if we needed to issue a rest call for the stop price, otherwise it will be null
+         * Converts the specified tradier order into a qc order.
+         * The 'task' will have a value if we needed to issue a rest call for the stop price, otherwise it will be null
         */
         protected Order ConvertOrder(TradierOrder order) {
             Order qcOrder;
@@ -1525,7 +1525,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Converts the qc order type into a tradier order type
+         * Converts the qc order type into a tradier order type
         */
         protected TradierOrderType ConvertOrderType(OrderType type) {
             switch (type) {
@@ -1549,7 +1549,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Converts the tradier order duration into a qc order duration
+         * Converts the tradier order duration into a qc order duration
         */
         protected OrderDuration ConvertDuration(TradierOrderDuration duration) {
             switch (duration) {
@@ -1563,7 +1563,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Converts the tradier order status into a qc order status
+         * Converts the tradier order status into a qc order status
         */
         protected OrderStatus ConvertStatus(TradierOrderStatus status) {
             switch (status) {
@@ -1593,7 +1593,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Converts the qc order status into a tradier order status
+         * Converts the qc order status into a tradier order status
         */
         protected TradierOrderStatus ConvertStatus(OrderStatus status) {
             switch (status) {
@@ -1624,12 +1624,12 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Converts the tradier order quantity into a qc quantity
+         * Converts the tradier order quantity into a qc quantity
         */
-        /// 
-        /// Tradier quantities are always positive and use the direction to denote +/-, where as qc
-        /// order quantities determine the direction
-        /// 
+         * 
+         * Tradier quantities are always positive and use the direction to denote +/-, where as qc
+         * order quantities determine the direction
+         * 
         protected int ConvertQuantity(TradierOrder order) {
             switch (order.Direction) {
                 case TradierOrderDirection.Buy:
@@ -1653,7 +1653,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Converts the tradier position into a qc holding
+         * Converts the tradier position into a qc holding
         */
         protected Holding ConvertHolding(TradierPosition position) {
             return new Holding
@@ -1663,13 +1663,13 @@ package com.quantconnect.lean.Brokerages.Tradier
                 AveragePrice = position.CostBasis/position.Quantity,
                 ConversionRate = 1.0m,
                 CurrencySymbol = "$",
-                MarketPrice = 0m, //--> GetAccountHoldings does a call to GetQuotes to fill this data in
+                MarketPrice = BigDecimal.ZERO, //--> GetAccountHoldings does a call to GetQuotes to fill this data in
                 Quantity = position.Quantity
             };
         }
 
         /**
-        /// Converts the QC order direction to a tradier order direction
+         * Converts the QC order direction to a tradier order direction
         */
         protected static TradierOrderDirection ConvertDirection(OrderDirection direction, BigDecimal holdingQuantity) {
             // this mapping assumes we're dealing with equity types, options have different codes, buy_to_open and sell_to_close
@@ -1708,7 +1708,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Determines whether or not the specified order will bring us across the zero line for holdings
+         * Determines whether or not the specified order will bring us across the zero line for holdings
         */
         protected boolean OrderCrossesZero(Order order) {
             holdingQuantity = _securityProvider.GetHoldingsQuantity(order.Symbol);
@@ -1730,7 +1730,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Converts the qc order duration into a tradier order duration
+         * Converts the qc order duration into a tradier order duration
         */
         protected static TradierOrderDuration GetOrderDuration(OrderDuration duration) {
             switch (duration) {
@@ -1742,7 +1742,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Converts the qc order type into a tradier order type
+         * Converts the qc order type into a tradier order type
         */
         protected static TradierOrderType ConvertOrderType(Order order) {
             switch (order.Type) {
@@ -1760,7 +1760,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Gets the stop price used in API calls with tradier from the specified qc order instance
+         * Gets the stop price used in API calls with tradier from the specified qc order instance
         */
         protected static BigDecimal GetStopPrice(Order order) {
             stopm = order as StopMarketOrder;
@@ -1775,7 +1775,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Gets the limit price used in API calls with tradier from the specified qc order instance
+         * Gets the limit price used in API calls with tradier from the specified qc order instance
         */
          * @param order">
         @returns 
@@ -1801,11 +1801,11 @@ package com.quantconnect.lean.Brokerages.Tradier
         class ContingentOrderQueue
         {
             /**
-            /// The original order produced by the algorithm
+             * The original order produced by the algorithm
             */
             public final Order QCOrder;
             /**
-            /// A queue of contingent orders to be placed after fills
+             * A queue of contingent orders to be placed after fills
             */
             public final Queue<TradierPlaceOrderRequest> Contingents;
 
@@ -1815,7 +1815,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
 
             /**
-            /// Dequeues the next contingent order, or null if there are none left
+             * Dequeues the next contingent order, or null if there are none left
             */
             public TradierPlaceOrderRequest Next() {
                 if( Contingents.Count == 0) {
@@ -1864,11 +1864,11 @@ package com.quantconnect.lean.Brokerages.Tradier
                 // when this is a contingent order we'll want to convert stop types into their base order type
                 if( Type == TradierOrderType.StopMarket) {
                     Type = TradierOrderType.Market;
-                    Stop = 0m;
+                    Stop = BigDecimal.ZERO;
                 }
                 else if( Type == TradierOrderType.StopLimit) {
                     Type = TradierOrderType.Limit;
-                    Stop = 0m;
+                    Stop = BigDecimal.ZERO;
                 }
             }
         }

@@ -19,20 +19,20 @@ using System;
 package com.quantconnect.lean.Data.Market
 {
     /**
-    /// Collections of <see cref="Delisting"/> keyed by <see cref="Symbol"/>
+     * Collections of <see cref="Delisting"/> keyed by <see cref="Symbol"/>
     */
     public class Delistings : DataMap<Delisting>
     {
         /**
-        /// Initializes a new instance of the <see cref="Delistings"/> dictionary
+         * Initializes a new instance of the <see cref="Delistings"/> dictionary
         */
         public Delistings() {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Delistings"/> dictionary
+         * Initializes a new instance of the <see cref="Delistings"/> dictionary
         */
-         * @param frontier">The time associated with the data in this Map
+         * @param frontier The time associated with the data in this Map
         public Delistings(DateTime frontier)
             : base(frontier) {
         }

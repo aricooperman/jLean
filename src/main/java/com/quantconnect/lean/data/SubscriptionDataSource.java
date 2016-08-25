@@ -33,16 +33,16 @@ public class SubscriptionDataSource {
     public final SubscriptionTransportMedium transportMedium;
 
     /// Initializes a new instance of the <see cref="SubscriptionDataSource"/> class.
-     * @param source">The subscription's data source location
-     * @param transportMedium">The transport medium to be used to retrieve the subscription's data from the source
+    /// <param name="source The subscription's data source location</param>
+    /// <param name="transportMedium The transport medium to be used to retrieve the subscription's data from the source</param>
     public SubscriptionDataSource( Path source, SubscriptionTransportMedium transportMedium ) {
         this( source, transportMedium, FileFormat.Csv );
     }
 
     /// Initializes a new instance of the <see cref="SubscriptionDataSource"/> class.
-     * @param source">The subscription's data source location
-     * @param format">The format of the data within the source
-     * @param transportMedium">The transport medium to be used to retrieve the subscription's data from the source
+    /// <param name="source The subscription's data source location</param>
+    /// <param name="format The format of the data within the source</param>
+    /// <param name="transportMedium The transport medium to be used to retrieve the subscription's data from the source</param>
     public SubscriptionDataSource( Path source, SubscriptionTransportMedium transportMedium, FileFormat format ) {
         this.source = source;
         this.format = format;
@@ -50,10 +50,10 @@ public class SubscriptionDataSource {
     }
 
     /// Indicates whether the current object is equal to another object of the same type.
-    @returns 
+    /// <returns>
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-    /// 
-     * @param other">An object to compare with this object.
+    /// </returns>
+    /// <param name="other An object to compare with this object.</param>
     public boolean equals( SubscriptionDataSource other)  {
         if( null == other ) return false;
         if( this == other ) return true;
@@ -61,10 +61,10 @@ public class SubscriptionDataSource {
     }
 
     /// Determines whether the specified instance is equal to the current instance.
-    @returns 
+    /// <returns>
     /// true if the specified object  is equal to the current object; otherwise, false.
-    /// 
-     * @param obj">The object to compare with the current object. <filterpriority>2</filterpriority>
+    /// </returns>
+    /// <param name="obj The object to compare with the current object. </param><filterpriority>2</filterpriority>
     public boolean equals( Object obj ) {
         if( null == obj ) return false;
         if( this == obj ) return true;
@@ -73,40 +73,40 @@ public class SubscriptionDataSource {
     }
 
     /// Serves as a hash function for a particular type. 
-    @returns 
+    /// <returns>
     /// A hash code for the current <see cref="T:System.Object"/>.
-    /// 
+    /// </returns>
     /// <filterpriority>2</filterpriority>
     public int hashCode() {
         return ((source != null ? source.hashCode() : 0)*397) ^ transportMedium.hashCode();
     }
 
-//    /**
+//    /// <summary>
 //    /// Indicates whether the current object is equal to another object of the same type.
-//    */
-//     * @param left">The <see cref="SubscriptionDataSource"/> instance on the left of the operator
-//     * @param right">The <see cref="SubscriptionDataSource"/> instance on the right of the operator
-//    @returns True if the two instances are considered equal, false otherwise
+//    /// </summary>
+//    /// <param name="left The <see cref="SubscriptionDataSource"/> instance on the left of the operator</param>
+//    /// <param name="right The <see cref="SubscriptionDataSource"/> instance on the right of the operator</param>
+//    /// <returns>True if the two instances are considered equal, false otherwise</returns>
 //    public static boolean operator ==(SubscriptionDataSource left, SubscriptionDataSource right)
 //    {
 //        return Equals(left, right);
 //    }
 //
-//    /**
+//    /// <summary>
 //    /// Indicates whether the current object is not equal to another object of the same type.
-//    */
-//     * @param left">The <see cref="SubscriptionDataSource"/> instance on the left of the operator
-//     * @param right">The <see cref="SubscriptionDataSource"/> instance on the right of the operator
-//    @returns True if the two instances are not considered equal, false otherwise
+//    /// </summary>
+//    /// <param name="left The <see cref="SubscriptionDataSource"/> instance on the left of the operator</param>
+//    /// <param name="right The <see cref="SubscriptionDataSource"/> instance on the right of the operator</param>
+//    /// <returns>True if the two instances are not considered equal, false otherwise</returns>
 //    public static boolean operator !=(SubscriptionDataSource left, SubscriptionDataSource right)
 //    {
 //        return !Equals(left, right);
 //    }
 
     /// Returns a String that represents the current object.
-    @returns 
+    /// <returns>
     /// A String that represents the current object.
-    /// 
+    /// </returns>
     /// <filterpriority>2</filterpriority>
     public String toString() {
         return String.format( "%s: %s %s", transportMedium, format, source );

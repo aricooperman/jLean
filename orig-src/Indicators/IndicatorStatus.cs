@@ -16,22 +16,22 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// The possible states returned by <see cref="IndicatorBase{T}.ComputeNextValue"/>
+     * The possible states returned by <see cref="IndicatorBase{T}.ComputeNextValue"/>
     */
     public enum IndicatorStatus
     {
         /**
-        /// The indicator successfully calculated a value for the input data
+         * The indicator successfully calculated a value for the input data
         */
         Success,
 
         /**
-        /// The indicator detected an invalid input data point or tradebar
+         * The indicator detected an invalid input data point or tradebar
         */
         InvalidInput,
 
         /**
-        /// The indicator encountered a math error during calculations
+         * The indicator encountered a math error during calculations
         */
         MathError,
     }

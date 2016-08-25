@@ -22,7 +22,7 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Processing harness used to read files in, parse them, and process them.
+     * Processing harness used to read files in, parse them, and process them.
     */
     public class RawFileProcessor : IDisposable
     {
@@ -32,12 +32,12 @@ package com.quantconnect.lean.ToolBox
         private final IDataProcessor[] _processors;
 
         /**
-        /// Gets or sets a name used for logging
+         * Gets or sets a name used for logging
         */
         public String Name { get; set; }
 
         /**
-        /// Initializes a new instance of the <see cref="RawFileProcessor"/> class
+         * Initializes a new instance of the <see cref="RawFileProcessor"/> class
         */
         public RawFileProcessor(IStreamProvider streamProvider, IStreamParser parser, params IDataProcessor[] processors) {
             _streamProvider = streamProvider;
@@ -46,13 +46,13 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Runs the raw file processor on the specified files
+         * Runs the raw file processor on the specified files
         */
-         * @param name">A name for the processor used for logging
-         * @param sources">The raw files to be processed
-         * @param streamProvider">Instance capable of reading the sources into a stream
-         * @param streamParser">Instance capable of parsing the provided stream
-         * @param processors">The data processors to process the parsed data
+         * @param name A name for the processor used for logging
+         * @param sources The raw files to be processed
+         * @param streamProvider Instance capable of reading the sources into a stream
+         * @param streamParser Instance capable of parsing the provided stream
+         * @param processors The data processors to process the parsed data
         @returns True if the operation completed without error, otherwise false
         public static boolean Run( String name, IEnumerable<String> sources, IStreamProvider streamProvider, IStreamParser streamParser, params IDataProcessor[] processors) {
             using (processor = new RawFileProcessor(streamProvider, streamParser, processors) { Name = name }) {
@@ -71,9 +71,9 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Perform processing on the specified source file
+         * Perform processing on the specified source file
         */
-         * @param source">The source file to be processed
+         * @param source The source file to be processed
         public void Process( String source) {
             _start = _start ?? DateTime.UtcNow;
 
@@ -93,7 +93,7 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
             _streamProvider.Dispose();

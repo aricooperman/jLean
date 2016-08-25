@@ -19,7 +19,7 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Util
 {
     /**
-    /// A never ending queue that will dequeue and reenqueue the same item
+     * A never ending queue that will dequeue and reenqueue the same item
     */
     public class CircularQueue<T>
     {
@@ -27,22 +27,22 @@ package com.quantconnect.lean.Util
         private final Queue<T> _queue;
 
         /**
-        /// Fired when we do a full circle
+         * Fired when we do a full circle
         */
         public event EventHandler CircleCompleted;
 
         /**
-        /// Initializes a new instance of the <see cref="CircularQueue{T}"/> class
+         * Initializes a new instance of the <see cref="CircularQueue{T}"/> class
         */
-         * @param items">The items in the queue
+         * @param items The items in the queue
         public CircularQueue(params T[] items)
             : this((IEnumerable<T>)items) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="CircularQueue{T}"/> class
+         * Initializes a new instance of the <see cref="CircularQueue{T}"/> class
         */
-         * @param items">The items in the queue
+         * @param items The items in the queue
         public CircularQueue(IEnumerable<T> items) {
             _queue = new Queue<T>();
 
@@ -57,7 +57,7 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Dequeues the next item
+         * Dequeues the next item
         */
         @returns The next item
         public T Dequeue() {
@@ -70,9 +70,9 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Event invocator for the <see cref="CircleCompleted"/> evet
+         * Event invocator for the <see cref="CircleCompleted"/> evet
         */
-        protected virtual void OnCircleCompleted() {
+        protected void OnCircleCompleted() {
             handler = CircleCompleted;
             if( handler != null ) handler(this, EventArgs.Empty);
         }

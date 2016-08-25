@@ -19,26 +19,26 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the True Range (TR). 
-    /// The True Range is the greatest of the following values: 
-    /// value1 = distance from today's high to today's low.
-    /// value2 = distance from yesterday's close to today's high.
-    /// value3 = distance from yesterday's close to today's low.    
+     * This indicator computes the True Range (TR). 
+     * The True Range is the greatest of the following values: 
+     * value1 = distance from today's high to today's low.
+     * value2 = distance from yesterday's close to today's high.
+     * value3 = distance from yesterday's close to today's low.    
     */
     public class TrueRange : TradeBarIndicator
     {
         private TradeBar _previousInput;
 
         /**
-        /// Initializes a new instance of the <see cref="TrueRange"/> class using the specified name.
+         * Initializes a new instance of the <see cref="TrueRange"/> class using the specified name.
         */ 
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public TrueRange( String name)
             : base(name) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -46,14 +46,14 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             if( !IsReady) {
                 _previousInput = input;
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             greatest = input.High - input.Low;

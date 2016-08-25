@@ -19,28 +19,28 @@ using QuantConnect.Brokerages;
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Provides an implementation of <see cref="ISecurityInitializer"/> that initializes a security
-    /// by settings the <see cref="Security.FillModel"/>, <see cref="Security.FeeModel"/>, 
-    /// <see cref="Security.SlippageModel"/>, and the <see cref="Security.SettlementModel"/> properties
+     * Provides an implementation of <see cref="ISecurityInitializer"/> that initializes a security
+     * by settings the <see cref="Security.FillModel"/>, <see cref="Security.FeeModel"/>, 
+     * <see cref="Security.SlippageModel"/>, and the <see cref="Security.SettlementModel"/> properties
     */
     public class BrokerageModelSecurityInitializer : ISecurityInitializer
     {
         private final IBrokerageModel _brokerageModel;
 
         /**
-        /// Initializes a new instance of the <see cref="BrokerageModelSecurityInitializer"/> class
-        /// for the specified algorithm
+         * Initializes a new instance of the <see cref="BrokerageModelSecurityInitializer"/> class
+         * for the specified algorithm
         */
-         * @param brokerageModel">The brokerage model used to initialize the security models
+         * @param brokerageModel The brokerage model used to initialize the security models
         public BrokerageModelSecurityInitializer(IBrokerageModel brokerageModel) {
             _brokerageModel = brokerageModel;
         }
 
         /**
-        /// Initializes the specified security by setting up the models
+         * Initializes the specified security by setting up the models
         */
-         * @param security">The security to be initialized
-        public virtual void Initialize(Security security) {
+         * @param security The security to be initialized
+        public void Initialize(Security security) {
             // set leverage and models
             security.SetLeverage(_brokerageModel.GetLeverage(security));
             security.FillModel = _brokerageModel.GetFillModel(security);

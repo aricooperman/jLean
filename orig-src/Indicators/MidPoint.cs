@@ -16,9 +16,9 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the MidPoint (MIDPOINT)
-    /// The MidPoint is calculated using the following formula:
-    /// MIDPOINT = (Highest Value + Lowest Value) / 2
+     * This indicator computes the MidPoint (MIDPOINT)
+     * The MidPoint is calculated using the following formula:
+     * MIDPOINT = (Highest Value + Lowest Value) / 2
     */
     public class MidPoint : IndicatorBase<IndicatorDataPoint>
     {
@@ -27,10 +27,10 @@ package com.quantconnect.lean.Indicators
         private final Minimum _minimum;
 
         /**
-        /// Initializes a new instance of the <see cref="MidPoint"/> class using the specified name and period.
+         * Initializes a new instance of the <see cref="MidPoint"/> class using the specified name and period.
         */ 
-         * @param name">The name of this indicator
-         * @param period">The period of the MIDPOINT
+         * @param name The name of this indicator
+         * @param period The period of the MIDPOINT
         public MidPoint( String name, int period) 
             : base(name) {
             _period = period;
@@ -39,15 +39,15 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Initializes a new instance of the <see cref="MidPoint"/> class using the specified period.
+         * Initializes a new instance of the <see cref="MidPoint"/> class using the specified period.
         */ 
-         * @param period">The period of the MIDPOINT
+         * @param period The period of the MIDPOINT
         public MidPoint(int period)
             : this( "MIDPOINT" + period, period) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -55,9 +55,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _maximum.Update(input);
@@ -67,7 +67,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _maximum.Reset();

@@ -19,20 +19,20 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Up/Down-gap side-by-side white lines candlestick pattern
+     * Up/Down-gap side-by-side white lines candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - upside or downside gap (between the bodies)
-    /// - first candle after the window: white candlestick
-    /// - second candle after the window: white candlestick with similar size(near the same) and about the same
-    /// open(equal) of the previous candle
-    /// - the second candle does not close the window
-    /// The meaning of "near" and "equal" is specified with SetCandleSettings
-    /// The returned value is positive(+1) or negative(-1): the user should consider that upside
-    /// or downside gap side-by-side white lines is significant when it appears in a trend, while this function
-    /// does not consider the trend
-    /// 
+     * 
+     * Must have:
+     * - upside or downside gap (between the bodies)
+     * - first candle after the window: white candlestick
+     * - second candle after the window: white candlestick with similar size(near the same) and about the same
+     * open(equal) of the previous candle
+     * - the second candle does not close the window
+     * The meaning of "near" and "equal" is specified with SetCandleSettings
+     * The returned value is positive(+1) or negative(-1): the user should consider that upside
+     * or downside gap side-by-side white lines is significant when it appears in a trend, while this function
+     * does not consider the trend
+     * 
     public class GapSideBySideWhite : CandlestickPattern
     {
         private final int _nearAveragePeriod;
@@ -42,9 +42,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _equalPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="GapSideBySideWhite"/> class using the specified name.
+         * Initializes a new instance of the <see cref="GapSideBySideWhite"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public GapSideBySideWhite( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.Near).AveragePeriod, CandleSettings.Get(CandleSettingType.Equal).AveragePeriod) + 2 + 1) {
             _nearAveragePeriod = CandleSettings.Get(CandleSettingType.Near).AveragePeriod;
@@ -52,14 +52,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="GapSideBySideWhite"/> class.
+         * Initializes a new instance of the <see cref="GapSideBySideWhite"/> class.
         */
         public GapSideBySideWhite()
             : this( "GAPSIDEBYSIDEWHITE") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -67,10 +67,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -82,7 +82,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _equalPeriodTotal += GetCandleRange(CandleSettingType.Equal, window[1]);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -105,7 +105,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = GetRealBodyGapUp(window[1], window[2]) ? 1m : -1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -120,7 +120,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _nearPeriodTotal = 0;

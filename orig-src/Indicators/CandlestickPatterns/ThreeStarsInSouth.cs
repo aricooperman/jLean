@@ -20,19 +20,19 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Three Stars In The South candlestick pattern
+     * Three Stars In The South candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - first candle: long black candle with long lower shadow
-    /// - second candle: smaller black candle that opens higher than prior close but within prior candle's range 
-    /// and trades lower than prior close but not lower than prior low and closes off of its low(it has a shadow)
-    /// - third candle: small black marubozu(or candle with very short shadows) engulfed by prior candle's range
-    /// The meanings of "long body", "short body", "very short shadow" are specified with SetCandleSettings;
-    /// The returned value is positive (+1): 3 stars in the south is always bullish;
-    /// The user should consider that 3 stars in the south is significant when it appears in downtrend, while this function
-    /// does not consider it
-    /// 
+     * 
+     * Must have:
+     * - first candle: long black candle with long lower shadow
+     * - second candle: smaller black candle that opens higher than prior close but within prior candle's range 
+     * and trades lower than prior close but not lower than prior low and closes off of its low(it has a shadow)
+     * - third candle: small black marubozu(or candle with very short shadows) engulfed by prior candle's range
+     * The meanings of "long body", "short body", "very short shadow" are specified with SetCandleSettings;
+     * The returned value is positive (+1): 3 stars in the south is always bullish;
+     * The user should consider that 3 stars in the south is significant when it appears in downtrend, while this function
+     * does not consider it
+     * 
     public class ThreeStarsInSouth : CandlestickPattern
     {
         private final int _bodyLongAveragePeriod;
@@ -46,9 +46,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _bodyShortPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="ThreeStarsInSouth"/> class using the specified name.
+         * Initializes a new instance of the <see cref="ThreeStarsInSouth"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public ThreeStarsInSouth( String name) 
             : base(name, Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod),
                   Math.Max(CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod)) + 2 + 1) {
@@ -59,14 +59,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ThreeStarsInSouth"/> class.
+         * Initializes a new instance of the <see cref="ThreeStarsInSouth"/> class.
         */
         public ThreeStarsInSouth()
             : this( "THREESTARSINSOUTH") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -74,10 +74,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -98,7 +98,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _bodyShortPeriodTotal += GetCandleRange(CandleSettingType.BodyShort, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -132,7 +132,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = 1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -155,7 +155,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _bodyLongPeriodTotal = 0;

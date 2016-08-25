@@ -17,19 +17,19 @@ package com.quantconnect.lean.api;
 
 import java.util.List;
 
-/// Response from the compiler on a build event
+ * Response from the compiler on a build event
 public class Compile extends RestResponse {
 
-    /// Compile Id for a sucessful build
+     * Compile Id for a sucessful build
 //    @JsonProperty( "compileId")]
     public String compileId;
 
-    /// True on successful compile
+     * True on successful compile
 //    @JsonProperty( "state")]
 //    [JsonConverter(typeof(StringEnumConverter))]
     public CompileState state;
 
-    /// Logs of the compilation request
+     * Logs of the compilation request
 //    @JsonProperty( "logs")]
     public List<String> logs;
 }
@@ -42,25 +42,25 @@ using Newtonsoft.Json.Converters;
 package com.quantconnect.lean.Api
 {
     /**
-    /// Response from the compiler on a build event
+     * Response from the compiler on a build event
     */
     public class Compile : RestResponse
     {
         /**
-        /// Compile Id for a sucessful build
+         * Compile Id for a sucessful build
         */
         @JsonProperty( "compileId")]
         public String CompileId;
 
         /**
-        /// True on successful compile
+         * True on successful compile
         */
         @JsonProperty( "state")]
         [JsonConverter(typeof(StringEnumConverter))]
         public CompileState State;
 
         /**
-        /// Logs of the compilation request
+         * Logs of the compilation request
         */
         @JsonProperty( "logs")]
         public List<String> Logs;

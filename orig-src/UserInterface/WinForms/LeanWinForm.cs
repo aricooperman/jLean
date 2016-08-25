@@ -22,10 +22,10 @@ package com.quantconnect.lean.Views.WinForms
         //private GeckoWebBrowser _geckoBrowser;
 
         /**
-        /// Create the UX.
+         * Create the UX.
         */
-         * @param notificationHandler">Messaging system
-         * @param job">Job to use for URL generation
+         * @param notificationHandler Messaging system
+         * @param job Job to use for URL generation
         public LeanWinForm(IMessagingHandler notificationHandler, AlgorithmNodePacket job) {
             InitializeComponent();
 
@@ -75,32 +75,32 @@ package com.quantconnect.lean.Views.WinForms
 
 
         /**
-        /// Get the URL for the embedded charting
+         * Get the URL for the embedded charting
         */
-         * @param job">Job packet for the URL
-         * @param liveMode">Is this a live mode chart?
-         * @param holdReady">Hold the ready signal to inject data
+         * @param job Job packet for the URL
+         * @param liveMode Is this a live mode chart?
+         * @param holdReady Hold the ready signal to inject data
         private static String GetUrl(AlgorithmNodePacket job, boolean liveMode = false, boolean holdReady = false) {
             url = "";
             hold = holdReady == false ? "0" : "1";
             embedPage = liveMode ? "embeddedLive" : "embedded";
 
             url = String.format(
-                "https://www.quantconnect.com/terminal/%1$s?user=%2$s&token=%3$s&pid={3}&version={4}&holdReady={5}&bid={6}",
+                "https://www.quantconnect.com/terminal/%1$s?user=%2$s&token=%3$s&pid=%4$s&version=%5$s&holdReady=%6$s&bid=%7$s",
                 embedPage, job.UserId, job.Channel, job.ProjectId, Globals.Version, hold, job.AlgorithmId);
 
             return url;
         }
 
         /**
-        /// MONO BROWSER: Browser content has completely loaded.
+         * MONO BROWSER: Browser content has completely loaded.
         */
         private void MonoBrowserOnDocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs webBrowserDocumentCompletedEventArgs) {
             _messaging.OnConsumerReadyEvent();
         }
 
         /**
-        /// GECKO BROWSER: Browser content has completely loaded.
+         * GECKO BROWSER: Browser content has completely loaded.
         */
         //private void BrowserOnDomContentLoaded(object sender, DomEventArgs domEventArgs)
         //{
@@ -108,7 +108,7 @@ package com.quantconnect.lean.Views.WinForms
         //}
 
         /**
-        /// Onload Form Initialization
+         * Onload Form Initialization
         */
         private void LeanWinForm_Load(object sender, EventArgs e) {
             if( OS.IsWindows && !WBEmulator.IsBrowserEmulationSet()) {
@@ -117,7 +117,7 @@ package com.quantconnect.lean.Views.WinForms
         }
 
         /**
-        /// Update the status label at the bottom of the form
+         * Update the status label at the bottom of the form
         */
         private void timer_Tick(object sender, EventArgs e) {
             StatisticsToolStripStatusLabel.Text = string.Concat( "Performance: CPU: ", OS.CpuUsage.NextValue().toString( "0.0"), "%",
@@ -143,7 +143,7 @@ package com.quantconnect.lean.Views.WinForms
         }
          
         /**
-        /// Backtest result packet
+         * Backtest result packet
         */
          * @param packet">
         private void MessagingOnBacktestResultEvent(BacktestResultPacket packet) {
@@ -191,7 +191,7 @@ package com.quantconnect.lean.Views.WinForms
         }
 
         /**
-        /// Display a handled error
+         * Display a handled error
         */
         private void MessagingOnHandledErrorEvent(HandledErrorPacket packet) {
             hstack = (!StringUtils.isEmpty(packet.StackTrace) ? (Environment.NewLine + " " + packet.StackTrace) : string.Empty);
@@ -199,7 +199,7 @@ package com.quantconnect.lean.Views.WinForms
         }
 
         /**
-        /// Display a runtime error
+         * Display a runtime error
         */
         private void MessagingOnRuntimeErrorEvent(RuntimeErrorPacket packet) {
             rstack = (!StringUtils.isEmpty(packet.StackTrace) ? (Environment.NewLine + " " + packet.StackTrace) : string.Empty);
@@ -207,14 +207,14 @@ package com.quantconnect.lean.Views.WinForms
         }
 
         /**
-        /// Display a log packet
+         * Display a log packet
         */
         private void MessagingOnLogEvent(LogPacket packet) {
             _logging.Trace(packet.Message);
         }
 
         /**
-        /// Display a debug packet
+         * Display a debug packet
         */
          * @param packet">
         private void MessagingOnDebugEvent(DebugPacket packet) {
@@ -222,7 +222,7 @@ package com.quantconnect.lean.Views.WinForms
         }
 
         /**
-        /// Closing the form exit the LEAN engine too.
+         * Closing the form exit the LEAN engine too.
         */
          * @param sender">
          * @param e">

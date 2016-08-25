@@ -285,7 +285,7 @@ package com.quantconnect.lean.Tests.Indicators
 
             left.Update(DateTime.Today, 1m);
             Assert.IsFalse(updatedEventFired);
-            right.Update(DateTime.Today, 0m);
+            right.Update(DateTime.Today, BigDecimal.ZERO);
             Assert.IsFalse(updatedEventFired);
 
             // submitting another update to right won't cause an update without corresponding update to left

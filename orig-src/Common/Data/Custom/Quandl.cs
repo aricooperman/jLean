@@ -20,8 +20,8 @@ using System.Globalization;
 package com.quantconnect.lean.Data.Custom
 {
     /**
-    /// Quandl Data Type - Import generic data from quandl, without needing to define Reader methods. 
-    /// This reads the headers of the data imported, and dynamically creates properties for the imported data.
+     * Quandl Data Type - Import generic data from quandl, without needing to define Reader methods. 
+     * This reads the headers of the data imported, and dynamically creates properties for the imported data.
     */
     public class Quandl : DynamicData
     {
@@ -31,7 +31,7 @@ package com.quantconnect.lean.Data.Custom
         private static String _authCode = "";
 
         /**
-        /// Flag indicating whether or not the Quanl auth code has been set yet
+         * Flag indicating whether or not the Quanl auth code has been set yet
         */
         public static boolean IsAuthCodeSet
         {
@@ -40,8 +40,8 @@ package com.quantconnect.lean.Data.Custom
         }
 
         /**
-        /// The end time of this data. Some data covers spans (trade bars) and as such we want
-        /// to know the entire time span covered
+         * The end time of this data. Some data covers spans (trade bars) and as such we want
+         * to know the entire time span covered
         */
         public @Override DateTime EndTime
         {
@@ -50,7 +50,7 @@ package com.quantconnect.lean.Data.Custom
         }
 
         /**
-        /// Gets a time span of one day
+         * Gets a time span of one day
         */
         public Duration Period
         {
@@ -58,13 +58,13 @@ package com.quantconnect.lean.Data.Custom
         }
 
         /**
-        /// Default quandl constructor uses Close as its value column
+         * Default quandl constructor uses Close as its value column
         */
         public Quandl() : this( "Close") {
         }
 
         /**
-        /// Constructor for creating customized quandl instance which doesn't use "Close" as its value item.
+         * Constructor for creating customized quandl instance which doesn't use "Close" as its value item.
         */
          * @param valueColumnName">
         protected Quandl( String valueColumnName) {
@@ -72,12 +72,12 @@ package com.quantconnect.lean.Data.Custom
         }
 
         /**
-        /// Generic Reader Implementation for Quandl Data.
+         * Generic Reader Implementation for Quandl Data.
         */
-         * @param config">Subscription configuration
-         * @param line">CSV line of data from the souce
-         * @param date">Date of the requested line
-         * @param isLiveMode">true if we're in live mode, false for backtesting mode
+         * @param config Subscription configuration
+         * @param line CSV line of data from the souce
+         * @param date Date of the requested line
+         * @param isLiveMode true if we're in live mode, false for backtesting mode
         @returns 
         public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
             // be sure to instantiate the correct type
@@ -91,7 +91,7 @@ package com.quantconnect.lean.Data.Custom
                     property = propertyName.TrimStart().TrimEnd();
                     // should we remove property names like Time?
                     // do we need to alias the Time??
-                    data.SetProperty(property, 0m);
+                    data.SetProperty(property, BigDecimal.ZERO);
                     _propertyNames.Add(property);
                 }
                 // Returns null at this point where we are only reading the properties names
@@ -112,11 +112,11 @@ package com.quantconnect.lean.Data.Custom
         }
 
         /**
-        /// Quandl Source Locator: Using the Quandl V1 API automatically set the URL for the dataset.
+         * Quandl Source Locator: Using the Quandl V1 API automatically set the URL for the dataset.
         */
-         * @param config">Subscription configuration object
-         * @param date">Date of the data file we're looking for
-         * @param isLiveMode">true if we're in live mode, false for backtesting mode
+         * @param config Subscription configuration object
+         * @param date Date of the data file we're looking for
+         * @param isLiveMode true if we're in live mode, false for backtesting mode
         @returns STRING API Url for Quandl.
         public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             source = @"https://www.quandl.com/api/v3/datasets/" + config.Symbol.Value + ".csv?order=asc&api_key=" + _authCode;
@@ -124,7 +124,7 @@ package com.quantconnect.lean.Data.Custom
         }
 
         /**
-        /// Set the auth code for the quandl set to the QuantConnect auth code.
+         * Set the auth code for the quandl set to the QuantConnect auth code.
         */
          * @param authCode">
         public static void SetAuthCode( String authCode) {

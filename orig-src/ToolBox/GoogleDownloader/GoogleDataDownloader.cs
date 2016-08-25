@@ -23,7 +23,7 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.ToolBox.GoogleDownloader
 {
     /**
-    /// Google Data Downloader class
+     * Google Data Downloader class
     */
     public class GoogleDataDownloader : IDataDownloader
     {
@@ -32,15 +32,15 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
         // p = period in days
         // ts = start time
         // Strangely Google forces CHLO format instead of normal OHLC.
-        private static final String UrlPrototype = @"http://www.google.com/finance/getprices?q=%1$s&i=%2$s&p=%3$sd&f=d,c,h,l,o,v&ts={3}";
+        private static final String UrlPrototype = @"http://www.google.com/finance/getprices?q=%1$s&i=%2$s&p=%3$sd&f=d,c,h,l,o,v&ts=%4$s";
 
         /**
-        /// Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
+         * Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
         */
-         * @param symbol">Symbol for the data we're looking for.
-         * @param resolution">Resolution of the data request
-         * @param startUtc">Start time of the data in UTC
-         * @param endUtc">End time of the data in UTC
+         * @param symbol Symbol for the data we're looking for.
+         * @param resolution Resolution of the data request
+         * @param startUtc Start time of the data in UTC
+         * @param endUtc End time of the data in UTC
         @returns Enumerable of base data for this symbol
         public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
             if( resolution != Resolution.Minute && resolution != Resolution.Hour)
@@ -50,7 +50,7 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
                 throw new NotSupportedException( "SecurityType not available: " + symbol.ID.SecurityType);
 
             if( endUtc < startUtc)
-                throw new ArgumentException( "The end date must be greater or equal than the start date.");
+                throw new IllegalArgumentException( "The end date must be greater or equal than the start date.");
 
             numberOfDays = (int)(endUtc - startUtc).TotalDays;
             resolutionSeconds = (int)resolution.ToTimeSpan().TotalSeconds;
@@ -107,22 +107,22 @@ package com.quantconnect.lean.ToolBox.GoogleDownloader
         }
 
         /**
-        /// Convert a DateTime object into a Unix time long value
+         * Convert a DateTime object into a Unix time long value
         */
-         * @param utcDateTime">The DateTime object (UTC)
+         * @param utcDateTime The DateTime object (UTC)
         @returns A Unix long time value.
-        /// When we move to NET 4.6, we can replace this with DateTimeOffset.ToUnixTimeSeconds()
+         * When we move to NET 4.6, we can replace this with DateTimeOffset.ToUnixTimeSeconds()
         private static long ToUnixTime(DateTime utcDateTime) {
             epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return (long)(utcDateTime - epoch).TotalSeconds;
         }
 
         /**
-        /// Convert a Unix time long value into a DateTime object
+         * Convert a Unix time long value into a DateTime object
         */
-         * @param unixTime">Unix long time.
+         * @param unixTime Unix long time.
         @returns A DateTime value (UTC)
-        /// When we move to NET 4.6, we can replace this with DateTimeOffset.FromUnixTimeSeconds()
+         * When we move to NET 4.6, we can replace this with DateTimeOffset.FromUnixTimeSeconds()
         private static DateTime FromUnixTime(long unixTime) {
             epoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
             return epoch.AddSeconds(unixTime);

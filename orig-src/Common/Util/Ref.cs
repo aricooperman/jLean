@@ -19,38 +19,38 @@ using System;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Represents a read-only reference to any value, T
+     * Represents a read-only reference to any value, T
     */
-    /// <typeparam name="T">The data type the reference points to</typeparam>
+     * <typeparam name="T The data type the reference points to</typeparam>
     public interface IReadOnlyRef<out T>
     {
         /**
-        /// Gets the current value this reference points to
+         * Gets the current value this reference points to
         */
         T Value { get; }
     }
 
     /**
-    /// Represents a reference to any value, T
+     * Represents a reference to any value, T
     */
-    /// <typeparam name="T">The data type the reference points to</typeparam>
+     * <typeparam name="T The data type the reference points to</typeparam>
     public sealed class Ref<T> : IReadOnlyRef<T>
     {
         private final Func<T> _getter;
         private final Action<T> _setter;
 
         /**
-        /// Initializes a new instance of the <see cref="Ref{T}"/> class
+         * Initializes a new instance of the <see cref="Ref{T}"/> class
         */
-         * @param getter">A function delegate to get the current value
-         * @param setter">A function delegate to set the current value
+         * @param getter A function delegate to get the current value
+         * @param setter A function delegate to set the current value
         public Ref(Func<T> getter, Action<T> setter) {
             _getter = getter;
             _setter = setter;
         }
 
         /**
-        /// Gets or sets the value of this reference
+         * Gets or sets the value of this reference
         */
         public T Value
         {
@@ -59,7 +59,7 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Returns a read-only version of this instance
+         * Returns a read-only version of this instance
         */
         @returns A new instance with read-only semantics/gaurantees
         public IReadOnlyRef<T> AsReadOnly() {
@@ -71,28 +71,28 @@ package com.quantconnect.lean.Util
     }
 
     /**
-    /// Provides some helper methods that leverage C# type inference
+     * Provides some helper methods that leverage C# type inference
     */
     public static class Ref
     {
         /**
-        /// Creates a new <see cref="Ref{T}"/> instance
+         * Creates a new <see cref="Ref{T}"/> instance
         */
         public static Ref<T> Create<T>(Func<T> getter, Action<T> setter) {
             return new Ref<T>(getter, setter);
         }
         /**
-        /// Creates a new <see cref="IReadOnlyRef{T}"/> instance
+         * Creates a new <see cref="IReadOnlyRef{T}"/> instance
         */
         public static IReadOnlyRef<T> CreateReadOnly<T>(Func<T> getter) {
             return new Ref<T>(getter, null ).AsReadOnly();
         }
         /**
-        /// Creates a new <see cref="Ref{T}"/> instance by closing over
-        /// the specified <paramref name="initialValue"/> variable.
-        /// NOTE: This won't close over the variable input to the function,
-        /// but rather a copy of the variable. This reference will use it's
-        /// own storage.
+         * Creates a new <see cref="Ref{T}"/> instance by closing over
+         * the specified <paramref name="initialValue"/> variable.
+         * NOTE: This won't close over the variable input to the function,
+         * but rather a copy of the variable. This reference will use it's
+         * own storage.
         */
         public static Ref<T> Create<T>(T initialValue) {
             return new Ref<T>(() -> initialValue, value -> { initialValue = value; });

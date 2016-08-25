@@ -15,14 +15,14 @@
 
 package com.quantconnect.lean.api;
 
-/// File for a project
+ * File for a project
 public class ProjectFile
 {
-    /// Name of a project file
+     * Name of a project file
 //    @JsonProperty( "name")]
     public String name;
 
-    /// Contents of the project file
+     * Contents of the project file
 //    @JsonProperty( "code")]
     public String code;
 }
@@ -33,18 +33,18 @@ sing Newtonsoft.Json;
 package com.quantconnect.lean.Api
 {
     /**
-    /// File for a project
+     * File for a project
     */
     public class ProjectFile
     {
         /**
-        /// Name of a project file
+         * Name of a project file
         */
         @JsonProperty( "name")]
         public String Name;
 
         /**
-        /// Contents of the project file
+         * Contents of the project file
         */
         @JsonProperty( "code")]
         public String Code;

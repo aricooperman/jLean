@@ -18,12 +18,12 @@ using System;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// Regression algorithm for custom data
+     * Regression algorithm for custom data
     */
     public class CustomDataRegressionAlgorithm : QCAlgorithm
     {
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             SetStartDate(2011, 9, 13);
@@ -38,10 +38,10 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Event Handler for Bitcoin Data Events: These Bitcoin objects are created from our 
-        /// "Bitcoin" type below and fired into this event handler.
+         * Event Handler for Bitcoin Data Events: These Bitcoin objects are created from our 
+         * "Bitcoin" type below and fired into this event handler.
         */
-         * @param data">One(1) Bitcoin Object, streamed into our algorithm synchronised in time with our other data streams
+         * @param data One(1) Bitcoin Object, streamed into our algorithm synchronised in time with our other data streams
         public void OnData(Bitcoin data) {
             //If we don't have any bitcoin "SHARES" -- invest"
             if( !Portfolio.Invested) {

@@ -19,18 +19,18 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Hammer candlestick pattern indicator
+     * Hammer candlestick pattern indicator
     */
-    /// 
-    /// Must have:
-    /// - small real body
-    /// - long lower shadow
-    /// - no, or very short, upper shadow
-    /// - body below or near the lows of the previous candle
-    /// The meaning of "short", "long" and "near the lows" is specified with SetCandleSettings;
-    /// The returned value is positive(+1): hammer is always bullish;
-    /// The user should consider that a hammer must appear in a downtrend, while this function does not consider it
-    /// 
+     * 
+     * Must have:
+     * - small real body
+     * - long lower shadow
+     * - no, or very short, upper shadow
+     * - body below or near the lows of the previous candle
+     * The meaning of "short", "long" and "near the lows" is specified with SetCandleSettings;
+     * The returned value is positive(+1): hammer is always bullish;
+     * The user should consider that a hammer must appear in a downtrend, while this function does not consider it
+     * 
     public class Hammer : CandlestickPattern
     {
         private final int _bodyShortAveragePeriod;
@@ -44,9 +44,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _nearPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="Hammer"/> class using the specified name.
+         * Initializes a new instance of the <see cref="Hammer"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public Hammer( String name) 
             : base(name, Math.Max(Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod),
                 CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod), CandleSettings.Get(CandleSettingType.Near).AveragePeriod) + 1 + 1) {
@@ -57,14 +57,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Hammer"/> class.
+         * Initializes a new instance of the <see cref="Hammer"/> class.
         */
         public Hammer()
             : this( "HAMMER") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -72,10 +72,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -95,7 +95,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _nearPeriodTotal += GetCandleRange(CandleSettingType.Near, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -111,7 +111,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = 1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -132,13 +132,13 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
-            _bodyShortPeriodTotal = 0m;
-            _shadowLongPeriodTotal = 0m;
-            _shadowVeryShortPeriodTotal = 0m;
-            _nearPeriodTotal = 0m;
+            _bodyShortPeriodTotal = BigDecimal.ZERO;
+            _shadowLongPeriodTotal = BigDecimal.ZERO;
+            _shadowVeryShortPeriodTotal = BigDecimal.ZERO;
+            _nearPeriodTotal = BigDecimal.ZERO;
             base.Reset();
         }
     }

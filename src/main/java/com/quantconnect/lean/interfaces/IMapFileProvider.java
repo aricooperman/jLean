@@ -21,12 +21,12 @@ import com.quantconnect.lean.data.auxiliary.MapFileResolver;
 //using System.ComponentModel.Composition;
 //using QuantConnect.Data.Auxiliary;
 
-/// Provides instances of <see cref="MapFileResolver"/> at run time
+ * Provides instances of <see cref="MapFileResolver"/> at run time
 //[InheritedExport(typeof(IMapFileProvider))]
 public interface IMapFileProvider {
-    /// Gets a <see cref="MapFileResolver"/> representing all the map
-    /// files for the specified market
-     * @param market">The equity market, for example, 'usa'
+     * Gets a <see cref="MapFileResolver"/> representing all the map
+     * files for the specified market
+     * @param market The equity market, for example, 'usa'
     @returns A <see cref="MapFileResolver"/> containing all map files for the specified market
     MapFileResolver get( String market );
 }

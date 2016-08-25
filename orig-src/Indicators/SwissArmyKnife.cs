@@ -20,34 +20,34 @@ package com.quantconnect.lean.Indicators
 {
 
     /**
-    /// The tools of the Swiss Army Knife. Some of the tools lend well to chaining with the "Of" Method, others may be treated as moving averages
+     * The tools of the Swiss Army Knife. Some of the tools lend well to chaining with the "Of" Method, others may be treated as moving averages
     */
     public enum SwissArmyKnifeTool
     {
         /**
-        /// Two Pole Guassian Filter
+         * Two Pole Guassian Filter
         */
         Gauss,
         /**
-        /// Two Pole Butterworth Filter
+         * Two Pole Butterworth Filter
         */
         Butter,
         /**
-        /// High Pass Filter
+         * High Pass Filter
         */
         HighPass,
         /**
-        /// Two Pole High Pass Filter
+         * Two Pole High Pass Filter
         */
         TwoPoleHighPass,
         /**
-        /// BandPass Filter
+         * BandPass Filter
         */
         BandPass,
     }
 
     /**
-    /// Swiss Army Knife indicator by John Ehlers
+     * Swiss Army Knife indicator by John Ehlers
     */
     public class SwissArmyKnife : Indicator
     {
@@ -67,7 +67,7 @@ package com.quantconnect.lean.Indicators
         double _a2 = 0;
 
         /**
-        /// Swiss Army Knife indicator by John Ehlers
+         * Swiss Army Knife indicator by John Ehlers
         */
          * @param period">
          * @param delta">
@@ -77,7 +77,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Swiss Army Knife indicator by John Ehlers
+         * Swiss Army Knife indicator by John Ehlers
         */
          * @param name">
          * @param period">
@@ -144,7 +144,7 @@ package com.quantconnect.lean.Indicators
 
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -152,9 +152,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
 
@@ -173,7 +173,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets to the initial state
+         * Resets to the initial state
         */
         public @Override void Reset() {
             _period = 20;

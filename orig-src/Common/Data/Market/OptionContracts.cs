@@ -18,18 +18,18 @@ using System;
 package com.quantconnect.lean.Data.Market
 {
     /**
-    /// Collection of <see cref="OptionContract"/> keyed by option symbol
+     * Collection of <see cref="OptionContract"/> keyed by option symbol
     */
     public class OptionContracts : DataMap<OptionContract>
     {
         /**
-        /// Creates a new instance of the <see cref="OptionContracts"/> dictionary
+         * Creates a new instance of the <see cref="OptionContracts"/> dictionary
         */
         public OptionContracts() {
         }
 
         /**
-        /// Creates a new instance of the <see cref="OptionContracts"/> dictionary
+         * Creates a new instance of the <see cref="OptionContracts"/> dictionary
         */
         public OptionContracts(DateTime time)
             : base(time) {

@@ -16,15 +16,15 @@
 package com.quantconnect.lean.Securities.Cfd
 {
     /**
-    /// CFD holdings implementation of the base securities class
+     * CFD holdings implementation of the base securities class
     */
-    /// <seealso cref="SecurityHolding"/>
+     * <seealso cref="SecurityHolding"/>
     public class CfdHolding : SecurityHolding
     {
         /**
-        /// CFD Holding Class constructor
+         * CFD Holding Class constructor
         */
-         * @param security">The CFD security being held
+         * @param security The CFD security being held
         public CfdHolding(Cfd security)
             : base(security) {
         }

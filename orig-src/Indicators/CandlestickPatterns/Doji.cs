@@ -18,15 +18,15 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Doji candlestick pattern indicator
+     * Doji candlestick pattern indicator
     */
-    /// 
-    /// Must have:
-    /// - open quite equal to close
-    /// How much can be the maximum distance between open and close is specified with SetCandleSettings
-    /// The returned value is always positive(+1) but this does not mean it is bullish: doji shows uncertainty and it is
-    /// neither bullish nor bearish when considered alone
-    /// 
+     * 
+     * Must have:
+     * - open quite equal to close
+     * How much can be the maximum distance between open and close is specified with SetCandleSettings
+     * The returned value is always positive(+1) but this does not mean it is bullish: doji shows uncertainty and it is
+     * neither bullish nor bearish when considered alone
+     * 
     public class Doji : CandlestickPattern
     {
         private final int _bodyDojiAveragePeriod;
@@ -34,23 +34,23 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _bodyDojiPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="Doji"/> class using the specified name.
+         * Initializes a new instance of the <see cref="Doji"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public Doji( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod + 1) {
             _bodyDojiAveragePeriod = CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Doji"/> class.
+         * Initializes a new instance of the <see cref="Doji"/> class.
         */
         public Doji()
             : this( "DOJI") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -58,10 +58,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -69,10 +69,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _bodyDojiPeriodTotal += GetCandleRange(CandleSettingType.BodyDoji, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
-            value = GetRealBody(input) <= GetCandleAverage(CandleSettingType.BodyDoji, _bodyDojiPeriodTotal, input) ? 1m : 0m;
+            value = GetRealBody(input) <= GetCandleAverage(CandleSettingType.BodyDoji, _bodyDojiPeriodTotal, input) ? 1m : BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -84,10 +84,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
-            _bodyDojiPeriodTotal = 0m;
+            _bodyDojiPeriodTotal = BigDecimal.ZERO;
             base.Reset();
         }
     }

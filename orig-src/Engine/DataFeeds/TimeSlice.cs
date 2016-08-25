@@ -26,57 +26,57 @@ using QuantConnect.Securities.Option;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Represents a grouping of data emitted at a certain time.
+     * Represents a grouping of data emitted at a certain time.
     */
     public class TimeSlice
     {
         /**
-        /// Gets the count of data points in this <see cref="TimeSlice"/>
+         * Gets the count of data points in this <see cref="TimeSlice"/>
         */
         public int DataPointCount { get; private set; }
 
         /**
-        /// Gets the time this data was emitted
+         * Gets the time this data was emitted
         */
         public DateTime Time { get; private set; }
 
         /**
-        /// Gets the data in the time slice
+         * Gets the data in the time slice
         */
         public List<DataFeedPacket> Data { get; private set; }
 
         /**
-        /// Gets the <see cref="Slice"/> that will be used as input for the algorithm
+         * Gets the <see cref="Slice"/> that will be used as input for the algorithm
         */
         public Slice Slice { get; private set; }
 
         /**
-        /// Gets the data used to update the cash book
+         * Gets the data used to update the cash book
         */
         public List<UpdateData<Cash>> CashBookUpdateData { get; private set; }
 
         /**
-        /// Gets the data used to update securities
+         * Gets the data used to update securities
         */
         public List<UpdateData<Security>> SecuritiesUpdateData { get; private set; }
 
         /**
-        /// Gets the data used to update the consolidators
+         * Gets the data used to update the consolidators
         */
         public List<UpdateData<SubscriptionDataConfig>> ConsolidatorUpdateData { get; private set; }
 
         /**
-        /// Gets all the custom data in this <see cref="TimeSlice"/>
+         * Gets all the custom data in this <see cref="TimeSlice"/>
         */
         public List<UpdateData<Security>> CustomData { get; private set; }
 
         /**
-        /// Gets the changes to the data subscriptions as a result of universe selection
+         * Gets the changes to the data subscriptions as a result of universe selection
         */
         public SecurityChanges SecurityChanges { get; set; }
 
         /**
-        /// Initializes a new <see cref="TimeSlice"/> containing the specified data
+         * Initializes a new <see cref="TimeSlice"/> containing the specified data
         */
         public TimeSlice(DateTime time,
             int dataPointCount,
@@ -99,13 +99,13 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Creates a new <see cref="TimeSlice"/> for the specified time using the specified data
+         * Creates a new <see cref="TimeSlice"/> for the specified time using the specified data
         */
-         * @param utcDateTime">The UTC frontier date time
-         * @param algorithmTimeZone">The algorithm's time zone, required for computing algorithm and slice time
-         * @param cashBook">The algorithm's cash book, required for generating cash update pairs
-         * @param data">The data in this <see cref="TimeSlice"/>
-         * @param changes">The new changes that are seen in this time slice as a result of universe selection
+         * @param utcDateTime The UTC frontier date time
+         * @param algorithmTimeZone The algorithm's time zone, required for computing algorithm and slice time
+         * @param cashBook The algorithm's cash book, required for generating cash update pairs
+         * @param data The data in this <see cref="TimeSlice"/>
+         * @param changes The new changes that are seen in this time slice as a result of universe selection
         @returns A new <see cref="TimeSlice"/> containing the specified data
         public static TimeSlice Create(DateTime utcDateTime, ZoneId algorithmTimeZone, CashBook cashBook, List<DataFeedPacket> data, SecurityChanges changes) {
             int count = 0;
@@ -238,7 +238,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Adds the specified <see cref="BaseData"/> instance to the appropriate <see cref="DataDictionary{T}"/>
+         * Adds the specified <see cref="BaseData"/> instance to the appropriate <see cref="DataDictionary{T}"/>
         */
         private static void PopulateDataDictionaries(BaseData baseData, Ticks ticks, TradeBars tradeBars, QuoteBars quoteBars, OptionChains optionChains) {
             symbol = baseData.Symbol;
@@ -294,7 +294,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     BidSize = security.BidSize,
                     AskPrice = security.AskPrice,
                     AskSize = security.AskSize,
-                    UnderlyingLastPrice = chain.Underlying != null ? chain.Underlying.Price : 0m
+                    UnderlyingLastPrice = chain.Underlying != null ? chain.Underlying.Price : BigDecimal.ZERO
                 };
                 chain.Contracts[baseData.Symbol] = contract;
                 option = security as Option;
@@ -331,11 +331,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         private static void UpdateContract(OptionContract contract, QuoteBar quote) {
-            if( quote.Ask != null && quote.Ask.Close != 0m) {
+            if( quote.Ask != null && quote.Ask.Close != BigDecimal.ZERO) {
                 contract.AskPrice = quote.Ask.Close;
                 contract.AskSize = quote.LastAskSize;
             }
-            if( quote.Bid != null && quote.Bid.Close != 0m) {
+            if( quote.Bid != null && quote.Bid.Close != BigDecimal.ZERO) {
                 contract.BidPrice = quote.Bid.Close;
                 contract.BidSize = quote.LastBidSize;
             }
@@ -346,11 +346,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 contract.LastPrice = tick.Price;
             }
             else if( tick.TickType == TickType.Quote) {
-                if( tick.AskPrice != 0m) {
+                if( tick.AskPrice != BigDecimal.ZERO) {
                     contract.AskPrice = tick.AskPrice;
                     contract.AskSize = tick.AskSize;
                 }
-                if( tick.BidPrice != 0m) {
+                if( tick.BidPrice != BigDecimal.ZERO) {
                     contract.BidPrice = tick.BidPrice;
                     contract.BidSize = tick.BidSize;
                 }

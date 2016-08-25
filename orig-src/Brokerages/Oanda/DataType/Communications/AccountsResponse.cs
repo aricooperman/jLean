@@ -22,7 +22,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
     /**
-    /// Represents the web response when querying the list of accounts belong to one Oanda user.
+     * Represents the web response when querying the list of accounts belong to one Oanda user.
     */
     public class AccountsResponse
     {

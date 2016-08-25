@@ -22,110 +22,110 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages.Tradier
 {
     /**
-    /// Tradier deserialization container for history
+     * Tradier deserialization container for history
     */
     public class TradierEventContainer
     {
-        /// Event Contents:
+         * Event Contents:
         @JsonProperty( "history")]
         public TradierEvents TradierEvents;
 
-        /// Default constructor for json serialization
+         * Default constructor for json serialization
         public TradierEventContainer() { }
     }
 
     /**
-    /// Events array container.
+     * Events array container.
     */
     public class TradierEvents 
     { 
-        /// Events List:
+         * Events List:
         @JsonProperty( "event")]
         [JsonConverter(typeof(SingleValueListConverter<TradierEvent>))]
         public List<TradierEvent> Events;
 
-        /// Default Constructor for JSON
+         * Default Constructor for JSON
         public TradierEvents() { }
     }
 
     /**
-    /// Tradier event model:
+     * Tradier event model:
     */
     public class TradierEvent
     { 
-        /// Tradier Event: Amount
+         * Tradier Event: Amount
         @JsonProperty( "amount")]
         public BigDecimal Amount;
 
-        /// Tradier Event: Date
+         * Tradier Event: Date
         @JsonProperty( "date")]
         public DateTime Date;
 
-        /// Tradier Event: Type
+         * Tradier Event: Type
         @JsonProperty( "type")]
         public TradierEventType Type;
 
-        /// Tradier Event: TradeEvent
+         * Tradier Event: TradeEvent
         @JsonProperty( "trade")]
         public TradierTradeEvent TradeEvent;
 
-        /// Tradier Event: Journal Event
+         * Tradier Event: Journal Event
         @JsonProperty( "journal")]
         public TradierJournalEvent JournalEvent;
 
-        /// Tradier Event: Option Event
+         * Tradier Event: Option Event
         @JsonProperty( "option")]
         public TradierOptionEvent OptionEvent;
 
-        /// Tradier Event: Dividend Event
+         * Tradier Event: Dividend Event
         @JsonProperty( "dividend")]
         public TradierOptionEvent DividendEvent;
     }
 
     /**
-    /// Common base class for events detail information:
+     * Common base class for events detail information:
     */
     public class TradierEventDetail 
     {
-        /// Tradier Event: Description
+         * Tradier Event: Description
         @JsonProperty( "description")]
         public String Description;
 
-        /// Tradier Event: Quantity
+         * Tradier Event: Quantity
         @JsonProperty( "quantity")]
         public BigDecimal Quantity;
         
-        /// Empty Constructor
+         * Empty Constructor
         public TradierEventDetail() {  }
     }
 
     /**
-    /// Trade event in history for tradier:
+     * Trade event in history for tradier:
     */
     public class TradierTradeEvent : TradierEventDetail
     {
-        /// Tradier Event: Comission
+         * Tradier Event: Comission
         @JsonProperty( "commission")]
         public BigDecimal Commission;
 
-        /// Tradier Event: Price
+         * Tradier Event: Price
         @JsonProperty( "price")]
         public BigDecimal Price;
 
-        /// Tradier Event: Symbol
+         * Tradier Event: Symbol
         @JsonProperty( "symbol")]
         public String Symbol;
 
-        /// Tradier Event: Trade Type
+         * Tradier Event: Trade Type
         @JsonProperty( "trade_type")]
         public TradierTradeType TradeType;
 
-        /// Empty constructor
+         * Empty constructor
         public TradierTradeEvent() { }
     }
 
     /**
-    /// Journal event in history:
+     * Journal event in history:
     */
     public class TradierJournalEvent : TradierEventDetail
     {
@@ -134,7 +134,7 @@ package com.quantconnect.lean.Brokerages.Tradier
     }
 
     /**
-    /// Dividend event in history:
+     * Dividend event in history:
     */
     public class TradierDividendEvent : TradierEventDetail
     {
@@ -143,7 +143,7 @@ package com.quantconnect.lean.Brokerages.Tradier
     }
 
     /**
-    /// Option event record in history:
+     * Option event record in history:
     */
     public class TradierOptionEvent : TradierEventDetail
     {

@@ -19,41 +19,41 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Hikkake candlestick pattern
+     * Hikkake candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - first and second candle: inside bar (2nd has lower high and higher low than 1st)
-    /// - third candle: lower high and lower low than 2nd(higher high and higher low than 2nd)
-    /// The returned value for the hikkake bar is positive(+1) or negative(-1) meaning bullish or bearish hikkake
-    /// Confirmation could come in the next 3 days with:
-    /// - a day that closes higher than the high(lower than the low) of the 2nd candle
-    /// The returned value for the confirmation bar is equal to 1 + the bullish hikkake result or -1 - the bearish hikkake result
-    /// Note: if confirmation and a new hikkake come at the same bar, only the new hikkake is reported(the new hikkake
-    /// overwrites the confirmation of the old hikkake)
-    /// 
+     * 
+     * Must have:
+     * - first and second candle: inside bar (2nd has lower high and higher low than 1st)
+     * - third candle: lower high and lower low than 2nd(higher high and higher low than 2nd)
+     * The returned value for the hikkake bar is positive(+1) or negative(-1) meaning bullish or bearish hikkake
+     * Confirmation could come in the next 3 days with:
+     * - a day that closes higher than the high(lower than the low) of the 2nd candle
+     * The returned value for the confirmation bar is equal to 1 + the bullish hikkake result or -1 - the bearish hikkake result
+     * Note: if confirmation and a new hikkake come at the same bar, only the new hikkake is reported(the new hikkake
+     * overwrites the confirmation of the old hikkake)
+     * 
     public class Hikkake : CandlestickPattern
     {
         private int _patternIndex;
         private int _patternResult;
 
         /**
-        /// Initializes a new instance of the <see cref="Hikkake"/> class using the specified name.
+         * Initializes a new instance of the <see cref="Hikkake"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public Hikkake( String name) 
             : base(name, 5 + 1) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Hikkake"/> class.
+         * Initializes a new instance of the <see cref="Hikkake"/> class.
         */
         public Hikkake()
             : this( "HIKKAKE") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -61,10 +61,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -95,7 +95,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                         _patternIndex = 0;
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -134,7 +134,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _patternIndex = 0;

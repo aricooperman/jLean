@@ -21,22 +21,22 @@ import java.util.Map;
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 
-/// Markets Collection: Soon to be expanded to a collection of items specifying the market hour, timezones and country codes.
+ * Markets Collection: Soon to be expanded to a collection of items specifying the market hour, timezones and country codes.
 public class Market {
     // the upper bound (non-inclusive) for market identifiers
     private static final int MaxMarketIdentifier = 1000;
-    /// USA Market 
+     * USA Market 
     public static final String USA = "usa";
-    /// Oanda Market
+     * Oanda Market
     public static final String Oanda = "oanda";
-    /// FXCM Market Hours
+     * FXCM Market Hours
     public static final String FXCM = "fxcm";
-    /// Dukascopy Market
+     * Dukascopy Market
     public static final String Dukascopy = "dukascopy";
-    /// Bitfinex market
+     * Bitfinex market
     public static final String Bitfinex = "bitfinex";
 
-    private static final Object _lock = new Object();
+    private static final Object _synchronized= new Object();
     
     private static final BiMap<String,Integer> HardcodedMarkets = ImmutableBiMap.<String,Integer>builder()
         .put( "empty", 0 )
@@ -49,17 +49,17 @@ public class Market {
     private static final Map<String,Integer> Markets = new HashMap<>( HardcodedMarkets );
     private static final Map<Integer,String> ReverseMarkets = HardcodedMarkets.inverse();
 
-    /// Adds the specified market to the map of available markets with the specified identifier.
-     * @param market">The market String to add
-     * @param identifier">The identifier for the market, this value must be positive and less than 1000
+     * Adds the specified market to the map of available markets with the specified identifier.
+     * @param market The market String to add
+     * @param identifier The identifier for the market, this value must be positive and less than 1000
     public static void add( String market, int identifier ) {
         if( identifier >= MaxMarketIdentifier )
             throw new IndexOutOfBoundsException( String.format( "The market identifier is limited to positive values less than %d.", MaxMarketIdentifier ) );
 
         market = market.toLowerCase();
 
-        // we lock since we don't want multiple threads getting these two dictionaries out of sync
-        synchronized( _lock ) {
+        // we synchronizedsince we don't want multiple threads getting these two dictionaries out of sync
+        synchronized( _synchronized) {
             final Integer marketIdentifier = Markets.get( market );
             if( marketIdentifier != null && identifier != marketIdentifier)
                 throw new IllegalArgumentException( "Attempted to add an already added market with a different identifier. Market: " + market );
@@ -75,20 +75,20 @@ public class Market {
         }
     }
 
-    /// Gets the market code for the specified market. Returns <c>null</c> if the market is not found
-     * @param market">The market to check for (case sensitive)
+     * Gets the market code for the specified market. Returns <c>null</c> if the market is not found
+     * @param market The market to check for (case sensitive)
     @returns The internal code used for the market. Corresponds to the value used when calling <see cref="Add"/>
     public static Integer encode( String market ) {
-        synchronized( _lock ) {
+        synchronized( _synchronized) {
             return Markets.get( market );
         }
     }
 
-    /// Gets the market String for the specified market code.
-     * @param code">The market code to be decoded
+     * Gets the market String for the specified market code.
+     * @param code The market code to be decoded
     @returns The String representation of the market, or null if not found
     public static String decode( int code ) {
-        synchronized( _lock ) {
+        synchronized( _synchronized) {
             return ReverseMarkets.get( code );
         }
     }

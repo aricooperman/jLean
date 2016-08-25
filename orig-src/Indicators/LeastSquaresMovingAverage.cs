@@ -21,44 +21,44 @@ using MathNet.Numerics.LinearAlgebra;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// The Least Squares Moving Average (LSMA) first calculates a least squares regression line
-    /// over the preceding time periods, and then projects it forward to the current period. In
-    /// essence, it calculates what the value would be if the regression line continued.
-    /// Source: https://rtmath.net/helpFinAnalysis/html/b3fab79c-f4b2-40fb-8709-fdba43cdb363.htm
+     * The Least Squares Moving Average (LSMA) first calculates a least squares regression line
+     * over the preceding time periods, and then projects it forward to the current period. In
+     * essence, it calculates what the value would be if the regression line continued.
+     * Source: https://rtmath.net/helpFinAnalysis/html/b3fab79c-f4b2-40fb-8709-fdba43cdb363.htm
     */
     public class LeastSquaresMovingAverage : WindowIndicator<IndicatorDataPoint>
     {
         /**
-        /// Array representing the time.
+         * Array representing the time.
         */
         private final double[] t;
 
         /**
-        /// Initializes a new instance of the <see cref="LeastSquaresMovingAverage"/> class.
+         * Initializes a new instance of the <see cref="LeastSquaresMovingAverage"/> class.
         */
-         * @param name">The name of this indicator
-         * @param period">The number of data points to hold in the window
+         * @param name The name of this indicator
+         * @param period The number of data points to hold in the window
         public LeastSquaresMovingAverage( String name, int period)
             : base(name, period) {
             t = Vector<double>.Build.Dense(period, i -> i + 1).ToArray();
         }
 
         /**
-        /// Initializes a new instance of the <see cref="LeastSquaresMovingAverage"/> class.
+         * Initializes a new instance of the <see cref="LeastSquaresMovingAverage"/> class.
         */
-         * @param period">The number of data points to hold in the window.
+         * @param period The number of data points to hold in the window.
         public LeastSquaresMovingAverage(int period)
             : this( "LSMA" + period, period) {
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
          * @param window">
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns 
-        /// A new value for this indicator
-        /// 
+         * A new value for this indicator
+         * 
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             // Until the windows is ready, the indicator returns the input value.
             BigDecimal output = input;

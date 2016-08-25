@@ -22,23 +22,23 @@ import java.util.Map;
 //using System.Collections.Generic;
 //using Newtonsoft.Json;
 
-/// Live job task packet: container for any live specific job variables
+ * Live job task packet: container for any live specific job variables
 public class LiveNodePacket extends AlgorithmNodePacket {
 
-    /// Deploy Id for this live algorithm.
+     * Deploy Id for this live algorithm.
 //    @JsonProperty( "sDeployID")]
     public String DeployId = "";
 
-    /// String name of the brokerage we're trading with
+     * String name of the brokerage we're trading with
 //    @JsonProperty( "sBrokerage")]
     public String Brokerage = "";
 
-    /// String-String Dictionary of Brokerage Data for this Live Job
+     * String-String Dictionary of Brokerage Data for this Live Job
 //    @JsonProperty( "aBrokerageData")]
     public Map<String,String> BrokerageData = new HashMap<String,String>();
 
     /**
-    /// Default constructor for JSON of the Live Task Packet
+     * Default constructor for JSON of the Live Task Packet
     */
     public LiveNodePacket() {
         super( PacketType.LiveNode );
@@ -55,30 +55,30 @@ using Newtonsoft.Json;
 package com.quantconnect.lean.Packets
 {
     /**
-    /// Live job task packet: container for any live specific job variables
+     * Live job task packet: container for any live specific job variables
     */
     public class LiveNodePacket : AlgorithmNodePacket 
     {
         /**
-        /// Deploy Id for this live algorithm.
+         * Deploy Id for this live algorithm.
         */
         @JsonProperty( "sDeployID")]
         public String DeployId = "";
 
         /**
-        /// String name of the brokerage we're trading with
+         * String name of the brokerage we're trading with
         */
         @JsonProperty( "sBrokerage")]
         public String Brokerage = "";
 
         /**
-        /// String-String Dictionary of Brokerage Data for this Live Job
+         * String-String Dictionary of Brokerage Data for this Live Job
         */
         @JsonProperty( "aBrokerageData")]
         public Map<String,String> BrokerageData = new Map<String,String>();
 
         /**
-        /// Default constructor for JSON of the Live Task Packet
+         * Default constructor for JSON of the Live Task Packet
         */
         public LiveNodePacket() 
             : base(PacketType.LiveNode) {

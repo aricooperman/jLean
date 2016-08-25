@@ -19,32 +19,32 @@ using Newtonsoft.Json;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Converts the String "null" into a new instance of T.
-    /// This converter only handles deserialization concerns.
+     * Converts the String "null" into a new instance of T.
+     * This converter only handles deserialization concerns.
     */
-    /// <typeparam name="T">The output type of the converter</typeparam>
+     * <typeparam name="T The output type of the converter</typeparam>
     public class NullStringValueConverter<T> : JsonConverter
         where T : new() {
         /**
-        /// Writes the JSON representation of the object.
+         * Writes the JSON representation of the object.
         */
-         * @param writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.
-         * @param value">The value.
-         * @param serializer">The calling serializer.
+         * @param writer The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.
+         * @param value The value.
+         * @param serializer The calling serializer.
         public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
             throw new NotImplementedException();
         }
 
         /**
-        /// Reads the JSON representation of the object.
+         * Reads the JSON representation of the object.
         */
-         * @param reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.
-         * @param objectType">Type of the object.
-         * @param existingValue">The existing value of object being read.
-         * @param serializer">The calling serializer.
+         * @param reader The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.
+         * @param objectType Type of the object.
+         * @param existingValue The existing value of object being read.
+         * @param serializer The calling serializer.
         @returns 
-        /// The object value.
-        /// 
+         * The object value.
+         * 
         public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
             if( reader.TokenType == JsonToken.Null || (reader.TokenType == JsonToken.String && ( String)reader.Value == "null")) {
                 return new T();
@@ -53,12 +53,12 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Determines whether this instance can convert the specified object type.
+         * Determines whether this instance can convert the specified object type.
         */
-         * @param objectType">Type of the object.
+         * @param objectType Type of the object.
         @returns 
-        /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-        /// 
+         * <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
+         * 
         public @Override boolean CanConvert(Type objectType) {
             throw new NotImplementedException();
         }

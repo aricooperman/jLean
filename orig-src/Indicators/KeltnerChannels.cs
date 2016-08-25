@@ -19,15 +19,15 @@ package com.quantconnect.lean.Indicators
 {
 
     /** 
-    /// This indicator creates a moving average (middle band) with an upper band and lower band
-    /// fixed at k average true range multiples away from the middle band.  
+     * This indicator creates a moving average (middle band) with an upper band and lower band
+     * fixed at k average true range multiples away from the middle band.  
     */
     public class KeltnerChannels : TradeBarIndicator
     {
         private final BigDecimal _k;
 
         /**
-        /// Gets the middle band of the channel
+         * Gets the middle band of the channel
         */
         public IndicatorBase<IndicatorDataPoint> MiddleBand
         {
@@ -35,7 +35,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Gets the upper band of the channel
+         * Gets the upper band of the channel
         */
         public IndicatorBase<TradeBar> UpperBand
         {
@@ -43,7 +43,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Gets the lower band of the channel
+         * Gets the lower band of the channel
         */
         public IndicatorBase<TradeBar> LowerBand
         {
@@ -51,7 +51,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Gets the average true range
+         * Gets the average true range
         */
         public IndicatorBase<TradeBar> AverageTrueRange
         {
@@ -60,22 +60,22 @@ package com.quantconnect.lean.Indicators
 
 
         /**
-        /// Initializes a new instance of the KeltnerChannels class
+         * Initializes a new instance of the KeltnerChannels class
         */
-         * @param period">The period of the average true range and moving average (middle band)
-         * @param k">The number of multiplies specifying the distance between the middle band and upper or lower bands
-         * @param movingAverageType">The type of moving average to be used
+         * @param period The period of the average true range and moving average (middle band)
+         * @param k The number of multiplies specifying the distance between the middle band and upper or lower bands
+         * @param movingAverageType The type of moving average to be used
         public KeltnerChannels(int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple)
             : this( String.format( "KC(%1$s,%2$s)", period, k), period, k, movingAverageType) {
         }
 
         /**
-        /// Initializes a new instance of the KeltnerChannels class
+         * Initializes a new instance of the KeltnerChannels class
         */
-         * @param name">The name of this indicator
-         * @param period">The period of the average true range and moving average (middle band)
-         * @param k">The number of multiples specifying the distance between the middle band and upper or lower bands
-         * @param movingAverageType">The type of moving average to be used
+         * @param name The name of this indicator
+         * @param period The period of the average true range and moving average (middle band)
+         * @param k The number of multiples specifying the distance between the middle band and upper or lower bands
+         * @param movingAverageType The type of moving average to be used
         public KeltnerChannels( String name, int period, BigDecimal k, MovingAverageType movingAverageType = MovingAverageType.Simple)
             : base(name) {
             _k = k;
@@ -100,7 +100,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -108,7 +108,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             AverageTrueRange.Reset();
@@ -119,9 +119,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value for this indicator from the given state.
+         * Computes the next value for this indicator from the given state.
         */
-         * @param input">The TradeBar to this indicator on this time step
+         * @param input The TradeBar to this indicator on this time step
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             AverageTrueRange.Update(input);
@@ -137,14 +137,14 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Calculates the lower band
+         * Calculates the lower band
         */
         private BigDecimal ComputeLowerBand() {
             return MiddleBand.IsReady ? MiddleBand - AverageTrueRange*_k : new decimal(0.0);
         }
 
         /**
-        /// Calculates the upper band
+         * Calculates the upper band
         */
         private BigDecimal ComputeUpperBand() {
             return MiddleBand.IsReady ? MiddleBand + AverageTrueRange*_k : new decimal(0.0);

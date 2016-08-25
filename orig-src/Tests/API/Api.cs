@@ -32,7 +32,7 @@ package com.quantconnect.lean.Tests.API
         private String _testToken = "ec87b337ac970da4cbea648f24f1c851";
 
         /**
-        /// Test successfully authenticates with the API using valid credentials.
+         * Test successfully authenticates with the API using valid credentials.
         */
         [Test]
         public void AuthenticatesSuccessfully() {
@@ -41,7 +41,7 @@ package com.quantconnect.lean.Tests.API
         }
 
         /**
-        /// Rejects invalid credentials
+         * Rejects invalid credentials
         */
         [Test]
         public void RejectsInvalidCredentials() {
@@ -50,11 +50,11 @@ package com.quantconnect.lean.Tests.API
         }
 
         /**
-        /// Tests all the API methods linked to a project id.
-        ///  - Creates project,
-        ///  - Adds files to project,
-        ///  - Updates the files, makes sure they are still present,
-        ///  - Builds the project, 
+         * Tests all the API methods linked to a project id.
+         *  - Creates project,
+         *  - Adds files to project,
+         *  - Updates the files, makes sure they are still present,
+         *  - Builds the project, 
         */
         [Test]
         public void CreatesProjectCompilesAndBacktestsProject() {
@@ -175,7 +175,7 @@ package com.quantconnect.lean.Tests.API
 
 
         /**
-        /// Live algorithm tests
+         * Live algorithm tests
         */
         [Test]
         public void ListAccountLiveAlgorithms() {
@@ -189,7 +189,7 @@ package com.quantconnect.lean.Tests.API
 
 
         /**
-        /// Create an authenticated API accessor object.
+         * Create an authenticated API accessor object.
         */
         @returns 
         private IApi CreateApiAccessor() {
@@ -197,10 +197,10 @@ package com.quantconnect.lean.Tests.API
         }
 
         /**
-        /// Create an API Class with the specified credentials
+         * Create an API Class with the specified credentials
         */
-         * @param uid">User id
-         * @param token">Token string
+         * @param uid User id
+         * @param token Token string
         @returns API class for placing calls
         private IApi CreateApiAccessor(int uid, String token) {
             api = new Api.Api();
@@ -209,9 +209,9 @@ package com.quantconnect.lean.Tests.API
         }
 
         /**
-        /// Wait for the compiler to respond to a specified compile request
+         * Wait for the compiler to respond to a specified compile request
         */
-         * @param api">API Method
+         * @param api API Method
          * @param projectId">
          * @param compileId">
         @returns 
@@ -227,11 +227,11 @@ package com.quantconnect.lean.Tests.API
         }
 
         /**
-        /// Wait for the backtest to complete
+         * Wait for the backtest to complete
         */
-         * @param api">IApi Object to make requests
-         * @param projectId">Project id to scan
-         * @param backtestId">Backtest id previously started
+         * @param api IApi Object to make requests
+         * @param projectId Project id to scan
+         * @param backtestId Backtest id previously started
         @returns Completed backtest object
         private Backtest WaitForBacktestCompletion(IApi api, int projectId, String backtestId) {
             result = new Backtest();

@@ -17,7 +17,7 @@
 package com.quantconnect.lean.Logging
 {
     /**
-    /// Error level
+     * Error level
     */
     public enum LogType
     {

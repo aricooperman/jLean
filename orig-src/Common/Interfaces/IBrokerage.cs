@@ -22,87 +22,87 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Interfaces
 {
     /**
-    /// Brokerage interface that defines the operations all brokerages must implement. The IBrokerage implementation
-    /// must have a matching IBrokerageFactory implementation.
+     * Brokerage interface that defines the operations all brokerages must implement. The IBrokerage implementation
+     * must have a matching IBrokerageFactory implementation.
     */
     public interface IBrokerage
     {
         /**
-        /// Event that fires each time an order is filled
+         * Event that fires each time an order is filled
         */
         event EventHandler<OrderEvent> OrderStatusChanged;
 
         /**
-        /// Event that fires each time a user's brokerage account is changed
+         * Event that fires each time a user's brokerage account is changed
         */
         event EventHandler<AccountEvent> AccountChanged;
 
         /**
-        /// Event that fires when a message is received from the brokerage
+         * Event that fires when a message is received from the brokerage
         */
         event EventHandler<BrokerageMessageEvent> Message;
 
         /**
-        /// Gets the name of the brokerage
+         * Gets the name of the brokerage
         */
         String Name { get; }
 
         /**
-        /// Returns true if we're currently connected to the broker
+         * Returns true if we're currently connected to the broker
         */
         boolean IsConnected { get; }
 
         /**
-        /// Gets all open orders on the account
+         * Gets all open orders on the account
         */
         @returns The open orders returned from IB
         List<Order> GetOpenOrders();
 
         /**
-        /// Gets all holdings for the account
+         * Gets all holdings for the account
         */
         @returns The current holdings from the account
         List<Holding> GetAccountHoldings();
 
         /**
-        /// Gets the current cash balance for each currency held in the brokerage account
+         * Gets the current cash balance for each currency held in the brokerage account
         */
         @returns The current cash balance for each currency available for trading
         List<Cash> GetCashBalance();
 
         /**
-        /// Places a new order and assigns a new broker ID to the order
+         * Places a new order and assigns a new broker ID to the order
         */
-         * @param order">The order to be placed
+         * @param order The order to be placed
         @returns True if the request for a new order has been placed, false otherwise
         boolean PlaceOrder(Order order);
 
         /**
-        /// Updates the order with the same id
+         * Updates the order with the same id
         */
-         * @param order">The new order information
+         * @param order The new order information
         @returns True if the request was made for the order to be updated, false otherwise
         boolean UpdateOrder(Order order);
 
         /**
-        /// Cancels the order with the specified ID
+         * Cancels the order with the specified ID
         */
-         * @param order">The order to cancel
+         * @param order The order to cancel
         @returns True if the request was made for the order to be canceled, false otherwise
         boolean CancelOrder(Order order);
 
         /**
-        /// Connects the client to the broker's remote servers
+         * Connects the client to the broker's remote servers
         */
         void Connect();
 
         /**
-        /// Disconnects the client from the broker's remote servers
+         * Disconnects the client from the broker's remote servers
         */
         void Disconnect();
 
         /**
-        /// Specifies whether the brokerage will instantly update account balances
+         * Specifies whether the brokerage will instantly update account balances
         */
         boolean AccountInstantlyUpdated { get; }
     }

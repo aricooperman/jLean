@@ -19,22 +19,22 @@ using QuantConnect.Commands;
 package com.quantconnect.lean.Packets
 {
     /**
-    /// Contains data held as the result of executing a command
+     * Contains data held as the result of executing a command
     */
     public class CommandResultPacket : Packet
     {
         /**
-        /// Gets or sets the command that produced this packet
+         * Gets or sets the command that produced this packet
         */
         public String CommandName { get; set; }
 
         /**
-        /// Gets or sets whether or not the
+         * Gets or sets whether or not the
         */
         public boolean Success { get; set; }
 
         /**
-        /// Initializes a new instance of the <see cref="CommandResultPacket"/> class
+         * Initializes a new instance of the <see cref="CommandResultPacket"/> class
         */
         public CommandResultPacket(ICommand command, boolean success)
             : base(PacketType.CommandResult) {

@@ -24,8 +24,8 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// This algorithm demonstrates how you can get your symbol list each day from a remote server
-    /// using the WebClient
+     * This algorithm demonstrates how you can get your symbol list each day from a remote server
+     * using the WebClient
     */
     public class EquitiesLabAlgorithm : QCAlgorithm
     {

@@ -26,7 +26,7 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Data.UniverseSelection
 {
     /**
-    /// Defines a universe for a single option chain
+     * Defines a universe for a single option chain
     */
     public class OptionChainUniverse : Universe
     {
@@ -37,11 +37,11 @@ package com.quantconnect.lean.Data.UniverseSelection
         private final UniverseSettings _universeSettings;
 
         /**
-        /// Initializes a new instance of the <see cref="OptionChainUniverse"/> class
+         * Initializes a new instance of the <see cref="OptionChainUniverse"/> class
         */
-         * @param option">The canonical option chain security
-         * @param universeSettings">The universe settings to be used for new subscriptions
-         * @param securityInitializer">The security initializer to use on newly created securities
+         * @param option The canonical option chain security
+         * @param universeSettings The universe settings to be used for new subscriptions
+         * @param securityInitializer The security initializer to use on newly created securities
         public OptionChainUniverse(Option option, UniverseSettings universeSettings, ISecurityInitializer securityInitializer = null )
             : base(option.SubscriptionDataConfig, securityInitializer) {
             _option = option;
@@ -49,7 +49,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Gets the settings used for subscriptons added for this universe
+         * Gets the settings used for subscriptons added for this universe
         */
         public @Override UniverseSettings UniverseSettings
         {
@@ -57,15 +57,15 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Performs universe selection using the data specified
+         * Performs universe selection using the data specified
         */
-         * @param utcTime">The current utc time
-         * @param data">The symbols to remain in the universe
+         * @param utcTime The current utc time
+         * @param data The symbols to remain in the universe
         @returns The data that passes the filter
         public @Override IEnumerable<Symbol> SelectSymbols(DateTime utcTime, BaseDataCollection data) {
             optionsUniverseDataCollection = data as OptionChainUniverseDataCollection;
             if( optionsUniverseDataCollection == null ) {
-                throw new ArgumentException( String.format( "Expected data of type '%1$s'", typeof (OptionChainUniverseDataCollection).Name));
+                throw new IllegalArgumentException( String.format( "Expected data of type '%1$s'", typeof (OptionChainUniverseDataCollection).Name));
             }
 
             _underlying = optionsUniverseDataCollection.Underlying ?? _underlying;
@@ -88,14 +88,14 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Gets the subscriptions to be added for the specified security
+         * Gets the subscriptions to be added for the specified security
         */
-        /// 
-        /// In most cases the default implementaon of returning the security's configuration is
-        /// sufficient. It's when we want multiple subscriptions (trade/quote data) that we'll need
-        /// to @Override this
-        /// 
-         * @param security">The security to get subscriptions for
+         * 
+         * In most cases the default implementaon of returning the security's configuration is
+         * sufficient. It's when we want multiple subscriptions (trade/quote data) that we'll need
+         * to @Override this
+         * 
+         * @param security The security to get subscriptions for
         @returns All subscriptions required by this security
         public @Override IEnumerable<SubscriptionDataConfig> GetSubscriptions(Security security) {
             config = security.SubscriptionDataConfig;
@@ -122,12 +122,12 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Creates and configures a security for the specified symbol
+         * Creates and configures a security for the specified symbol
         */
-         * @param symbol">The symbol of the security to be created
-         * @param algorithm">The algorithm instance
-         * @param marketHoursDatabase">The market hours database
-         * @param symbolPropertiesDatabase">The symbol properties database
+         * @param symbol The symbol of the security to be created
+         * @param algorithm The algorithm instance
+         * @param marketHoursDatabase The market hours database
+         * @param symbolPropertiesDatabase The symbol properties database
         @returns The newly initialized security object
         public @Override Security CreateSecurity(Symbol symbol, IAlgorithm algorithm, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase) {
             // set the underlying security and pricing model from the canonical security
@@ -138,13 +138,13 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Determines whether or not the specified security can be removed from
-        /// this universe. This is useful to prevent securities from being taken
-        /// out of a universe before the algorithm has had enough time to make
-        /// decisions on the security
+         * Determines whether or not the specified security can be removed from
+         * this universe. This is useful to prevent securities from being taken
+         * out of a universe before the algorithm has had enough time to make
+         * decisions on the security
         */
-         * @param utcTime">The current utc time
-         * @param security">The security to check if its ok to remove
+         * @param utcTime The current utc time
+         * @param security The security to check if its ok to remove
         @returns True if we can remove the security, false otherwise
         public @Override boolean CanRemoveMember(DateTime utcTime, Security security) {
             // if we haven't begun receiving data for this security then it's safe to remove
@@ -164,7 +164,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Gets the data type required for the specified combination of resolution and tick type
+         * Gets the data type required for the specified combination of resolution and tick type
         */
         private static Type GetDataType(Resolution resolution, TickType tickType) {
             if( resolution == Resolution.Tick) return typeof(Tick);

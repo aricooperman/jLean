@@ -23,7 +23,7 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Algorithm.Examples
 {
     /**
-    /// ETF Global Rotation Strategy
+     * ETF Global Rotation Strategy
     */
     public class ETFGlobalRotationAlgorithm : QCAlgorithm
     {
@@ -53,7 +53,7 @@ package com.quantconnect.lean.Algorithm.Examples
         List<SymbolData> SymbolData = new List<SymbolData>();
 
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             SetCash(25000);
@@ -76,9 +76,9 @@ package com.quantconnect.lean.Algorithm.Examples
 
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">TradeBars IDictionary object with your stock data
+         * @param data TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             try
             {

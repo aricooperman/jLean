@@ -21,7 +21,7 @@ using QuantConnect.Lean.Engine.Results;
 package com.quantconnect.lean.Lean.Engine.TransactionHandlers
 {
     /**
-    /// This transaction handler is used for processing transactions during backtests
+     * This transaction handler is used for processing transactions during backtests
     */
     public class BacktestingTransactionHandler : BrokerageTransactionHandler
     {
@@ -29,14 +29,14 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         private BacktestingBrokerage _brokerage;
 
         /**
-        /// Creates a new BacktestingTransactionHandler using the BacktestingBrokerage
+         * Creates a new BacktestingTransactionHandler using the BacktestingBrokerage
         */
-         * @param algorithm">The algorithm instance
-         * @param brokerage">The BacktestingBrokerage
+         * @param algorithm The algorithm instance
+         * @param brokerage The BacktestingBrokerage
          * @param resultHandler">
         public @Override void Initialize(IAlgorithm algorithm, IBrokerage brokerage, IResultHandler resultHandler) {
             if( !(brokerage is BacktestingBrokerage)) {
-                throw new ArgumentException( "Brokerage must be of type BacktestingBrokerage for use wth the BacktestingTransactionHandler");
+                throw new IllegalArgumentException( "Brokerage must be of type BacktestingBrokerage for use wth the BacktestingTransactionHandler");
             }
             
             _brokerage = (BacktestingBrokerage) brokerage;
@@ -45,7 +45,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Processes all synchronous events that must take place before the next time loop for the algorithm
+         * Processes all synchronous events that must take place before the next time loop for the algorithm
         */
         public @Override void ProcessSynchronousEvents() {
             base.ProcessSynchronousEvents();
@@ -54,7 +54,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Processes asynchronous events on the transaction handler's thread
+         * Processes asynchronous events on the transaction handler's thread
         */
         public @Override void ProcessAsynchronousEvents() {
             base.ProcessAsynchronousEvents();

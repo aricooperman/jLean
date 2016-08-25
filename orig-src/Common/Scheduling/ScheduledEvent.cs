@@ -22,17 +22,17 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.Scheduling
 {
     /**
-    /// Real time self scheduling event
+     * Real time self scheduling event
     */
     public class ScheduledEvent : IDisposable
     {
         /**
-        /// Gets the default time before market close end of trading day events will fire
+         * Gets the default time before market close end of trading day events will fire
         */
         public static final Duration SecurityEndOfDayDelta = Duration.ofMinutes(10);
 
         /**
-        /// Gets the default time before midnight end of day events will fire
+         * Gets the default time before midnight end of day events will fire
         */
         public static final Duration AlgorithmEndOfDayDelta = Duration.ofMinutes(2);
 
@@ -44,12 +44,12 @@ package com.quantconnect.lean.Scheduling
         private final IEnumerator<DateTime> _orderedEventUtcTimes;
 
         /**
-        /// Event that fires each time this scheduled event happens
+         * Event that fires each time this scheduled event happens
         */
         public event Action<String, DateTime> EventFired;
 
         /**
-        /// Gets or sets whether this event is enabled
+         * Gets or sets whether this event is enabled
         */
         public boolean Enabled
         {
@@ -57,7 +57,7 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Gets or sets whether this event will log each time it fires
+         * Gets or sets whether this event will log each time it fires
         */
         internal boolean IsLoggingEnabled
         {
@@ -65,7 +65,7 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Gets the next time this scheduled event will fire in UTC
+         * Gets the next time this scheduled event will fire in UTC
         */
         public DateTime NextEventUtcTime
         {
@@ -73,7 +73,7 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Gets an identifier for this event
+         * Gets an identifier for this event
         */
         public String Name
         {
@@ -81,31 +81,31 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Initalizes a new instance of the <see cref="ScheduledEvent"/> class
+         * Initalizes a new instance of the <see cref="ScheduledEvent"/> class
         */
-         * @param name">An identifier for this event
-         * @param eventUtcTime">The date time the event should fire
-         * @param callback">Delegate to be called when the event time passes
+         * @param name An identifier for this event
+         * @param eventUtcTime The date time the event should fire
+         * @param callback Delegate to be called when the event time passes
         public ScheduledEvent( String name, DateTime eventUtcTime, Action<String, DateTime> callback = null )
             : this(name, new[] { eventUtcTime }.AsEnumerable().GetEnumerator(), callback) {
         }
 
         /**
-        /// Initalizes a new instance of the <see cref="ScheduledEvent"/> class
+         * Initalizes a new instance of the <see cref="ScheduledEvent"/> class
         */
-         * @param name">An identifier for this event
-         * @param orderedEventUtcTimes">An enumerable that emits event times
-         * @param callback">Delegate to be called each time an event passes
+         * @param name An identifier for this event
+         * @param orderedEventUtcTimes An enumerable that emits event times
+         * @param callback Delegate to be called each time an event passes
         public ScheduledEvent( String name, IEnumerable<DateTime> orderedEventUtcTimes, Action<String, DateTime> callback = null )
             : this(name, orderedEventUtcTimes.GetEnumerator(), callback) {
         }
 
         /**
-        /// Initalizes a new instance of the <see cref="ScheduledEvent"/> class
+         * Initalizes a new instance of the <see cref="ScheduledEvent"/> class
         */
-         * @param name">An identifier for this event
-         * @param orderedEventUtcTimes">An enumerator that emits event times
-         * @param callback">Delegate to be called each time an event passes
+         * @param name An identifier for this event
+         * @param orderedEventUtcTimes An enumerator that emits event times
+         * @param callback Delegate to be called each time an event passes
         public ScheduledEvent( String name, IEnumerator<DateTime> orderedEventUtcTimes, Action<String, DateTime> callback = null ) {
             _name = name;
             _callback = callback;
@@ -118,9 +118,9 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Scans this event and fires the callback if an event happened
+         * Scans this event and fires the callback if an event happened
         */
-         * @param utcTime">The current time in UTC
+         * @param utcTime The current time in UTC
         internal void Scan(DateTime utcTime) {
             if( _endOfScheduledEvents) {
                 return;
@@ -167,9 +167,9 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Fast forwards this schedule to the specified time without invoking the events
+         * Fast forwards this schedule to the specified time without invoking the events
         */
-         * @param utcTime">Frontier time
+         * @param utcTime Frontier time
         internal void SkipEventsUntil(DateTime utcTime) {
             // check if our next event is in the past
             if( utcTime < _orderedEventUtcTimes.Current) return;
@@ -198,17 +198,17 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         void IDisposable.Dispose() {
             _orderedEventUtcTimes.Dispose();
         }
 
         /**
-        /// Event invocator for the <see cref="EventFired"/> event
+         * Event invocator for the <see cref="EventFired"/> event
         */
-         * @param triggerTime">The event's time in UTC
+         * @param triggerTime The event's time in UTC
         protected void OnEventFired(DateTime triggerTime) {
             // don't fire the event if we're turned off
             if( !Enabled) return;

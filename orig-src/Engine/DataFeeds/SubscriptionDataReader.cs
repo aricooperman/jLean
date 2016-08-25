@@ -31,9 +31,9 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Subscription data reader is a wrapper on the stream reader class to download, unpack and iterate over a data file.
+     * Subscription data reader is a wrapper on the stream reader class to download, unpack and iterate over a data file.
     */
-    /// The class accepts any subscription configuration and automatically makes it availble to enumerate
+     * The class accepts any subscription configuration and automatically makes it availble to enumerate
     public class SubscriptionDataReader : IEnumerator<BaseData>
     {
         // Source String to create memory stream:
@@ -43,10 +43,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
 
         private IEnumerator<BaseData> _subscriptionFactoryEnumerator;
 
-        /// Configuration of the data-reader:
+         * Configuration of the data-reader:
         private final SubscriptionDataConfig _config;
 
-        /// true if we can find a scale factor file for the security of the form: ..\Lean\Data\equity\market\factor_files\{SYMBOL}.csv
+         * true if we can find a scale factor file for the security of the form: ..\Lean\Data\equity\market\factor_files\{SYMBOL}.csv
         private final boolean _hasScaleFactors;
 
         // Symbol Mapping:
@@ -66,11 +66,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
 
         // we set the price factor ratio when we encounter a dividend in the factor file
         // and on the next trading day we use this data to produce the dividend instance
-        private decimal? _priceFactorRatio;
+        private Optional<BigDecimal> _priceFactorRatio;
 
         // we set the split factor when we encounter a split in the factor file
         // and on the next trading day we use this data to produce the split instance
-        private decimal? _splitFactor;
+        private Optional<BigDecimal> _splitFactor;
 
         // we'll use these flags to denote we've already fired off the DelistedType.Warning
         // and a DelistedType.Delisted Delisting object, the _delistingType object is save here
@@ -92,7 +92,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         private BaseData _lastInstanceBeforeAuxilliaryData;
 
         /**
-        /// Last read BaseData object from this type and source
+         * Last read BaseData object from this type and source
         */
         public BaseData Current
         {
@@ -101,7 +101,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Explicit Interface Implementation for Current
+         * Explicit Interface Implementation for Current
         */
         object IEnumerator.Current
         {
@@ -109,17 +109,17 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Subscription data reader takes a subscription request, loads the type, accepts the data source and enumerate on the results.
+         * Subscription data reader takes a subscription request, loads the type, accepts the data source and enumerate on the results.
         */
-         * @param config">Subscription configuration object
-         * @param periodStart">Start date for the data request/backtest
-         * @param periodFinish">Finish date for the data request/backtest
-         * @param resultHandler">Result handler used to push error messages and perform sampling on skipped days
-         * @param mapFileResolver">Used for resolving the correct map files
-         * @param factorFileProvider">Used for getting factor files
-         * @param tradeableDates">Defines the dates for which we'll request data, in order, in the security's exchange time zone
-         * @param isLiveMode">True if we're in live mode, false otherwise
-         * @param includeAuxilliaryData">True if we want to emit aux data, false to only emit price data
+         * @param config Subscription configuration object
+         * @param periodStart Start date for the data request/backtest
+         * @param periodFinish Finish date for the data request/backtest
+         * @param resultHandler Result handler used to push error messages and perform sampling on skipped days
+         * @param mapFileResolver Used for resolving the correct map files
+         * @param factorFileProvider Used for getting factor files
+         * @param tradeableDates Defines the dates for which we'll request data, in order, in the security's exchange time zone
+         * @param isLiveMode True if we're in live mode, false otherwise
+         * @param includeAuxilliaryData True if we want to emit aux data, false to only emit price data
         public SubscriptionDataReader(SubscriptionDataConfig config,
             DateTime periodStart,
             DateTime periodFinish,
@@ -194,12 +194,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Advances the enumerator to the next element of the collection.
+         * Advances the enumerator to the next element of the collection.
         */
         @returns 
-        /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// 
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+         * true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+         * 
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public boolean MoveNext() {
             if( _endOfStream) {
                 return false;
@@ -213,7 +213,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             if( _subscriptionFactoryEnumerator == null ) {
                 // in live mode the trade able dates will eventually advance to the next
                 if( _isLiveMode) {
-                    // HACK attack -- we don't want to block in live mode
+                    // HACK attack -- we don't want to bsynchronizedin live mode
                     Current = null;
                     return true;
                 }
@@ -323,7 +323,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Resolves the next enumerator to be used in <see cref="MoveNext"/>
+         * Resolves the next enumerator to be used in <see cref="MoveNext"/>
         */
         private IEnumerator<BaseData> ResolveDataEnumerator( boolean endOfEnumerator) {
             do
@@ -420,9 +420,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Iterates the tradeable dates enumerator
+         * Iterates the tradeable dates enumerator
         */
-         * @param date">The next tradeable date
+         * @param date The next tradeable date
         @returns True if we got a new date from the enumerator, false if it's exhausted, or in live mode if we're already at today
         private boolean TryGetNextDate(out DateTime date) {
             if( _isLiveMode && _tradeableDates.Current >= DateTime.Today) {
@@ -473,10 +473,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// For backwards adjusted data the price is adjusted by a scale factor which is a combination of splits and dividends. 
-        /// This backwards adjusted price is used by default and fed as the current price.
+         * For backwards adjusted data the price is adjusted by a scale factor which is a combination of splits and dividends. 
+         * This backwards adjusted price is used by default and fed as the current price.
         */
-         * @param date">Current date of the backtest.
+         * @param date Current date of the backtest.
         private void UpdateScaleFactors(DateTime date) {
             switch (_config.DataNormalizationMode) {
                 case DataNormalizationMode.Raw:
@@ -497,15 +497,15 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Reset the IEnumeration
+         * Reset the IEnumeration
         */
-        /// Not used
+         * Not used
         public void Reset() {
             throw new NotImplementedException( "Reset method not implemented. Assumes loop will only be used once.");
         }
 
         /**
-        /// Check for dividends and emit them into the aux data queue
+         * Check for dividends and emit them into the aux data queue
         */
         private void CheckForSplit(DateTime date) {
             if( _splitFactor != null ) {
@@ -522,7 +522,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Check for dividends and emit them into the aux data queue
+         * Check for dividends and emit them into the aux data queue
         */
         private void CheckForDividend(DateTime date) {
             if( _priceFactorRatio != null ) {
@@ -542,7 +542,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Check for delistings and emit them into the aux data queue
+         * Check for delistings and emit them into the aux data queue
         */
         private void CheckForDelisting(DateTime date) {
             // these ifs set flags to tell us to produce a delisting instance
@@ -560,10 +560,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Un-normalizes the Previous.Value
+         * Un-normalizes the Previous.Value
         */
         private BigDecimal GetRawClose() {
-            if( _previous == null ) return 0m;
+            if( _previous == null ) return BigDecimal.ZERO;
 
             close = _previous.Value;
 
@@ -589,7 +589,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Dispose of the Stream Reader and close out the source stream and file connections.
+         * Dispose of the Stream Reader and close out the source stream and file connections.
         */
         public void Dispose() {
             if( _subscriptionFactoryEnumerator != null ) {

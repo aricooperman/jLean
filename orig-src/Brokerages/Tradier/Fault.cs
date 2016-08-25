@@ -19,46 +19,46 @@ using Newtonsoft.Json;
 package com.quantconnect.lean.Brokerages.Tradier
 {
     /**
-    /// Wrapper container for fault:
+     * Wrapper container for fault:
     */
     public class TradierFaultContainer
     {
-        /// Inner Fault Object
+         * Inner Fault Object
         @JsonProperty( "fault")]
         public TradierFault Fault;
 
-        /// Fault Container Constructor:
+         * Fault Container Constructor:
         public TradierFaultContainer() { }
     }
 
     /**
-    /// Tradier fault object:
-    /// {"fault":{"faultstring":"Access Token expired","detail":{"errorcode":"keymanagement.service.access_token_expired"}}}
+     * Tradier fault object:
+     * {"fault":{"faultstring":"Access Token expired","detail":{"errorcode":"keymanagement.service.access_token_expired"}}}
     */
     public class TradierFault
     {
-        /// Description of fault
+         * Description of fault
         @JsonProperty( "faultstring")]
         public String Description = "";
 
-        /// Detail object for fault exception
+         * Detail object for fault exception
         @JsonProperty( "detail")]
         public TradierFaultDetail Details = new TradierFaultDetail();
 
-        /// Tradier Fault Constructor:
+         * Tradier Fault Constructor:
         public TradierFault() { }
     }
 
     /**
-    /// Error code associated with this fault.
+     * Error code associated with this fault.
     */
     public class TradierFaultDetail
     {
-        /// Error code for fault
+         * Error code for fault
         @JsonProperty( "errorcode")]
         public String ErrorCode;
 
-        /// Tradier Detail Fault Constructor
+         * Tradier Detail Fault Constructor
         public TradierFaultDetail() { }
     }
 }

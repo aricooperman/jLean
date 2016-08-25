@@ -16,9 +16,9 @@
 package com.quantconnect.lean.Securities.Option
 {
     /**
-    /// Option packet by packet data filtering mechanism for dynamically detecting bad ticks.
+     * Option packet by packet data filtering mechanism for dynamically detecting bad ticks.
     */
-    /// <seealso cref="SecurityDataFilter"/>
+     * <seealso cref="SecurityDataFilter"/>
     public class OptionDataFilter : SecurityDataFilter
     {
     }

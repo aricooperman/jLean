@@ -23,25 +23,25 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Data
 {
     /**
-    /// Dynamic Data Class: Accept flexible data, adapting to the columns provided by source.
+     * Dynamic Data Class: Accept flexible data, adapting to the columns provided by source.
     */
-    /// Intended for use with Quandl class.
+     * Intended for use with Quandl class.
     public abstract class DynamicData : BaseData, IDynamicMetaObjectProvider
     {
         private final Map<String, object> _storage = new Map<String, object>();
 
         /**
-        /// Get the metaObject required for Dynamism.
+         * Get the metaObject required for Dynamism.
         */
         public DynamicMetaObject GetMetaObject(Expression parameter) {
             return new DynamicDataMetaObject(parameter, this);
         }
 
         /**
-        /// Sets the property with the specified name to the value. This is a case-insensitve search.
+         * Sets the property with the specified name to the value. This is a case-insensitve search.
         */
-         * @param name">The property name to set
-         * @param value">The new property value
+         * @param name The property name to set
+         * @param value The new property value
         @returns Returns the input value back to the caller
         public object SetProperty( String name, object value) {
             name = name.toLowerCase();
@@ -71,9 +71,9 @@ package com.quantconnect.lean.Data
         }
 
         /**
-        /// Gets the property's value with the specified name. This is a case-insensitve search.
+         * Gets the property's value with the specified name. This is a case-insensitve search.
         */
-         * @param name">The property name to access
+         * @param name The property name to access
         @returns object value of BaseData
         public object GetProperty( String name) {
             name = name.toLowerCase();
@@ -102,21 +102,21 @@ package com.quantconnect.lean.Data
         }
 
         /**
-        /// Gets whether or not this dynamic data instance has a property with the specified name.
-        /// This is a case-insensitve search.
+         * Gets whether or not this dynamic data instance has a property with the specified name.
+         * This is a case-insensitve search.
         */
-         * @param name">The property name to check for
+         * @param name The property name to check for
         @returns True if the property exists, false otherwise
         public boolean HasProperty( String name) {
             return _storage.ContainsKey(name.toLowerCase());
         }
 
         /**
-        /// Return a new instance clone of this object, used in fill forward
+         * Return a new instance clone of this object, used in fill forward
         */
-        /// 
-        /// This base implementation uses reflection to copy all public fields and properties
-        /// 
+         * 
+         * This base implementation uses reflection to copy all public fields and properties
+         * 
         @returns A clone of the current object
         public @Override BaseData Clone() {
             clone = ObjectActivator.Clone(this);
@@ -128,7 +128,7 @@ package com.quantconnect.lean.Data
         }
 
         /**
-        /// Custom implementation of Dynamic Data MetaObject
+         * Custom implementation of Dynamic Data MetaObject
         */
         private class DynamicDataMetaObject : DynamicMetaObject
         {

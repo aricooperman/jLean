@@ -18,54 +18,28 @@ package com.quantconnect.lean.api;
 import java.util.ArrayList;
 import java.util.List;
 
-/// Base API response class for the QuantConnect API.
+/**
+ * Base API response class for the QuantConnect API.
+ */
 public class RestResponse {
-    
-    /// Indicate if the API request was successful.
+   
+    /**
+     * Indicate if the API request was successful.
+     */
 //    @JsonProperty( "success")]
     public boolean success;
     
-    /// List of errors with the API call.
+    /**
+     * List of errors with the API call.
+     */
 //    @JsonProperty( "errors")]
     public List<String> errors;
 
-    /// JSON Constructor
+    /**
+     * JSON Constructor
+     */
     public RestResponse() {
         success = false;
         errors = new ArrayList<String>();
     }
 }
-
-/*
-using System.Collections.Generic;
-using Newtonsoft.Json;
-
-package com.quantconnect.lean.Api
-{
-    /**
-    /// Base API response class for the QuantConnect API.
-    */
-    public class RestResponse
-    {
-        /**
-        /// JSON Constructor
-        */
-        public RestResponse() {
-            Success = false;
-            Errors = new List<String>();
-        }
-
-        /**
-        /// Indicate if the API request was successful.
-        */
-        @JsonProperty( "success")]
-        public boolean Success;
-
-        /**
-        /// List of errors with the API call.
-        */
-        @JsonProperty( "errors")]
-        public List<String> Errors;
-    }
-}
-*/

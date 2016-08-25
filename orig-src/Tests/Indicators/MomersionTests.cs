@@ -20,7 +20,7 @@ using System;
 package com.quantconnect.lean.Tests.Indicators
 {
     /**
-    /// Result tested vs. Python and Excel available in http://tinyurl.com/ob5tslj
+     * Result tested vs. Python and Excel available in http://tinyurl.com/ob5tslj
     */
     [TestFixture]
     public class MomersionTests

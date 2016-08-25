@@ -19,35 +19,35 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Engulfing candlestick pattern
+     * Engulfing candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - first: black (white) real body
-    /// - second: white(black) real body that engulfs the prior real body
-    /// The returned value is positive(+1) when bullish or negative(-1) when bearish;
-    /// The user should consider that an engulfing must appear in a downtrend if bullish or in an uptrend if bearish,
-    /// while this function does not consider it
-    /// 
+     * 
+     * Must have:
+     * - first: black (white) real body
+     * - second: white(black) real body that engulfs the prior real body
+     * The returned value is positive(+1) when bullish or negative(-1) when bearish;
+     * The user should consider that an engulfing must appear in a downtrend if bullish or in an uptrend if bearish,
+     * while this function does not consider it
+     * 
     public class Engulfing : CandlestickPattern
     {
         /**
-        /// Initializes a new instance of the <see cref="Engulfing"/> class using the specified name.
+         * Initializes a new instance of the <see cref="Engulfing"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public Engulfing( String name) 
             : base(name, 3) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Engulfing"/> class.
+         * Initializes a new instance of the <see cref="Engulfing"/> class.
         */
         public Engulfing()
             : this( "ENGULFING") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -55,14 +55,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;

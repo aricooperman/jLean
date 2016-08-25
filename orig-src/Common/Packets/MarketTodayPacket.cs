@@ -20,69 +20,69 @@ package com.quantconnect.lean.Packets
 {
 
     /**
-    /// Market today information class
+     * Market today information class
     */
     public class MarketToday
     {
         /**
-        /// Date this packet was generated.
+         * Date this packet was generated.
         */
         @JsonProperty( "date")]
         public DateTime Date { get; set; }
 
         /**
-        /// Given the dates and times above, what is the current market status - open or closed.
+         * Given the dates and times above, what is the current market status - open or closed.
         */
         @JsonProperty( "status")]
         public String Status = "";
 
         /**
-        /// Premarket hours for today
+         * Premarket hours for today
         */
         @JsonProperty( "premarket")]
         public MarketHours PreMarket;
 
         /**
-        /// Normal trading market hours for today
+         * Normal trading market hours for today
         */
         @JsonProperty( "open")]
         public MarketHours Open;
 
         /**
-        /// Post market hours for today
+         * Post market hours for today
         */
         @JsonProperty( "postmarket")]
         public MarketHours PostMarket;
 
         /**
-        /// Default constructor (required for JSON serialization)
+         * Default constructor (required for JSON serialization)
         */
         public MarketToday() { }
     }
 
     /**
-    /// Market open hours model for pre, normal and post market hour definitions.
+     * Market open hours model for pre, normal and post market hour definitions.
     */
     public class MarketHours
     {
         /**
-        /// Start time for this market hour category
+         * Start time for this market hour category
         */
         @JsonProperty( "start")]
         public DateTime Start;
 
         /**
-        /// End time for this market hour category
+         * End time for this market hour category
         */
         @JsonProperty( "end")]
         public DateTime End;
 
         /**
-        /// Market hours initializer given an hours since midnight measure for the market hours today
+         * Market hours initializer given an hours since midnight measure for the market hours today
         */
-         * @param referenceDate">Reference date used for as base date from the specified hour offsets
-         * @param defaultStart">Time in hours since midnight to start this open period.
-         * @param defaultEnd">Time in hours since midnight to end this open period.
+         * @param referenceDate Reference date used for as base date from the specified hour offsets
+         * @param defaultStart Time in hours since midnight to start this open period.
+         * @param defaultEnd Time in hours since midnight to end this open period.
         public MarketHours(DateTime referenceDate, double defaultStart, double defaultEnd) {
             Start = referenceDate.Date.AddHours(defaultStart);
             End = referenceDate.Date.AddHours(defaultEnd);

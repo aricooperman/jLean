@@ -15,15 +15,15 @@
 
 package com.quantconnect.lean.api;
 
-/// State of the compilation request
+ * State of the compilation request
 public enum CompileState {
-    /// Compile waiting in the queue to be processed.
+     * Compile waiting in the queue to be processed.
     InQueue,
 
-    /// Compile was built successfully
+     * Compile was built successfully
     BuildSuccess,
 
-    /// Build error, check logs for more information
+     * Build error, check logs for more information
     BuildError
 }
 
@@ -31,22 +31,22 @@ public enum CompileState {
 package com.quantconnect.lean.Api
 {
     /**
-    /// State of the compilation request
+     * State of the compilation request
     */
     public enum CompileState
     {
         /**
-        /// Compile waiting in the queue to be processed.
+         * Compile waiting in the queue to be processed.
         */
         InQueue,
 
         /**
-        /// Compile was built successfully
+         * Compile was built successfully
         */
         BuildSuccess,
 
         /**
-        /// Build error, check logs for more information
+         * Build error, check logs for more information
         */
         BuildError
     }

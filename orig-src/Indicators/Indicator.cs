@@ -16,15 +16,15 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// Represents a type capable of ingesting a piece of data and producing a new piece of data.
-    /// Indicators can be used to filter and transform data into a new, more informative form.
+     * Represents a type capable of ingesting a piece of data and producing a new piece of data.
+     * Indicators can be used to filter and transform data into a new, more informative form.
     */
     public abstract class Indicator : IndicatorBase<IndicatorDataPoint>
     {
         /**
-        /// Initializes a new instance of the Indicator class using the specified name.
+         * Initializes a new instance of the Indicator class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         protected Indicator( String name) 
             : base(name) {
         }

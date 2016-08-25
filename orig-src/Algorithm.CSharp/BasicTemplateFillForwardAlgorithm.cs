@@ -18,12 +18,12 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Algorithm.Examples
 {
     /**
-    /// Basic template algorithm simply initializes the date range and cash
+     * Basic template algorithm simply initializes the date range and cash
     */
     public class BasicTemplateFillForwardAlgorithm : QCAlgorithm
     {
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 01);  //Set Start Date
@@ -34,9 +34,9 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">TradeBars IDictionary object with your stock data
+         * @param data TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             if( !Portfolio.Invested) {
                 SetHoldings( "ASUR", 1);

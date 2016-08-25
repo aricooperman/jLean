@@ -34,7 +34,7 @@ package com.quantconnect.lean.Views
     }
 
     /**
-    /// Helper class for setting registry configuration for the web browser control
+     * Helper class for setting registry configuration for the web browser control
     */
     public static class WBEmulator
     {
@@ -42,7 +42,7 @@ package com.quantconnect.lean.Views
         private static final String BrowserEmulationKey = InternetExplorerRootKey + @"\Main\FeatureControl\FEATURE_BROWSER_EMULATION";
 
         /**
-        /// Get the version of internet explorer from the registry
+         * Get the version of internet explorer from the registry
         */
         @returns int version of IE.
         public static int GetInternetExplorerMajorVersion() {
@@ -97,7 +97,7 @@ package com.quantconnect.lean.Views
         }
 
         /**
-        /// Set the browser's IE version in registry
+         * Set the browser's IE version in registry
         */
          * @param browserEmulationVersion">
         @returns 
@@ -131,7 +131,7 @@ package com.quantconnect.lean.Views
         }
 
         /**
-        /// Set the enumulation version for the web browser control
+         * Set the enumulation version for the web browser control
         */
         public static boolean SetBrowserEmulationVersion() {
             BrowserEmulationVersion emulationCode;
@@ -161,7 +161,7 @@ package com.quantconnect.lean.Views
         }
 
         /**
-        /// Helper to confirm if the browser 
+         * Helper to confirm if the browser 
         */
         @returns Bool check if its set
         public static boolean IsBrowserEmulationSet() {

@@ -28,7 +28,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
     public partial class FxcmBrokerageTests : BrokerageTests
     {
         /**
-        /// Creates the brokerage under test
+         * Creates the brokerage under test
         */
         @returns A connected brokerage instance
         protected @Override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider) {
@@ -42,15 +42,15 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         }
 
         /**
-        /// Disposes of the brokerage and any external resources started in order to create it
+         * Disposes of the brokerage and any external resources started in order to create it
         */
-         * @param brokerage">The brokerage instance to be disposed of
+         * @param brokerage The brokerage instance to be disposed of
         protected @Override void DisposeBrokerage(IBrokerage brokerage) {
             brokerage.Disconnect();
         }
 
         /**
-        /// Provides the data required to test each order type in various cases
+         * Provides the data required to test each order type in various cases
         */
         public @Override TestCaseData[] OrderParameters
         {
@@ -66,7 +66,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         }
 
         /**
-        /// Gets the symbol to be traded, must be shortable
+         * Gets the symbol to be traded, must be shortable
         */
         protected @Override Symbol Symbol
         {
@@ -74,7 +74,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         }
 
         /**
-        /// Gets the security type associated with the <see cref="BrokerageTests.Symbol"/>
+         * Gets the security type associated with the <see cref="BrokerageTests.Symbol"/>
         */
         protected @Override SecurityType SecurityType
         {
@@ -82,7 +82,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         }
 
         /**
-        /// Gets a high price for the specified symbol so a limit sell won't fill
+         * Gets a high price for the specified symbol so a limit sell won't fill
         */
         protected @Override BigDecimal HighPrice
         {
@@ -91,7 +91,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         }
 
         /**
-        /// Gets a low price for the specified symbol so a limit buy won't fill
+         * Gets a low price for the specified symbol so a limit buy won't fill
         */
         protected @Override BigDecimal LowPrice
         {
@@ -100,7 +100,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         }
 
         /**
-        /// Gets the current market price of the specified security
+         * Gets the current market price of the specified security
         */
         protected @Override BigDecimal GetAskPrice(Symbol symbol) {
             // not used, we use bid/ask prices
@@ -108,7 +108,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
         }
 
         /**
-        /// Gets the default order quantity
+         * Gets the default order quantity
         */
         protected @Override int GetDefaultQuantity() {
             // FXCM requires a multiple of 1000 for Forex instruments

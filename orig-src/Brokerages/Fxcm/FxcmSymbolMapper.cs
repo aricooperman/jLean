@@ -19,12 +19,12 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Brokerages.Fxcm
 {
     /**
-    /// Provides the mapping between Lean symbols and FXCM symbols.
+     * Provides the mapping between Lean symbols and FXCM symbols.
     */
     public class FxcmSymbolMapper : ISymbolMapper
     {
         /**
-        /// Helper class to allow collection initializer on a List of tuples
+         * Helper class to allow collection initializer on a List of tuples
         */
         private class TupleList<T1, T2> : List<Tuple<T1, T2>>
         {
@@ -34,9 +34,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// The list of mappings from FXCM symbols to Lean symbols.
+         * The list of mappings from FXCM symbols to Lean symbols.
         */
-        /// T1 is FXCM symbol, T2 is Lean symbol
+         * T1 is FXCM symbol, T2 is Lean symbol
         private static final TupleList<String,String> FxcmSymbolMappings = new TupleList<String,String>
         {
             { "AUD/CAD", "AUDCAD" },
@@ -108,7 +108,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         private static final Map<String,String> MapLeanToFxcm = new Map<String,String>();
 
         /**
-        /// The list of known FXCM currencies.
+         * The list of known FXCM currencies.
         */
         private static final HashSet<String> KnownCurrencies = new HashSet<String>
         {
@@ -116,7 +116,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         };
 
         /**
-        /// Static constructor for the <see cref="FxcmSymbolMapper"/> class
+         * Static constructor for the <see cref="FxcmSymbolMapper"/> class
         */
         static FxcmSymbolMapper() {
             foreach (mapping in FxcmSymbolMappings) {
@@ -126,52 +126,52 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Converts a Lean symbol instance to an FXCM symbol
+         * Converts a Lean symbol instance to an FXCM symbol
         */
-         * @param symbol">A Lean symbol instance
+         * @param symbol A Lean symbol instance
         @returns The FXCM symbol
         public String GetBrokerageSymbol(Symbol symbol) {
-            if( symbol == null || symbol == Symbol.Empty || string.IsNullOrWhiteSpace(symbol.Value))
-                throw new ArgumentException( "Invalid symbol: " + (symbol == null ? "null" : symbol.toString()));
+            if( symbol == null || symbol == Symbol.Empty || StringUtils.isBlank(symbol.Value))
+                throw new IllegalArgumentException( "Invalid symbol: " + (symbol == null ? "null" : symbol.toString()));
 
             if( symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
-                throw new ArgumentException( "Invalid security type: " + symbol.ID.SecurityType);
+                throw new IllegalArgumentException( "Invalid security type: " + symbol.ID.SecurityType);
 
             brokerageSymbol = ConvertLeanSymbolToFxcmSymbol(symbol.Value);
 
             if( !IsKnownBrokerageSymbol(brokerageSymbol))
-                throw new ArgumentException( "Unknown symbol: " + symbol.Value);
+                throw new IllegalArgumentException( "Unknown symbol: " + symbol.Value);
 
             return brokerageSymbol;
         }
 
         /**
-        /// Converts an FXCM symbol to a Lean symbol instance
+         * Converts an FXCM symbol to a Lean symbol instance
         */
-         * @param brokerageSymbol">The FXCM symbol
-         * @param securityType">The security type
-         * @param market">The market
+         * @param brokerageSymbol The FXCM symbol
+         * @param securityType The security type
+         * @param market The market
         @returns A new Lean Symbol instance
         public Symbol GetLeanSymbol( String brokerageSymbol, SecurityType securityType, String market) {
             if(  String.IsNullOrWhiteSpace(brokerageSymbol))
-                throw new ArgumentException( "Invalid FXCM symbol: " + brokerageSymbol);
+                throw new IllegalArgumentException( "Invalid FXCM symbol: " + brokerageSymbol);
 
             if( !IsKnownBrokerageSymbol(brokerageSymbol))
-                throw new ArgumentException( "Unknown FXCM symbol: " + brokerageSymbol);
+                throw new IllegalArgumentException( "Unknown FXCM symbol: " + brokerageSymbol);
 
             if( securityType != SecurityType.Forex && securityType != SecurityType.Cfd)
-                throw new ArgumentException( "Invalid security type: " + securityType);
+                throw new IllegalArgumentException( "Invalid security type: " + securityType);
 
             if( market != Market.FXCM)
-                throw new ArgumentException( "Invalid market: " + market);
+                throw new IllegalArgumentException( "Invalid market: " + market);
 
             return Symbol.Create(ConvertFxcmSymbolToLeanSymbol(brokerageSymbol), GetBrokerageSecurityType(brokerageSymbol), Market.FXCM);
         }
 
         /**
-        /// Returns the security type for an FXCM symbol
+         * Returns the security type for an FXCM symbol
         */
-         * @param brokerageSymbol">The FXCM symbol
+         * @param brokerageSymbol The FXCM symbol
         @returns The security type
         public SecurityType GetBrokerageSecurityType( String brokerageSymbol) {
             tokens = brokerageSymbol.split('/');
@@ -181,34 +181,34 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Returns the security type for a Lean symbol
+         * Returns the security type for a Lean symbol
         */
-         * @param leanSymbol">The Lean symbol
+         * @param leanSymbol The Lean symbol
         @returns The security type
         public SecurityType GetLeanSecurityType( String leanSymbol) {
             String fxcmSymbol;
             if( !MapLeanToFxcm.TryGetValue(leanSymbol, out fxcmSymbol))
-                throw new ArgumentException( "Unknown Lean symbol: " + leanSymbol);
+                throw new IllegalArgumentException( "Unknown Lean symbol: " + leanSymbol);
 
             return GetBrokerageSecurityType(fxcmSymbol);
         }
 
         /**
-        /// Checks if the symbol is supported by FXCM
+         * Checks if the symbol is supported by FXCM
         */
-         * @param brokerageSymbol">The FXCM symbol
+         * @param brokerageSymbol The FXCM symbol
         @returns True if FXCM supports the symbol
         public boolean IsKnownBrokerageSymbol( String brokerageSymbol) {
             return brokerageSymbol != null && MapFxcmToLean.ContainsKey(brokerageSymbol);
         }
 
         /**
-        /// Checks if the symbol is supported by FXCM
+         * Checks if the symbol is supported by FXCM
         */
-         * @param symbol">The Lean symbol
+         * @param symbol The Lean symbol
         @returns True if FXCM supports the symbol
         public boolean IsKnownLeanSymbol(Symbol symbol) {
-            if( symbol == null || string.IsNullOrWhiteSpace(symbol.Value))
+            if( symbol == null || StringUtils.isBlank(symbol.Value))
                 return false;
 
             fxcmSymbol = ConvertLeanSymbolToFxcmSymbol(symbol.Value);
@@ -217,7 +217,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Converts an FXCM symbol to a Lean symbol string
+         * Converts an FXCM symbol to a Lean symbol string
         */
         public static String ConvertFxcmSymbolToLeanSymbol( String fxcmSymbol) {
             String leanSymbol;
@@ -225,7 +225,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Converts a Lean symbol String to an FXCM symbol
+         * Converts a Lean symbol String to an FXCM symbol
         */
         private static String ConvertLeanSymbolToFxcmSymbol( String leanSymbol) {
             String fxcmSymbol;

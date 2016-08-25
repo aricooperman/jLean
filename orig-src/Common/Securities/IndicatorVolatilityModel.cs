@@ -20,10 +20,10 @@ using QuantConnect.Indicators;
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Provides an implementation of <see cref="IVolatilityModel"/> that uses an indicator
-    /// to compute its value
+     * Provides an implementation of <see cref="IVolatilityModel"/> that uses an indicator
+     * to compute its value
     */
-    /// <typeparam name="T">The indicator's input type</typeparam>
+     * <typeparam name="T The indicator's input type</typeparam>
     public class IndicatorVolatilityModel<T> : IVolatilityModel
         where T : BaseData
     {
@@ -31,7 +31,7 @@ package com.quantconnect.lean.Securities
         private final Action<Security, BaseData, IIndicator<T>> _indicatorUpdate;
 
         /**
-        /// Gets the volatility of the security as a percentage
+         * Gets the volatility of the security as a percentage
         */
         public BigDecimal Volatility
         {
@@ -39,35 +39,35 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Initializes a new instance of the <see cref="IVolatilityModel"/> using
-        /// the specified <paramref name="indicator"/>. The <paramref name="indicator"/>
-        /// is assumed to but updated externally from this model, such as being registered
-        /// into the consolidator system.
+         * Initializes a new instance of the <see cref="IVolatilityModel"/> using
+         * the specified <paramref name="indicator"/>. The <paramref name="indicator"/>
+         * is assumed to but updated externally from this model, such as being registered
+         * into the consolidator system.
         */
-         * @param indicator">The auto-updating indicator
+         * @param indicator The auto-updating indicator
         public IndicatorVolatilityModel(IIndicator<T> indicator) {
             _indicator = indicator;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="IVolatilityModel"/> using
-        /// the specified <paramref name="indicator"/>. The <paramref name="indicator"/>
-        /// is assumed to but updated externally from this model, such as being registered
-        /// into the consolidator system.
+         * Initializes a new instance of the <see cref="IVolatilityModel"/> using
+         * the specified <paramref name="indicator"/>. The <paramref name="indicator"/>
+         * is assumed to but updated externally from this model, such as being registered
+         * into the consolidator system.
         */
-         * @param indicator">The auto-updating indicator
-         * @param indicatorUpdate">Function delegate used to update the indicator on each call to <see cref="Update"/>
+         * @param indicator The auto-updating indicator
+         * @param indicatorUpdate Function delegate used to update the indicator on each call to <see cref="Update"/>
         public IndicatorVolatilityModel(IIndicator<T> indicator, Action<Security, BaseData, IIndicator<T>> indicatorUpdate) {
             _indicator = indicator;
             _indicatorUpdate = indicatorUpdate;
         }
 
         /**
-        /// Updates this model using the new price information in
-        /// the specified security instance
+         * Updates this model using the new price information in
+         * the specified security instance
         */
-         * @param security">The security to calculate volatility for
-         * @param data">The new piece of data for the security
+         * @param security The security to calculate volatility for
+         * @param data The new piece of data for the security
         public void Update(Security security, BaseData data) {
             if( _indicatorUpdate != null ) {
                 _indicatorUpdate(security, data, _indicator);

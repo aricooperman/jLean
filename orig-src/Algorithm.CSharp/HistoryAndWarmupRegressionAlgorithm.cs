@@ -161,7 +161,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 }
 
                 int qty = 0;
-                BigDecimal limit = 0m;
+                BigDecimal limit = BigDecimal.ZERO;
                 if( IsUptrend) {
                     // 100 order lots
                     qty = LotSize;
@@ -186,7 +186,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                     return false;
                 }
 
-                BigDecimal limit = 0m;
+                BigDecimal limit = BigDecimal.ZERO;
                 if( Security.Holdings.IsLong && Close*exitTolerance < EMA) {
                     limit = Security.High;
                 }

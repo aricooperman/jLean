@@ -16,15 +16,15 @@
 package com.quantconnect.lean.Securities.Equity
 {
     /**
-    /// Holdings class for equities securities: no specific properties here but it is a placeholder for future equities specific behaviours.
+     * Holdings class for equities securities: no specific properties here but it is a placeholder for future equities specific behaviours.
     */
-    /// <seealso cref="SecurityHolding"/>
+     * <seealso cref="SecurityHolding"/>
     public class EquityHolding : SecurityHolding 
     {
         /**
-        /// Constructor for equities holdings.
+         * Constructor for equities holdings.
         */
-         * @param security">The security being held
+         * @param security The security being held
         public EquityHolding(Security security)
             : base(security) {
         }

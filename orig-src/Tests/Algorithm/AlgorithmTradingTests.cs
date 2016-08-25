@@ -31,7 +31,7 @@ package com.quantconnect.lean.Tests.Algorithm
             {
                 return new[]
                 {
-                    new TestCaseData(1m),
+                    new TestCaseData( BigDecimal.ONE ),
                     new TestCaseData(2m),
                     new TestCaseData(100m),
                 };
@@ -209,7 +209,7 @@ package com.quantconnect.lean.Tests.Algorithm
             algo.Portfolio.SetCash(50000);
             algo.Portfolio[Symbols.MSFT].SetHoldings(25, 2000);
             //Sell all 2000 held:
-            actual = algo.CalculateOrderQuantity(Symbols.MSFT, 0m);
+            actual = algo.CalculateOrderQuantity(Symbols.MSFT, BigDecimal.ZERO);
             Assert.AreEqual(-2000, actual);
         }
 
@@ -223,7 +223,7 @@ package com.quantconnect.lean.Tests.Algorithm
             algo.Portfolio.SetCash(50000);
             algo.Portfolio[Symbols.MSFT].SetHoldings(25, 2000);
             //Sell all 2000 held:
-            actual = algo.CalculateOrderQuantity(Symbols.MSFT, 0m);
+            actual = algo.CalculateOrderQuantity(Symbols.MSFT, BigDecimal.ZERO);
             Assert.AreEqual(-2000, actual);
         }
 
@@ -237,7 +237,7 @@ package com.quantconnect.lean.Tests.Algorithm
             algo.Portfolio.SetCash(50000);
             algo.Portfolio[Symbols.MSFT].SetHoldings(25, 2000);
             //Sell all 2000 held:
-            actual = algo.CalculateOrderQuantity(Symbols.MSFT, 0m);
+            actual = algo.CalculateOrderQuantity(Symbols.MSFT, BigDecimal.ZERO);
             Assert.AreEqual(-2000, actual);
         }
 
@@ -341,7 +341,7 @@ package com.quantconnect.lean.Tests.Algorithm
             algo.Portfolio.SetCash(150000);
             algo.Portfolio[Symbols.MSFT].SetHoldings(25, -2000);
             //Buy 2000 to get to 0 holdings.
-            actual = algo.CalculateOrderQuantity(Symbols.MSFT, 0m);
+            actual = algo.CalculateOrderQuantity(Symbols.MSFT, BigDecimal.ZERO);
             Assert.AreEqual(2000, actual);
         }
 
@@ -355,7 +355,7 @@ package com.quantconnect.lean.Tests.Algorithm
             algo.Portfolio.SetCash(150000);
             algo.Portfolio[Symbols.MSFT].SetHoldings(25, -2000);
             //Buy 2000 to get to 0 holdings.
-            actual = algo.CalculateOrderQuantity(Symbols.MSFT, 0m);
+            actual = algo.CalculateOrderQuantity(Symbols.MSFT, BigDecimal.ZERO);
             Assert.AreEqual(2000, actual);
         }
 
@@ -369,7 +369,7 @@ package com.quantconnect.lean.Tests.Algorithm
             algo.Portfolio.SetCash(150000);
             algo.Portfolio[Symbols.MSFT].SetHoldings(25, -2000);
             //Buy 2000 to get to 0 holdings.
-            actual = algo.CalculateOrderQuantity(Symbols.MSFT, 0m);
+            actual = algo.CalculateOrderQuantity(Symbols.MSFT, BigDecimal.ZERO);
             Assert.AreEqual(2000, actual);
         }
 

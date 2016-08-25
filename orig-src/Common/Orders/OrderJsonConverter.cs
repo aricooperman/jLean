@@ -24,7 +24,7 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Orders
 {
     /**
-    /// Provides an implementation of <see cref="JsonConverter"/> that can deserialize Orders
+     * Provides an implementation of <see cref="JsonConverter"/> that can deserialize Orders
     */
     public class OrderJsonConverter : JsonConverter
     {
@@ -33,42 +33,42 @@ package com.quantconnect.lean.Orders
             );
 
         /**
-        /// Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON.
+         * Gets a value indicating whether this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON.
         */
-        /// <value>
-        /// <c>true</c> if this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON; otherwise, <c>false</c>.
-        /// </value>
+         * <value>
+         * <c>true</c> if this <see cref="T:Newtonsoft.Json.JsonConverter"/> can write JSON; otherwise, <c>false</c>.
+         * 
         public @Override boolean CanWrite
         {
             get { return false; }
         }
 
         /**
-        /// Determines whether this instance can convert the specified object type.
+         * Determines whether this instance can convert the specified object type.
         */
-         * @param objectType">Type of the object.
+         * @param objectType Type of the object.
         @returns 
-        /// <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-        /// 
+         * <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
+         * 
         public @Override boolean CanConvert(Type objectType) {
             return typeof(Order).IsAssignableFrom(objectType);
         }
 
         /**
-        /// Writes the JSON representation of the object.
+         * Writes the JSON representation of the object.
         */
-         * @param writer">The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.<param name="value">The value.<param name="serializer">The calling serializer.
+         * @param writer The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.<param name="value The value.<param name="serializer The calling serializer.
         public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
             throw new NotImplementedException( "The OrderJsonConverter does not implement a WriteJson method;.");
         }
 
         /**
-        /// Reads the JSON representation of the object.
+         * Reads the JSON representation of the object.
         */
-         * @param reader">The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.<param name="objectType">Type of the object.<param name="existingValue">The existing value of object being read.<param name="serializer">The calling serializer.
+         * @param reader The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.<param name="objectType Type of the object.<param name="existingValue The existing value of object being read.<param name="serializer The calling serializer.
         @returns 
-        /// The object value.
-        /// 
+         * The object value.
+         * 
         public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
             jObject = JObject.Load(reader);
 
@@ -78,7 +78,7 @@ package com.quantconnect.lean.Orders
         }
 
         /**
-        /// Create an order from a simple JObject
+         * Create an order from a simple JObject
         */
          * @param jObject">
         @returns Order Object
@@ -121,7 +121,7 @@ package com.quantconnect.lean.Orders
         }
         
         /**
-        /// Creates an order of the correct type
+         * Creates an order of the correct type
         */
         private static Order CreateOrder(OrderType orderType, JObject jObject) {
             Order order;

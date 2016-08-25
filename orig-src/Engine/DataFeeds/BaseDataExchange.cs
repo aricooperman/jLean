@@ -26,7 +26,7 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Provides a means of distributing output from enumerators from a dedicated separate thread
+     * Provides a means of distributing output from enumerators from a dedicated separate thread
     */
     public class BaseDataExchange
     {
@@ -40,7 +40,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         private ConcurrentMap<Symbol, EnumeratorHandler> _enumerators;
 
         /**
-        /// Gets or sets how long this thread will sleep when no data is available
+         * Gets or sets how long this thread will sleep when no data is available
         */
         public int SleepInterval
         {
@@ -49,7 +49,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets a name for this exchange
+         * Gets a name for this exchange
         */
         public String Name
         {
@@ -57,10 +57,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Initializes a new instance of the <see cref="BaseDataExchange"/>
+         * Initializes a new instance of the <see cref="BaseDataExchange"/>
         */
-         * @param name">A name for this exchange
-         * @param enumerators">The enumerators to fanout
+         * @param name A name for this exchange
+         * @param enumerators The enumerators to fanout
         public BaseDataExchange( String name) {
             _name = name;
             _isFatalError = x -> false;
@@ -69,23 +69,23 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Adds the enumerator to this exchange. If it has already been added
-        /// then it will remain registered in the exchange only once
+         * Adds the enumerator to this exchange. If it has already been added
+         * then it will remain registered in the exchange only once
         */
-         * @param handler">The handler to use when this symbol's data is encountered
+         * @param handler The handler to use when this symbol's data is encountered
         public void AddEnumerator(EnumeratorHandler handler) {
             _enumerators[handler.Symbol] = handler;
         }
 
         /**
-        /// Adds the enumerator to this exchange. If it has already been added
-        /// then it will remain registered in the exchange only once
+         * Adds the enumerator to this exchange. If it has already been added
+         * then it will remain registered in the exchange only once
         */
-         * @param symbol">A unique symbol used to identify this enumerator
-         * @param enumerator">The enumerator to be added
-         * @param shouldMoveNext">Function used to determine if move next should be called on this
-        /// enumerator, defaults to always returning true
-         * @param enumeratorFinished">Delegate called when the enumerator move next returns false
+         * @param symbol A unique symbol used to identify this enumerator
+         * @param enumerator The enumerator to be added
+         * @param shouldMoveNext Function used to determine if move next should be called on this
+         * enumerator, defaults to always returning true
+         * @param enumeratorFinished Delegate called when the enumerator move next returns false
         public void AddEnumerator(Symbol symbol, IEnumerator<BaseData> enumerator, Func<bool> shouldMoveNext = null, Action<EnumeratorHandler> enumeratorFinished = null ) {
             enumeratorHandler = new EnumeratorHandler(symbol, enumerator, shouldMoveNext);
             if( enumeratorFinished != null ) {
@@ -95,33 +95,33 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Sets the specified function as the error handler. This function
-        /// returns true if it is a fatal error and queue consumption should
-        /// cease.
+         * Sets the specified function as the error handler. This function
+         * returns true if it is a fatal error and queue consumption should
+         * cease.
         */
-         * @param isFatalError">The error handling function to use when an
-        /// error is encountered during queue consumption. Returns true if queue
-        /// consumption should be stopped, returns false if queue consumption should
-        /// continue
+         * @param isFatalError The error handling function to use when an
+         * error is encountered during queue consumption. Returns true if queue
+         * consumption should be stopped, returns false if queue consumption should
+         * continue
         public void SetErrorHandler(Func<Exception, bool> isFatalError) {
             // default to false;
             _isFatalError = isFatalError ?? (x -> false);
         }
 
         /**
-        /// Sets the specified hander function to handle data for the handler's symbol
+         * Sets the specified hander function to handle data for the handler's symbol
         */
-         * @param handler">The handler to use when this symbol's data is encountered
+         * @param handler The handler to use when this symbol's data is encountered
         @returns An identifier that can be used to remove this handler
         public void SetDataHandler(DataHandler handler) {
             _dataHandlers[handler.Symbol] = handler;
         }
 
         /**
-        /// Sets the specified hander function to handle data for the handler's symbol
+         * Sets the specified hander function to handle data for the handler's symbol
         */
-         * @param symbol">The symbol whose data is to be handled
-         * @param handler">The handler to use when this symbol's data is encountered
+         * @param symbol The symbol whose data is to be handled
+         * @param handler The handler to use when this symbol's data is encountered
         @returns An identifier that can be used to remove this handler
         public void SetDataHandler(Symbol symbol, Action<BaseData> handler) {
             dataHandler = new DataHandler(symbol);
@@ -130,17 +130,17 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Removes the handler with the specified identifier
+         * Removes the handler with the specified identifier
         */
-         * @param symbol">The symbol to remove handlers for
+         * @param symbol The symbol to remove handlers for
         public boolean RemoveDataHandler(Symbol symbol) {
             DataHandler handler;
             return _dataHandlers.TryRemove(symbol, out handler);
         }
 
         /**
-        /// Removes and returns enumerator handler with the specified symbol.
-        /// The removed handler is returned, null if not found
+         * Removes and returns enumerator handler with the specified symbol.
+         * The removed handler is returned, null if not found
         */
         public EnumeratorHandler RemoveEnumerator(Symbol symbol) {
             EnumeratorHandler handler;
@@ -152,10 +152,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Begins consumption of the wrapped <see cref="IDataQueueHandler"/> on
-        /// a separate thread
+         * Begins consumption of the wrapped <see cref="IDataQueueHandler"/> on
+         * a separate thread
         */
-         * @param token">A cancellation token used to signal to stop
+         * @param token A cancellation token used to signal to stop
         public void Start(CancellationToken? token = null ) {
             Log.Trace( "BaseDataExchange(%1$s) Starting...", Name);
             _isStopping = false;
@@ -163,7 +163,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Ends consumption of the wrapped <see cref="IDataQueueHandler"/>
+         * Ends consumption of the wrapped <see cref="IDataQueueHandler"/>
         */
         public void Stop() {
             Log.Trace( "BaseDataExchange(%1$s) Stopping...", Name);
@@ -171,8 +171,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /** Entry point for queue consumption </summary>
-         * @param token">A cancellation token used to signal to stop
-        ///  This function only returns after <see cref="Stop"/> is called or the token is cancelled
+         * @param token A cancellation token used to signal to stop
+         *  This function only returns after <see cref="Stop"/> is called or the token is cancelled
         private void ConsumeEnumerators(CancellationToken token) {
             while (true) {
                 if( _isStopping || token.IsCancellationRequested) {
@@ -234,32 +234,32 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Handler used to handle data emitted from enumerators
+         * Handler used to handle data emitted from enumerators
         */
         public class DataHandler
         {
             /**
-            /// Event fired when MoveNext returns true and Current is non-null
+             * Event fired when MoveNext returns true and Current is non-null
             */
             public event EventHandler<BaseData> DataEmitted;
 
             /**
-            /// The symbol this handler handles
+             * The symbol this handler handles
             */
             public final Symbol Symbol;
 
             /**
-            /// Initializes a new instance of the <see cref="DataHandler"/> class
+             * Initializes a new instance of the <see cref="DataHandler"/> class
             */
-             * @param symbol">The symbol whose data is to be handled
+             * @param symbol The symbol whose data is to be handled
             public DataHandler(Symbol symbol) {
                 Symbol = symbol;
             }
 
             /**
-            /// Event invocator for the <see cref="DataEmitted"/> event
+             * Event invocator for the <see cref="DataEmitted"/> event
             */
-             * @param data">The data being emitted
+             * @param data The data being emitted
             public void OnDataEmitted(BaseData data) {
                 handler = DataEmitted;
                 if( handler != null ) handler(this, data);
@@ -267,7 +267,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Handler used to manage a single enumerator's move next/end of stream behavior
+         * Handler used to manage a single enumerator's move next/end of stream behavior
         */
         public class EnumeratorHandler
         {
@@ -275,35 +275,35 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             private final Action<BaseData> _handleData;
 
             /**
-            /// Event fired when MoveNext returns false
+             * Event fired when MoveNext returns false
             */
             public event EventHandler<EnumeratorHandler> EnumeratorFinished;
 
             /**
-            /// A unique symbol used to identify this enumerator
+             * A unique symbol used to identify this enumerator
             */
             public final Symbol Symbol;
 
             /**
-            /// The enumerator this handler handles
+             * The enumerator this handler handles
             */
             public final IEnumerator<BaseData> Enumerator;
 
             /**
-            /// Determines whether or not this handler is to be used for handling the
-            /// data emitted. This is useful when enumerators are not for a single symbol,
-            /// such is the case with universe subscriptions
+             * Determines whether or not this handler is to be used for handling the
+             * data emitted. This is useful when enumerators are not for a single symbol,
+             * such is the case with universe subscriptions
             */
             public final boolean HandlesData;
 
             /**
-            /// Initializes a new instance of the <see cref="EnumeratorHandler"/> class
+             * Initializes a new instance of the <see cref="EnumeratorHandler"/> class
             */
-             * @param symbol">The symbol to identify this enumerator
-             * @param enumerator">The enumeator this handler handles
-             * @param shouldMoveNext">Predicate function used to determine if we should call move next
-            /// on the symbol's enumerator
-             * @param handleData">Handler for data if HandlesData=true
+             * @param symbol The symbol to identify this enumerator
+             * @param enumerator The enumeator this handler handles
+             * @param shouldMoveNext Predicate function used to determine if we should call move next
+             * on the symbol's enumerator
+             * @param handleData Handler for data if HandlesData=true
             public EnumeratorHandler(Symbol symbol, IEnumerator<BaseData> enumerator, Func<bool> shouldMoveNext = null, Action<BaseData> handleData = null ) {
                 Symbol = symbol;
                 Enumerator = enumerator;
@@ -314,11 +314,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
 
             /**
-            /// Initializes a new instance of the <see cref="EnumeratorHandler"/> class
+             * Initializes a new instance of the <see cref="EnumeratorHandler"/> class
             */
-             * @param symbol">The symbol to identify this enumerator
-             * @param enumerator">The enumeator this handler handles
-             * @param handlesData">True if this handler will handle the data, false otherwise
+             * @param symbol The symbol to identify this enumerator
+             * @param enumerator The enumeator this handler handles
+             * @param handlesData True if this handler will handle the data, false otherwise
             protected EnumeratorHandler(Symbol symbol, IEnumerator<BaseData> enumerator, boolean handlesData) {
                 Symbol = symbol;
                 HandlesData = handlesData;
@@ -329,25 +329,25 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
 
             /**
-            /// Event invocator for the <see cref="EnumeratorFinished"/> event
+             * Event invocator for the <see cref="EnumeratorFinished"/> event
             */
-            public virtual void OnEnumeratorFinished() {
+            public void OnEnumeratorFinished() {
                 handler = EnumeratorFinished;
                 if( handler != null ) handler(this, this);
             }
 
             /**
-            /// Returns true if this enumerator should move next
+             * Returns true if this enumerator should move next
             */
-            public virtual boolean ShouldMoveNext() {
+            public boolean ShouldMoveNext() {
                 return _shouldMoveNext();
             }
 
             /**
-            /// Handles the specified data.
+             * Handles the specified data.
             */
-             * @param data">The data to be handled
-            public virtual void HandleData(BaseData data) {
+             * @param data The data to be handled
+            public void HandleData(BaseData data) {
                 _handleData(data);
             }
         }

@@ -16,15 +16,15 @@
 package com.quantconnect.lean.Securities.Forex 
 {
     /**
-    /// FOREX holdings implementation of the base securities class
+     * FOREX holdings implementation of the base securities class
     */
-    /// <seealso cref="SecurityHolding"/>
+     * <seealso cref="SecurityHolding"/>
     public class ForexHolding : SecurityHolding 
     {
         /**
-        /// Forex Holding Class
+         * Forex Holding Class
         */
-         * @param security">The forex security being held
+         * @param security The forex security being held
         public ForexHolding(Forex security)
             : base(security) {
         }

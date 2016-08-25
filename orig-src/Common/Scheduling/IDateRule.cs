@@ -20,20 +20,20 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Scheduling
 {
     /**
-    /// Specifies dates that events should be fired, used in conjunction with the <see cref="ITimeRule"/>
+     * Specifies dates that events should be fired, used in conjunction with the <see cref="ITimeRule"/>
     */
     public interface IDateRule
     {
         /**
-        /// Gets a name for this rule
+         * Gets a name for this rule
         */
         String Name { get; }
 
         /**
-        /// Gets the dates produced by this date rule between the specified times
+         * Gets the dates produced by this date rule between the specified times
         */
-         * @param start">The start of the interval to produce dates for
-         * @param end">The end of the interval to produce dates for
+         * @param start The start of the interval to produce dates for
+         * @param end The end of the interval to produce dates for
         @returns All dates in the interval matching this date rule
         IEnumerable<DateTime> GetDates(DateTime start, DateTime end);
     }

@@ -49,7 +49,7 @@ package com.quantconnect.lean.Algorithm.CSharp
     }
 
     /**
-    /// Handle the error messages in a custom manner
+     * Handle the error messages in a custom manner
     */
     public class CustomBrokerageMessageHandler : IBrokerageMessageHandler
     {
@@ -57,9 +57,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         public CustomBrokerageMessageHandler(IAlgorithm algo) { _algo = algo; }
 
         /**
-        /// Process the brokerage message event. Trigger any actions in the algorithm or notifications system required.
+         * Process the brokerage message event. Trigger any actions in the algorithm or notifications system required.
         */
-         * @param message">Message object
+         * @param message Message object
         public void Handle(BrokerageMessageEvent message) {
             toLog = _algo.Time.toString( "o") + " Event: " + message.Message;
             _algo.Debug(toLog);

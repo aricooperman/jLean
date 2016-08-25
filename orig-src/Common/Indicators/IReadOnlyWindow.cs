@@ -18,44 +18,44 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Indicators
 {
     /**
-    ///     Interface type used to pass windows around without worry of external modification
+     *     Interface type used to pass windows around without worry of external modification
     */
-    /// <typeparam name="T">The type of data in the window</typeparam>
+     * <typeparam name="T The type of data in the window</typeparam>
     public interface IReadOnlyWindow<out T> : IEnumerable<T>
     {
         /**
-        ///     Gets the size of this window
+         *     Gets the size of this window
         */
         int Size { get; }
 
         /**
-        ///     Gets the current number of elements in this window
+         *     Gets the current number of elements in this window
         */
         int Count { get; }
 
         /**
-        ///     Gets the number of samples that have been added to this window over its lifetime
+         *     Gets the number of samples that have been added to this window over its lifetime
         */
         BigDecimal Samples { get; }
 
         /**
-        ///     Indexes into this window, where index 0 is the most recently
-        ///     entered value
+         *     Indexes into this window, where index 0 is the most recently
+         *     entered value
         */
-         * @param i">the index, i
+         * @param i the index, i
         @returns the ith most recent entry
         T this[int i] { get; }
 
         /**
-        ///     Gets a value indicating whether or not this window is ready, i.e,
-        ///     it has been filled to its capacity, this is when the Size==Count
+         *     Gets a value indicating whether or not this window is ready, i.e,
+         *     it has been filled to its capacity, this is when the Size==Count
         */
         boolean IsReady { get; }
 
         /**
-        ///     Gets the most recently removed item from the window. This is the
-        ///     piece of data that just 'fell off' as a result of the most recent
-        ///     add. If no items have been removed, this will throw an exception.
+         *     Gets the most recently removed item from the window. This is the
+         *     piece of data that just 'fell off' as a result of the most recent
+         *     add. If no items have been removed, this will throw an exception.
         */
         T MostRecentlyRemoved { get; }
     }

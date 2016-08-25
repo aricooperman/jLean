@@ -27,127 +27,127 @@ package com.quantconnect.lean.Algorithm
         private int _maxOrders = 10000;
 
         /**
-        /// Transaction Manager - Process transaction fills and order management.
+         * Transaction Manager - Process transaction fills and order management.
         */
         public SecurityTransactionManager Transactions { get; set; }
 
         /**
-        /// Buy Stock (Alias of Order)
+         * Buy Stock (Alias of Order)
         */
-         * @param symbol">string Symbol of the asset to trade
-         * @param quantity">int Quantity of the asset to trade
-        /// <seealso cref="Buy(Symbol, double)"/>
+         * @param symbol string Symbol of the asset to trade
+         * @param quantity int Quantity of the asset to trade
+         * <seealso cref="Buy(Symbol, double)"/>
         public OrderTicket Buy(Symbol symbol, int quantity) {
             return Order(symbol, Math.Abs(quantity));
         }
 
         /**
-        /// Buy Stock (Alias of Order)
+         * Buy Stock (Alias of Order)
         */
-         * @param symbol">string Symbol of the asset to trade
-         * @param quantity">double Quantity of the asset to trade
-        /// <seealso cref="Buy(Symbol, int)"/>
+         * @param symbol string Symbol of the asset to trade
+         * @param quantity double Quantity of the asset to trade
+         * <seealso cref="Buy(Symbol, int)"/>
         public OrderTicket Buy(Symbol symbol, double quantity) {
             return Order(symbol, Math.Abs(quantity));
         }
 
         /**
-        /// Buy Stock (Alias of Order)
+         * Buy Stock (Alias of Order)
         */
-         * @param symbol">string Symbol of the asset to trade
-         * @param quantity">decimal Quantity of the asset to trade
-        /// <seealso cref="Order(Symbol, double)"/>
+         * @param symbol string Symbol of the asset to trade
+         * @param quantity decimal Quantity of the asset to trade
+         * <seealso cref="Order(Symbol, double)"/>
         public OrderTicket Buy(Symbol symbol, BigDecimal quantity) {
             return Order(symbol, Math.Abs(quantity));
         }
 
         /**
-        /// Buy Stock (Alias of Order)
+         * Buy Stock (Alias of Order)
         */
-         * @param symbol">string Symbol of the asset to trade
-         * @param quantity">float Quantity of the asset to trade
-        /// <seealso cref="Buy(Symbol, double)"/>
+         * @param symbol string Symbol of the asset to trade
+         * @param quantity float Quantity of the asset to trade
+         * <seealso cref="Buy(Symbol, double)"/>
         public OrderTicket Buy(Symbol symbol, float quantity) {
             return Order(symbol, Math.Abs(quantity));
         }
 
         /**
-        /// Sell stock (alias of Order)
+         * Sell stock (alias of Order)
         */
-         * @param symbol">string Symbol of the asset to trade
-         * @param quantity">int Quantity of the asset to trade
-        /// <seealso cref="Sell(Symbol, double)"/>
+         * @param symbol string Symbol of the asset to trade
+         * @param quantity int Quantity of the asset to trade
+         * <seealso cref="Sell(Symbol, double)"/>
         public OrderTicket Sell(Symbol symbol, int quantity) {
             return Order(symbol, Math.Abs(quantity) * -1);
         }
 
         /**
-        /// Sell stock (alias of Order)
+         * Sell stock (alias of Order)
         */
-         * @param symbol">String symbol to sell
-         * @param quantity">Quantity to order
+         * @param symbol String symbol to sell
+         * @param quantity Quantity to order
         @returns int Order Id.
         public OrderTicket Sell(Symbol symbol, double quantity) {
             return Order(symbol, Math.Abs(quantity) * -1);
         }
 
         /**
-        /// Sell stock (alias of Order)
+         * Sell stock (alias of Order)
         */
-         * @param symbol">String symbol
-         * @param quantity">Quantity to sell
+         * @param symbol String symbol
+         * @param quantity Quantity to sell
         @returns int order id
-        /// <seealso cref="Sell(Symbol, double)"/>
+         * <seealso cref="Sell(Symbol, double)"/>
         public OrderTicket Sell(Symbol symbol, float quantity) {
             return Order(symbol, Math.Abs(quantity) * -1);
         }
 
         /**
-        /// Sell stock (alias of Order)
+         * Sell stock (alias of Order)
         */
-         * @param symbol">String symbol to sell
-         * @param quantity">Quantity to sell
+         * @param symbol String symbol to sell
+         * @param quantity Quantity to sell
         @returns Int Order Id.
         public OrderTicket Sell(Symbol symbol, BigDecimal quantity) {
             return Order(symbol, Math.Abs(quantity) * -1);
         }
 
         /**
-        /// Issue an order/trade for asset: Alias wrapper for Order( String, int);
+         * Issue an order/trade for asset: Alias wrapper for Order( String, int);
         */
-        /// <seealso cref="Order(Symbol, decimal)"/>
+         * <seealso cref="Order(Symbol, decimal)"/>
         public OrderTicket Order(Symbol symbol, double quantity) {
             return Order(symbol, (int) quantity);
         }
 
         /**
-        /// Issue an order/trade for asset: Alias wrapper for Order( String, int);
+         * Issue an order/trade for asset: Alias wrapper for Order( String, int);
         */
-        /// 
-        /// <seealso cref="Order(Symbol, double)"/>
+         * 
+         * <seealso cref="Order(Symbol, double)"/>
         public OrderTicket Order(Symbol symbol, BigDecimal quantity) {
             return Order(symbol, (int) quantity);
         }
 
         /**
-        /// Wrapper for market order method: submit a new order for quantity of symbol using type order.
+         * Wrapper for market order method: submit a new order for quantity of symbol using type order.
         */
-         * @param symbol">Symbol of the MarketType Required.
-         * @param quantity">Number of shares to request.
-         * @param asynchronous">Send the order asynchrously (false). Otherwise we'll block until it fills
-         * @param tag">Place a custom order property or tag (e.g. indicator data).
-        /// <seealso cref="MarketOrder(Symbol, int, bool, string)"/>
+         * @param symbol Symbol of the MarketType Required.
+         * @param quantity Number of shares to request.
+         * @param asynchronous Send the order asynchrously (false). Otherwise we'll bsynchronizeduntil it fills
+         * @param tag Place a custom order property or tag (e.g. indicator data).
+         * <seealso cref="MarketOrder(Symbol, int, bool, string)"/>
         public OrderTicket Order(Symbol symbol, int quantity, boolean asynchronous = false, String tag = "") {
             return MarketOrder(symbol, quantity, asynchronous, tag);
         }
 
         /**
-        /// Market order implementation: Send a market order and wait for it to be filled.
+         * Market order implementation: Send a market order and wait for it to be filled.
         */
-         * @param symbol">Symbol of the MarketType Required.
-         * @param quantity">Number of shares to request.
-         * @param asynchronous">Send the order asynchrously (false). Otherwise we'll block until it fills
-         * @param tag">Place a custom order property or tag (e.g. indicator data).
+         * @param symbol Symbol of the MarketType Required.
+         * @param quantity Number of shares to request.
+         * @param asynchronous Send the order asynchrously (false). Otherwise we'll bsynchronizeduntil it fills
+         * @param tag Place a custom order property or tag (e.g. indicator data).
         @returns int Order id
         public OrderTicket MarketOrder(Symbol symbol, int quantity, boolean asynchronous = false, String tag = "") {
             security = Securities[symbol];
@@ -183,11 +183,11 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Market on open order implementation: Send a market order when the exchange opens
+         * Market on open order implementation: Send a market order when the exchange opens
         */
-         * @param symbol">The symbol to be ordered
-         * @param quantity">The number of shares to required
-         * @param tag">Place a custom order property or tag (e.g. indicator data).
+         * @param symbol The symbol to be ordered
+         * @param quantity The number of shares to required
+         * @param tag Place a custom order property or tag (e.g. indicator data).
         @returns The order ID
         public OrderTicket MarketOnOpenOrder(Symbol symbol, int quantity, String tag = "") {
             security = Securities[symbol];
@@ -201,11 +201,11 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Market on close order implementation: Send a market order when the exchange closes
+         * Market on close order implementation: Send a market order when the exchange closes
         */
-         * @param symbol">The symbol to be ordered
-         * @param quantity">The number of shares to required
-         * @param tag">Place a custom order property or tag (e.g. indicator data).
+         * @param symbol The symbol to be ordered
+         * @param quantity The number of shares to required
+         * @param tag Place a custom order property or tag (e.g. indicator data).
         @returns The order ID
         public OrderTicket MarketOnCloseOrder(Symbol symbol, int quantity, String tag = "") {
             security = Securities[symbol];
@@ -219,12 +219,12 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Send a limit order to the transaction handler:
+         * Send a limit order to the transaction handler:
         */
-         * @param symbol">String symbol for the asset
-         * @param quantity">Quantity of shares for limit order
-         * @param limitPrice">Limit price to fill this order
-         * @param tag">String tag for the order (optional)
+         * @param symbol String symbol for the asset
+         * @param quantity Quantity of shares for limit order
+         * @param limitPrice Limit price to fill this order
+         * @param tag String tag for the order (optional)
         @returns Order id
         public OrderTicket LimitOrder(Symbol symbol, int quantity, BigDecimal limitPrice, String tag = "") {
             security = Securities[symbol];
@@ -238,12 +238,12 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Create a stop market order and return the newly created order id; or negative if the order is invalid
+         * Create a stop market order and return the newly created order id; or negative if the order is invalid
         */
-         * @param symbol">String symbol for the asset we're trading
-         * @param quantity">Quantity to be traded
-         * @param stopPrice">Price to fill the stop order
-         * @param tag">Optional String data tag for the order
+         * @param symbol String symbol for the asset we're trading
+         * @param quantity Quantity to be traded
+         * @param stopPrice Price to fill the stop order
+         * @param tag Optional String data tag for the order
         @returns Int orderId for the new order.
         public OrderTicket StopMarketOrder(Symbol symbol, int quantity, BigDecimal stopPrice, String tag = "") {
             security = Securities[symbol];
@@ -257,13 +257,13 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Send a stop limit order to the transaction handler:
+         * Send a stop limit order to the transaction handler:
         */
-         * @param symbol">String symbol for the asset
-         * @param quantity">Quantity of shares for limit order
-         * @param stopPrice">Stop price for this order
-         * @param limitPrice">Limit price to fill this order
-         * @param tag">String tag for the order (optional)
+         * @param symbol String symbol for the asset
+         * @param quantity Quantity of shares for limit order
+         * @param stopPrice Stop price for this order
+         * @param limitPrice Limit price to fill this order
+         * @param tag String tag for the order (optional)
         @returns Order id
         public OrderTicket StopLimitOrder(Symbol symbol, int quantity, BigDecimal stopPrice, BigDecimal limitPrice, String tag = "") {
             security = Securities[symbol];
@@ -278,8 +278,8 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Perform preorder checks to ensure we have sufficient capital, 
-        /// the market is open, and we haven't exceeded maximum realistic orders per day.
+         * Perform preorder checks to ensure we have sufficient capital, 
+         * the market is open, and we haven't exceeded maximum realistic orders per day.
         */
         @returns OrderResponse. If no error, order request is submitted.
         private OrderResponse PreOrderChecks(SubmitOrderRequest request) {
@@ -291,8 +291,8 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Perform preorder checks to ensure we have sufficient capital, 
-        /// the market is open, and we haven't exceeded maximum realistic orders per day.
+         * Perform preorder checks to ensure we have sufficient capital, 
+         * the market is open, and we haven't exceeded maximum realistic orders per day.
         */
         @returns OrderResponse. If no error, order request is submitted.
         private OrderResponse PreOrderChecksImpl(SubmitOrderRequest request) {
@@ -329,7 +329,7 @@ package com.quantconnect.lean.Algorithm
             if( !Portfolio.CashBook.TryGetValue(quoteCurrency, out quoteCash)) {
                 return OrderResponse.Error(request, OrderResponseErrorCode.QuoteCurrencyRequired, request.Symbol.Value + ": requires " + quoteCurrency + " in the cashbook to trade.");
             }
-            if( security.QuoteCurrency.ConversionRate == 0m) {
+            if( security.QuoteCurrency.ConversionRate == BigDecimal.ZERO) {
                 return OrderResponse.Error(request, OrderResponseErrorCode.ConversionRateZero, request.Symbol.Value + ": requires " + quoteCurrency + " to have a non-zero conversion rate. This can be caused by lack of data.");
             }
             
@@ -340,7 +340,7 @@ package com.quantconnect.lean.Algorithm
                 if( !Portfolio.CashBook.TryGetValue(baseCurrency, out baseCash)) {
                     return OrderResponse.Error(request, OrderResponseErrorCode.ForexBaseAndQuoteCurrenciesRequired, request.Symbol.Value + ": requires " + baseCurrency + " and " + quoteCurrency + " in the cashbook to trade.");
                 }
-                if( baseCash.ConversionRate == 0m) {
+                if( baseCash.ConversionRate == BigDecimal.ZERO) {
                     return OrderResponse.Error(request, OrderResponseErrorCode.ForexConversionRateZero, request.Symbol.Value + ": requires " + baseCurrency + " and " + quoteCurrency + " to have non-zero conversion rates. This can be caused by lack of data.");
                 }
             }
@@ -373,11 +373,11 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Liquidate all holdings and cancel open orders. Called at the end of day for tick-strategies.
+         * Liquidate all holdings and cancel open orders. Called at the end of day for tick-strategies.
         */
-         * @param symbolToLiquidate">Symbols we wish to liquidate
+         * @param symbolToLiquidate Symbols we wish to liquidate
         @returns Array of order ids for liquidated symbols
-        /// <seealso cref="MarketOrder"/>
+         * <seealso cref="MarketOrder"/>
         public List<Integer> Liquidate(Symbol symbolToLiquidate = null ) {
             orderIdList = new List<Integer>();
             symbolToLiquidate = symbolToLiquidate ?? QuantConnect.Symbol.Empty;
@@ -398,7 +398,7 @@ package com.quantconnect.lean.Algorithm
                     continue;
 
                 // cancel all open orders
-                marketOrdersQuantity = 0m;
+                marketOrdersQuantity = BigDecimal.ZERO;
                 foreach (order in orders) {
                     if( order.Type == OrderType.Market) {
                         // pending market order
@@ -428,7 +428,7 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Maximum number of orders for the algorithm
+         * Maximum number of orders for the algorithm
         */
          * @param max">
         public void SetMaximumOrders(int max) {
@@ -438,50 +438,50 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Alias for SetHoldings to avoid the M-decimal errors.
+         * Alias for SetHoldings to avoid the M-decimal errors.
         */
-         * @param symbol">string symbol we wish to hold
-         * @param percentage">double percentage of holdings desired
-         * @param liquidateExistingHoldings">liquidate existing holdings if neccessary to hold this stock
-        /// <seealso cref="MarketOrder"/>
+         * @param symbol string symbol we wish to hold
+         * @param percentage double percentage of holdings desired
+         * @param liquidateExistingHoldings liquidate existing holdings if neccessary to hold this stock
+         * <seealso cref="MarketOrder"/>
         public void SetHoldings(Symbol symbol, double percentage, boolean liquidateExistingHoldings = false) {
             SetHoldings(symbol, (decimal)percentage, liquidateExistingHoldings);
         }
 
         /**
-        /// Alias for SetHoldings to avoid the M-decimal errors.
+         * Alias for SetHoldings to avoid the M-decimal errors.
         */
-         * @param symbol">string symbol we wish to hold
-         * @param percentage">float percentage of holdings desired
-         * @param liquidateExistingHoldings">bool liquidate existing holdings if neccessary to hold this stock
-         * @param tag">Tag the order with a short string.
-        /// <seealso cref="MarketOrder"/>
+         * @param symbol string symbol we wish to hold
+         * @param percentage float percentage of holdings desired
+         * @param liquidateExistingHoldings bool liquidate existing holdings if neccessary to hold this stock
+         * @param tag Tag the order with a short string.
+         * <seealso cref="MarketOrder"/>
         public void SetHoldings(Symbol symbol, float percentage, boolean liquidateExistingHoldings = false, String tag = "") {
             SetHoldings(symbol, (decimal)percentage, liquidateExistingHoldings, tag);
         }
 
         /**
-        /// Alias for SetHoldings to avoid the M-decimal errors.
+         * Alias for SetHoldings to avoid the M-decimal errors.
         */
-         * @param symbol">string symbol we wish to hold
-         * @param percentage">float percentage of holdings desired
-         * @param liquidateExistingHoldings">bool liquidate existing holdings if neccessary to hold this stock
-         * @param tag">Tag the order with a short string.
-        /// <seealso cref="MarketOrder"/>
+         * @param symbol string symbol we wish to hold
+         * @param percentage float percentage of holdings desired
+         * @param liquidateExistingHoldings bool liquidate existing holdings if neccessary to hold this stock
+         * @param tag Tag the order with a short string.
+         * <seealso cref="MarketOrder"/>
         public void SetHoldings(Symbol symbol, int percentage, boolean liquidateExistingHoldings = false, String tag = "") {
             SetHoldings(symbol, (decimal)percentage, liquidateExistingHoldings, tag);
         }
 
         /**
-        /// Automatically place an order which will set the holdings to between 100% or -100% of *PORTFOLIO VALUE*.
-        /// E.g. SetHoldings( "AAPL", 0.1); SetHoldings( "IBM", -0.2); -> Sets portfolio as long 10% APPL and short 20% IBM
-        /// E.g. SetHoldings( "AAPL", 2); -> Sets apple to 2x leveraged with all our cash.
+         * Automatically place an order which will set the holdings to between 100% or -100% of *PORTFOLIO VALUE*.
+         * E.g. SetHoldings( "AAPL", 0.1); SetHoldings( "IBM", -0.2); -> Sets portfolio as long 10% APPL and short 20% IBM
+         * E.g. SetHoldings( "AAPL", 2); -> Sets apple to 2x leveraged with all our cash.
         */
-         * @param symbol">Symbol indexer
-         * @param percentage">decimal fraction of portfolio to set stock
-         * @param liquidateExistingHoldings">bool flag to clean all existing holdings before setting new faction.
-         * @param tag">Tag the order with a short string.
-        /// <seealso cref="MarketOrder"/>
+         * @param symbol Symbol indexer
+         * @param percentage decimal fraction of portfolio to set stock
+         * @param liquidateExistingHoldings bool flag to clean all existing holdings before setting new faction.
+         * @param tag Tag the order with a short string.
+         * <seealso cref="MarketOrder"/>
         public void SetHoldings(Symbol symbol, BigDecimal percentage, boolean liquidateExistingHoldings = false, String tag = "") {
             //Initialize Requirements:
             Security security;
@@ -510,22 +510,22 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Calculate the order quantity to achieve target-percent holdings.
+         * Calculate the order quantity to achieve target-percent holdings.
         */
-         * @param symbol">Security object we're asking for
-         * @param target">Target percentag holdings
+         * @param symbol Security object we're asking for
+         * @param target Target percentag holdings
         @returns Order quantity to achieve this percentage
         public int CalculateOrderQuantity(Symbol symbol, double target) {
             return CalculateOrderQuantity(symbol, (decimal)target);
         }
 
         /**
-        /// Calculate the order quantity to achieve target-percent holdings.
+         * Calculate the order quantity to achieve target-percent holdings.
         */
-         * @param symbol">Security object we're asking for
-         * @param target">Target percentag holdings, this is an unlevered value, so 
-        /// if you have 2x leverage and request 100% holdings, it will utilize half of the 
-        /// available margin
+         * @param symbol Security object we're asking for
+         * @param target Target percentag holdings, this is an unlevered value, so 
+         * if you have 2x leverage and request 100% holdings, it will utilize half of the 
+         * available margin
         @returns Order quantity to achieve this percentage
         public int CalculateOrderQuantity(Symbol symbol, BigDecimal target) {
             security = Securities[symbol];
@@ -597,14 +597,14 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Obsolete implementation of Order method accepting a OrderType. This was deprecated since it 
-        /// was impossible to generate other orders via this method. Any calls to this method will always default to a Market Order.
+         * Obsolete implementation of Order method accepting a OrderType. This was deprecated since it 
+         * was impossible to generate other orders via this method. Any calls to this method will always default to a Market Order.
         */
-         * @param symbol">Symbol we want to purchase
-         * @param quantity">Quantity to buy, + is long, - short.
-         * @param type">Order Type
-         * @param asynchronous">Don't wait for the response, just submit order and move on.
-         * @param tag">Custom data for this order
+         * @param symbol Symbol we want to purchase
+         * @param quantity Quantity to buy, + is long, - short.
+         * @param type Order Type
+         * @param asynchronous Don't wait for the response, just submit order and move on.
+         * @param tag Custom data for this order
         @returns Integer Order ID.
         [Obsolete( "This Order method has been made obsolete, use Order( String, int, bool, string) method instead. Calls to the obsolete method will only generate market orders.")]
         public OrderTicket Order(Symbol symbol, int quantity, OrderType type, boolean asynchronous = false, String tag = "") {
@@ -612,7 +612,7 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Obsolete method for placing orders. 
+         * Obsolete method for placing orders. 
         */
          * @param symbol">
          * @param quantity">
@@ -623,7 +623,7 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Obsolete method for placing orders.
+         * Obsolete method for placing orders.
         */
          * @param symbol">
          * @param quantity">
@@ -633,7 +633,7 @@ package com.quantconnect.lean.Algorithm
             return Order(symbol, quantity);
         }
 
-        private SubmitOrderRequest CreateSubmitOrderRequest(OrderType orderType, Security security, int quantity, String tag, BigDecimal stopPrice = 0m, BigDecimal limitPrice = 0m) {
+        private SubmitOrderRequest CreateSubmitOrderRequest(OrderType orderType, Security security, int quantity, String tag, BigDecimal stopPrice = BigDecimal.ZERO, BigDecimal limitPrice = BigDecimal.ZERO) {
             return new SubmitOrderRequest(orderType, security.Type, security.Symbol, quantity, stopPrice, limitPrice, UtcTime, tag);
         }
     }

@@ -21,12 +21,12 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Brokerages.Backtesting
 {
     /**
-    /// Factory type for the <see cref="BacktestingBrokerage"/>
+     * Factory type for the <see cref="BacktestingBrokerage"/>
     */
     public class BacktestingBrokerageFactory : IBrokerageFactory
     {
         /**
-        /// Gets the type of brokerage produced by this factory
+         * Gets the type of brokerage produced by this factory
         */
         public Type BrokerageType
         {
@@ -34,19 +34,19 @@ package com.quantconnect.lean.Brokerages.Backtesting
         }
 
         /**
-        /// Gets the brokerage data required to run the IB brokerage from configuration
+         * Gets the brokerage data required to run the IB brokerage from configuration
         */
-        /// 
-        /// The implementation of this property will create the brokerage data dictionary required for
-        /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
-        /// 
+         * 
+         * The implementation of this property will create the brokerage data dictionary required for
+         * running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
+         * 
         public Map<String,String> BrokerageData
         {
             get { return new Map<String,String>(); }
         }
 
         /**
-        /// Gets a new instance of the <see cref="InteractiveBrokersBrokerageModel"/>
+         * Gets a new instance of the <see cref="InteractiveBrokersBrokerageModel"/>
         */
         public IBrokerageModel BrokerageModel
         {
@@ -54,19 +54,19 @@ package com.quantconnect.lean.Brokerages.Backtesting
         }
 
         /**
-        /// Creates a new IBrokerage instance
+         * Creates a new IBrokerage instance
         */
-         * @param job">The job packet to create the brokerage for
-         * @param algorithm">The algorithm instance
+         * @param job The job packet to create the brokerage for
+         * @param algorithm The algorithm instance
         @returns A new brokerage instance
         public IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm) {
             return new BacktestingBrokerage(algorithm);
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
             // NOP
         }

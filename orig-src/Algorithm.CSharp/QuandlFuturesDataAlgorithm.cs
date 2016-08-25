@@ -20,20 +20,20 @@ using QuantConnect.Data.Custom;
 package com.quantconnect.lean
 {
     /**
-    /// QuantConnect University: Futures Example
-    /// 
-    /// QuantConnect allows importing generic data sources! This example demonstrates importing a futures
-    /// data from the popular open data source Quandl.
-    /// 
-    /// QuantConnect has a special deal with Quandl giving you access to Stevens Continuous Futurs (SCF) for free.
-    /// If you'd like to download SCF for local backtesting, you can download it through Quandl.com.
+     * QuantConnect University: Futures Example
+     * 
+     * QuantConnect allows importing generic data sources! This example demonstrates importing a futures
+     * data from the popular open data source Quandl.
+     * 
+     * QuantConnect has a special deal with Quandl giving you access to Stevens Continuous Futurs (SCF) for free.
+     * If you'd like to download SCF for local backtesting, you can download it through Quandl.com.
     */
     public class QCUQuandlFutures : QCAlgorithm
     {
         String _crude = "SCF/CME_CL1_ON";
 
         /**
-        /// Initialize the data and resolution you require for your strategy
+         * Initialize the data and resolution you require for your strategy
         */
         public @Override void Initialize() {
             SetStartDate(2000, 1, 1);
@@ -43,9 +43,9 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Data Event Handler: New data arrives here. "TradeBars" type is a dictionary of strings so you can access it by symbol.
+         * Data Event Handler: New data arrives here. "TradeBars" type is a dictionary of strings so you can access it by symbol.
         */
-         * @param data">Data.
+         * @param data Data.
         public void OnData(Quandl data) {
             if( !Portfolio.HoldStock) {
                 SetHoldings(_crude, 1);
@@ -55,12 +55,12 @@ package com.quantconnect.lean
     }
 
     /**
-    /// Custom quandl data type for setting customized value column name. Value column is used for the primary trading calculations and charting.
+     * Custom quandl data type for setting customized value column name. Value column is used for the primary trading calculations and charting.
     */
     public class QuandlFuture : Quandl
     {
         /**
-        /// Initializes a new instance of the <see cref="QuantConnect.QuandlFuture"/> class.
+         * Initializes a new instance of the <see cref="QuantConnect.QuandlFuture"/> class.
         */
         public QuandlFuture()
             : base(valueColumnName: "Settle") {

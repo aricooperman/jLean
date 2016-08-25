@@ -23,7 +23,7 @@ using QuantConnect.Securities.Interfaces;
 package com.quantconnect.lean.Securities 
 {
     /**
-    /// Default security transaction model for user defined securities.
+     * Default security transaction model for user defined securities.
     */
     public class SecurityTransactionModel : ISecurityTransactionModel
     {
@@ -32,8 +32,8 @@ package com.quantconnect.lean.Securities
         private final ISlippageModel _slippageModel;
 
         /**
-        /// Initializes a new default instance of the <see cref="SecurityTransactionModel"/> class.
-        /// This will use default slippage and fill models.
+         * Initializes a new default instance of the <see cref="SecurityTransactionModel"/> class.
+         * This will use default slippage and fill models.
         */
         public SecurityTransactionModel() {
             _slippageModel = new SpreadSlippageModel();
@@ -42,11 +42,11 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Initializes a new instance of the <see cref="SecurityTransactionManager"/> class
+         * Initializes a new instance of the <see cref="SecurityTransactionManager"/> class
         */
-         * @param fillModel">The fill model to use
-         * @param feeModel">The order fee model to use
-         * @param slippageModel">The slippage model to use
+         * @param fillModel The fill model to use
+         * @param feeModel The order fee model to use
+         * @param slippageModel The slippage model to use
         public SecurityTransactionModel(IFillModel fillModel, IFeeModel feeModel, ISlippageModel slippageModel) {
             _fillModel = fillModel;
             _feeModel = feeModel;
@@ -54,97 +54,97 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Default market fill model for the base security class. Fills at the last traded price.
+         * Default market fill model for the base security class. Fills at the last traded price.
         */
-         * @param asset">Security asset we're filling
-         * @param order">Order packet to model
+         * @param asset Security asset we're filling
+         * @param order Order packet to model
         @returns Order fill information detailing the average price and quantity filled.
-        /// <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
-        /// <seealso cref="LimitFill(Security, LimitOrder)"/>
-        public virtual OrderEvent MarketFill(Security asset, MarketOrder order) {
+         * <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
+         * <seealso cref="LimitFill(Security, LimitOrder)"/>
+        public OrderEvent MarketFill(Security asset, MarketOrder order) {
             return _fillModel.MarketFill(asset, order);
         }
 
         /**
-        /// Default stop fill model implementation in base class security. (Stop Market Order Type)
+         * Default stop fill model implementation in base class security. (Stop Market Order Type)
         */
-         * @param asset">Security asset we're filling
-         * @param order">Order packet to model
+         * @param asset Security asset we're filling
+         * @param order Order packet to model
         @returns Order fill information detailing the average price and quantity filled.
-        /// <seealso cref="MarketFill(Security, MarketOrder)"/>
-        /// <seealso cref="LimitFill(Security, LimitOrder)"/>
-        public virtual OrderEvent StopMarketFill(Security asset, StopMarketOrder order) {
+         * <seealso cref="MarketFill(Security, MarketOrder)"/>
+         * <seealso cref="LimitFill(Security, LimitOrder)"/>
+        public OrderEvent StopMarketFill(Security asset, StopMarketOrder order) {
             return _fillModel.StopMarketFill(asset, order);
         }
 
         /**
-        /// Default stop limit fill model implementation in base class security. (Stop Limit Order Type)
+         * Default stop limit fill model implementation in base class security. (Stop Limit Order Type)
         */
-         * @param asset">Security asset we're filling
-         * @param order">Order packet to model
+         * @param asset Security asset we're filling
+         * @param order Order packet to model
         @returns Order fill information detailing the average price and quantity filled.
-        /// <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
-        /// <seealso cref="LimitFill(Security, LimitOrder)"/>
-        /// 
-        ///     There is no good way to model limit orders with OHLC because we never know whether the market has 
-        ///     gapped past our fill price. We have to make the assumption of a fluid, high volume market.
-        /// 
-        ///     Stop limit orders we also can't be sure of the order of the H - L values for the limit fill. The assumption
-        ///     was made the limit fill will be done with closing price of the bar after the stop has been triggered..
-        /// 
-        public virtual OrderEvent StopLimitFill(Security asset, StopLimitOrder order) {
+         * <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
+         * <seealso cref="LimitFill(Security, LimitOrder)"/>
+         * 
+         *     There is no good way to model limit orders with OHLC because we never know whether the market has 
+         *     gapped past our fill price. We have to make the assumption of a fluid, high volume market.
+         * 
+         *     Stop limit orders we also can't be sure of the order of the H - L values for the limit fill. The assumption
+         *     was made the limit fill will be done with closing price of the bar after the stop has been triggered..
+         * 
+        public OrderEvent StopLimitFill(Security asset, StopLimitOrder order) {
             return _fillModel.StopLimitFill(asset, order);
         }
 
         /**
-        /// Default limit order fill model in the base security class.
+         * Default limit order fill model in the base security class.
         */
-         * @param asset">Security asset we're filling
-         * @param order">Order packet to model
+         * @param asset Security asset we're filling
+         * @param order Order packet to model
         @returns Order fill information detailing the average price and quantity filled.
-        /// <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
-        /// <seealso cref="MarketFill(Security, MarketOrder)"/>
-        public virtual OrderEvent LimitFill(Security asset, LimitOrder order) {
+         * <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
+         * <seealso cref="MarketFill(Security, MarketOrder)"/>
+        public OrderEvent LimitFill(Security asset, LimitOrder order) {
             return _fillModel.LimitFill(asset, order);
         }
 
         /**
-        /// Market on Open Fill Model. Return an order event with the fill details
+         * Market on Open Fill Model. Return an order event with the fill details
         */
-         * @param asset">Asset we're trading with this order
-         * @param order">Order to be filled
+         * @param asset Asset we're trading with this order
+         * @param order Order to be filled
         @returns Order fill information detailing the average price and quantity filled.
         public OrderEvent MarketOnOpenFill(Security asset, MarketOnOpenOrder order) {
             return _fillModel.MarketOnOpenFill(asset, order);
         }
 
         /**
-        /// Market on Close Fill Model. Return an order event with the fill details
+         * Market on Close Fill Model. Return an order event with the fill details
         */
-         * @param asset">Asset we're trading with this order
-         * @param order">Order to be filled
+         * @param asset Asset we're trading with this order
+         * @param order Order to be filled
         @returns Order fill information detailing the average price and quantity filled.
         public OrderEvent MarketOnCloseFill(Security asset, MarketOnCloseOrder order) {
             return _fillModel.MarketOnCloseFill(asset, order);
         }
 
         /**
-        /// Get the slippage approximation for this order
+         * Get the slippage approximation for this order
         */
-         * @param security">Security asset we're filling
-         * @param order">Order packet to model
+         * @param security Security asset we're filling
+         * @param order Order packet to model
         @returns decimal approximation for slippage
-        public virtual BigDecimal GetSlippageApproximation(Security security, Order order) {
+        public BigDecimal GetSlippageApproximation(Security security, Order order) {
             return _slippageModel.GetSlippageApproximation(security, order);
         }
 
         /**
-        /// Default implementation returns 0 for fees.
+         * Default implementation returns 0 for fees.
         */
-         * @param security">The security matching the order
-         * @param order">The order to compute fees for
+         * @param security The security matching the order
+         * @param order The order to compute fees for
         @returns The cost of the order in units of the account currency
-        public virtual BigDecimal GetOrderFee(Security security, Order order) {
+        public BigDecimal GetOrderFee(Security security, Order order) {
             return Math.Abs(_feeModel.GetOrderFee(security, order));
         }
     }

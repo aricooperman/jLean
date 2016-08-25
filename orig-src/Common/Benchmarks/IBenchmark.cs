@@ -18,14 +18,14 @@ using System;
 package com.quantconnect.lean.Benchmarks
 {
     /**
-    /// Specifies how to compute a benchmark for an algorithm
+     * Specifies how to compute a benchmark for an algorithm
     */
     public interface IBenchmark
     {
         /**
-        /// Evaluates this benchmark at the specified time
+         * Evaluates this benchmark at the specified time
         */
-         * @param time">The time to evaluate the benchmark at
+         * @param time The time to evaluate the benchmark at
         @returns The value of the benchmark at the specified time
         BigDecimal Evaluate(DateTime time);
     }

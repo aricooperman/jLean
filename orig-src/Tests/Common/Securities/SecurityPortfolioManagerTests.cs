@@ -67,7 +67,7 @@ package com.quantconnect.lean.Tests.Common.Securities
                                                : OrderDirection.Hold,
                 x.Get<decimal>( "FillPrice"),
                 x.Get<Integer>( "FillQuantity"),
-                0m)
+                BigDecimal.ZERO)
                 ).ToList();
 
             equity = XDocument.Load(equityFile).Descendants( "decimal")

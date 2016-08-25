@@ -22,29 +22,29 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
 {
     /**
-    /// Live Data Queue is the cut out implementation of how to bind a custom live data source 
+     * Live Data Queue is the cut out implementation of how to bind a custom live data source 
     */
     public class LiveDataQueue : IDataQueueHandler
     {
         /**
-        /// Desktop/Local doesn't support live data from this handler
+         * Desktop/Local doesn't support live data from this handler
         */
         @returns Tick
-        public virtual IEnumerable<BaseData> GetNextTicks() {
+        public IEnumerable<BaseData> GetNextTicks() {
             throw new NotImplementedException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
         }
 
         /**
-        /// Desktop/Local doesn't support live data from this handler
+         * Desktop/Local doesn't support live data from this handler
         */
-        public virtual void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
+        public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             throw new NotImplementedException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
         }
 
         /**
-        /// Desktop/Local doesn't support live data from this handler
+         * Desktop/Local doesn't support live data from this handler
         */
-        public virtual void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
+        public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             throw new NotImplementedException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
         }
     }

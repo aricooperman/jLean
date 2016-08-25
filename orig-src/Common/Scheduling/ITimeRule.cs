@@ -20,21 +20,21 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Scheduling
 {
     /**
-    /// Specifies times times on dates for events, used in conjunction with <see cref="IDateRule"/>
+     * Specifies times times on dates for events, used in conjunction with <see cref="IDateRule"/>
     */
     public interface ITimeRule
     {
         /**
-        /// Gets a name for this rule
+         * Gets a name for this rule
         */
         String Name { get; }
 
         /**
-        /// Creates the event times for the specified dates in UTC
+         * Creates the event times for the specified dates in UTC
         */
-         * @param dates">The dates to apply times to
+         * @param dates The dates to apply times to
         @returns An enumerable of date times that is the result
-        /// of applying this rule to the specified dates
+         * of applying this rule to the specified dates
         IEnumerable<DateTime> CreateUtcEventTimes(IEnumerable<DateTime> dates);
     }
 }

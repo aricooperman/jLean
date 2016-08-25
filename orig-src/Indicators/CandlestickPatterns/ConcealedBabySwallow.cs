@@ -19,19 +19,19 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Concealed Baby Swallow candlestick pattern
+     * Concealed Baby Swallow candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - first candle: black marubozu (very short shadows)
-    /// - second candle: black marubozu(very short shadows)
-    /// - third candle: black candle that opens gapping down but has an upper shadow that extends into the prior body
-    /// - fourth candle: black candle that completely engulfs the third candle, including the shadows
-    /// The meanings of "very short shadow" are specified with SetCandleSettings;
-    /// The returned value is positive(+1): concealing baby swallow is always bullish;
-    /// The user should consider that concealing baby swallow is significant when it appears in downtrend, while 
-    /// this function does not consider it
-    /// 
+     * 
+     * Must have:
+     * - first candle: black marubozu (very short shadows)
+     * - second candle: black marubozu(very short shadows)
+     * - third candle: black candle that opens gapping down but has an upper shadow that extends into the prior body
+     * - fourth candle: black candle that completely engulfs the third candle, including the shadows
+     * The meanings of "very short shadow" are specified with SetCandleSettings;
+     * The returned value is positive(+1): concealing baby swallow is always bullish;
+     * The user should consider that concealing baby swallow is significant when it appears in downtrend, while 
+     * this function does not consider it
+     * 
     public class ConcealedBabySwallow : CandlestickPattern
     {
         private final int _shadowVeryShortAveragePeriod;
@@ -39,23 +39,23 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private decimal[] _shadowVeryShortPeriodTotal = new decimal[4];
 
         /**
-        /// Initializes a new instance of the <see cref="ConcealedBabySwallow"/> class using the specified name.
+         * Initializes a new instance of the <see cref="ConcealedBabySwallow"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public ConcealedBabySwallow( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod + 3 + 1) {
             _shadowVeryShortAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ConcealedBabySwallow"/> class.
+         * Initializes a new instance of the <see cref="ConcealedBabySwallow"/> class.
         */
         public ConcealedBabySwallow()
             : this( "CONCEALEDBABYSWALLOW") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -63,10 +63,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -76,7 +76,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _shadowVeryShortPeriodTotal[1] += GetCandleRange(CandleSettingType.ShadowVeryShort, window[1]);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -106,7 +106,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = 1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -120,7 +120,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _shadowVeryShortPeriodTotal = new decimal[4];

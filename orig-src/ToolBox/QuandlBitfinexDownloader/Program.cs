@@ -22,7 +22,7 @@ package com.quantconnect.lean.ToolBox.QuandlBitfinexDownloader
     class Program
     {
         /**
-        /// Quandl Bitfinex Toolbox Project For LEAN Algorithmic Trading Engine.
+         * Quandl Bitfinex Toolbox Project For LEAN Algorithmic Trading Engine.
         */
         static void Main( String[] args) {
             if( args.Length != 2) {

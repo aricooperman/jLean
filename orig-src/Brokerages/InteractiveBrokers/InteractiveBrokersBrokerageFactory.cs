@@ -25,24 +25,24 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages.InteractiveBrokers
 {
     /**
-    /// Factory type for the <see cref="InteractiveBrokersBrokerage"/>
+     * Factory type for the <see cref="InteractiveBrokersBrokerage"/>
     */
     public class InteractiveBrokersBrokerageFactory : BrokerageFactory
     {
         /**
-        /// Initializes a new instance of the InteractiveBrokersBrokerageFactory class
+         * Initializes a new instance of the InteractiveBrokersBrokerageFactory class
         */
         public InteractiveBrokersBrokerageFactory()
             : base(typeof(InteractiveBrokersBrokerage)) {
         }
 
         /**
-        /// Gets the brokerage data required to run the IB brokerage from configuration
+         * Gets the brokerage data required to run the IB brokerage from configuration
         */
-        /// 
-        /// The implementation of this property will create the brokerage data dictionary required for
-        /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
-        /// 
+         * 
+         * The implementation of this property will create the brokerage data dictionary required for
+         * running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
+         * 
         public @Override Map<String,String> BrokerageData
         {
             get
@@ -57,7 +57,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Gets a new instance of the <see cref="InteractiveBrokersBrokerageModel"/>
+         * Gets a new instance of the <see cref="InteractiveBrokersBrokerageModel"/>
         */
         public @Override IBrokerageModel BrokerageModel
         {
@@ -65,10 +65,10 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Creates a new IBrokerage instance and set ups the environment for the brokerage
+         * Creates a new IBrokerage instance and set ups the environment for the brokerage
         */
-         * @param job">The job packet to create the brokerage for
-         * @param algorithm">The algorithm instance
+         * @param job The job packet to create the brokerage for
+         * @param algorithm The algorithm instance
         @returns A new brokerage instance
         public @Override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm) {
             errors = new List<String>();
@@ -99,10 +99,10 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// Stops the InteractiveBrokersGatewayRunner
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Stops the InteractiveBrokersGatewayRunner
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public @Override void Dispose() {
             InteractiveBrokersGatewayRunner.Stop();
         }

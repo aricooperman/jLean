@@ -24,24 +24,24 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Brokerages.Paper
 {
     /**
-    /// Paper Trading Brokerage
+     * Paper Trading Brokerage
     */
     public class PaperBrokerage : BacktestingBrokerage
     {
         private final LiveNodePacket _job;
 
         /**
-        /// Creates a new PaperBrokerage
+         * Creates a new PaperBrokerage
         */
-         * @param algorithm">The algorithm under analysis
-         * @param job">The job packet
+         * @param algorithm The algorithm under analysis
+         * @param job The job packet
         public PaperBrokerage(IAlgorithm algorithm, LiveNodePacket job) 
             : base(algorithm, "Paper Brokerage") {
             _job = job;
         }
 
         /**
-        /// Gets the current cash balance for each currency held in the brokerage account
+         * Gets the current cash balance for each currency held in the brokerage account
         */
         @returns The current cash balance for each currency available for trading
         public @Override List<Cash> GetCashBalance() {

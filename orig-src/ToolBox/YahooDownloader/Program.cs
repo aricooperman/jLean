@@ -22,8 +22,8 @@ package com.quantconnect.lean.ToolBox.YahooDownloader
     class Program
     {
         /**
-        /// Yahoo Downloader Toolbox Project For LEAN Algorithmic Trading Engine.
-        /// Original by @chrisdk2015, tidied by @jaredbroad
+         * Yahoo Downloader Toolbox Project For LEAN Algorithmic Trading Engine.
+         * Original by @chrisdk2015, tidied by @jaredbroad
         */
         static void Main( String[] args) {
             if( args.Length != 4) {

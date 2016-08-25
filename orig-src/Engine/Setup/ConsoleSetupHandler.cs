@@ -33,37 +33,37 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine.Setup
 {
     /**
-    /// Console setup handler to initialize and setup the Lean Engine properties for a local backtest
+     * Console setup handler to initialize and setup the Lean Engine properties for a local backtest
     */
     public class ConsoleSetupHandler : ISetupHandler
     {
         /**
-        /// Error which occured during setup may appear here.
+         * Error which occured during setup may appear here.
         */
         public List<String> Errors { get;  set; }
 
         /**
-        /// Maximum runtime of the strategy. (Set to 10 years for local backtesting).
+         * Maximum runtime of the strategy. (Set to 10 years for local backtesting).
         */
         public Duration MaximumRuntime { get; private set; }
 
         /**
-        /// Starting capital for the algorithm (Loaded from the algorithm code).
+         * Starting capital for the algorithm (Loaded from the algorithm code).
         */
         public BigDecimal StartingPortfolioValue { get; private set; }
 
         /**
-        /// Start date for the backtest.
+         * Start date for the backtest.
         */
         public DateTime StartingDate { get; private set; }
 
         /**
-        /// Maximum number of orders for this backtest.
+         * Maximum number of orders for this backtest.
         */
         public int MaxOrders { get; private set; }
 
         /**
-        /// Setup the algorithm data, cash, job start end date etc:
+         * Setup the algorithm data, cash, job start end date etc:
         */
         public ConsoleSetupHandler() {
             MaxOrders = int.MaxValue;
@@ -74,11 +74,11 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Creates a new algorithm instance. Checks configuration for a specific type name, and if present will
-        /// force it to find that one
+         * Creates a new algorithm instance. Checks configuration for a specific type name, and if present will
+         * force it to find that one
         */
-         * @param assemblyPath">Physical path of the algorithm dll.
-         * @param language">Language of the assembly.
+         * @param assemblyPath Physical path of the algorithm dll.
+         * @param language Language of the assembly.
         @returns Algorithm instance
         public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language) {
             String error;
@@ -95,24 +95,24 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Creates a new <see cref="BacktestingBrokerage"/> instance
+         * Creates a new <see cref="BacktestingBrokerage"/> instance
         */
-         * @param algorithmNodePacket">Job packet
-         * @param uninitializedAlgorithm">The algorithm instance before Initialize has been called
+         * @param algorithmNodePacket Job packet
+         * @param uninitializedAlgorithm The algorithm instance before Initialize has been called
         @returns The brokerage instance, or throws if error creating instance
         public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm) {
             return new BacktestingBrokerage(uninitializedAlgorithm);
         }
 
         /**
-        /// Setup the algorithm cash, dates and portfolio as desired.
+         * Setup the algorithm cash, dates and portfolio as desired.
         */
-         * @param algorithm">Existing algorithm instance
-         * @param brokerage">New brokerage instance
-         * @param baseJob">Backtesting job
-         * @param resultHandler">The configured result handler
-         * @param transactionHandler">The configuration transaction handler
-         * @param realTimeHandler">The configured real time handler
+         * @param algorithm Existing algorithm instance
+         * @param brokerage New brokerage instance
+         * @param baseJob Backtesting job
+         * @param resultHandler The configured result handler
+         * @param transactionHandler The configuration transaction handler
+         * @param realTimeHandler The configured real time handler
         @returns Boolean true on successfully setting up the console.
         public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket baseJob, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler) {
             initializeComplete = false;
@@ -168,8 +168,8 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Matches type names as namespace qualified or just the name
-        /// If expectedTypeName is null or empty, this will always return true
+         * Matches type names as namespace qualified or just the name
+         * If expectedTypeName is null or empty, this will always return true
         */
          * @param currentTypeFullName">
          * @param expectedTypeName">
@@ -183,9 +183,9 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
             // nothing to clean up
         }

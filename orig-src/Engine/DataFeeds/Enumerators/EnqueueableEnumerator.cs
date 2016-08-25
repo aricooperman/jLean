@@ -24,11 +24,11 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /**
-    /// An implementation of <see cref="IEnumerator{T}"/> that relies on the
-    /// <see cref="Enqueue"/> method being called and only ends when <see cref="Stop"/>
-    /// is called
+     * An implementation of <see cref="IEnumerator{T}"/> that relies on the
+     * <see cref="Enqueue"/> method being called and only ends when <see cref="Stop"/>
+     * is called
     */
-    /// <typeparam name="T">The item type yielded by the enumerator</typeparam>
+     * <typeparam name="T The item type yielded by the enumerator</typeparam>
     public class EnqueueableEnumerator<T> : IEnumerator<T>
     {
         private T _current;
@@ -37,17 +37,17 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         private volatile boolean _disposed;
 
         private final int _timeout;
-        private final object _lock = new object();
+        private final object _synchronized= new object();
         private final BlockingCollection<T> _blockingCollection;
 
         /**
-        /// Gets the current number of items held in the internal queue
+         * Gets the current number of items held in the internal queue
         */
         public int Count
         {
             get
             {
-                lock (_lock) {
+                synchronized(_lock) {
                     if( _end) return 0;
                     return _blockingCollection.Count;
                 }
@@ -55,7 +55,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Gets the last item that was enqueued
+         * Gets the last item that was enqueued
         */
         public T LastEnqueued
         {
@@ -63,20 +63,20 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Initializes a new instance of the <see cref="EnqueueableEnumerator{T}"/> class
+         * Initializes a new instance of the <see cref="EnqueueableEnumerator{T}"/> class
         */
-         * @param blocking">Specifies whether or not to use the blocking behavior
+         * @param blocking Specifies whether or not to use the blocking behavior
         public EnqueueableEnumerator( boolean blocking = false) {
             _blockingCollection = new BlockingCollection<T>();
             _timeout = blocking ? Timeout.Infinite : 0;
         }
 
         /**
-        /// Enqueues the new data into this enumerator
+         * Enqueues the new data into this enumerator
         */
-         * @param data">The data to be enqueued
+         * @param data The data to be enqueued
         public void Enqueue(T data) {
-            lock (_lock) {
+            synchronized(_lock) {
                 if( _end) return;
                 _blockingCollection.Add(data);
                 _lastEnqueued = data;
@@ -84,11 +84,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Signals the enumerator to stop enumerating when the items currently
-        /// held inside are gone. No more items will be added to this enumerator.
+         * Signals the enumerator to stop enumerating when the items currently
+         * held inside are gone. No more items will be added to this enumerator.
         */
         public void Stop() {
-            lock (_lock) {
+            synchronized(_lock) {
                 if( _end) return;
                 // no more items can be added, so no need to wait anymore
                 _blockingCollection.CompleteAdding();
@@ -97,12 +97,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Advances the enumerator to the next element of the collection.
+         * Advances the enumerator to the next element of the collection.
         */
         @returns 
-        /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// 
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+         * true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+         * 
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public boolean MoveNext() {
             T current;
             if( !_blockingCollection.TryTake(out current, _timeout)) {
@@ -119,42 +119,42 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Sets the enumerator to its initial position, which is before the first element in the collection.
+         * Sets the enumerator to its initial position, which is before the first element in the collection.
         */
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             throw new NotImplementedException( "EnqueableEnumerator.Reset() has not been implemented yet.");
         }
 
         /**
-        /// Gets the element in the collection at the current position of the enumerator.
+         * Gets the element in the collection at the current position of the enumerator.
         */
         @returns 
-        /// The element in the collection at the current position of the enumerator.
-        /// 
+         * The element in the collection at the current position of the enumerator.
+         * 
         public T Current
         {
             get { return _current; }
         }
 
         /**
-        /// Gets the current element in the collection.
+         * Gets the current element in the collection.
         */
         @returns 
-        /// The current element in the collection.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * The current element in the collection.
+         * 
+         * <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
-            lock (_lock) {
+            synchronized(_lock) {
                 if( _disposed) return;
                 Stop();
                 if( _blockingCollection != null ) _blockingCollection.Dispose();

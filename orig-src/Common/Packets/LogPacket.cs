@@ -19,30 +19,30 @@ using Newtonsoft.Json;
 package com.quantconnect.lean.Packets
 {
     /**
-    /// Simple log message instruction from the lean engine.
+     * Simple log message instruction from the lean engine.
     */
     public class LogPacket : Packet
     {
         /**
-        /// Log message to the users console:
+         * Log message to the users console:
         */
         @JsonProperty( "sMessage")]
         public String Message;
 
         /**
-        /// Algorithm Id requesting this logging
+         * Algorithm Id requesting this logging
         */
         @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId;
 
         /**
-        /// Default constructor for JSON
+         * Default constructor for JSON
         */
         public LogPacket()
             : base (PacketType.Log) { }
 
         /**
-        /// Create a new instance of the notify Log packet:
+         * Create a new instance of the notify Log packet:
         */
         public LogPacket( String algorithmId, String message)
             : base(PacketType.Log) {

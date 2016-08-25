@@ -22,33 +22,33 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Scheduling
 {
     /**
-    /// Combines multiple time rules into a single rule that emits for each rule
+     * Combines multiple time rules into a single rule that emits for each rule
     */
     public class CompositeTimeRule : ITimeRule
     {
         /**
-        /// Gets the individual rules for this composite rule
+         * Gets the individual rules for this composite rule
         */
         public final IReadOnlyList<ITimeRule> Rules;
 
         /**
-        /// Initializes a new instance of the <see cref="CompositeTimeRule"/> class
+         * Initializes a new instance of the <see cref="CompositeTimeRule"/> class
         */
-         * @param timeRules">The time rules to compose
+         * @param timeRules The time rules to compose
         public CompositeTimeRule(params ITimeRule[] timeRules)
             : this((IEnumerable<ITimeRule>) timeRules) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="CompositeTimeRule"/> class
+         * Initializes a new instance of the <see cref="CompositeTimeRule"/> class
         */
-         * @param timeRules">The time rules to compose
+         * @param timeRules The time rules to compose
         public CompositeTimeRule(IEnumerable<ITimeRule> timeRules) {
             Rules = timeRules.ToList();
         }
 
         /**
-        /// Gets a name for this rule
+         * Gets a name for this rule
         */
         public String Name
         {
@@ -56,11 +56,11 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Creates the event times for the specified dates in UTC
+         * Creates the event times for the specified dates in UTC
         */
-         * @param dates">The dates to apply times to
+         * @param dates The dates to apply times to
         @returns An enumerable of date times that is the result
-        /// of applying this rule to the specified dates
+         * of applying this rule to the specified dates
         public IEnumerable<DateTime> CreateUtcEventTimes(IEnumerable<DateTime> dates) {
             foreach (date in dates) {
                 // make unqiue times and order the events before yielding

@@ -15,43 +15,43 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// Represents the  Relative Strength Index (RSI) developed by K. Welles Wilder.
-    /// You can optionally specified a different moving average type to be used in the computation
+     * Represents the  Relative Strength Index (RSI) developed by K. Welles Wilder.
+     * You can optionally specified a different moving average type to be used in the computation
     */
     public class RelativeStrengthIndex : Indicator
     {
         private IndicatorDataPoint previousInput;
 
         /**
-        /// Gets the type of indicator used to compute AverageGain and AverageLoss
+         * Gets the type of indicator used to compute AverageGain and AverageLoss
         */
         public MovingAverageType MovingAverageType { get; private set; }
 
         /**
-        /// Gets the EMA for the down days
+         * Gets the EMA for the down days
         */
         public IndicatorBase<IndicatorDataPoint> AverageLoss { get; private set; }
 
         /**
-        /// Gets the indicator for average gain
+         * Gets the indicator for average gain
         */
         public IndicatorBase<IndicatorDataPoint> AverageGain { get; private set; }
 
         /**
-        /// Initializes a new instance of the RelativeStrengthIndex class with the specified name and period
+         * Initializes a new instance of the RelativeStrengthIndex class with the specified name and period
         */
-         * @param period">The period used for up and down days
-         * @param movingAverageType">The type of moving average to be used for computing the average gain/loss values
+         * @param period The period used for up and down days
+         * @param movingAverageType The type of moving average to be used for computing the average gain/loss values
         public RelativeStrengthIndex(int period, MovingAverageType movingAverageType = MovingAverageType.Wilders)
             : this( "RSI" + period, period, movingAverageType) {
         }
 
         /**
-        /// Initializes a new instance of the RelativeStrengthIndex class with the specified name and period
+         * Initializes a new instance of the RelativeStrengthIndex class with the specified name and period
         */
-         * @param name">The name of this indicator
-         * @param period">The period used for up and down days
-         * @param movingAverageType">The type of moving average to be used for computing the average gain/loss values
+         * @param name The name of this indicator
+         * @param period The period used for up and down days
+         * @param movingAverageType The type of moving average to be used for computing the average gain/loss values
         public RelativeStrengthIndex( String name, int period, MovingAverageType movingAverageType = MovingAverageType.Wilders)
             : base(name) {
             MovingAverageType = movingAverageType;
@@ -60,7 +60,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -68,22 +68,22 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             if( previousInput != null && input.Value >= previousInput.Value) {
                 AverageGain.Update(input.Time, input.Value - previousInput.Value);
-                AverageLoss.Update(input.Time, 0m);
+                AverageLoss.Update(input.Time, BigDecimal.ZERO);
             }
             else if( previousInput != null && input.Value < previousInput.Value) {
-                AverageGain.Update(input.Time, 0m);
+                AverageGain.Update(input.Time, BigDecimal.ZERO);
                 AverageLoss.Update(input.Time, previousInput.Value - input.Value);
             }
 
             previousInput = input;
-            if( AverageLoss == 0m) {
+            if( AverageLoss == BigDecimal.ZERO) {
                 // all up days is 100
                 return 100m;
             }
@@ -93,7 +93,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             AverageGain.Reset();

@@ -31,7 +31,7 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
     public partial class OandaBrokerageTests : BrokerageTests
     {
         /**
-        ///     Creates the brokerage under test and connects it
+         *     Creates the brokerage under test and connects it
         */
         @returns A connected brokerage instance
         protected @Override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider) {
@@ -43,7 +43,7 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
         }
 
         /**
-        ///     Gets the symbol to be traded, must be shortable
+         *     Gets the symbol to be traded, must be shortable
         */
         protected @Override Symbol Symbol
         {
@@ -51,7 +51,7 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
         }
 
         /**
-        ///     Gets the security type associated with the <see cref="BrokerageTests.Symbol" />
+         *     Gets the security type associated with the <see cref="BrokerageTests.Symbol" />
         */
         protected @Override SecurityType SecurityType
         {
@@ -59,7 +59,7 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
         }
 
         /**
-        ///     Gets a high price for the specified symbol so a limit sell won't fill
+         *     Gets a high price for the specified symbol so a limit sell won't fill
         */
         protected @Override BigDecimal HighPrice
         {
@@ -67,7 +67,7 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
         }
 
         /**
-        ///     Gets a low price for the specified symbol so a limit buy won't fill
+         *     Gets a low price for the specified symbol so a limit buy won't fill
         */
         protected @Override BigDecimal LowPrice
         {
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Tests.Brokerages.Oanda
         }
 
         /**
-        ///     Gets the current market price of the specified security
+         *     Gets the current market price of the specified security
         */
         protected @Override BigDecimal GetAskPrice(Symbol symbol) {
             oanda = (OandaBrokerage) Brokerage;

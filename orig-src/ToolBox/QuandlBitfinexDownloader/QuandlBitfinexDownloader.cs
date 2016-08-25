@@ -22,7 +22,7 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.ToolBox.QuandlBitfinexDownloader
 {
     /**
-    /// Quandl Bitfinex Data Downloader class 
+     * Quandl Bitfinex Data Downloader class 
     */
     public class QuandlBitfinexDownloader : IDataDownloader
     {
@@ -30,26 +30,26 @@ package com.quantconnect.lean.ToolBox.QuandlBitfinexDownloader
         private final BigDecimal _scaleFactor;
 
         /**
-        /// Initializes a new instance of the <see cref="QuandlBitfinexDownloader"/> class
+         * Initializes a new instance of the <see cref="QuandlBitfinexDownloader"/> class
         */
-         * @param apiKey">The quandl api key
-         * @param scaleFactor">Scale factor used to scale the data, useful for changing the BTC units
+         * @param apiKey The quandl api key
+         * @param scaleFactor Scale factor used to scale the data, useful for changing the BTC units
         public QuandlBitfinexDownloader( String apiKey, int scaleFactor = 100) {
             _apiKey = apiKey;
             _scaleFactor = scaleFactor;
         }
 
         /**
-        /// Get historical data enumerable for Bitfinex from Quandl
+         * Get historical data enumerable for Bitfinex from Quandl
         */
-         * @param symbol">Symbol for the data we're looking for.
-         * @param resolution">Only Daily is supported
-         * @param startUtc">Start time of the data in UTC
-         * @param endUtc">End time of the data in UTC
+         * @param symbol Symbol for the data we're looking for.
+         * @param resolution Only Daily is supported
+         * @param startUtc Start time of the data in UTC
+         * @param endUtc End time of the data in UTC
         @returns Enumerable of base data for this symbol
         public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
             if( resolution != Resolution.Daily) {
-                throw new ArgumentException( "Only daily data is currently supported.");
+                throw new IllegalArgumentException( "Only daily data is currently supported.");
             }
 
             static final String collapse = "daily";

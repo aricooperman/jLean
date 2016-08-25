@@ -30,10 +30,10 @@ using QuantConnect.Statistics;
 package com.quantconnect.lean.Lean.Engine 
 {
     /**
-    /// LEAN ALGORITHMIC TRADING ENGINE: ENTRY POINT.
-    /// 
-    /// The engine loads new tasks, create the algorithms and threads, and sends them 
-    /// to Algorithm Manager to be executed. It is the primary operating loop.
+     * LEAN ALGORITHMIC TRADING ENGINE: ENTRY POINT.
+     * 
+     * The engine loads new tasks, create the algorithms and threads, and sends them 
+     * to Algorithm Manager to be executed. It is the primary operating loop.
     */
     public class Engine
     {
@@ -42,7 +42,7 @@ package com.quantconnect.lean.Lean.Engine
         private final LeanEngineAlgorithmHandlers _algorithmHandlers;
 
         /**
-        /// Gets the configured system handlers for this engine instance
+         * Gets the configured system handlers for this engine instance
         */
         public LeanEngineSystemHandlers SystemHandlers
         {
@@ -50,7 +50,7 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Gets the configured algorithm handlers for this engine instance
+         * Gets the configured algorithm handlers for this engine instance
         */
         public LeanEngineAlgorithmHandlers AlgorithmHandlers
         {
@@ -58,11 +58,11 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Engine"/> class using the specified handlers
+         * Initializes a new instance of the <see cref="Engine"/> class using the specified handlers
         */
-         * @param systemHandlers">The system handlers for controlling acquisition of jobs, messaging, and api calls
-         * @param algorithmHandlers">The algorithm handlers for managing algorithm initialization, data, results, transaction, and real time events
-         * @param liveMode">True when running in live mode, false otherwises
+         * @param systemHandlers The system handlers for controlling acquisition of jobs, messaging, and api calls
+         * @param algorithmHandlers The algorithm handlers for managing algorithm initialization, data, results, transaction, and real time events
+         * @param liveMode True when running in live mode, false otherwises
         public Engine(LeanEngineSystemHandlers systemHandlers, LeanEngineAlgorithmHandlers algorithmHandlers, boolean liveMode) {
             _liveMode = liveMode;
             _systemHandlers = systemHandlers;
@@ -70,10 +70,10 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Runs a single backtest/live job from the job queue
+         * Runs a single backtest/live job from the job queue
         */
-         * @param job">The algorithm job to be processed
-         * @param assemblyPath">The path to the algorithm's assembly
+         * @param job The algorithm job to be processed
+         * @param assemblyPath The path to the algorithm's assembly
         public void Run(AlgorithmNodePacket job, String assemblyPath) {
             algorithm = default(IAlgorithm);
             algorithmManager = new AlgorithmManager(_liveMode);
@@ -302,7 +302,7 @@ package com.quantconnect.lean.Lean.Engine
                         totalSeconds = (DateTime.Now - startTime).TotalSeconds;
                         dataPoints = algorithmManager.DataPoints + _algorithmHandlers.HistoryProvider.DataPointCount;
                         _algorithmHandlers.Results.DebugMessage(
-                            String.format( "Algorithm Id:(%1$s) completed in %2$s seconds at %3$sk data points per second. Processing total of {3} data points.",
+                            String.format( "Algorithm Id:(%1$s) completed in %2$s seconds at %3$sk data points per second. Processing total of %4$s data points.",
                                 job.AlgorithmId, totalSeconds.toString( "F2"), ((dataPoints/(double) 1000)/totalSeconds).toString( "F0"),
                                 dataPoints.toString( "N0")));
 

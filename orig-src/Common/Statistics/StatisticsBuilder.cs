@@ -22,21 +22,21 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.Statistics
 {
     /**
-    /// The <see cref="StatisticsBuilder"/> class creates summary and rolling statistics from trades, equity and benchmark points
+     * The <see cref="StatisticsBuilder"/> class creates summary and rolling statistics from trades, equity and benchmark points
     */
     public static class StatisticsBuilder
     {
         /**
-        /// Generates the statistics and returns the results
+         * Generates the statistics and returns the results
         */
-         * @param trades">The list of closed trades
-         * @param profitLoss">Trade record of profits and losses
-         * @param pointsEquity">The list of daily equity values
-         * @param pointsPerformance">The list of algorithm performance values
-         * @param pointsBenchmark">The list of benchmark values
-         * @param startingCapital">The algorithm starting capital
-         * @param totalFees">The total fees
-         * @param totalTransactions">The total number of transactions
+         * @param trades The list of closed trades
+         * @param profitLoss Trade record of profits and losses
+         * @param pointsEquity The list of daily equity values
+         * @param pointsPerformance The list of algorithm performance values
+         * @param pointsBenchmark The list of benchmark values
+         * @param startingCapital The algorithm starting capital
+         * @param totalFees The total fees
+         * @param totalTransactions The total number of transactions
         @returns Returns a <see cref="StatisticsResults"/> object
         public static StatisticsResults Generate(
             List<Trade> trades, 
@@ -60,16 +60,16 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Returns the performance of the algorithm in the specified date range
+         * Returns the performance of the algorithm in the specified date range
         */
-         * @param fromDate">The initial date of the range
-         * @param toDate">The final date of the range
-         * @param trades">The list of closed trades
-         * @param profitLoss">Trade record of profits and losses
-         * @param equity">The list of daily equity values
-         * @param pointsPerformance">The list of algorithm performance values
-         * @param pointsBenchmark">The list of benchmark values
-         * @param startingCapital">The algorithm starting capital
+         * @param fromDate The initial date of the range
+         * @param toDate The final date of the range
+         * @param trades The list of closed trades
+         * @param profitLoss Trade record of profits and losses
+         * @param equity The list of daily equity values
+         * @param pointsPerformance The list of algorithm performance values
+         * @param pointsBenchmark The list of benchmark values
+         * @param startingCapital The algorithm starting capital
         @returns The algorithm performance
         private static AlgorithmPerformance GetAlgorithmPerformance(
             DateTime fromDate, 
@@ -98,16 +98,16 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Returns the rolling performances of the algorithm
+         * Returns the rolling performances of the algorithm
         */
-         * @param firstDate">The first date of the total period
-         * @param lastDate">The last date of the total period
-         * @param trades">The list of closed trades
-         * @param profitLoss">Trade record of profits and losses
-         * @param equity">The list of daily equity values
-         * @param pointsPerformance">The list of algorithm performance values
-         * @param pointsBenchmark">The list of benchmark values
-         * @param startingCapital">The algorithm starting capital
+         * @param firstDate The first date of the total period
+         * @param lastDate The last date of the total period
+         * @param trades The list of closed trades
+         * @param profitLoss Trade record of profits and losses
+         * @param equity The list of daily equity values
+         * @param pointsPerformance The list of algorithm performance values
+         * @param pointsBenchmark The list of benchmark values
+         * @param startingCapital The algorithm starting capital
         @returns A dictionary with the rolling performances
         private static Map<String, AlgorithmPerformance> GetRollingPerformances(
             DateTime firstDate, 
@@ -135,7 +135,7 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Returns a summary of the algorithm performance as a dictionary
+         * Returns a summary of the algorithm performance as a dictionary
         */
         private static Map<String,String> GetSummary(AlgorithmPerformance totalPerformance, BigDecimal totalFees, int totalTransactions) {
             return new Map<String,String> 
@@ -169,7 +169,7 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Helper class for rolling statistics
+         * Helper class for rolling statistics
         */
         private class PeriodRange
         {
@@ -179,12 +179,12 @@ package com.quantconnect.lean.Statistics
 
         // 
         /**
-        /// Gets a list of date ranges for the requested monthly period
+         * Gets a list of date ranges for the requested monthly period
         */
-        /// The first and last ranges created are partial periods
-         * @param periodMonths">The number of months in the period (valid inputs are [1, 3, 6, 12])
-         * @param firstDate">The first date of the total period
-         * @param lastDate">The last date of the total period
+         * The first and last ranges created are partial periods
+         * @param periodMonths The number of months in the period (valid inputs are [1, 3, 6, 12])
+         * @param firstDate The first date of the total period
+         * @param lastDate The last date of the total period
         @returns The list of date ranges
         private static IEnumerable<PeriodRange> GetPeriodRanges(int periodMonths, DateTime firstDate, DateTime lastDate) {
             // get end dates
@@ -213,12 +213,12 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Convert the charting data into an equity array.
+         * Convert the charting data into an equity array.
         */
-        /// This is required to convert the equity plot into a usable form for the statistics calculation
-         * @param points">ChartPoints Array
-         * @param fromDate">An optional starting date
-         * @param toDate">An optional ending date
+         * This is required to convert the equity plot into a usable form for the statistics calculation
+         * @param points ChartPoints Array
+         * @param fromDate An optional starting date
+         * @param toDate An optional ending date
         @returns SortedDictionary of the equity BigDecimal values ordered in time
         private static SortedMap<DateTime, decimal> ChartPointToDictionary(IEnumerable<ChartPoint> points, DateTime? fromDate = null, DateTime? toDate = null ) {
             dictionary = new SortedMap<DateTime, decimal>();
@@ -236,10 +236,10 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Creates a list of benchmark differences for the period
+         * Creates a list of benchmark differences for the period
         */
-         * @param benchmark">The benchmark values
-         * @param equity">The equity values
+         * @param benchmark The benchmark values
+         * @param equity The equity values
         @returns The list of benchmark differences
         private static List<double> CreateBenchmarkDifferences(SortedMap<DateTime, decimal> benchmark, SortedMap<DateTime, decimal> equity) {
             // to find the delta in benchmark for first day, we need to know the price at
@@ -274,10 +274,10 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Ensures the performance list and benchmark list have the same length, padding with trailing zeros
+         * Ensures the performance list and benchmark list have the same length, padding with trailing zeros
         */
-         * @param listPerformance">The performance list
-         * @param listBenchmark">The benchmark list
+         * @param listPerformance The performance list
+         * @param listBenchmark The benchmark list
         private static void EnsureSameLength(List<double> listPerformance, List<double> listBenchmark) {
             // THIS SHOULD NEVER HAPPEN --> But if it does, log it and fail silently.
             while (listPerformance.Count < listBenchmark.Count) {

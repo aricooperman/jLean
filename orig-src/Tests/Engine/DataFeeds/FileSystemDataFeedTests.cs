@@ -77,7 +77,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 SetCash(100000);
 
                 // no benchmark
-                SetBenchmark(time -> 0m);
+                SetBenchmark(time -> BigDecimal.ZERO);
 
                 // Use 400 symbols
                 //foreach (ticker in Equity.All.Take(400))

@@ -25,15 +25,15 @@ using QuantConnect.Securities.Equity;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// This algorithm demonstrates the various ways you can call the History function,
-    /// what it returns, and what you can do with the returned values.
+     * This algorithm demonstrates the various ways you can call the History function,
+     * what it returns, and what you can do with the returned values.
     */
     public class HistoryAlgorithm : QCAlgorithm
     {
         public SimpleMovingAverage spyDailySma;
 
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 08);  //Set Start Date
@@ -182,9 +182,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">Slice object keyed by symbol containing the stock data
+         * @param data Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             if( !Portfolio.Invested) {
                 SetHoldings( "SPY", 1);

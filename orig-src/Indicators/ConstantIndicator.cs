@@ -19,16 +19,16 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// An indicator that will always return the same value.
+     * An indicator that will always return the same value.
     */
-    /// <typeparam name="T">The type of input this indicator takes</typeparam>
+     * <typeparam name="T The type of input this indicator takes</typeparam>
     public sealed class ConstantIndicator<T> : IndicatorBase<T>
         where T : BaseData
     {
         private final BigDecimal _value;
 
         /**
-        /// Gets true since the ConstantIndicator is always ready to return the same value
+         * Gets true since the ConstantIndicator is always ready to return the same value
         */
         public @Override boolean IsReady
         {
@@ -36,10 +36,10 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new ConstantIndicator that will always return the specified value
+         * Creates a new ConstantIndicator that will always return the specified value
         */
-         * @param name">The name of this indicator
-         * @param value">The constant value to be returned
+         * @param name The name of this indicator
+         * @param value The constant value to be returned
         public ConstantIndicator( String name, BigDecimal value)
             : base(name) {
             _value = value;
@@ -50,16 +50,16 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(T input) {
             return _value;
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             base.Reset();

@@ -17,17 +17,17 @@
 package com.quantconnect.lean.Util
 {
     /**
-    /// Represents a work item to be processed
+     * Represents a work item to be processed
     */
     public interface IParallelRunnerWorkItem
     {
         /**
-        /// Determines if this work item is ready to be processed
+         * Determines if this work item is ready to be processed
         */
         boolean IsReady { get; }
 
         /**
-        /// Executes this work item
+         * Executes this work item
         */
         @returns The result of execution
         void Execute();

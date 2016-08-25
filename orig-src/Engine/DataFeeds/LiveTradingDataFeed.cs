@@ -37,8 +37,8 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Provides an implementation of <see cref="IDataFeed"/> that is designed to deal with
-    /// live, remote data sources
+     * Provides an implementation of <see cref="IDataFeed"/> that is designed to deal with
+     * live, remote data sources
     */
     public class LiveTradingDataFeed : IDataFeed
     {
@@ -64,7 +64,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         private DateTime _frontierUtc;
 
         /**
-        /// Gets all of the current subscriptions this data feed is processing
+         * Gets all of the current subscriptions this data feed is processing
         */
         public IEnumerable<Subscription> Subscriptions
         {
@@ -72,7 +72,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Public flag indicator that the thread is still busy.
+         * Public flag indicator that the thread is still busy.
         */
         public boolean IsActive
         {
@@ -80,11 +80,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Initializes the data feed for the specified job and algorithm
+         * Initializes the data feed for the specified job and algorithm
         */
         public void Initialize(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler resultHandler, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider) {
             if( !(job is LiveNodePacket)) {
-                throw new ArgumentException( "The LiveTradingDataFeed requires a LiveNodePacket.");
+                throw new IllegalArgumentException( "The LiveTradingDataFeed requires a LiveNodePacket.");
             }
 
             _cancellationTokenSource = new CancellationTokenSource();
@@ -143,13 +143,13 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Adds a new subscription to provide data for the specified security.
+         * Adds a new subscription to provide data for the specified security.
         */
-         * @param universe">The universe the subscription is to be added to
-         * @param security">The security to add a subscription for
-         * @param config">The subscription config to be added
-         * @param utcStartTime">The start time of the subscription
-         * @param utcEndTime">The end time of the subscription
+         * @param universe The universe the subscription is to be added to
+         * @param security The security to add a subscription for
+         * @param config The subscription config to be added
+         * @param utcStartTime The start time of the subscription
+         * @param utcEndTime The end time of the subscription
         @returns True if the subscription was created and added successfully, false otherwise
         public boolean AddSubscription(Universe universe, Security security, SubscriptionDataConfig config, DateTime utcStartTime, DateTime utcEndTime) {
             // create and add the subscription to our collection
@@ -181,9 +181,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Removes the subscription from the data feed, if it exists
+         * Removes the subscription from the data feed, if it exists
         */
-         * @param configuration">The configuration of the subscription to remove
+         * @param configuration The configuration of the subscription to remove
         @returns True if the subscription was successfully removed, false otherwise
         public boolean RemoveSubscription(SubscriptionDataConfig configuration) {
             // remove the subscription from our collection
@@ -219,7 +219,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Primary entry point.
+         * Primary entry point.
         */
         public void Run() {
             IsActive = true;
@@ -293,7 +293,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// External controller calls to signal a terminate of the thread.
+         * External controller calls to signal a terminate of the thread.
         */
         public void Exit() {
             if( _subscriptions != null ) {
@@ -319,32 +319,32 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets the <see cref="IDataQueueHandler"/> to use. By default this will try to load
-        /// the type specified in the configuration via the 'data-queue-handler'
+         * Gets the <see cref="IDataQueueHandler"/> to use. By default this will try to load
+         * the type specified in the configuration via the 'data-queue-handler'
         */
         @returns The loaded <see cref="IDataQueueHandler"/>
-        protected virtual IDataQueueHandler GetDataQueueHandler() {
+        protected IDataQueueHandler GetDataQueueHandler() {
             return Composer.Instance.GetExportedValueByTypeName<IDataQueueHandler>(Config.Get( "data-queue-handler", "LiveDataQueue"));
         }
 
         /**
-        /// Gets the <see cref="ITimeProvider"/> to use. By default this will load the
-        /// <see cref="RealTimeProvider"/> which use's the system's <see cref="DateTime.UtcNow"/>
-        /// for the current time
+         * Gets the <see cref="ITimeProvider"/> to use. By default this will load the
+         * <see cref="RealTimeProvider"/> which use's the system's <see cref="DateTime.UtcNow"/>
+         * for the current time
         */
         @returns he loaded <see cref="ITimeProvider"/>
-        protected virtual ITimeProvider GetTimeProvider() {
+        protected ITimeProvider GetTimeProvider() {
             return new RealTimeProvider();
         }
 
         /**
-        /// Creates a new subscription for the specified security
+         * Creates a new subscription for the specified security
         */
          * @param universe">
-         * @param security">The security to create a subscription for
-         * @param config">The subscription config to be added
-         * @param utcStartTime">The start time of the subscription in UTC
-         * @param utcEndTime">The end time of the subscription in UTC
+         * @param security The security to create a subscription for
+         * @param config The subscription config to be added
+         * @param utcStartTime The start time of the subscription in UTC
+         * @param utcEndTime The end time of the subscription in UTC
         @returns A new subscription instance of the specified security
         protected Subscription CreateSubscription(Universe universe, Security security, SubscriptionDataConfig config, DateTime utcStartTime, DateTime utcEndTime) {
             Subscription subscription = null;
@@ -431,12 +431,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Creates a new subscription for universe selection
+         * Creates a new subscription for universe selection
         */
-         * @param universe">The universe to add a subscription for
-         * @param startTimeUtc">The start time of the subscription in utc
-         * @param endTimeUtc">The end time of the subscription in utc
-        protected virtual Subscription CreateUniverseSubscription(Universe universe, DateTime startTimeUtc, DateTime endTimeUtc) {
+         * @param universe The universe to add a subscription for
+         * @param startTimeUtc The start time of the subscription in utc
+         * @param endTimeUtc The end time of the subscription in utc
+        protected Subscription CreateUniverseSubscription(Universe universe, DateTime startTimeUtc, DateTime endTimeUtc) {
             // TODO : Consider moving the creating of universe subscriptions to a separate, testable class
 
             // grab the relevant exchange hours
@@ -515,8 +515,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Provides an <see cref="IEnumerator{BaseData}"/> that will continually dequeue data
-        /// from the data queue handler while we're not cancelled
+         * Provides an <see cref="IEnumerator{BaseData}"/> that will continually dequeue data
+         * from the data queue handler while we're not cancelled
         */
         @returns 
         private IEnumerator<BaseData> GetNextTicksEnumerator() {
@@ -533,8 +533,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Updates the fill forward resolution by checking all existing subscriptions and
-        /// selecting the smallest resoluton not equal to tick
+         * Updates the fill forward resolution by checking all existing subscriptions and
+         * selecting the smallest resoluton not equal to tick
         */
         private void UpdateFillForwardResolution() {
             _fillForwardResolution.Value = _subscriptions
@@ -546,30 +546,30 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Returns an enumerator that iterates through the collection.
+         * Returns an enumerator that iterates through the collection.
         */
         @returns 
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// 
-        /// <filterpriority>1</filterpriority>
+         * A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+         * 
+         * <filterpriority>1</filterpriority>
         public IEnumerator<TimeSlice> GetEnumerator() {
             return _bridge.GetConsumingEnumerable(_cancellationTokenSource.Token).GetEnumerator();
         }
 
         /**
-        /// Returns an enumerator that iterates through a collection.
+         * Returns an enumerator that iterates through a collection.
         */
         @returns 
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+         * 
+         * <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
 
         /**
-        /// Overrides methods of the base data exchange implementation
+         * Overrides methods of the base data exchange implementation
         */
         class EnumeratorHandler : BaseDataExchange.EnumeratorHandler
         {
@@ -579,17 +579,17 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 _enqueueable = enqueueable;
             }
             /**
-            /// Returns true if this enumerator should move next
+             * Returns true if this enumerator should move next
             */
             public @Override boolean ShouldMoveNext() { return true; }
             /**
-            /// Calls stop on the internal enqueueable enumerator
+             * Calls stop on the internal enqueueable enumerator
             */
             public @Override void OnEnumeratorFinished() { _enqueueable.Stop(); }
             /**
-            /// Enqueues the data
+             * Enqueues the data
             */
-             * @param data">The data to be handled
+             * @param data The data to be handled
             public @Override void HandleData(BaseData data) {
                 _enqueueable.Enqueue(data);
             }

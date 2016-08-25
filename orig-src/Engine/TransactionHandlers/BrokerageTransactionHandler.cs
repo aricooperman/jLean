@@ -30,7 +30,7 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine.TransactionHandlers
 {
     /**
-    /// Transaction handler for all brokerages
+     * Transaction handler for all brokerages
     */
     public class BrokerageTransactionHandler : ITransactionHandler
     {
@@ -48,29 +48,29 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         private static final Duration _liveBrokerageCashSyncTime = new TimeSpan(7, 45, 0); // 7:45 am
 
         /**
-        /// OrderQueue holds the newly updated orders from the user algorithm waiting to be processed. Once
-        /// orders are processed they are moved into the Orders queue awaiting the brokerage response.
+         * OrderQueue holds the newly updated orders from the user algorithm waiting to be processed. Once
+         * orders are processed they are moved into the Orders queue awaiting the brokerage response.
         */
         private final BusyBlockingCollection<OrderRequest> _orderRequestQueue = new BusyBlockingCollection<OrderRequest>();
         private final CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         /**
-        /// The orders dictionary holds orders which are sent to exchange, partially filled, completely filled or cancelled.
-        /// Once the transaction thread has worked on them they get put here while witing for fill updates.
+         * The orders dictionary holds orders which are sent to exchange, partially filled, completely filled or cancelled.
+         * Once the transaction thread has worked on them they get put here while witing for fill updates.
         */
         private final ConcurrentMap<Integer, Order> _orders = new ConcurrentMap<Integer, Order>();
 
         /**
-        /// The orders tickets dictionary holds order tickets that the algorithm can use to reference a specific order. This
-        /// includes invoking update and cancel commands. In the future, we can add more features to the ticket, such as events
-        /// and async events (such as run this code when this order fills)
+         * The orders tickets dictionary holds order tickets that the algorithm can use to reference a specific order. This
+         * includes invoking update and cancel commands. In the future, we can add more features to the ticket, such as events
+         * and async events (such as run this code when this order fills)
         */
         private final ConcurrentMap<Integer, OrderTicket> _orderTickets = new ConcurrentMap<Integer, OrderTicket>();
 
         private IResultHandler _resultHandler;
 
         /**
-        /// Gets the permanent storage for all orders
+         * Gets the permanent storage for all orders
         */
         public ConcurrentMap<Integer, Order> Orders
         {
@@ -78,7 +78,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Gets the current number of orders that have been processed
+         * Gets the current number of orders that have been processed
         */
         public int OrdersCount
         {
@@ -86,12 +86,12 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Creates a new BrokerageTransactionHandler to process orders using the specified brokerage implementation
+         * Creates a new BrokerageTransactionHandler to process orders using the specified brokerage implementation
         */
-         * @param algorithm">The algorithm instance
-         * @param brokerage">The brokerage implementation to process orders and fire fill events
+         * @param algorithm The algorithm instance
+         * @param brokerage The brokerage implementation to process orders and fire fill events
          * @param resultHandler">
-        public virtual void Initialize(IAlgorithm algorithm, IBrokerage brokerage, IResultHandler resultHandler) {
+        public void Initialize(IAlgorithm algorithm, IBrokerage brokerage, IResultHandler resultHandler) {
             if( brokerage == null ) {
                 throw new ArgumentNullException( "brokerage");
             }
@@ -126,17 +126,17 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Boolean flag indicating the Run thread method is busy. 
-        /// False indicates it is completely finished processing and ready to be terminated.
+         * Boolean flag indicating the Run thread method is busy. 
+         * False indicates it is completely finished processing and ready to be terminated.
         */
         public boolean IsActive { get; private set; }
 
         #region Order Request Processing
 
         /**
-        /// Adds the specified order to be processed
+         * Adds the specified order to be processed
         */
-         * @param request">The order to be processed
+         * @param request The order to be processed
         public OrderTicket Process(OrderRequest request) {
             if( _algorithm.LiveMode) {
                 Log.Trace( "BrokerageTransactionHandler.Process(): " + request);
@@ -158,9 +158,9 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Add an order to collection and return the unique order id or negative if an error.
+         * Add an order to collection and return the unique order id or negative if an error.
         */
-         * @param request">A request detailing the order to be submitted
+         * @param request A request detailing the order to be submitted
         @returns New unique, increasing orderid
         public OrderTicket AddOrder(SubmitOrderRequest request) {
             response = !_algorithm.IsWarmingUp
@@ -193,10 +193,10 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Update an order yet to be filled such as stop or limit orders.
+         * Update an order yet to be filled such as stop or limit orders.
         */
-         * @param request">Request detailing how the order should be updated
-        /// Does not apply if the order is already fully filled
+         * @param request Request detailing how the order should be updated
+         * Does not apply if the order is already fully filled
         public OrderTicket UpdateOrder(UpdateOrderRequest request) {
             OrderTicket ticket;
             if( !_orderTickets.TryGetValue(request.OrderId, out ticket)) {
@@ -238,9 +238,9 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Remove this order from outstanding queue: user is requesting a cancel.
+         * Remove this order from outstanding queue: user is requesting a cancel.
         */
-         * @param request">Request containing the specific order id to remove
+         * @param request Request containing the specific order id to remove
         public OrderTicket CancelOrder(CancelOrderRequest request) {
             OrderTicket ticket;
             if( !_orderTickets.TryGetValue(request.OrderId, out ticket)) {
@@ -290,18 +290,18 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Gets and enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/>
+         * Gets and enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/>
         */
-         * @param filter">The filter predicate used to find the required order tickets
+         * @param filter The filter predicate used to find the required order tickets
         @returns An enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/>
         public IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null ) {
             return _orderTickets.Select(x -> x.Value).Where(filter ?? (x -> true));
         }
 
         /**
-        /// Gets the order ticket for the specified order id. Returns null if not found
+         * Gets the order ticket for the specified order id. Returns null if not found
         */
-         * @param orderId">The order's id
+         * @param orderId The order's id
         @returns The order ticket with the specified id, or null if not found
         public OrderTicket GetOrderTicket(int orderId) {
             OrderTicket ticket;
@@ -312,9 +312,9 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         #endregion
 
         /**
-        /// Get the order by its id
+         * Get the order by its id
         */
-         * @param orderId">Order id to fetch
+         * @param orderId Order id to fetch
         @returns The order with the specified id, or null if no match is found
         public Order GetOrderById(int orderId) {
             Order order = GetOrderByIdInternal(orderId);
@@ -330,9 +330,9 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Gets the order by its brokerage id
+         * Gets the order by its brokerage id
         */
-         * @param brokerageId">The brokerage id to fetch
+         * @param brokerageId The brokerage id to fetch
         @returns The first order matching the brokerage id, or null if no match is found
         public Order GetOrderByBrokerageId( String brokerageId) {
             // this function can be invoked by brokerages when getting open orders, guard against null ref
@@ -343,9 +343,9 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Gets all orders matching the specified filter
+         * Gets all orders matching the specified filter
         */
-         * @param filter">Delegate used to filter the orders
+         * @param filter Delegate used to filter the orders
         @returns All open orders this order provider currently holds
         public IEnumerable<Order> GetOrders(Func<Order, bool> filter = null ) {
             if( _orders == null ) {
@@ -362,7 +362,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Primary thread entry point to launch the transaction thread.
+         * Primary thread entry point to launch the transaction thread.
         */
         public void Run() {
             try
@@ -384,16 +384,16 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Processes asynchronous events on the transaction handler's thread
+         * Processes asynchronous events on the transaction handler's thread
         */
-        public virtual void ProcessAsynchronousEvents() {
+        public void ProcessAsynchronousEvents() {
             // NOP
         }
 
         /**
-        /// Processes all synchronous events that must take place before the next time loop for the algorithm
+         * Processes all synchronous events that must take place before the next time loop for the algorithm
         */
-        public virtual void ProcessSynchronousEvents() {
+        public void ProcessSynchronousEvents() {
             // how to do synchronous market orders for real brokerages?
 
             // in backtesting we need to wait for orders to be removed from the queue and finished processing
@@ -445,7 +445,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Syncs cash from brokerage with portfolio object
+         * Syncs cash from brokerage with portfolio object
         */
         private void PerformCashSync() {
             try
@@ -526,7 +526,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Signal a end of thread request to stop montioring the transactions.
+         * Signal a end of thread request to stop montioring the transactions.
         */
         public void Exit() {
             timeout = Duration.ofSeconds(60);
@@ -537,7 +537,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Handles a generic order request
+         * Handles a generic order request
         */
          * @param request"><see cref="OrderRequest"/> to be handled
         @returns <see cref="OrderResponse"/> for request
@@ -562,7 +562,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Handles a request to submit a new order
+         * Handles a request to submit a new order
         */
         private OrderResponse HandleSubmitOrderRequest(SubmitOrderRequest request) {
             OrderTicket ticket;
@@ -591,7 +591,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
                 order.Status = OrderStatus.Invalid;
                 response = OrderResponse.ZeroQuantity(request);
                 _algorithm.Error(response.ErrorMessage);
-                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, 0m, "Unable to add order for zero quantity"));
+                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, BigDecimal.ZERO, "Unable to add order for zero quantity"));
                 return response;
             }
 
@@ -604,7 +604,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
             catch (Exception err) {
                 Log.Error(err);
                 _algorithm.Error( String.format( "Order Error: id: %1$s, Error executing margin models: %2$s", order.Id, err.Message));
-                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, 0m, "Error executing margin models"));
+                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, BigDecimal.ZERO, "Error executing margin models"));
                 return OrderResponse.Error(request, OrderResponseErrorCode.ProcessingError, "Error in GetSufficientCapitalForOrder");
             }
 
@@ -612,7 +612,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
                 order.Status = OrderStatus.Invalid;
                 response = OrderResponse.Error(request, OrderResponseErrorCode.InsufficientBuyingPower, String.format( "Order Error: id: %1$s, Insufficient buying power to complete order (Value:%2$s).", order.Id, order.GetValue(security).SmartRounding()));
                 _algorithm.Error(response.ErrorMessage);
-                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, 0m, "Insufficient buying power to complete order"));
+                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, BigDecimal.ZERO, "Insufficient buying power to complete order"));
                 return response;
             }
 
@@ -624,7 +624,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
                 if( message == null ) message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "InvalidOrder", "BrokerageModel declared unable to submit order: " + order.Id);
                 response = OrderResponse.Error(request, OrderResponseErrorCode.BrokerageModelRefusedToSubmitOrder, "OrderID: " + order.Id + " " + message);
                 _algorithm.Error(response.ErrorMessage);
-                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, 0m, "BrokerageModel declared unable to submit order"));
+                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, BigDecimal.ZERO, "BrokerageModel declared unable to submit order"));
                 return response;
             }
 
@@ -645,7 +645,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
                 errorMessage = "Brokerage failed to place order: " + order.Id;
                 response = OrderResponse.Error(request, OrderResponseErrorCode.BrokerageFailedToSubmitOrder, errorMessage);
                 _algorithm.Error(response.ErrorMessage);
-                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, 0m, "Brokerage failed to place order"));
+                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, BigDecimal.ZERO, "Brokerage failed to place order"));
                 return response;
             }
             
@@ -654,7 +654,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Handles a request to update order properties
+         * Handles a request to update order properties
         */
         private OrderResponse HandleUpdateOrderRequest(UpdateOrderRequest request) {
             Order order;
@@ -680,7 +680,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
                 if( message == null ) message = new BrokerageMessageEvent(BrokerageMessageType.Warning, "InvalidOrder", "BrokerageModel declared unable to update order: " + order.Id);
                 response = OrderResponse.Error(request, OrderResponseErrorCode.BrokerageModelRefusedToUpdateOrder, "OrderID: " + order.Id + " " + message);
                 _algorithm.Error(response.ErrorMessage);
-                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, 0m, "BrokerageModel declared unable to update order"));
+                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, BigDecimal.ZERO, "BrokerageModel declared unable to update order"));
                 return response;
             }
 
@@ -702,7 +702,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
                 // we failed to update the order for some reason
                 errorMessage = "Brokerage failed to update order with id " + request.OrderId;
                 _algorithm.Error(errorMessage);
-                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, 0m, "Brokerage failed to update order"));
+                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, BigDecimal.ZERO, "Brokerage failed to update order"));
                 return OrderResponse.Error(request, OrderResponseErrorCode.BrokerageFailedToUpdateOrder, errorMessage);
             }
 
@@ -710,9 +710,9 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Returns true if the specified order can be updated
+         * Returns true if the specified order can be updated
         */
-         * @param order">The order to check if we can update
+         * @param order The order to check if we can update
         @returns True if the order can be updated, false otherwise
         private boolean CanUpdateOrder(Order order) {
             return order.Status != OrderStatus.Filled
@@ -722,7 +722,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Handles a request to cancel an order
+         * Handles a request to cancel an order
         */
         private OrderResponse HandleCancelOrderRequest(CancelOrderRequest request) {
             Order order;
@@ -752,7 +752,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
                 // failed to cancel the order
                 message = "Brokerage failed to cancel order with id " + order.Id;
                 _algorithm.Error(message);
-                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, 0m, "Brokerage failed to cancel order"));
+                HandleOrderEvent(new OrderEvent(order, _algorithm.UtcTime, BigDecimal.ZERO, "Brokerage failed to cancel order"));
                 return OrderResponse.Error(request, OrderResponseErrorCode.BrokerageFailedToCancelOrder, message);
             }
 
@@ -843,9 +843,9 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Brokerages can send account updates, this include cash balance updates. Since it is of
-        /// utmost important to always have an accurate picture of reality, we'll trust this information
-        /// as truth
+         * Brokerages can send account updates, this include cash balance updates. Since it is of
+         * utmost important to always have an accurate picture of reality, we'll trust this information
+         * as truth
         */
         private void HandleAccountChanged(AccountEvent account) {
             // how close are we?
@@ -862,7 +862,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Gets the amount of time since the last call to algorithm.Portfolio.ProcessFill(fill)
+         * Gets the amount of time since the last call to algorithm.Portfolio.ProcessFill(fill)
         */
         private Duration TimeSinceLastFill
         {
@@ -870,7 +870,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Gets the date of the last sync
+         * Gets the date of the last sync
         */
         private DateTime LastSyncDate
         {
@@ -878,7 +878,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Rounds off the order towards 0 to the nearest multiple of Lot Size
+         * Rounds off the order towards 0 to the nearest multiple of Lot Size
         */
         private int RoundOffOrder(Order order, Security security) {
             orderLotMod = order.Quantity% Integer.parseInt( security.SymbolProperties.LotSize);

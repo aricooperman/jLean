@@ -18,23 +18,23 @@ using System;
 package com.quantconnect.lean.Brokerages
 {
     /**
-    /// Represents an error retuned from a broker's server
+     * Represents an error retuned from a broker's server
     */
     public class BrokerageException : Exception
     {
         /**
-        /// Creates a new BrokerageException with the specified message.
+         * Creates a new BrokerageException with the specified message.
         */
-         * @param message">The error message that explains the reason for the exception.
+         * @param message The error message that explains the reason for the exception.
         public BrokerageException( String message)
             : base(message) {
         }
 
         /**
-        /// Creates a new BrokerageException with the specified message.
+         * Creates a new BrokerageException with the specified message.
         */
-         * @param message">The error message that explains the reason for the exception.
-         * @param inner">The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.
+         * @param message The error message that explains the reason for the exception.
+         * @param inner The exception that is the cause of the current exception, or a null reference (Nothing in Visual Basic) if no inner exception is specified.
         public BrokerageException( String message, Exception inner)
             : base(message, inner) {
         }

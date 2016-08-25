@@ -58,7 +58,7 @@ package com.quantconnect.lean.Tests.Indicators
             Assert.AreEqual(-1m, min.Current.Value);
             Assert.AreEqual(1, min.PeriodsSinceMinimum);
 
-            min.Update(reference.AddDays(4), 0m);
+            min.Update(reference.AddDays(4), BigDecimal.ZERO);
             Assert.AreEqual(-1m, min.Current.Value);
             Assert.AreEqual(2, min.PeriodsSinceMinimum);
 

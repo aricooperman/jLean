@@ -19,17 +19,17 @@ using QuantConnect.Data;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Data Downloader Interface for pulling data from a remote source.
+     * Data Downloader Interface for pulling data from a remote source.
     */
     public interface IDataDownloader
     {
         /**
-        /// Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
+         * Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
         */
-         * @param symbol">Symbol for the data we're looking for.
-         * @param resolution">Resolution of the data request
-         * @param startUtc">Start time of the data in UTC
-         * @param endUtc">End time of the data in UTC
+         * @param symbol Symbol for the data we're looking for.
+         * @param resolution Resolution of the data request
+         * @param startUtc Start time of the data in UTC
+         * @param endUtc End time of the data in UTC
         @returns Enumerable of base data for this symbol
         IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc);
     }

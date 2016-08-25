@@ -22,7 +22,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
     /**
-    /// Represent web response for the list of active/tradable instruments provided by Oanda.
+     * Represent web response for the list of active/tradable instruments provided by Oanda.
     */
     public class InstrumentsResponse
     {

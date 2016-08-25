@@ -19,25 +19,25 @@ using System.IO;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Provides an implementation of <see cref="IStreamProvider"/> that just returns a file stream
+     * Provides an implementation of <see cref="IStreamProvider"/> that just returns a file stream
     */
     public class FileStreamProvider : IStreamProvider
     {
         private final Map<String, FileStream> _files = new Map<String, FileStream>();
 
         /**
-        /// Opens the specified source as read to be consumed stream
+         * Opens the specified source as read to be consumed stream
         */
-         * @param source">The source file to be opened
+         * @param source The source file to be opened
         @returns The stream representing the specified source
         public IEnumerable<Stream> Open( String source) {
             yield return File.OpenRead(source);
         }
 
         /**
-        /// Closes the specified source file stream
+         * Closes the specified source file stream
         */
-         * @param source">The source file to be closed
+         * @param source The source file to be closed
         public void Close( String source) {
             // it's expected that users will dispose the stream
             // from the open call, this is used to clean up any
@@ -47,7 +47,7 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
             foreach (kvp in _files) {

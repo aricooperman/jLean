@@ -20,21 +20,21 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Three Advancing White Soldiers candlestick pattern
+     * Three Advancing White Soldiers candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - three white candlesticks with consecutively higher closes
-    /// - Greg Morris wants them to be long, Steve Nison doesn't; anyway they should not be short
-    /// - each candle opens within or near the previous white real body
-    /// - each candle must have no or very short upper shadow
-    /// - to differentiate this pattern from advance block, each candle must not be far shorter than the prior candle
-    /// The meanings of "not short", "very short shadow", "far" and "near" are specified with SetCandleSettings;
-    /// here the 3 candles must be not short, if you want them to be long use SetCandleSettings on BodyShort;
-    /// The returned value is positive (+1): advancing 3 white soldiers is always bullish;
-    /// The user should consider that 3 white soldiers is significant when it appears in downtrend, while this function 
-    /// does not consider it
-    /// 
+     * 
+     * Must have:
+     * - three white candlesticks with consecutively higher closes
+     * - Greg Morris wants them to be long, Steve Nison doesn't; anyway they should not be short
+     * - each candle opens within or near the previous white real body
+     * - each candle must have no or very short upper shadow
+     * - to differentiate this pattern from advance block, each candle must not be far shorter than the prior candle
+     * The meanings of "not short", "very short shadow", "far" and "near" are specified with SetCandleSettings;
+     * here the 3 candles must be not short, if you want them to be long use SetCandleSettings on BodyShort;
+     * The returned value is positive (+1): advancing 3 white soldiers is always bullish;
+     * The user should consider that 3 white soldiers is significant when it appears in downtrend, while this function 
+     * does not consider it
+     * 
     public class ThreeWhiteSoldiers : CandlestickPattern
     {
         private final int _shadowVeryShortAveragePeriod;
@@ -48,9 +48,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _bodyShortPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="ThreeWhiteSoldiers"/> class using the specified name.
+         * Initializes a new instance of the <see cref="ThreeWhiteSoldiers"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public ThreeWhiteSoldiers( String name) 
             : base(name, Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod),
                   Math.Max(CandleSettings.Get(CandleSettingType.Far).AveragePeriod, CandleSettings.Get(CandleSettingType.Near).AveragePeriod)) + 2 + 1) {
@@ -61,14 +61,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ThreeWhiteSoldiers"/> class.
+         * Initializes a new instance of the <see cref="ThreeWhiteSoldiers"/> class.
         */
         public ThreeWhiteSoldiers()
             : this( "THREEWHITESOLDIERS") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -76,10 +76,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -103,7 +103,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _bodyShortPeriodTotal += GetCandleRange(CandleSettingType.BodyShort, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -137,7 +137,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = 1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -164,7 +164,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _shadowVeryShortPeriodTotal = new decimal[3];

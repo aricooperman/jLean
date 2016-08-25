@@ -24,7 +24,7 @@ import java.util.Map;
 //using QuantConnect.Orders;
 
 /**
-/// Algorithm Transactions Manager - Recording Transactions
+ * Algorithm Transactions Manager - Recording Transactions
 */
 public class SecurityTransactionManager implements IOrderProvider {
     private int _orderId;
@@ -37,7 +37,7 @@ public class SecurityTransactionManager implements IOrderProvider {
     private Map<DateTime, decimal> _transactionRecord;
 
     /**
-    /// Gets the time the security information was last updated
+     * Gets the time the security information was last updated
     */
     public LocalDateTime UtcTime
     {
@@ -45,7 +45,7 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
     
     /**
-    /// Initialise the transaction manager for holding and processing orders.
+     * Initialise the transaction manager for holding and processing orders.
     */
     public SecurityTransactionManager(SecurityManager security) {
         //Private reference for processing transactions
@@ -56,7 +56,7 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Trade record of profits and losses for each trade statistics calculations
+     * Trade record of profits and losses for each trade statistics calculations
     */
     public Map<DateTime, decimal> TransactionRecord
     {
@@ -71,9 +71,9 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Configurable minimum order value to ignore bad orders, or orders with unrealistic sizes
+     * Configurable minimum order value to ignore bad orders, or orders with unrealistic sizes
     */
-    /// Default minimum order size is $0 value
+     * Default minimum order size is $0 value
     public BigDecimal MinimumOrderSize 
     {
         get 
@@ -83,9 +83,9 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Configurable minimum order size to ignore bad orders, or orders with unrealistic sizes
+     * Configurable minimum order size to ignore bad orders, or orders with unrealistic sizes
     */
-    /// Default minimum order size is 0 shares
+     * Default minimum order size is 0 shares
     public int MinimumOrderQuantity 
     {
         get 
@@ -95,7 +95,7 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Get the last order id.
+     * Get the last order id.
     */
     public int LastOrderId
     {
@@ -106,9 +106,9 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Configurable timeout for market order fills
+     * Configurable timeout for market order fills
     */
-    /// Default value is 5 seconds
+     * Default value is 5 seconds
     public Duration MarketOrderFillTimeout
     {
         get
@@ -122,48 +122,48 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Processes the order request
-    */
-     * @param request">The request to be processed
-    @returns The order ticket for the request
-    public OrderTicket ProcessRequest(OrderRequest request) {
-        submit = request as SubmitOrderRequest;
-        if( submit != null ) {
-            submit.SetOrderId(GetIncrementOrderId());
-        }
-        return _orderProcessor.Process(request);
+     * Processes the order request
+     * @param request The request to be processed
+     * @returns The order ticket for the request
+     */
+    public OrderTicket processRequest( OrderRequest request ) {
+        if( request instanceof SubmitOrderRequest )
+            submit = (SubmitOrderRequest)request;
+            submit.setOrderId( getIncrementOrderId() );
+        
+        return _orderProcessor.process( request );
     }
 
     /**
-    /// Add an order to collection and return the unique order id or negative if an error.
+     * Add an order to collection and return the unique order id or negative if an error.
     */
-     * @param request">A request detailing the order to be submitted
+     * @param request A request detailing the order to be submitted
     @returns New unique, increasing orderid
     public OrderTicket AddOrder(SubmitOrderRequest request) {
         return ProcessRequest(request);
     }
 
     /**
-    /// Update an order yet to be filled such as stop or limit orders.
-    */
-     * @param request">Request detailing how the order should be updated
-    /// Does not apply if the order is already fully filled
-    public OrderTicket UpdateOrder(UpdateOrderRequest request) {
-        return ProcessRequest(request);
+     * Update an order yet to be filled such as stop or limit orders.
+     * @param request Request detailing how the order should be updated
+     * Does not apply if the order is already fully filled
+     */
+    public OrderTicket updateOrder( UpdateOrderRequest request ) {
+        return processRequest( request );
     }
 
     /**
-    /// Added alias for RemoveOrder - 
-    */
-     * @param orderId">Order id we wish to cancel
+     * Added alias for RemoveOrder - 
+     * @param orderId Order id we wish to cancel
+     */
     public OrderTicket CancelOrder(int orderId) {
         return RemoveOrder(orderId);
     }
 
     /**
-    /// Cancels all open orders for the specified symbol
+     * Cancels all open orders for the specified symbol
     */
-     * @param symbol">The symbol whose orders are to be cancelled
+     * @param symbol The symbol whose orders are to be cancelled
     @returns List containing the cancelled order tickets
     public List<OrderTicket> CancelOpenOrders(Symbol symbol) {
         cancelledOrders = new List<OrderTicket>();
@@ -175,38 +175,38 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Remove this order from outstanding queue: user is requesting a cancel.
+     * Remove this order from outstanding queue: user is requesting a cancel.
     */
-     * @param orderId">Specific order id to remove
+     * @param orderId Specific order id to remove
     public OrderTicket RemoveOrder(int orderId) {
         return ProcessRequest(new CancelOrderRequest(_securities.UtcTime, orderId, string.Empty));
     }
 
     /**
-    /// Gets and enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/>
+     * Gets and enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/>
     */
-     * @param filter">The filter predicate used to find the required order tickets
+     * @param filter The filter predicate used to find the required order tickets
     @returns An enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/>
     public IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null ) {
         return _orderProcessor.GetOrderTickets(filter ?? (x -> true));
     }
 
     /**
-    /// Gets the order ticket for the specified order id. Returns null if not found
+     * Gets the order ticket for the specified order id. Returns null if not found
     */
-     * @param orderId">The order's id
+     * @param orderId The order's id
     @returns The order ticket with the specified id, or null if not found
     public OrderTicket GetOrderTicket(int orderId) {
         return _orderProcessor.GetOrderTicket(orderId);
     }
 
     /**
-    /// Wait for a specific order to be either Filled, Invalid or Canceled
+     * Wait for a specific order to be either Filled, Invalid or Canceled
     */
-     * @param orderId">The id of the order to wait for
+     * @param orderId The id of the order to wait for
     @returns True if we successfully wait for the fill, false if we were unable
-    /// to wait. This may be because it is not a market order or because the timeout
-    /// was reached
+     * to wait. This may be because it is not a market order or because the timeout
+     * was reached
     public boolean WaitForOrder(int orderId) {
         orderTicket = GetOrderTicket(orderId);
         if( orderTicket == null ) {
@@ -223,7 +223,7 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Get a list of all open orders.
+     * Get a list of all open orders.
     */
     @returns List of open orders.
     public List<Order> GetOpenOrders() {
@@ -231,16 +231,16 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Get a list of all open orders for a symbol.
+     * Get a list of all open orders for a symbol.
     */
-     * @param symbol">The symbol for which to return the orders
+     * @param symbol The symbol for which to return the orders
     @returns List of open orders.
     public List<Order> GetOpenOrders(Symbol symbol) {
         return _orderProcessor.GetOrders(x -> x.Symbol == symbol && x.Status.IsOpen()).ToList();
     }
 
     /**
-    /// Gets the current number of orders that have been processed
+     * Gets the current number of orders that have been processed
     */
     public int OrdersCount
     {
@@ -248,37 +248,37 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Get the order by its id
+     * Get the order by its id
     */
-     * @param orderId">Order id to fetch
+     * @param orderId Order id to fetch
     @returns The order with the specified id, or null if no match is found
     public Order GetOrderById(int orderId) {
         return _orderProcessor.GetOrderById(orderId);
     }
 
     /**
-    /// Gets the order by its brokerage id
+     * Gets the order by its brokerage id
     */
-     * @param brokerageId">The brokerage id to fetch
+     * @param brokerageId The brokerage id to fetch
     @returns The first order matching the brokerage id, or null if no match is found
     public Order GetOrderByBrokerageId( String brokerageId) {
         return _orderProcessor.GetOrderByBrokerageId(brokerageId);
     }
 
     /**
-    /// Gets all orders matching the specified filter
+     * Gets all orders matching the specified filter
     */
-     * @param filter">Delegate used to filter the orders
+     * @param filter Delegate used to filter the orders
     @returns All open orders this order provider currently holds
     public IEnumerable<Order> GetOrders(Func<Order, bool> filter) {
         return _orderProcessor.GetOrders(filter);
     }
 
     /**
-    /// Check if there is sufficient capital to execute this order.
+     * Check if there is sufficient capital to execute this order.
     */
-     * @param portfolio">Our portfolio
-     * @param order">Order we're checking
+     * @param portfolio Our portfolio
+     * @param order Order we're checking
     @returns True if sufficient capital.
     public boolean GetSufficientCapitalForOrder(SecurityPortfolioManager portfolio, Order order) {
         // short circuit the div 0 case
@@ -310,7 +310,7 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Get a new order id, and increment the internal counter.
+     * Get a new order id, and increment the internal counter.
     */
     @returns New unique int order id.
     public int GetIncrementOrderId() {
@@ -318,15 +318,15 @@ public class SecurityTransactionManager implements IOrderProvider {
     }
 
     /**
-    /// Sets the <see cref="IOrderProvider"/> used for fetching orders for the algorithm
+     * Sets the <see cref="IOrderProvider"/> used for fetching orders for the algorithm
     */
-     * @param orderProvider">The <see cref="IOrderProvider"/> to be used to manage fetching orders
+     * @param orderProvider The <see cref="IOrderProvider"/> to be used to manage fetching orders
     public void SetOrderProcessor(IOrderProcessor orderProvider) {
         _orderProcessor = orderProvider;
     }
 
     /**
-    /// Returns true when the specified order is in a completed state
+     * Returns true when the specified order is in a completed state
     */
     private static boolean Completed(Order order) {
         return order.Status == OrderStatus.Filled || order.Status == OrderStatus.PartiallyFilled || order.Status == OrderStatus.Invalid || order.Status == OrderStatus.Canceled;

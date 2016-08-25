@@ -16,28 +16,28 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator creates two moving averages defined on a base indicator and produces the difference
-    /// between the fast and slow averages.
+     * This indicator creates two moving averages defined on a base indicator and produces the difference
+     * between the fast and slow averages.
     */
     public class MovingAverageConvergenceDivergence : Indicator
     {
         /**
-        /// Gets the fast average indicator
+         * Gets the fast average indicator
         */
         public IndicatorBase<IndicatorDataPoint> Fast { get; private set; }
 
         /**
-        /// Gets the slow average indicator
+         * Gets the slow average indicator
         */
         public IndicatorBase<IndicatorDataPoint> Slow { get; private set; }
 
         /**
-        /// Gets the signal of the MACD
+         * Gets the signal of the MACD
         */
         public IndicatorBase<IndicatorDataPoint> Signal { get; private set; }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -45,24 +45,24 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new MACD with the specified parameters
+         * Creates a new MACD with the specified parameters
         */
-         * @param fastPeriod">The fast moving average period
-         * @param slowPeriod">The slow moving average period
-         * @param signalPeriod">The signal period
-         * @param type">The type of moving averages to use
+         * @param fastPeriod The fast moving average period
+         * @param slowPeriod The slow moving average period
+         * @param signalPeriod The signal period
+         * @param type The type of moving averages to use
         public MovingAverageConvergenceDivergence(int fastPeriod, int slowPeriod, int signalPeriod, MovingAverageType type = MovingAverageType.Simple)
             : this( String.format( "MACD(%1$s,%2$s)", fastPeriod, slowPeriod), fastPeriod, slowPeriod, signalPeriod, type) {
         }
 
         /**
-        /// Creates a new MACD with the specified parameters
+         * Creates a new MACD with the specified parameters
         */
-         * @param name">The name of this indicator
-         * @param fastPeriod">The fast moving average period
-         * @param slowPeriod">The slow moving average period
-         * @param signalPeriod">The signal period
-         * @param type">The type of moving averages to use
+         * @param name The name of this indicator
+         * @param fastPeriod The fast moving average period
+         * @param slowPeriod The slow moving average period
+         * @param signalPeriod The signal period
+         * @param type The type of moving averages to use
         public MovingAverageConvergenceDivergence( String name, int fastPeriod, int slowPeriod, int signalPeriod, MovingAverageType type = MovingAverageType.Simple)
             : base(name) {
             Fast = type.AsIndicator(name + "_Fast", fastPeriod);
@@ -71,9 +71,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             Fast.Update(input);
@@ -88,7 +88,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             Fast.Reset();

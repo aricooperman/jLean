@@ -30,7 +30,7 @@ package com.quantconnect.lean.Tests.Indicators
             
             ema4 = new ExponentialMovingAverage(period);
 
-            BigDecimal current = 0m;
+            BigDecimal current = BigDecimal.ZERO;
             for (int i = 0; i < values.Length; i++) {
                 ema4.Update(new IndicatorDataPoint(DateTime.UtcNow.AddSeconds(i), values[i]));
                 if( i == 0) {

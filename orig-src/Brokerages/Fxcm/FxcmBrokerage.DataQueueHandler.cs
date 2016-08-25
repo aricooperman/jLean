@@ -25,7 +25,7 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Brokerages.Fxcm
 {
     /**
-    /// FXCM brokerage - implementation of IDataQueueHandler interface
+     * FXCM brokerage - implementation of IDataQueueHandler interface
     */
     public partial class FxcmBrokerage
     {
@@ -35,11 +35,11 @@ package com.quantconnect.lean.Brokerages.Fxcm
         #region IDataQueueHandler implementation
 
         /**
-        /// Get the next ticks from the live trading data queue
+         * Get the next ticks from the live trading data queue
         */
         @returns IEnumerable list of ticks since the last update.
         public IEnumerable<BaseData> GetNextTicks() {
-            lock (_ticks) {
+            synchronized(_ticks) {
                 copy = _ticks.ToArray();
                 _ticks.Clear();
                 return copy;
@@ -47,10 +47,10 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Adds the specified symbols to the subscription
+         * Adds the specified symbols to the subscription
         */
-         * @param job">Job we're subscribing for:
-         * @param symbols">The symbols to be added keyed by SecurityType
+         * @param job Job we're subscribing for:
+         * @param symbols The symbols to be added keyed by SecurityType
         public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             symbolsToSubscribe = (from symbol in symbols 
                                       where !_subscribedSymbols.Contains(symbol) 
@@ -67,7 +67,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
             request.setSubscriptionRequestType(SubscriptionRequestTypeFactory.SUBSCRIBE);
             request.setMDEntryTypeSet(MarketDataRequest.MDENTRYTYPESET_ALL);
 
-            lock (_locker) {
+            synchronized(_locker) {
                 _gateway.sendMessage(request);
             }
 
@@ -77,10 +77,10 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Removes the specified symbols to the subscription
+         * Removes the specified symbols to the subscription
         */
-         * @param job">Job we're processing.
-         * @param symbols">The symbols to be removed keyed by SecurityType
+         * @param job Job we're processing.
+         * @param symbols The symbols to be removed keyed by SecurityType
         public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             symbolsToUnsubscribe = (from symbol in symbols 
                                         where _subscribedSymbols.Contains(symbol) 
@@ -97,7 +97,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
             request.setSubscriptionRequestType(SubscriptionRequestTypeFactory.UNSUBSCRIBE);
             request.setMDEntryTypeSet(MarketDataRequest.MDENTRYTYPESET_ALL);
 
-            lock (_locker) {
+            synchronized(_locker) {
                 _gateway.sendMessage(request);
             }
 

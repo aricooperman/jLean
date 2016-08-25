@@ -18,14 +18,14 @@ using System;
 package com.quantconnect.lean.Data.Consolidators
 {
     /**
-    /// This consolidator wires up the events on its First and Second consolidators
-    /// such that data flows from the First to Second consolidator. It's output comes
-    /// from the Second.
+     * This consolidator wires up the events on its First and Second consolidators
+     * such that data flows from the First to Second consolidator. It's output comes
+     * from the Second.
     */
     public class SequentialConsolidator : IDataConsolidator
     {
         /**
-        /// Gets the first consolidator to receive data
+         * Gets the first consolidator to receive data
         */
         public IDataConsolidator First
         {
@@ -33,8 +33,8 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Gets the second consolidator that ends up receiving data produced
-        /// by the first
+         * Gets the second consolidator that ends up receiving data produced
+         * by the first
         */
         public IDataConsolidator Second
         {
@@ -42,10 +42,10 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Gets the most recently consolidated piece of data. This will be null if this consolidator
-        /// has not produced any data yet.
-        /// 
-        /// For a SequentialConsolidator, this is the output from the 'Second' consolidator.
+         * Gets the most recently consolidated piece of data. This will be null if this consolidator
+         * has not produced any data yet.
+         * 
+         * For a SequentialConsolidator, this is the output from the 'Second' consolidator.
         */
         public BaseData Consolidated
         {
@@ -53,7 +53,7 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Gets a clone of the data being currently consolidated
+         * Gets a clone of the data being currently consolidated
         */
         public BaseData WorkingData
         {
@@ -61,7 +61,7 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Gets the type consumed by this consolidator
+         * Gets the type consumed by this consolidator
         */
         public Type InputType
         {
@@ -69,7 +69,7 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Gets the type produced by this consolidator
+         * Gets the type produced by this consolidator
         */
         public Type OutputType
         {
@@ -77,35 +77,35 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Updates this consolidator with the specified data
+         * Updates this consolidator with the specified data
         */
-         * @param data">The new data for the consolidator
+         * @param data The new data for the consolidator
         public void Update(BaseData data) {
             First.Update(data);
         }
 
         /**
-        /// Scans this consolidator to see if it should emit a bar due to time passing
+         * Scans this consolidator to see if it should emit a bar due to time passing
         */
-         * @param currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)
+         * @param currentLocalTime The current time in the local time zone (same as <see cref="BaseData.Time"/>)
         public void Scan(DateTime currentLocalTime) {
             First.Scan(currentLocalTime);
         }
 
         /**
-        /// Event handler that fires when a new piece of data is produced
+         * Event handler that fires when a new piece of data is produced
         */
         public event DataConsolidatedHandler DataConsolidated;
 
         /**
-        /// Creates a new consolidator that will pump date through the first, and then the output
-        /// of the first into the second. This enables 'wrapping' or 'composing' of consolidators
+         * Creates a new consolidator that will pump date through the first, and then the output
+         * of the first into the second. This enables 'wrapping' or 'composing' of consolidators
         */
-         * @param first">The first consolidator to receive data
-         * @param second">The consolidator to receive first's output
+         * @param first The first consolidator to receive data
+         * @param second The consolidator to receive first's output
         public SequentialConsolidator(IDataConsolidator first, IDataConsolidator second) {
             if( !second.InputType.IsAssignableFrom(first.OutputType)) {
-                throw new ArgumentException( "first.OutputType must equal second.OutputType!");
+                throw new IllegalArgumentException( "first.OutputType must equal second.OutputType!");
             }
             First = first;
             Second = second;
@@ -119,11 +119,11 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Event invocator for the DataConsolidated event. This should be invoked
-        /// by derived classes when they have consolidated a new piece of data.
+         * Event invocator for the DataConsolidated event. This should be invoked
+         * by derived classes when they have consolidated a new piece of data.
         */
-         * @param consolidated">The newly consolidated data
-        protected virtual void OnDataConsolidated(BaseData consolidated) {
+         * @param consolidated The newly consolidated data
+        protected void OnDataConsolidated(BaseData consolidated) {
             handler = DataConsolidated;
             if( handler != null ) handler(this, consolidated);
         }

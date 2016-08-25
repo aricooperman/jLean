@@ -16,15 +16,15 @@
 package com.quantconnect.lean.Brokerages
 {
     /**
-    /// Provides an plugin point to allow algorithms to directly handle the messages
-    /// that come from their brokerage
+     * Provides an plugin point to allow algorithms to directly handle the messages
+     * that come from their brokerage
     */
     public interface IBrokerageMessageHandler
     {
         /**
-        /// Handles the message
+         * Handles the message
         */
-         * @param message">The message to be handled
+         * @param message The message to be handled
         void Handle(BrokerageMessageEvent message);
     }
 }

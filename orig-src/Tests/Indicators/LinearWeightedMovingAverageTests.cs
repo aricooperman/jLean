@@ -29,7 +29,7 @@ package com.quantconnect.lean.Tests.Indicators
 
             lwma = new LinearWeightedMovingAverage(period);
 
-            BigDecimal current = 0m;
+            BigDecimal current = BigDecimal.ZERO;
             for (int i = 0; i < values.Length; i++) {
                 lwma.Update(new IndicatorDataPoint(DateTime.UtcNow.AddSeconds(i), values[i]));
             }
@@ -43,7 +43,7 @@ package com.quantconnect.lean.Tests.Indicators
 
             lwma = new LinearWeightedMovingAverage(period);
 
-            BigDecimal current = 0m;
+            BigDecimal current = BigDecimal.ZERO;
             for (int i = 0; i < values.Length; i++) {
                 lwma.Update(new IndicatorDataPoint(DateTime.UtcNow.AddSeconds(i), values[i]));
             }
@@ -57,7 +57,7 @@ package com.quantconnect.lean.Tests.Indicators
 
             lwma = new LinearWeightedMovingAverage(period);
 
-            BigDecimal current = 0m;
+            BigDecimal current = BigDecimal.ZERO;
             for (int i = 0; i < values.Length; i++) {
                 lwma.Update(new IndicatorDataPoint(DateTime.UtcNow.AddSeconds(i), values[i]));
             }
@@ -73,7 +73,7 @@ package com.quantconnect.lean.Tests.Indicators
 
             lwma = new LinearWeightedMovingAverage(period);
 
-            BigDecimal current = 0m;
+            BigDecimal current = BigDecimal.ZERO;
             for (int i = 0; i < values.Length; i++) {
                 lwma.Update(new IndicatorDataPoint(DateTime.UtcNow.AddSeconds(i), values[i]));
 

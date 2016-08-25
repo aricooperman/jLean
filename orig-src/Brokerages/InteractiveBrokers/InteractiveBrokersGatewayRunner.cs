@@ -25,18 +25,18 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.Brokerages.InteractiveBrokers
 {
     /**
-    /// Handles launching and killing the IB Controller script
+     * Handles launching and killing the IB Controller script
     */
-    /// 
-    /// Requires TWS or IB Gateway and IBController installed to run
-    /// 
+     * 
+     * Requires TWS or IB Gateway and IBController installed to run
+     * 
     public static class InteractiveBrokersGatewayRunner
     {
         // process that's running the IB Controller script
         private static int ScriptProcessID;
 
         /**
-        /// Starts the interactive brokers gateway using values from configuration
+         * Starts the interactive brokers gateway using values from configuration
         */
         public static void StartFromConfiguration() {
             Start(Config.Get( "ib-controller-dir"),
@@ -48,13 +48,13 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Starts the IB Gateway
+         * Starts the IB Gateway
         */
-         * @param ibControllerDirectory">Directory to the IB controller installation
+         * @param ibControllerDirectory Directory to the IB controller installation
          * @param twsDirectory">
-         * @param userID">The log in user id
-         * @param password">The log in password
-         * @param useTws">True to use Trader Work Station, false to just launch the API gateway
+         * @param userID The log in user id
+         * @param password The log in password
+         * @param useTws True to use Trader Work Station, false to just launch the API gateway
         public static void Start( String ibControllerDirectory, String twsDirectory, String userID, String password, boolean useTws = false) {
             useTwsSwitch = useTws ? "TWS" : "GATEWAY";
             batchFilename = Path.Combine( "InteractiveBrokers", "run-ib-controller.bat");
@@ -63,7 +63,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             try
             {
                 file = OS.IsWindows ? batchFilename : bashFilename;
-                arguments = String.format( "%1$s %2$s %3$s {3} {4} {5}", file, ibControllerDirectory, twsDirectory, userID, password, useTwsSwitch);
+                arguments = String.format( "%1$s %2$s %3$s %4$s %5$s %6$s", file, ibControllerDirectory, twsDirectory, userID, password, useTwsSwitch);
 
                 Log.Trace( "InteractiveBrokersGatewayRunner.Start(): Launching IBController for account " + userID + "...");
 
@@ -80,7 +80,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Stops the IB Gateway
+         * Stops the IB Gateway
         */
         public static void Stop() {
             if( ScriptProcessID == 0) {

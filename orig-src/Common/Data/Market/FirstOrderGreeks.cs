@@ -16,19 +16,19 @@
 package com.quantconnect.lean.Data.Market
 {
     /**
-    /// Defines the first-order greeks
+     * Defines the first-order greeks
     */
-    /// 
-    /// We can later add second and third order greeks as sub-classes
-    /// 
+     * 
+     * We can later add second and third order greeks as sub-classes
+     * 
     public class FirstOrderGreeks
     {
         /**
-        /// Gets the delta.
-        /// <para>
-        /// Delta measures the rate of change of the option value with respect to changes in
-        /// the underlying asset'sprice. (∂V/∂S)
-        /// </para>
+         * Gets the delta.
+         * <para>
+         * Delta measures the rate of change of the option value with respect to changes in
+         * the underlying asset'sprice. (∂V/∂S)
+         * </para>
         */
         public BigDecimal Delta
         {
@@ -36,11 +36,11 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the vega.
-        /// <para>
-        /// Vega measures the rate of change of the option value with respect to changes in
-        /// the underlying's volatility. (∂V/∂σ)
-        /// </para>
+         * Gets the vega.
+         * <para>
+         * Vega measures the rate of change of the option value with respect to changes in
+         * the underlying's volatility. (∂V/∂σ)
+         * </para>
         */
         public BigDecimal Vega
         {
@@ -48,11 +48,11 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the theta.
-        /// <para>
-        /// Theta measures the rate of change of the option value with respect to changes in
-        /// time. This is commonly known as the 'time decay.' (∂V/∂τ)
-        /// </para>
+         * Gets the theta.
+         * <para>
+         * Theta measures the rate of change of the option value with respect to changes in
+         * time. This is commonly known as the 'time decay.' (∂V/∂τ)
+         * </para>
         */
         public BigDecimal Theta
         {
@@ -60,11 +60,11 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the rho.
-        /// <para>
-        /// Rho measures the rate of change of the option value with respect to changes in
-        /// the risk free interest rate. (∂V/∂r)
-        /// </para>
+         * Gets the rho.
+         * <para>
+         * Rho measures the rate of change of the option value with respect to changes in
+         * the risk free interest rate. (∂V/∂r)
+         * </para>
         */
         public BigDecimal Rho
         {
@@ -72,12 +72,12 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the lambda.
-        /// <para>
-        /// Lambda is the percentage change in option value per percentage change in the
-        /// underlying's price, a measure of leverage. Sometimes referred to as gearing.
-        /// (∂V/∂S ✕ S/V)
-        /// </para>
+         * Gets the lambda.
+         * <para>
+         * Lambda is the percentage change in option value per percentage change in the
+         * underlying's price, a measure of leverage. Sometimes referred to as gearing.
+         * (∂V/∂S ✕ S/V)
+         * </para>
         */
         public BigDecimal Lambda
         {
@@ -85,13 +85,13 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Initializes a new default instance of the <see cref="FirstOrderGreeks"/> class
+         * Initializes a new default instance of the <see cref="FirstOrderGreeks"/> class
         */
         public FirstOrderGreeks() {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="FirstOrderGreeks"/> class
+         * Initializes a new instance of the <see cref="FirstOrderGreeks"/> class
         */
         public FirstOrderGreeks( BigDecimal delta, BigDecimal vega, BigDecimal theta, BigDecimal rho, BigDecimal lambda) {
             Delta = delta;

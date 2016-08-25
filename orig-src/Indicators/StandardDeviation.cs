@@ -18,35 +18,35 @@ using System;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the n-period population standard deviation.
+     * This indicator computes the n-period population standard deviation.
     */
     public class StandardDeviation : Variance
     {
         /**
-        /// Initializes a new instance of the StandardDeviation class with the specified period.
-        /// 
-        /// Evaluates the standard deviation of samples in the lookback period. 
-        /// On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset.
+         * Initializes a new instance of the StandardDeviation class with the specified period.
+         * 
+         * Evaluates the standard deviation of samples in the lookback period. 
+         * On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset.
         */
-         * @param period">The sample size of the standard deviation
+         * @param period The sample size of the standard deviation
         public StandardDeviation(int period)
             : this( "STD" + period, period) {
         }
 
         /**
-        /// Initializes a new instance of the StandardDeviation class with the specified name and period.
-        /// 
-        /// Evaluates the standard deviation of samples in the lookback period. 
-        /// On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset.
+         * Initializes a new instance of the StandardDeviation class with the specified name and period.
+         * 
+         * Evaluates the standard deviation of samples in the lookback period. 
+         * On a dataset of size N will use an N normalizer and would thus be biased if applied to a subset.
         */
-         * @param name">The name of this indicator
-         * @param period">The sample size of the standard deviation
+         * @param name The name of this indicator
+         * @param period The sample size of the standard deviation
         public StandardDeviation( String name, int period)
             : base(name, period) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -54,10 +54,10 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
-         * @param window">The window for the input history
+         * @param input The input given to the indicator
+         * @param window The window for the input history
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             return (decimal)Math.Sqrt((double)base.ComputeNextValue(window, input));

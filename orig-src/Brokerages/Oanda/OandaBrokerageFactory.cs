@@ -23,30 +23,30 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages.Oanda
 {
     /**
-    /// Provides an implementations of <see cref="IBrokerageFactory"/> that produces a <see cref="OandaBrokerage"/>
+     * Provides an implementations of <see cref="IBrokerageFactory"/> that produces a <see cref="OandaBrokerage"/>
     */
     public class OandaBrokerageFactory: BrokerageFactory
     {
         /**
-        /// Initializes a new instance of the <see cref="OandaBrokerageFactory"/> class.
+         * Initializes a new instance of the <see cref="OandaBrokerageFactory"/> class.
         */
         public OandaBrokerageFactory() 
             : base(typeof(OandaBrokerage)) {
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public @Override void Dispose() {
         }
 
         /**
-        /// Gets the brokerage data required to run the brokerage from configuration/disk
+         * Gets the brokerage data required to run the brokerage from configuration/disk
         */
-        /// 
-        /// The implementation of this property will create the brokerage data dictionary required for
-        /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
-        /// 
+         * 
+         * The implementation of this property will create the brokerage data dictionary required for
+         * running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
+         * 
         public @Override Map<String,String> BrokerageData
         {
             get
@@ -61,7 +61,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Gets a new instance of the <see cref="OandaBrokerageModel"/>
+         * Gets a new instance of the <see cref="OandaBrokerageModel"/>
         */
         public @Override IBrokerageModel BrokerageModel
         {
@@ -69,10 +69,10 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Creates a new <see cref="IBrokerage"/> instance
+         * Creates a new <see cref="IBrokerage"/> instance
         */
-         * @param job">The job packet to create the brokerage for
-         * @param algorithm">The algorithm instance
+         * @param job The job packet to create the brokerage for
+         * @param algorithm The algorithm instance
         @returns A new brokerage instance
         public @Override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm) {
             errors = new List<String>();

@@ -31,8 +31,8 @@ import java.util.TreeMap;
 //using QuantConnect.Logging;
 //using QuantConnect.Util;
 
-/// Provides a means of mapping a symbol at a point in time to the map file
-/// containing that share class's mapping information
+ * Provides a means of mapping a symbol at a point in time to the map file
+ * containing that share class's mapping information
 public class MapFileResolver implements Iterable<MapFile> {
     
     private static final Comparator<String> IGNORE_CASE_COMP = String::compareToIgnoreCase;
@@ -40,13 +40,13 @@ public class MapFileResolver implements Iterable<MapFile> {
     private final Map<String,MapFile> mapFilesByPermtick;
     private final Map<String,SortedMap<LocalDate,MapFileRowEntry>> bySymbol;
 
-    /// Gets an empty <see cref="MapFileResolver"/>, that is an instance that contains
-    /// zero mappings
+     * Gets an empty <see cref="MapFileResolver"/>, that is an instance that contains
+     * zero mappings
 //    public static final MapFileResolver Empty = new MapFileResolver( Collections.emptyList() ) ;
 
-    /// Initializes a new instance of the <see cref="MapFileResolver"/> by reading
-    /// in all files in the specified directory.
-     * @param mapFiles">The data used to initialize this resolver.
+     * Initializes a new instance of the <see cref="MapFileResolver"/> by reading
+     * in all files in the specified directory.
+     * @param mapFiles The data used to initialize this resolver.
     public MapFileResolver( Iterable<MapFile> mapFiles ) {
         mapFilesByPermtick = new TreeMap<String,MapFile>( IGNORE_CASE_COMP );
         bySymbol = new TreeMap<String,SortedMap<LocalDate,MapFileRowEntry>>( IGNORE_CASE_COMP );
@@ -76,33 +76,33 @@ public class MapFileResolver implements Iterable<MapFile> {
         }
     }
 
-    /// Creates a new instance of the <see cref="MapFileResolver"/> class by reading all map files
-    /// for the specified market into memory
-     * @param dataDirectory">The root data directory
-     * @param market">The equity market to produce a map file collection for
+     * Creates a new instance of the <see cref="MapFileResolver"/> class by reading all map files
+     * for the specified market into memory
+     * @param dataDirectory The root data directory
+     * @param market The equity market to produce a map file collection for
     @returns The collection of map files capable of mapping equity symbols within the specified market
     public static MapFileResolver create( String dataDirectory, String market ) throws IOException {
         return create( Paths.get( dataDirectory, "equity", market.toLowerCase(), "map_files" ) );
     }
 
-    /// Creates a new instance of the <see cref="MapFileResolver"/> class by reading all map files
-    /// for the specified market into memory
-     * @param mapFileDirectory">The directory containing the map files
+     * Creates a new instance of the <see cref="MapFileResolver"/> class by reading all map files
+     * for the specified market into memory
+     * @param mapFileDirectory The directory containing the map files
     @returns The collection of map files capable of mapping equity symbols within the specified market
     public static MapFileResolver create( Path mapFileDirectory ) throws IOException {
         return new MapFileResolver( MapFile.getMapFiles( mapFileDirectory ) );
     }
 
-    /// Gets the map file matching the specified permtick
-     * @param permtick">The permtick to match on
+     * Gets the map file matching the specified permtick
+     * @param permtick The permtick to match on
     @returns The map file matching the permtick, or null if not found
     public MapFile getByPermtick( String permtick ) {
         return mapFilesByPermtick.get( permtick.toUpperCase() );
     }
 
-    /// Resolves the map file path containing the mapping information for the symbol defined at <paramref name="date"/>
-     * @param symbol">The symbol as of <paramref name="date"/> to be mapped
-     * @param date">The date associated with the <paramref name="symbol"/>
+     * Resolves the map file path containing the mapping information for the symbol defined at <paramref name="date"/>
+     * @param symbol The symbol as of <paramref name="date"/> to be mapped
+     * @param date The date associated with the <paramref name="symbol"/>
     @returns The map file responsible for mapping the symbol, if no map file is found, null is returned
     public MapFile resolveMapFile( String symbol, LocalDate date ) {
         // lookup the symbol's history
@@ -131,51 +131,51 @@ public class MapFileResolver implements Iterable<MapFile> {
         return mapFile;
     }
 
-    /// Returns an enumerator that iterates through the collection.
+     * Returns an enumerator that iterates through the collection.
     @returns 
-    /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-    /// 
-    /// <filterpriority>1</filterpriority>
+     * A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+     * 
+     * <filterpriority>1</filterpriority>
     @Override
     public Iterator<MapFile> iterator() {
         return mapFilesByPermtick.values().iterator();
     }
 
     
-    /// Combines the map file row with the map file path that produced the row
+     * Combines the map file row with the map file path that produced the row
     class MapFileRowEntry {
-        /// Gets the map file row
+         * Gets the map file row
         private MapFileRow mapFileRow;
 //        { get; private set; }
 
-        /// Gets the full path to the map file that produced this row
+         * Gets the full path to the map file that produced this row
         public String entitySymbol;
 //        { get; private set; }
 
-        /// Initializes a new instance of the <see cref="MapFileRowEntry"/> class
-         * @param entitySymbol">The map file that produced this row
-         * @param mapFileRow">The map file row data
+         * Initializes a new instance of the <see cref="MapFileRowEntry"/> class
+         * @param entitySymbol The map file that produced this row
+         * @param mapFileRow The map file row data
         public MapFileRowEntry( String entitySymbol, MapFileRow mapFileRow ) {
             this.mapFileRow = mapFileRow;
             this.entitySymbol = entitySymbol;
         }
 
-        /// Indicates whether the current object is equal to another object of the same type.
+         * Indicates whether the current object is equal to another object of the same type.
         @returns 
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// 
-         * @param other">An object to compare with this object.
+         * true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+         * 
+         * @param other An object to compare with this object.
         public boolean equals( MapFileRowEntry other ) {
             if( other == null ) return false;
             return other.mapFileRow.getDate().equals( mapFileRow.getDate() )
                 && other.mapFileRow.getMappedSymbol().equals( mapFileRow.getMappedSymbol() );
         }
 
-        /// Returns a String that represents the current object.
+         * Returns a String that represents the current object.
         @returns 
-        /// A String that represents the current object.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * A String that represents the current object.
+         * 
+         * <filterpriority>2</filterpriority>
         public String toString() {
             return mapFileRow.getDate() + ": " + mapFileRow.getMappedSymbol() + ": " + entitySymbol;
         }

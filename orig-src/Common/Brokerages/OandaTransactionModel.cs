@@ -23,14 +23,14 @@ using QuantConnect.Securities.Interfaces;
 package com.quantconnect.lean.Brokerages
 {
     /**
-    /// Oanda Transaction Model Class: Specific transaction fill models for Oanda orders
+     * Oanda Transaction Model Class: Specific transaction fill models for Oanda orders
     */
-    /// <seealso cref="SecurityTransactionModel"/>
-    /// <seealso cref="ISecurityTransactionModel"/>
+     * <seealso cref="SecurityTransactionModel"/>
+     * <seealso cref="ISecurityTransactionModel"/>
     public class OandaTransactionModel : SecurityTransactionModel
     {
         /**
-        /// Initializes a new instance of the <see cref="OandaTransactionModel"/> class
+         * Initializes a new instance of the <see cref="OandaTransactionModel"/> class
         */
         public OandaTransactionModel()
             : base(new ImmediateFillModel(), new ConstantFeeModel(0), new SpreadSlippageModel()) {

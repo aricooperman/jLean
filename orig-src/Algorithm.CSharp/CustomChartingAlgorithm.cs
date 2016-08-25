@@ -19,15 +19,15 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Algorithm.Examples
 {
     /**
-    /// 4.0 DEMONSTRATION OF CUSTOM CHARTING FLEXIBILITY:
-    /// 
-    /// The entire charting system of quantconnect is adaptable. You can adjust it to draw whatever you'd like.
-    /// 
-    /// Charts can be stacked, or overlayed on each other.
-    /// Series can be candles, lines or scatter plots.
-    /// 
-    /// Even the default behaviours of QuantConnect can be overridden
-    /// 
+     * 4.0 DEMONSTRATION OF CUSTOM CHARTING FLEXIBILITY:
+     * 
+     * The entire charting system of quantconnect is adaptable. You can adjust it to draw whatever you'd like.
+     * 
+     * Charts can be stacked, or overlayed on each other.
+     * Series can be candles, lines or scatter plots.
+     * 
+     * Even the default behaviours of QuantConnect can be overridden
+     * 
     */
     public class CustomChartingAlgorithm : QCAlgorithm
     {
@@ -42,7 +42,7 @@ package com.quantconnect.lean.Algorithm.Examples
         DateTime endDate = new DateTime(2014, 3, 3);
 
         /**
-        /// Called at the start of your algorithm to setup your requirements:
+         * Called at the start of your algorithm to setup your requirements:
         */
         public @Override void Initialize() {
             //Set the date range you want to run your algorithm:
@@ -79,8 +79,8 @@ package com.quantconnect.lean.Algorithm.Examples
 
 
         /**
-        /// OnEndOfDay Event Handler - At the end of each trading day we fire this code.
-        /// To avoid flooding, we recommend running your plotting at the end of each day.
+         * OnEndOfDay Event Handler - At the end of each trading day we fire this code.
+         * To avoid flooding, we recommend running your plotting at the end of each day.
         */
         public @Override void OnEndOfDay() {
             //Log the end of day prices:
@@ -89,10 +89,10 @@ package com.quantconnect.lean.Algorithm.Examples
 
 
         /**
-        /// On receiving new tradebar data it will be passed into this function. The general pattern is:
-        /// "public void OnData( CustomType name ) {...s"
+         * On receiving new tradebar data it will be passed into this function. The general pattern is:
+         * "public void OnData( CustomType name ) {...s"
         */
-         * @param data">TradeBars data type synchronized and pushed into this function. The tradebars are grouped in a dictionary.
+         * @param data TradeBars data type synchronized and pushed into this function. The tradebars are grouped in a dictionary.
         public void OnData(TradeBars data) {
             lastPrice = data["SPY"].Close;
 

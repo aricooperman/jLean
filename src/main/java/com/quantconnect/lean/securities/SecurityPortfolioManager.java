@@ -18,33 +18,33 @@ package com.quantconnect.lean.securities;
 import java.util.List;
 
 /**
-/// Portfolio manager class groups popular properties and makes them accessible through one interface.
-/// It also provide indexing by the vehicle symbol to get the Security.Holding objects.
+ * Portfolio manager class groups popular properties and makes them accessible through one interface.
+ * It also provide indexing by the vehicle symbol to get the Security.Holding objects.
 */
 public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, ISecurityProvider {
     
     /**
-    /// Local access to the securities collection for the portfolio summation.
+     * Local access to the securities collection for the portfolio summation.
     */
     public SecurityManager Securities;
 
     /**
-    /// Local access to the transactions collection for the portfolio summation and updates.
+     * Local access to the transactions collection for the portfolio summation and updates.
     */
     public SecurityTransactionManager Transactions;
 
     /**
-    /// Gets the cash book that keeps track of all currency holdings (only settled cash)
+     * Gets the cash book that keeps track of all currency holdings (only settled cash)
     */
     public CashBook CashBook { get; private set; }
 
     /**
-    /// Gets the cash book that keeps track of all currency holdings (only unsettled cash)
+     * Gets the cash book that keeps track of all currency holdings (only unsettled cash)
     */
     public CashBook UnsettledCashBook { get; private set; }
 
     /**
-    /// The list of pending funds waiting for settlement time
+     * The list of pending funds waiting for settlement time
     */
     private final List<UnsettledCashAmount> _unsettledCashAmounts;
 
@@ -56,7 +56,7 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     private final Cash _baseCurrencyUnsettledCash;
 
     /**
-    /// Initialise security portfolio manager.
+     * Initialise security portfolio manager.
     */
     public SecurityPortfolioManager(SecurityManager securityManager, SecurityTransactionManager transactions) {
         Securities = securityManager;
@@ -75,68 +75,68 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Add a new securities string-security to the portfolio.
+     * Add a new securities string-security to the portfolio.
     */
-     * @param symbol">Symbol of Map
-     * @param holding">SecurityHoldings object
-    /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
-    /// This method is not implemented and using it will throw an exception
+     * @param symbol Symbol of Map
+     * @param holding SecurityHoldings object
+     * <exception cref="NotImplementedException Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
+     * This method is not implemented and using it will throw an exception
     public void Add(Symbol symbol, SecurityHolding holding) { throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager. To add a new asset add the required data during initialization."); }
 
     /**
-    /// Add a new securities key value pair to the portfolio.
+     * Add a new securities key value pair to the portfolio.
     */
-     * @param pair">Key value pair of Map
-    /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
-    /// This method is not implemented and using it will throw an exception
+     * @param pair Key value pair of Map
+     * <exception cref="NotImplementedException Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
+     * This method is not implemented and using it will throw an exception
     public void Add(KeyValuePair<Symbol, SecurityHolding> pair) { throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager. To add a new asset add the required data during initialization."); }
 
     /**
-    /// Clear the portfolio of securities objects.
+     * Clear the portfolio of securities objects.
     */
-    /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
-    /// This method is not implemented and using it will throw an exception
+     * <exception cref="NotImplementedException Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
+     * This method is not implemented and using it will throw an exception
     public void Clear() { throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager and cannot be cleared."); }
 
     /**
-    /// Remove this keyvalue pair from the portfolio.
+     * Remove this keyvalue pair from the portfolio.
     */
-    /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
-     * @param pair">Key value pair of Map
-    /// This method is not implemented and using it will throw an exception
+     * <exception cref="NotImplementedException Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
+     * @param pair Key value pair of Map
+     * This method is not implemented and using it will throw an exception
     public boolean Remove(KeyValuePair<Symbol, SecurityHolding> pair) { throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager and objects cannot be removed."); }
 
     /**
-    /// Remove this symbol from the portfolio.
+     * Remove this symbol from the portfolio.
     */
-    /// <exception cref="NotImplementedException">Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
-     * @param symbol">Symbol of Map
-    /// This method is not implemented and using it will throw an exception
+     * <exception cref="NotImplementedException Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
+     * @param symbol Symbol of Map
+     * This method is not implemented and using it will throw an exception
     public boolean Remove(Symbol symbol) { throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager and objects cannot be removed."); }
 
     /**
-    /// Check if the portfolio contains this symbol string.
+     * Check if the portfolio contains this symbol string.
     */
-     * @param symbol">String search symbol for the security
+     * @param symbol String search symbol for the security
     @returns Boolean true if portfolio contains this symbol
     public boolean ContainsKey(Symbol symbol) {
         return Securities.ContainsKey(symbol);
     }
 
     /**
-    /// Check if the key-value pair is in the portfolio.
+     * Check if the key-value pair is in the portfolio.
     */
-    /// IDictionary implementation calling the underlying Securities collection
-     * @param pair">Pair we're searching for
+     * IDictionary implementation calling the underlying Securities collection
+     * @param pair Pair we're searching for
     @returns True if we have this object
     public boolean Contains(KeyValuePair<Symbol, SecurityHolding> pair) {
         return Securities.ContainsKey(pair.Key);
     }
 
     /**
-    /// Count the securities objects in the portfolio.
+     * Count the securities objects in the portfolio.
     */
-    /// IDictionary implementation calling the underlying Securities collection
+     * IDictionary implementation calling the underlying Securities collection
     public int Count
     {
         get
@@ -146,9 +146,9 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Check if the underlying securities array is read only.
+     * Check if the underlying securities array is read only.
     */
-    /// IDictionary implementation calling the underlying Securities collection
+     * IDictionary implementation calling the underlying Securities collection
     public boolean IsReadOnly
     {
         get
@@ -158,11 +158,11 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Copy contents of the portfolio collection to a new destination.
+     * Copy contents of the portfolio collection to a new destination.
     */
-    /// IDictionary implementation calling the underlying Securities collection
-     * @param array">Destination array
-     * @param index">Position in array to start copying
+     * IDictionary implementation calling the underlying Securities collection
+     * @param array Destination array
+     * @param index Position in array to start copying
     public void CopyTo(KeyValuePair<Symbol, SecurityHolding>[] array, int index) {
         array = new KeyValuePair<Symbol, SecurityHolding>[Securities.Count];
         i = 0;
@@ -175,9 +175,9 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Symbol keys collection of the underlying assets in the portfolio.
+     * Symbol keys collection of the underlying assets in the portfolio.
     */
-    /// IDictionary implementation calling the underlying securities key symbols
+     * IDictionary implementation calling the underlying securities key symbols
     public ICollection<Symbol> Keys
     {
         get
@@ -187,9 +187,9 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Collection of securities objects in the portfolio.
+     * Collection of securities objects in the portfolio.
     */
-    /// IDictionary implementation calling the underlying securities values collection
+     * IDictionary implementation calling the underlying securities values collection
     public ICollection<SecurityHolding> Values
     {
         get
@@ -200,11 +200,11 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Attempt to get the value of the securities holding class if this symbol exists.
+     * Attempt to get the value of the securities holding class if this symbol exists.
     */
-     * @param symbol">String search symbol
-     * @param holding">Holdings object of this security
-    /// IDictionary implementation
+     * @param symbol String search symbol
+     * @param holding Holdings object of this security
+     * IDictionary implementation
     @returns Boolean true if successful locating and setting the holdings object
     public boolean TryGetValue(Symbol symbol, out SecurityHolding holding) {
         Security security;
@@ -214,18 +214,18 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Get the enumerator for the underlying securities collection.
+     * Get the enumerator for the underlying securities collection.
     */
-    /// IDictionary implementation
+     * IDictionary implementation
     @returns Enumerable key value pair
     IEnumerator<KeyValuePair<Symbol, SecurityHolding>> IEnumerable<KeyValuePair<Symbol, SecurityHolding>>.GetEnumerator() {
         return Securities.Select(x -> new KeyValuePair<Symbol, SecurityHolding>(x.Key, x.Value.Holdings)).GetEnumerator();
     }
 
     /**
-    /// Get the enumerator for the underlying securities collection.
+     * Get the enumerator for the underlying securities collection.
     */
-    /// IDictionary implementation
+     * IDictionary implementation
     @returns Enumerator
     IEnumerator IEnumerable.GetEnumerator() {
         return Securities.Select(x -> new KeyValuePair<Symbol, SecurityHolding>(x.Key, x.Value.Holdings)).GetEnumerator();
@@ -234,33 +234,33 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     #endregion
 
     /**
-    /// Sum of all currencies in account in US dollars (only settled cash)
+     * Sum of all currencies in account in US dollars (only settled cash)
     */
-    /// 
-    /// This should not be mistaken for margin available because Forex uses margin
-    /// even though the total cash value is not impact
-    /// 
+     * 
+     * This should not be mistaken for margin available because Forex uses margin
+     * even though the total cash value is not impact
+     * 
     public BigDecimal Cash
     {
         get { return CashBook.TotalValueInAccountCurrency; }
     }
 
     /**
-    /// Sum of all currencies in account in US dollars (only unsettled cash)
+     * Sum of all currencies in account in US dollars (only unsettled cash)
     */
-    /// 
-    /// This should not be mistaken for margin available because Forex uses margin
-    /// even though the total cash value is not impact
-    /// 
+     * 
+     * This should not be mistaken for margin available because Forex uses margin
+     * even though the total cash value is not impact
+     * 
     public BigDecimal UnsettledCash
     {
         get { return UnsettledCashBook.TotalValueInAccountCurrency; }
     }
 
     /**
-    /// Absolute value of cash discounted from our total cash by the holdings we own.
+     * Absolute value of cash discounted from our total cash by the holdings we own.
     */
-    /// When account has leverage the actual cash removed is a fraction of the purchase price according to the leverage
+     * When account has leverage the actual cash removed is a fraction of the purchase price according to the leverage
     public BigDecimal TotalUnleveredAbsoluteHoldingsCost
     {
         get
@@ -272,8 +272,8 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Gets the total absolute holdings cost of the portfolio. This sums up the individual 
-    /// absolute cost of each holding
+     * Gets the total absolute holdings cost of the portfolio. This sums up the individual 
+     * absolute cost of each holding
     */
     public BigDecimal TotalAbsoluteHoldingsCost
     {
@@ -281,7 +281,7 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Absolute sum the individual items in portfolio.
+     * Absolute sum the individual items in portfolio.
     */
     public BigDecimal TotalHoldingsValue
     {
@@ -294,26 +294,26 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Boolean flag indicating we have any holdings in the portfolio.
+     * Boolean flag indicating we have any holdings in the portfolio.
     */
-    /// Assumes no asset can have $0 price and uses the sum of total holdings value
-    /// <seealso cref="Invested"/>
+     * Assumes no asset can have $0 price and uses the sum of total holdings value
+     * <seealso cref="Invested"/>
     public boolean HoldStock
     {
         get { return TotalHoldingsValue > 0; }
     }
 
     /**
-    /// Alias for HoldStock. Check if we have and holdings.
+     * Alias for HoldStock. Check if we have and holdings.
     */
-    /// <seealso cref="HoldStock"/>
+     * <seealso cref="HoldStock"/>
     public boolean Invested
     {
         get { return HoldStock; }
     }
 
     /**
-    /// Get the total unrealised profit in our portfolio from the individual security unrealized profits.
+     * Get the total unrealised profit in our portfolio from the individual security unrealized profits.
     */
     public BigDecimal TotalUnrealisedProfit 
     {
@@ -325,21 +325,21 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Get the total unrealised profit in our portfolio from the individual security unrealized profits.
+     * Get the total unrealised profit in our portfolio from the individual security unrealized profits.
     */
-    /// Added alias for American spelling
+     * Added alias for American spelling
     public BigDecimal TotalUnrealizedProfit
     {
         get { return TotalUnrealisedProfit; }
     }
 
     /**
-    /// Total portfolio value if we sold all holdings at current market rates.
+     * Total portfolio value if we sold all holdings at current market rates.
     */
-    /// Cash + TotalUnrealisedProfit + TotalUnleveredAbsoluteHoldingsCost
-    /// <seealso cref="Cash"/>
-    /// <seealso cref="TotalUnrealizedProfit"/>
-    /// <seealso cref="TotalUnleveredAbsoluteHoldingsCost"/>
+     * Cash + TotalUnrealisedProfit + TotalUnleveredAbsoluteHoldingsCost
+     * <seealso cref="Cash"/>
+     * <seealso cref="TotalUnrealizedProfit"/>
+     * <seealso cref="TotalUnleveredAbsoluteHoldingsCost"/>
     public BigDecimal TotalPortfolioValue
     {
         get
@@ -356,7 +356,7 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Total fees paid during the algorithm operation across all securities in portfolio.
+     * Total fees paid during the algorithm operation across all securities in portfolio.
     */
     public BigDecimal TotalFees 
     {
@@ -368,7 +368,7 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Sum of all gross profit across all securities in portfolio.
+     * Sum of all gross profit across all securities in portfolio.
     */
     public BigDecimal TotalProfit 
     {
@@ -380,7 +380,7 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Total sale volume since the start of algorithm operations.
+     * Total sale volume since the start of algorithm operations.
     */
     public BigDecimal TotalSaleVolume 
     {
@@ -392,7 +392,7 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Gets the total margin used across all securities in the account's currency
+     * Gets the total margin used across all securities in the account's currency
     */
     public BigDecimal TotalMarginUsed
     {
@@ -408,7 +408,7 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Gets the remaining margin on the account in the account's currency
+     * Gets the remaining margin on the account in the account's currency
     */
     public BigDecimal MarginRemaining
     {
@@ -416,15 +416,15 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Gets or sets the <see cref="MarginCallModel"/> for the portfolio. This
-    /// is used to executed margin call orders.
+     * Gets or sets the <see cref="MarginCallModel"/> for the portfolio. This
+     * is used to executed margin call orders.
     */
     public MarginCallModel MarginCallModel { get; set; }
 
     /**
-    /// Indexer for the PortfolioManager class to access the underlying security holdings objects.
+     * Indexer for the PortfolioManager class to access the underlying security holdings objects.
     */
-     * @param symbol">Symbol object indexer
+     * @param symbol Symbol object indexer
     @returns SecurityHolding class from the algorithm securities
     public SecurityHolding this[Symbol symbol]
     {
@@ -433,9 +433,9 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Indexer for the PortfolioManager class to access the underlying security holdings objects.
+     * Indexer for the PortfolioManager class to access the underlying security holdings objects.
     */
-     * @param ticker">string ticker symbol indexer
+     * @param ticker string ticker symbol indexer
     @returns SecurityHolding class from the algorithm securities
     public SecurityHolding this[string ticker]
     {
@@ -444,19 +444,19 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Set the base currrency cash this algorithm is to manage.
+     * Set the base currrency cash this algorithm is to manage.
     */
-     * @param cash">Decimal cash value of portfolio
+     * @param cash Decimal cash value of portfolio
     public void SetCash( BigDecimal cash) {
         _baseCurrencyCash.SetAmount(cash);
     }
 
     /**
-    /// Set the cash for the specified symbol
+     * Set the cash for the specified symbol
     */
-     * @param symbol">The cash symbol to set
-     * @param cash">Decimal cash value of portfolio
-     * @param conversionRate">The current conversion rate for the
+     * @param symbol The cash symbol to set
+     * @param cash Decimal cash value of portfolio
+     * @param conversionRate The current conversion rate for the
     public void SetCash( String symbol, BigDecimal cash, BigDecimal conversionRate) {
         Cash item;
         if( CashBook.TryGetValue(symbol, out item)) {
@@ -470,10 +470,10 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Gets the margin available for trading a specific symbol in a specific direction.
+     * Gets the margin available for trading a specific symbol in a specific direction.
     */
-     * @param symbol">The symbol to compute margin remaining for
-     * @param direction">The order/trading direction
+     * @param symbol The symbol to compute margin remaining for
+     * @param direction The order/trading direction
     @returns The maximum order size that is currently executable in the specified direction
     public BigDecimal GetMarginRemaining(Symbol symbol, OrderDirection direction = OrderDirection.Buy) {
         security = Securities[symbol];
@@ -481,34 +481,34 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Gets the margin available for trading a specific symbol in a specific direction.
-    /// Alias for <see cref="GetMarginRemaining"/>
+     * Gets the margin available for trading a specific symbol in a specific direction.
+     * Alias for <see cref="GetMarginRemaining"/>
     */
-     * @param symbol">The symbol to compute margin remaining for
-     * @param direction">The order/trading direction
+     * @param symbol The symbol to compute margin remaining for
+     * @param direction The order/trading direction
     @returns The maximum order size that is currently executable in the specified direction
     public BigDecimal GetBuyingPower(Symbol symbol, OrderDirection direction = OrderDirection.Buy) {
         return GetMarginRemaining(symbol, direction);
     }
 
     /**
-    /// Calculate the new average price after processing a partial/complete order fill event. 
+     * Calculate the new average price after processing a partial/complete order fill event. 
     */
-    /// 
-    ///     For purchasing stocks from zero holdings, the new average price is the sale price.
-    ///     When simply partially reducing holdings the average price remains the same.
-    ///     When crossing zero holdings the average price becomes the trade price in the new side of zero.
-    /// 
-    public virtual void ProcessFill(OrderEvent fill) {
+     * 
+     *     For purchasing stocks from zero holdings, the new average price is the sale price.
+     *     When simply partially reducing holdings the average price remains the same.
+     *     When crossing zero holdings the average price becomes the trade price in the new side of zero.
+     * 
+    public void ProcessFill(OrderEvent fill) {
         security = Securities[fill.Symbol];
         security.PortfolioModel.ProcessFill(this, security, fill);
     }
 
     /**
-    /// Scan the portfolio and the updated data for a potential margin call situation which may get the holdings below zero! 
-    /// If there is a margin call, liquidate the portfolio immediately before the portfolio gets sub zero.
+     * Scan the portfolio and the updated data for a potential margin call situation which may get the holdings below zero! 
+     * If there is a margin call, liquidate the portfolio immediately before the portfolio gets sub zero.
     */
-     * @param issueMarginCallWarning">Set to true if a warning should be issued to the algorithm
+     * @param issueMarginCallWarning Set to true if a warning should be issued to the algorithm
     @returns True for a margin call on the holdings.
     public List<SubmitOrderRequest> ScanForMarginCall(out boolean issueMarginCallWarning) {
         issueMarginCallWarning = false;
@@ -554,9 +554,9 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Applies a dividend to the portfolio
+     * Applies a dividend to the portfolio
     */
-     * @param dividend">The dividend to be applied
+     * @param dividend The dividend to be applied
     public void ApplyDividend(Dividend dividend) {
         security = Securities[dividend.Symbol];
 
@@ -572,9 +572,9 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Applies a split to the portfolio
+     * Applies a split to the portfolio
     */
-     * @param split">The split to be applied
+     * @param split The split to be applied
     public void ApplySplit(Split split) {
         security = Securities[split.Symbol];
 
@@ -625,14 +625,14 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Record the transaction value and time in a list to later be processed for statistics creation.
+     * Record the transaction value and time in a list to later be processed for statistics creation.
     */
-    /// 
-    /// Bit of a hack -- but using datetime as dictionary key is dangerous as you can process multiple orders within a second.
-    /// For the accounting / statistics generating purposes its not really critical to know the precise time, so just add a millisecond while there's an identical key.
-    /// 
-     * @param time">Time of order processed 
-     * @param transactionProfitLoss">Profit Loss.
+     * 
+     * Bit of a hack -- but using datetime as dictionary key is dangerous as you can process multiple orders within a second.
+     * For the accounting / statistics generating purposes its not really critical to know the precise time, so just add a millisecond while there's an identical key.
+     * 
+     * @param time Time of order processed 
+     * @param transactionProfitLoss Profit Loss.
     public void AddTransactionRecord(DateTime time, BigDecimal transactionProfitLoss) {
         clone = time;
         while (Transactions.TransactionRecord.ContainsKey(clone)) {
@@ -642,9 +642,9 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Retrieves a summary of the holdings for the specified symbol
+     * Retrieves a summary of the holdings for the specified symbol
     */
-     * @param symbol">The symbol to get holdings for
+     * @param symbol The symbol to get holdings for
     @returns The holdings for the symbol or null if the symbol is invalid and/or not in the portfolio
     Security ISecurityProvider.GetSecurity(Symbol symbol) {
         Security security;
@@ -655,20 +655,20 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     }
 
     /**
-    /// Adds an item to the list of unsettled cash amounts
+     * Adds an item to the list of unsettled cash amounts
     */
-     * @param item">The item to add
+     * @param item The item to add
     public void AddUnsettledCashAmount(UnsettledCashAmount item) {
-        lock (_unsettledCashAmountsLocker) {
+        synchronized(_unsettledCashAmountsLocker) {
             _unsettledCashAmounts.Add(item);
         }
     }
 
     /**
-    /// Scan the portfolio to check if unsettled funds should be settled
+     * Scan the portfolio to check if unsettled funds should be settled
     */
     public void ScanForCashSettlement(DateTime timeUtc) {
-        lock (_unsettledCashAmountsLocker) {
+        synchronized(_unsettledCashAmountsLocker) {
             foreach (item in _unsettledCashAmounts.ToList()) {
                 // check if settlement time has passed
                 if( timeUtc >= item.SettlementTimeUtc) {

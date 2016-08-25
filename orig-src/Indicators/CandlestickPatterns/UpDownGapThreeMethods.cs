@@ -20,37 +20,37 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Up/Down Gap Three Methods candlestick pattern
+     * Up/Down Gap Three Methods candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - first candle: white (black) candle
-    /// - second candle: white(black) candle
-    /// - upside(downside) gap between the first and the second real bodies
-    /// - third candle: black(white) candle that opens within the second real body and closes within the first real body
-    /// The returned value is positive(+1) when bullish or negative(-1) when bearish;
-    /// The user should consider that up/downside gap 3 methods is significant when it appears in a trend, while this
-    /// function does not consider it
-    /// 
+     * 
+     * Must have:
+     * - first candle: white (black) candle
+     * - second candle: white(black) candle
+     * - upside(downside) gap between the first and the second real bodies
+     * - third candle: black(white) candle that opens within the second real body and closes within the first real body
+     * The returned value is positive(+1) when bullish or negative(-1) when bearish;
+     * The user should consider that up/downside gap 3 methods is significant when it appears in a trend, while this
+     * function does not consider it
+     * 
     public class UpDownGapThreeMethods : CandlestickPattern
     {
         /**
-        /// Initializes a new instance of the <see cref="UpDownGapThreeMethods"/> class using the specified name.
+         * Initializes a new instance of the <see cref="UpDownGapThreeMethods"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public UpDownGapThreeMethods( String name) 
             : base(name, 2 + 1) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="UpDownGapThreeMethods"/> class.
+         * Initializes a new instance of the <see cref="UpDownGapThreeMethods"/> class.
         */
         public UpDownGapThreeMethods()
             : this( "UPDOWNGAPTHREEMETHODS") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -58,14 +58,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;

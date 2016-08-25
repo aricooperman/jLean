@@ -22,7 +22,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
     /**
-    /// Represents the post order response from Oanda.
+     * Represents the post order response from Oanda.
     */
 	public class PostOrderResponse : Response
 	{

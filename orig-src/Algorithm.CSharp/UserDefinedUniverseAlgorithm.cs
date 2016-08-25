@@ -20,9 +20,9 @@ using QuantConnect.Data.UniverseSelection;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// This algorithm shows how you can handle universe selection in anyway you like,
-    /// at any time you like. This algorithm has a list of 10 stocks that it rotates
-    /// through every hour.
+     * This algorithm shows how you can handle universe selection in anyway you like,
+     * at any time you like. This algorithm has a list of 10 stocks that it rotates
+     * through every hour.
     */
     public class UserDefinedUniverseAlgorithm : QCAlgorithm
     {

@@ -19,36 +19,36 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Three Outside Up/Down candlestick pattern
+     * Three Outside Up/Down candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - first: black(white) real body
-    /// - second: white(black) real body that engulfs the prior real body
-    /// - third: candle that closes higher(lower) than the second candle
-    /// The returned value is positive (+1) for the three outside up or negative (-1) for the three outside down;
-    /// The user should consider that a three outside up must appear in a downtrend and three outside down must appear
-    /// in an uptrend, while this function does not consider it
-    /// 
+     * 
+     * Must have:
+     * - first: black(white) real body
+     * - second: white(black) real body that engulfs the prior real body
+     * - third: candle that closes higher(lower) than the second candle
+     * The returned value is positive (+1) for the three outside up or negative (-1) for the three outside down;
+     * The user should consider that a three outside up must appear in a downtrend and three outside down must appear
+     * in an uptrend, while this function does not consider it
+     * 
     public class ThreeOutside : CandlestickPattern
     {
         /**
-        /// Initializes a new instance of the <see cref="ThreeOutside"/> class using the specified name.
+         * Initializes a new instance of the <see cref="ThreeOutside"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public ThreeOutside( String name) 
             : base(name, 3) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ThreeOutside"/> class.
+         * Initializes a new instance of the <see cref="ThreeOutside"/> class.
         */
         public ThreeOutside()
             : this( "THREEOUTSIDE") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -56,14 +56,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;

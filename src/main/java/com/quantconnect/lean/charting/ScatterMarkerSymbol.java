@@ -5,17 +5,17 @@ package com.quantconnect.lean.charting;
  */
 //    [JsonConverter(typeof(StringEnumConverter))]
 public enum ScatterMarkerSymbol {
-    /// Circle symbol
+     * Circle symbol
     None( "none" ),
-    /// Circle symbol
+     * Circle symbol
     Circle( "circle" ),
-    /// Square symbol
+     * Square symbol
     Square( "square" ),
-    /// Diamond symbol
+     * Diamond symbol
     Diamond( "diamond" ),
-    /// Triangle symbol
+     * Triangle symbol
     Triangle( "triangle" ),
-    /// Triangle-down symbol
+     * Triangle-down symbol
     TriangleDown( "triangle-down" );
     
     private final String desc;

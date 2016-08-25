@@ -30,7 +30,7 @@ package com.quantconnect.lean.Tests.Common.Securities
     {
         private static final ZoneId TimeZone = TimeZones.NewYork;
         private static final SecurityExchangeHours SecurityExchangeHours = SecurityExchangeHours.AlwaysOpen(TimeZone);
-        private static final IReadOnlyMap<SecurityType,String> MarketMap = DefaultBrokerageModel.DefaultMarketMap;
+        private static final ImmutableMap<SecurityType,String> MarketMap = DefaultBrokerageModel.DefaultMarketMap;
 
         [Test]
         public void ConstructorCapitalizedSymbol() {

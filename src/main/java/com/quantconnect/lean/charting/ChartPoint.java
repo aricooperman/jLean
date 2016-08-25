@@ -10,10 +10,10 @@ import java.time.ZonedDateTime;
  */
 //    [JsonObject]
 public class ChartPoint {
-    /// Time of this chart point: lower case for javascript encoding simplicty
+     * Time of this chart point: lower case for javascript encoding simplicty
     public long x;
 
-    /// Value of this chart point:  lower case for javascript encoding simplicty
+     * Value of this chart point:  lower case for javascript encoding simplicty
     public BigDecimal y;
 
     ///Constructor for datetime-value arguements:
@@ -28,7 +28,7 @@ public class ChartPoint {
         y = point.y.SmartRounding();
     }
 
-    /// Provides a readable String representation of this instance.
+     * Provides a readable String representation of this instance.
     @Overrides
     public String toString() {
         return Time.UnixTimeStampToDateTime(x).toString( "o") + " - " + y;

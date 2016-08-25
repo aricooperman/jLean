@@ -22,172 +22,172 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages.Tradier
 {
     /**
-    /// Container for timeseries array
+     * Container for timeseries array
     */
     public class TradierTimeSeriesContainer
     {
-        /// Data Time Series
+         * Data Time Series
         @JsonProperty( "data")]
         [JsonConverter(typeof(SingleValueListConverter<TradierTimeSeries>))]
         public List<TradierTimeSeries> TimeSeries;
     }
 
     /**
-    /// One bar of historical Tradier data.
+     * One bar of historical Tradier data.
     */
     public class TradierTimeSeries
     {
-        /// Time of Price Sample
+         * Time of Price Sample
         @JsonProperty( "time")]
         public DateTime Time;
 
-        /// Tick data requests:
+         * Tick data requests:
         @JsonProperty( "price")]
         public BigDecimal Price;
 
-        /// Bar Requests: Open
+         * Bar Requests: Open
         @JsonProperty( "open")]
         public BigDecimal Open;
 
-        /// Bar Requests: High
+         * Bar Requests: High
         @JsonProperty( "high")]
         public BigDecimal High;
 
-        /// Bar Requests: Low
+         * Bar Requests: Low
         @JsonProperty( "low")]
         public BigDecimal Low;
 
-        /// Bar Requests: Close
+         * Bar Requests: Close
         @JsonProperty( "close")]
         public BigDecimal Close;
 
-        /// Bar Requests: Volume
+         * Bar Requests: Volume
         @JsonProperty( "volume")]
         public long Volume;
     }
 
 
     /**
-    /// Container for quotes:
+     * Container for quotes:
     */
     public class TradierQuoteContainer
     {
-        /// Price Quotes:
+         * Price Quotes:
         @JsonProperty( "quote")]
         [JsonConverter(typeof(SingleValueListConverter<TradierQuote>))]
         public List<TradierQuote> Quotes;
     }
 
     /**
-    /// Quote data from Tradier:
+     * Quote data from Tradier:
     */
     public class TradierQuote
     {
-        /// Quote Symbol
+         * Quote Symbol
         @JsonProperty( "symbol")]
         public String Symbol = "";
 
-        /// Quote Description
+         * Quote Description
         @JsonProperty( "description")]
         public String Description = "";
 
-        /// Quote Exchange
+         * Quote Exchange
         @JsonProperty( "exch")]
         public String Exchange = "";
 
-        /// Quote Type
+         * Quote Type
         @JsonProperty( "type")]
         public String Type = "";
 
-        /// Quote Last Price
+         * Quote Last Price
         @JsonProperty( "last")]
         public BigDecimal Last = 0;
 
-        /// Quote Change Absolute
+         * Quote Change Absolute
         @JsonProperty( "change")]
         public BigDecimal Change = 0;
 
-        /// Quote Change Percentage
+         * Quote Change Percentage
         @JsonProperty( "change_percentage")]
         public BigDecimal PercentageChange = 0;
 
-        /// Quote Volume
+         * Quote Volume
         @JsonProperty( "volume")]
         public BigDecimal Volume = 0;
 
-        /// Quote Average Volume
+         * Quote Average Volume
         @JsonProperty( "average_volume")]
         public BigDecimal AverageVolume = 0;
 
-        /// Quote Last Volume
+         * Quote Last Volume
         @JsonProperty( "last_volume")]
         public BigDecimal LastVolume = 0;
 
-        /// Last Trade Date in Unix Time
+         * Last Trade Date in Unix Time
         @JsonProperty( "trade_date")]
         public long TradeDateUnix = 0;
 
-        /// Open Price
+         * Open Price
         @JsonProperty( "open")]
-        public decimal? Open = 0;
+        public Optional<BigDecimal> Open = 0;
 
-        /// High Price
+         * High Price
         @JsonProperty( "high")]
-        public decimal? High = 0;
+        public Optional<BigDecimal> High = 0;
 
-        /// Low Price
+         * Low Price
         @JsonProperty( "low")]
-        public decimal? Low = 0;
+        public Optional<BigDecimal> Low = 0;
 
-        /// Closng Price
+         * Closng Price
         @JsonProperty( "close")]
-        public decimal? Close = 0;
+        public Optional<BigDecimal> Close = 0;
 
-        /// Previous Close
+         * Previous Close
         @JsonProperty( "prevclose")]
         public BigDecimal PreviousClose = 0;
 
-        /// 52 W high
+         * 52 W high
         @JsonProperty( "week_52_high")]
         public BigDecimal Week52High = 0;
 
-        /// 52 W Low
+         * 52 W Low
         @JsonProperty( "week_52_low")]
         public BigDecimal Week52Low = 0;
 
-        /// Bid Price
+         * Bid Price
         @JsonProperty( "bid")]
         public BigDecimal Bid = 0;
 
-        /// Bid Size:
+         * Bid Size:
         @JsonProperty( "bidsize")]
         public BigDecimal BidSize = 0;
         
-        /// Bid Exchange
+         * Bid Exchange
         @JsonProperty( "bidexch")]
         public String BigExchange = "";
 
-        /// Bid Date Unix
+         * Bid Date Unix
         @JsonProperty( "bid_date")]
         private long BidDateUnix = 0;
 
-        /// Asking Price
+         * Asking Price
         @JsonProperty( "ask")]
         public BigDecimal Ask = 0;
 
-        /// Asking Quantity
+         * Asking Quantity
         @JsonProperty( "asksize")]
         public BigDecimal AskSize = 0;
 
-        /// Ask Exchange
+         * Ask Exchange
         @JsonProperty( "askexch")]
         public String AskExchange = "";
 
-        /// Date of Ask
+         * Date of Ask
         @JsonProperty( "ask_date")]
         private long AskDateUnix = 0;
 
-        /// Open Interest
+         * Open Interest
         @JsonProperty( "open_interest")]
         private long Options_OpenInterest = 0;
 
@@ -211,271 +211,271 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "expiration_type")]
         private TradierOptionExpirationType Options_ExpirationType = TradierOptionExpirationType.Standard;
 
-        /// Option Type
+         * Option Type
         @JsonProperty( "option_type")]
         private TradierOptionType Options_OptionType = TradierOptionType.Call;
 
-        /// Empty Constructor
+         * Empty Constructor
         public TradierQuote() { }
     }
 
     /**
-    /// Container for deserializing history classes
+     * Container for deserializing history classes
     */
     public class TradierHistoryDataContainer
     {
-        /// Historical Data Contents
+         * Historical Data Contents
         @JsonProperty( "day")]
         [JsonConverter(typeof(SingleValueListConverter<TradierHistoryBar>))]
         public List<TradierHistoryBar> Data;
     }
 
     /**
-    /// "Bar" for a history unit.
+     * "Bar" for a history unit.
     */
     public class TradierHistoryBar
     {
-        /// Historical Data Bar: Date
+         * Historical Data Bar: Date
         @JsonProperty( "date")]
         public DateTime Time;
 
-        /// Historical Data Bar: Open
+         * Historical Data Bar: Open
         @JsonProperty( "open")]
         public BigDecimal Open;
 
-        /// Historical Data Bar: High
+         * Historical Data Bar: High
         @JsonProperty( "high")]
         public BigDecimal High;
 
-        /// Historical Data Bar: Low
+         * Historical Data Bar: Low
         @JsonProperty( "low")]
         public BigDecimal Low;
 
-        /// Historical Data Bar: Close
+         * Historical Data Bar: Close
         @JsonProperty( "close")]
         public BigDecimal Close;
 
-        /// Historical Data Bar: Volume
+         * Historical Data Bar: Volume
         @JsonProperty( "volume")]
         public long Volume;
     }
 
     /**
-    /// Current market status description
+     * Current market status description
     */
     public class TradierMarketStatus
     {
-        /// Market Status: Date
+         * Market Status: Date
         @JsonProperty( "date")]
         public DateTime Date;
 
-        /// Market Status: Description
+         * Market Status: Description
         @JsonProperty( "description")]
         public String Description;
 
-        /// Market Status: Next Change in Status
+         * Market Status: Next Change in Status
         @JsonProperty( "next_change")]
         public String NextChange;
 
-        /// Market Status: State 
+         * Market Status: State 
         @JsonProperty( "state")]
         public String State;
 
-        /// Market Status: Timestamp
+         * Market Status: Timestamp
         @JsonProperty( "timestamp")]
         public long TimeStamp;
     }
 
     /**
-    /// Calendar status:
+     * Calendar status:
     */
     public class TradierCalendarStatus
     {
-        /// Trading Calendar: Day
+         * Trading Calendar: Day
         @JsonProperty( "days")]
         public TradierCalendarDayContainer Days;
 
-        /// Trading Calendar: month
+         * Trading Calendar: month
         @JsonProperty( "month")]
         public int Month;
 
-        /// Trading Calendar: year
+         * Trading Calendar: year
         @JsonProperty( "year")]
         public int Year;
     }
 
     /**
-    /// Container for the days array:
+     * Container for the days array:
     */
     public class TradierCalendarDayContainer
     {
-        /// Trading Calendar: Days List
+         * Trading Calendar: Days List
         @JsonProperty( "day")]
         [JsonConverter(typeof(SingleValueListConverter<TradierCalendarDay>))]
         public List<TradierCalendarDay> Days;
     }
 
     /**
-    /// Single days properties from the calendar:
+     * Single days properties from the calendar:
     */
     public class TradierCalendarDay
     {
-        /// Trading Calendar: Day
+         * Trading Calendar: Day
         @JsonProperty( "date")]
         public DateTime Date;
 
-        /// Trading Calendar: Sattus
+         * Trading Calendar: Sattus
         @JsonProperty( "status")]
         public String Status;
 
-        /// Trading Calendar: Description
+         * Trading Calendar: Description
         @JsonProperty( "description")]
         public String Description;
 
-        /// Trading Calendar: Premarket Hours
+         * Trading Calendar: Premarket Hours
         @JsonProperty( "premarket")]
         public TradierCalendarDayMarketHours Premarket;
 
-        /// Trading Calendar: Open Hours
+         * Trading Calendar: Open Hours
         @JsonProperty( "open")]
         public TradierCalendarDayMarketHours Open;
 
-        /// Trading Calendar: Post Hours
+         * Trading Calendar: Post Hours
         @JsonProperty( "postmarket")]
         public TradierCalendarDayMarketHours Postmarket;
     }
 
     /**
-    /// Start and finish time of market hours for this market.
+     * Start and finish time of market hours for this market.
     */
     public class TradierCalendarDayMarketHours
     {
-        /// Trading Calendar: Start Hours
+         * Trading Calendar: Start Hours
         @JsonProperty( "start")]
         public DateTime Start;
 
-        /// Trading Calendar: End Hours
+         * Trading Calendar: End Hours
         @JsonProperty( "end")]
         public DateTime End;
     }
 
     /**
-    /// Tradier Search Container for Deserialization:
+     * Tradier Search Container for Deserialization:
     */
     public class TradierSearchContainer
     {
-        /// Trading Search container
+         * Trading Search container
         @JsonProperty( "security")]
         public List<TradierSearchResult> Results;
     }
 
     /**
-    /// One search result from API
+     * One search result from API
     */
     public class TradierSearchResult
     {
-        /// Trading Search: Symbol
+         * Trading Search: Symbol
         @JsonProperty( "symbol")]
         public String Symbol;
 
-        /// Trading Search: Exch
+         * Trading Search: Exch
         @JsonProperty( "exchange")]
         public String Exchange;
 
-        /// Trading Search: Type
+         * Trading Search: Type
         @JsonProperty( "type")]
         public String Type;
 
-        /// Trading Search: Description
+         * Trading Search: Description
         @JsonProperty( "description")]
         public String Description;
     }
 
     /**
-    /// Create a new stream session
+     * Create a new stream session
     */
     public class TradierStreamSession
     {
-        /// Trading Stream: Session Id 
+         * Trading Stream: Session Id 
         public String SessionId;
-        /// Trading Stream: Stream URL
+         * Trading Stream: Stream URL
         public String Url;
     }
 
     /**
-    /// One data packet from a tradier stream:
+     * One data packet from a tradier stream:
     */
     public class TradierStreamData
     {
-        /// Trading Stream: Type
+         * Trading Stream: Type
         @JsonProperty( "type")]
         public String Type;
 
-        /// Trading Stream: Symbol
+         * Trading Stream: Symbol
         @JsonProperty( "symbol")]
         public String Symbol;
 
-        /// Trading Stream: Open
+         * Trading Stream: Open
         @JsonProperty( "open")]
         public BigDecimal SummaryOpen;
 
-        /// Trading Stream: High
+         * Trading Stream: High
         @JsonProperty( "high")]
         public BigDecimal SummaryHigh;
 
-        /// Trading Stream: Low
+         * Trading Stream: Low
         @JsonProperty( "low")]
         public BigDecimal SummaryLow;
 
-        /// Trading Stream: Close
+         * Trading Stream: Close
         @JsonProperty( "close")]
         public BigDecimal SummaryClose;
 
-        /// Trading Stream: Bid Price
+         * Trading Stream: Bid Price
         @JsonProperty( "bid")]
         public BigDecimal BidPrice;
 
-        /// Trading Stream: BidSize
+         * Trading Stream: BidSize
         @JsonProperty( "bidsz")]
         public int BidSize;
 
-        /// Trading Stream: Bid Exhc
+         * Trading Stream: Bid Exhc
         @JsonProperty( "bidexch")]
         public String BidExchange;
 
-        /// Trading Stream: Bid Time
+         * Trading Stream: Bid Time
         @JsonProperty( "biddate")]
         public long BidDateUnix;
 
-        /// Trading Stream: Last Price
+         * Trading Stream: Last Price
         @JsonProperty( "price")]
         public BigDecimal TradePrice;
 
-        /// Trading Stream: Last Size
+         * Trading Stream: Last Size
         @JsonProperty( "size")]
         public BigDecimal TradeSize;
 
-        /// Trading Stream: Last Exh
+         * Trading Stream: Last Exh
         @JsonProperty( "exch")]
         public String TradeExchange;
 
-        /// Trading Stream: Last Vol
+         * Trading Stream: Last Vol
         @JsonProperty( "cvol")]
         public long TradeCVol;
 
-        /// Trading Stream: Ask Price
+         * Trading Stream: Ask Price
         @JsonProperty( "ask")]
         public BigDecimal AskPrice;
 
-        /// Trading Stream: Ask Size
+         * Trading Stream: Ask Size
         @JsonProperty( "asksz")]
         public int AskSize;
 
-        /// Trading Stream: Ask Exhc
+         * Trading Stream: Ask Exhc
         @JsonProperty( "askexch")]
         public String AskExchange;
 
-        /// Trading Stream: Ask Date
+         * Trading Stream: Ask Date
         @JsonProperty( "askdate")]
         public long AskDateUnix;
     }

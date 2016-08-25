@@ -28,16 +28,16 @@ import org.apache.commons.lang3.StringUtils;
 //using System.IO;
 //using System.Linq;
 
-/// Represents a single row in a map_file. This is a csv file ordered as {date, mapped symbol}
+ * Represents a single row in a map_file. This is a csv file ordered as {date, mapped symbol}
 public class MapFileRow {
     
-    /// Gets the date associated with this data
+     * Gets the date associated with this data
     private LocalDate date;
 
-    /// Gets the mapped symbol
+     * Gets the mapped symbol
     private String mappedSymbol;
 
-    /// Initializes a new instance of the <see cref="MapFileRow"/> class.
+     * Initializes a new instance of the <see cref="MapFileRow"/> class.
     public MapFileRow( LocalDate date, String mappedSymbol ) {
         this.date = date;
         this.mappedSymbol = mappedSymbol.toUpperCase();
@@ -51,28 +51,28 @@ public class MapFileRow {
         return mappedSymbol;
     }
 
-    /// Reads in the map_file for the specified equity symbol
+     * Reads in the map_file for the specified equity symbol
     public static Stream<MapFileRow> read( String permtick, String market ) throws IOException {
         final Path path = MapFile.getMapFilePath( permtick, market );
         return Files.exists( path ) ? read( path ) : Collections.<MapFileRow>emptyList().stream();
     }
 
-    /// Reads in the map_file at the specified path
+     * Reads in the map_file at the specified path
     public static Stream<MapFileRow> read( Path path ) throws IOException {
         return Files.lines( path ).filter( StringUtils::isNotBlank ).map( MapFileRow::parse );
     }
 
-    /// Parses the specified line into a MapFileRow
+     * Parses the specified line into a MapFileRow
     public static MapFileRow parse( String line ) {
         final String[] csv = line.split( "," );
         return new MapFileRow( LocalDate.parse( csv[0] ), csv[1] ); //DateFormat.EightCharacter
     }
 
-    /// Indicates whether the current object is equal to another object of the same type.
+     * Indicates whether the current object is equal to another object of the same type.
     @returns 
-    /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-    /// 
-     * @param other">An object to compare with this object.
+     * true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+     * 
+     * @param other An object to compare with this object.
     public boolean equals( MapFileRow other ) {
         if( null == other ) return false;
         if( this == other ) return true;
@@ -80,11 +80,11 @@ public class MapFileRow {
         return this.date.equals( other.date ) && mappedSymbol.equals( other.mappedSymbol );
     }
 
-    /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
+     * Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
     @returns 
-    /// true if the specified object  is equal to the current object; otherwise, false.
-    /// 
-     * @param obj">The object to compare with the current object. <filterpriority>2</filterpriority>
+     * true if the specified object  is equal to the current object; otherwise, false.
+     * 
+     * @param obj The object to compare with the current object. <filterpriority>2</filterpriority>
     public boolean equals( Object obj ) {
         if( null == obj ) return false;
         if( this == obj ) return true;
@@ -92,17 +92,17 @@ public class MapFileRow {
         return equals( (MapFileRow)obj );
     }
 
-    /// Serves as a hash function for a particular type. 
+     * Serves as a hash function for a particular type. 
     @returns 
-    /// A hash code for the current <see cref="T:System.Object"/>.
-    /// 
-    /// <filterpriority>2</filterpriority>
+     * A hash code for the current <see cref="T:System.Object"/>.
+     * 
+     * <filterpriority>2</filterpriority>
     public int hashCode() {
         return (date.hashCode() * 397) ^ (mappedSymbol != null ? mappedSymbol.hashCode() : 0);
     }
 
 //    /**
-//    /// Determines whether or not the two instances are equal
+//     * Determines whether or not the two instances are equal
 //    */
 //    public static boolean operator ==(MapFileRow left, MapFileRow right)
 //    {
@@ -110,7 +110,7 @@ public class MapFileRow {
 //    }
 //
 //    /**
-//    /// Determines whether or not the two instances are not equal
+//     * Determines whether or not the two instances are not equal
 //    */
 //    public static boolean operator !=(MapFileRow left, MapFileRow right)
 //    {

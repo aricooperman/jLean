@@ -18,31 +18,31 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Statistics
 {
     /**
-    /// The <see cref="StatisticsResults"/> class represents total and rolling statistics for an algorithm
+     * The <see cref="StatisticsResults"/> class represents total and rolling statistics for an algorithm
     */
     public class StatisticsResults
     {
         /**
-        /// The performance of the algorithm over the whole period
+         * The performance of the algorithm over the whole period
         */
         public AlgorithmPerformance TotalPerformance { get; private set; }
 
         /**
-        /// The rolling performance of the algorithm over 1, 3, 6, 12 month periods
+         * The rolling performance of the algorithm over 1, 3, 6, 12 month periods
         */
         public Map<String, AlgorithmPerformance> RollingPerformances { get; private set; }
 
         /**
-        /// Returns a summary of the algorithm performance as a dictionary
+         * Returns a summary of the algorithm performance as a dictionary
         */
         public Map<String,String> Summary { get; private set; }
 
         /**
-        /// Initializes a new instance of the <see cref="StatisticsResults"/> class
+         * Initializes a new instance of the <see cref="StatisticsResults"/> class
         */
-         * @param totalPerformance">The algorithm total performance
-         * @param rollingPerformances">The algorithm rolling performances
-         * @param summary">The summary performance Map
+         * @param totalPerformance The algorithm total performance
+         * @param rollingPerformances The algorithm rolling performances
+         * @param summary The summary performance Map
         public StatisticsResults(AlgorithmPerformance totalPerformance, Map<String, AlgorithmPerformance> rollingPerformances, Map<String,String> summary) {
             TotalPerformance = totalPerformance;
             RollingPerformances = rollingPerformances;
@@ -50,7 +50,7 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Initializes a new instance of the <see cref="StatisticsResults"/> class
+         * Initializes a new instance of the <see cref="StatisticsResults"/> class
         */
         public StatisticsResults() {
             TotalPerformance = new AlgorithmPerformance();

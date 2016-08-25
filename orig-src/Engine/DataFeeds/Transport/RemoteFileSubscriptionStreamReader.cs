@@ -21,18 +21,18 @@ using System.Net;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
 {
     /**
-    /// Represents a stream reader capabable of downloading a remote file and then
-    /// reading it from disk
+     * Represents a stream reader capabable of downloading a remote file and then
+     * reading it from disk
     */
     public class RemoteFileSubscriptionStreamReader : IStreamReader
     {
         private final IStreamReader _streamReader;
 
         /**
-        /// Initializes a new insance of the <see cref="RemoteFileSubscriptionStreamReader"/> class.
+         * Initializes a new insance of the <see cref="RemoteFileSubscriptionStreamReader"/> class.
         */
-         * @param source">The remote url to be downloaded via web client
-         * @param downloadDirectory">The local directory and destination of the download
+         * @param source The remote url to be downloaded via web client
+         * @param downloadDirectory The local directory and destination of the download
         public RemoteFileSubscriptionStreamReader( String source, String downloadDirectory) {
             // create a hash for a new filename
             filename = Guid.NewGuid() + source.GetExtension();
@@ -48,7 +48,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         }
 
         /**
-        /// Gets <see cref="SubscriptionTransportMedium.RemoteFile"/>
+         * Gets <see cref="SubscriptionTransportMedium.RemoteFile"/>
         */
         public SubscriptionTransportMedium TransportMedium
         {
@@ -56,7 +56,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         }
 
         /**
-        /// Gets whether or not there's more data to be read in the stream
+         * Gets whether or not there's more data to be read in the stream
         */
         public boolean EndOfStream
         {
@@ -64,14 +64,14 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         }
 
         /**
-        /// Gets the next line/batch of content from the stream 
+         * Gets the next line/batch of content from the stream 
         */
         public String ReadLine() {
             return _streamReader.ReadLine();
         }
 
         /**
-        /// Disposes of the stream
+         * Disposes of the stream
         */
         public void Dispose() {
             _streamReader.Dispose();

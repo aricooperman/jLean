@@ -19,19 +19,19 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Three Line Strike candlestick pattern
+     * Three Line Strike candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - three white soldiers (three black crows): three white (black) candlesticks with consecutively higher (lower) closes,
-    /// each opening within or near the previous real body
-    /// - fourth candle: black (white) candle that opens above (below) prior candle's close and closes below (above) 
-    /// the first candle's open
-    /// The meaning of "near" is specified with SetCandleSettings;
-    /// The returned value is positive (+1) when bullish or negative (-1) when bearish;
-    /// The user should consider that 3-line strike is significant when it appears in a trend in the same direction of
-    /// the first three candles, while this function does not consider it
-    /// 
+     * 
+     * Must have:
+     * - three white soldiers (three black crows): three white (black) candlesticks with consecutively higher (lower) closes,
+     * each opening within or near the previous real body
+     * - fourth candle: black (white) candle that opens above (below) prior candle's close and closes below (above) 
+     * the first candle's open
+     * The meaning of "near" is specified with SetCandleSettings;
+     * The returned value is positive (+1) when bullish or negative (-1) when bearish;
+     * The user should consider that 3-line strike is significant when it appears in a trend in the same direction of
+     * the first three candles, while this function does not consider it
+     * 
     public class ThreeLineStrike : CandlestickPattern
     {
         private final int _nearAveragePeriod;
@@ -39,23 +39,23 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private decimal[] _nearPeriodTotal = new decimal[4];
 
         /**
-        /// Initializes a new instance of the <see cref="ThreeLineStrike"/> class using the specified name.
+         * Initializes a new instance of the <see cref="ThreeLineStrike"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public ThreeLineStrike( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.Near).AveragePeriod + 3 + 1) {
             _nearAveragePeriod = CandleSettings.Get(CandleSettingType.Near).AveragePeriod;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ThreeLineStrike"/> class.
+         * Initializes a new instance of the <see cref="ThreeLineStrike"/> class.
         */
         public ThreeLineStrike()
             : this( "THREELINESTRIKE") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -63,10 +63,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _nearPeriodTotal[2] += GetCandleRange(CandleSettingType.Near, window[2]);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -116,7 +116,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = (int)GetCandleColor(window[1]);
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -130,7 +130,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _nearPeriodTotal = new decimal[4];

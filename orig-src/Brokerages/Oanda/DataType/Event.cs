@@ -20,7 +20,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
     /**
-    /// Represents a single event when subscribed to the streaming events.
+     * Represents a single event when subscribed to the streaming events.
     */
 	public class Event : IHeartbeat
 	{

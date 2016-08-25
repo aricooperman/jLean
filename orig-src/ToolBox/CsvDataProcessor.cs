@@ -23,8 +23,8 @@ using QuantConnect.Util;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Provides an implementation of <see cref="IDataProcessor"/> that writes the incoming
-    /// stream of data to a csv file.
+     * Provides an implementation of <see cref="IDataProcessor"/> that writes the incoming
+     * stream of data to a csv file.
     */
     public class CsvDataProcessor : IDataProcessor
     {
@@ -37,11 +37,11 @@ package com.quantconnect.lean.ToolBox
         private final Map<Symbol, Writer> _writers;
 
         /**
-        /// Initializes a new instance of the <see cref="CsvDataProcessor"/> class
+         * Initializes a new instance of the <see cref="CsvDataProcessor"/> class
         */
-         * @param dataDirectory">The root data directory, /Data
-         * @param resolution">The resolution being sent into the Process method
-         * @param tickType">The tick type, trade or quote
+         * @param dataDirectory The root data directory, /Data
+         * @param resolution The resolution being sent into the Process method
+         * @param tickType The tick type, trade or quote
         public CsvDataProcessor( String dataDirectory, Resolution resolution, TickType tickType) {
             _dataDirectory = dataDirectory;
             _resolution = resolution;
@@ -50,9 +50,9 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Invoked for each piece of data from the source file
+         * Invoked for each piece of data from the source file
         */
-         * @param data">The data to be processed
+         * @param data The data to be processed
         public void Process(BaseData data) {
             Writer writer;
             if( !_writers.TryGetValue(data.Symbol, out writer)) {
@@ -70,7 +70,7 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
             foreach (kvp in _writers) {
@@ -79,7 +79,7 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Creates the <see cref="TextWriter"/> that writes data to csv files
+         * Creates the <see cref="TextWriter"/> that writes data to csv files
         */
         private Writer CreateTextWriter(BaseData data) {
             entry = LeanData.GenerateZipEntryName(data.Symbol, data.Time.Date, _resolution, _tickType);
@@ -88,8 +88,8 @@ package com.quantconnect.lean.ToolBox
             path = Path.Combine(Path.Combine(_dataDirectory, relativePath), entry);
             directory = new FileInfo(path).Directory.FullName;
             if( !Directory.Exists(directory)) {
-                // lock before checking again
-                lock (DirectoryCreateSync) if( !Directory.Exists(directory)) Directory.CreateDirectory(directory);
+                // synchronizedbefore checking again
+                synchronized(DirectoryCreateSync) if( !Directory.Exists(directory)) Directory.CreateDirectory(directory);
             }
 
             return new Writer(path, new StreamWriter(path));

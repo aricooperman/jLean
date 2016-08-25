@@ -19,8 +19,8 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// Parabolic SAR Indicator 
-    /// Based on TA-Lib implementation
+     * Parabolic SAR Indicator 
+     * Based on TA-Lib implementation
     */
     public class ParabolicStopAndReverse : TradeBarIndicator
     {
@@ -35,12 +35,12 @@ package com.quantconnect.lean.Indicators
         private final BigDecimal _afIncrement;
 
         /**
-        /// Create new Parabolic SAR
+         * Create new Parabolic SAR
         */
-         * @param name">The name of this indicator
-         * @param afStart">Acceleration factor start value
-         * @param afIncrement">Acceleration factor increment value
-         * @param afMax">Acceleration factor max value
+         * @param name The name of this indicator
+         * @param afStart Acceleration factor start value
+         * @param afIncrement Acceleration factor increment value
+         * @param afMax Acceleration factor max value
         public ParabolicStopAndReverse( String name, BigDecimal afStart = 0.02m, BigDecimal afIncrement = 0.02m, BigDecimal afMax = 0.2m)
             : base(name) {
             _afInit = afStart;
@@ -50,17 +50,17 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Create new Parabolic SAR
+         * Create new Parabolic SAR
         */
-         * @param afStart">Acceleration factor start value
-         * @param afIncrement">Acceleration factor increment value
-         * @param afMax">Acceleration factor max value
+         * @param afStart Acceleration factor start value
+         * @param afIncrement Acceleration factor increment value
+         * @param afMax Acceleration factor max value
         public ParabolicStopAndReverse( BigDecimal afStart = 0.02m, BigDecimal afIncrement = 0.02m, BigDecimal afMax = 0.2m)
             : this( String.format( "PSAR(%1$s,%2$s,%3$s)", afStart, afIncrement, afMax), afStart, afIncrement, afMax) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -68,7 +68,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _af = _afInit;
@@ -76,9 +76,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The trade bar input given to the indicator
+         * @param input The trade bar input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             // On first iteration we can’t produce an SAR value so we save the current bar and return zero
@@ -110,7 +110,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Initialize the indicator values 
+         * Initialize the indicator values 
         */
         private void Init(TradeBar currentBar) {
             // init position
@@ -130,7 +130,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Calculate indicator value when the position is long
+         * Calculate indicator value when the position is long
         */
         private void HandleLongPosition(TradeBar currentBar) {
             // Switch to short if the low penetrates the SAR value.
@@ -189,7 +189,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Calculate indicator value when the position is short
+         * Calculate indicator value when the position is short
         */
         private void HandleShortPosition(TradeBar currentBar) {
             // Switch to long if the high penetrates the SAR value.

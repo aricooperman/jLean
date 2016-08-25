@@ -7,32 +7,32 @@
 //using QuantConnect.Logging;
 //using QuantConnect.Securities;
 
-/// Provides json conversion for the <see cref="MarketHoursDatabase"/> class
+ * Provides json conversion for the <see cref="MarketHoursDatabase"/> class
 public class MarketHoursDatabaseJsonConverter : TypeChangeJsonConverter<MarketHoursDatabase, MarketHoursDatabaseJsonConverter.MarketHoursDatabaseJson>
 {
     /**
-    /// Convert the input value to a value to be serialzied
+     * Convert the input value to a value to be serialzied
     */
-     * @param value">The input value to be converted before serialziation
+     * @param value The input value to be converted before serialziation
     @returns A new instance of TResult that is to be serialzied
     protected @Override MarketHoursDatabaseJson Convert(MarketHoursDatabase value) {
         return new MarketHoursDatabaseJson( value );
     }
 
     /**
-    /// Converts the input value to be deserialized
+     * Converts the input value to be deserialized
     */
-     * @param value">The deserialized value that needs to be converted to T
+     * @param value The deserialized value that needs to be converted to T
     @returns The converted value
     protected @Override MarketHoursDatabase Convert(MarketHoursDatabaseJson value) {
         return value.Convert();
     }
 
     /**
-    /// Creates an instance of the un-projected type to be deserialized
+     * Creates an instance of the un-projected type to be deserialized
     */
-     * @param type">The input object type, this is the data held in the token
-     * @param token">The input data to be converted into a T
+     * @param type The input object type, this is the data held in the token
+     * @param token The input data to be converted into a T
     @returns A new instance of T that is to be serialized using default rules
     protected @Override MarketHoursDatabase Create(Type type, JToken token) {
         jobject = (JObject) token;
@@ -41,21 +41,21 @@ public class MarketHoursDatabaseJsonConverter : TypeChangeJsonConverter<MarketHo
     }
 
     /**
-    /// Defines the json structure of the market-hours-database.json file
+     * Defines the json structure of the market-hours-database.json file
     */
     [JsonObject(MemberSerialization.OptIn)]
     public class MarketHoursDatabaseJson
     {
         /**
-        /// The entries in the market hours database, keyed by <see cref="MarketHoursDatabase.Key.toString"/>
+         * The entries in the market hours database, keyed by <see cref="MarketHoursDatabase.Key.toString"/>
         */
         @JsonProperty( "entries")]
         public Map<String, MarketHoursDatabaseEntryJson> Entries;
 
         /**
-        /// Initializes a new instance of the <see cref="MarketHoursDatabaseJson"/> class
+         * Initializes a new instance of the <see cref="MarketHoursDatabaseJson"/> class
         */
-         * @param database">The database instance to copy
+         * @param database The database instance to copy
         public MarketHoursDatabaseJson(MarketHoursDatabase database) {
             if( database == null ) return;
             Entries = new Map<String, MarketHoursDatabaseEntryJson>();
@@ -67,7 +67,7 @@ public class MarketHoursDatabaseJsonConverter : TypeChangeJsonConverter<MarketHo
         }
 
         /**
-        /// Converts this json representation to the <see cref="MarketHoursDatabase"/> type
+         * Converts this json representation to the <see cref="MarketHoursDatabase"/> type
         */
         @returns A new instance of the <see cref="MarketHoursDatabase"/> class
         public MarketHoursDatabase Convert() {
@@ -87,66 +87,66 @@ public class MarketHoursDatabaseJsonConverter : TypeChangeJsonConverter<MarketHo
     }
 
     /**
-    /// Defines the json structure of a single entry in the market-hours-database.json file
+     * Defines the json structure of a single entry in the market-hours-database.json file
     */
     [JsonObject(MemberSerialization.OptIn)]
     public class MarketHoursDatabaseEntryJson
     {
         /**
-        /// The data's raw time zone
+         * The data's raw time zone
         */
         @JsonProperty( "dataTimeZone")]
         public String DataTimeZone;
         /**
-        /// The exchange's time zone id from the tzdb
+         * The exchange's time zone id from the tzdb
         */
         @JsonProperty( "exchangeTimeZone")]
         public String ExchangeTimeZone;
         /**
-        /// Sunday market hours segments
+         * Sunday market hours segments
         */
         @JsonProperty( "sunday")]
         public List<MarketHoursSegment> Sunday;
         /**
-        /// Monday market hours segments
+         * Monday market hours segments
         */
         @JsonProperty( "monday")]
         public List<MarketHoursSegment> Monday;
         /**
-        /// Tuesday market hours segments
+         * Tuesday market hours segments
         */
         @JsonProperty( "tuesday")]
         public List<MarketHoursSegment> Tuesday;
         /**
-        /// Wednesday market hours segments
+         * Wednesday market hours segments
         */
         @JsonProperty( "wednesday")]
         public List<MarketHoursSegment> Wednesday;
         /**
-        /// Thursday market hours segments
+         * Thursday market hours segments
         */
         @JsonProperty( "thursday")]
         public List<MarketHoursSegment> Thursday;
         /**
-        /// Friday market hours segments
+         * Friday market hours segments
         */
         @JsonProperty( "friday")]
         public List<MarketHoursSegment> Friday;
         /**
-        /// Saturday market hours segments
+         * Saturday market hours segments
         */
         @JsonProperty( "saturday")]
         public List<MarketHoursSegment> Saturday;
         /**
-        /// Holiday date strings
+         * Holiday date strings
         */
         @JsonProperty( "holidays")]
         public List<String> Holidays;
 
         /**
-        /// Initializes a new instance of the <see cref="MarketHoursDatabaseEntryJson"/> class
+         * Initializes a new instance of the <see cref="MarketHoursDatabaseEntryJson"/> class
         */
-         * @param entry">The entry instance to copy
+         * @param entry The entry instance to copy
         public MarketHoursDatabaseEntryJson(MarketHoursDatabase.Entry entry) {
             if( entry == null ) return;
             DataTimeZone = entry.DataTimeZone.Id;
@@ -163,7 +163,7 @@ public class MarketHoursDatabaseJsonConverter : TypeChangeJsonConverter<MarketHo
         }
 
         /**
-        /// Converts this json representation to the <see cref="MarketHoursDatabase.Entry"/> type
+         * Converts this json representation to the <see cref="MarketHoursDatabase.Entry"/> type
         */
         @returns A new instance of the <see cref="MarketHoursDatabase.Entry"/> class
         public MarketHoursDatabase.Entry Convert() {

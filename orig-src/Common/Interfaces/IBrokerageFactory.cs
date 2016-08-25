@@ -22,36 +22,36 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Interfaces
 {
     /**
-    /// Defines factory types for brokerages. Every IBrokerage is expected to also implement an IBrokerageFactory.
+     * Defines factory types for brokerages. Every IBrokerage is expected to also implement an IBrokerageFactory.
     */
     [InheritedExport(typeof(IBrokerageFactory))]
     public interface IBrokerageFactory : IDisposable
     {
         /**
-        /// Gets the type of brokerage produced by this factory
+         * Gets the type of brokerage produced by this factory
         */
         Type BrokerageType { get; }
 
         /**
-        /// Gets the brokerage data required to run the brokerage from configuration/disk
+         * Gets the brokerage data required to run the brokerage from configuration/disk
         */
-        /// 
-        /// The implementation of this property will create the brokerage data dictionary required for
-        /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
-        /// 
+         * 
+         * The implementation of this property will create the brokerage data dictionary required for
+         * running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
+         * 
         Map<String,String> BrokerageData { get; }
 
         /**
-        /// Gets a brokerage model that can be used to model this brokerage's unique
-        /// behaviors
+         * Gets a brokerage model that can be used to model this brokerage's unique
+         * behaviors
         */
         IBrokerageModel BrokerageModel { get; }
 
         /**
-        /// Creates a new IBrokerage instance
+         * Creates a new IBrokerage instance
         */
-         * @param job">The job packet to create the brokerage for
-         * @param algorithm">The algorithm instance
+         * @param job The job packet to create the brokerage for
+         * @param algorithm The algorithm instance
         @returns A new brokerage instance
         IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm);
     }

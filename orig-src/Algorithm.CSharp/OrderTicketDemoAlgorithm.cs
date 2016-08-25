@@ -22,7 +22,7 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// In this algorithm we submit/update/cancel each order type
+     * In this algorithm we submit/update/cancel each order type
     */
     public class OrderTicketDemoAlgorithm : QCAlgorithm
     {
@@ -34,7 +34,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         private final List<OrderTicket> _openStopLimitOrders = new List<OrderTicket>();
 
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 7);  //Set Start Date
@@ -45,9 +45,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">Slice object keyed by symbol containing the stock data
+         * @param data Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             // MARKET ORDERS
 
@@ -75,16 +75,16 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// MarketOrders are the only orders that are processed synchronously by default, so 
-        /// they'll fill by the next line of code. This behavior equally applies to live mode. 
-        /// You can opt out of this behavior by specifying the 'asynchronous' parameter as true.
+         * MarketOrders are the only orders that are processed synchronously by default, so 
+         * they'll fill by the next line of code. This behavior equally applies to live mode. 
+         * You can opt out of this behavior by specifying the 'asynchronous' parameter as true.
         */
         private void MarketOrders() {
             if( TimeIs(7, 9, 31)) {
                 Log( "Submitting MarketOrder");
 
                 // submit a market order to buy 10 shares, this function returns an OrderTicket object
-                // we submit the order with asynchronous:false, so it block until it is filled
+                // we submit the order with asynchronous:false, so it bsynchronizeduntil it is filled
                 newTicket = MarketOrder(Symbol, 10, asynchronous: false);
                 if( newTicket.Status != OrderStatus.Filled) {
                     Log( "Synchronous market order was not filled synchronously!");
@@ -108,18 +108,18 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// LimitOrders are always processed asynchronously. Limit orders are used to
-        /// set 'good' entry points for an order. For example, you may wish to go
-        /// long a stock, but want a good price, so can place a LimitOrder to buy with
-        /// a limit price below the current market price. Likewise the opposite is true
-        /// when selling, you can place a LimitOrder to sell with a limit price above the
-        /// current market price to get a better sale price.
-        /// You can submit requests to update or cancel the LimitOrder at any time. 
-        /// The 'LimitPrice' for an order can be retrieved from the ticket using the 
-        /// OrderTicket.Get(OrderField) method, for example:
-        /// <code>
-        /// currentLimitPrice = orderTicket.Get(OrderField.LimitPrice);
-        /// </code>
+         * LimitOrders are always processed asynchronously. Limit orders are used to
+         * set 'good' entry points for an order. For example, you may wish to go
+         * long a stock, but want a good price, so can place a LimitOrder to buy with
+         * a limit price below the current market price. Likewise the opposite is true
+         * when selling, you can place a LimitOrder to sell with a limit price above the
+         * current market price to get a better sale price.
+         * You can submit requests to update or cancel the LimitOrder at any time. 
+         * The 'LimitPrice' for an order can be retrieved from the ticket using the 
+         * OrderTicket.Get(OrderField) method, for example:
+         * <code>
+         * currentLimitPrice = orderTicket.Get(OrderField.LimitPrice);
+         * </code>
         */
         private void LimitOrders() {
             if( TimeIs(7, 12, 0)) {
@@ -170,17 +170,17 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// StopMarketOrders work in the opposite way that limit orders do.
-        /// When placing a long trade, the stop price must be above current
-        /// market price. In this way it's a 'stop loss' for a short trade.
-        /// When placing a short trade, the stop price must be below current
-        /// market price. In this way it's a 'stop loss' for a long trade.
-        /// You can submit requests to update or cancel the StopMarketOrder at any time. 
-        /// The 'StopPrice' for an order can be retrieved from the ticket using the 
-        /// OrderTicket.Get(OrderField) method, for example:
-        /// <code>
-        /// currentStopPrice = orderTicket.Get(OrderField.StopPrice);
-        /// </code>
+         * StopMarketOrders work in the opposite way that limit orders do.
+         * When placing a long trade, the stop price must be above current
+         * market price. In this way it's a 'stop loss' for a short trade.
+         * When placing a short trade, the stop price must be below current
+         * market price. In this way it's a 'stop loss' for a long trade.
+         * You can submit requests to update or cancel the StopMarketOrder at any time. 
+         * The 'StopPrice' for an order can be retrieved from the ticket using the 
+         * OrderTicket.Get(OrderField) method, for example:
+         * <code>
+         * currentStopPrice = orderTicket.Get(OrderField.StopPrice);
+         * </code>
         */
         private void StopMarketOrders() {
             if( TimeIs(7, 12 + 4, 0)) {
@@ -235,20 +235,20 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// StopLimitOrders work as a combined stop and limit order. First, the
-        /// price must pass the stop price in the same way a StopMarketOrder works,
-        /// but then we're also gauranteed a fill price at least as good as the
-        /// limit price. This order type can be beneficial in gap down scenarios
-        /// where a StopMarketOrder would have triggered and given the not as beneficial
-        /// gapped down price, whereas the StopLimitOrder could protect you from
-        /// getting the gapped down price through prudent placement of the limit price.
-        /// You can submit requests to update or cancel the StopLimitOrder at any time.
-        /// The 'StopPrice' or 'LimitPrice' for an order can be retrieved from the ticket
-        /// using the OrderTicket.Get(OrderField) method, for example:
-        /// <code>
-        /// currentStopPrice = orderTicket.Get(OrderField.StopPrice);
-        /// currentLimitPrice = orderTicket.Get(OrderField.LimitPrice);
-        /// </code>
+         * StopLimitOrders work as a combined stop and limit order. First, the
+         * price must pass the stop price in the same way a StopMarketOrder works,
+         * but then we're also gauranteed a fill price at least as good as the
+         * limit price. This order type can be beneficial in gap down scenarios
+         * where a StopMarketOrder would have triggered and given the not as beneficial
+         * gapped down price, whereas the StopLimitOrder could protect you from
+         * getting the gapped down price through prudent placement of the limit price.
+         * You can submit requests to update or cancel the StopLimitOrder at any time.
+         * The 'StopPrice' or 'LimitPrice' for an order can be retrieved from the ticket
+         * using the OrderTicket.Get(OrderField) method, for example:
+         * <code>
+         * currentStopPrice = orderTicket.Get(OrderField.StopPrice);
+         * currentLimitPrice = orderTicket.Get(OrderField.LimitPrice);
+         * </code>
         */
         private void StopLimitOrders() {
             if( TimeIs(8, 12, 1)) {
@@ -316,9 +316,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// MarketOnCloseOrders are always executed at the next market's closing
-        /// price. The only properties that can be updated are the quantity and
-        /// order tag properties.
+         * MarketOnCloseOrders are always executed at the next market's closing
+         * price. The only properties that can be updated are the quantity and
+         * order tag properties.
         */
         private void MarketOnCloseOrders() {
             if( TimeIs(9, 12, 0)) {
@@ -359,9 +359,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// MarketOnOpenOrders are always executed at the next market's opening
-        /// price. The only properties that can be updated are the quantity and
-        /// order tag properties.
+         * MarketOnOpenOrders are always executed at the next market's opening
+         * price. The only properties that can be updated are the quantity and
+         * order tag properties.
         */
         private void MarketOnOpenOrders() {
             if( TimeIs(8, 12 + 2, 0)) {

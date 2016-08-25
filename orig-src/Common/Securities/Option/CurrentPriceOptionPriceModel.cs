@@ -19,22 +19,22 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Securities.Option
 {
     /**
-    /// Provides a default implementation of <see cref="IOptionPriceModel"/> that does not compute any
-    /// greeks and uses the current price for the theoretical price. 
-    /// This is a stub implementation until the real models are implemented
+     * Provides a default implementation of <see cref="IOptionPriceModel"/> that does not compute any
+     * greeks and uses the current price for the theoretical price. 
+     * This is a stub implementation until the real models are implemented
     */
     public class CurrentPriceOptionPriceModel : IOptionPriceModel
     {
         /**
-        /// Creates a new <see cref="OptionPriceModelResult"/> containing the current <see cref="Security.Price"/>
-        /// and a default, empty instance of <see cref="FirstOrderGreeks"/>
+         * Creates a new <see cref="OptionPriceModelResult"/> containing the current <see cref="Security.Price"/>
+         * and a default, empty instance of <see cref="FirstOrderGreeks"/>
         */
-         * @param security">The option security object
-         * @param slice">The current data slice. This can be used to access other information
-        /// available to the algorithm
-         * @param contract">The option contract to evaluate
+         * @param security The option security object
+         * @param slice The current data slice. This can be used to access other information
+         * available to the algorithm
+         * @param contract The option contract to evaluate
         @returns An instance of <see cref="OptionPriceModelResult"/> containing the theoretical
-        /// price of the specified option contract
+         * price of the specified option contract
         public OptionPriceModelResult Evaluate(Security security, Slice slice, OptionContract contract) {
             return new OptionPriceModelResult(security.Price, new FirstOrderGreeks());
         }

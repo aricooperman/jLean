@@ -22,72 +22,72 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages.Tradier
 {
     /**
-    /// Gain loss parent class for deserialization
+     * Gain loss parent class for deserialization
     */
     public class TradierGainLossContainer
     {
-        /// Profit Loss
+         * Profit Loss
         @JsonProperty( "gainloss")]
         public TradierGainLossClosed GainLossClosed;
 
-        /// Null Constructor
+         * Null Constructor
         public TradierGainLossContainer() { }
     }
 
     /**
-    /// Gain loss class
+     * Gain loss class
     */
     public class TradierGainLossClosed
     {
-        /// Array of user account details:
+         * Array of user account details:
         @JsonProperty( "closed_position")]
         [JsonConverter(typeof(SingleValueListConverter<TradierGainLoss>))]
         public List<TradierGainLoss> ClosedPositions = new List<TradierGainLoss>();
     }
 
     /**
-    /// Account only settings for a tradier user:
+     * Account only settings for a tradier user:
     */
     public class TradierGainLoss 
     {
-        /// Date the position was closed.
+         * Date the position was closed.
         @JsonProperty( "close_date")]
         public DateTime CloseDate;
 
-        /// Date the position was opened
+         * Date the position was opened
         @JsonProperty( "open_date")]
         public DateTime OpenDate;
 
-        /// Total cost of the order.
+         * Total cost of the order.
         @JsonProperty( "cost")]
         public BigDecimal Cost;
 
-        /// Gain or loss on the position.
+         * Gain or loss on the position.
         @JsonProperty( "gain_loss")]
         public BigDecimal GainLoss;
 
-        /// Percentage of gain or loss on the position.
+         * Percentage of gain or loss on the position.
         @JsonProperty( "gain_loss_percent")]
         public BigDecimal GainLossPercentage;
 
-        /// Total amount received for the order.
+         * Total amount received for the order.
         @JsonProperty( "proceeds")]
         public BigDecimal Proceeds;
 
-        /// Number of shares/contracts
+         * Number of shares/contracts
         @JsonProperty( "quantity")]
         public BigDecimal Quantity;
 
-        /// Symbol
+         * Symbol
         @JsonProperty( "symbol")]
         public String Symbol;
 
-        /// Number of shares/contracts
+         * Number of shares/contracts
         @JsonProperty( "term")]
         public BigDecimal Term;
 
         /**
-        /// Closed position trade summary
+         * Closed position trade summary
         */
         public TradierGainLoss() { }
     }

@@ -25,7 +25,7 @@ package com.quantconnect.lean.Algorithm
     public partial class QCAlgorithm
     {
         /**
-        /// Gets universe manager which holds universes keyed by their symbol
+         * Gets universe manager which holds universes keyed by their symbol
         */
         public UniverseManager UniverseManager
         {
@@ -34,7 +34,7 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Gets the universe settings to be used when adding securities via universe selection
+         * Gets the universe settings to be used when adding securities via universe selection
         */
         public UniverseSettings UniverseSettings
         {
@@ -43,7 +43,7 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Gets a helper that provides pre-defined universe defintions, such as top dollar volume
+         * Gets a helper that provides pre-defined universe defintions, such as top dollar volume
         */
         public UniverseDefinitions Universe
         {
@@ -52,155 +52,155 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Adds the universe to the algorithm
+         * Adds the universe to the algorithm
         */
-         * @param universe">The universe to be added
+         * @param universe The universe to be added
         public void AddUniverse(Universe universe) {
             UniverseManager.Add(universe.Configuration.Symbol, universe);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This will use the default universe settings
-        /// specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
-        /// of SecurityType.Equity, Resolution.Daily, Market.USA, and UniverseSettings
+         * Creates a new universe and adds it to the algorithm. This will use the default universe settings
+         * specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
+         * of SecurityType.Equity, Resolution.Daily, Market.USA, and UniverseSettings
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param name">A unique name for this universe
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param name A unique name for this universe
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>( String name, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, UniverseSettings, selector);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This will use the default universe settings
-        /// specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
-        /// of SecurityType.Equity, Resolution.Daily, Market.USA, and UniverseSettings
+         * Creates a new universe and adds it to the algorithm. This will use the default universe settings
+         * specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
+         * of SecurityType.Equity, Resolution.Daily, Market.USA, and UniverseSettings
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param name">A unique name for this universe
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param name A unique name for this universe
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>( String name, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, UniverseSettings, selector);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This will use the default universe settings
-        /// specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
-        /// of SecurityType.Equity, Resolution.Daily, and Market.USA
+         * Creates a new universe and adds it to the algorithm. This will use the default universe settings
+         * specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
+         * of SecurityType.Equity, Resolution.Daily, and Market.USA
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param name">A unique name for this universe
-         * @param universeSettings">The settings used for securities added by this universe
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param name A unique name for this universe
+         * @param universeSettings The settings used for securities added by this universe
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>( String name, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, universeSettings, selector);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This will use the default universe settings
-        /// specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
-        /// of SecurityType.Equity, Resolution.Daily, and Market.USA
+         * Creates a new universe and adds it to the algorithm. This will use the default universe settings
+         * specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
+         * of SecurityType.Equity, Resolution.Daily, and Market.USA
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param name">A unique name for this universe
-         * @param universeSettings">The settings used for securities added by this universe
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param name A unique name for this universe
+         * @param universeSettings The settings used for securities added by this universe
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>( String name, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, universeSettings, selector);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This will use the default universe settings
-        /// specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
-        /// of SecurityType.Equity, Market.USA and UniverseSettings
+         * Creates a new universe and adds it to the algorithm. This will use the default universe settings
+         * specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
+         * of SecurityType.Equity, Market.USA and UniverseSettings
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param name">A unique name for this universe
-         * @param resolution">The epected resolution of the universe data
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param name A unique name for this universe
+         * @param resolution The epected resolution of the universe data
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>( String name, Resolution resolution, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, UniverseSettings, selector);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This will use the default universe settings
-        /// specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
-        /// of SecurityType.Equity, Market.USA and UniverseSettings
+         * Creates a new universe and adds it to the algorithm. This will use the default universe settings
+         * specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
+         * of SecurityType.Equity, Market.USA and UniverseSettings
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param name">A unique name for this universe
-         * @param resolution">The epected resolution of the universe data
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param name A unique name for this universe
+         * @param resolution The epected resolution of the universe data
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>( String name, Resolution resolution, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, UniverseSettings, selector);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This will use the default universe settings
-        /// specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
-        /// of SecurityType.Equity, and Market.USA
+         * Creates a new universe and adds it to the algorithm. This will use the default universe settings
+         * specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
+         * of SecurityType.Equity, and Market.USA
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param name">A unique name for this universe
-         * @param resolution">The epected resolution of the universe data
-         * @param universeSettings">The settings used for securities added by this universe
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param name A unique name for this universe
+         * @param resolution The epected resolution of the universe data
+         * @param universeSettings The settings used for securities added by this universe
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>( String name, Resolution resolution, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, universeSettings, selector);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This will use the default universe settings
-        /// specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
-        /// of SecurityType.Equity, and Market.USA
+         * Creates a new universe and adds it to the algorithm. This will use the default universe settings
+         * specified via the <see cref="UniverseSettings"/> property. This universe will use the defaults
+         * of SecurityType.Equity, and Market.USA
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param name">A unique name for this universe
-         * @param resolution">The epected resolution of the universe data
-         * @param universeSettings">The settings used for securities added by this universe
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param name A unique name for this universe
+         * @param resolution The epected resolution of the universe data
+         * @param universeSettings The settings used for securities added by this universe
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>( String name, Resolution resolution, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, universeSettings, selector);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This will use the default universe settings
-        /// specified via the <see cref="UniverseSettings"/> property.
+         * Creates a new universe and adds it to the algorithm. This will use the default universe settings
+         * specified via the <see cref="UniverseSettings"/> property.
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param securityType">The security type the universe produces
-         * @param name">A unique name for this universe
-         * @param resolution">The epected resolution of the universe data
-         * @param market">The market for selected symbols
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param securityType The security type the universe produces
+         * @param name A unique name for this universe
+         * @param resolution The epected resolution of the universe data
+         * @param market The market for selected symbols
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             AddUniverse(securityType, name, resolution, market, UniverseSettings, selector);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This will use the default universe settings
-        /// specified via the <see cref="UniverseSettings"/> property.
+         * Creates a new universe and adds it to the algorithm. This will use the default universe settings
+         * specified via the <see cref="UniverseSettings"/> property.
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param securityType">The security type the universe produces
-         * @param name">A unique name for this universe
-         * @param resolution">The epected resolution of the universe data
-         * @param market">The market for selected symbols
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param securityType The security type the universe produces
+         * @param name A unique name for this universe
+         * @param resolution The epected resolution of the universe data
+         * @param market The market for selected symbols
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             AddUniverse(securityType, name, resolution, market, UniverseSettings, selector);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm
+         * Creates a new universe and adds it to the algorithm
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param securityType">The security type the universe produces
-         * @param name">A unique name for this universe
-         * @param resolution">The epected resolution of the universe data
-         * @param market">The market for selected symbols
-         * @param universeSettings">The subscription settings to use for newly created subscriptions
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param securityType The security type the universe produces
+         * @param name A unique name for this universe
+         * @param resolution The epected resolution of the universe data
+         * @param market The market for selected symbols
+         * @param universeSettings The subscription settings to use for newly created subscriptions
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<Symbol>> selector) {
             marketHoursDbEntry = _marketHoursDatabase.GetEntry(market, name, securityType);
             dataTimeZone = marketHoursDbEntry.DataTimeZone;
@@ -211,15 +211,15 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm
+         * Creates a new universe and adds it to the algorithm
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param securityType">The security type the universe produces
-         * @param name">A unique name for this universe
-         * @param resolution">The epected resolution of the universe data
-         * @param market">The market for selected symbols
-         * @param universeSettings">The subscription settings to use for newly created subscriptions
-         * @param selector">Function delegate that performs selection on the universe data
+         * <typeparam name="T The data type</typeparam>
+         * @param securityType The security type the universe produces
+         * @param name A unique name for this universe
+         * @param resolution The epected resolution of the universe data
+         * @param market The market for selected symbols
+         * @param universeSettings The subscription settings to use for newly created subscriptions
+         * @param selector Function delegate that performs selection on the universe data
         public void AddUniverse<T>(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<IEnumerable<T>, IEnumerable<String>> selector) {
             marketHoursDbEntry = _marketHoursDatabase.GetEntry(market, name, securityType);
             dataTimeZone = marketHoursDbEntry.DataTimeZone;
@@ -230,10 +230,10 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Creates a new univese and adds it to the algorithm. This is for coarse fundamntal US Equity data and
-        /// will be executed on day changes in the NewYork time zone (<see cref="TimeZones.NewYork"/>
+         * Creates a new univese and adds it to the algorithm. This is for coarse fundamntal US Equity data and
+         * will be executed on day changes in the NewYork time zone (<see cref="TimeZones.NewYork"/>
         */
-         * @param selector">Defines an initial coarse selection
+         * @param selector Defines an initial coarse selection
         public void AddUniverse(Func<IEnumerable<CoarseFundamental>, IEnumerable<Symbol>> selector) {
             symbol = CoarseFundamental.CreateUniverseSymbol(Market.USA);
             config = new SubscriptionDataConfig(typeof(CoarseFundamental), symbol, Resolution.Daily, TimeZones.NewYork, TimeZones.NewYork, false, false, true, isFilteredSubscription: false);
@@ -241,35 +241,35 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This can be used to return a list of string
-        /// symbols retrieved from anywhere and will loads those symbols under the US Equity market.
+         * Creates a new universe and adds it to the algorithm. This can be used to return a list of string
+         * symbols retrieved from anywhere and will loads those symbols under the US Equity market.
         */
-         * @param name">A unique name for this universe
-         * @param selector">Function delegate that accepts a DateTime and returns a collection of String symbols
+         * @param name A unique name for this universe
+         * @param selector Function delegate that accepts a DateTime and returns a collection of String symbols
         public void AddUniverse( String name, Func<DateTime, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, Resolution.Daily, Market.USA, UniverseSettings, selector);
         }
 
         /**
-        /// Creates a new universe and adds it to the algorithm. This can be used to return a list of string
-        /// symbols retrieved from anywhere and will loads those symbols under the US Equity market.
+         * Creates a new universe and adds it to the algorithm. This can be used to return a list of string
+         * symbols retrieved from anywhere and will loads those symbols under the US Equity market.
         */
-         * @param name">A unique name for this universe
-         * @param resolution">The resolution this universe should be triggered on
-         * @param selector">Function delegate that accepts a DateTime and returns a collection of String symbols
+         * @param name A unique name for this universe
+         * @param resolution The resolution this universe should be triggered on
+         * @param selector Function delegate that accepts a DateTime and returns a collection of String symbols
         public void AddUniverse( String name, Resolution resolution, Func<DateTime, IEnumerable<String>> selector) {
             AddUniverse(SecurityType.Equity, name, resolution, Market.USA, UniverseSettings, selector);
         }
 
         /**
-        /// Creates a new user defined universe that will fire on the requested resolution during market hours.
+         * Creates a new user defined universe that will fire on the requested resolution during market hours.
         */
-         * @param securityType">The security type of the universe
-         * @param name">A unique name for this universe
-         * @param resolution">The resolution this universe should be triggered on
-         * @param market">The market of the universe
-         * @param universeSettings">The subscription settings used for securities added from this universe
-         * @param selector">Function delegate that accepts a DateTime and returns a collection of String symbols
+         * @param securityType The security type of the universe
+         * @param name A unique name for this universe
+         * @param resolution The resolution this universe should be triggered on
+         * @param market The market of the universe
+         * @param universeSettings The subscription settings used for securities added from this universe
+         * @param selector Function delegate that accepts a DateTime and returns a collection of String symbols
         public void AddUniverse(SecurityType securityType, String name, Resolution resolution, String market, UniverseSettings universeSettings, Func<DateTime, IEnumerable<String>> selector) {
             marketHoursDbEntry = _marketHoursDatabase.GetEntry(market, name, securityType);
             dataTimeZone = marketHoursDbEntry.DataTimeZone;
@@ -280,7 +280,7 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Adds the security to the user defined universe for the specified 
+         * Adds the security to the user defined universe for the specified 
         */
         private void AddToUserDefinedUniverse(Security security) {
             Securities.Add(security);

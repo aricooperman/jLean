@@ -25,8 +25,8 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Controller type used to schedule <see cref="IParallelRunnerWorkItem"/> instances
-    /// to run on dedicated runner threads
+     * Controller type used to schedule <see cref="IParallelRunnerWorkItem"/> instances
+     * to run on dedicated runner threads
     */
     public class ParallelRunnerController : IDisposable
     {
@@ -40,8 +40,8 @@ package com.quantconnect.lean.Util
         private final BlockingCollection<IParallelRunnerWorkItem> _processQueue;
 
         /**
-        /// Gets a wait handle that can be used to wait for this controller
-        /// to finish all scheduled work
+         * Gets a wait handle that can be used to wait for this controller
+         * to finish all scheduled work
         */
         public WaitHandle WaitHandle
         {
@@ -49,9 +49,9 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ParallelRunnerController"/> class
+         * Initializes a new instance of the <see cref="ParallelRunnerController"/> class
         */
-         * @param threadCount">The number of dedicated threads to spin up
+         * @param threadCount The number of dedicated threads to spin up
         public ParallelRunnerController(int threadCount) {
             _threadCount = threadCount;
             _waitHandle = new ManualResetEvent(false);
@@ -61,22 +61,22 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Schedules the specified work item to run
+         * Schedules the specified work item to run
         */
-         * @param workItem">The work item to schedule
+         * @param workItem The work item to schedule
         public void Schedule(IParallelRunnerWorkItem workItem) {
             if( workItem.IsReady) _processQueue.Add(workItem);
             else _holdQueue.Add(workItem);
         }
 
         /**
-        /// Starts this instance of <see cref="ParallelRunnerController"/>.
-        /// This method is indempotent
+         * Starts this instance of <see cref="ParallelRunnerController"/>.
+         * This method is indempotent
         */
-         * @param token">The cancellation token
+         * @param token The cancellation token
         public void Start(CancellationToken token) {
             WaitHandle[] waitHandles;
-            lock (_sync) {
+            synchronized(_sync) {
                 if( _workers[0] != null ) return;
                 for (int i = 0; i < _threadCount; i++) {
                     worker = new ParallelRunnerWorker(this, _processQueue);
@@ -103,10 +103,10 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Processes the internal hold queue checking to see if work
-        /// items are ready to run
+         * Processes the internal hold queue checking to see if work
+         * items are ready to run
         */
-         * @param token">The cancellation token
+         * @param token The cancellation token
         private void ProcessHoldQueue(CancellationToken token) {
             try
             {
@@ -131,11 +131,11 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
-            lock (_sync) {
+            synchronized(_sync) {
                 if( _holdQueue != null ) _holdQueue.Dispose();
                 if( _processQueue != null ) _processQueue.Dispose();
                 if( _processQueueThread != null && _processQueueThread.IsAlive) _processQueueThread.Abort();

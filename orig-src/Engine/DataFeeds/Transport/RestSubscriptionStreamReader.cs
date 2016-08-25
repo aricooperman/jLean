@@ -21,7 +21,7 @@ using RestSharp;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
 {
     /**
-    /// Represents a stream reader capable of polling a rest client
+     * Represents a stream reader capable of polling a rest client
     */
     public class RestSubscriptionStreamReader : IStreamReader
     {
@@ -29,16 +29,16 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         private final RestRequest _request;
 
         /**
-        /// Initializes a new instance of the <see cref="RestSubscriptionStreamReader"/> class.
+         * Initializes a new instance of the <see cref="RestSubscriptionStreamReader"/> class.
         */
-         * @param source">The source url to poll with a GET
+         * @param source The source url to poll with a GET
         public RestSubscriptionStreamReader( String source) {
             _client = new RestClient(source);
             _request = new RestRequest(Method.GET);
         }
 
         /**
-        /// Gets <see cref="SubscriptionTransportMedium.Rest"/>
+         * Gets <see cref="SubscriptionTransportMedium.Rest"/>
         */
         public SubscriptionTransportMedium TransportMedium
         {
@@ -46,7 +46,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         }
 
         /**
-        /// Gets whether or not there's more data to be read in the stream
+         * Gets whether or not there's more data to be read in the stream
         */
         public boolean EndOfStream
         {
@@ -54,7 +54,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         }
 
         /**
-        /// Gets the next line/batch of content from the stream 
+         * Gets the next line/batch of content from the stream 
         */
         public String ReadLine() {
             try
@@ -72,7 +72,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         }
 
         /**
-        /// This stream reader doesn't require disposal
+         * This stream reader doesn't require disposal
         */
         public void Dispose() {
         }

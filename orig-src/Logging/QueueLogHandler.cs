@@ -20,7 +20,7 @@ using System.IO;
 package com.quantconnect.lean.Logging
 {
     /**
-    /// ILogHandler implementation that queues all logs and writes them when instructed.
+     * ILogHandler implementation that queues all logs and writes them when instructed.
     */
     public class QueueLogHandler : ILogHandler
     {
@@ -30,7 +30,7 @@ package com.quantconnect.lean.Logging
         private final TextWriter _error;
 
         /**
-        /// Public access to the queue for log processing.
+         * Public access to the queue for log processing.
         */
         public ConcurrentQueue<LogEntry> Logs
         {
@@ -38,17 +38,17 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// LOgging event delegate
+         * LOgging event delegate
         */
         public delegate void LogEventRaised(LogEntry log);
 
         /**
-        /// Logging Event Handler
+         * Logging Event Handler
         */
         public event LogEventRaised LogEvent;
         
         /**
-        /// Initializes a new instance of the <see cref="QueueLogHandler"/> class.
+         * Initializes a new instance of the <see cref="QueueLogHandler"/> class.
         */
         public QueueLogHandler() {
             _logs = new ConcurrentQueue<LogEntry>();
@@ -57,9 +57,9 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write error message to log
+         * Write error message to log
         */
-         * @param text">The error text to log
+         * @param text The error text to log
         public void Error( String text) {
             log = new LogEntry(text, DateTime.Now, LogType.Error);
             _logs.Enqueue(log);
@@ -71,9 +71,9 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write debug message to log
+         * Write debug message to log
         */
-         * @param text">The debug text to log
+         * @param text The debug text to log
         public void Debug( String text) {
             log = new LogEntry(text, DateTime.Now, LogType.Debug);
             _logs.Enqueue(log);
@@ -83,9 +83,9 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write debug message to log
+         * Write debug message to log
         */
-         * @param text">The trace text to log
+         * @param text The trace text to log
         public void Trace( String text) {
             log = new LogEntry(text, DateTime.Now, LogType.Trace);
             _logs.Enqueue(log);
@@ -95,16 +95,16 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
         }
 
         /**
-        /// Raise a log event safely
+         * Raise a log event safely
         */
-        protected virtual void OnLogEvent(LogEntry log) {
+        protected void OnLogEvent(LogEntry log) {
             handler = LogEvent;
 
             if( handler != null ) {

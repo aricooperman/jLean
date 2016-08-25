@@ -22,7 +22,7 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Provides an implementation of <see cref="ISubscriptionDataSourceReader"/> that reads zip entry names
+     * Provides an implementation of <see cref="ISubscriptionDataSourceReader"/> that reads zip entry names
     */
     public class ZipEntryNameSubscriptionDataSourceReader : ISubscriptionDataSourceReader
     {
@@ -32,17 +32,17 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         private final BaseData _factory;
 
         /**
-        /// Event fired when the specified source is considered invalid, this may
-        /// be from a missing file or failure to download a remote source
+         * Event fired when the specified source is considered invalid, this may
+         * be from a missing file or failure to download a remote source
         */
         public event EventHandler<InvalidSourceEventArgs> InvalidSource;
 
         /**
-        /// Initializes a new instance of the <see cref="ZipEntryNameSubscriptionDataSourceReader"/> class
+         * Initializes a new instance of the <see cref="ZipEntryNameSubscriptionDataSourceReader"/> class
         */
-         * @param config">The subscription's configuration
-         * @param dateTime">The date this factory was produced to read data for
-         * @param isLiveMode">True if we're in live mode, false for backtesting
+         * @param config The subscription's configuration
+         * @param dateTime The date this factory was produced to read data for
+         * @param isLiveMode True if we're in live mode, false for backtesting
         public ZipEntryNameSubscriptionDataSourceReader(SubscriptionDataConfig config, DateTime dateTime, boolean isLiveMode) {
             _config = config;
             _dateTime = dateTime;
@@ -51,9 +51,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Reads the specified <paramref name="source"/>
+         * Reads the specified <paramref name="source"/>
         */
-         * @param source">The source to be read
+         * @param source The source to be read
         @returns An <see cref="IEnumerable{BaseData}"/> that contains the data in the source
         public IEnumerable<BaseData> Read(SubscriptionDataSource source) {
             if( !File.Exists(source.Source)) {
@@ -76,10 +76,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Event invocator for the <see cref="InvalidSource"/> event
+         * Event invocator for the <see cref="InvalidSource"/> event
         */
-         * @param source">The <see cref="SubscriptionDataSource"/> that was invalid
-         * @param exception">The exception if one was raised, otherwise null
+         * @param source The <see cref="SubscriptionDataSource"/> that was invalid
+         * @param exception The exception if one was raised, otherwise null
         private void OnInvalidSource(SubscriptionDataSource source, Exception exception) {
             handler = InvalidSource;
             if( handler != null ) handler(this, new InvalidSourceEventArgs(source, exception));

@@ -25,10 +25,11 @@ import com.quantconnect.lean.orders.OrderTypes.OrderDirection;
 import com.quantconnect.lean.orders.OrderTypes.OrderDuration;
 import com.quantconnect.lean.orders.OrderTypes.OrderStatus;
 import com.quantconnect.lean.orders.OrderTypes.OrderType;
+import com.quantconnect.lean.securities.Security;
 import com.quantconnect.lean.Global.SecurityType;
 
-/*
- *  Order struct for placing new trade
+/**
+ *  Order class for placing new trade
  */
 public abstract class Order implements Cloneable {
     
@@ -64,6 +65,9 @@ public abstract class Order implements Cloneable {
 
     /// Tag the order with some custom data
     protected String tag;
+
+    /// Order Expiry on a specific UTC time.
+    public LocalDateTime DurationValue;
 
     
     public int getId() {
@@ -129,33 +133,51 @@ public abstract class Order implements Cloneable {
         return OrderDirection.Hold;
     }
 
-    /// Get the absolute quantity for this order
+    /**
+     * Get the absolute quantity for this order
+     * @return
+     */
     public int getAbsoluteQuantity() {
         return Math.abs( quantity );
     }
 
-    /// Gets the executed value of this order. If the order has not yet filled,
-    /// then this will return zero.
+    /**
+     * Gets the executed value of this order. If the order has not yet filled,
+     * then this will return zero.
+     * @return
+     */
     public BigDecimal getValue() {
         return price.multiply( BigDecimal.valueOf( quantity ) );
     }
 
     /// Added a default constructor for JSON Deserialization:
-    protected Order() {
+    /*protected*/ Order() {
         this( Symbol.EMPTY, 0, LocalDateTime.now(), "" );
     }
 
     /**
-    /// New order constructor
-    */
-     * @param symbol">Symbol asset we're seeking to trade
-     * @param quantity">Quantity of the asset we're seeking to trade
-     * @param time">Time the order was placed
-     * @param tag">User defined data tag for this order
+     * New order constructor
+     * @param symbol
+    /// <param name="symbol Symbol asset we're seeking to trade</param>
+     * @param quantity
+    /// <param name="quantity Quantity of the asset we're seeking to trade</param>
+     * @param time
+    /// <param name="time Time the order was placed</param>
+     */
     protected Order( Symbol symbol, int quantity, LocalDateTime time ) {
         this( symbol, quantity, time, "" );
     }
-    
+
+    /**
+     * New order constructor
+     * @param symbol
+    /// <param name="symbol Symbol asset we're seeking to trade</param>
+     * @param quantity
+    /// <param name="quantity Quantity of the asset we're seeking to trade</param>
+     * @param time
+    /// <param name="time Time the order was placed</param>
+    /// <param name="tag User defined data tag for this order</param>
+     */
     protected Order( Symbol symbol, int quantity, LocalDateTime time, String tag ) {
         this.time = time;
         this.price = BigDecimal.ZERO;
@@ -172,50 +194,54 @@ public abstract class Order implements Cloneable {
     }
 
     /**
-    /// Gets the value of this order at the given market price in units of the account currency
-    /// NOTE: Some order types derive value from other parameters, such as limit prices
-    */
-     * @param security">The security matching this order's symbol
-    @returns The value of this order given the current market price
+     * Gets the value of this order at the given market price in units of the account currency
+     * NOTE: Some order types derive value from other parameters, such as limit prices
+     * @param security security The security matching this order's symbol
+     * @return The value of this order given the current market price
+     */
     public BigDecimal getValue( Security security ) {
-        value = getValueImpl( security );
-        return value*security.QuoteCurrency.ConversionRate*security.SymbolProperties.ContractMultiplier;
+        final BigDecimal value = getValueImpl( security );
+        return value.multiply( security.getQuoteCurrency().getConversionRate() ).multiply( security.getSymbolProperties().getContractMultiplier() );
     }
 
-    /// Gets the order value in units of the security's quote currency for a single unit.
-    /// A single unit here is a single share of stock, or a single barrel of oil, or the
-    /// cost of a single share in an option contract.
-     * @param security">The security matching this order's symbol
+    /**
+     * Gets the order value in units of the security's quote currency for a single unit.
+     * A single unit here is a single share of stock, or a single barrel of oil, or the
+     * cost of a single share in an option contract.
+     * @param security security The security matching this order's symbol
+     * @return
+     */
     protected abstract BigDecimal getValueImpl( Security security );
 
-    /// Modifies the state of this order to match the update request
-     * @param request">The request to update this order object
-    public /*virtual*/ void ApplyUpdateOrderRequest( UpdateOrderRequest request ) {
-        if( request.OrderId != id )
+    /**
+     * Modifies the state of this order to match the update request
+     * @param request The request to update this order object</param>
+     */
+    public void applyUpdateOrderRequest( UpdateOrderRequest request ) {
+        if( request.orderId != id )
             throw new IllegalArgumentException( "Attempted to apply updates to the incorrect order!" );
 
-        if( request.Quantity.HasValue )
-            quantity = request.Quantity.Value;
+        quantity = request.getQuantity().orElse( quantity );
 
-        if( request.Tag != null )
-            tag = request.Tag;
+        if( request.getTag() != null )
+            tag = request.getTag();
     }
 
     /// Returns a String that represents the current object.
-    @returns 
+    /// <returns>
     /// A String that represents the current object.
-    /// 
+    /// </returns>
     /// <filterpriority>2</filterpriority>
     public String toString() {
-        return String.format( "OrderId: %d %s %3$s order for %d unit%s of %s", id, status, Type, quantity, quantity == 1 ? "" : "s", symbol );
+        return String.format( "OrderId: %d %s %3$s order for %d unit%s of %s", id, status, getType(), quantity, quantity == 1 ? "" : "s", symbol );
     }
 
     /// Creates a deep-copy clone of this order
-    @returns A copy of this order
+    /// <returns>A copy of this order</returns>
     public abstract Order clone();
 
     /// Copies base Order properties to the specified order
-     * @param order">The target of the copy
+    /// <param name="order The target of the copy</param>
     protected void copyTo( Order order ) {
         order.id = id;
         order.time = time;
@@ -230,43 +256,42 @@ public abstract class Order implements Cloneable {
         order.tag = tag;
     }
 
-    /// Creates an <see cref="Order"/> to match the specified <paramref name="request"/>
-     * @param request">The <see cref="SubmitOrderRequest"/> to create an order for
-    @returns The <see cref="Order"/> that matches the request
+    /**
+     * Creates an <see cref="Order"/> to match the specified <paramref name="request"/>
+     * @param request The <see cref="SubmitOrderRequest"/> to create an order for
+     * @return The <see cref="Order"/> that matches the request
+     */
     public static Order createOrder( SubmitOrderRequest request ) {
         Order order;
-        switch( request.OrderType ) {
-            case OrderType.Market:
-                order = new MarketOrder( request.Symbol, request.Quantity, request.Time, request.Tag );
+        switch( request.getOrderType() ) {
+            case Market:
+                order = new MarketOrder( request.getSymbol(), request.getQuantity(), request.getTime(), request.getTag() );
                 break;
-            case OrderType.Limit:
-                order = new LimitOrder( request.Symbol, request.Quantity, request.LimitPrice, request.Time, request.Tag );
+            case Limit:
+                order = new LimitOrder( request.getSymbol(), request.getQuantity(), request.getLimitPrice(), request.getTime(), request.getTag() );
                 break;
-            case OrderType.StopMarket:
-                order = new StopMarketOrder( request.Symbol, request.Quantity, request.StopPrice, request.Time, request.Tag );
+            case StopMarket:
+                order = new StopMarketOrder( request.getSymbol(), request.getQuantity(), request.getStopPrice(), request.getTime(), request.getTag() );
                 break;
-            case OrderType.StopLimit:
-                order = new StopLimitOrder( request.Symbol, request.Quantity, request.StopPrice, request.LimitPrice, request.Time, request.Tag );
+            case StopLimit:
+                order = new StopLimitOrder( request.getSymbol(), request.getQuantity(), request.getStopPrice(), request.getLimitPrice(), request.getTime(), request.getTag() );
                 break;
-            case OrderType.MarketOnOpen:
-                order = new MarketOnOpenOrder( request.Symbol, request.Quantity, request.Time, request.Tag );
+            case MarketOnOpen:
+                order = new MarketOnOpenOrder( request.getSymbol(), request.getQuantity(), request.getTime(), request.getTag() );
                 break;
-            case OrderType.MarketOnClose:
-                order = new MarketOnCloseOrder( request.Symbol, request.Quantity, request.Time, request.Tag );
+            case MarketOnClose:
+                order = new MarketOnCloseOrder( request.getSymbol(), request.getQuantity(), request.getTime(), request.getTag() );
                 break;
             default:
                 throw new IllegalArgumentException();
         }
         
         order.status = OrderStatus.New;
-        order.id = request.OrderId;
+        order.id = request.orderId;
         
-        if( request.Tag != null )
-            order.tag = request.Tag;
+        if( request.getTag() != null )
+            order.tag = request.getTag();
 
         return order;
     }
-
-    /// Order Expiry on a specific UTC time.
-    public LocalDateTime DurationValue;
 }

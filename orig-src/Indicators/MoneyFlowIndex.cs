@@ -19,18 +19,18 @@ package com.quantconnect.lean.Indicators
 {
 
     /**
-    ///     The Money Flow Index (MFI) is an oscillator that uses both price and volume to 
-    ///     measure buying and selling pressure
-    ///     
-    ///     Typical Price = (High + Low + Close)/3
-    ///     Money Flow = Typical Price x Volume
-    ///     Positve Money Flow = Sum of the money flows of all days where the typical 
-    ///         price is greater than the previous day's typical price
-    ///     Negative Money Flow = Sum of the money flows of all days where the typical 
-    ///         price is less than the previous day's typical price
-    ///     Money Flow Ratio = (14-period Positive Money Flow)/(14-period Negative Money Flow)
-    ///     
-    ///     Money Flow Index = 100 x  Positve Money Flow / ( Positve Money Flow + Negative Money Flow)
+     *     The Money Flow Index (MFI) is an oscillator that uses both price and volume to 
+     *     measure buying and selling pressure
+     *     
+     *     Typical Price = (High + Low + Close)/3
+     *     Money Flow = Typical Price x Volume
+     *     Positve Money Flow = Sum of the money flows of all days where the typical 
+     *         price is greater than the previous day's typical price
+     *     Negative Money Flow = Sum of the money flows of all days where the typical 
+     *         price is less than the previous day's typical price
+     *     Money Flow Ratio = (14-period Positive Money Flow)/(14-period Negative Money Flow)
+     *     
+     *     Money Flow Index = 100 x  Positve Money Flow / ( Positve Money Flow + Negative Money Flow)
     */
     public class MoneyFlowIndex : TradeBarIndicator
     {
@@ -44,7 +44,7 @@ package com.quantconnect.lean.Indicators
         public BigDecimal PreviousTypicalPrice { get; private set; }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -52,7 +52,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             PreviousTypicalPrice = 0.0m;
@@ -62,18 +62,18 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Initializes a new instance of the MoneyFlowIndex class
+         * Initializes a new instance of the MoneyFlowIndex class
         */
-         * @param period">The period of the negative and postive money flow
+         * @param period The period of the negative and postive money flow
         public MoneyFlowIndex(int period)
             : this( "MFI" + period, period) {
         }
 
         /**
-        /// Initializes a new instance of the MoneyFlowIndex class
+         * Initializes a new instance of the MoneyFlowIndex class
         */
-         * @param name">The name of this indicator
-         * @param period">The period of the negative and postive money flow
+         * @param name The name of this indicator
+         * @param period The period of the negative and postive money flow
         public MoneyFlowIndex( String name, int period)
             : base(name) {
             PositiveMoneyFlow = new Sum(name + "_PositiveMoneyFlow", period);
@@ -81,9 +81,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             BigDecimal typicalPrice = (input.High + input.Low + input.Close)/3.0m;

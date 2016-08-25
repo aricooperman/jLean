@@ -36,7 +36,7 @@ using IB = Krs.Ats.IBNet;
 package com.quantconnect.lean.Brokerages.InteractiveBrokers
 {
     /**
-    /// The Interactive Brokers brokerage
+     * The Interactive Brokers brokerage
     */
     public sealed class InteractiveBrokersBrokerage : Brokerage, IDataQueueHandler
     {
@@ -77,7 +77,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         private final InteractiveBrokersSymbolMapper _symbolMapper = new InteractiveBrokersSymbolMapper();
 
         /**
-        /// Returns true if we're currently connected to the broker
+         * Returns true if we're currently connected to the broker
         */
         public @Override boolean IsConnected
         {
@@ -89,14 +89,14 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Creates a new InteractiveBrokersBrokerage using values from configuration:
-        ///     ib-account (required)
-        ///     ib-host (optional, defaults to LOCALHOST)
-        ///     ib-port (optional, defaults to 4001)
-        ///     ib-agent-description (optional, defaults to Individual)
+         * Creates a new InteractiveBrokersBrokerage using values from configuration:
+         *     ib-account (required)
+         *     ib-host (optional, defaults to LOCALHOST)
+         *     ib-port (optional, defaults to 4001)
+         *     ib-agent-description (optional, defaults to Individual)
         */
-         * @param orderProvider">An instance of IOrderProvider used to fetch Order objects by brokerage ID
-         * @param securityProvider">The security provider used to give access to algorithm securities
+         * @param orderProvider An instance of IOrderProvider used to fetch Order objects by brokerage ID
+         * @param securityProvider The security provider used to give access to algorithm securities
         public InteractiveBrokersBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider)
             : this(
                 orderProvider,
@@ -109,11 +109,11 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Creates a new InteractiveBrokersBrokerage for the specified account
+         * Creates a new InteractiveBrokersBrokerage for the specified account
         */
-         * @param orderProvider">An instance of IOrderProvider used to fetch Order objects by brokerage ID
-         * @param securityProvider">The security provider used to give access to algorithm securities
-         * @param account">The account used to connect to IB
+         * @param orderProvider An instance of IOrderProvider used to fetch Order objects by brokerage ID
+         * @param securityProvider The security provider used to give access to algorithm securities
+         * @param account The account used to connect to IB
         public InteractiveBrokersBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider, String account)
             : this(orderProvider,
                 securityProvider,
@@ -125,14 +125,14 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Creates a new InteractiveBrokersBrokerage from the specified values
+         * Creates a new InteractiveBrokersBrokerage from the specified values
         */
-         * @param orderProvider">An instance of IOrderProvider used to fetch Order objects by brokerage ID
-         * @param securityProvider">The security provider used to give access to algorithm securities
-         * @param account">The Interactive Brokers account name
-         * @param host">host name or IP address of the machine where TWS is running. Leave blank to connect to the local host.
-         * @param port">must match the port specified in TWS on the Configure&gt;API&gt;Socket Port field.
-         * @param agentDescription">Used for Rule 80A describes the type of trader.
+         * @param orderProvider An instance of IOrderProvider used to fetch Order objects by brokerage ID
+         * @param securityProvider The security provider used to give access to algorithm securities
+         * @param account The Interactive Brokers account name
+         * @param host host name or IP address of the machine where TWS is running. Leave blank to connect to the local host.
+         * @param port must match the port specified in TWS on the Configure&gt;API&gt;Socket Port field.
+         * @param agentDescription Used for Rule 80A describes the type of trader.
         public InteractiveBrokersBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider, String account, String host, int port, IB.AgentDescription agentDescription = IB.AgentDescription.Individual)
             : base( "Interactive Brokers Brokerage") {
             _orderProvider = orderProvider;
@@ -166,7 +166,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Provides public access to the underlying IBClient instance
+         * Provides public access to the underlying IBClient instance
         */
         public IB.IBClient Client
         {
@@ -174,9 +174,9 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Places a new order and assigns a new broker ID to the order
+         * Places a new order and assigns a new broker ID to the order
         */
-         * @param order">The order to be placed
+         * @param order The order to be placed
         @returns True if the request for a new order has been placed, false otherwise
         public @Override boolean PlaceOrder(Order order) {
             try
@@ -193,9 +193,9 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Updates the order with the same id
+         * Updates the order with the same id
         */
-         * @param order">The new order information
+         * @param order The new order information
         @returns True if the request was made for the order to be updated, false otherwise
         public @Override boolean UpdateOrder(Order order) {
             try
@@ -212,9 +212,9 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Cancels the order with the specified ID
+         * Cancels the order with the specified ID
         */
-         * @param order">The order to cancel
+         * @param order The order to cancel
         @returns True if the request was made for the order to be canceled, false otherwise
         public @Override boolean CancelOrder(Order order) {
             try
@@ -236,7 +236,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Gets all open orders on the account
+         * Gets all open orders on the account
         */
         @returns The open orders returned from IB
         public @Override List<Order> GetOpenOrders() {
@@ -274,7 +274,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Gets all holdings for the account
+         * Gets all holdings for the account
         */
         @returns The current holdings from the account
         public @Override List<Holding> GetAccountHoldings() {
@@ -306,7 +306,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Gets the current cash balance for each currency held in the brokerage account
+         * Gets the current cash balance for each currency held in the brokerage account
         */
         @returns The current cash balance for each currency available for trading
         public @Override List<Cash> GetCashBalance() {
@@ -314,7 +314,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Gets the execution details matching the filter
+         * Gets the execution details matching the filter
         */
         @returns A list of executions matching the filter
         public List<IB.ExecDetailsEventArgs> GetExecutions( String symbol, IB.SecurityType? type, String exchange, DateTime? timeSince, IB.ActionSide? side) {
@@ -366,7 +366,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Connects the client to the IB gateway
+         * Connects the client to the IB gateway
         */
         public @Override void Connect() {
             if( IsConnected) return;
@@ -453,7 +453,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Disconnects the client from the IB gateway
+         * Disconnects the client from the IB gateway
         */
         public @Override void Disconnect() {
             if( !IsConnected) return;
@@ -462,7 +462,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
             if( _client != null ) {
@@ -472,18 +472,18 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Gets the raw account values sent from IB
+         * Gets the raw account values sent from IB
         */
         public Map<String,String> GetAccountValues() {
             return new Map<String,String>(_accountProperties);
         }
 
         /**
-        /// Places the order with InteractiveBrokers
+         * Places the order with InteractiveBrokers
         */
-         * @param order">The order to be placed
-         * @param needsNewID">Set to true to generate a new order ID, false to leave it alone
-         * @param exchange">The exchange to send the order to, defaults to "Smart" to use IB's smart routing
+         * @param order The order to be placed
+         * @param needsNewID Set to true to generate a new order ID, false to leave it alone
+         * @param exchange The exchange to send the order to, defaults to "Smart" to use IB's smart routing
         private void IBPlaceOrder(Order order, boolean needsNewID, String exchange = null ) {
             // connect will throw if it fails
             Connect();
@@ -507,7 +507,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             }
             else
             {
-                throw new ArgumentException( "Expected order with populated BrokerId for updating orders.");
+                throw new IllegalArgumentException( "Expected order with populated BrokerId for updating orders.");
             }
 
             ibOrder = ConvertOrder(order, contract, ibOrderID);
@@ -575,9 +575,9 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Gets the current conversion rate into USD
+         * Gets the current conversion rate into USD
         */
-        /// Synchronous, blocking
+         * Synchronous, blocking
         private BigDecimal GetUsdConversion( String currency) {
             if( currency == "USD") {
                 return 1m;
@@ -602,7 +602,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             }
 
             // if this stays zero then we haven't received the conversion rate
-            rate = 0m; 
+            rate = BigDecimal.ZERO; 
             manualResetEvent = new ManualResetEvent(false);
 
             // we're going to request both history and active ticks, we'll use the ticks first
@@ -668,7 +668,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Handles error messages from IB
+         * Handles error messages from IB
         */
         private void HandleError(object sender, IB.ErrorEventArgs e) {
             // https://www.interactivebrokers.com/en/software/api/apiguide/tables/api_message_codes.htm
@@ -713,8 +713,8 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// If we lose connection to TWS/IB servers we don't want to send the Error event if it is within
-        /// the scheduled server reset times
+         * If we lose connection to TWS/IB servers we don't want to send the Error event if it is within
+         * the scheduled server reset times
         */
         private void TryWaitForReconnect() {
             // IB has server reset schedule: https://www.interactivebrokers.com/en/?f=%2Fen%2Fsoftware%2FsystemStatus.php%3Fib_entity%3Dllc
@@ -733,7 +733,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Stores all the account values
+         * Stores all the account values
         */
         private void HandleUpdateAccountValue(object sender, IB.UpdateAccountValueEventArgs e) {
             //https://www.interactivebrokers.com/en/software/api/apiguide/activex/updateaccountvalue.htm
@@ -755,7 +755,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Handle order events from IB
+         * Handle order events from IB
         */
         private void HandleOrderStatusUpdates(object sender, IB.OrderStatusEventArgs update) {
             try
@@ -774,10 +774,10 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     _orderFills.TryRemove(order.Id, out value);
                 }
 
-                orderFee = 0m;
+                orderFee = BigDecimal.ZERO;
                 int filledThisTime;
-                lock (_orderFillsLock) {
-                    // lock since we're getting and updating in multiple operations
+                synchronized(_orderFillsLock) {
+                    // synchronizedsince we're getting and updating in multiple operations
                     currentFilled = _orderFills.GetOrAdd(order.Id, 0);
                     if( currentFilled == 0) {
                         // apply order fees on the first fill event TODO: What about partial filled orders that get cancelled?
@@ -829,7 +829,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Handle portfolio changed events from IB
+         * Handle portfolio changed events from IB
         */
         private void HandlePortfolioUpdates(object sender, IB.UpdatePortfolioEventArgs e) {
             _accountHoldingsResetEvent.Reset();
@@ -838,7 +838,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Converts a QC order to an IB order
+         * Converts a QC order to an IB order
         */
         private IB.Order ConvertOrder(Order order, IB.Contract contract, int ibOrderID) {
             ibOrder = new IB.Order
@@ -946,10 +946,10 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Creates an IB contract from the order.
+         * Creates an IB contract from the order.
         */
-         * @param symbol">The symbol whose contract we need to create
-         * @param exchange">The exchange where the order will be placed, defaults to 'Smart'
+         * @param symbol The symbol whose contract we need to create
+         * @param exchange The exchange where the order will be placed, defaults to 'Smart'
         @returns A new IB contract for the order
         private IB.Contract CreateContract(Symbol symbol, String exchange = null ) {
             securityType = ConvertSecurityType(symbol.ID.SecurityType);
@@ -976,7 +976,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Maps OrderDirection enumeration
+         * Maps OrderDirection enumeration
         */
         private IB.ActionSide ConvertOrderDirection(OrderDirection direction) {
             switch (direction) {
@@ -989,7 +989,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Maps OrderType enum
+         * Maps OrderType enum
         */
         private IB.OrderType ConvertOrderType(OrderType type) {
             switch (type) {
@@ -1005,7 +1005,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Maps OrderType enum
+         * Maps OrderType enum
         */
         private OrderType ConvertOrderType(IB.Order order) {
             switch (order.OrderType) {
@@ -1026,7 +1026,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Maps IB's OrderStats enum
+         * Maps IB's OrderStats enum
         */
         private OrderStatus ConvertOrderStatus(IB.OrderStatus status) {
             switch (status) {
@@ -1066,7 +1066,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Maps SecurityType enum
+         * Maps SecurityType enum
         */
         private static IB.SecurityType ConvertSecurityType(SecurityType type) {
             switch (type) {
@@ -1086,7 +1086,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     return IB.SecurityType.Future;
 
                 case SecurityType.Base:
-                    throw new ArgumentException( "InteractiveBrokers does not support SecurityType.Base");
+                    throw new IllegalArgumentException( "InteractiveBrokers does not support SecurityType.Base");
 
                 default:
                     throw new InvalidEnumArgumentException( "type", (int)type, typeof(SecurityType));
@@ -1094,7 +1094,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
         
         /**
-        /// Maps SecurityType enum
+         * Maps SecurityType enum
         */
         private static SecurityType ConvertSecurityType(IB.SecurityType type) {
             switch (type) {
@@ -1129,7 +1129,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Creates a holding object from te UpdatePortfolioEventArgs
+         * Creates a holding object from te UpdatePortfolioEventArgs
         */
         private Holding CreateHolding(IB.UpdatePortfolioEventArgs e) {
             String currencySymbol;
@@ -1150,7 +1150,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Maps the IB Contract's symbol to a QC symbol
+         * Maps the IB Contract's symbol to a QC symbol
         */
         private Symbol MapSymbol(IB.Contract contract) {
             securityType = ConvertSecurityType(contract.SecurityType);
@@ -1166,7 +1166,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Handles the threading issues of creating an IB order ID
+         * Handles the threading issues of creating an IB order ID
         */
         @returns The new IB ID
         private int GetNextBrokerageOrderID() {
@@ -1186,17 +1186,17 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Increments the client ID for communication with the gateway
+         * Increments the client ID for communication with the gateway
         */
         private static int IncrementClientID() {
             return Interlocked.Increment(ref _nextClientID);
         }
 
         /**
-        /// This function is used to decide whether or not we should kill an algorithm
-        /// when we lose contact with IB servers. IB performs server resets nightly
-        /// and on Fridays they take everything down, so we'll prevent killing algos
-        /// on Saturdays completely for the time being.
+         * This function is used to decide whether or not we should kill an algorithm
+         * when we lose contact with IB servers. IB performs server resets nightly
+         * and on Fridays they take everything down, so we'll prevent killing algos
+         * on Saturdays completely for the time being.
         */
         private static boolean IsWithinScheduledServerResetTimes() {
             boolean result;
@@ -1222,18 +1222,18 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             return DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork).Add(_brokerTimeDiff);
         }
         void HandleBrokerTime(object sender, IB.CurrentTimeEventArgs e) {
-            // keep track of clock drift
+            // keep track of csynchronizeddrift
             _brokerTimeDiff = e.Time.Subtract(DateTime.UtcNow);
         }
         Duration _brokerTimeDiff = new TimeSpan(0);
 
 
         /**
-        /// IDataQueueHandler interface implementaion 
+         * IDataQueueHandler interface implementaion 
         */
-        /// 
+         * 
         public IEnumerable<BaseData> GetNextTicks() {
-            lock (_ticks) {
+            synchronized(_ticks) {
                 copy = _ticks.ToArray();
                 _ticks.Clear();
                 return copy;
@@ -1241,10 +1241,10 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Adds the specified symbols to the subscription
+         * Adds the specified symbols to the subscription
         */
-         * @param job">Job we're subscribing for:
-         * @param symbols">The symbols to be added keyed by SecurityType
+         * @param job Job we're subscribing for:
+         * @param symbols The symbols to be added keyed by SecurityType
         public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             foreach (symbol in symbols) {
                 id = GetNextRequestID();
@@ -1257,10 +1257,10 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         /**
-        /// Removes the specified symbols to the subscription
+         * Removes the specified symbols to the subscription
         */
-         * @param job">Job we're processing.
-         * @param symbols">The symbols to be removed keyed by SecurityType
+         * @param job Job we're processing.
+         * @param symbols The symbols to be removed keyed by SecurityType
         public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             foreach (symbol in symbols) {
                 res = default(int);
@@ -1329,13 +1329,13 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                     return;
             }
 
-            lock (_ticks)
+            synchronized(_ticks)
                 if( tick.IsValid()) _ticks.Add(tick);
 
         }
 
         /**
-        /// Modifies the quantity received from IB based on the security type
+         * Modifies the quantity received from IB based on the security type
         */
         public static int AdjustQuantity(SecurityType type, int size) {
             switch (type) {
@@ -1403,7 +1403,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                 default:
                     return;
             }
-            lock (_ticks)
+            synchronized(_ticks)
                 if( tick.IsValid()) _ticks.Add(tick);
 
         }

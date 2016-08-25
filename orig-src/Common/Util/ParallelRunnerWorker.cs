@@ -22,7 +22,7 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Runner type used to run <see cref="IParallelRunnerWorkItem"/>
+     * Runner type used to run <see cref="IParallelRunnerWorkItem"/>
     */
     public class ParallelRunnerWorker : IDisposable
     {
@@ -33,8 +33,8 @@ package com.quantconnect.lean.Util
         private final BlockingCollection<IParallelRunnerWorkItem> _queue;
 
         /**
-        /// Gets a wait handle that can be used to wait for this worker
-        /// to finished all work in the queue, that is, when <see cref="BlockingCollection{T}.IsAddingCompleted"/> equals true.
+         * Gets a wait handle that can be used to wait for this worker
+         * to finished all work in the queue, that is, when <see cref="BlockingCollection{T}.IsAddingCompleted"/> equals true.
         */
         public WaitHandle WaitHandle
         {
@@ -42,10 +42,10 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Initialzies a new instance of the <see cref="ParallelRunnerWorker"/> class
+         * Initialzies a new instance of the <see cref="ParallelRunnerWorker"/> class
         */
-         * @param controller">The controller instance used to reschedule work items
-         * @param queue">The work queue where this worker will source the work items
+         * @param controller The controller instance used to reschedule work items
+         * @param queue The work queue where this worker will source the work items
         public ParallelRunnerWorker(ParallelRunnerController controller, BlockingCollection<IParallelRunnerWorkItem> queue) {
             _queue = queue;
             _controller = controller;
@@ -53,12 +53,12 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Starts a new thread to process the work queue.
-        /// This method is indempotent.
+         * Starts a new thread to process the work queue.
+         * This method is indempotent.
         */
-         * @param token">The cancellation token
+         * @param token The cancellation token
         public void Start(CancellationToken token) {
-            lock (_sync) {
+            synchronized(_sync) {
                 if( _thread != null ) return;
                 _thread = new Thread(() -> ThreadEntry(token));
                 _thread.Start();
@@ -66,7 +66,7 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Main entry point for the worker thread
+         * Main entry point for the worker thread
         */
         private void ThreadEntry(CancellationToken token) {
             try
@@ -96,11 +96,11 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
-            lock (_sync) {
+            synchronized(_sync) {
                 if( _waitHandle != null ) _waitHandle.Dispose();
                 if( _thread != null && _thread.IsAlive) _thread.Abort();
             }

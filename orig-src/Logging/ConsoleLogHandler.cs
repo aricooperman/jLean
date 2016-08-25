@@ -19,7 +19,7 @@ using System.IO;
 package com.quantconnect.lean.Logging
 {
     /**
-    /// ILogHandler implementation that writes log output to console.
+     * ILogHandler implementation that writes log output to console.
     */
     public class ConsoleLogHandler : ILogHandler
     {
@@ -28,7 +28,7 @@ package com.quantconnect.lean.Logging
         private final TextWriter _error;
 
         /**
-        /// Initializes a new instance of the <see cref="QuantConnect.Logging.ConsoleLogHandler"/> class.
+         * Initializes a new instance of the <see cref="QuantConnect.Logging.ConsoleLogHandler"/> class.
         */
         public ConsoleLogHandler() {
             // saves references to the real console text writer since in a deployed state we may overwrite this in order
@@ -38,9 +38,9 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write error message to log
+         * Write error message to log
         */
-         * @param text">The error text to log
+         * @param text The error text to log
         public void Error( String text) {
             Console.ForegroundColor = ConsoleColor.Red;
             _error.WriteLine(DateTime.Now.toString(DateFormat) + " ERROR:: " + text);
@@ -48,25 +48,25 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write debug message to log
+         * Write debug message to log
         */
-         * @param text">The debug text to log
+         * @param text The debug text to log
         public void Debug( String text) {
             _trace.WriteLine(DateTime.Now.toString(DateFormat) + " DEBUG:: " + text);
         }
 
         /**
-        /// Write debug message to log
+         * Write debug message to log
         */
-         * @param text">The trace text to log
+         * @param text The trace text to log
         public void Trace( String text) {
             _trace.WriteLine(DateTime.Now.toString(DateFormat) + " Trace:: " + text);
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
         }
     }

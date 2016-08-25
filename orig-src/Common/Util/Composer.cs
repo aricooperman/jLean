@@ -29,20 +29,20 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Provides methods for obtaining exported MEF instances
+     * Provides methods for obtaining exported MEF instances
     */
     public class Composer
     {
         private static final String PluginDirectory = Config.Get( "plugin-directory");
 
         /**
-        /// Gets the singleton instance
+         * Gets the singleton instance
         */
         public static final Composer Instance = new Composer();
 
         /**
-        /// Initializes a new instance of the <see cref="Composer"/> class. This type
-        /// is a light wrapper on top of an MEF <see cref="CompositionContainer"/>
+         * Initializes a new instance of the <see cref="Composer"/> class. This type
+         * is a light wrapper on top of an MEF <see cref="CompositionContainer"/>
         */
         public Composer() {
             Reset();
@@ -53,9 +53,9 @@ package com.quantconnect.lean.Util
         private final Map<Type, IEnumerable> _exportedValues = new Map<Type, IEnumerable>();
 
         /**
-        /// Gets the export matching the predicate
+         * Gets the export matching the predicate
         */
-         * @param predicate">Function used to pick which imported instance to return, if null the first instance is returned
+         * @param predicate Function used to pick which imported instance to return, if null the first instance is returned
         @returns The only export matching the specified predicate
         public T Single<T>(Func<T, bool> predicate) {
             if( predicate == null ) {
@@ -66,12 +66,12 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Adds the specified instance to this instance to allow it to be recalled via GetExportedValueByTypeName
+         * Adds the specified instance to this instance to allow it to be recalled via GetExportedValueByTypeName
         */
-        /// <typeparam name="T">The contract type</typeparam>
-         * @param instance">The instance to add
+         * <typeparam name="T The contract type</typeparam>
+         * @param instance The instance to add
         public void AddPart<T>(T instance) {
-            lock (_exportedValuesLockObject) {
+            synchronized(_exportedValuesLockObject) {
                 IEnumerable values;
                 if( _exportedValues.TryGetValue(typeof (T), out values)) {
                     ((IList<T>) values).Add(instance);
@@ -85,20 +85,20 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Extension method to searches the composition container for an export that has a matching type name. This function
-        /// will first try to match on Type.AssemblyQualifiedName, then Type.FullName, and finally on Type.Name
-        /// 
-        /// This method will not throw if multiple types are found matching the name, it will just return the first one it finds.
+         * Extension method to searches the composition container for an export that has a matching type name. This function
+         * will first try to match on Type.AssemblyQualifiedName, then Type.FullName, and finally on Type.Name
+         * 
+         * This method will not throw if multiple types are found matching the name, it will just return the first one it finds.
         */
-        /// <typeparam name="T">The type of the export</typeparam>
-         * @param typeName">The name of the type to find. This can be an assembly qualified name, a full name, or just the type's name
+         * <typeparam name="T The type of the export</typeparam>
+         * @param typeName The name of the type to find. This can be an assembly qualified name, a full name, or just the type's name
         @returns The export instance
         public T GetExportedValueByTypeName<T>( String typeName)
             where T : class
         {
             try
             {
-                lock (_exportedValuesLockObject) {
+                synchronized(_exportedValuesLockObject) {
                     T instance;
                     IEnumerable values;
                     type = typeof(T);
@@ -119,7 +119,7 @@ package com.quantconnect.lean.Util
                         .FirstOrDefault();
 
                     if( selectedPart == null ) {
-                        throw new ArgumentException(
+                        throw new IllegalArgumentException(
                             "Unable to locate any exports matching the requested typeName: " + typeName, "typeName");
                     }
 
@@ -153,10 +153,10 @@ package com.quantconnect.lean.Util
             }
         }
         /**
-        /// Gets all exports of type T
+         * Gets all exports of type T
         */
         public IEnumerable<T> GetExportedValues<T>() {
-            lock (_exportedValuesLockObject) {
+            synchronized(_exportedValuesLockObject) {
                 IEnumerable values;
                 if( _exportedValues.TryGetValue(typeof (T), out values)) {
                     return values.OfType<T>();
@@ -169,7 +169,7 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Clears the cache of exported values, causing new instances to be created.
+         * Clears the cache of exported values, causing new instances to be created.
         */
         public void Reset() {
             lock(_exportedValuesLockObject) {
@@ -179,7 +179,7 @@ package com.quantconnect.lean.Util
                     new DirectoryCatalog(AppDomain.CurrentDomain.BaseDirectory, "*.dll"),
                     new DirectoryCatalog(AppDomain.CurrentDomain.BaseDirectory, "*.exe")
                 };
-                if( !string.IsNullOrWhiteSpace(PluginDirectory) && Directory.Exists(PluginDirectory) && new DirectoryInfo(PluginDirectory).FullName != AppDomain.CurrentDomain.BaseDirectory) {
+                if( !StringUtils.isBlank(PluginDirectory) && Directory.Exists(PluginDirectory) && new DirectoryInfo(PluginDirectory).FullName != AppDomain.CurrentDomain.BaseDirectory) {
                     catalogs.Add(new DirectoryCatalog(PluginDirectory, "*.dll"));
                 }
                 aggregate = new AggregateCatalog(catalogs);

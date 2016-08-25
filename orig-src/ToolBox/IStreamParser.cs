@@ -21,15 +21,15 @@ using QuantConnect.Data;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Represents a type capable of accepting a stream and parsing it into an enumerable of data
+     * Represents a type capable of accepting a stream and parsing it into an enumerable of data
     */
     public interface IStreamParser : IDisposable
     {
         /**
-        /// Parses the specified input stream into an enumerable of data
+         * Parses the specified input stream into an enumerable of data
         */
-         * @param source">The source of the stream
-         * @param stream">The input stream to be parsed
+         * @param source The source of the stream
+         * @param stream The input stream to be parsed
         @returns An enumerable of base data
         IEnumerable<BaseData> Parse( String source, Stream stream);
     }

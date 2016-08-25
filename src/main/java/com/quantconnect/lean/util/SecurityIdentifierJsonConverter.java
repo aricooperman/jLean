@@ -30,12 +30,12 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.quantconnect.lean.SecurityIdentifier;
 
-/// A <see cref="JsonConverter"/> implementation that serializes a <see cref="SecurityIdentifier"/> as a string
+ * A <see cref="JsonConverter"/> implementation that serializes a <see cref="SecurityIdentifier"/> as a string
 public class SecurityIdentifierJsonConverter {
     
     public static class SecurityIdentifierJsonSerializer extends JsonSerializer<SecurityIdentifier> {
-        /// Converts as security identifier to a string
-         * @param value">The input value to be converted before serialziation
+         * Converts as security identifier to a string
+         * @param value The input value to be converted before serialziation
         @returns A new instance of TResult that is to be serialzied
         @Override
         public void serialize( SecurityIdentifier value, JsonGenerator gen, SerializerProvider serializers )
@@ -45,8 +45,8 @@ public class SecurityIdentifierJsonConverter {
     }
 
     public static class SecurityIdentifierJsonDeserializer extends JsonDeserializer<SecurityIdentifier> {
-        /// Converts the input String to a security identifier
-         * @param value">The deserialized value that needs to be converted to T
+         * Converts the input String to a security identifier
+         * @param value The deserialized value that needs to be converted to T
         @returns The converted value
         @Override
         public com.quantconnect.lean.SecurityIdentifier deserialize( JsonParser p, DeserializationContext ctxt )

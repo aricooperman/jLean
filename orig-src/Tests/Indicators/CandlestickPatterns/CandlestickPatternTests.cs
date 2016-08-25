@@ -30,7 +30,7 @@ package com.quantconnect.lean.Tests.Indicators.CandlestickPatterns
             "spy_candle_patterns.txt", "ewz_candle_patterns.txt", "eurusd_candle_patterns.txt"
         };
 
-        public virtual TestCaseData[] PatternTestParameters
+        public TestCaseData[] PatternTestParameters
         {
             get
             {

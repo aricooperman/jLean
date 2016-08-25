@@ -25,7 +25,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
     class Program
     {
         /**
-        /// Primary entry point to the program
+         * Primary entry point to the program
         */
         static void Main( String[] args) {
             if( args.Length != 4) {
@@ -55,7 +55,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
 
                 foreach (symbol in symbols) {
                     if( !downloader.HasSymbol(symbol))
-                        throw new ArgumentException( "The symbol " + symbol + " is not available.");
+                        throw new IllegalArgumentException( "The symbol " + symbol + " is not available.");
                 }
 
                 foreach (symbol in symbols) {

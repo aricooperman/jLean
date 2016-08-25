@@ -19,10 +19,10 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// The functional indicator is used to lift any function into an indicator. This can be very useful
-    /// when trying to combine output of several indicators, or for expression a mathematical equation
+     * The functional indicator is used to lift any function into an indicator. This can be very useful
+     * when trying to combine output of several indicators, or for expression a mathematical equation
     */
-    /// <typeparam name="T">The input type for this indicator</typeparam>
+     * <typeparam name="T The input type for this indicator</typeparam>
     public class FunctionalIndicator<T> : IndicatorBase<T>
         where T : BaseData
     {
@@ -34,11 +34,11 @@ package com.quantconnect.lean.Indicators
         private final Func<T, decimal> _computeNextValue;
 
         /**
-        /// Creates a new FunctionalIndicator using the specified functions as its implementation.
+         * Creates a new FunctionalIndicator using the specified functions as its implementation.
         */
-         * @param name">The name of this indicator
-         * @param computeNextValue">A function accepting the input value and returning this indicator's output value
-         * @param isReady">A function accepting this indicator and returning true if the indicator is ready, false otherwise
+         * @param name The name of this indicator
+         * @param computeNextValue A function accepting the input value and returning this indicator's output value
+         * @param isReady A function accepting this indicator and returning true if the indicator is ready, false otherwise
         public FunctionalIndicator( String name, Func<T, decimal> computeNextValue, Func<IndicatorBase<T>, bool> isReady)
             : base(name) {
             _computeNextValue = computeNextValue;
@@ -46,12 +46,12 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new FunctionalIndicator using the specified functions as its implementation.
+         * Creates a new FunctionalIndicator using the specified functions as its implementation.
         */
-         * @param name">The name of this indicator
-         * @param computeNextValue">A function accepting the input value and returning this indicator's output value
-         * @param isReady">A function accepting this indicator and returning true if the indicator is ready, false otherwise
-         * @param reset">Function called to reset this indicator and any indicators this is dependent on
+         * @param name The name of this indicator
+         * @param computeNextValue A function accepting the input value and returning this indicator's output value
+         * @param isReady A function accepting this indicator and returning true if the indicator is ready, false otherwise
+         * @param reset Function called to reset this indicator and any indicators this is dependent on
         public FunctionalIndicator( String name, Func<T, decimal> computeNextValue, Func<IndicatorBase<T>, bool> isReady, Action reset)
             : base(name) {
             _computeNextValue = computeNextValue;
@@ -60,7 +60,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -68,16 +68,16 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(T input) {
             return _computeNextValue(input);
         }
 
         /**
-        /// Resets this indicator to its initial state, optionally using the reset action passed via the constructor
+         * Resets this indicator to its initial state, optionally using the reset action passed via the constructor
         */
         public @Override void Reset() {
             if( _reset != null ) {

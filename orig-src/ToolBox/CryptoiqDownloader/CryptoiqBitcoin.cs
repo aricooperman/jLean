@@ -17,36 +17,36 @@ using System;
 package com.quantconnect.lean.ToolBox.CryptoiqDownloader
 {
     /**
-    /// Defines the JSON response structure from the Cryptoiq API
+     * Defines the JSON response structure from the Cryptoiq API
     */
     public class CryptoiqBitcoin
     {
         /**
-        /// The time of the tick
+         * The time of the tick
         */
         public DateTime Time;
         /**
-        /// The ask price
+         * The ask price
         */
         public BigDecimal Ask;
         /**
-        /// The bid price
+         * The bid price
         */
         public BigDecimal Bid;
         /**
-        /// The price of the last trade
+         * The price of the last trade
         */
         public BigDecimal Last;
         /**
-        /// The daily high
+         * The daily high
         */
         public BigDecimal High;
         /**
-        /// The daily low
+         * The daily low
         */
         public BigDecimal Low;
         /**
-        /// The daily running volume
+         * The daily running volume
         */
         public BigDecimal Volume;
     }

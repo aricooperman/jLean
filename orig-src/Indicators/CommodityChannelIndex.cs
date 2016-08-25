@@ -18,16 +18,16 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    ///     Represents the traditional commodity channel index (CCI)
-    ///     
-    ///     CCI = (Typical Price - 20-period SMA of TP) / (.015 * Mean Deviation)
-    ///     Typical Price (TP) = (High + Low + Close)/3
-    ///     Constant = 0.015
+     *     Represents the traditional commodity channel index (CCI)
+     *     
+     *     CCI = (Typical Price - 20-period SMA of TP) / (.015 * Mean Deviation)
+     *     Typical Price (TP) = (High + Low + Close)/3
+     *     Constant = 0.015
     ///
-    ///     There are four steps to calculating the Mean Deviation, first, subtract
-    ///     the most recent 20-period average of the typical price from each period's
-    ///     typical price. Second, take the absolute values of these numbers. Third,
-    ///     sum the absolute values. Fourth, divide by the total number of periods (20).
+     *     There are four steps to calculating the Mean Deviation, first, subtract
+     *     the most recent 20-period average of the typical price from each period's
+     *     typical price. Second, take the absolute values of these numbers. Third,
+     *     sum the absolute values. Fourth, divide by the total number of periods (20).
     */
     public class CommodityChannelIndex : TradeBarIndicator
     {
@@ -35,35 +35,35 @@ package com.quantconnect.lean.Indicators
         private static final BigDecimal _k = 0.015m;
 
         /**
-        /// Gets the type of moving average
+         * Gets the type of moving average
         */
         public MovingAverageType MovingAverageType { get; private set; }
 
         /**
-        /// Keep track of the simple moving average of the typical price
+         * Keep track of the simple moving average of the typical price
         */
         public IndicatorBase<IndicatorDataPoint> TypicalPriceAverage { get; private set; }
 
         /**
-        /// Keep track of the mean absolute deviation of the typical price
+         * Keep track of the mean absolute deviation of the typical price
         */
         public IndicatorBase<IndicatorDataPoint> TypicalPriceMeanDeviation { get; private set; }
 
         /**
-        /// Initializes a new instance of the CommodityChannelIndex class
+         * Initializes a new instance of the CommodityChannelIndex class
         */
-         * @param period">The period of the standard deviation and moving average (middle band)
-         * @param movingAverageType">The type of moving average to be used
+         * @param period The period of the standard deviation and moving average (middle band)
+         * @param movingAverageType The type of moving average to be used
         public CommodityChannelIndex(int period, MovingAverageType movingAverageType = MovingAverageType.Simple)
             : this( "CCI" + period, period, movingAverageType) {
         }
 
         /**
-        /// Initializes a new instance of the CommodityChannelIndex class
+         * Initializes a new instance of the CommodityChannelIndex class
         */
-         * @param name">The name of this indicator
-         * @param period">The period of the standard deviation and moving average (middle band)
-         * @param movingAverageType">The type of moving average to be used
+         * @param name The name of this indicator
+         * @param period The period of the standard deviation and moving average (middle band)
+         * @param movingAverageType The type of moving average to be used
         public CommodityChannelIndex( String name, int period, MovingAverageType movingAverageType = MovingAverageType.Simple)
             : base(name) {
             MovingAverageType = movingAverageType;
@@ -72,7 +72,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -80,9 +80,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             BigDecimal typicalPrice = (input.High + input.Low + input.Close)/3.0m;
@@ -101,7 +101,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             TypicalPriceAverage.Reset();

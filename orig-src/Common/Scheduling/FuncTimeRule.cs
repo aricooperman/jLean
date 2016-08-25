@@ -20,24 +20,24 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Scheduling
 {
     /**
-    /// Uses a function to define a time rule as a projection of date times to date times
+     * Uses a function to define a time rule as a projection of date times to date times
     */
     public class FuncTimeRule : ITimeRule
     {
         private final Func<IEnumerable<DateTime>, IEnumerable<DateTime>> _createUtcEventTimesFunction;
 
         /**
-        /// Initializes a new instance of the <see cref="FuncTimeRule"/> class
+         * Initializes a new instance of the <see cref="FuncTimeRule"/> class
         */
-         * @param name">The name of the time rule
-         * @param createUtcEventTimesFunction">Function used to transform dates into event date times
+         * @param name The name of the time rule
+         * @param createUtcEventTimesFunction Function used to transform dates into event date times
         public FuncTimeRule( String name, Func<IEnumerable<DateTime>, IEnumerable<DateTime>> createUtcEventTimesFunction) {
             Name = name;
             _createUtcEventTimesFunction = createUtcEventTimesFunction;
         }
 
         /**
-        /// Gets a name for this rule
+         * Gets a name for this rule
         */
         public String Name
         {
@@ -45,11 +45,11 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Creates the event times for the specified dates in UTC
+         * Creates the event times for the specified dates in UTC
         */
-         * @param dates">The dates to apply times to
+         * @param dates The dates to apply times to
         @returns An enumerable of date times that is the result
-        /// of applying this rule to the specified dates
+         * of applying this rule to the specified dates
         public IEnumerable<DateTime> CreateUtcEventTimes(IEnumerable<DateTime> dates) {
             return _createUtcEventTimesFunction(dates);
         }

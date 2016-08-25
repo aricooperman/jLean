@@ -19,17 +19,17 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Homing Pigeon candlestick pattern indicator
+     * Homing Pigeon candlestick pattern indicator
     */
-    /// 
-    /// Must have:
-    /// - first candle: long black candle
-    /// - second candle: short black real body completely inside the previous day's body
-    /// The meaning of "short" and "long" is specified with SetCandleSettings
-    /// The returned value is positive(+1): homing pigeon is always bullish;
-    /// The user should consider that homing pigeon is significant when it appears in a downtrend,
-    /// while this function does not consider the trend
-    /// 
+     * 
+     * Must have:
+     * - first candle: long black candle
+     * - second candle: short black real body completely inside the previous day's body
+     * The meaning of "short" and "long" is specified with SetCandleSettings
+     * The returned value is positive(+1): homing pigeon is always bullish;
+     * The user should consider that homing pigeon is significant when it appears in a downtrend,
+     * while this function does not consider the trend
+     * 
     public class HomingPigeon : CandlestickPattern
     {
         private final int _bodyLongAveragePeriod;
@@ -39,9 +39,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _bodyShortPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="HomingPigeon"/> class using the specified name.
+         * Initializes a new instance of the <see cref="HomingPigeon"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public HomingPigeon( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod) + 1 + 1) {
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
@@ -49,14 +49,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="HomingPigeon"/> class.
+         * Initializes a new instance of the <see cref="HomingPigeon"/> class.
         */
         public HomingPigeon()
             : this( "HOMINGPIGEON") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -64,10 +64,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -79,7 +79,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _bodyShortPeriodTotal += GetCandleRange(CandleSettingType.BodyShort, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -98,7 +98,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = 1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -113,11 +113,11 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
-            _bodyLongPeriodTotal = 0m;
-            _bodyShortPeriodTotal = 0m;
+            _bodyLongPeriodTotal = BigDecimal.ZERO;
+            _bodyShortPeriodTotal = BigDecimal.ZERO;
             base.Reset();
         }
     }

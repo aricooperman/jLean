@@ -21,7 +21,7 @@ using Ionic.Zip;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Provides an implementation of <see cref="IStreamProvider"/> that opens zip files
+     * Provides an implementation of <see cref="IStreamProvider"/> that opens zip files
     */
     public class ZipStreamProvider : IStreamProvider
     {
@@ -29,12 +29,12 @@ package com.quantconnect.lean.ToolBox
         private final Map<String, ZipFile> _zipFiles = new Map<String, ZipFile>();
 
         /**
-        /// Opens the specified source as read to be consumed stream
+         * Opens the specified source as read to be consumed stream
         */
-         * @param source">The source file to be opened
+         * @param source The source file to be opened
         @returns The stream representing the specified source
         public IEnumerable<Stream> Open( String source) {
-            lock (_sync) {
+            synchronized(_sync) {
                 archive = new ZipFile(source);
                 _zipFiles.Add(source, archive);
                 foreach (entry in archive) {
@@ -44,11 +44,11 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Closes the specified source file stream
+         * Closes the specified source file stream
         */
-         * @param source">The source file to be closed
+         * @param source The source file to be closed
         public void Close( String source) {
-            lock (_sync) {
+            synchronized(_sync) {
                 ZipFile archive;
                 if( _zipFiles.TryGetValue(source, out archive)) {
                     _zipFiles.Remove(source);
@@ -58,10 +58,10 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
-            lock (_sync) {
+            synchronized(_sync) {
                 foreach (zipFile in _zipFiles.Values) {
                     zipFile.Dispose();
                 }

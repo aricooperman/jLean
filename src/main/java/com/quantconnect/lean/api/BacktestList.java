@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class BacktestList extends RestResponse {
 
-    /// Collection of summarized backtest objects
+     * Collection of summarized backtest objects
 //    @JsonProperty( "backtests")]
     public List<Backtest> backtests; 
 }

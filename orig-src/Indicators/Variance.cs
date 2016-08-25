@@ -16,7 +16,7 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the n-period population variance.
+     * This indicator computes the n-period population variance.
     */
     public class Variance : WindowIndicator<IndicatorDataPoint>
     {
@@ -24,24 +24,24 @@ package com.quantconnect.lean.Indicators
         private BigDecimal _rollingSumOfSquares;
 
         /**
-        /// Initializes a new instance of the <see cref="Variance"/> class using the specified period.
+         * Initializes a new instance of the <see cref="Variance"/> class using the specified period.
         */ 
-         * @param period">The period of the indicator
+         * @param period The period of the indicator
         public Variance(int period)
             : this( "VAR" + period, period) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Variance"/> class using the specified name and period.
+         * Initializes a new instance of the <see cref="Variance"/> class using the specified name and period.
         */ 
-         * @param name">The name of this indicator
-         * @param period">The period of the indicator
+         * @param name The name of this indicator
+         * @param period The period of the indicator
         public Variance( String name, int period)
             : base(name, period) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -49,17 +49,17 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
-         * @param window">The window for the input history
+         * @param input The input given to the indicator
+         * @param window The window for the input history
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             _rollingSum += input.Value;
             _rollingSumOfSquares += input.Value * input.Value;
 
             if( Samples < 2)
-                return 0m;
+                return BigDecimal.ZERO;
 
             n = Period;
             if( Samples < n)
@@ -78,7 +78,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _rollingSum = 0;

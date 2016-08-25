@@ -20,50 +20,50 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Data.Consolidators
 {
     /**
-    /// Consolidates ticks into quote bars. This consolidator ignores trade ticks
+     * Consolidates ticks into quote bars. This consolidator ignores trade ticks
     */
     public class TickQuoteBarConsolidator : PeriodCountConsolidatorBase<Tick, QuoteBar>
     {
         /**
-        /// Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
+         * Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
         */
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         public TickQuoteBarConsolidator(TimeSpan period)
             : base(period) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
+         * Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
         public TickQuoteBarConsolidator(int maxCount)
             : base(maxCount) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
+         * Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         public TickQuoteBarConsolidator(int maxCount, Duration period)
             : base(maxCount, period) {
         }
         
         /**
-        /// Determines whether or not the specified data should be processd
+         * Determines whether or not the specified data should be processd
         */
-         * @param data">The data to check
+         * @param data The data to check
         @returns True if the consolidator should process this data, false otherwise
         protected @Override boolean ShouldProcess(Tick data) {
             return data.TickType == TickType.Quote;
         }
 
         /**
-        /// Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
-        /// null following the event firing
+         * Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
+         * null following the event firing
         */
-         * @param workingBar">The bar we're building, null if the event was just fired and we're starting a new consolidated bar
-         * @param data">The new data
+         * @param workingBar The bar we're building, null if the event was just fired and we're starting a new consolidated bar
+         * @param data The new data
         protected @Override void AggregateBar(ref QuoteBar workingBar, Tick data) {
             if( workingBar == null ) {
                 workingBar = new QuoteBar

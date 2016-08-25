@@ -21,12 +21,12 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Data.UniverseSelection
 {
     /**
-    /// Defines the additions and subtractions to the algorithm's security subscriptions
+     * Defines the additions and subtractions to the algorithm's security subscriptions
     */
     public class SecurityChanges
     {
         /**
-        /// Gets an instance that represents no changes have been made
+         * Gets an instance that represents no changes have been made
         */
         public static final SecurityChanges None = new SecurityChanges(new List<Security>(), new List<Security>());
 
@@ -34,7 +34,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         private final HashSet<Security> _removedSecurities;
 
         /**
-        /// Gets the symbols that were added by universe selection
+         * Gets the symbols that were added by universe selection
         */
         public IReadOnlyList<Security> AddedSecurities
         {
@@ -42,9 +42,9 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Gets the symbols that were removed by universe selection. This list may
-        /// include symbols that were removed, but are still receiving data due to
-        /// existing holdings or open orders
+         * Gets the symbols that were removed by universe selection. This list may
+         * include symbols that were removed, but are still receiving data due to
+         * existing holdings or open orders
         */
         public IReadOnlyList<Security> RemovedSecurities
         {
@@ -52,19 +52,19 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Initializes a new instance of the <see cref="SecurityChanges"/> class
+         * Initializes a new instance of the <see cref="SecurityChanges"/> class
         */
-         * @param addedSecurities">Added symbols list
-         * @param removedSecurities">Removed symbols list
+         * @param addedSecurities Added symbols list
+         * @param removedSecurities Removed symbols list
         public SecurityChanges(IEnumerable<Security> addedSecurities, IEnumerable<Security> removedSecurities) {
             _addedSecurities = addedSecurities.ToHashSet();
             _removedSecurities = removedSecurities.ToHashSet();
         }
 
         /**
-        /// Returns a new instance of <see cref="SecurityChanges"/> with the specified securities marked as added
+         * Returns a new instance of <see cref="SecurityChanges"/> with the specified securities marked as added
         */
-         * @param securities">The added securities
+         * @param securities The added securities
         @returns A new security changes instance with the specified securities marked as added
         public static SecurityChanges Added(params Security[] securities) {
             if( securities == null || securities.Length == 0) return None;
@@ -72,9 +72,9 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Returns a new instance of <see cref="SecurityChanges"/> with the specified securities marked as removed
+         * Returns a new instance of <see cref="SecurityChanges"/> with the specified securities marked as removed
         */
-         * @param securities">The removed securities
+         * @param securities The removed securities
         @returns A new security changes instance with the specified securities marked as removed
         public static SecurityChanges Removed(params Security[] securities) {
             if( securities == null || securities.Length == 0) return None;
@@ -82,10 +82,10 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Combines the results of two <see cref="SecurityChanges"/>
+         * Combines the results of two <see cref="SecurityChanges"/>
         */
-         * @param left">The left side of the operand
-         * @param right">The right side of the operand
+         * @param left The left side of the operand
+         * @param right The right side of the operand
         @returns Adds the additions together and removes any removals found in the additions, that is, additions take precendence
         public static SecurityChanges operator +(SecurityChanges left, SecurityChanges right) {
             // common case is adding something to nothing, shortcut these to prevent linqness
@@ -100,12 +100,12 @@ package com.quantconnect.lean.Data.UniverseSelection
         #region Overrides of Object
 
         /**
-        /// Returns a String that represents the current object.
+         * Returns a String that represents the current object.
         */
         @returns 
-        /// A String that represents the current object.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * A String that represents the current object.
+         * 
+         * <filterpriority>2</filterpriority>
         public @Override String toString() {
             if( AddedSecurities.Count == 0 && RemovedSecurities.Count == 0) {
                 return "SecurityChanges: None";

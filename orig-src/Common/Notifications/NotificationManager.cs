@@ -19,7 +19,7 @@ using System.Collections.Concurrent;
 package com.quantconnect.lean.Notifications
 {
     /**
-    /// Local/desktop implementation of messaging system for Lean Engine.
+     * Local/desktop implementation of messaging system for Lean Engine.
     */
     public class NotificationManager
     {
@@ -29,7 +29,7 @@ package com.quantconnect.lean.Notifications
         private final boolean _liveMode;
 
         /**
-        /// Public access to the messages
+         * Public access to the messages
         */
         public ConcurrentQueue<Notification> Messages
         {
@@ -37,7 +37,7 @@ package com.quantconnect.lean.Notifications
         }
 
         /**
-        /// Initialize the messaging system
+         * Initialize the messaging system
         */
         public NotificationManager( boolean liveMode) {
             _count = 0;
@@ -47,7 +47,7 @@ package com.quantconnect.lean.Notifications
         }
 
         /**
-        /// Maintain a rate limit of the notification messages per hour send of roughly 20 messages per hour.
+         * Maintain a rate limit of the notification messages per hour send of roughly 20 messages per hour.
         */
         @returns True on under rate limit and acceptable to send message
         private boolean Allow() {
@@ -64,12 +64,12 @@ package com.quantconnect.lean.Notifications
         }
 
         /**
-        /// Send an email to the address specified for live trading notifications.
+         * Send an email to the address specified for live trading notifications.
         */
-         * @param subject">Subject of the email
-         * @param message">Message body, up to 10kb
-         * @param data">Data attachment (optional)
-         * @param address">Email address to send to
+         * @param subject Subject of the email
+         * @param message Message body, up to 10kb
+         * @param data Data attachment (optional)
+         * @param address Email address to send to
         public boolean Email( String address, String subject, String message, String data = "") {
             if( !_liveMode) return false;
             allow = Allow();
@@ -83,10 +83,10 @@ package com.quantconnect.lean.Notifications
         }
 
         /**
-        /// Send an SMS to the phone number specified
+         * Send an SMS to the phone number specified
         */
-         * @param phoneNumber">Phone number to send to
-         * @param message">Message to send
+         * @param phoneNumber Phone number to send to
+         * @param message Message to send
         public boolean Sms( String phoneNumber, String message) {
             if( !_liveMode) return false;
             allow = Allow();
@@ -98,10 +98,10 @@ package com.quantconnect.lean.Notifications
         }
 
         /**
-        /// Place REST POST call to the specified address with the specified DATA.
+         * Place REST POST call to the specified address with the specified DATA.
         */
-         * @param address">Endpoint address
-         * @param data">Data to send in body JSON encoded (optional)
+         * @param address Endpoint address
+         * @param data Data to send in body JSON encoded (optional)
         public boolean Web( String address, object data = null ) {
             if( !_liveMode) return false;
             allow = Allow();

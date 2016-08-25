@@ -25,12 +25,12 @@ using RestSharp;
 package com.quantconnect.lean.Messaging
 {
     /**
-    /// Provides a common transmit method for utilizing the QC streaming API
+     * Provides a common transmit method for utilizing the QC streaming API
     */
     public static class StreamingApi
     {
         /**
-        /// Gets a flag indicating whether or not the streaming api is enabled
+         * Gets a flag indicating whether or not the streaming api is enabled
         */
         public static final boolean IsEnabled = Config.GetBool( "send-via-api");
 
@@ -38,11 +38,11 @@ package com.quantconnect.lean.Messaging
         private static final RestClient Client = new RestClient( "http://streaming.quantconnect.com");
 
         /**
-        /// Send a message to the QuantConnect Chart Streaming API.
+         * Send a message to the QuantConnect Chart Streaming API.
         */
-         * @param userId">User Id
-         * @param apiToken">API token for authentication
-         * @param packet">Packet to transmit
+         * @param userId User Id
+         * @param apiToken API token for authentication
+         * @param packet Packet to transmit
         public static void Transmit(int userId, String apiToken, Packet packet) {
             try
             {
@@ -85,18 +85,18 @@ package com.quantconnect.lean.Messaging
         }
 
         /**
-        /// Response object from the Streaming API.
+         * Response object from the Streaming API.
         */
         private class Response
         {
             /**
-            /// Type of response from the streaming api.
+             * Type of response from the streaming api.
             */
-            /// success or error
+             * success or error
             public String Type;
 
             /**
-            /// Message description of the error or success state.
+             * Message description of the error or success state.
             */
             public String Message;
         }

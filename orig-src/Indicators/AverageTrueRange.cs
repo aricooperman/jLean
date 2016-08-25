@@ -19,29 +19,29 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// The AverageTrueRange indicator is a measure of volatility introduced by Welles Wilder in his
-    /// book: New Concepts in Technical Trading Systems.  This indicator computes the TrueRange and then
-    /// smoothes the TrueRange over a given period.
-    /// 
-    /// TrueRange is defined as the maximum of the following:
-    ///   High - Low
-    ///   ABS(High - PreviousClose)
-    ///   ABS(Low  - PreviousClose)
+     * The AverageTrueRange indicator is a measure of volatility introduced by Welles Wilder in his
+     * book: New Concepts in Technical Trading Systems.  This indicator computes the TrueRange and then
+     * smoothes the TrueRange over a given period.
+     * 
+     * TrueRange is defined as the maximum of the following:
+     *   High - Low
+     *   ABS(High - PreviousClose)
+     *   ABS(Low  - PreviousClose)
     */
     public class AverageTrueRange : TradeBarIndicator
     {
         /**This indicator is used to smooth the TrueRange computation</summary>
-        /// This is not exposed publicly since it is the same value as this indicator, meaning
-        /// that this '_smoother' computers the ATR directly, so exposing it publicly would be duplication
+         * This is not exposed publicly since it is the same value as this indicator, meaning
+         * that this '_smoother' computers the ATR directly, so exposing it publicly would be duplication
         private final IndicatorBase<IndicatorDataPoint> _smoother;
 
         /**
-        /// Gets the true range which is the more volatile calculation to be smoothed by this indicator
+         * Gets the true range which is the more volatile calculation to be smoothed by this indicator
         */
         public IndicatorBase<TradeBar> TrueRange { get; private set; } 
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -49,11 +49,11 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new AverageTrueRange indicator using the specified period and moving average type
+         * Creates a new AverageTrueRange indicator using the specified period and moving average type
         */
-         * @param name">The name of this indicator
-         * @param period">The smoothing period used to smooth the true range values
-         * @param movingAverageType">The type of smoothing used to smooth the true range values
+         * @param name The name of this indicator
+         * @param period The smoothing period used to smooth the true range values
+         * @param movingAverageType The type of smoothing used to smooth the true range values
         public AverageTrueRange( String name, int period, MovingAverageType movingAverageType = MovingAverageType.Wilders)
             : base(name) {
             _smoother = movingAverageType.AsIndicator( String.format( "%1$s_%2$s", name, movingAverageType), period);
@@ -71,24 +71,24 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new AverageTrueRange indicator using the specified period and moving average type
+         * Creates a new AverageTrueRange indicator using the specified period and moving average type
         */
-         * @param period">The smoothing period used to smooth the true range values
-         * @param movingAverageType">The type of smoothing used to smooth the true range values
+         * @param period The smoothing period used to smooth the true range values
+         * @param movingAverageType The type of smoothing used to smooth the true range values
         public AverageTrueRange(int period, MovingAverageType movingAverageType = MovingAverageType.Wilders)
             : this( "ATR" + period, period, movingAverageType) {
         }
 
         /**
-        /// Computes the TrueRange from the current and previous trade bars
-        /// 
-        /// TrueRange is defined as the maximum of the following:
-        ///   High - Low
-        ///   ABS(High - PreviousClose)
-        ///   ABS(Low  - PreviousClose)
+         * Computes the TrueRange from the current and previous trade bars
+         * 
+         * TrueRange is defined as the maximum of the following:
+         *   High - Low
+         *   ABS(High - PreviousClose)
+         *   ABS(Low  - PreviousClose)
         */
-         * @param previous">The previous trade bar
-         * @param current">The current trade bar
+         * @param previous The previous trade bar
+         * @param current The current trade bar
         @returns The true range
         public static BigDecimal ComputeTrueRange(TradeBar previous, TradeBar current) {
             range1 = current.High - current.Low;
@@ -103,9 +103,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             // compute the true range and then send it to our smoother
@@ -116,7 +116,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _smoother.Reset();

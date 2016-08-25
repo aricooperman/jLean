@@ -20,26 +20,26 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Interfaces
 {
     /**
-    /// Task requestor interface with cloud system
+     * Task requestor interface with cloud system
     */
     [InheritedExport(typeof(IJobQueueHandler))]
     public interface IJobQueueHandler
     {
         /**
-        /// Initialize the internal state
+         * Initialize the internal state
         */
         void Initialize();
 
         /**
-        /// Request the next task to run through the engine:
+         * Request the next task to run through the engine:
         */
         @returns Algorithm job to process
         AlgorithmNodePacket NextJob(out String algorithmPath);
 
         /**
-        /// Signal task complete
+         * Signal task complete
         */
-         * @param job">Work to do.
+         * @param job Work to do.
         void AcknowledgeJob(AlgorithmNodePacket job);
     }
 }

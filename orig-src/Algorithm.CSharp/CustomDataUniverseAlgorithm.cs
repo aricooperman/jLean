@@ -22,10 +22,10 @@ using QuantConnect.Data.UniverseSelection;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// This algorithm shows how to grab symbols from an external api each day
-    /// and load data using the universe selection feature. In this example we
-    /// define a custom data type for the NYSE top gainers and then short the 
-    /// top 2 gainers each day
+     * This algorithm shows how to grab symbols from an external api each day
+     * and load data using the universe selection feature. In this example we
+     * define a custom data type for the NYSE top gainers and then short the 
+     * top 2 gainers each day
     */
     public class CustomDataUniverseAlgorithm : QCAlgorithm
     {
@@ -78,9 +78,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Custom data type that uses the wall street journal's top 100 nyse gainers
-        /// html page as a live data source, and a csv file that contains the top 10
-        /// nyse gainers since the beginning of 2009 until 2015/10/19
+         * Custom data type that uses the wall street journal's top 100 nyse gainers
+         * html page as a live data source, and a csv file that contains the top 10
+         * nyse gainers since the beginning of 2009 until 2015/10/19
         */
         public class NyseTopGainers : BaseData
         {

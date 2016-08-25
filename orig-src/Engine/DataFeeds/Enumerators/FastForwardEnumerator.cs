@@ -23,7 +23,7 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /**
-    /// Provides the ability to fast forward an enumerator based on the age of the data
+     * Provides the ability to fast forward an enumerator based on the age of the data
     */
     public class FastForwardEnumerator : IEnumerator<BaseData>
     {
@@ -35,12 +35,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         private final IEnumerator<BaseData> _enumerator;
 
         /**
-        /// Initializes a new instance of the <see cref="FastForwardEnumerator"/> class
+         * Initializes a new instance of the <see cref="FastForwardEnumerator"/> class
         */
-         * @param enumerator">The source enumerator
-         * @param timeProvider">A time provider used to determine age of data
-         * @param timeZone">The data's time zone
-         * @param maximumDataAge">The maximum age of data allowed
+         * @param enumerator The source enumerator
+         * @param timeProvider A time provider used to determine age of data
+         * @param timeZone The data's time zone
+         * @param maximumDataAge The maximum age of data allowed
         public FastForwardEnumerator(IEnumerator<BaseData> enumerator, ITimeProvider timeProvider, ZoneId timeZone, Duration maximumDataAge) {
             _enumerator = enumerator;
             _timeProvider = timeProvider;
@@ -49,11 +49,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Advances the enumerator to the next element of the collection.
+         * Advances the enumerator to the next element of the collection.
         */
         @returns 
-        /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// 
+         * true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+         * 
         public boolean MoveNext() {
             // keep churning until recent data or null
             while (_enumerator.MoveNext()) {
@@ -82,40 +82,40 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Sets the enumerator to its initial position, which is before the first element in the collection.
+         * Sets the enumerator to its initial position, which is before the first element in the collection.
         */
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             _enumerator.Reset();
         }
 
         /**
-        /// Gets the element in the collection at the current position of the enumerator.
+         * Gets the element in the collection at the current position of the enumerator.
         */
         @returns 
-        /// The element in the collection at the current position of the enumerator.
-        /// 
+         * The element in the collection at the current position of the enumerator.
+         * 
         public BaseData Current
         {
             get { return _current; }
         }
 
         /**
-        /// Gets the current element in the collection.
+         * Gets the current element in the collection.
         */
         @returns 
-        /// The current element in the collection.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * The current element in the collection.
+         * 
+         * <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return _current; }
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
             _enumerator.Dispose();
         }

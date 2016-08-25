@@ -16,25 +16,25 @@
 package com.quantconnect.lean.Securities.Option
 {
     /**
-    /// Option exchange class - information and helper tools for option exchange properties
+     * Option exchange class - information and helper tools for option exchange properties
     */
-    /// <seealso cref="SecurityExchange"/>
+     * <seealso cref="SecurityExchange"/>
     public class OptionExchange : SecurityExchange
     {
         /**
-        /// Number of trading days per year for this security, 252.
+         * Number of trading days per year for this security, 252.
         */
-        /// Used for performance statistics to calculate sharpe ratio accurately
+         * Used for performance statistics to calculate sharpe ratio accurately
         public @Override int TradingDaysPerYear
         {
             get { return 252; }
         }
 
         /**
-        /// Initializes a new instance of the <see cref="OptionExchange"/> class using the specified
-        /// exchange hours to determine open/close times
+         * Initializes a new instance of the <see cref="OptionExchange"/> class using the specified
+         * exchange hours to determine open/close times
         */
-         * @param exchangeHours">Contains the weekly exchange schedule plus holidays
+         * @param exchangeHours Contains the weekly exchange schedule plus holidays
         public OptionExchange(SecurityExchangeHours exchangeHours)
             : base(exchangeHours) {
         }

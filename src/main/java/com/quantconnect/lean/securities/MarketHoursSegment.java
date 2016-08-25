@@ -65,37 +65,37 @@ public class MarketHoursSegment {
     }
 
     /**
-    /// Gets a new market hours segment representing being open all day
+     * Gets a new market hours segment representing being open all day
     */
     public static MarketHoursSegment closedAllDay() {
         return new MarketHoursSegment( MarketHoursState.Closed, Duration.ZERO, Time.OneDay );
     }
 
     /**
-    /// Determines whether or not the specified time is contained within this segment
+     * Determines whether or not the specified time is contained within this segment
     */
-     * @param time">The time to check
+     * @param time The time to check
     @returns True if this segment contains the specified time, false otherwise
     public boolean Contains(TimeSpan time) {
         return time >= Start && time < End;
     }
 
     /**
-    /// Determines whether or not the specified time range overlaps with this segment
+     * Determines whether or not the specified time range overlaps with this segment
     */
-     * @param start">The start of the range
-     * @param end">The end of the range
+     * @param start The start of the range
+     * @param end The end of the range
     @returns True if the specified range overlaps this time segment, false otherwise
     public boolean Overlaps(TimeSpan start, Duration end) {
         return Start < end && End > start;
     }
 
     /**
-    /// Returns a String that represents the current object.
+     * Returns a String that represents the current object.
     */
     @returns 
-    /// A String that represents the current object.
-    /// 
+     * A String that represents the current object.
+     * 
     public @Override String toString() {
         return String.format( "%1$s: %2$s-%3$s", State, Start, End);
     }

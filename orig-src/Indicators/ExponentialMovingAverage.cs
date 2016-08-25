@@ -17,7 +17,7 @@ package com.quantconnect.lean.Indicators
 {
 
     /**
-    ///     Represents the traditional exponential moving average indicator (EMA)
+     *     Represents the traditional exponential moving average indicator (EMA)
     */
     public class ExponentialMovingAverage : Indicator
     {
@@ -26,8 +26,8 @@ package com.quantconnect.lean.Indicators
 
         /**Initializes a new instance of the ExponentialMovingAverage class with the specified name and period
         */
-         * @param name">The name of this indicator
-         * @param period">The period of the EMA
+         * @param name The name of this indicator
+         * @param period The period of the EMA
         public ExponentialMovingAverage( String name, int period)
             : base(name) {
             _period = period;
@@ -36,9 +36,9 @@ package com.quantconnect.lean.Indicators
 
         /**Initializes a new instance of the ExponentialMovingAverage class with the specified name and period
         */
-         * @param name">The name of this indicator
-         * @param period">The period of the EMA
-         * @param smoothingFactor">The percentage of data from the previous value to be carried into the next value
+         * @param name The name of this indicator
+         * @param period The period of the EMA
+         * @param smoothingFactor The percentage of data from the previous value to be carried into the next value
         public ExponentialMovingAverage( String name, int period, BigDecimal smoothingFactor)
             : base(name) {
             _period = period;
@@ -46,31 +46,31 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        ///     Initializes a new instance of the ExponentialMovingAverage class with the default name and period
+         *     Initializes a new instance of the ExponentialMovingAverage class with the default name and period
         */
-         * @param period">The period of the EMA
+         * @param period The period of the EMA
         public ExponentialMovingAverage(int period)
             : this( "EMA" + period, period) {
         }
 
         /**Initializes a new instance of the ExponentialMovingAverage class with the default name and period
         */
-         * @param period">The period of the EMA
-         * @param smoothingFactor">The percentage of data from the previous value to be carried into the next value
+         * @param period The period of the EMA
+         * @param smoothingFactor The percentage of data from the previous value to be carried into the next value
         public ExponentialMovingAverage(int period, BigDecimal smoothingFactor)
             : this( "EMA" + period, period, smoothingFactor) {
         }
 
         /**Calculates the default smoothing factor for an ExponentialMovingAverage indicator
         */
-         * @param period">The period of the EMA
+         * @param period The period of the EMA
         @returns The default smoothing factor
         public static BigDecimal SmoothingFactorDefault(int period) {
             return 2.0m / ((decimal) period + 1.0m);
         }
 
         /**
-        ///     Gets a flag indicating when this indicator is ready and fully initialized
+         *     Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -78,9 +78,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        ///     Computes the next value of this indicator from the given state
+         *     Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             // our first data point just return identity

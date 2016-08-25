@@ -21,8 +21,8 @@ using QuantConnect.Data.Consolidators;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Provides an implementation of <see cref="IDataProcessor"/> that consolidates the data
-    /// stream and forwards the consolidated data to other processors
+     * Provides an implementation of <see cref="IDataProcessor"/> that consolidates the data
+     * stream and forwards the consolidated data to other processors
     */
     public class ConsolidatorDataProcessor : IDataProcessor
     {
@@ -32,10 +32,10 @@ package com.quantconnect.lean.ToolBox
         private final Map<Symbol, IDataConsolidator> _consolidators;
 
         /**
-        /// Initializes a new instance of the <see cref="ConsolidatorDataProcessor"/> class
+         * Initializes a new instance of the <see cref="ConsolidatorDataProcessor"/> class
         */
-         * @param destination">The receiver of the consolidated data
-         * @param createConsolidator">Function used to create consolidators
+         * @param destination The receiver of the consolidated data
+         * @param createConsolidator Function used to create consolidators
         public ConsolidatorDataProcessor(IDataProcessor destination, Func<BaseData, IDataConsolidator> createConsolidator) {
             _destination = destination;
             _createConsolidator = createConsolidator;
@@ -43,9 +43,9 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Invoked for each piece of data from the source file
+         * Invoked for each piece of data from the source file
         */
-         * @param data">The data to be processed
+         * @param data The data to be processed
         public void Process(BaseData data) {
             // grab the correct consolidator for this symbol
             IDataConsolidator consolidator;
@@ -59,7 +59,7 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
             _frontier = DateTime.MaxValue;
@@ -74,7 +74,7 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Handles the <see cref="IDataConsolidator.DataConsolidated"/> event
+         * Handles the <see cref="IDataConsolidator.DataConsolidated"/> event
         */
         private void OnDataConsolidated(object sender, BaseData args) {
             _destination.Process(args);

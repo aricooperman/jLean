@@ -18,67 +18,67 @@ using System;
 package com.quantconnect.lean.Statistics
 {
     /**
-    /// Represents a closed trade
+     * Represents a closed trade
     */
     public class Trade
     {
         /**
-        /// The symbol of the traded instrument
+         * The symbol of the traded instrument
         */
         public Symbol Symbol { get; set; }
 
         /**
-        /// The date and time the trade was opened
+         * The date and time the trade was opened
         */
         public DateTime EntryTime { get; set; }
 
         /**
-        /// The price at which the trade was opened (or the average price if multiple entries)
+         * The price at which the trade was opened (or the average price if multiple entries)
         */
         public BigDecimal EntryPrice { get; set; }
 
         /**
-        /// The direction of the trade (Long or Short)
+         * The direction of the trade (Long or Short)
         */
         public TradeDirection Direction { get; set; }
 
         /**
-        /// The total unsigned quantity of the trade
+         * The total unsigned quantity of the trade
         */
         public int Quantity { get; set; }
 
         /**
-        /// The date and time the trade was closed
+         * The date and time the trade was closed
         */
         public DateTime ExitTime { get; set; }
 
         /**
-        /// The price at which the trade was closed (or the average price if multiple exits)
+         * The price at which the trade was closed (or the average price if multiple exits)
         */
         public BigDecimal ExitPrice { get; set; }
 
         /**
-        /// The gross profit/loss of the trade (as symbol currency)
+         * The gross profit/loss of the trade (as symbol currency)
         */
         public BigDecimal ProfitLoss { get; set; }
 
         /**
-        /// The total fees associated with the trade (always positive value) (as symbol currency)
+         * The total fees associated with the trade (always positive value) (as symbol currency)
         */
         public BigDecimal TotalFees { get; set; }
 
         /**
-        /// The Maximum Adverse Excursion (as symbol currency)
+         * The Maximum Adverse Excursion (as symbol currency)
         */
         public BigDecimal MAE { get; set; }
 
         /**
-        /// The Maximum Favorable Excursion (as symbol currency)
+         * The Maximum Favorable Excursion (as symbol currency)
         */
         public BigDecimal MFE { get; set; }
 
         /**
-        /// Returns the duration of the trade
+         * Returns the duration of the trade
         */
         public Duration Duration
         {
@@ -86,7 +86,7 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Returns the amount of profit given back before the trade was closed
+         * Returns the amount of profit given back before the trade was closed
         */
         public BigDecimal EndTradeDrawdown
         {

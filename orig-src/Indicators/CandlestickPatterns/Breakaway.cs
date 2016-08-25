@@ -18,20 +18,20 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Breakaway candlestick pattern indicator
+     * Breakaway candlestick pattern indicator
     */
-    /// 
-    ///  Must have:
-    /// - first candle: long black(white)
-    /// - second candle: black(white) day whose body gaps down(up)
-    /// - third candle: black or white day with lower(higher) high and lower(higher) low than prior candle's
-    /// - fourth candle: black(white) day with lower(higher) high and lower(higher) low than prior candle's
-    /// - fifth candle: white(black) day that closes inside the gap, erasing the prior 3 days
-    /// The meaning of "long" is specified with SetCandleSettings
-    /// The returned value is positive(+1) when bullish or negative(-1) when bearish;
-    /// The user should consider that breakaway is significant in a trend opposite to the last candle, while this
-    /// function does not consider it
-    /// 
+     * 
+     *  Must have:
+     * - first candle: long black(white)
+     * - second candle: black(white) day whose body gaps down(up)
+     * - third candle: black or white day with lower(higher) high and lower(higher) low than prior candle's
+     * - fourth candle: black(white) day with lower(higher) high and lower(higher) low than prior candle's
+     * - fifth candle: white(black) day that closes inside the gap, erasing the prior 3 days
+     * The meaning of "long" is specified with SetCandleSettings
+     * The returned value is positive(+1) when bullish or negative(-1) when bearish;
+     * The user should consider that breakaway is significant in a trend opposite to the last candle, while this
+     * function does not consider it
+     * 
     public class Breakaway : CandlestickPattern
     {
         private final int _bodyLongAveragePeriod;
@@ -39,23 +39,23 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _bodyLongPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="Breakaway"/> class using the specified name.
+         * Initializes a new instance of the <see cref="Breakaway"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public Breakaway( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod + 4 + 1) {
             _bodyLongAveragePeriod = CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Breakaway"/> class.
+         * Initializes a new instance of the <see cref="Breakaway"/> class.
         */
         public Breakaway()
             : this( "BREAKAWAY") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -63,10 +63,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -74,7 +74,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _bodyLongPeriodTotal += GetCandleRange(CandleSettingType.BodyLong, window[4]);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -115,7 +115,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = (int)GetCandleColor(input);
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -127,10 +127,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
-            _bodyLongPeriodTotal = 0m;
+            _bodyLongPeriodTotal = BigDecimal.ZERO;
             base.Reset();
         }
     }

@@ -26,7 +26,7 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Queues
 {
     /**
-    /// Implementation of local/desktop job request:
+     * Implementation of local/desktop job request:
     */
     public class JobQueue : IJobQueueHandler
     {
@@ -41,7 +41,7 @@ package com.quantconnect.lean.Queues
         private final Language Language = (Language)Enum.Parse(typeof(Language), Config.Get( "algorithm-language"));
 
         /**
-        /// Physical location of Algorithm DLL.
+         * Physical location of Algorithm DLL.
         */
         private String AlgorithmLocation
         {
@@ -53,14 +53,14 @@ package com.quantconnect.lean.Queues
         }
 
         /**
-        /// Initialize the job queue:
+         * Initialize the job queue:
         */
         public void Initialize() {
             //
         }
         
         /**
-        /// Desktop/Local Get Next Task - Get task from the Algorithm folder of VS Solution.
+         * Desktop/Local Get Next Task - Get task from the Algorithm folder of VS Solution.
         */
         @returns 
         public AlgorithmNodePacket NextJob(out String location) {
@@ -122,7 +122,7 @@ package com.quantconnect.lean.Queues
         }
 
         /**
-        /// Desktop/Local acknowledge the task processed. Nothing to do.
+         * Desktop/Local acknowledge the task processed. Nothing to do.
         */
          * @param job">
         public void AcknowledgeJob(AlgorithmNodePacket job) {

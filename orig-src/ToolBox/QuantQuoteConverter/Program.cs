@@ -24,7 +24,7 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
     class Program
     {
         /**
-        /// Primary entry point to the program
+         * Primary entry point to the program
         */
         private static void Main( String[] args) {
             //Document the process:
@@ -83,7 +83,7 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
                     fileContents = File.ReadAllText(file);
                     data = new Map<String,String> { { String.format( "%1$s_%2$s_Trade_Second.csv", date.toString( "yyyyMMdd"), symbol), fileContents } };
 
-                    fileDestination = String.format( "%1$s/equity/%2$s/%3$s/{3}_trade.zip",  destinationDirectory, resolution, symbol, date.toString( "yyyyMMdd"));
+                    fileDestination = String.format( "%1$s/equity/%2$s/%3$s/%4$s_trade.zip",  destinationDirectory, resolution, symbol, date.toString( "yyyyMMdd"));
 
                     if( !Compression.ZipData(fileDestination, data)) {
                         Error( "Error: Could not convert to Lean zip file.");
@@ -100,9 +100,9 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
 
 
         /**
-        /// Application error: display error and then stop conversion
+         * Application error: display error and then stop conversion
         */
-         * @param error">Error string
+         * @param error Error string
         private static void Error( String error) {
             Console.WriteLine(error);
             Console.ReadKey();
@@ -110,7 +110,7 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
         }
 
         /**
-        /// Get the count of the files to process
+         * Get the count of the files to process
         */
          * @param sourceDirectory">
         @returns 
@@ -123,14 +123,14 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
         }
 
         /**
-        /// Remove the final slash to make path building easier
+         * Remove the final slash to make path building easier
         */
         private static String StripFinalSlash( String directory) {
             return directory.Trim('/', '\\');
         }
 
         /**
-        /// Get the date component of tie file path.
+         * Get the date component of tie file path.
         */
          * @param date">
         @returns 
@@ -142,7 +142,7 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
 
 
         /**
-        /// Extract the symbol from the path
+         * Extract the symbol from the path
         */
         private static String GetSymbol( String filePath) {
             splits = filePath.split('/', '\\');
@@ -153,7 +153,7 @@ package com.quantconnect.lean.ToolBox.QuantQuoteConverter
         }
 
         /**
-        /// Validate the users input and throw error if not valid
+         * Validate the users input and throw error if not valid
         */
         private static void Validate( String sourceDirectory, String destinationDirectory, String resolution) {
             if(  String.IsNullOrWhiteSpace(sourceDirectory)) {

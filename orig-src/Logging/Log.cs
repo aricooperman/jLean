@@ -21,7 +21,7 @@ using System.Threading;
 package com.quantconnect.lean.Logging 
 {
     /**
-    /// Logging management class.
+     * Logging management class.
     */
     public static class Log
     {
@@ -32,7 +32,7 @@ package com.quantconnect.lean.Logging
         private static ILogHandler _logHandler = new ConsoleLogHandler();
 
         /**
-        /// Gets or sets the ILogHandler instance used as the global logging implementation.
+         * Gets or sets the ILogHandler instance used as the global logging implementation.
         */
         public static ILogHandler LogHandler
         {
@@ -41,7 +41,7 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Global flag whether to enable debugging logging:
+         * Global flag whether to enable debugging logging:
         */
         public static boolean DebuggingEnabled
         {
@@ -50,7 +50,7 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Set the minimum message level:
+         * Set the minimum message level:
         */
         public static int DebuggingLevel
         {
@@ -59,10 +59,10 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Log error
+         * Log error
         */
-         * @param error">String Error
-         * @param @OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive
+         * @param error String Error
+         * @param @OverrideMessageFloodProtection Force sending a message, overriding the "do not flood" directive
         public static void Error( String error, boolean @OverrideMessageFloodProtection = false) {
             try 
             {
@@ -76,29 +76,29 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Log error. This overload is usefull when exceptions are being thrown from within an anonymous function.
+         * Log error. This overload is usefull when exceptions are being thrown from within an anonymous function.
         */
-         * @param method">The method identifier to be used
-         * @param exception">The exception to be logged
-         * @param message">An optional message to be logged, if null/whitespace the messge text will be extracted
-         * @param @OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive
+         * @param method The method identifier to be used
+         * @param exception The exception to be logged
+         * @param message An optional message to be logged, if null/whitespace the messge text will be extracted
+         * @param @OverrideMessageFloodProtection Force sending a message, overriding the "do not flood" directive
         private static void Error( String method, Exception exception, String message = null, boolean @OverrideMessageFloodProtection = false) {
             message = method + "(): " + (message ?? string.Empty) + " " + exception;
             Error(message, @OverrideMessageFloodProtection);
         }
 
         /**
-        /// Log error
+         * Log error
         */
-         * @param exception">The exception to be logged
-         * @param message">An optional message to be logged, if null/whitespace the messge text will be extracted
-         * @param @OverrideMessageFloodProtection">Force sending a message, overriding the "do not flood" directive
+         * @param exception The exception to be logged
+         * @param message An optional message to be logged, if null/whitespace the messge text will be extracted
+         * @param @OverrideMessageFloodProtection Force sending a message, overriding the "do not flood" directive
         public static void Error(Exception exception, String message = null, boolean @OverrideMessageFloodProtection = false) {
             Error(WhoCalledMe.GetMethodName(1), exception, message, @OverrideMessageFloodProtection);
         }
 
         /**
-        /// Log trace
+         * Log trace
         */
         public static void Trace( String traceText, boolean @OverrideMessageFloodProtection = false) { 
             try 
@@ -113,24 +113,24 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Writes the message in normal text
+         * Writes the message in normal text
         */
         public static void Trace( String format, params object[] args) {
             Trace( String.format(format, args));
         }
 
         /**
-        /// Writes the message in red
+         * Writes the message in red
         */
         public static void Error( String format, params object[] args) {
             Error( String.format(format, args));
         }
 
         /**
-        /// Output to the console, and sleep the thread for a little period to monitor the results.
+         * Output to the console, and sleep the thread for a little period to monitor the results.
         */
          * @param text">
-         * @param level">debug level
+         * @param level debug level
          * @param delay">
         public static void Debug( String text, int level = 1, int delay = 0) {
             try
@@ -145,7 +145,7 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// C# Equivalent of Print_r in PHP:
+         * C# Equivalent of Print_r in PHP:
         */
          * @param obj">
          * @param recursion">

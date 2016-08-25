@@ -23,14 +23,14 @@ using QuantConnect.Securities.Option;
 package com.quantconnect.lean.Data.Market
 {
     /**
-    /// Defines a single option contract at a specific expiration and strike price
+     * Defines a single option contract at a specific expiration and strike price
     */
     public class OptionContract
     {
         private Lazy<OptionPriceModelResult> _optionPriceModelResult = new Lazy<OptionPriceModelResult>(() -> new OptionPriceModelResult(0m, new FirstOrderGreeks())); 
 
         /**
-        /// Gets the option contract's symbol
+         * Gets the option contract's symbol
         */
         public Symbol Symbol
         {
@@ -38,7 +38,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the underlying security's symbol
+         * Gets the underlying security's symbol
         */
         public Symbol UnderlyingSymbol
         {
@@ -46,7 +46,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the strike price
+         * Gets the strike price
         */
         public BigDecimal Strike
         {
@@ -54,7 +54,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the expiration date
+         * Gets the expiration date
         */
         public DateTime Expiry
         {
@@ -62,7 +62,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the right being purchased (call [right to buy] or put [right to sell])
+         * Gets the right being purchased (call [right to buy] or put [right to sell])
         */
         public OptionRight Right
         {
@@ -70,7 +70,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the theoretical price of this option contract as computed by the <see cref="IOptionPriceModel"/>
+         * Gets the theoretical price of this option contract as computed by the <see cref="IOptionPriceModel"/>
         */
         public BigDecimal TheoreticalPrice
         {
@@ -78,7 +78,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the greeks for this contract
+         * Gets the greeks for this contract
         */
         public FirstOrderGreeks Greeks
         {
@@ -86,7 +86,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the local date time this contract's data was last updated
+         * Gets the local date time this contract's data was last updated
         */
         public DateTime Time
         {
@@ -94,7 +94,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the open interest
+         * Gets the open interest
         */
         public BigDecimal OpenInterest
         {
@@ -102,7 +102,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the last price this contract traded at
+         * Gets the last price this contract traded at
         */
         public BigDecimal LastPrice
         {
@@ -110,7 +110,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the current bid price
+         * Gets the current bid price
         */
         public BigDecimal BidPrice
         {
@@ -118,7 +118,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Get the current bid size
+         * Get the current bid size
         */
         public long BidSize
         {
@@ -126,7 +126,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the ask price
+         * Gets the ask price
         */
         public BigDecimal AskPrice
         {
@@ -134,7 +134,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the current ask size
+         * Gets the current ask size
         */
         public long AskSize
         {
@@ -142,7 +142,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the last price the underlying security traded at
+         * Gets the last price the underlying security traded at
         */
         public BigDecimal UnderlyingLastPrice
         {
@@ -150,29 +150,29 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Initializes a new instance of the <see cref="OptionContract"/> class
+         * Initializes a new instance of the <see cref="OptionContract"/> class
         */
-         * @param symbol">The option contract symbol
-         * @param underlyingSymbol">The symbol of the underlying security
+         * @param symbol The option contract symbol
+         * @param underlyingSymbol The symbol of the underlying security
         public OptionContract(Symbol symbol, Symbol underlyingSymbol) {
             Symbol = symbol;
             UnderlyingSymbol = underlyingSymbol;
         }
 
         /**
-        /// Sets the option price model evaluator function to be used for this contract
+         * Sets the option price model evaluator function to be used for this contract
         */
-         * @param optionPriceModelEvaluator">Function delegate used to evaluate the option price model
+         * @param optionPriceModelEvaluator Function delegate used to evaluate the option price model
         internal void SetOptionPriceModel(Func<OptionPriceModelResult> optionPriceModelEvaluator) {
             _optionPriceModelResult = new Lazy<OptionPriceModelResult>(optionPriceModelEvaluator);
         }
 
         /**
-        /// Returns a String that represents the current object.
+         * Returns a String that represents the current object.
         */
         @returns 
-        /// A String that represents the current object.
-        /// 
+         * A String that represents the current object.
+         * 
         public @Override String toString() {
             return String.format( "%1$s%2$s%3$s{3:00000000}", Symbol.ID.Symbol, Expiry.toString(DateFormat.EightCharacter), Right.toString()[0], Strike*1000m);
         }

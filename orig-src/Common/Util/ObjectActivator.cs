@@ -24,11 +24,11 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Provides methods for creating new instances of objects
+     * Provides methods for creating new instances of objects
     */
     public static class ObjectActivator
     {
-        private static final object _lock = new object();
+        private static final object _synchronized= new object();
         private static final object[] _emptyObjectArray = new object[0];
         private static final Map<Type, MethodInvoker> _cloneMethodsByType = new Map<Type, MethodInvoker>();
         private static final Map<Type, Func<object[], object>> _activatorsByType = new Map<Type, Func<object[], object>>();
@@ -40,14 +40,14 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Fast Object Creator from Generic Type:
-        /// Modified from http://rogeralsing.com/2008/02/28/linq-expressions-creating-objects/
+         * Fast Object Creator from Generic Type:
+         * Modified from http://rogeralsing.com/2008/02/28/linq-expressions-creating-objects/
         */
-        /// This assumes that the type has a parameterless, default constructor
-         * @param dataType">Type of the object we wish to create
+         * This assumes that the type has a parameterless, default constructor
+         * @param dataType Type of the object we wish to create
         @returns Method to return an instance of object
         public static Func<object[], object> GetActivator(Type dataType) {
-            lock (_lock) {
+            synchronized(_lock) {
                 // if we already have it, just use it
                 Func<object[], object> factory;
                 if( _activatorsByType.TryGetValue(dataType, out factory)) {
@@ -85,9 +85,9 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Clones the specified instance using reflection
+         * Clones the specified instance using reflection
         */
-         * @param instanceToClone">The instance to be cloned
+         * @param instanceToClone The instance to be cloned
         @returns A field/property wise, non-recursive clone of the instance
         public static object Clone(object instanceToClone) {
             type = instanceToClone.GetType();
@@ -105,7 +105,7 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Clones the specified instance and then casts it to T before returning
+         * Clones the specified instance and then casts it to T before returning
         */
         public static T Clone<T>(T instanceToClone) where T : class
         {

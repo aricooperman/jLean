@@ -22,12 +22,12 @@ using QuantConnect.Data.Custom;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// Daily Fx demonstration to call on and use the FXCM Calendar API
+     * Daily Fx demonstration to call on and use the FXCM Calendar API
     */
     public class DailyFxAlgorithm : QCAlgorithm
     {
         /**
-        /// Add the Daily FX type to our algorithm and use its events.
+         * Add the Daily FX type to our algorithm and use its events.
         */
         public @Override void Initialize() {
             SetStartDate(2016, 05, 26);  //Set Start Date
@@ -43,7 +43,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Trigger an event on a complete calendar event which has an actual value.
+         * Trigger an event on a complete calendar event which has an actual value.
         */
         private int _eventCount = 0;
         private Map<String, DailyFx> _uniqueConfirmation = new Map<String, DailyFx>();

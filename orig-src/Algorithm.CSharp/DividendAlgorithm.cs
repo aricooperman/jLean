@@ -21,12 +21,12 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// Basic template algorithm simply initializes the date range and cash
+     * Basic template algorithm simply initializes the date range and cash
     */
     public class DividendAlgorithm : QCAlgorithm
     {
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             SetStartDate(1998, 01, 01);  //Set Start Date
@@ -43,9 +43,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">TradeBars IDictionary object with your stock data
+         * @param data TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             if( Transactions.OrdersCount == 0) {
                 SetHoldings( "MSFT", .5);
@@ -57,23 +57,23 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Raises the data event.
+         * Raises the data event.
         */
-         * @param data">Data.
+         * @param data Data.
         public void OnData(Dividends data) // update this to Dividends dictionary
         {
             dividend = data["MSFT"];
-            Console.WriteLine( "%1$s >> DIVIDEND >> %2$s - %3$s - {3} - {4}", dividend.Time.toString( "o"), dividend.Symbol, dividend.Distribution.toString( "C"), Portfolio.Cash, Portfolio["MSFT"].Price.toString( "C"));
+            Console.WriteLine( "%1$s >> DIVIDEND >> %2$s - %3$s - %4$s - %5$s", dividend.Time.toString( "o"), dividend.Symbol, dividend.Distribution.toString( "C"), Portfolio.Cash, Portfolio["MSFT"].Price.toString( "C"));
         }
 
         /**
-        /// Raises the data event.
+         * Raises the data event.
         */
-         * @param data">Data.
+         * @param data Data.
         public void OnData(Splits data) {
             Debug( "MSFT: " + Securities["MSFT"].Price);
             split = data["MSFT"];
-            Console.WriteLine( "%1$s >> SPLIT >> %2$s - %3$s - {3} - {4}", split.Time.toString( "o"), split.Symbol, split.splitFactor, Portfolio.Cash, Portfolio["MSFT"].Quantity);
+            Console.WriteLine( "%1$s >> SPLIT >> %2$s - %3$s - %4$s - %5$s", split.Time.toString( "o"), split.Symbol, split.splitFactor, Portfolio.Cash, Portfolio["MSFT"].Quantity);
         }
 
         public @Override void OnOrderEvent(OrderEvent orderEvent) {

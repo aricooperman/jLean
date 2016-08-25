@@ -19,34 +19,34 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Statistics
 {
     /**
-    /// The <see cref="AlgorithmPerformance"/> class is a wrapper for <see cref="TradeStatistics"/> and <see cref="PortfolioStatistics"/>
+     * The <see cref="AlgorithmPerformance"/> class is a wrapper for <see cref="TradeStatistics"/> and <see cref="PortfolioStatistics"/>
     */
     public class AlgorithmPerformance
     {
         /**
-        /// The algorithm statistics on closed trades
+         * The algorithm statistics on closed trades
         */
         public TradeStatistics TradeStatistics { get; private set; }
 
         /**
-        /// The algorithm statistics on portfolio
+         * The algorithm statistics on portfolio
         */
         public PortfolioStatistics PortfolioStatistics { get; private set; }
 
         /**
-        /// The list of closed trades
+         * The list of closed trades
         */
         public List<Trade> ClosedTrades { get; private set; }
 
         /**
-        /// Initializes a new instance of the <see cref="AlgorithmPerformance"/> class
+         * Initializes a new instance of the <see cref="AlgorithmPerformance"/> class
         */
-         * @param trades">The list of closed trades
-         * @param profitLoss">Trade record of profits and losses
-         * @param equity">The list of daily equity values
-         * @param listPerformance">The list of algorithm performance values
-         * @param listBenchmark">The list of benchmark values
-         * @param startingCapital">The algorithm starting capital
+         * @param trades The list of closed trades
+         * @param profitLoss Trade record of profits and losses
+         * @param equity The list of daily equity values
+         * @param listPerformance The list of algorithm performance values
+         * @param listBenchmark The list of benchmark values
+         * @param startingCapital The algorithm starting capital
         public AlgorithmPerformance(
             List<Trade> trades,
             SortedMap<DateTime, decimal> profitLoss,
@@ -60,7 +60,7 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Initializes a new instance of the <see cref="AlgorithmPerformance"/> class
+         * Initializes a new instance of the <see cref="AlgorithmPerformance"/> class
         */
         public AlgorithmPerformance() {
             TradeStatistics = new TradeStatistics();

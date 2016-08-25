@@ -23,9 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 //using System.Collections.Concurrent;
-//using System.Globalization;
 //using System.IO;
-//using System.Linq;
 //using System.Security.Cryptography;
 //using System.Text;
 //using System.Text.RegularExpressions;
@@ -35,9 +33,12 @@ import java.util.List;
 //using QuantConnect.Securities;
 //using Timer = System.Timers.Timer;
 
-/// Extensions function collections - group all static extensions functions here.
+/**
+ * Extensions function collections - group all static extensions functions here.
+ */
 public class Extensions {
     
+    private static final BigDecimal ONE_THOUSAND = BigDecimal.valueOf( 1000 );
     private static final BigDecimal TWO = BigDecimal.valueOf( 2 );
 
     
@@ -53,9 +54,8 @@ public class Extensions {
      * @param oldIndex Index of variable we want to move.
      * @param newInde New location for the variable
      */
-    /// <typeparam name="T">Type of list</typeparam>
     public static <T> void move( List<T> list, int oldIndex, int newIndex ) {
-        T oItem = list.get( oldIndex );
+        final T oItem = list.get( oldIndex );
         list.remove( oldIndex );
         if( newIndex > oldIndex ) 
             newIndex--;
@@ -64,7 +64,7 @@ public class Extensions {
 
     /**
      * Extension method to convert a String into a byte array
-     * @param str">String to convert to bytes.
+     * @param str String to convert to bytes.
      * @returns Byte array
      */
     public static byte[] getBytes( String str ) {
@@ -74,10 +74,10 @@ public class Extensions {
 //        return bytes;
     }
 
-//    /// Extentsion method to clear all items from a thread safe queue
-//    /// Small risk of race condition if a producer is adding to the list.
-//    /// <typeparam name="T">Queue type</typeparam>
-//     * @param queue">queue object
+//     * Extentsion method to clear all items from a thread safe queue
+//     * Small risk of race condition if a producer is adding to the list.
+//     * <typeparam name="T Queue type</typeparam>
+//     * @param queue queue object
 //    public static void clear<T>( ConcurrentQueue<T> queue) 
 //    {
 //        T item;
@@ -87,9 +87,9 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to convert a byte array into a string.
+//     * Extension method to convert a byte array into a string.
 //    */
-//     * @param bytes">Byte array to convert.
+//     * @param bytes Byte array to convert.
 //    @returns String from bytes.
 //    public static String GetString(this byte[] bytes) 
 //    {
@@ -99,9 +99,9 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to convert a String to a MD5 hash.
+//     * Extension method to convert a String to a MD5 hash.
 //    */
-//     * @param str">String we want to MD5 encode.
+//     * @param str String we want to MD5 encode.
 //    @returns MD5 hash of a string
 //    public static String ToMD5(this String str) 
 //    {
@@ -115,29 +115,29 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to automatically set the update value to same as "add" value for TryAddUpdate. 
-//    /// This makes the API similar for traditional and concurrent dictionaries.
+//     * Extension method to automatically set the update value to same as "add" value for TryAddUpdate. 
+//     * This makes the API similar for traditional and concurrent dictionaries.
 //    */
-//    /// <typeparam name="K">Key type for Map</typeparam>
-//    /// <typeparam name="V">Value type for dictonary</typeparam>
-//     * @param dictionary">Dictionary object we're operating on
-//     * @param key">Key we want to add or update.
-//     * @param value">Value we want to set.
+//     * <typeparam name="K Key type for Map</typeparam>
+//     * <typeparam name="V Value type for dictonary</typeparam>
+//     * @param dictionary Dictionary object we're operating on
+//     * @param key Key we want to add or update.
+//     * @param value Value we want to set.
 //    public static void AddOrUpdate<K, V>(this ConcurrentMap<K, V> dictionary, K key, V value)
 //    {
 //        dictionary.AddOrUpdate(key, value, (oldkey, oldvalue) -> value);
 //    }
 //
 //    /**
-//    /// Adds the specified element to the collection with the specified key. If an entry does not exist for th
-//    /// specified key then one will be created.
+//     * Adds the specified element to the collection with the specified key. If an entry does not exist for th
+//     * specified key then one will be created.
 //    */
-//    /// <typeparam name="TKey">The key type</typeparam>
-//    /// <typeparam name="TElement">The collection element type</typeparam>
-//    /// <typeparam name="TCollection">The collection type</typeparam>
-//     * @param dictionary">The source dictionary to be added to
-//     * @param key">The key
-//     * @param element">The element to be added
+//     * <typeparam name="TKey The key type</typeparam>
+//     * <typeparam name="TElement The collection element type</typeparam>
+//     * <typeparam name="TCollection The collection type</typeparam>
+//     * @param dictionary The source dictionary to be added to
+//     * @param key The key
+//     * @param element The element to be added
 //    public static void Add<TKey, TElement, TCollection>(this Map<TKey, TCollection> dictionary, TKey key, TElement element)
 //        where TCollection : ICollection<TElement>, new()
 //    {
@@ -151,10 +151,10 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to round a double value to a fixed number of significant figures instead of a fixed BigDecimal places.
+//     * Extension method to round a double value to a fixed number of significant figures instead of a fixed BigDecimal places.
 //    */
-//     * @param d">Double we're rounding
-//     * @param digits">Number of significant figures
+//     * @param d Double we're rounding
+//     * @param digits Number of significant figures
 //    @returns New double rounded to digits-significant figures
 //    public static double RoundToSignificantDigits(this double d, int digits)
 //    {
@@ -164,10 +164,10 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to round a double value to a fixed number of significant figures instead of a fixed BigDecimal places.
+//     * Extension method to round a double value to a fixed number of significant figures instead of a fixed BigDecimal places.
 //    */
-//     * @param d">Double we're rounding
-//     * @param digits">Number of significant figures
+//     * @param d Double we're rounding
+//     * @param digits Number of significant figures
 //    @returns New double rounded to digits-significant figures
 //    public static BigDecimal RoundToSignificantDigits(this BigDecimal d, int digits)
 //    {
@@ -175,32 +175,26 @@ public class Extensions {
 //        scale = (decimal)Math.Pow(10, Math.Floor(Math.Log10((double) Math.Abs(d))) + 1);
 //        return scale * Math.Round(d / scale, digits);
 //    }
-//
+
+    /**
+     * Provides global smart rounding, numbers larger than 1000 will round to 4 BigDecimal places,
+     * while numbers smaller will round to 7 significant digits
+     */
+    public static BigDecimal smartRounding( BigDecimal input ) {
+        // any larger numbers we still want some decimal places
+        if( input.compareTo( ONE_THOUSAND ) > 0 )
+            return input.setScale( 4, RoundingMode.HALF_UP );
+
+        // this is good for forex and other small numbers
+        return input.setScale( 7, RoundingMode.HALF_UP );
+    }
+
 //    /**
-//    /// Provides global smart rounding, numbers larger than 1000 will round to 4 BigDecimal places,
-//    /// while numbers smaller will round to 7 significant digits
+//     * Casts the specified input value to a BigDecimal while acknowledging the overflow conditions
 //    */
-//    public static BigDecimal SmartRounding(this BigDecimal input)
-//    {
-//        input = Normalize(input);
-//
-//        // any larger numbers we still want some BigDecimal places
-//        if( input > 1000)
-//        {
-//            return Math.Round(input, 4);
-//        }
-//
-//        // this is good for forex and other small numbers
-//        d = (double)input;
-//        return (decimal)d.RoundToSignificantDigits(7);
-//    }
-//
-//    /**
-//    /// Casts the specified input value to a BigDecimal while acknowledging the overflow conditions
-//    */
-//     * @param input">The value to be cast
+//     * @param input The value to be cast
 //    @returns The input value as a decimal, if the value is too large or to small to be represented
-//    /// as a decimal, then the closest BigDecimal value will be returned
+//     * as a decimal, then the closest BigDecimal value will be returned
 //    public static BigDecimal SafeDecimalCast(this double input)
 //    {
 //        if( input <= (double) decimal.MinValue) return decimal.MinValue;
@@ -208,17 +202,11 @@ public class Extensions {
 //        return (decimal) input;
 //    }
 //
-//    private static BigDecimal Normalize( BigDecimal input)
-//    {
-//        // http://stackoverflow.com/a/7983330/1582922
-//        return input / 1.000000000000000000000000000000000m;
-//    }
-//
 //    /**
-//    /// Extension method for faster String to BigDecimal conversion. 
+//     * Extension method for faster String to BigDecimal conversion. 
 //    */
-//     * @param str">String to be converted to positive BigDecimal value
-//    /// Method makes some assuptions - always numbers, no "signs" +,- etc.
+//     * @param str String to be converted to positive BigDecimal value
+//     * Method makes some assuptions - always numbers, no "signs" +,- etc.
 //    @returns Decimal value of the string
 //    public static BigDecimal ToDecimal(this String str)
 //    {
@@ -247,10 +235,10 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method for faster String to Int32 conversion. 
+//     * Extension method for faster String to Int32 conversion. 
 //    */
-//     * @param str">String to be converted to positive Int32 value
-//    /// Method makes some assuptions - always numbers, no "signs" +,- etc.
+//     * @param str String to be converted to positive Int32 value
+//     * Method makes some assuptions - always numbers, no "signs" +,- etc.
 //    @returns Int32 value of the string
 //    public static int ToInt32(this String str)
 //    {
@@ -263,10 +251,10 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method for faster String to Int64 conversion. 
+//     * Extension method for faster String to Int64 conversion. 
 //    */
-//     * @param str">String to be converted to positive Int64 value
-//    /// Method makes some assuptions - always numbers, no "signs" +,- etc.
+//     * @param str String to be converted to positive Int64 value
+//     * Method makes some assuptions - always numbers, no "signs" +,- etc.
 //    @returns Int32 value of the string
 //    public static long ToInt64(this String str)
 //    {
@@ -311,17 +299,17 @@ public class Extensions {
     }
 
 //    /**
-//    /// Check if a number is NaN or equal to zero
+//     * Check if a number is NaN or equal to zero
 //    */
-//     * @param value">The double value to check
+//     * @param value The double value to check
 //    public static boolean IsNaNOrZero(this double value)
 //    {
 //        return double.IsNaN(value) || Math.Abs(value) < double.Epsilon;
 //    }
 //
 //    /**
-//    /// Gets the smallest positive number that can be added to a BigDecimal instance and return
-//    /// a new value that does not == the old value
+//     * Gets the smallest positive number that can be added to a BigDecimal instance and return
+//     * a new value that does not == the old value
 //    */
 //    public static BigDecimal GetDecimalEpsilon()
 //    {
@@ -329,9 +317,9 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to extract the extension part of this file name if it matches a safe list, or return a ".custom" extension for ones which do not match.
+//     * Extension method to extract the extension part of this file name if it matches a safe list, or return a ".custom" extension for ones which do not match.
 //    */
-//     * @param str">String we're looking for the extension for.
+//     * @param str String we're looking for the extension for.
 //    @returns Last 4 character String of string.
 //    public static String GetExtension(this String str) {
 //        ext = str.Substring(Math.Max(0, str.Length - 4));
@@ -344,9 +332,9 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to convert strings to stream to be read.
+//     * Extension method to convert strings to stream to be read.
 //    */
-//     * @param str">String to convert to stream
+//     * @param str String to convert to stream
 //    @returns Stream instance
 //    public static Stream ToStream(this String str) 
 //    {
@@ -359,11 +347,11 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to round a timeSpan to nearest timespan period.
+//     * Extension method to round a timeSpan to nearest timespan period.
 //    */
-//     * @param time">TimeSpan To Round
-//     * @param roundingInterval">Rounding Unit
-//     * @param roundingType">Rounding method
+//     * @param time TimeSpan To Round
+//     * @param roundingInterval Rounding Unit
+//     * @param roundingType Rounding method
 //    @returns Rounded timespan
 //    public static Duration Round(this Duration time, Duration roundingInterval, MidpointRounding roundingType) 
 //    {
@@ -383,10 +371,10 @@ public class Extensions {
 //
 //    
 //    /**
-//    /// Extension method to round timespan to nearest timespan period.
+//     * Extension method to round timespan to nearest timespan period.
 //    */
-//     * @param time">Base timespan we're looking to round.
-//     * @param roundingInterval">Timespan period we're rounding.
+//     * @param time Base timespan we're looking to round.
+//     * @param roundingInterval Timespan period we're rounding.
 //    @returns Rounded timespan period
 //    public static Duration Round(this Duration time, Duration roundingInterval)
 //    {
@@ -394,10 +382,10 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to round a datetime down by a timespan interval.
+//     * Extension method to round a datetime down by a timespan interval.
 //    */
-//     * @param dateTime">Base DateTime object we're rounding down.
-//     * @param interval">Timespan interval to round to.
+//     * @param dateTime Base DateTime object we're rounding down.
+//     * @param interval Timespan interval to round to.
 //    @returns Rounded datetime
 //    public static DateTime RoundDown(this DateTime dateTime, Duration interval)
 //    {
@@ -410,16 +398,16 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to round a datetime down by a timespan interval until it's
-//    /// within the specified exchange's open hours. This works by first rounding down
-//    /// the specified time using the interval, then producing a bar between that
-//    /// rounded time and the interval plus the rounded time and incrementally walking
-//    /// backwards until the exchange is open
+//     * Extension method to round a datetime down by a timespan interval until it's
+//     * within the specified exchange's open hours. This works by first rounding down
+//     * the specified time using the interval, then producing a bar between that
+//     * rounded time and the interval plus the rounded time and incrementally walking
+//     * backwards until the exchange is open
 //    */
-//     * @param dateTime">Time to be rounded down
-//     * @param interval">Timespan interval to round to.
-//     * @param exchangeHours">The exchange hours to determine open times
-//     * @param extendedMarket">True for extended market hours, otherwise false
+//     * @param dateTime Time to be rounded down
+//     * @param interval Timespan interval to round to.
+//     * @param exchangeHours The exchange hours to determine open times
+//     * @param extendedMarket True for extended market hours, otherwise false
 //    @returns Rounded datetime
 //    public static DateTime ExchangeRoundDown(this DateTime dateTime, Duration interval, SecurityExchangeHours exchangeHours, boolean extendedMarket)
 //    {
@@ -435,10 +423,10 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to round a datetime to the nearest unit timespan.
+//     * Extension method to round a datetime to the nearest unit timespan.
 //    */
-//     * @param datetime">Datetime object we're rounding.
-//     * @param roundingInterval">Timespan rounding period.s
+//     * @param datetime Datetime object we're rounding.
+//     * @param roundingInterval Timespan rounding period.s
 //    @returns Rounded datetime
 //    public static DateTime Round(this DateTime datetime, Duration roundingInterval) 
 //    {
@@ -446,10 +434,10 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Extension method to explicitly round up to the nearest timespan interval.
+//     * Extension method to explicitly round up to the nearest timespan interval.
 //    */
-//     * @param time">Base datetime object to round up.
-//     * @param d">Timespan interval for rounding
+//     * @param time Base datetime object to round up.
+//     * @param d Timespan interval for rounding
 //    @returns Rounded datetime
 //    public static DateTime RoundUp(this DateTime time, Duration d)
 //    {
@@ -513,9 +501,9 @@ public class Extensions {
     }
 
 //    /**
-//    /// Add the reset method to the System.Timer class.
+//     * Add the reset method to the System.Timer class.
 //    */
-//     * @param timer">System.timer object
+//     * @param timer System.timer object
 //    public static void Reset(this Timer timer)
 //    {
 //        timer.Stop();
@@ -523,11 +511,11 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Function used to match a type against a String type name. This function compares on the AssemblyQualfiedName,
-//    /// the FullName, and then just the Name of the type.
+//     * Function used to match a type against a String type name. This function compares on the AssemblyQualfiedName,
+//     * the FullName, and then just the Name of the type.
 //    */
-//     * @param type">The type to test for a match
-//     * @param typeName">The name of the type to match
+//     * @param type The type to test for a match
+//     * @param typeName The name of the type to match
 //    @returns True if the specified type matches the type name, false otherwise
 //    public static boolean MatchesTypeName(this Type type, String typeName)
 //    {
@@ -547,11 +535,11 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Checks the specified type to see if it is a subclass of the <paramref name="possibleSuperType"/>. This method will
-//    /// crawl up the inheritance heirarchy to check for equality using generic type definitions (if exists)
+//     * Checks the specified type to see if it is a subclass of the <paramref name="possibleSuperType"/>. This method will
+//     * crawl up the inheritance heirarchy to check for equality using generic type definitions (if exists)
 //    */
-//     * @param type">The type to be checked as a subclass of <paramref name="possibleSuperType"/>
-//     * @param possibleSuperType">The possible superclass of <paramref name="type"/>
+//     * @param type The type to be checked as a subclass of <paramref name="possibleSuperType"/>
+//     * @param possibleSuperType The possible superclass of <paramref name="type"/>
 //    @returns True if <paramref name="type"/> is a subclass of the generic type definition <paramref name="possibleSuperType"/>
 //    public static boolean IsSubclassOfGeneric(this Type type, Type possibleSuperType)
 //    {
@@ -576,10 +564,10 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Gets a type's name with the generic parameters filled in the way they would look when
-//    /// defined in code, such as converting Dictionary&lt;`1,`2&gt; to Dictionary&lt;string,int&gt;
+//     * Gets a type's name with the generic parameters filled in the way they would look when
+//     * defined in code, such as converting Dictionary&lt;`1,`2&gt; to Dictionary&lt;string,int&gt;
 //    */
-//     * @param type">The type who's name we seek
+//     * @param type The type who's name we seek
 //    @returns A better type name
 //    public static String GetBetterTypeName(this Type type)
 //    {
@@ -594,9 +582,9 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Converts the Resolution instance into a Duration instance
+//     * Converts the Resolution instance into a Duration instance
 //    */
-//     * @param resolution">The resolution to be converted
+//     * @param resolution The resolution to be converted
 //    @returns A Duration instance that represents the resolution specified
 //    public static Duration ToTimeSpan(this Resolution resolution)
 //    {
@@ -619,10 +607,10 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Converts the specified String value into the specified type
+//     * Converts the specified String value into the specified type
 //    */
-//    /// <typeparam name="T">The output type</typeparam>
-//     * @param value">The String value to be converted
+//     * <typeparam name="T The output type</typeparam>
+//     * @param value The String value to be converted
 //    @returns The converted value
 //    public static T ConvertTo<T>(this String value)
 //    {
@@ -630,10 +618,10 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Converts the specified String value into the specified type
+//     * Converts the specified String value into the specified type
 //    */
-//     * @param value">The String value to be converted
-//     * @param type">The output type
+//     * @param value The String value to be converted
+//     * @param type The output type
 //    @returns The converted value
 //    public static object ConvertTo(this String value, Type type)
 //    {
@@ -659,59 +647,59 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Blocks the current thread until the current <see cref="T:System.Threading.WaitHandle"/> receives a signal, while observing a <see cref="T:System.Threading.CancellationToken"/>.
+//     * Blocks the current thread until the current <see cref="T:System.Threading.WaitHandle"/> receives a signal, while observing a <see cref="T:System.Threading.CancellationToken"/>.
 //    */
-//     * @param waitHandle">The wait handle to wait on
-//     * @param cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> to observe.
-//    /// <exception cref="T:System.InvalidOperationException">The maximum number of waiters has been exceeded.</exception>
-//    /// <exception cref="T:System.OperationCanceledExcepton"><paramref name="cancellationToken"/> was canceled.</exception>
-//    /// <exception cref="T:System.ObjectDisposedException">The object has already been disposed or the <see cref="T:System.Threading.CancellationTokenSource"/> that created <paramref name="cancellationToken"/> has been disposed.</exception>
+//     * @param waitHandle The wait handle to wait on
+//     * @param cancellationToken The <see cref="T:System.Threading.CancellationToken"/> to observe.
+//     * <exception cref="T:System.InvalidOperationException The maximum number of waiters has been exceeded.</exception>
+//     * <exception cref="T:System.OperationCanceledExcepton"><paramref name="cancellationToken"/> was canceled.</exception>
+//     * <exception cref="T:System.ObjectDisposedException The object has already been disposed or the <see cref="T:System.Threading.CancellationTokenSource"/> that created <paramref name="cancellationToken"/> has been disposed.</exception>
 //    public static boolean WaitOne(this WaitHandle waitHandle, CancellationToken cancellationToken)
 //    {
 //        return waitHandle.WaitOne(Timeout.Infinite, cancellationToken);
 //    }
 //
 //    /**
-//    /// Blocks the current thread until the current <see cref="T:System.Threading.WaitHandle"/> is set, using a <see cref="T:System.TimeSpan"/> to measure the time interval, while observing a <see cref="T:System.Threading.CancellationToken"/>.
+//     * Blocks the current thread until the current <see cref="T:System.Threading.WaitHandle"/> is set, using a <see cref="T:System.TimeSpan"/> to measure the time interval, while observing a <see cref="T:System.Threading.CancellationToken"/>.
 //    */
-//    /// 
+//     * 
 //    @returns 
-//    /// true if the <see cref="T:System.Threading.WaitHandle"/> was set; otherwise, false.
-//    /// 
-//     * @param waitHandle">The wait handle to wait on
-//     * @param timeout">A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a <see cref="T:System.TimeSpan"/> that represents -1 milliseconds to wait indefinitely.
-//     * @param cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> to observe.
-//    /// <exception cref="T:System.Threading.OperationCanceledException"><paramref name="cancellationToken"/> was canceled.</exception>
-//    /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout"/> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue"/>.</exception>
-//    /// <exception cref="T:System.InvalidOperationException">The maximum number of waiters has been exceeded. </exception><exception cref="T:System.ObjectDisposedException">The object has already been disposed or the <see cref="T:System.Threading.CancellationTokenSource"/> that created <paramref name="cancellationToken"/> has been disposed.</exception>
+//     * true if the <see cref="T:System.Threading.WaitHandle"/> was set; otherwise, false.
+//     * 
+//     * @param waitHandle The wait handle to wait on
+//     * @param timeout A <see cref="T:System.TimeSpan"/> that represents the number of milliseconds to wait, or a <see cref="T:System.TimeSpan"/> that represents -1 milliseconds to wait indefinitely.
+//     * @param cancellationToken The <see cref="T:System.Threading.CancellationToken"/> to observe.
+//     * <exception cref="T:System.Threading.OperationCanceledException"><paramref name="cancellationToken"/> was canceled.</exception>
+//     * <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="timeout"/> is a negative number other than -1 milliseconds, which represents an infinite time-out -or- timeout is greater than <see cref="F:System.Int32.MaxValue"/>.</exception>
+//     * <exception cref="T:System.InvalidOperationException The maximum number of waiters has been exceeded. </exception><exception cref="T:System.ObjectDisposedException The object has already been disposed or the <see cref="T:System.Threading.CancellationTokenSource"/> that created <paramref name="cancellationToken"/> has been disposed.</exception>
 //    public static boolean WaitOne(this WaitHandle waitHandle, Duration timeout, CancellationToken cancellationToken)
 //    {
 //        return waitHandle.WaitOne((int) timeout.TotalMilliseconds, cancellationToken);
 //    }
 //
 //    /**
-//    /// Blocks the current thread until the current <see cref="T:System.Threading.WaitHandle"/> is set, using a 32-bit signed integer to measure the time interval, while observing a <see cref="T:System.Threading.CancellationToken"/>.
+//     * Blocks the current thread until the current <see cref="T:System.Threading.WaitHandle"/> is set, using a 32-bit signed integer to measure the time interval, while observing a <see cref="T:System.Threading.CancellationToken"/>.
 //    */
-//    /// 
+//     * 
 //    @returns 
-//    /// true if the <see cref="T:System.Threading.WaitHandle"/> was set; otherwise, false.
-//    /// 
-//     * @param waitHandle">The wait handle to wait on
-//     * @param millisecondsTimeout">The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/>(-1) to wait indefinitely.
-//     * @param cancellationToken">The <see cref="T:System.Threading.CancellationToken"/> to observe.
-//    /// <exception cref="T:System.Threading.OperationCanceledException"><paramref name="cancellationToken"/> was canceled.</exception>
-//    /// <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout"/> is a negative number other than -1, which represents an infinite time-out.</exception>
-//    /// <exception cref="T:System.InvalidOperationException">The maximum number of waiters has been exceeded.</exception>
-//    /// <exception cref="T:System.ObjectDisposedException">The object has already been disposed or the <see cref="T:System.Threading.CancellationTokenSource"/> that created <paramref name="cancellationToken"/> has been disposed.</exception>
+//     * true if the <see cref="T:System.Threading.WaitHandle"/> was set; otherwise, false.
+//     * 
+//     * @param waitHandle The wait handle to wait on
+//     * @param millisecondsTimeout The number of milliseconds to wait, or <see cref="F:System.Threading.Timeout.Infinite"/>(-1) to wait indefinitely.
+//     * @param cancellationToken The <see cref="T:System.Threading.CancellationToken"/> to observe.
+//     * <exception cref="T:System.Threading.OperationCanceledException"><paramref name="cancellationToken"/> was canceled.</exception>
+//     * <exception cref="T:System.ArgumentOutOfRangeException"><paramref name="millisecondsTimeout"/> is a negative number other than -1, which represents an infinite time-out.</exception>
+//     * <exception cref="T:System.InvalidOperationException The maximum number of waiters has been exceeded.</exception>
+//     * <exception cref="T:System.ObjectDisposedException The object has already been disposed or the <see cref="T:System.Threading.CancellationTokenSource"/> that created <paramref name="cancellationToken"/> has been disposed.</exception>
 //    public static boolean WaitOne(this WaitHandle waitHandle, int millisecondsTimeout, CancellationToken cancellationToken)
 //    {
 //        return WaitHandle.WaitAny(new[] { waitHandle, cancellationToken.WaitHandle }, millisecondsTimeout) == 0;
 //    }
 //
 //    /**
-//    /// Gets the MD5 hash from a stream
+//     * Gets the MD5 hash from a stream
 //    */
-//     * @param stream">The stream to compute a hash for
+//     * @param stream The stream to compute a hash for
 //    @returns The MD5 hash
 //    public static byte[] GetMD5Hash(this Stream stream)
 //    {
@@ -722,9 +710,9 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Convert a String into the same String with a URL! :)
+//     * Convert a String into the same String with a URL! :)
 //    */
-//     * @param source">The source String to be converted
+//     * @param source The source String to be converted
 //    @returns The same source String but with anchor tags around substrings matching a link regex
 //    public static String WithEmbeddedHtmlAnchors(this String source)
 //    {
@@ -738,9 +726,9 @@ public class Extensions {
 //    }
 //
 //    /**
-//    /// Converts the specified <paramref name="enum"/> value to its corresponding lower-case String representation
+//     * Converts the specified <paramref name="enum"/> value to its corresponding lower-case String representation
 //    */
-//     * @param enum">The enumeration value
+//     * @param enum The enumeration value
 //    @returns A lower-case String representation of the specified enumeration value
 //    public static String ToLower(this Enum @enum)
 //    {

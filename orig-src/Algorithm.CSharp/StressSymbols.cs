@@ -21,12 +21,12 @@ package com.quantconnect.lean.Algorithm.Examples
     public static class StressSymbols
     {
         /**
-        /// The forex symbols.
+         * The forex symbols.
         */
         public static HashSet<String> ForexSymbols = new HashSet<String>(Currencies.CurrencyPairs);
 
         /**
-        /// The stock symbols.
+         * The stock symbols.
         */
         public static HashSet<String> StockSymbols = new HashSet<String>
         {

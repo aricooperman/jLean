@@ -25,9 +25,9 @@ package com.quantconnect.lean.Algorithm.CSharp
             SetWarmup(SlowPeriod);
         }
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">Slice object keyed by symbol containing the stock data
+         * @param data Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             if( first && !IsWarmingUp) {
                 first = false;

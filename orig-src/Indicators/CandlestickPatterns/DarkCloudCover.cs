@@ -19,19 +19,19 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Dark Cloud Cover candlestick pattern
+     * Dark Cloud Cover candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - first candle: long white candle
-    /// - second candle: black candle that opens above previous day high and closes within previous day real body; 
-    /// Greg Morris wants the close to be below the midpoint of the previous real body
-    /// The meaning of "long" is specified with SetCandleSettings, the penetration of the first real body is specified
-    /// with optInPenetration
-    /// The returned value is negative(-1): dark cloud cover is always bearish
-    /// The user should consider that a dark cloud cover is significant when it appears in an uptrend, while 
-    /// this function does not consider it
-    /// 
+     * 
+     * Must have:
+     * - first candle: long white candle
+     * - second candle: black candle that opens above previous day high and closes within previous day real body; 
+     * Greg Morris wants the close to be below the midpoint of the previous real body
+     * The meaning of "long" is specified with SetCandleSettings, the penetration of the first real body is specified
+     * with optInPenetration
+     * The returned value is negative(-1): dark cloud cover is always bearish
+     * The user should consider that a dark cloud cover is significant when it appears in an uptrend, while 
+     * this function does not consider it
+     * 
     public class DarkCloudCover : CandlestickPattern
     {
         private final BigDecimal _penetration;
@@ -41,10 +41,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _bodyLongPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="DarkCloudCover"/> class using the specified name.
+         * Initializes a new instance of the <see cref="DarkCloudCover"/> class using the specified name.
         */
-         * @param name">The name of this indicator
-         * @param penetration">Percentage of penetration of a candle within another candle
+         * @param name The name of this indicator
+         * @param penetration Percentage of penetration of a candle within another candle
         public DarkCloudCover( String name, BigDecimal penetration = 0.5m) 
             : base(name, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod + 1 + 1) {
             _penetration = penetration;
@@ -53,15 +53,15 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="DarkCloudCover"/> class.
+         * Initializes a new instance of the <see cref="DarkCloudCover"/> class.
         */
-         * @param penetration">Percentage of penetration of a candle within another candle
+         * @param penetration Percentage of penetration of a candle within another candle
         public DarkCloudCover( BigDecimal penetration = 0.5m)
             : this( "DARKCLOUDCOVER", penetration) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -69,10 +69,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -80,7 +80,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _bodyLongPeriodTotal += GetCandleRange(CandleSettingType.BodyLong, window[1]);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -99,7 +99,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = -1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -111,7 +111,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _bodyLongPeriodTotal = 0;

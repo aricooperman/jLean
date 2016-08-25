@@ -19,12 +19,12 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Event arguments for the <see cref="ISubscriptionDataSourceReader.InvalidSource"/> event
+     * Event arguments for the <see cref="ISubscriptionDataSourceReader.InvalidSource"/> event
     */
     public sealed class InvalidSourceEventArgs : EventArgs
     {
         /**
-        /// Gets the source that was considered invalid
+         * Gets the source that was considered invalid
         */
         public SubscriptionDataSource Source
         {
@@ -32,7 +32,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets the exception that was encountered
+         * Gets the exception that was encountered
         */
         public Exception Exception
         {
@@ -40,10 +40,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Initializes a new instance of the <see cref="InvalidSourceEventArgs"/> class
+         * Initializes a new instance of the <see cref="InvalidSourceEventArgs"/> class
         */
-         * @param source">The source that was considered invalid
-         * @param exception">The exception that was encountered
+         * @param source The source that was considered invalid
+         * @param exception The exception that was encountered
         public InvalidSourceEventArgs(SubscriptionDataSource source, Exception exception) {
             Source = source;
             Exception = exception;

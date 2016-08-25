@@ -20,21 +20,21 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Advance Block candlestick pattern
+     * Advance Bsynchronizedcandlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - three white candlesticks with consecutively higher closes
-    /// - each candle opens within or near the previous white real body
-    /// - first candle: long white with no or very short upper shadow(a short shadow is accepted too for more flexibility)
-    /// - second and third candles, or only third candle, show signs of weakening: progressively smaller white real bodies
-    /// and/or relatively long upper shadows; see below for specific conditions
-    /// The meanings of "long body", "short shadow", "far" and "near" are specified with SetCandleSettings;
-    /// The returned value is negative(-1): advance block is always bearish;
-    /// The user should consider that advance block is significant when it appears in uptrend, while this function
-    /// does not consider it
-    /// 
-    public class AdvanceBlock : CandlestickPattern
+     * 
+     * Must have:
+     * - three white candlesticks with consecutively higher closes
+     * - each candle opens within or near the previous white real body
+     * - first candle: long white with no or very short upper shadow(a short shadow is accepted too for more flexibility)
+     * - second and third candles, or only third candle, show signs of weakening: progressively smaller white real bodies
+     * and/or relatively long upper shadows; see below for specific conditions
+     * The meanings of "long body", "short shadow", "far" and "near" are specified with SetCandleSettings;
+     * The returned value is negative(-1): advance bsynchronizedis always bearish;
+     * The user should consider that advance bsynchronizedis significant when it appears in uptrend, while this function
+     * does not consider it
+     * 
+    public class AdvanceBsynchronized: CandlestickPattern
     {
         private final int _shadowShortAveragePeriod;
         private final int _shadowLongAveragePeriod;
@@ -49,9 +49,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _bodyLongPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="AdvanceBlock"/> class using the specified name.
+         * Initializes a new instance of the <see cref="AdvanceBlock"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public AdvanceBlock( String name) 
             : base(name, Math.Max(Math.Max(Math.Max(CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowShort).AveragePeriod),
                   Math.Max(CandleSettings.Get(CandleSettingType.Far).AveragePeriod, CandleSettings.Get(CandleSettingType.Near).AveragePeriod)),
@@ -64,14 +64,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
     /**
-    /// Initializes a new instance of the <see cref="AdvanceBlock"/> class.
+     * Initializes a new instance of the <see cref="AdvanceBlock"/> class.
     */
     public AdvanceBlock()
             : this( "ADVANCEBLOCK") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -79,10 +79,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -111,7 +111,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _farPeriodTotal[1] += GetCandleRange(CandleSettingType.Far, window[1]);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -166,7 +166,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = -1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -195,7 +195,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _shadowShortPeriodTotal = new decimal[3];

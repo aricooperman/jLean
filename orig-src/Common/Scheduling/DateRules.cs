@@ -23,26 +23,26 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Scheduling
 {
     /**
-    /// Helper class used to provide better syntax when defining date rules
+     * Helper class used to provide better syntax when defining date rules
     */
     public class DateRules
     {
         private final SecurityManager _securities;
 
         /**
-        /// Initializes a new instance of the <see cref="DateRules"/> helper class
+         * Initializes a new instance of the <see cref="DateRules"/> helper class
         */
-         * @param securities">The security manager
+         * @param securities The security manager
         public DateRules(SecurityManager securities) {
             _securities = securities;
         }
 
         /**
-        /// Specifies an event should fire only on the specified day
+         * Specifies an event should fire only on the specified day
         */
-         * @param year">The year
-         * @param month">The month
-         * @param day">The day
+         * @param year The year
+         * @param month The month
+         * @param day The day
         @returns 
         public IDateRule On(int year, int month, int day) {
             // make sure they're date objects
@@ -51,9 +51,9 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Specifies an event should fire only on the specified days
+         * Specifies an event should fire only on the specified days
         */
-         * @param dates">The dates the event should fire
+         * @param dates The dates the event should fire
         @returns 
         public IDateRule On(params DateTime[] dates) {
             // make sure they're date objects
@@ -62,9 +62,9 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Specifies an event should fire on each of the specified days of week
+         * Specifies an event should fire on each of the specified days of week
         */
-         * @param days">The days the event shouls fire
+         * @param days The days the event shouls fire
         @returns A date rule that fires on every specified day of week
         public IDateRule Every(params DayOfWeek[] days) {
             hash = days.ToHashSet();
@@ -72,7 +72,7 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Specifies an event should fire every day
+         * Specifies an event should fire every day
         */
         @returns A date rule that fires every day
         public IDateRule EveryDay() {
@@ -80,9 +80,9 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Specifies an event should fire every day the symbol is trading
+         * Specifies an event should fire every day the symbol is trading
         */
-         * @param symbol">The symbol whose exchange is used to determine tradeable dates
+         * @param symbol The symbol whose exchange is used to determine tradeable dates
         @returns A date rule that fires every day the specified symbol trades
         public IDateRule EveryDay(Symbol symbol) {
             security = GetSecurity(symbol);
@@ -90,7 +90,7 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Specifies an event should fire on the first of each month
+         * Specifies an event should fire on the first of each month
         */
         @returns A date rule that fires on the first of each month
         public IDateRule MonthStart() {
@@ -98,20 +98,20 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Specifies an event should fire on the first tradeable date for the specified
-        /// symbol of each month
+         * Specifies an event should fire on the first tradeable date for the specified
+         * symbol of each month
         */
-         * @param symbol">The symbol whose exchange is used to determine the first 
-        /// tradeable date of the month
+         * @param symbol The symbol whose exchange is used to determine the first 
+         * tradeable date of the month
         @returns A date rule that fires on the first tradeable date for the specified security each month
         public IDateRule MonthStart(Symbol symbol) {
             return new FuncDateRule(symbol.toString() + ": MonthStart", (start, end) -> MonthStartIterator(GetSecurity(symbol), start, end));
         }
 
         /**
-        /// Gets the security with the specified symbol, or throws an exception if the symbol is not found
+         * Gets the security with the specified symbol, or throws an exception if the symbol is not found
         */
-         * @param symbol">The security's symbol to search for
+         * @param symbol The security's symbol to search for
         @returns The security object matching the given symbol
         private Security GetSecurity(Symbol symbol) {
             Security security;

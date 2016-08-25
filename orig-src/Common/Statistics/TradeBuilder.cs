@@ -22,12 +22,12 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Statistics
 {
     /**
-    /// The <see cref="TradeBuilder"/> class generates trades from executions and market price updates
+     * The <see cref="TradeBuilder"/> class generates trades from executions and market price updates
     */
     public class TradeBuilder
     {
         /**
-        /// Helper class to manage pending trades and market price updates for a symbol
+         * Helper class to manage pending trades and market price updates for a symbol
         */
         private class Position 
         {
@@ -55,7 +55,7 @@ package com.quantconnect.lean.Statistics
         private boolean _liveMode;
 
         /**
-        /// Initializes a new instance of the <see cref="TradeBuilder"/> class
+         * Initializes a new instance of the <see cref="TradeBuilder"/> class
         */
         public TradeBuilder(FillGroupingMethod groupingMethod, FillMatchingMethod matchingMethod) {
             _groupingMethod = groupingMethod;
@@ -63,15 +63,15 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Sets the live mode flag
+         * Sets the live mode flag
         */
-         * @param live">The live mode flag
+         * @param live The live mode flag
         public void SetLiveMode( boolean live) {
             _liveMode = live;
         }
 
         /**
-        /// The list of closed trades
+         * The list of closed trades
         */
         public List<Trade> ClosedTrades
         {
@@ -79,9 +79,9 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Returns true if there is an open position for the symbol
+         * Returns true if there is an open position for the symbol
         */
-         * @param symbol">The symbol
+         * @param symbol The symbol
         @returns true if there is an open position for the symbol
         public boolean HasOpenPosition(Symbol symbol) {
             Position position;
@@ -94,7 +94,7 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Sets the current market price for the symbol
+         * Sets the current market price for the symbol
         */
          * @param symbol">
          * @param price">
@@ -109,14 +109,14 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Processes a new fill, eventually creating new trades
+         * Processes a new fill, eventually creating new trades
         */
-         * @param fill">The new fill order event
-         * @param conversionRate">The current market conversion rate into the account currency
+         * @param fill The new fill order event
+         * @param conversionRate The current market conversion rate into the account currency
         public void ProcessFill(OrderEvent fill, BigDecimal conversionRate) {
             // If we have multiple fills per order, we assign the order fee only to its first fill
             // to avoid counting the same order fee multiple times.
-            orderFee = 0m;
+            orderFee = BigDecimal.ZERO;
             if( !_ordersWithFeesAssigned.Contains(fill.OrderId)) {
                 orderFee = fill.OrderFee;
                 _ordersWithFeesAssigned.Add(fill.OrderId);
@@ -287,8 +287,8 @@ package com.quantconnect.lean.Statistics
                     entryTime = position.PendingFills[0].UtcTime;
                     totalEntryQuantity = 0;
                     totalExitQuantity = 0;
-                    entryAveragePrice = 0m;
-                    exitAveragePrice = 0m;
+                    entryAveragePrice = BigDecimal.ZERO;
+                    exitAveragePrice = BigDecimal.ZERO;
 
                     while (position.PendingFills.Count > 0) {
                         if( Math.Sign(position.PendingFills[index].FillQuantity) != Math.Sign(fill.FillQuantity)) {
@@ -375,7 +375,7 @@ package com.quantconnect.lean.Statistics
                 // execution has opposite direction of trade
                 entryTime = position.PendingFills[index].UtcTime;
                 totalExecutedQuantity = 0;
-                entryPrice = 0m;
+                entryPrice = BigDecimal.ZERO;
                 position.TotalFees += orderFee;
 
                 while (position.PendingFills.Count > 0 && Math.Abs(totalExecutedQuantity) < fill.AbsoluteFillQuantity) {
@@ -432,7 +432,7 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Adds a trade to the list of closed trades, capping the total number only in live mode
+         * Adds a trade to the list of closed trades, capping the total number only in live mode
         */
         private void AddNewTrade(Trade trade) {
             _closedTrades.Add(trade);

@@ -34,7 +34,7 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine.Setup
 {
     /**
-    /// Backtesting setup handler processes the algorithm initialize method and sets up the internal state of the algorithm class.
+     * Backtesting setup handler processes the algorithm initialize method and sets up the internal state of the algorithm class.
     */
     public class BacktestingSetupHandler : ISetupHandler
     {
@@ -44,7 +44,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
         private DateTime _startingDate = new DateTime(1998, 01, 01);
 
         /**
-        /// Internal errors list from running the setup proceedures.
+         * Internal errors list from running the setup proceedures.
         */
         public List<String> Errors
         { 
@@ -53,9 +53,9 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Maximum runtime of the algorithm in seconds.
+         * Maximum runtime of the algorithm in seconds.
         */
-        /// Maximum runtime is a formula based on the number and resolution of symbols requested, and the days backtesting
+         * Maximum runtime is a formula based on the number and resolution of symbols requested, and the days backtesting
         public Duration MaximumRuntime
         {
             get 
@@ -65,10 +65,10 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Starting capital according to the users initialize routine.
+         * Starting capital according to the users initialize routine.
         */
-        /// Set from the user code.
-        /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
+         * Set from the user code.
+         * <seealso cref="QCAlgorithm.SetCash(decimal)"/>
         public BigDecimal StartingPortfolioValue
         {
             get 
@@ -78,9 +78,9 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Start date for analysis loops to search for data.
+         * Start date for analysis loops to search for data.
         */
-        /// <seealso cref="QCAlgorithm.SetStartDate(DateTime)"/>
+         * <seealso cref="QCAlgorithm.SetStartDate(DateTime)"/>
         public DateTime StartingDate
         {
             get
@@ -90,9 +90,9 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Maximum number of orders for this backtest.
+         * Maximum number of orders for this backtest.
         */
-        /// To stop algorithm flooding the backtesting system with hundreds of megabytes of order data we limit it to 100 per day
+         * To stop algorithm flooding the backtesting system with hundreds of megabytes of order data we limit it to 100 per day
         public int MaxOrders
         {
             get 
@@ -102,18 +102,18 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Initialize the backtest setup handler.
+         * Initialize the backtest setup handler.
         */
         public BacktestingSetupHandler() {
             Errors = new List<String>();
         }
 
         /**
-        /// Creates a new algorithm instance. Verified there's only one defined in the assembly and requires
-        /// instantiation to take less than 10 seconds
+         * Creates a new algorithm instance. Verified there's only one defined in the assembly and requires
+         * instantiation to take less than 10 seconds
         */
-         * @param assemblyPath">Physical location of the assembly.
-         * @param language">Language of the DLL
+         * @param assemblyPath Physical location of the assembly.
+         * @param language Language of the DLL
         @returns Algorithm instance.
         public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language) {
             String error;
@@ -128,32 +128,32 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Creates a new <see cref="BacktestingBrokerage"/> instance
+         * Creates a new <see cref="BacktestingBrokerage"/> instance
         */
-         * @param algorithmNodePacket">Job packet
-         * @param uninitializedAlgorithm">The algorithm instance before Initialize has been called
+         * @param algorithmNodePacket Job packet
+         * @param uninitializedAlgorithm The algorithm instance before Initialize has been called
         @returns The brokerage instance, or throws if error creating instance
         public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm) {
             return new BacktestingBrokerage(uninitializedAlgorithm);
         }
 
         /**
-        /// Setup the algorithm cash, dates and data subscriptions as desired.
+         * Setup the algorithm cash, dates and data subscriptions as desired.
         */
-         * @param algorithm">Algorithm instance
-         * @param brokerage">Brokerage instance
-         * @param baseJob">Algorithm job
-         * @param resultHandler">The configured result handler
-         * @param transactionHandler">The configurated transaction handler
-         * @param realTimeHandler">The configured real time handler
+         * @param algorithm Algorithm instance
+         * @param brokerage Brokerage instance
+         * @param baseJob Algorithm job
+         * @param resultHandler The configured result handler
+         * @param transactionHandler The configurated transaction handler
+         * @param realTimeHandler The configured real time handler
         @returns Boolean true on successfully initializing the algorithm
         public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket baseJob, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler) {
             job = baseJob as BacktestNodePacket;
             if( job == null ) {
-                throw new ArgumentException( "Expected BacktestNodePacket but received " + baseJob.GetType().Name);
+                throw new IllegalArgumentException( "Expected BacktestNodePacket but received " + baseJob.GetType().Name);
             }
 
-            Log.Trace( String.format( "BacktestingSetupHandler.Setup(): Setting up job: Plan: %1$s, UID: %2$s, PID: %3$s, Version: {3}, Source: {4}", job.UserPlan, job.UserId, job.ProjectId, job.Version, job.RequestSource));
+            Log.Trace( String.format( "BacktestingSetupHandler.Setup(): Setting up job: Plan: %1$s, UID: %2$s, PID: %3$s, Version: %4$s, Source: %5$s", job.UserPlan, job.UserId, job.ProjectId, job.Version, job.RequestSource));
 
             if( algorithm == null ) {
                 Errors.Add( "Could not create instance of algorithm");
@@ -227,11 +227,11 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Calculate the maximum runtime for this algorithm job.
+         * Calculate the maximum runtime for this algorithm job.
         */
-         * @param start">State date of the algorithm
-         * @param finish">End date of the algorithm
-         * @param subscriptionCount">Number of data feeds the user has requested
+         * @param start State date of the algorithm
+         * @param finish End date of the algorithm
+         * @param subscriptionCount Number of data feeds the user has requested
         @returns Timespan maximum run period
         private Duration GetMaximumRuntime(DateTime start, DateTime finish, int subscriptionCount) {
             double maxRunTime = 0;
@@ -260,9 +260,9 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
             // nothing to clean up
         }

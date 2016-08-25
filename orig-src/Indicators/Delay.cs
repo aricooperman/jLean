@@ -16,33 +16,33 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// An indicator that delays its input for a certain period
+     * An indicator that delays its input for a certain period
     */
     public class Delay : WindowIndicator<IndicatorDataPoint>
     {
         /**
-        /// Creates a new Delay indicator that delays its input by the specified period
+         * Creates a new Delay indicator that delays its input by the specified period
         */
-         * @param period">The period to delay input, must be greater than zero
+         * @param period The period to delay input, must be greater than zero
         public Delay(int period)
             : this( "DELAY" + period, period) {
             
         }
 
         /**
-        /// Creates a new Delay indicator that delays its input by the specified period
+         * Creates a new Delay indicator that delays its input by the specified period
         */
-         * @param name">Name of the delay window indicator
-         * @param period">The period to delay input, must be greater than zero
+         * @param name Name of the delay window indicator
+         * @param period The period to delay input, must be greater than zero
         public Delay( String name, int period) 
             : base(name, period) {
         }
 
         /**
-        ///     Computes the next value for this indicator from the given state.
+         *     Computes the next value for this indicator from the given state.
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input value to this indicator on this time step
+         * @param window The window of data held in this indicator
+         * @param input The input value to this indicator on this time step
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             if( !window.IsReady) {

@@ -24,7 +24,7 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
 {
     /**
-    /// Provides an implementation of <see cref="IStreamParser"/> that parses raw algo seek options data
+     * Provides an implementation of <see cref="IStreamParser"/> that parses raw algo seek options data
     */
     public class AlgoSeekOptionsParser : IStreamParser
     {
@@ -35,10 +35,10 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
         }
 
         /**
-        /// Parses the specified input stream into an enumerable of data
+         * Parses the specified input stream into an enumerable of data
         */
-         * @param source">The source of the stream
-         * @param stream">The input stream to be parsed
+         * @param source The source of the stream
+         * @param stream The input stream to be parsed
         @returns An enumerable of base data
         public IEnumerable<BaseData> Parse( String source, Stream stream) {
             count = 0L;
@@ -150,13 +150,13 @@ package com.quantconnect.lean.ToolBox.AlgoSeekOptionsConverter
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
         }
 
         /**
-        /// Specifies the event types to be parsed from the raw data, all other data is ignored
+         * Specifies the event types to be parsed from the raw data, all other data is ignored
         */
         class EventType
         {

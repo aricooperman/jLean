@@ -21,98 +21,98 @@ using System.Linq;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Provides more extension methods for the enumerable types
+     * Provides more extension methods for the enumerable types
     */
     public static class LinqExtensions
     {
         /**
-        /// Creates a dictionary multimap from the lookup.
+         * Creates a dictionary multimap from the lookup.
         */
-        /// <typeparam name="K">The key type</typeparam>
-        /// <typeparam name="V">The value type</typeparam>
-         * @param lookup">The ILookup instance to convert to a Map
+         * <typeparam name="K The key type</typeparam>
+         * <typeparam name="V The value type</typeparam>
+         * @param lookup The ILookup instance to convert to a Map
         @returns A dictionary holding the same data as 'lookup'
         public static Map<K, List<V>> ToMap<K, V>(this ILookup<K, V> lookup) {
             return lookup.ToDictionary(grouping -> grouping.Key, grouping -> grouping.ToList());
         }
 
         /**
-        /// Creates a dictionary enumerable of key value pairs
+         * Creates a dictionary enumerable of key value pairs
         */
-        /// <typeparam name="K">The key type</typeparam>
-        /// <typeparam name="V">The value type</typeparam>
-         * @param enumerable">The IEnumerable of KeyValuePair instances to convert to a Map
+         * <typeparam name="K The key type</typeparam>
+         * <typeparam name="V The value type</typeparam>
+         * @param enumerable The IEnumerable of KeyValuePair instances to convert to a Map
         @returns A dictionary holding the same data as the enumerable
         public static Map<K, V> ToMap<K, V>(this IEnumerable<KeyValuePair<K, V>> enumerable) {
             return enumerable.ToDictionary(kvp -> kvp.Key, kvp -> kvp.Value);
         }
 
         /**
-        /// Creates a new read-only dictionary from the key value pairs
+         * Creates a new read-only dictionary from the key value pairs
         */
-        /// <typeparam name="K">The key type</typeparam>
-        /// <typeparam name="V">The value type</typeparam>
-         * @param enumerable">The IEnumerable of KeyValuePair instances to convert to a Map
+         * <typeparam name="K The key type</typeparam>
+         * <typeparam name="V The value type</typeparam>
+         * @param enumerable The IEnumerable of KeyValuePair instances to convert to a Map
         @returns A read-only dictionary holding the same data as the enumerable
-        public static IReadOnlyMap<K, V> ToReadOnlyMap<K, V>(this IEnumerable<KeyValuePair<K, V>> enumerable) {
+        public static ImmutableMap<K, V> ToReadOnlyMap<K, V>(this IEnumerable<KeyValuePair<K, V>> enumerable) {
             return new ReadOnlyMap<K, V>(enumerable.ToDictionary());
         }
 
         /**
-        /// Creates a new <see cref="HashSet{T}"/> from the elements in the specified enumerable
+         * Creates a new <see cref="HashSet{T}"/> from the elements in the specified enumerable
         */
-        /// <typeparam name="T">The item type in the hash set</typeparam>
-         * @param enumerable">The items to be placed into the enumerable
+         * <typeparam name="T The item type in the hash set</typeparam>
+         * @param enumerable The items to be placed into the enumerable
         @returns A new <see cref="HashSet{T}"/> containing the items in the enumerable
         public static HashSet<T> ToHashSet<T>(this IEnumerable<T> enumerable) {
             return new HashSet<T>(enumerable);
         }
 
         /**
-        /// Creates a new <see cref="HashSet{T}"/> from the elements in the specified enumerable
+         * Creates a new <see cref="HashSet{T}"/> from the elements in the specified enumerable
         */
-        /// <typeparam name="T">The item type of the source enumerable</typeparam>
-        /// <typeparam name="TResult">The type of the items in the output <see cref="HashSet{T}"/></typeparam>
-         * @param enumerable">The items to be placed into the enumerable
-         * @param selector">Selects items from the enumerable to be placed into the <see cref="HashSet{T}"/>
+         * <typeparam name="T The item type of the source enumerable</typeparam>
+         * <typeparam name="TResult The type of the items in the output <see cref="HashSet{T}"/></typeparam>
+         * @param enumerable The items to be placed into the enumerable
+         * @param selector Selects items from the enumerable to be placed into the <see cref="HashSet{T}"/>
         @returns A new <see cref="HashSet{T}"/> containing the items in the enumerable
         public static HashSet<TResult> ToHashSet<T, TResult>(this IEnumerable<T> enumerable, Func<T, TResult> selector) {
             return new HashSet<TResult>(enumerable.Select(selector));
         }
 
         /**
-        /// Produces the set difference of two sequences by using the default equality comparer to compare values.
+         * Produces the set difference of two sequences by using the default equality comparer to compare values.
         */
-        /// <typeparam name="T">The type of the elements of the input sequences.</typeparam>
-         * @param enumerable">An <see cref="T:System.Collections.Generic.IEnumerable`1"/> whose elements that are not also in <paramref name="set"/> will be returned.
-         * @param set">An <see cref="T:System.Collections.Generic.IEnumerable`1"/> whose elements that also occur in the first sequence will cause those elements to be removed from the returned sequence.
+         * <typeparam name="T The type of the elements of the input sequences.</typeparam>
+         * @param enumerable An <see cref="T:System.Collections.Generic.IEnumerable`1"/> whose elements that are not also in <paramref name="set"/> will be returned.
+         * @param set An <see cref="T:System.Collections.Generic.IEnumerable`1"/> whose elements that also occur in the first sequence will cause those elements to be removed from the returned sequence.
         @returns A sequence that contains the set difference of the elements of two sequences.
         public static IEnumerable<T> Except<T>(this IEnumerable<T> enumerable, ISet<T> set) {
             return enumerable.Where(item -> !set.Contains(item));
         }
 
         /**
-        /// Returns true if the specified enumerable is null or has no elements
+         * Returns true if the specified enumerable is null or has no elements
         */
-        /// <typeparam name="T">The enumerable's item type</typeparam>
-         * @param enumerable">The enumerable to check for a value
+         * <typeparam name="T The enumerable's item type</typeparam>
+         * @param enumerable The enumerable to check for a value
         @returns True if the enumerable has elements, false otherwise
         public static boolean IsNullOrEmpty<T>(this IEnumerable<T> enumerable) {
             return enumerable == null || !enumerable.Any();
         }
 
         /**
-        /// Performs the specified selector before calling DefaultIfEmpty. This is just short hand for Select(selector).DefaultIfEmpty(defaultValue)
+         * Performs the specified selector before calling DefaultIfEmpty. This is just short hand for Select(selector).DefaultIfEmpty(defaultValue)
         */
         public static IEnumerable<TResult> DefaultIfEmpty<T, TResult>(this IEnumerable<T> enumerable, Func<T, TResult> selector, TResult defaultValue = default(TResult)) {
             return enumerable.Select(selector).DefaultIfEmpty(defaultValue);
         }
 
         /**
-        /// Gets the median value in the collection
+         * Gets the median value in the collection
         */
-        /// <typeparam name="T">The item type in the collection</typeparam>
-         * @param enumerable">The enumerable of items to search
+         * <typeparam name="T The item type in the collection</typeparam>
+         * @param enumerable The enumerable of items to search
         @returns The median value, throws InvalidOperationException if no items are present
         public static T Median<T>(this IEnumerable<T> enumerable) {
             collection = enumerable.ToList();
@@ -120,25 +120,25 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Gets the median value in the collection
+         * Gets the median value in the collection
         */
-        /// <typeparam name="T">The item type in the collection</typeparam>
-        /// <typeparam name="TProperty">The type of the value selected</typeparam>
-         * @param collection">The collection of items to search
-         * @param selector">Function used to select a value from collection items
+         * <typeparam name="T The item type in the collection</typeparam>
+         * <typeparam name="TProperty The type of the value selected</typeparam>
+         * @param collection The collection of items to search
+         * @param selector Function used to select a value from collection items
         @returns The median value, throws InvalidOperationException if no items are present
         public static TProperty Median<T, TProperty>(this IEnumerable<T> collection, Func<T, TProperty> selector) {
             return collection.Select(selector).Median();
         }
 
         /**
-        /// Performs a binary search on the specified collection.
+         * Performs a binary search on the specified collection.
         */
-        /// <typeparam name="TItem">The type of the item.</typeparam>
-        /// <typeparam name="TSearch">The type of the searched item.</typeparam>
-         * @param list">The list to be searched.
-         * @param value">The value to search for.
-         * @param comparer">The comparer that is used to compare the value with the list items.
+         * <typeparam name="TItem The type of the item.</typeparam>
+         * <typeparam name="TSearch The type of the searched item.</typeparam>
+         * @param list The list to be searched.
+         * @param value The value to search for.
+         * @param comparer The comparer that is used to compare the value with the list items.
         @returns The index of the item if found, otherwise the bitwise complement where the value should be per MSDN specs
         public static int BinarySearch<TItem, TSearch>(this IList<TItem> list, TSearch value, Func<TSearch, TItem,Integer> comparer) {
             if( list == null ) {
@@ -170,33 +170,33 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Performs a binary search on the specified collection.
+         * Performs a binary search on the specified collection.
         */
-        /// <typeparam name="TItem">The type of the item.</typeparam>
-         * @param list">The list to be searched.
-         * @param value">The value to search for.
+         * <typeparam name="TItem The type of the item.</typeparam>
+         * @param list The list to be searched.
+         * @param value The value to search for.
         @returns The index of the item if found, otherwise the bitwise complement where the value should be per MSDN specs
         public static int BinarySearch<TItem>(this IList<TItem> list, TItem value) {
             return BinarySearch(list, value, Comparer<TItem>.Default);
         }
 
         /**
-        /// Performs a binary search on the specified collection.
+         * Performs a binary search on the specified collection.
         */
-        /// <typeparam name="TItem">The type of the item.</typeparam>
-         * @param list">The list to be searched.
-         * @param value">The value to search for.
-         * @param comparer">The comparer that is used to compare the value with the list items.
+         * <typeparam name="TItem The type of the item.</typeparam>
+         * @param list The list to be searched.
+         * @param value The value to search for.
+         * @param comparer The comparer that is used to compare the value with the list items.
         @returns The index of the item if found, otherwise the bitwise complement where the value should be per MSDN specs
         public static int BinarySearch<TItem>(this IList<TItem> list, TItem value, IComparer<TItem> comparer) {
             return list.BinarySearch(value, comparer.Compare);
         }
 
         /**
-        /// Wraps the specified enumerable such that it will only be enumerated once
+         * Wraps the specified enumerable such that it will only be enumerated once
         */
-        /// <typeparam name="T">The enumerable's element type</typeparam>
-         * @param enumerable">The source enumerable to be wrapped
+         * <typeparam name="T The enumerable's element type</typeparam>
+         * @param enumerable The source enumerable to be wrapped
         @returns A new enumerable that can be enumerated multiple times without re-enumerating the source enumerable
         public static IEnumerable<T> Memoize<T>(this IEnumerable<T> enumerable) {
             if( enumerable is MemoizingEnumerable<T>) return enumerable;
@@ -204,14 +204,14 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Produces the an enumerable of the range of values between start and end using the specified
-        /// incrementing function
+         * Produces the an enumerable of the range of values between start and end using the specified
+         * incrementing function
         */
-        /// <typeparam name="T">The enumerable item type</typeparam>
-         * @param start">The start of the range
-         * @param end">The end of the range, non-inclusive by default
-         * @param incrementer">The incrementing function, with argument of the current item
-         * @param includeEndPoint">True to emit the end point, false otherwise
+         * <typeparam name="T The enumerable item type</typeparam>
+         * @param start The start of the range
+         * @param end The end of the range, non-inclusive by default
+         * @param incrementer The incrementing function, with argument of the current item
+         * @param includeEndPoint True to emit the end point, false otherwise
         @returns An enumerable of the range of items between start and end
         public static IEnumerable<T> Range<T>(T start, T end, Func<T, T> incrementer, boolean includeEndPoint = false)
             where T : IComparable
@@ -233,12 +233,12 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Creates a new enumerable that will be distinct by the specified property selector
+         * Creates a new enumerable that will be distinct by the specified property selector
         */
-        /// <typeparam name="T">The enumerable item type</typeparam>
-        /// <typeparam name="TPropery">The selected property type</typeparam>
-         * @param enumerable">The source enumerable
-         * @param selector">The property selector
+         * <typeparam name="T The enumerable item type</typeparam>
+         * <typeparam name="TPropery The selected property type</typeparam>
+         * @param enumerable The source enumerable
+         * @param selector The property selector
         @returns A filtered enumerable distinct on the selected property
         public static IEnumerable<T> DistinctBy<T, TPropery>(this IEnumerable<T> enumerable, Func<T, TPropery> selector) {
             hash = new HashSet<TPropery>();
@@ -246,14 +246,14 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Groups adjacent elements of the enumerale using the specified grouper function
+         * Groups adjacent elements of the enumerale using the specified grouper function
         */
-        /// <typeparam name="T">The enumerable item type</typeparam>
-         * @param enumerable">The source enumerable to be grouped
-         * @param grouper">A function that accepts the previous value and the next value and returns
-        /// true if the next value belongs in the same group as the previous value, otherwise returns false
+         * <typeparam name="T The enumerable item type</typeparam>
+         * @param enumerable The source enumerable to be grouped
+         * @param grouper A function that accepts the previous value and the next value and returns
+         * true if the next value belongs in the same group as the previous value, otherwise returns false
         @returns A new enumerable of the groups defined by grouper. These groups don't have a key
-        /// and are only grouped by being emitted separately from this enumerable
+         * and are only grouped by being emitted separately from this enumerable
         public static IEnumerable<IEnumerable<T>> GroupAdjacentBy<T>(this IEnumerable<T> enumerable, Func<T, T, bool> grouper) {
             using (e = enumerable.GetEnumerator()) {
                 if( e.MoveNext()) {

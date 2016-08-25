@@ -20,12 +20,12 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Algorithm.Examples
 {
     /**
-    /// This algorithm shows how to initialize and use the RenkoConsolidator
+     * This algorithm shows how to initialize and use the RenkoConsolidator
     */
     public class RenkoConsolidatorAlgorithm : QCAlgorithm
     {
         /**
-        /// Initializes the algorithm state.
+         * Initializes the algorithm state.
         */
         public @Override void Initialize() {
             SetStartDate(2012, 01, 01);
@@ -63,15 +63,15 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// We're doing our analysis in the OnRenkoBar method, but the framework verifies that this method exists, so we define it.
+         * We're doing our analysis in the OnRenkoBar method, but the framework verifies that this method exists, so we define it.
         */
         public void OnData(TradeBars data) {
         }
 
         /**
-        /// This function is called by our renkoClose consolidator defined in Initialize()
+         * This function is called by our renkoClose consolidator defined in Initialize()
         */
-         * @param data">The new renko bar produced by the consolidator
+         * @param data The new renko bar produced by the consolidator
         public void HandleRenkoClose(RenkoBar data) {
             if( !Portfolio.Invested) {
                 SetHoldings(data.Symbol, 1.0);
@@ -80,9 +80,9 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// This function is called by our renko7bar onsolidator defined in Initialize()
+         * This function is called by our renko7bar onsolidator defined in Initialize()
         */
-         * @param data">The new renko bar produced by the consolidator
+         * @param data The new renko bar produced by the consolidator
         public void HandleRenko7Bar(RenkoBar data) {
             Console.WriteLine( "7BAR  - %1$s - %2$s %3$s", data.Time.toString( "o"), data.Open, data.Close);
         }

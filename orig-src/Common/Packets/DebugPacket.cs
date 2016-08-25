@@ -19,49 +19,49 @@ using Newtonsoft.Json;
 package com.quantconnect.lean.Packets
 {
     /**
-    /// Send a simple debug message from the users algorithm to the console.
+     * Send a simple debug message from the users algorithm to the console.
     */
     public class DebugPacket : Packet
     {
         /**
-        /// String debug message to send to the users console
+         * String debug message to send to the users console
         */
         @JsonProperty( "sMessage")]
         public String Message;
 
         /**
-        /// Associated algorithm Id.
+         * Associated algorithm Id.
         */
         @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId;
 
         /**
-        /// Compile id of the algorithm sending this message
+         * Compile id of the algorithm sending this message
         */
         @JsonProperty( "sCompileID")]
         public String CompileId;
 
         /**
-        /// Project Id for this message
+         * Project Id for this message
         */
         @JsonProperty( "iProjectID")]
         public int ProjectId;
 
         /**
-        /// True to emit message as a popup notification (toast),
-        /// false to emit message in console as text
+         * True to emit message as a popup notification (toast),
+         * false to emit message in console as text
         */
         @JsonProperty( "bToast")]
         public boolean Toast;
 
         /**
-        /// Default constructor for JSON
+         * Default constructor for JSON
         */
         public DebugPacket()
             : base (PacketType.Debug) { }
 
         /**
-        /// Create a new instance of the notify debug packet:
+         * Create a new instance of the notify debug packet:
         */
         public DebugPacket(int projectId, String algorithmId, String compileId, String message, boolean toast = false)
             : base(PacketType.Debug) {

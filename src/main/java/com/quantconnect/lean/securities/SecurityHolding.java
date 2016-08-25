@@ -18,71 +18,73 @@ package com.quantconnect.lean.securities;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import com.quantconnect.lean.Extensions;
 import com.quantconnect.lean.Global.SecurityType;
 import com.quantconnect.lean.Symbol;
+import com.quantconnect.lean.orders.MarketOrder;
 
 /**
  * SecurityHolding is a base class for purchasing and holding a market item which manages the asset portfolio
  */
 public class SecurityHolding {
     
-    //Working Variables
-    private BigDecimal _averagePrice;
-    private int        _quantity;
-    private BigDecimal _price;
-    private BigDecimal _totalSaleVolume;
-    private BigDecimal _profit;
-    private BigDecimal _lastTradeProfit;
-    private BigDecimal _totalFees;
+    private final Security security;
     
-    private final Security _security;
+    //Working Variables
+    private BigDecimal averagePrice;
+    private int        quantity;
+    private BigDecimal price;
+    private BigDecimal totalSaleVolume;
+    private BigDecimal profit;
+    private BigDecimal lastTradeProfit;
+    private BigDecimal totalFees;
 
     /**
      * Create a new holding class instance setting the initial properties to $0.
-     * @param security">The security being held
+     * @param security The security being held
      */
     public SecurityHolding( Security security ) {
-        _security = security;
+        this.security = security;
         //Total Sales Volume for the day
-        _totalSaleVolume = BigDecimal.ZERO;
-        _lastTradeProfit = BigDecimal.ZERO;
+        this.totalSaleVolume = BigDecimal.ZERO;
+        this.lastTradeProfit = BigDecimal.ZERO;
     }
 
     /**
      * Average price of the security holdings.
      */
     public BigDecimal getAveragePrice() {
-        return _averagePrice;
+        return averagePrice;
     }
 
     /**
      * Quantity of the security held.
      * Positive indicates long holdings, negative quantity indicates a short holding
-    /// <seealso cref="AbsoluteQuantity"/>
+     * <seealso cref="AbsoluteQuantity"/>
      */
     public BigDecimal getQuantity() {
-        return BigDecimal.valueOf( _quantity );
+        return BigDecimal.valueOf( quantity );
     }
 
     /**
      * Symbol identifier of the underlying security.
      */
     public Symbol getSymbol() {
-        return _security.getSymbol();
+        return security.getSymbol();
     }
 
     /**
      * The security type of the symbol
      */
     public SecurityType getType() {
-        return _security.getType();
+        return security.getType();
     }
 
     /**
      * Leverage of the underlying security.
      */
     public BigDecimal getLeverage() {
-        return _security.MarginModel.getLeverage( _security );
+        return security.getMarginModel().getLeverage( security );
     }
     
 
@@ -90,7 +92,7 @@ public class SecurityHolding {
      * Acquisition cost of the security total holdings.
      */
     public BigDecimal getHoldingsCost() {
-        return _averagePrice.multiply( BigDecimal.valueOf( _quantity ) ).multiply( _security.QuoteCurrency.ConversionRate ).multiply( _security.SymbolProperties.ContractMultiplier );
+        return averagePrice.multiply( BigDecimal.valueOf( quantity ) ).multiply( security.getQuoteCurrency().ConversionRate ).multiply( security.getSymbolProperties().getContractMultiplier() );
     }
 
     /**
@@ -104,12 +106,12 @@ public class SecurityHolding {
      * Current market price of the security.
      */
     public BigDecimal getPrice() {
-        return _price;
+        return price;
     }
 
     /**
      * Absolute holdings cost for current holdings in units of the account's currency
-    /// <seealso cref="HoldingsCost"/>
+     * <seealso cref="HoldingsCost"/>
      */
     public BigDecimal getAbsoluteHoldingsCost() {
         return getHoldingsCost().abs();
@@ -126,12 +128,12 @@ public class SecurityHolding {
      * Market value of our holdings.
      */
     public BigDecimal getHoldingsValue() {
-         return _price.multiply( BigDecimal.valueOf( _quantity ) ).multiply( _security.QuoteCurrency.ConversionRate ).multiply( _security.SymbolProperties.ContractMultiplier );
+         return price.multiply( BigDecimal.valueOf( quantity ) ).multiply( security.getQuoteCurrency().ConversionRate ).multiply( security.getSymbolProperties().getContractMultiplier() );
     }
 
     /**
      * Absolute of the market value of our holdings.
-    /// <seealso cref="HoldingsValue"/>
+     * <seealso cref="HoldingsValue"/>
      */
     public BigDecimal getAbsoluteHoldingsValue() {
          return getHoldingsValue().abs();
@@ -141,13 +143,13 @@ public class SecurityHolding {
      * Boolean flat indicating if we hold any of the security
      */
     public boolean isHoldStock() {
-        return getAbsoluteQuantity().signum() > 0;
+        return getAbsoluteQuantity() > 0;
     }
 
     /**
      * Boolean flat indicating if we hold any of the security
      * Alias of HoldStock
-    /// <seealso cref="HoldStock"/>
+     * <seealso cref="HoldStock"/>
      */
     public boolean isInvested() {
         return isHoldStock();
@@ -157,62 +159,62 @@ public class SecurityHolding {
      *  The total transaction volume for this security since the algorithm started.
      */
     public BigDecimal getTotalSaleVolume() {
-        return _totalSaleVolume;
+        return totalSaleVolume;
     }
 
     /**
      * Total fees for this company since the algorithm started.
      */
     public BigDecimal getTotalFees() {
-        return _totalFees;
+        return totalFees;
     }
 
     /**
      * Boolean flag indicating we have a net positive holding of the security.
-    /// <seealso cref="IsShort"/>
+     * <seealso cref="IsShort"/>
      */
     public boolean isLong() {
-        return _quantity > 0;
+        return quantity > 0;
     }
 
     /**
      * Boolean flag indicating we have a net negative holding of the security.
-    /// <seealso cref="IsLong"/>
+     * <seealso cref="IsLong"/>
      */
     public boolean isShort() {
-        return _quantity < 0;
+        return quantity < 0;
     }
 
     /**
      * Absolute quantity of holdings of this security
-    /// <seealso cref="Quantity"/>
+     * <seealso cref="Quantity"/>
      */
     public int getAbsoluteQuantity() {
-        return Math.abs( _quantity );
+        return Math.abs( quantity );
     }
 
     /**
      * Record of the closing profit from the last trade conducted.
      */
     public BigDecimal getLastTradeProfit() {
-        return _lastTradeProfit;
+        return lastTradeProfit;
     }
 
     /**
      * Calculate the total profit for this security.
-    /// <seealso cref="NetProfit"/>
+     * <seealso cref="NetProfit"/>
      */
     public BigDecimal getProfit() {
-         return _profit; 
+         return profit; 
     }
 
     /**
      * Return the net for this company measured by the profit less fees.
-    /// <seealso cref="Profit"/>
-    /// <seealso cref="TotalFees"/>
+     * <seealso cref="Profit"/>
+     * <seealso cref="TotalFees"/>
      */
     public BigDecimal getNetProfit() {
-        return _profit.subtract( _totalFees );
+        return profit.subtract( totalFees );
     }
 
     /**
@@ -237,7 +239,7 @@ public class SecurityHolding {
      * @param newFee
      */
     public void addNewFee( BigDecimal newFee ) {
-        _totalFees = _totalFees.add( newFee );
+        totalFees = totalFees.add( newFee );
     }
 
     /**
@@ -245,7 +247,7 @@ public class SecurityHolding {
      * @param profitLoss The cash change in portfolio from closing a position
      */
     public void addNewProfit( BigDecimal profitLoss ) {
-        _profit = _profit.add( profitLoss );
+        profit = profit.add( profitLoss );
     }
 
     /**
@@ -253,7 +255,7 @@ public class SecurityHolding {
      * @param saleValue">
      */
     public void addNewSale( BigDecimal saleValue ) {
-        _totalSaleVolume = _totalSaleVolume.add( saleValue );
+        totalSaleVolume = totalSaleVolume.add( saleValue );
     }
 
     /**
@@ -261,15 +263,15 @@ public class SecurityHolding {
      * @param lastTradeProfit Value of the last trade profit
      */
     public void setLastTradeProfit( BigDecimal lastTradeProfit ) {
-        _lastTradeProfit = lastTradeProfit;
+        this.lastTradeProfit = lastTradeProfit;
     }
         
     /**
      * Set the quantity of holdings and their average price after processing a portfolio fill.
      */
     public void setHoldings( BigDecimal averagePrice, int quantity ) {
-        _averagePrice = averagePrice;
-        _quantity = quantity;
+        this.averagePrice = averagePrice;
+        this.quantity = quantity;
     }
 
     /**
@@ -277,7 +279,7 @@ public class SecurityHolding {
      * @param closingPrice Price of the underlying asset to be used for calculating market price / portfolio value
      */
     public void updateMarketPrice( BigDecimal closingPrice ) {
-        _price = closingPrice;
+        price = closingPrice;
     }
 
     /**
@@ -289,9 +291,13 @@ public class SecurityHolding {
             return BigDecimal.ZERO;
 
         // this is in the account currency
-        marketOrder = new MarketOrder( _security.Symbol, -_quantity, _security.LocalTime.ConvertToUtc( _security.getExchange().TimeZone ) );
-        orderFee = _security.FeeModel.GetOrderFee( _security, marketOrder );
+        final MarketOrder marketOrder = new MarketOrder( security.getSymbol(), -quantity, Extensions.convertToUtc( security.getLocalTime(), security.getExchange().getTimeZone() ) );
+        final BigDecimal orderFee = security.getFeeModel().getOrderFee( security, marketOrder );
 
-        return (_price.subtract( _averagePrice )).multiply( BigDecimal.valueOf( _quantity ) ).multiply( _security.QuoteCurrency.ConversionRate ).multiply( _security.SymbolProperties.ContractMultiplier ).subtract( orderFee );
+        return (price.subtract( averagePrice ))
+                    .multiply( BigDecimal.valueOf( quantity ) )
+                    .multiply( security.getQuoteCurrency().ConversionRate )
+                    .multiply( security.getSymbolProperties().getContractMultiplier() )
+                    .subtract( orderFee );
     }
 }

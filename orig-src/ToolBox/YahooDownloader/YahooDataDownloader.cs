@@ -21,30 +21,30 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.ToolBox.YahooDownloader
 {
     /**
-    /// Yahoo Data Downloader class 
+     * Yahoo Data Downloader class 
     */
     public class YahooDataDownloader : IDataDownloader
     {
         //Initialize
-        private String _urlPrototype = @"http://ichart.finance.yahoo.com/table.csv?s=%1$s&a=%2$s&b=%3$s&c={3}&d={4}&e={5}&f={6}&g={7}&ignore=.csv";
+        private String _urlPrototype = @"http://ichart.finance.yahoo.com/table.csv?s=%1$s&a=%2$s&b=%3$s&c=%4$s&d=%5$s&e=%6$s&f=%7$s&g={7}&ignore=.csv";
 
         /**
-        /// Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
+         * Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
         */
-         * @param symbol">Symbol for the data we're looking for.
-         * @param resolution">Resolution of the data request
-         * @param startUtc">Start time of the data in UTC
-         * @param endUtc">End time of the data in UTC
+         * @param symbol Symbol for the data we're looking for.
+         * @param resolution Resolution of the data request
+         * @param startUtc Start time of the data in UTC
+         * @param endUtc End time of the data in UTC
         @returns Enumerable of base data for this symbol
         public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
             if( resolution != Resolution.Daily)
-                throw new ArgumentException( "The YahooDataDownloader can only download daily data.");
+                throw new IllegalArgumentException( "The YahooDataDownloader can only download daily data.");
 
             if( symbol.ID.SecurityType != SecurityType.Equity)
                 throw new NotSupportedException( "SecurityType not available: " + symbol.ID.SecurityType);
 
             if( endUtc < startUtc)
-                throw new ArgumentException( "The end date must be greater or equal than the start date.");
+                throw new IllegalArgumentException( "The end date must be greater or equal than the start date.");
 
             // Note: Yahoo syntax requires the month zero-based (0-11)
             url = String.format(_urlPrototype, symbol.Value, startUtc.Month - 1, startUtc.Day, startUtc.Year, endUtc.Month - 1, endUtc.Day, endUtc.Year, "d");

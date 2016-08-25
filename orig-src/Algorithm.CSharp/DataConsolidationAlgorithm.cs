@@ -21,36 +21,36 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Algorithm.Examples
 {
     /**
-    /// Example algorithm giving an introduction into using IDataConsolidators.  
-    /// 
-    /// This is an advanced QC concept and requires a certain level of comfort using C# and its event system.
-    /// 
-    /// What is an IDataConsolidator?
-    /// IDataConsolidator is a plugin point that can be used to transform your data more easily.
-    /// In this example we show one of the simplest consolidators, the TradeBarConsolidator.
-    /// This type is capable of taking a timespan to indicate how long each bar should be, or an
-    /// integer to indicate how many bars should be aggregated into one.
-    /// 
-    /// When a new 'consolidated' piece of data is produced by the IDataConsolidator, an event is fired
-    /// with the argument of the new data.
-    /// 
-    /// If you are unfamiliar with C# events, or events in general, you may find this useful. This is
-    /// Microsoft's overview of events in C#
-    /// 
-    ///     http://msdn.microsoft.com/en-us/library/aa645739%28v=vs.71%29.aspx
-    /// 
-    /// Also, if you're unfamiliar with using lambda expressions in C#, you may find this useful. This
-    /// is Microsoft's overview of lambda expressions in C# (anonymous functions)
-    /// 
-    ///     http://msdn.microsoft.com/en-us/library/bb397687.aspx
-    /// 
+     * Example algorithm giving an introduction into using IDataConsolidators.  
+     * 
+     * This is an advanced QC concept and requires a certain level of comfort using C# and its event system.
+     * 
+     * What is an IDataConsolidator?
+     * IDataConsolidator is a plugin point that can be used to transform your data more easily.
+     * In this example we show one of the simplest consolidators, the TradeBarConsolidator.
+     * This type is capable of taking a timespan to indicate how long each bar should be, or an
+     * integer to indicate how many bars should be aggregated into one.
+     * 
+     * When a new 'consolidated' piece of data is produced by the IDataConsolidator, an event is fired
+     * with the argument of the new data.
+     * 
+     * If you are unfamiliar with C# events, or events in general, you may find this useful. This is
+     * Microsoft's overview of events in C#
+     * 
+     *     http://msdn.microsoft.com/en-us/library/aa645739%28v=vs.71%29.aspx
+     * 
+     * Also, if you're unfamiliar with using lambda expressions in C#, you may find this useful. This
+     * is Microsoft's overview of lambda expressions in C# (anonymous functions)
+     * 
+     *     http://msdn.microsoft.com/en-us/library/bb397687.aspx
+     * 
     */
     public class DataConsolidationAlgorithm : QCAlgorithm
     {
         TradeBar _last;
 
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             AddSecurity(SecurityType.Equity, "SPY");
@@ -96,17 +96,17 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param bars">TradeBars IDictionary object with your stock data
+         * @param bars TradeBars IDictionary object with your stock data
         public void OnData(TradeBars bars) {
             // we need to declare this method
         }
 
         /**
-        /// End of a trading day event handler. This method is called at the end of the algorithm day (or multiple times if trading multiple assets).
+         * End of a trading day event handler. This method is called at the end of the algorithm day (or multiple times if trading multiple assets).
         */
-         * @param symbol">Asset symbol for this end of day event. Forex and equities have different closing hours.
+         * @param symbol Asset symbol for this end of day event. Forex and equities have different closing hours.
         public @Override void OnEndOfDay( String symbol) {
             // close up shop each day and reset our 'last' value so we start tomorrow fresh
             Liquidate(symbol);
@@ -114,9 +114,9 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// This is our event handler for our 30 minute trade bar defined above in Initialize(). So each time the consolidator
-        /// produces a new 30 minute bar, this function will be called automatically. The 'sender' parameter will be the
-        /// instance of the IDataConsolidator that invoked the event, but you'll almost never need that!
+         * This is our event handler for our 30 minute trade bar defined above in Initialize(). So each time the consolidator
+         * produces a new 30 minute bar, this function will be called automatically. The 'sender' parameter will be the
+         * instance of the IDataConsolidator that invoked the event, but you'll almost never need that!
         */
         private void ThirtyMinuteBarHandler(object sender, TradeBar consolidated) {
             if( _last != null && consolidated.Close > _last.Close) {
@@ -131,9 +131,9 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// This is our event handler for our 3 day trade bar defined above in Initialize(). So each time the consolidator
-        /// produces a new 3 day bar, this function will be called automatically. The 'sender' parameter will be the
-        /// instance of the IDataConsolidator that invoked the event, but you'll almost never need that!
+         * This is our event handler for our 3 day trade bar defined above in Initialize(). So each time the consolidator
+         * produces a new 3 day bar, this function will be called automatically. The 'sender' parameter will be the
+         * instance of the IDataConsolidator that invoked the event, but you'll almost never need that!
         */
         private void ThreeDayBarConsolidatedHandler(object sender, TradeBar consolidated) {
             Log(consolidated.Time.toString( "0") + " >> Plotting!");

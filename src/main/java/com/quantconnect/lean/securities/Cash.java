@@ -19,59 +19,68 @@ package com.quantconnect.lean.securities;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
+import com.google.common.collect.ImmutableMap;
+import com.quantconnect.lean.Global.SecurityType;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.data.BaseData;
 import com.quantconnect.lean.data.SubscriptionManager;
 
-//using System.Linq;
-//using QuantConnect.Data;
-//using QuantConnect.Data.Market;
-//using QuantConnect.Logging;
-
-    /// Represents a holding of a currency in cash.
+/**
+ * Represents a holding of a currency in cash.
+ */
 public class Cash {
     private boolean _isBaseCurrency;
     private boolean _invertRealTimePrice;
 
+    private Symbol SecuritySymbol;
+    private String Symbol;
+    private BigDecimal Amount;
+
+    protected BigDecimal ConversionRate;
+
     private final Object _locker = new Object();
 
-    /// Gets the symbol of the security required to provide conversion rates.
-    private Symbol SecuritySymbol;
-    
+    /**
+     * Gets the symbol of the security required to provide conversion rates.
+     */
     public Symbol getSecuritySymbol() { 
         return SecuritySymbol;
     }
-
-    /// Gets the symbol used to represent this cash
-    private String Symbol;
     
-    private String getSymbol() { 
+    /**
+     * Gets the symbol used to represent this cash
+     */
+    public String getSymbol() { 
         return Symbol;
     }
-
-    /// Gets or sets the amount of cash held
-    private BigDecimal Amount;
     
-    private BigDecimal getAmount() { 
+    /**
+     * Gets or sets the amount of cash held
+     */
+    public BigDecimal getAmount() { 
         return Amount;
     }
-
-    /// Gets the conversion rate into account currency
-    protected BigDecimal ConversionRate;
     
+    /**
+     * Gets the conversion rate into account currency
+     */
     public BigDecimal getConversionRate() { 
         return ConversionRate;
     }
 
-    /// Gets the value of this cash in the accout currency
+    /**
+     * Gets the value of this cash in the accout currency
+     */
     public BigDecimal getValueInAccountCurrency() {
         return Amount.multiply( ConversionRate );
     }
 
-    /// Initializes a new instance of the <see cref="Cash"/> class
-     * @param symbol">The symbol used to represent this cash
-     * @param amount">The amount of this currency held
-     * @param conversionRate">The initial conversion rate of this currency into the <see cref="CashBook.AccountCurrency"/>
+    /**
+     * Initializes a new instance of the <see cref="Cash"/> class
+     * @param symbol The symbol used to represent this cash
+     * @param amount The amount of this currency held
+     * @param conversionRate The initial conversion rate of this currency into the <see cref="CashBook.AccountCurrency"/>
+     */
     public Cash( String symbol, BigDecimal amount, BigDecimal conversionRate ) {
         if( symbol == null || symbol.length() != 3 )
             throw new IllegalArgumentException( "Cash symbols must be exactly 3 characters." );
@@ -81,8 +90,10 @@ public class Cash {
         this.Symbol = symbol.toUpperCase();
     }
 
-    /// Updates this cash object with the specified data
-     * @param data">The new data for this cash object
+    /**
+     * Updates this cash object with the specified data
+     * @param data The new data for this cash object
+     */
     public void update( BaseData data ) {
         if( _isBaseCurrency ) 
             return;
@@ -94,10 +105,12 @@ public class Cash {
         ConversionRate = rate;
     }
 
-    /// Adds the specified amount of currency to this Cash instance and returns the new total.
-    /// This operation is thread-safe
-     * @param amount">The amount of currency to be added
-    @returns The amount of currency directly after the addition
+    /**
+     * Adds the specified amount of currency to this Cash instance and returns the new total.
+     * This operation is thread-safe
+     * @param amount The amount of currency to be added
+     * @returns The amount of currency directly after the addition
+     */
     public BigDecimal addAmount( BigDecimal amt ) {
         synchronized( _locker ) {
             Amount = Amount.add( amt );
@@ -105,29 +118,33 @@ public class Cash {
         }
     }
 
-    /// Sets the Quantity to the specified amount
-     * @param amount">The amount to set the quantity to
+    /**
+     * Sets the Quantity to the specified amount
+     * @param amount The amount to set the quantity to
+     */
     public void setAmount( BigDecimal amount ) {
         synchronized( _locker ) {
             this.Amount = amount;
         }
     }
 
-    /// Ensures that we have a data feed to convert this currency into the base currency.
-    /// This will add a subscription at the lowest resolution if one is not found.
-     * @param securities">The security manager
-     * @param subscriptions">The subscription manager used for searching and adding subscriptions
-     * @param marketHoursDatabase">A security exchange hours provider instance used to resolve exchange hours for new subscriptions
-     * @param symbolPropertiesDatabase">A symbol properties database instance
-     * @param marketMap">The market map that decides which market the new security should be in
-     * @param cashBook">The cash book - used for resolving quote currencies for created conversion securities
-    @returns Returns the added currency security if needed, otherwise null
+    /**
+     * Ensures that we have a data feed to convert this currency into the base currency.
+     * This will add a subscription at the lowest resolution if one is not found.
+     * @param securities The security manager
+     * @param subscriptions The subscription manager used for searching and adding subscriptions
+     * @param marketHoursDatabase A security exchange hours provider instance used to resolve exchange hours for new subscriptions
+     * @param symbolPropertiesDatabase A symbol properties database instance
+     * @param marketMap The market map that decides which market the new security should be in
+     * @param cashBook The cash book used for resolving quote currencies for created conversion securities
+     * @returns Returns the added currency security if needed, otherwise null
+     */
     public Security ensureCurrencyDataFeed( SecurityManager securities, SubscriptionManager subscriptions, MarketHoursDatabase marketHoursDatabase, 
-            SymbolPropertiesDatabase symbolPropertiesDatabase, IReadOnlyMap<SecurityType,String> marketMap, CashBook cashBook ) {
+            SymbolPropertiesDatabase symbolPropertiesDatabase, ImmutableMap<SecurityType,String> marketMap, CashBook cashBook ) {
         if( Symbol == CashBook.AccountCurrency ) {
             SecuritySymbol = QuantConnect.Symbol.Empty;
             _isBaseCurrency = true;
-            ConversionRate = 1.0m;
+            ConversionRate = BigDecimal.ONE;
             return null;
         }
 
@@ -186,14 +203,56 @@ public class Cash {
         // if this still hasn't been set then it's an error condition
         throw new IllegalArgumentException( String.format( "In order to maintain cash in %1$s you are required to add a subscription for Forex pair %1$s%2$s or %2$s%1$s", Symbol, CashBook.AccountCurrency));
     }
+    
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((Amount == null) ? 0 : Amount.hashCode());
+        result = prime * result + ((ConversionRate == null) ? 0 : ConversionRate.hashCode());
+        result = prime * result + ((SecuritySymbol == null) ? 0 : SecuritySymbol.hashCode());
+        result = prime * result + ((Symbol == null) ? 0 : Symbol.hashCode());
+        result = prime * result + (_invertRealTimePrice ? 1231 : 1237);
+        result = prime * result + (_isBaseCurrency ? 1231 : 1237);
+        return result;
+    }
 
-    /// Returns a <see cref="System.String"/> that represents the current <see cref="QuantConnect.Securities.Cash"/>.
-    @returns A <see cref="System.String"/> that represents the current <see cref="QuantConnect.Securities.Cash"/>.
+    @Override
+    public boolean equals( Object obj ) {
+        if( this == obj ) return true;
+        if( obj == null ) return false;
+        if( !(obj instanceof Cash) ) return false;
+        Cash other = (Cash)obj;
+        if( Amount == null ) {
+            if( other.Amount != null ) return false;
+        }
+        else if( !Amount.equals( other.Amount ) ) return false;
+        if( ConversionRate == null ) {
+            if( other.ConversionRate != null ) return false;
+        }
+        else if( !ConversionRate.equals( other.ConversionRate ) ) return false;
+        if( SecuritySymbol == null ) {
+            if( other.SecuritySymbol != null ) return false;
+        }
+        else if( !SecuritySymbol.equals( other.SecuritySymbol ) ) return false;
+        if( Symbol == null ) {
+            if( other.Symbol != null ) return false;
+        }
+        else if( !Symbol.equals( other.Symbol ) ) return false;
+        if( _invertRealTimePrice != other._invertRealTimePrice ) return false;
+        if( _isBaseCurrency != other._isBaseCurrency ) return false;
+        return true;
+    }
+
+    /**
+     * Returns a <see cref="System.String"/> that represents the current <see cref="QuantConnect.Securities.Cash"/>.
+     * @returns A <see cref="System.String"/> that represents the current <see cref="QuantConnect.Securities.Cash"/>.
+     */
     public String toString() {
         // round the conversion rate for output
         BigDecimal rate = ConversionRate;
         rate = rate < 1000 ? rate.setScale( 5, RoundingMode.HALF_UP ) : Math.round( rate, 2 );
-        return String.format( "%1$s: {1,15} @ ${2,10} = {3}{4}", 
+        return String.format( "%1$s: {1,15} @ ${2,10} = %4$s%5$s", 
             Symbol, 
             Amount.toString( "0.00" ), 
             rate.toString( "0.00####"), 

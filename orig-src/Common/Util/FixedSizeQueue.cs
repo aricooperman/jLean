@@ -18,16 +18,16 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Util 
 {
     /**
-    /// Helper method for a limited length queue which self-removes the extra elements.
-    /// http://stackoverflow.com/questions/5852863/fixed-size-queue-which-automatically-dequeues-old-values-upon-new-enques
+     * Helper method for a limited length queue which self-removes the extra elements.
+     * http://stackoverflow.com/questions/5852863/fixed-size-queue-which-automatically-dequeues-old-values-upon-new-enques
     */
-    /// <typeparam name="T">The type of item the queue holds</typeparam>
+     * <typeparam name="T The type of item the queue holds</typeparam>
     public class FixedSizeQueue<T> : Queue<T>
     {
         private int _limit = -1;
 
         /**
-        /// Max Length 
+         * Max Length 
         */
         public int Limit
         {
@@ -36,7 +36,7 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Create a new fixed length queue:
+         * Create a new fixed length queue:
         */
         public FixedSizeQueue(int limit)
             : base(limit) {
@@ -44,7 +44,7 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Enqueue a new item int the generic fixed length queue:
+         * Enqueue a new item int the generic fixed length queue:
         */
         public new void Enqueue(T item) {
             while (Count >= Limit) {

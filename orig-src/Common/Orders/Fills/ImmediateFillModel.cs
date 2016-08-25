@@ -20,19 +20,19 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Orders.Fills
 {
     /**
-    /// Represents the default fill model used to simulate order fills
+     * Represents the default fill model used to simulate order fills
     */
     public class ImmediateFillModel : IFillModel
     {
         /**
-        /// Default market fill model for the base security class. Fills at the last traded price.
+         * Default market fill model for the base security class. Fills at the last traded price.
         */
-         * @param asset">Security asset we're filling
-         * @param order">Order packet to model
+         * @param asset Security asset we're filling
+         * @param order Order packet to model
         @returns Order fill information detailing the average price and quantity filled.
-        /// <seealso cref="SecurityTransactionModel.StopMarketFill"/>
-        /// <seealso cref="SecurityTransactionModel.LimitFill"/>
-        public virtual OrderEvent MarketFill(Security asset, MarketOrder order) {
+         * <seealso cref="SecurityTransactionModel.StopMarketFill"/>
+         * <seealso cref="SecurityTransactionModel.LimitFill"/>
+        public OrderEvent MarketFill(Security asset, MarketOrder order) {
             //Default order event to return.
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
             fill = new OrderEvent(order, utcTime, 0);
@@ -69,14 +69,14 @@ package com.quantconnect.lean.Orders.Fills
         }
 
         /**
-        /// Default stop fill model implementation in base class security. (Stop Market Order Type)
+         * Default stop fill model implementation in base class security. (Stop Market Order Type)
         */
-         * @param asset">Security asset we're filling
-         * @param order">Order packet to model
+         * @param asset Security asset we're filling
+         * @param order Order packet to model
         @returns Order fill information detailing the average price and quantity filled.
-        /// <seealso cref="MarketFill(Security, MarketOrder)"/>
-        /// <seealso cref="SecurityTransactionModel.LimitFill"/>
-        public virtual OrderEvent StopMarketFill(Security asset, StopMarketOrder order) {
+         * <seealso cref="MarketFill(Security, MarketOrder)"/>
+         * <seealso cref="SecurityTransactionModel.LimitFill"/>
+        public OrderEvent StopMarketFill(Security asset, StopMarketOrder order) {
             //Default order event to return.
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
             fill = new OrderEvent(order, utcTime, 0);
@@ -124,21 +124,21 @@ package com.quantconnect.lean.Orders.Fills
         }
 
         /**
-        /// Default stop limit fill model implementation in base class security. (Stop Limit Order Type)
+         * Default stop limit fill model implementation in base class security. (Stop Limit Order Type)
         */
-         * @param asset">Security asset we're filling
-         * @param order">Order packet to model
+         * @param asset Security asset we're filling
+         * @param order Order packet to model
         @returns Order fill information detailing the average price and quantity filled.
-        /// <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
-        /// <seealso cref="SecurityTransactionModel.LimitFill"/>
-        /// 
-        ///     There is no good way to model limit orders with OHLC because we never know whether the market has 
-        ///     gapped past our fill price. We have to make the assumption of a fluid, high volume market.
-        /// 
-        ///     Stop limit orders we also can't be sure of the order of the H - L values for the limit fill. The assumption
-        ///     was made the limit fill will be done with closing price of the bar after the stop has been triggered..
-        /// 
-        public virtual OrderEvent StopLimitFill(Security asset, StopLimitOrder order) {
+         * <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
+         * <seealso cref="SecurityTransactionModel.LimitFill"/>
+         * 
+         *     There is no good way to model limit orders with OHLC because we never know whether the market has 
+         *     gapped past our fill price. We have to make the assumption of a fluid, high volume market.
+         * 
+         *     Stop limit orders we also can't be sure of the order of the H - L values for the limit fill. The assumption
+         *     was made the limit fill will be done with closing price of the bar after the stop has been triggered..
+         * 
+        public OrderEvent StopLimitFill(Security asset, StopLimitOrder order) {
             //Default order event to return.
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
             fill = new OrderEvent(order, utcTime, 0);
@@ -190,14 +190,14 @@ package com.quantconnect.lean.Orders.Fills
         }
 
         /**
-        /// Default limit order fill model in the base security class.
+         * Default limit order fill model in the base security class.
         */
-         * @param asset">Security asset we're filling
-         * @param order">Order packet to model
+         * @param asset Security asset we're filling
+         * @param order Order packet to model
         @returns Order fill information detailing the average price and quantity filled.
-        /// <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
-        /// <seealso cref="MarketFill(Security, MarketOrder)"/>
-        public virtual OrderEvent LimitFill(Security asset, LimitOrder order) {
+         * <seealso cref="StopMarketFill(Security, StopMarketOrder)"/>
+         * <seealso cref="MarketFill(Security, MarketOrder)"/>
+        public OrderEvent LimitFill(Security asset, LimitOrder order) {
             //Initialise;
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
             fill = new OrderEvent(order, utcTime, 0);
@@ -241,10 +241,10 @@ package com.quantconnect.lean.Orders.Fills
         }
 
         /**
-        /// Market on Open Fill Model. Return an order event with the fill details
+         * Market on Open Fill Model. Return an order event with the fill details
         */
-         * @param asset">Asset we're trading with this order
-         * @param order">Order to be filled
+         * @param asset Asset we're trading with this order
+         * @param order Order to be filled
         @returns Order fill information detailing the average price and quantity filled.
         public OrderEvent MarketOnOpenFill(Security asset, MarketOnOpenOrder order) {
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
@@ -297,10 +297,10 @@ package com.quantconnect.lean.Orders.Fills
         }
 
         /**
-        /// Market on Close Fill Model. Return an order event with the fill details
+         * Market on Close Fill Model. Return an order event with the fill details
         */
-         * @param asset">Asset we're trading with this order
-         * @param order">Order to be filled
+         * @param asset Asset we're trading with this order
+         * @param order Order to be filled
         @returns Order fill information detailing the average price and quantity filled.
         public OrderEvent MarketOnCloseFill(Security asset, MarketOnCloseOrder order) {
             utcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
@@ -342,10 +342,10 @@ package com.quantconnect.lean.Orders.Fills
         }
 
         /**
-        /// Get the minimum and maximum price for this security in the last bar:
+         * Get the minimum and maximum price for this security in the last bar:
         */
-         * @param asset">Security asset we're checking
-         * @param direction">The order direction, decides whether to pick bid or ask
+         * @param asset Security asset we're checking
+         * @param direction The order direction, decides whether to pick bid or ask
         private Prices GetPrices(Security asset, OrderDirection direction) {
             low = asset.Low;
             high = asset.High;
@@ -385,7 +385,7 @@ package com.quantconnect.lean.Orders.Fills
         }
 
         /**
-        /// Determines if the exchange is open using the current time of the asset
+         * Determines if the exchange is open using the current time of the asset
         */
         private static boolean IsExchangeOpen(Security asset) {
             if( !asset.Exchange.DateTimeIsOpen(asset.LocalTime)) {

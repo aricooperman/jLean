@@ -79,8 +79,8 @@ public class Config {
         return configObject;
     } );
 
-    /// Gets the currently selected environment. If sub-environments are defined,
-    /// they'll be returned as {env1}.{env2}
+     * Gets the currently selected environment. If sub-environments are defined,
+     * they'll be returned as {env1}.{env2}
     @returns The fully qualified currently selected environment
     @SuppressWarnings( "unchecked")
     public static String getEnvironment() {
@@ -101,8 +101,8 @@ public class Config {
         return environments.stream().collect( Collectors.joining( "." ) );
     }
     
-    /// Get the matching config setting from the file searching for this key.
-     * @param key">String key value we're seaching for in the config file.
+     * Get the matching config setting from the file searching for this key.
+     * @param key String key value we're seaching for in the config file.
      * @param defaultValue">
     @returns String value of the configuration setting or empty String if nothing found.
     public static String get( String key ) {
@@ -124,18 +124,18 @@ public class Config {
     }
 
     /**
-    /// Gets the underlying JToken for the specified key
+     * Gets the underlying JToken for the specified key
     */
     public static Map<String,Object> getToken( String key ) {
         return getToken( settings.get(), key );
     }
 
     /**
-    /// Sets a configuration value. This is really only used to help testing. The key heye can be
-    /// specified as {environment}.key to set a value on a specific environment
+     * Sets a configuration value. This is really only used to help testing. The key heye can be
+     * specified as {environment}.key to set a value on a specific environment
     */
-     * @param key">The key to be set
-     * @param value">The new value
+     * @param key The key to be set
+     * @param value The new value
     @SuppressWarnings( "unchecked")
     public static void set( String key, String value ) {
         Map<String,Object> environment = settings.get();
@@ -152,10 +152,10 @@ public class Config {
     }
 
     /**
-    /// Get a boolean value configuration setting by a configuration key.
+     * Get a boolean value configuration setting by a configuration key.
     */
-     * @param key">String value of the configuration key.
-     * @param defaultValue">The default value to use if not found in configuration
+     * @param key String value of the configuration key.
+     * @param defaultValue The default value to use if not found in configuration
     @returns Boolean value of the config setting.
     public static boolean getBool( String key ) {
         return getBool( key, false );
@@ -166,10 +166,10 @@ public class Config {
     }
 
     /**
-    /// Get the int value of a config string.
+     * Get the int value of a config string.
     */
-     * @param key">Search key from the config file
-     * @param defaultValue">The default value to use if not found in configuration
+     * @param key Search key from the config file
+     * @param defaultValue The default value to use if not found in configuration
     @returns Int value of the config setting.
     public static int getInt( String key ) {
         return getInt( key, 0 );
@@ -180,10 +180,10 @@ public class Config {
     }
 
     /**
-    /// Get the double value of a config string.
+     * Get the double value of a config string.
     */
-     * @param key">Search key from the config file
-     * @param defaultValue">The default value to use if not found in configuration
+     * @param key Search key from the config file
+     * @param defaultValue The default value to use if not found in configuration
     @returns Double value of the config setting.
     public static double getDouble( String key ) {
         return getDouble( key, 0.0 );
@@ -194,12 +194,12 @@ public class Config {
     }
 
     /**
-    /// Gets a value from configuration and converts it to the requested type, assigning a default if
-    /// the configuration is null or empty
+     * Gets a value from configuration and converts it to the requested type, assigning a default if
+     * the configuration is null or empty
     */
-    /// <typeparam name="T">The requested type</typeparam>
-     * @param key">Search key from the config file
-     * @param defaultValue">The default value to use if not found in configuration
+     * <typeparam name="T The requested type</typeparam>
+     * @param key Search key from the config file
+     * @param defaultValue The default value to use if not found in configuration
     @returns Converted value of the config setting.
     public static <T> T getValue( String key ) {
         return getValue( key, null );
@@ -250,7 +250,7 @@ public class Config {
 //        }
 //        catch (Exception err)
 //        {
-//            Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to parse: {3}. Using default value.", typeof (T).Name, key, defaultValue, value);
+//            Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to parse: %4$s. Using default value.", typeof (T).Name, key, defaultValue, value);
 //            Log.Error(err);
 //            return defaultValue;
 //        }
@@ -261,32 +261,32 @@ public class Config {
 //        }
 //        catch (Exception err)
 //        {
-//            Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to JSON deserialize: {3}. Using default value.", typeof(T).Name, key, defaultValue, value);
+//            Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to JSON deserialize: %4$s. Using default value.", typeof(T).Name, key, defaultValue, value);
 //            Log.Error(err);
 //            return defaultValue;
 //        }
     }
 
     /**
-    /// Tries to find the specified key and parse it as a T, using
-    /// default(T) if unable to locate the key or unable to parse it
+     * Tries to find the specified key and parse it as a T, using
+     * default(T) if unable to locate the key or unable to parse it
     */
-    /// <typeparam name="T">The desired output type</typeparam>
-     * @param key">The configuration key
-     * @param value">The output value
+     * <typeparam name="T The desired output type</typeparam>
+     * @param key The configuration key
+     * @param value The output value
     @returns True on successful parse, false when output value is default(T)
     public static <T> /*boolean*/ T tryGetValue( String key ) {
         return tryGetValue( key, null );
     }
 
     /**
-    /// Tries to find the specified key and parse it as a T, using
-    /// defaultValue if unable to locate the key or unable to parse it
+     * Tries to find the specified key and parse it as a T, using
+     * defaultValue if unable to locate the key or unable to parse it
     */
-    /// <typeparam name="T">The desired output type</typeparam>
-     * @param key">The configuration key
-     * @param defaultValue">The default value to use on key not found or unsuccessful parse
-     * @param value">The output value
+     * <typeparam name="T The desired output type</typeparam>
+     * @param key The configuration key
+     * @param defaultValue The default value to use on key not found or unsuccessful parse
+     * @param value The output value
     @returns True on successful parse, false when output value is defaultValue
     public static <T> /*boolean*/ T tryGetValue( String key, T defaultValue ) {
 //        try {
@@ -302,7 +302,7 @@ public class Config {
     }
 
     /**
-    /// Write the contents of the serialized configuration back to the disk.
+     * Write the contents of the serialized configuration back to the disk.
     */
     public static void write() {
 //        if( !settings.get()..IsValueCreated ) return;
@@ -311,21 +311,21 @@ public class Config {
     }
 
     /**
-    /// Flattens the jobject with respect to the selected environment and then
-    /// removes the 'environments' node
+     * Flattens the jobject with respect to the selected environment and then
+     * removes the 'environments' node
     */
-     * @param @OverrideEnvironment">The environment to use
+     * @param @OverrideEnvironment The environment to use
     @returns The flattened JObject
     public static Map<String,Object> flatten( String @OverrideEnvironment ) {
         return flatten( settings.get(), @OverrideEnvironment );
     }
 
     /**
-    /// Flattens the jobject with respect to the selected environment and then
-    /// removes the 'environments' node
+     * Flattens the jobject with respect to the selected environment and then
+     * removes the 'environments' node
     */
-     * @param config">The configuration represented as a JObject
-     * @param @OverrideEnvironment">The environment to use
+     * @param config The configuration represented as a JObject
+     * @param @OverrideEnvironment The environment to use
     @returns The flattened JObject
     public static Map<String,Object> flatten( Map<String,Object> config, String @OverrideEnvironment ) {
         Map<String,Object> clone = null;
@@ -414,7 +414,7 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.Configuration
 {
     /**
-    /// Configuration class loads the required external setup variables to launch the Lean engine.
+     * Configuration class loads the required external setup variables to launch the Lean engine.
     */
     public static class Config
     {
@@ -445,8 +445,8 @@ package com.quantconnect.lean.Configuration
         });
 
         /**
-        /// Gets the currently selected environment. If sub-environments are defined,
-        /// they'll be returned as {env1}.{env2}
+         * Gets the currently selected environment. If sub-environments are defined,
+         * they'll be returned as {env1}.{env2}
         */
         @returns The fully qualified currently selected environment
         public static String GetEnvironment() {
@@ -468,9 +468,9 @@ package com.quantconnect.lean.Configuration
         }
         
         /**
-        /// Get the matching config setting from the file searching for this key.
+         * Get the matching config setting from the file searching for this key.
         */
-         * @param key">String key value we're seaching for in the config file.
+         * @param key String key value we're seaching for in the config file.
          * @param defaultValue">
         @returns String value of the configuration setting or empty String if nothing found.
         public static String Get( String key, String defaultValue = "") {
@@ -486,18 +486,18 @@ package com.quantconnect.lean.Configuration
         }
 
         /**
-        /// Gets the underlying JToken for the specified key
+         * Gets the underlying JToken for the specified key
         */
         public static JToken GetToken( String key) {
             return GetToken(Settings.Value, key);
         }
 
         /**
-        /// Sets a configuration value. This is really only used to help testing. The key heye can be
-        /// specified as {environment}.key to set a value on a specific environment
+         * Sets a configuration value. This is really only used to help testing. The key heye can be
+         * specified as {environment}.key to set a value on a specific environment
         */
-         * @param key">The key to be set
-         * @param value">The new value
+         * @param key The key to be set
+         * @param value The new value
         public static void Set( String key, String value) {
             JToken environment = Settings.Value;
             while (key.Contains( ".")) {
@@ -513,42 +513,42 @@ package com.quantconnect.lean.Configuration
         }
 
         /**
-        /// Get a boolean value configuration setting by a configuration key.
+         * Get a boolean value configuration setting by a configuration key.
         */
-         * @param key">String value of the configuration key.
-         * @param defaultValue">The default value to use if not found in configuration
+         * @param key String value of the configuration key.
+         * @param defaultValue The default value to use if not found in configuration
         @returns Boolean value of the config setting.
         public static boolean GetBool( String key, boolean defaultValue = false) {
             return GetValue(key, defaultValue);
         }
 
         /**
-        /// Get the int value of a config string.
+         * Get the int value of a config string.
         */
-         * @param key">Search key from the config file
-         * @param defaultValue">The default value to use if not found in configuration
+         * @param key Search key from the config file
+         * @param defaultValue The default value to use if not found in configuration
         @returns Int value of the config setting.
         public static int GetInt( String key, int defaultValue = 0) {
             return GetValue(key, defaultValue);
         }
 
         /**
-        /// Get the double value of a config string.
+         * Get the double value of a config string.
         */
-         * @param key">Search key from the config file
-         * @param defaultValue">The default value to use if not found in configuration
+         * @param key Search key from the config file
+         * @param defaultValue The default value to use if not found in configuration
         @returns Double value of the config setting.
         public static double GetDouble( String key, double defaultValue = 0.0) {
             return GetValue(key, defaultValue);
         }
 
         /**
-        /// Gets a value from configuration and converts it to the requested type, assigning a default if
-        /// the configuration is null or empty
+         * Gets a value from configuration and converts it to the requested type, assigning a default if
+         * the configuration is null or empty
         */
-        /// <typeparam name="T">The requested type</typeparam>
-         * @param key">Search key from the config file
-         * @param defaultValue">The default value to use if not found in configuration
+         * <typeparam name="T The requested type</typeparam>
+         * @param key Search key from the config file
+         * @param defaultValue The default value to use if not found in configuration
         @returns Converted value of the config setting.
         public static T GetValue<T>( String key, T defaultValue = default(T)) {
             // special case environment requests
@@ -588,7 +588,7 @@ package com.quantconnect.lean.Configuration
                 }
             }
             catch (Exception err) {
-                Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to parse: {3}. Using default value.", typeof (T).Name, key, defaultValue, value);
+                Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to parse: %4$s. Using default value.", typeof (T).Name, key, defaultValue, value);
                 Log.Error(err);
                 return defaultValue;
             }
@@ -598,32 +598,32 @@ package com.quantconnect.lean.Configuration
                 return JsonConvert.DeserializeObject<T>(value);
             }
             catch (Exception err) {
-                Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to JSON deserialize: {3}. Using default value.", typeof(T).Name, key, defaultValue, value);
+                Log.Trace( "Config.GetValue<%1$s>(%2$s,%3$s): Failed to JSON deserialize: %4$s. Using default value.", typeof(T).Name, key, defaultValue, value);
                 Log.Error(err);
                 return defaultValue;
             }
         }
 
         /**
-        /// Tries to find the specified key and parse it as a T, using
-        /// default(T) if unable to locate the key or unable to parse it
+         * Tries to find the specified key and parse it as a T, using
+         * default(T) if unable to locate the key or unable to parse it
         */
-        /// <typeparam name="T">The desired output type</typeparam>
-         * @param key">The configuration key
-         * @param value">The output value
+         * <typeparam name="T The desired output type</typeparam>
+         * @param key The configuration key
+         * @param value The output value
         @returns True on successful parse, false when output value is default(T)
         public static boolean TryGetValue<T>( String key, out T value) {
             return TryGetValue(key, default(T), out value);
         }
 
         /**
-        /// Tries to find the specified key and parse it as a T, using
-        /// defaultValue if unable to locate the key or unable to parse it
+         * Tries to find the specified key and parse it as a T, using
+         * defaultValue if unable to locate the key or unable to parse it
         */
-        /// <typeparam name="T">The desired output type</typeparam>
-         * @param key">The configuration key
-         * @param defaultValue">The default value to use on key not found or unsuccessful parse
-         * @param value">The output value
+         * <typeparam name="T The desired output type</typeparam>
+         * @param key The configuration key
+         * @param defaultValue The default value to use on key not found or unsuccessful parse
+         * @param value The output value
         @returns True on successful parse, false when output value is defaultValue
         public static boolean TryGetValue<T>( String key, T defaultValue, out T value) {
             try
@@ -639,7 +639,7 @@ package com.quantconnect.lean.Configuration
         }
 
         /**
-        /// Write the contents of the serialized configuration back to the disk.
+         * Write the contents of the serialized configuration back to the disk.
         */
         public static void Write() {
             if( !Settings.IsValueCreated) return;
@@ -648,21 +648,21 @@ package com.quantconnect.lean.Configuration
         }
 
         /**
-        /// Flattens the jobject with respect to the selected environment and then
-        /// removes the 'environments' node
+         * Flattens the jobject with respect to the selected environment and then
+         * removes the 'environments' node
         */
-         * @param @OverrideEnvironment">The environment to use
+         * @param @OverrideEnvironment The environment to use
         @returns The flattened JObject
         public static JObject Flatten( String @OverrideEnvironment) {
             return Flatten(Settings.Value, @OverrideEnvironment);
         }
 
         /**
-        /// Flattens the jobject with respect to the selected environment and then
-        /// removes the 'environments' node
+         * Flattens the jobject with respect to the selected environment and then
+         * removes the 'environments' node
         */
-         * @param config">The configuration represented as a JObject
-         * @param @OverrideEnvironment">The environment to use
+         * @param config The configuration represented as a JObject
+         * @param @OverrideEnvironment The environment to use
         @returns The flattened JObject
         public static JObject Flatten(JObject config, String @OverrideEnvironment) {
             clone = (JObject)config.DeepClone();
@@ -714,7 +714,7 @@ package com.quantconnect.lean.Configuration
             environmentSetting = settings.SelectToken( "environment");
             if( environmentSetting != null ) {
                 environmentSettingValue = environmentSetting.Value<String>();
-                if( !string.IsNullOrWhiteSpace(environmentSettingValue)) {
+                if( !StringUtils.isBlank(environmentSettingValue)) {
                     environment = settings.SelectToken( "environments." + environmentSettingValue);
                     if( environment != null ) {
                         setting = environment.SelectToken(key);

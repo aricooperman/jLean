@@ -22,22 +22,22 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Queues
 {
     /**
-    /// Provides an implementation of <see cref="ICommandQueueHandler"/> that never
-    /// returns a command. This is useful for local console backtesting when we don't
-    /// really want to issue commands
+     * Provides an implementation of <see cref="ICommandQueueHandler"/> that never
+     * returns a command. This is useful for local console backtesting when we don't
+     * really want to issue commands
     */
     public class EmptyCommandQueueHandler : ICommandQueueHandler
     {
         /**
-        /// NOP
+         * NOP
         */
-         * @param job">unused
-         * @param algorithm">The algorithm instance
+         * @param job unused
+         * @param algorithm The algorithm instance
         public void Initialize(AlgorithmNodePacket job, IAlgorithm algorithm) {
         }
 
         /**
-        /// Return empty enumerable.
+         * Return empty enumerable.
         */
         @returns null
         public IEnumerable<ICommand> GetCommands() {
@@ -45,9 +45,9 @@ package com.quantconnect.lean.Queues
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
         }
     }

@@ -21,7 +21,7 @@ package com.quantconnect.lean.Indicators
 {
 
     /**
-    /// The Fractal Adaptive Moving Average (FRAMA) by John Ehlers
+     * The Fractal Adaptive Moving Average (FRAMA) by John Ehlers
     */
     public class FractalAdaptiveMovingAverage : TradeBarIndicator
     {
@@ -33,15 +33,15 @@ package com.quantconnect.lean.Indicators
         RollingWindow<double> _low;
 
         /**
-        /// Initializes a new instance of the average class
+         * Initializes a new instance of the average class
         */
-         * @param name">The name of the indicator instance
-         * @param n">The window period (must be even). Example value: 16
-         * @param longPeriod">The average period. Example value: 198
+         * @param name The name of the indicator instance
+         * @param n The window period (must be even). Example value: 16
+         * @param longPeriod The average period. Example value: 198
         public FractalAdaptiveMovingAverage( String name, int n, int longPeriod)
             : base(name) {
             if( n % 2 > 0) {
-                throw new ArgumentException( "N must be even.");
+                throw new IllegalArgumentException( "N must be even.");
             }
             _n = n;
             _w = CalculateW(longPeriod);
@@ -50,19 +50,19 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Initializes a new instance of the average class
+         * Initializes a new instance of the average class
         */
-         * @param name">The name of the indicator instance
-         * @param n">The window period (must be even). Example value: 16
+         * @param name The name of the indicator instance
+         * @param n The window period (must be even). Example value: 16
         public FractalAdaptiveMovingAverage(int n)
             : this( "FRAMA" + n, n, 198) {
 
         }
 
         /**
-        /// Computes the average value
+         * Computes the average value
         */
-         * @param input">The data for the calculation
+         * @param input The data for the calculation
         @returns The average value
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             price = (double)(input.High + input.Low) / 2;
@@ -115,7 +115,7 @@ package com.quantconnect.lean.Indicators
 
 
         /**
-        /// Returns whether the indicator will return valid results
+         * Returns whether the indicator will return valid results
         */
         public @Override boolean IsReady
         {
@@ -123,7 +123,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets the average to its initial state
+         * Resets the average to its initial state
         */
         public @Override void Reset() {
             _filt = 0;

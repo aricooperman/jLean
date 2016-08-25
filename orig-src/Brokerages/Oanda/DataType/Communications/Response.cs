@@ -24,7 +24,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
     /**
-    /// Represents the Restful web response from Oanda.
+     * Represents the Restful web response from Oanda.
     */
 	public class Response
 	{

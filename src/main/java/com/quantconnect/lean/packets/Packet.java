@@ -16,101 +16,101 @@
 
 package com.quantconnect.lean.packets;
 
-    /// Base class for packet messaging system
+     * Base class for packet messaging system
 public class Packet {
-    /// Packet type defined by a String enum
+     * Packet type defined by a String enum
 //    @JsonProperty( "eType")]
     public PacketType type = PacketType.None;
 
-    /// User unique specific channel endpoint to send the packets
+     * User unique specific channel endpoint to send the packets
 //    @JsonProperty( "sChannel")]
     public String channel = "";
 
     /**
-    /// Initialize the base class and setup the packet type.
+     * Initialize the base class and setup the packet type.
     */
-     * @param type">PacketType for the class.
+     * @param type PacketType for the class.
     public Packet( PacketType type ) {
         this.channel = "";
         this.type = type;
     }
 
-    /// Classifications of internal packet system
+     * Classifications of internal packet system
 //    [JsonConverter(typeof(StringEnumConverter))]
     public enum PacketType {
-        /// Default, unset:
+         * Default, unset:
         None,
         
-        /// Base type for backtest and live work
+         * Base type for backtest and live work
         AlgorithmNode,
         
-        /// Autocomplete Work Packet
+         * Autocomplete Work Packet
         AutocompleteWork,
         
-        /// Result of the Autocomplete Job:
+         * Result of the Autocomplete Job:
         AutocompleteResult,
         
-        /// Controller->Backtest Node Packet:
+         * Controller->Backtest Node Packet:
         BacktestNode,
         
-        /// Packet out of backtest node:
+         * Packet out of backtest node:
         BacktestResult,
         
-        /// API-> Controller Work Packet:
+         * API-> Controller Work Packet:
         BacktestWork,
         
-        /// Controller -> Live Node Packet:
+         * Controller -> Live Node Packet:
         LiveNode,
         
-        /// Live Node -> User Packet:
+         * Live Node -> User Packet:
         LiveResult,
         
-        /// API -> Controller Packet:
+         * API -> Controller Packet:
         LiveWork,
         
-        /// Node -> User Algo Security Types
+         * Node -> User Algo Security Types
         SecurityTypes,
         
-        /// Controller -> User Error in Backtest Settings:
+         * Controller -> User Error in Backtest Settings:
         BacktestError,
         
-        /// Nodes -> User Algorithm Status Packet:
+         * Nodes -> User Algorithm Status Packet:
         AlgorithmStatus,
         
-        /// API -> Compiler Work Packet:
+         * API -> Compiler Work Packet:
         BuildWork,
         
-        /// Compiler -> User Build Success
+         * Compiler -> User Build Success
         BuildSuccess,
         
-        /// Compiler -> User, Compile Error
+         * Compiler -> User, Compile Error
         BuildError,
         
-        /// Node -> User Algorithm Runtime Error
+         * Node -> User Algorithm Runtime Error
         RuntimeError,
         
-        /// Error is an internal handled error packet inside users algorithm
+         * Error is an internal handled error packet inside users algorithm
         HandledError,
         
-        /// Nodes -> User Log Message
+         * Nodes -> User Log Message
         Log,
         
-        /// Nodes -> User Debug Message
+         * Nodes -> User Debug Message
         Debug,
         
-        /// Nodes -> User, Order Update Event
+         * Nodes -> User, Order Update Event
         OrderEvent,
         
-        /// Boolean true/false success
+         * Boolean true/false success
         Success,
         
-        /// History live job packets
+         * History live job packets
         History,
         
-        /// Result from a command
+         * Result from a command
         CommandResult,
         
-        /// Hook from git hub
+         * Hook from git hub
         GitHubHook
     }
 
@@ -124,26 +124,26 @@ using Newtonsoft.Json.Converters;
 package com.quantconnect.lean.Packets
 {
     /**
-    /// Base class for packet messaging system
+     * Base class for packet messaging system
     */
     public class Packet
     {
         /**
-        /// Packet type defined by a String enum
+         * Packet type defined by a String enum
         */
         @JsonProperty( "eType")]
         public PacketType Type = PacketType.None;
 
         /**
-        /// User unique specific channel endpoint to send the packets
+         * User unique specific channel endpoint to send the packets
         */
         @JsonProperty( "sChannel")]
         public String Channel = "";
 
         /**
-        /// Initialize the base class and setup the packet type.
+         * Initialize the base class and setup the packet type.
         */
-         * @param type">PacketType for the class.
+         * @param type PacketType for the class.
         public Packet(PacketType type) {
             Channel = "";
             Type = type;
@@ -151,84 +151,84 @@ package com.quantconnect.lean.Packets
     }
 
     /**
-    /// Classifications of internal packet system
+     * Classifications of internal packet system
     */
     [JsonConverter(typeof(StringEnumConverter))]
     public enum PacketType
     {
-        /// Default, unset:
+         * Default, unset:
         None,
 
-        /// Base type for backtest and live work
+         * Base type for backtest and live work
         AlgorithmNode,
 
-        /// Autocomplete Work Packet
+         * Autocomplete Work Packet
         AutocompleteWork,
 
-        /// Result of the Autocomplete Job:
+         * Result of the Autocomplete Job:
         AutocompleteResult,
 
-        /// Controller->Backtest Node Packet:
+         * Controller->Backtest Node Packet:
         BacktestNode,
 
-        /// Packet out of backtest node:
+         * Packet out of backtest node:
         BacktestResult,
 
-        /// API-> Controller Work Packet:
+         * API-> Controller Work Packet:
         BacktestWork,
 
-        /// Controller -> Live Node Packet:
+         * Controller -> Live Node Packet:
         LiveNode,
 
-        /// Live Node -> User Packet:
+         * Live Node -> User Packet:
         LiveResult,
 
-        /// API -> Controller Packet:
+         * API -> Controller Packet:
         LiveWork,
 
-        /// Node -> User Algo Security Types
+         * Node -> User Algo Security Types
         SecurityTypes,
 
-        /// Controller -> User Error in Backtest Settings:
+         * Controller -> User Error in Backtest Settings:
         BacktestError,
 
-        /// Nodes -> User Algorithm Status Packet:
+         * Nodes -> User Algorithm Status Packet:
         AlgorithmStatus,
 
-        /// API -> Compiler Work Packet:
+         * API -> Compiler Work Packet:
         BuildWork,
 
-        /// Compiler -> User Build Success
+         * Compiler -> User Build Success
         BuildSuccess,
 
-        /// Compiler -> User, Compile Error
+         * Compiler -> User, Compile Error
         BuildError,
 
-        /// Node -> User Algorithm Runtime Error
+         * Node -> User Algorithm Runtime Error
         RuntimeError,
 
-        /// Error is an internal handled error packet inside users algorithm
+         * Error is an internal handled error packet inside users algorithm
         HandledError,
 
-        /// Nodes -> User Log Message
+         * Nodes -> User Log Message
         Log,
 
-        /// Nodes -> User Debug Message
+         * Nodes -> User Debug Message
         Debug,
 
-        /// Nodes -> User, Order Update Event
+         * Nodes -> User, Order Update Event
         OrderEvent,
 
-        /// Boolean true/false success
+         * Boolean true/false success
         Success,
 
-        /// History live job packets
+         * History live job packets
         History,
 
-        /// Result from a command
+         * Result from a command
         CommandResult,
 
-        /// Hook from git hub
+         * Hook from git hub
         GitHubHook
     }
 }

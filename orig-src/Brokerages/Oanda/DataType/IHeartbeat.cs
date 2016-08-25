@@ -20,7 +20,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
     /**
-    /// Represents the interface for the HeartBeat and RateStreamResponse class.
+     * Represents the interface for the HeartBeat and RateStreamResponse class.
     */
 	public interface IHeartbeat
 	{

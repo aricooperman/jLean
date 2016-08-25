@@ -50,7 +50,7 @@ package com.quantconnect.lean.Tests.Indicators
             Assert.AreEqual(1m, max.Current.Value);
             Assert.AreEqual(1, max.PeriodsSinceMaximum);
 
-            max.Update(reference.AddDays(3), 0m);
+            max.Update(reference.AddDays(3), BigDecimal.ZERO);
             Assert.AreEqual(1m, max.Current.Value);
             Assert.AreEqual(2, max.PeriodsSinceMaximum);
 

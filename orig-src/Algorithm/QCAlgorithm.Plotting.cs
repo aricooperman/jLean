@@ -27,9 +27,9 @@ package com.quantconnect.lean.Algorithm
         private Map<String,String> _runtimeStatistics = new Map<String,String>();
 
         /**
-        /// Access to the runtime statistics property. User provided statistics.
+         * Access to the runtime statistics property. User provided statistics.
         */
-        ///  RuntimeStatistics are displayed in the head banner in live trading
+         *  RuntimeStatistics are displayed in the head banner in live trading
         public Map<String,String> RuntimeStatistics
         {
             get
@@ -39,10 +39,10 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Add a Chart object to algorithm collection
+         * Add a Chart object to algorithm collection
         */
-         * @param chart">Chart object to add to collection.
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         * @param chart Chart object to add to collection.
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void AddChart(Chart chart) {
             if( !_charts.ContainsKey(chart.Name)) {
                 _charts.Add(chart.Name, chart);
@@ -50,11 +50,11 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Plot a chart using String series name, with value.
+         * Plot a chart using String series name, with value.
         */
-         * @param series">Name of the plot series
-         * @param value">Value to plot
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         * @param series Name of the plot series
+         * @param value Value to plot
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void Plot( String series, BigDecimal value) {
             //By default plot to the primary chart:
             Plot( "Strategy Equity", series, value);
@@ -62,45 +62,45 @@ package com.quantconnect.lean.Algorithm
 
 
         /**
-        /// Plot a chart using String series name, with int value. Alias of Plot();
+         * Plot a chart using String series name, with int value. Alias of Plot();
         */
-        ///  Record( String series, int value)
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         *  Record( String series, int value)
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void Record( String series, int value) {
             Plot(series, value);
         }
 
         /**
-        /// Plot a chart using String series name, with double value. Alias of Plot();
+         * Plot a chart using String series name, with double value. Alias of Plot();
         */
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void Record( String series, double value) {
             Plot(series, value);
         }
 
         /**
-        /// Plot a chart using String series name, with BigDecimal value. Alias of Plot();
+         * Plot a chart using String series name, with BigDecimal value. Alias of Plot();
         */
          * @param series">
          * @param value">
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void Record( String series, BigDecimal value) {
             //By default plot to the primary chart:
             Plot(series, value);
         }
 
         /**
-        /// Plot a chart using String series name, with double value.
+         * Plot a chart using String series name, with double value.
         */
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void Plot( String series, double value) {
             Plot(series, (decimal)value);
         }
 
         /**
-        /// Plot a chart using String series name, with int value.
+         * Plot a chart using String series name, with int value.
         */
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void Plot( String series, int value) {
             Plot(series, (decimal)value);
         }
@@ -108,41 +108,41 @@ package com.quantconnect.lean.Algorithm
         /**
         ///Plot a chart using String series name, with float value.
         */
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void Plot( String series, float value) {
             Plot(series, (decimal)value);
         }
 
         /**
-        /// Plot a chart to String chart name, using String series name, with double value.
+         * Plot a chart to String chart name, using String series name, with double value.
         */
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void Plot( String chart, String series, double value) {
             Plot(chart, series, (decimal)value);
         }
 
         /**
-        /// Plot a chart to String chart name, using String series name, with int value
+         * Plot a chart to String chart name, using String series name, with int value
         */
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void Plot( String chart, String series, int value) {
             Plot(chart, series, (decimal)value);
         }
 
         /**
-        /// Plot a chart to String chart name, using String series name, with float value
+         * Plot a chart to String chart name, using String series name, with float value
         */
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void Plot( String chart, String series, float value) {
             Plot(chart, series, (decimal)value);
         }
 
         /**
-        /// Plot a value to a chart of string-chart name, with String series name, and BigDecimal value. If chart does not exist, create it.
+         * Plot a value to a chart of string-chart name, with String series name, and BigDecimal value. If chart does not exist, create it.
         */
-         * @param chart">Chart name
-         * @param series">Series name
-         * @param value">Value of the point
+         * @param chart Chart name
+         * @param series Series name
+         * @param value Value of the point
         public void Plot( String chart, String series, BigDecimal value) {
             //Ignore the reserved chart names:
             if( (chart == "Strategy Equity" && series == "Equity") || (chart == "Daily Performance") || (chart == "Meta")) {
@@ -179,11 +179,11 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Plots the value of each indicator on the chart
+         * Plots the value of each indicator on the chart
         */
-         * @param chart">The chart's name
-         * @param indicators">The indicatorsto plot
-        /// <seealso cref="Plot( String,string,decimal)"/>
+         * @param chart The chart's name
+         * @param indicators The indicatorsto plot
+         * <seealso cref="Plot( String,string,decimal)"/>
         public void Plot<T>( String chart, params IndicatorBase<T>[] indicators)
             where T : BaseData
         {
@@ -193,7 +193,7 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Automatically plots each indicator when a new value is available
+         * Automatically plots each indicator when a new value is available
         */
         public void PlotIndicator<T>( String chart, params IndicatorBase<T>[] indicators)
             where T : BaseData
@@ -209,7 +209,7 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Automatically plots each indicator when a new value is available, optionally waiting for indicator.IsReady to return true
+         * Automatically plots each indicator when a new value is available, optionally waiting for indicator.IsReady to return true
         */
         public void PlotIndicator<T>( String chart, boolean waitForReady, params IndicatorBase<T>[] indicators)
             where T : BaseData
@@ -227,11 +227,11 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Set a runtime statistic for the algorithm. Runtime statistics are shown in the top banner of a live algorithm GUI.
+         * Set a runtime statistic for the algorithm. Runtime statistics are shown in the top banner of a live algorithm GUI.
         */
-         * @param name">Name of your runtime statistic
-         * @param value">String value of your runtime statistic
-        /// <seealso cref="LiveMode"/>
+         * @param name Name of your runtime statistic
+         * @param value String value of your runtime statistic
+         * <seealso cref="LiveMode"/>
         public void SetRuntimeStatistic( String name, String value) {
             //If not set, add it to the dictionary:
             if( !_runtimeStatistics.ContainsKey(name)) {
@@ -243,38 +243,38 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Set a runtime statistic for the algorithm. Runtime statistics are shown in the top banner of a live algorithm GUI.
+         * Set a runtime statistic for the algorithm. Runtime statistics are shown in the top banner of a live algorithm GUI.
         */
-         * @param name">Name of your runtime statistic
-         * @param value">Decimal value of your runtime statistic
+         * @param name Name of your runtime statistic
+         * @param value Decimal value of your runtime statistic
         public void SetRuntimeStatistic( String name, BigDecimal value) {
             SetRuntimeStatistic(name, value.toString());
         }
 
         /**
-        /// Set a runtime statistic for the algorithm. Runtime statistics are shown in the top banner of a live algorithm GUI.
+         * Set a runtime statistic for the algorithm. Runtime statistics are shown in the top banner of a live algorithm GUI.
         */
-         * @param name">Name of your runtime statistic
-         * @param value">Int value of your runtime statistic
+         * @param name Name of your runtime statistic
+         * @param value Int value of your runtime statistic
         public void SetRuntimeStatistic( String name, int value) {
             SetRuntimeStatistic(name, value.toString());
         }
 
         /**
-        /// Set a runtime statistic for the algorithm. Runtime statistics are shown in the top banner of a live algorithm GUI.
+         * Set a runtime statistic for the algorithm. Runtime statistics are shown in the top banner of a live algorithm GUI.
         */
-         * @param name">Name of your runtime statistic
-         * @param value">Double value of your runtime statistic
+         * @param name Name of your runtime statistic
+         * @param value Double value of your runtime statistic
         public void SetRuntimeStatistic( String name, double value) {
             SetRuntimeStatistic(name, value.toString());
         }
 
         /**
-        /// Get the chart updates by fetch the recent points added and return for dynamic plotting.
+         * Get the chart updates by fetch the recent points added and return for dynamic plotting.
         */
          * @param clearChartData">
         @returns List of chart updates since the last request
-        /// GetChartUpdates returns the latest updates since previous request.
+         * GetChartUpdates returns the latest updates since previous request.
         public List<Chart> GetChartUpdates( boolean clearChartData = false) {
             updates = _charts.Values.Select(chart -> chart.GetUpdates()).ToList();
 

@@ -19,13 +19,13 @@ using System;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Provides access to the current time in UTC. This doesn't necessarily
-    /// need to be wall-clock time, but rather the current time in some system
+     * Provides access to the current time in UTC. This doesn't necessarily
+     * need to be wall-csynchronizedtime, but rather the current time in some system
     */
     public interface ITimeProvider
     {
         /**
-        /// Gets the current time in UTC
+         * Gets the current time in UTC
         */
         @returns The current time in UTC
         DateTime GetUtcNow();

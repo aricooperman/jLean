@@ -8,12 +8,12 @@ using QuantConnect.Securities.Interfaces;
 package com.quantconnect.lean.Algorithm.Examples
 {
     /**
-    /// Tick Filter Example
+     * Tick Filter Example
     */
     public class TickDataFilteringAlgorithm : QCAlgorithm
     {
         /**
-        /// Initialize the tick filtering example algorithm
+         * Initialize the tick filtering example algorithm
         */
         public @Override void Initialize() {
             SetCash(25000);
@@ -26,9 +26,9 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// Data arriving here will now be filtered.
+         * Data arriving here will now be filtered.
         */
-         * @param data">Ticks data array
+         * @param data Ticks data array
         public void OnData(Ticks data) {
             if( !data.ContainsKey( "SPY")) return;
             spyTickList = data["SPY"];
@@ -44,14 +44,14 @@ package com.quantconnect.lean.Algorithm.Examples
         }
     }
     /**
-    /// Exchange filter class 
+     * Exchange filter class 
     */
     public class ExchangeDataFilter : ISecurityDataFilter
     {
         private IAlgorithm _algo;
 
         /**
-        /// Save instance of the algorithm namespace
+         * Save instance of the algorithm namespace
         */
          * @param algo">
         public ExchangeDataFilter(IAlgorithm algo) {
@@ -59,12 +59,12 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// Global Market Short Codes and their full versions: (used in tick objects)
-        /// https://github.com/QuantConnect/QCAlgorithm/blob/master/QuantConnect.Common/Global.cs
+         * Global Market Short Codes and their full versions: (used in tick objects)
+         * https://github.com/QuantConnect/QCAlgorithm/blob/master/QuantConnect.Common/Global.cs
         */
         public static class MarketCodesFilter
         {
-            /// US Market Codes
+             * US Market Codes
             public static Map<String,String> US = new Map<String,String>() {
                 {"A", "American Stock Exchange"},
                 {"B", "Boston Stock Exchange"},
@@ -86,14 +86,14 @@ package com.quantconnect.lean.Algorithm.Examples
                 {"Z", "BATS Exchange, Inc"}
             };
 
-            /// Canada Market Short Codes:
+             * Canada Market Short Codes:
             public static Map<String,String> Canada = new Map<String,String>() {
                 {"T", "Toronto"},
                 {"V", "Venture"}
             };
 
             /**
-            /// Select allowed exchanges for this filter: e.g. top 4
+             * Select allowed exchanges for this filter: e.g. top 4
             */
             public static List<String> AllowedExchanges = new List<String>() { 
                 "P",    //NYSE ARCA - SPY PRIMARY EXCHANGE
@@ -103,10 +103,10 @@ package com.quantconnect.lean.Algorithm.Examples
 
 
         /**
-        /// Filter out a tick from this vehicle, with this new data:
+         * Filter out a tick from this vehicle, with this new data:
         */
-         * @param data">New data packet:
-         * @param asset">Vehicle of this filter.
+         * @param data New data packet:
+         * @param asset Vehicle of this filter.
         public boolean Filter(Security asset, BaseData data) {
             // TRUE -->  Accept Tick
             // FALSE --> Reject Tick

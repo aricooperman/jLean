@@ -10,12 +10,12 @@ using QuantConnect.Securities.Interfaces;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /**
-    /// Implements a wrapper around a base data enumerator to provide a final filtering step
+     * Implements a wrapper around a base data enumerator to provide a final filtering step
     */
     public class SubscriptionFilterEnumerator : IEnumerator<BaseData>
     {
         /**
-        /// Fired when there's an error executing a user's data filter
+         * Fired when there's an error executing a user's data filter
         */
         public event EventHandler<Exception> DataFilterError;
 
@@ -26,14 +26,14 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         private final ISecurityDataFilter _dataFilter;
 
         /**
-        /// Convenience method to wrap the enumerator and attach the data filter event to log and alery users of errors
+         * Convenience method to wrap the enumerator and attach the data filter event to log and alery users of errors
         */
-         * @param resultHandler">Result handler reference used to send errors
-         * @param enumerator">The source enumerator to be wrapped
-         * @param security">The security who's data is being enumerated
-         * @param endTime">The end time of the subscription
+         * @param resultHandler Result handler reference used to send errors
+         * @param enumerator The source enumerator to be wrapped
+         * @param security The security who's data is being enumerated
+         * @param endTime The end time of the subscription
         @returns A new instance of the <see cref="SubscriptionFilterEnumerator"/> class that has had it's <see cref="DataFilterError"/>
-        /// event subscribed to to send errors to the result handler
+         * event subscribed to to send errors to the result handler
         public static SubscriptionFilterEnumerator WrapForDataFeed(IResultHandler resultHandler, IEnumerator<BaseData> enumerator, Security security, DateTime endTime) {
             filter = new SubscriptionFilterEnumerator(enumerator, security, endTime);
             filter.DataFilterError += (sender, exception) =>
@@ -45,11 +45,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Initializes a new instance of the <see cref="SubscriptionFilterEnumerator"/> class
+         * Initializes a new instance of the <see cref="SubscriptionFilterEnumerator"/> class
         */
-         * @param enumerator">The source enumerator to be wrapped
-         * @param security">The security containing an exchange and data filter
-         * @param endTime">The end time of the subscription
+         * @param enumerator The source enumerator to be wrapped
+         * @param security The security containing an exchange and data filter
+         * @param endTime The end time of the subscription
         public SubscriptionFilterEnumerator(IEnumerator<BaseData> enumerator, Security security, DateTime endTime) {
             _enumerator = enumerator;
             _security = security;
@@ -59,11 +59,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Gets the element in the collection at the current position of the enumerator.
+         * Gets the element in the collection at the current position of the enumerator.
         */
         @returns 
-        /// The element in the collection at the current position of the enumerator.
-        /// 
+         * The element in the collection at the current position of the enumerator.
+         * 
         public BaseData Current
         {
             get;
@@ -71,24 +71,24 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Gets the current element in the collection.
+         * Gets the current element in the collection.
         */
         @returns 
-        /// The current element in the collection.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * The current element in the collection.
+         * 
+         * <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
         /**
-        /// Advances the enumerator to the next element of the collection.
+         * Advances the enumerator to the next element of the collection.
         */
         @returns 
-        /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// 
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+         * true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+         * 
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public boolean MoveNext() {
             while (_enumerator.MoveNext()) {
                 current = _enumerator.Current;
@@ -124,25 +124,25 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
             _enumerator.Dispose();
         }
 
         /**
-        /// Sets the enumerator to its initial position, which is before the first element in the collection.
+         * Sets the enumerator to its initial position, which is before the first element in the collection.
         */
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             _enumerator.Reset();
         }
 
         /**
-        /// Event invocated for the <see cref="DataFilterError"/> event
+         * Event invocated for the <see cref="DataFilterError"/> event
         */
-         * @param exception">The exception that was thrown when trying to perform data filtering
+         * @param exception The exception that was thrown when trying to perform data filtering
         private void OnDataFilterError(Exception exception) {
             handler = DataFilterError;
             if( handler != null ) handler(this, exception);

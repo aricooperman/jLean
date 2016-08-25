@@ -31,7 +31,7 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Brokerages.Fxcm
 {
     /**
-    /// FXCM brokerage - Java API related functions and interface implementations
+     * FXCM brokerage - Java API related functions and interface implementations
     */
     public partial class FxcmBrokerage
     {
@@ -60,7 +60,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
             // Note: requestTradingSessionStatus() MUST be called just after login
 
             AutoResetEvent autoResetEvent;
-            lock (_locker) {
+            synchronized(_locker) {
                 _currentRequest = _gateway.requestTradingSessionStatus();
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
@@ -71,7 +71,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
 
         private void LoadAccounts() {
             AutoResetEvent autoResetEvent;
-            lock (_locker) {
+            synchronized(_locker) {
                 _currentRequest = _gateway.requestAccounts();
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
@@ -80,7 +80,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 throw new TimeoutException( String.format( "FxcmBrokerage.LoadAccounts(): Operation took longer than %1$s seconds.", (decimal)ResponseTimeout / 1000));
 
             if( !_accounts.ContainsKey(_accountId))
-                throw new ArgumentException( "FxcmBrokerage.LoadAccounts(): The account id is invalid: " + _accountId);
+                throw new IllegalArgumentException( "FxcmBrokerage.LoadAccounts(): The account id is invalid: " + _accountId);
 
             // Hedging MUST be disabled on the account
             if( _accounts[_accountId].getParties().getFXCMPositionMaintenance() == "Y") {
@@ -90,7 +90,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
 
         private void LoadOpenOrders() {
             AutoResetEvent autoResetEvent;
-            lock (_locker) {
+            synchronized(_locker) {
                 _currentRequest = _gateway.requestOpenOrders(_accountId);
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
@@ -101,7 +101,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
 
         private void LoadOpenPositions() {
             AutoResetEvent autoResetEvent;
-            lock (_locker) {
+            synchronized(_locker) {
                 _currentRequest = _terminal.Equals( "Demo") ?
                     _gateway.requestOpenPositions(Convert.ToInt64(_accountId)) :
                     _gateway.requestOpenPositions(_accountId);
@@ -113,8 +113,8 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Provides as public access to this data without requiring consumers to reference
-        /// IKVM libraries
+         * Provides as public access to this data without requiring consumers to reference
+         * IKVM libraries
         */
         public List<Tick> GetBidAndAsk(List<String> fxcmSymbols) {
             return GetQuotes(fxcmSymbols).Select(x -> new Tick
@@ -129,7 +129,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Gets the quotes for the symbol
+         * Gets the quotes for the symbol
         */
         private List<MarketDataSnapshot> GetQuotes(List<String> fxcmSymbols) {
             // get current quotes for the instrument
@@ -141,7 +141,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
             }
 
             AutoResetEvent autoResetEvent;
-            lock (_locker) {
+            synchronized(_locker) {
                 _currentRequest = _gateway.sendMessage(request);
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
@@ -153,9 +153,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Gets the current conversion rate into USD
+         * Gets the current conversion rate into USD
         */
-        /// Synchronous, blocking
+         * Synchronous, blocking
         private BigDecimal GetUsdConversion( String currency) {
             if( currency == "USD")
                 return 1m;
@@ -177,13 +177,13 @@ package com.quantconnect.lean.Brokerages.Fxcm
         #region IGenericMessageListener implementation
 
         /**
-        /// Receives generic messages from the FXCM API
+         * Receives generic messages from the FXCM API
         */
-         * @param message">Generic message received
+         * @param message Generic message received
         public void messageArrived(ITransportable message) {
             // Dispatch message to specific handler
 
-            lock (_locker) {
+            synchronized(_locker) {
                 if( message is TradingSessionStatus)
                     OnTradingSessionStatus((TradingSessionStatus)message);
 
@@ -220,7 +220,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// TradingSessionStatus message handler
+         * TradingSessionStatus message handler
         */
         private void OnTradingSessionStatus(TradingSessionStatus message) {
             if( message.getRequestID() == _currentRequest) {
@@ -240,7 +240,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// CollateralReport message handler
+         * CollateralReport message handler
         */
         private void OnCollateralReport(CollateralReport message) {
             // add the trading account to the account list
@@ -256,7 +256,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// MarketDataSnapshot message handler
+         * MarketDataSnapshot message handler
         */
         private void OnMarketDataSnapshot(MarketDataSnapshot message) {
             // update the current prices for the instrument
@@ -273,7 +273,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 askPrice = new BigDecimal( message.getAskClose());
                 tick = new Tick(time, symbol, bidPrice, askPrice);
 
-                lock (_ticks) {
+                synchronized(_ticks) {
                     _ticks.Add(tick);
                 }
             }
@@ -287,7 +287,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// ExecutionReport message handler
+         * ExecutionReport message handler
         */
         private void OnExecutionReport(ExecutionReport message) {
             orderId = message.getOrderID();
@@ -359,7 +359,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// RequestForPositionsAck message handler
+         * RequestForPositionsAck message handler
         */
         private void OnRequestForPositionsAck(RequestForPositionsAck message) {
             if( message.getRequestID() == _currentRequest) {
@@ -371,7 +371,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// PositionReport message handler
+         * PositionReport message handler
         */
         private void OnPositionReport(PositionReport message) {
             if( message.getAccount() == _accountId) {
@@ -394,7 +394,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// OrderCancelReject message handler
+         * OrderCancelReject message handler
         */
         private void OnOrderCancelReject(OrderCancelReject message) {
             if( message.getRequestID() == _currentRequest) {
@@ -414,13 +414,13 @@ package com.quantconnect.lean.Brokerages.Fxcm
         #region IStatusMessageListener implementation
 
         /**
-        /// Receives status messages from the FXCM API
+         * Receives status messages from the FXCM API
         */
-         * @param message">Status message received
+         * @param message Status message received
         public void messageArrived(ISessionStatus message) {
             switch (message.getStatusCode()) {
                 case ISessionStatus.__Fields.STATUSCODE_READY:
-                    lock (_lockerConnectionMonitor) {
+                    synchronized(_lockerConnectionMonitor) {
                         _lastReadyMessageTime = DateTime.UtcNow;
                     }
                     _connectionError = false;

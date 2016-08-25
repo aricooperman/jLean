@@ -16,33 +16,33 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the n-period percentage rate of change in a value using the following:
-    /// 100 * (value_0 - value_n) / value_n
+     * This indicator computes the n-period percentage rate of change in a value using the following:
+     * 100 * (value_0 - value_n) / value_n
     */
     public class RateOfChangePercent : WindowIndicator<IndicatorDataPoint>
     {
         /**
-        /// Creates a new RateOfChangePercent indicator with the specified period
+         * Creates a new RateOfChangePercent indicator with the specified period
         */
-         * @param period">The period over which to perform to computation
+         * @param period The period over which to perform to computation
         public RateOfChangePercent(int period)
             : base( "ROCP" + period, period) {
         }
 
         /**
-        /// Creates a new RateOfChangePercent indicator with the specified period
+         * Creates a new RateOfChangePercent indicator with the specified period
         */
-         * @param name">The name of this indicator
-         * @param period">The period over which to perform to computation
+         * @param name The name of this indicator
+         * @param period The period over which to perform to computation
         public RateOfChangePercent( String name, int period)
             : base(name, period) {
         }
 
         /**
-        /// Computes the next value for this indicator from the given state.
+         * Computes the next value for this indicator from the given state.
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input value to this indicator on this time step
+         * @param window The window of data held in this indicator
+         * @param input The input value to this indicator on this time step
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             // if we're not ready just grab the first input point in the window

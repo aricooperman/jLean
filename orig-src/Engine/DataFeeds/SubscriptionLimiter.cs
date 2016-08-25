@@ -20,7 +20,7 @@ using System.Linq;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Provides logic to prevent an algorithm from adding too many data subscriptions
+     * Provides logic to prevent an algorithm from adding too many data subscriptions
     */
     public class SubscriptionLimiter
     {
@@ -35,12 +35,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         private final Func<IEnumerable<Subscription>> _subscriptionsProvider;
 
         /**
-        /// Initializes a new instance of the <see cref="SubscriptionLimiter"/> class
+         * Initializes a new instance of the <see cref="SubscriptionLimiter"/> class
         */
-         * @param subscriptionsProvider">Delegate used to provide access to the current subscriptions
-         * @param tickLimit">The maximum number of tick symbols
-         * @param secondLimit">The maximum number of second symbols
-         * @param minuteLimit">The maximum number of minute symbol
+         * @param subscriptionsProvider Delegate used to provide access to the current subscriptions
+         * @param tickLimit The maximum number of tick symbols
+         * @param secondLimit The maximum number of second symbols
+         * @param minuteLimit The maximum number of minute symbol
         public SubscriptionLimiter(Func<IEnumerable<Subscription>> subscriptionsProvider, int tickLimit, int secondLimit, int minuteLimit) {
             _subscriptionsProvider = subscriptionsProvider;
             _tickLimit = tickLimit;
@@ -50,9 +50,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Get the number of securities that have this resolution.
+         * Get the number of securities that have this resolution.
         */
-         * @param resolution">Search resolution value.
+         * @param resolution Search resolution value.
         @returns Count of the securities
         public int GetResolutionCount(Resolution resolution) {
             return (from subscription in _subscriptionsProvider()
@@ -64,21 +64,21 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets the number of available slots for the specifed resolution
+         * Gets the number of available slots for the specifed resolution
         */
-         * @param resolution">The resolution we want to add subscriptions at
+         * @param resolution The resolution we want to add subscriptions at
         @returns The number of subscriptions we can safely add without maxing out the count (ram usage depends on other factors)
         public int GetRemaining(Resolution resolution) {
             return GetResolutionLimit(resolution) - GetResolutionCount(resolution);
         }
 
         /**
-        /// Determines if we can add a subscription for the specified resolution
+         * Determines if we can add a subscription for the specified resolution
         */
-         * @param resolution">The new subscription resolution to check
-         * @param reason">When this function returns false, this is the reason we are unable to add the subscription
+         * @param resolution The new subscription resolution to check
+         * @param reason When this function returns false, this is the reason we are unable to add the subscription
         @returns True if we can add a subscription for the specified resolution while
-        /// remaining within our limits, false if this will put us over our limits
+         * remaining within our limits, false if this will put us over our limits
         public boolean CanAddSubscription(Resolution resolution, out String reason) {
             reason = null;
             limit = GetResolutionLimit(resolution);
@@ -108,9 +108,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets the max number of symbols for the specified resolution
+         * Gets the max number of symbols for the specified resolution
         */
-         * @param resolution">The resolution whose limit we seek
+         * @param resolution The resolution whose limit we seek
         @returns The specified resolution's limit
         private int GetResolutionLimit(Resolution resolution) {
             switch (resolution) {
@@ -133,7 +133,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Estimated ram usage with this symbol combination:
+         * Estimated ram usage with this symbol combination:
         */
         @returns Decimal estimate of the number of MB ram the requested assets would consume
         private BigDecimal GetRamEstimate(int minute, int second, int tick) {
@@ -141,7 +141,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets reason String for having a larger count than the limits
+         * Gets reason String for having a larger count than the limits
         */
         private String GetCountLimitReason(Resolution resolution) {
             limit = GetResolutionLimit(resolution);
@@ -149,7 +149,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets reason String for having a larger estimated ram usage than the limits
+         * Gets reason String for having a larger estimated ram usage than the limits
         */
         private String GetMaxRamReason( BigDecimal currentEstimatedRam) {
             return String.format( "We estimate you will run out of memory (%1$smb of %2$smb physically available). " +

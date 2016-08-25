@@ -18,18 +18,18 @@ using System;
 package com.quantconnect.lean.Data.Market
 {
     /**
-    /// Collection of <see cref="QuoteBar"/> keyed by symbol
+     * Collection of <see cref="QuoteBar"/> keyed by symbol
     */
     public class QuoteBars : DataMap<QuoteBar>
     {
         /**
-        /// Creates a new instance of the <see cref="QuoteBars"/> dictionary
+         * Creates a new instance of the <see cref="QuoteBars"/> dictionary
         */
         public QuoteBars() {
         }
 
         /**
-        /// Creates a new instance of the <see cref="QuoteBars"/> dictionary
+         * Creates a new instance of the <see cref="QuoteBars"/> dictionary
         */
         public QuoteBars(DateTime time)
             : base(time) {

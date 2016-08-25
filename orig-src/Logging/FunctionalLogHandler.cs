@@ -19,7 +19,7 @@ using System.ComponentModel.Composition;
 package com.quantconnect.lean.Logging
 {
     /**
-    /// ILogHandler implementation that writes log output to result handler
+     * ILogHandler implementation that writes log output to result handler
     */
     [PartNotDiscoverable]
     public class FunctionalLogHandler : ILogHandler
@@ -30,14 +30,14 @@ package com.quantconnect.lean.Logging
         private final Action<String> _error;
 
         /**
-        /// Default constructor to handle MEF.
+         * Default constructor to handle MEF.
         */
         public FunctionalLogHandler() {
 
         }
 
         /**
-        /// Initializes a new instance of the <see cref="QuantConnect.Logging.FunctionalLogHandler"/> class.
+         * Initializes a new instance of the <see cref="QuantConnect.Logging.FunctionalLogHandler"/> class.
         */
         public FunctionalLogHandler(Action<String> debug, Action<String> trace, Action<String> error) {
             // saves references to the real console text writer since in a deployed state we may overwrite this in order
@@ -48,9 +48,9 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write error message to log
+         * Write error message to log
         */
-         * @param text">The error text to log
+         * @param text The error text to log
         public void Error( String text) {
             if( _error != null ) {
                 _error(DateTime.Now.toString(DateFormat) + " ERROR " + text);
@@ -58,9 +58,9 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write debug message to log
+         * Write debug message to log
         */
-         * @param text">The debug text to log
+         * @param text The debug text to log
         public void Debug( String text) {
             if( _debug != null ) {
                 _debug(DateTime.Now.toString(DateFormat) + " DEBUG " + text);
@@ -68,9 +68,9 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write debug message to log
+         * Write debug message to log
         */
-         * @param text">The trace text to log
+         * @param text The trace text to log
         public void Trace( String text) {
             if( _trace != null ) {
                 _trace(DateTime.Now.toString(DateFormat) + " TRACE " + text);
@@ -78,9 +78,9 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
         }
     }

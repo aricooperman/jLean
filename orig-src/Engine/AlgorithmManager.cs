@@ -38,20 +38,20 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine
 {
     /**
-    /// Algorithm manager class executes the algorithm and generates and passes through the algorithm events.
+     * Algorithm manager class executes the algorithm and generates and passes through the algorithm events.
     */
     public class AlgorithmManager
     {
         private DateTime _previousTime;
         private IAlgorithm _algorithm;
-        private final object _lock = new object();
+        private final object _synchronized= new object();
         private String _algorithmId = "";
         private DateTime _currentTimeStepTime;
         private final Duration _timeLoopMaximum = Duration.ofMinutes(Config.GetDouble( "algorithm-manager-time-loop-maximum", 10));
         private long _dataPointCount;
 
         /**
-        /// Publicly accessible algorithm status
+         * Publicly accessible algorithm status
         */
         public AlgorithmStatus State
         {
@@ -59,7 +59,7 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Public access to the currently running algorithm id.
+         * Public access to the currently running algorithm id.
         */
         public String AlgorithmId
         {
@@ -67,7 +67,7 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Gets the amount of time spent on the current time step
+         * Gets the amount of time spent on the current time step
         */
         public Duration CurrentTimeStepElapsed
         {
@@ -75,24 +75,24 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Gets a function used with the Isolator for verifying we're not spending too much time in each
-        /// algo manager timer loop
+         * Gets a function used with the Isolator for verifying we're not spending too much time in each
+         * algo manager timer loop
         */
         public final Func<String> TimeLoopWithinLimits;
 
         private final boolean _liveMode;
 
         /**
-        /// Quit state flag for the running algorithm. When true the user has requested the backtest stops through a Quit() method.
+         * Quit state flag for the running algorithm. When true the user has requested the backtest stops through a Quit() method.
         */
-        /// <seealso cref="QCAlgorithm.Quit"/>
+         * <seealso cref="QCAlgorithm.Quit"/>
         public boolean QuitState
         {
             get { return State == AlgorithmStatus.Deleted; }
         }
 
         /**
-        /// Gets the number of data points processed per second
+         * Gets the number of data points processed per second
         */
         public long DataPoints
         {
@@ -100,9 +100,9 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Initializes a new instance of the <see cref="AlgorithmManager"/> class
+         * Initializes a new instance of the <see cref="AlgorithmManager"/> class
         */
-         * @param liveMode">True if we're running in live mode, false for backtest mode
+         * @param liveMode True if we're running in live mode, false for backtest mode
         public AlgorithmManager( boolean liveMode) {
             TimeLoopWithinLimits = () =>
             {
@@ -115,17 +115,17 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Launch the algorithm manager to run this strategy
+         * Launch the algorithm manager to run this strategy
         */
-         * @param job">Algorithm job
-         * @param algorithm">Algorithm instance
-         * @param feed">Datafeed object
-         * @param transactions">Transaction manager object
-         * @param results">Result handler object
-         * @param realtime">Realtime processing object
-         * @param commands">The command queue for relaying extenal commands to the algorithm
-         * @param token">Cancellation token
-        /// Modify with caution
+         * @param job Algorithm job
+         * @param algorithm Algorithm instance
+         * @param feed Datafeed object
+         * @param transactions Transaction manager object
+         * @param results Result handler object
+         * @param realtime Realtime processing object
+         * @param commands The command queue for relaying extenal commands to the algorithm
+         * @param token Cancellation token
+         * Modify with caution
         public void Run(AlgorithmNodePacket job, IAlgorithm algorithm, IDataFeed feed, ITransactionHandler transactions, IResultHandler results, IRealTimeHandler realtime, ICommandQueueHandler commands, CancellationToken token) {
             //Initialize:
             _dataPointCount = 0;
@@ -238,7 +238,7 @@ package com.quantconnect.lean.Lean.Engine
                         results.SampleEquity(_previousTime, Math.Round(algorithm.Portfolio.TotalPortfolioValue, 4));
 
                         //Check for divide by zero
-                        if( portfolioValue == 0m) {
+                        if( portfolioValue == BigDecimal.ZERO) {
                             results.SamplePerformance(_previousTime.Date, 0);
                         }
                         else
@@ -344,7 +344,7 @@ package com.quantconnect.lean.Lean.Engine
                             // execute the margin call orders
                             executedTickets = algorithm.Portfolio.MarginCallModel.ExecuteMarginCall(marginCallOrders);
                             foreach (ticket in executedTickets) {
-                                algorithm.Error( String.format( "%1$s - Executed MarginCallOrder: %2$s - Quantity: %3$s @ {3}", algorithm.Time, ticket.Symbol, ticket.Quantity, ticket.AverageFillPrice));
+                                algorithm.Error( String.format( "%1$s - Executed MarginCallOrder: %2$s - Quantity: %3$s @ %4$s", algorithm.Time, ticket.Symbol, ticket.Quantity, ticket.AverageFillPrice));
                             }
                         }
                         catch (Exception err) {
@@ -577,10 +577,10 @@ package com.quantconnect.lean.Lean.Engine
         } // End of Run();
 
         /**
-        /// Set the quit state.
+         * Set the quit state.
         */
         public void SetStatus(AlgorithmStatus state) {
-            lock (_lock) {
+            synchronized(_lock) {
                 //We don't want anyone elseto set our internal state to "Running". 
                 //This is controlled by the algorithm private variable only.
                 if( state != AlgorithmStatus.Running) {
@@ -632,7 +632,7 @@ package com.quantconnect.lean.Lean.Engine
 
                 foreach (request in historyRequests) {
                     start = Math.Min(request.StartTimeUtc.Ticks, start);
-                    Log.Trace( String.format( "AlgorithmManager.Stream(): WarmupHistoryRequest: %1$s: Start: %2$s End: %3$s Resolution: {3}", request.Symbol, request.StartTimeUtc, request.EndTimeUtc, request.Resolution));
+                    Log.Trace( String.format( "AlgorithmManager.Stream(): WarmupHistoryRequest: %1$s: Start: %2$s End: %3$s Resolution: %4$s", request.Symbol, request.StartTimeUtc, request.EndTimeUtc, request.Resolution));
                 }
 
                 // make the history request and build time slices
@@ -735,12 +735,12 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Adds a method invoker if the method exists to the method invokers dictionary
+         * Adds a method invoker if the method exists to the method invokers dictionary
         */
-        /// <typeparam name="T">The data type to check for 'OnData(T data)</typeparam>
-         * @param algorithm">The algorithm instance
-         * @param methodInvokers">The dictionary of method invokers
-         * @param methodName">The name of the method to search for
+         * <typeparam name="T The data type to check for 'OnData(T data)</typeparam>
+         * @param algorithm The algorithm instance
+         * @param methodInvokers The dictionary of method invokers
+         * @param methodName The name of the method to search for
         @returns True if the method existed and was added to the collection
         private boolean AddMethodInvoker<T>(IAlgorithm algorithm, Map<Type, MethodInvoker> methodInvokers, String methodName = "OnData") {
             newSplitMethodInfo = algorithm.GetType().GetMethod(methodName, new[] {typeof (T)});
@@ -752,10 +752,10 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Performs delisting logic for the securities specified in <paramref name="newDelistings"/> that are marked as <see cref="DelistingType.Delisted"/>. 
-        /// This includes liquidating the position and removing the security from the algorithm's collection.
-        /// If we're unable to liquidate the position (maybe daily data or EOD already) then we'll add it to the <paramref name="delistingTickets"/>
-        /// for the algo manager time loop to check later
+         * Performs delisting logic for the securities specified in <paramref name="newDelistings"/> that are marked as <see cref="DelistingType.Delisted"/>. 
+         * This includes liquidating the position and removing the security from the algorithm's collection.
+         * If we're unable to liquidate the position (maybe daily data or EOD already) then we'll add it to the <paramref name="delistingTickets"/>
+         * for the algo manager time loop to check later
         */
         private static void HandleDelistedSymbols(IAlgorithm algorithm, Delistings newDelistings, ICollection<OrderTicket> delistingTickets) {
             foreach (delisting in newDelistings.Values) {
@@ -780,7 +780,7 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Samples the benchmark in a  try/catch block
+         * Samples the benchmark in a  try/catch block
         */
         private void SampleBenchmark(IAlgorithm algorithm, IResultHandler results, DateTime time) {
             try

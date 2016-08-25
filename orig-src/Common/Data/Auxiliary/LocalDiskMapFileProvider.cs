@@ -23,8 +23,8 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.Data.Auxiliary
 {
     /**
-    /// Provides a default implementation of <see cref="IMapFileProvider"/> that reads from
-    /// the local disk
+     * Provides a default implementation of <see cref="IMapFileProvider"/> that reads from
+     * the local disk
     */
     public class LocalDiskMapFileProvider : IMapFileProvider
     {
@@ -32,10 +32,10 @@ package com.quantconnect.lean.Data.Auxiliary
         private final ConcurrentMap<String, MapFileResolver> _cache = new ConcurrentMap<String, MapFileResolver>();
 
         /**
-        /// Gets a <see cref="MapFileResolver"/> representing all the map
-        /// files for the specified market
+         * Gets a <see cref="MapFileResolver"/> representing all the map
+         * files for the specified market
         */
-         * @param market">The equity market, for example, 'usa'
+         * @param market The equity market, for example, 'usa'
         @returns A <see cref="MapFileRow"/> containing all map files for the specified market
         public MapFileResolver Get( String market) {
             market = market.toLowerCase();

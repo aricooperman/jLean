@@ -20,23 +20,23 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Hikkake Modified candlestick pattern
+     * Hikkake Modified candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - first candle
-    /// - second candle: candle with range less than first candle and close near the bottom(near the top)
-    /// - third candle: lower high and higher low than 2nd
-    /// - fourth candle: lower high and lower low(higher high and higher low) than 3rd
-    /// The returned value for the hikkake bar is positive(+1) or negative(-1) meaning bullish or bearish hikkake
-    /// Confirmation could come in the next 3 days with:
-    /// - a day that closes higher than the high(lower than the low) of the 3rd candle
-    /// The returned value for the confirmation bar is equal to 1 + the bullish hikkake result or -1 - the bearish hikkake result
-    /// Note: if confirmation and a new hikkake come at the same bar, only the new hikkake is reported(the new hikkake
-    /// overwrites the confirmation of the old hikkake);
-    /// The user should consider that modified hikkake is a reversal pattern, while hikkake could be both a reversal
-    /// or a continuation pattern, so bullish(bearish) modified hikkake is significant when appearing in a downtrend(uptrend)
-    /// 
+     * 
+     * Must have:
+     * - first candle
+     * - second candle: candle with range less than first candle and close near the bottom(near the top)
+     * - third candle: lower high and higher low than 2nd
+     * - fourth candle: lower high and lower low(higher high and higher low) than 3rd
+     * The returned value for the hikkake bar is positive(+1) or negative(-1) meaning bullish or bearish hikkake
+     * Confirmation could come in the next 3 days with:
+     * - a day that closes higher than the high(lower than the low) of the 3rd candle
+     * The returned value for the confirmation bar is equal to 1 + the bullish hikkake result or -1 - the bearish hikkake result
+     * Note: if confirmation and a new hikkake come at the same bar, only the new hikkake is reported(the new hikkake
+     * overwrites the confirmation of the old hikkake);
+     * The user should consider that modified hikkake is a reversal pattern, while hikkake could be both a reversal
+     * or a continuation pattern, so bullish(bearish) modified hikkake is significant when appearing in a downtrend(uptrend)
+     * 
     public class HikkakeModified : CandlestickPattern
     {
         private final int _nearAveragePeriod;
@@ -47,23 +47,23 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private int _patternResult;
 
         /**
-        /// Initializes a new instance of the <see cref="HikkakeModified"/> class using the specified name.
+         * Initializes a new instance of the <see cref="HikkakeModified"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public HikkakeModified( String name) 
             : base(name, Math.Max(1, CandleSettings.Get(CandleSettingType.Near).AveragePeriod) + 5 + 1) {
             _nearAveragePeriod = CandleSettings.Get(CandleSettingType.Near).AveragePeriod;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="HikkakeModified"/> class.
+         * Initializes a new instance of the <see cref="HikkakeModified"/> class.
         */
         public HikkakeModified()
             : this( "HIKKAKEMODIFIED") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -71,10 +71,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -124,7 +124,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                                         GetCandleRange(CandleSettingType.Near, window[(int)Samples - 1]);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -176,7 +176,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _nearPeriodTotal = 0;

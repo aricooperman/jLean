@@ -25,13 +25,13 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.Statistics
 {
     /**
-    /// Calculate all the statistics required from the backtest, based on the equity curve and the profit loss statement.
+     * Calculate all the statistics required from the backtest, based on the equity curve and the profit loss statement.
     */
-    /// This is a particularly ugly class and one of the first ones written. It should be thrown out and re-written.
+     * This is a particularly ugly class and one of the first ones written. It should be thrown out and re-written.
     public class Statistics
     {
         /**
-        /// Retrieve a static S-P500 Benchmark for the statistics calculations. Update the benchmark once per day.
+         * Retrieve a static S-P500 Benchmark for the statistics calculations. Update the benchmark once per day.
         */
         public static SortedMap<DateTime, decimal> YahooSPYBenchmark
         {
@@ -61,10 +61,10 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Convert the charting data into an equity array.
+         * Convert the charting data into an equity array.
         */
-        /// This is required to convert the equity plot into a usable form for the statistics calculation
-         * @param points">ChartPoints Array
+         * This is required to convert the equity plot into a usable form for the statistics calculation
+         * @param points ChartPoints Array
         @returns SortedDictionary of the equity BigDecimal values ordered in time
         private static SortedMap<DateTime, decimal> ChartPointToDictionary(IEnumerable<ChartPoint> points) {
             dictionary = new SortedMap<DateTime, decimal>();
@@ -89,16 +89,16 @@ package com.quantconnect.lean.Statistics
 
 
         /**
-        /// Run a full set of orders and return a Dictionary of statistics.
+         * Run a full set of orders and return a Dictionary of statistics.
         */
-         * @param pointsEquity">Equity value over time.
-         * @param profitLoss">profit loss from trades
+         * @param pointsEquity Equity value over time.
+         * @param profitLoss profit loss from trades
          * @param pointsPerformance"> Daily performance
          * @param unsortedBenchmark"> Benchmark data as dictionary. Data does not need to be ordered
-         * @param startingCash">Amount of starting cash in USD 
-         * @param totalFees">The total fees incurred over the life time of the algorithm
-         * @param totalTrades">Total number of orders executed.
-         * @param tradingDaysPerYear">Number of trading days per year
+         * @param startingCash Amount of starting cash in USD 
+         * @param totalFees The total fees incurred over the life time of the algorithm
+         * @param totalTrades Total number of orders executed.
+         * @param tradingDaysPerYear Number of trading days per year
         @returns Statistics Array, Broken into Annual Periods
         public static Map<String,String> Generate(IEnumerable<ChartPoint> pointsEquity, 
             SortedMap<DateTime, decimal> profitLoss, 
@@ -324,7 +324,7 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Return profit loss ratio safely avoiding divide by zero errors.
+         * Return profit loss ratio safely avoiding divide by zero errors.
         */
          * @param averageWin">
          * @param averageLoss">
@@ -335,13 +335,13 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Drawdown maximum percentage.
+         * Drawdown maximum percentage.
         */
          * @param equityOverTime">
          * @param rounding">
         @returns 
         public static BigDecimal DrawdownPercent(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2) {
-            dd = 0m;
+            dd = BigDecimal.ZERO;
             try
             {
                 lPrices = equityOverTime.Values.ToList();
@@ -360,10 +360,10 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Drawdown maximum value
+         * Drawdown maximum value
         */
-         * @param equityOverTime">Array of portfolio value over time.
-         * @param rounding">Round the drawdown statistics.
+         * @param equityOverTime Array of portfolio value over time.
+         * @param rounding Round the drawdown statistics.
         @returns Draw down percentage over period.
         public static BigDecimal DrawdownValue(SortedMap<DateTime, decimal> equityOverTime, int rounding = 2) {
             //Initialise:
@@ -397,80 +397,80 @@ package com.quantconnect.lean.Statistics
 
 
         /**
-        /// Annual compounded returns statistic based on the final-starting capital and years.
+         * Annual compounded returns statistic based on the final-starting capital and years.
         */
-         * @param startingCapital">Algorithm starting capital
-         * @param finalCapital">Algorithm final capital
-         * @param years">Years trading
+         * @param startingCapital Algorithm starting capital
+         * @param finalCapital Algorithm final capital
+         * @param years Years trading
         @returns Decimal fraction for annual compounding performance
         public static BigDecimal CompoundingAnnualPerformance( BigDecimal startingCapital, BigDecimal finalCapital, BigDecimal years) {
             return (Math.Pow((double)finalCapital / (double)startingCapital, (1 / (double)years)) - 1).SafeDecimalCast();
         }
 
         /**
-        /// Annualized return statistic calculated as an average of daily trading performance multiplied by the number of trading days per year.
+         * Annualized return statistic calculated as an average of daily trading performance multiplied by the number of trading days per year.
         */
-         * @param performance">Dictionary collection of double performance values
-         * @param tradingDaysPerYear">Trading days per year for the assets in portfolio
-        /// May be unaccurate for forex algorithms with more trading days in a year
+         * @param performance Dictionary collection of double performance values
+         * @param tradingDaysPerYear Trading days per year for the assets in portfolio
+         * May be unaccurate for forex algorithms with more trading days in a year
         @returns Double annual performance percentage
         public static double AnnualPerformance(List<double> performance, double tradingDaysPerYear = 252) {
             return performance.Average() * tradingDaysPerYear;
         }
 
         /**
-        /// Annualized variance statistic calculation using the daily performance variance and trading days per year.
+         * Annualized variance statistic calculation using the daily performance variance and trading days per year.
         */
          * @param performance">
          * @param tradingDaysPerYear">
-        /// Invokes the variance extension in the MathNet Statistics class
+         * Invokes the variance extension in the MathNet Statistics class
         @returns Annual variance value
         public static double AnnualVariance(List<double> performance, double tradingDaysPerYear = 252) {
             return (performance.Variance())*tradingDaysPerYear;
         }
 
         /**
-        /// Annualized standard deviation
+         * Annualized standard deviation
         */
-         * @param performance">Collection of double values for daily performance
-         * @param tradingDaysPerYear">Number of trading days for the assets in portfolio to get annualize standard deviation.
-        /// 
-        ///     Invokes the variance extension in the MathNet Statistics class.
-        ///     Feasibly the trading days per year can be fetched from the dictionary of performance which includes the date-times to get the range; if is more than 1 year data.
-        /// 
+         * @param performance Collection of double values for daily performance
+         * @param tradingDaysPerYear Number of trading days for the assets in portfolio to get annualize standard deviation.
+         * 
+         *     Invokes the variance extension in the MathNet Statistics class.
+         *     Feasibly the trading days per year can be fetched from the dictionary of performance which includes the date-times to get the range; if is more than 1 year data.
+         * 
         @returns Value for annual standard deviation
         public static double AnnualStandardDeviation(List<double> performance, double tradingDaysPerYear = 252) {
             return Math.Sqrt(performance.Variance() * tradingDaysPerYear);
         }
         
         /**
-        /// Algorithm "beta" statistic - the covariance between the algorithm and benchmark performance, divided by benchmark's variance
+         * Algorithm "beta" statistic - the covariance between the algorithm and benchmark performance, divided by benchmark's variance
         */
-         * @param algoPerformance">Collection of double values for algorithm daily performance.
-         * @param benchmarkPerformance">Collection of double benchmark daily performance values.
-        /// Invokes the variance and covariance extensions in the MathNet Statistics class
+         * @param algoPerformance Collection of double values for algorithm daily performance.
+         * @param benchmarkPerformance Collection of double benchmark daily performance values.
+         * Invokes the variance and covariance extensions in the MathNet Statistics class
         @returns Value for beta
         public static double Beta(List<double> algoPerformance, List<double> benchmarkPerformance) {
             return algoPerformance.Covariance(benchmarkPerformance) / benchmarkPerformance.Variance();
         }
 
         /**
-        /// Algorithm "Alpha" statistic - abnormal returns over the risk free rate and the relationshio (beta) with the benchmark returns.
+         * Algorithm "Alpha" statistic - abnormal returns over the risk free rate and the relationshio (beta) with the benchmark returns.
         */
-         * @param algoPerformance">Collection of double algorithm daily performance values.
-         * @param benchmarkPerformance">Collection of double benchmark daily performance values.
-         * @param riskFreeRate">Risk free rate of return for the T-Bonds.
+         * @param algoPerformance Collection of double algorithm daily performance values.
+         * @param benchmarkPerformance Collection of double benchmark daily performance values.
+         * @param riskFreeRate Risk free rate of return for the T-Bonds.
         @returns Value for alpha
         public static double Alpha(List<double> algoPerformance, List<double> benchmarkPerformance, double riskFreeRate) {
             return AnnualPerformance(algoPerformance) - (riskFreeRate + Beta(algoPerformance, benchmarkPerformance) * (AnnualPerformance(benchmarkPerformance) - riskFreeRate));
         }
 
         /**
-        /// Tracking error volatility (TEV) statistic - a measure of how closely a portfolio follows the index to which it is benchmarked
+         * Tracking error volatility (TEV) statistic - a measure of how closely a portfolio follows the index to which it is benchmarked
         */
-        /// If algo = benchmark, TEV = 0
-         * @param algoPerformance">Double collection of algorithm daily performance values
-         * @param benchmarkPerformance">Double collection of benchmark daily performance values
+         * If algo = benchmark, TEV = 0
+         * @param algoPerformance Double collection of algorithm daily performance values
+         * @param benchmarkPerformance Double collection of benchmark daily performance values
         @returns Value for tracking error
         public static double TrackingError(List<double> algoPerformance, List<double> benchmarkPerformance) {
             return Math.Sqrt(AnnualVariance(algoPerformance) - 2 * Correlation.Pearson(algoPerformance, benchmarkPerformance) * AnnualStandardDeviation(algoPerformance) * AnnualStandardDeviation(benchmarkPerformance) + AnnualVariance(benchmarkPerformance));
@@ -478,22 +478,22 @@ package com.quantconnect.lean.Statistics
 
         
         /**
-        /// Information ratio - risk adjusted return
+         * Information ratio - risk adjusted return
         */
-         * @param algoPerformance">Collection of doubles for the daily algorithm daily performance
-         * @param benchmarkPerformance">Collection of doubles for the benchmark daily performance
-        /// (risk = tracking error volatility, a volatility measures that considers the volatility of both algo and benchmark)
-        /// <seealso cref="TrackingError"/>
+         * @param algoPerformance Collection of doubles for the daily algorithm daily performance
+         * @param benchmarkPerformance Collection of doubles for the benchmark daily performance
+         * (risk = tracking error volatility, a volatility measures that considers the volatility of both algo and benchmark)
+         * <seealso cref="TrackingError"/>
         @returns Value for information ratio
         public static double InformationRatio(List<double> algoPerformance, List<double> benchmarkPerformance) {
             return (AnnualPerformance(algoPerformance) - AnnualPerformance(benchmarkPerformance)) / (TrackingError(algoPerformance, benchmarkPerformance));
         }
 
         /**
-        /// Sharpe ratio with respect to risk free rate: measures excess of return per unit of risk.
+         * Sharpe ratio with respect to risk free rate: measures excess of return per unit of risk.
         */
-        /// With risk defined as the algorithm's volatility
-         * @param algoPerformance">Collection of double values for the algorithm daily performance
+         * With risk defined as the algorithm's volatility
+         * @param algoPerformance Collection of double values for the algorithm daily performance
          * @param riskFreeRate">
         @returns Value for sharpe ratio
         public static double SharpeRatio(List<double> algoPerformance, double riskFreeRate) {
@@ -501,11 +501,11 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Treynor ratio statistic is a measurement of the returns earned in excess of that which could have been earned on an investment that has no diversifiable risk
+         * Treynor ratio statistic is a measurement of the returns earned in excess of that which could have been earned on an investment that has no diversifiable risk
         */
-         * @param algoPerformance">Collection of double algorithm daily performance values
-         * @param benchmarkPerformance">Collection of double benchmark daily performance values
-         * @param riskFreeRate">Risk free rate of return
+         * @param algoPerformance Collection of double algorithm daily performance values
+         * @param benchmarkPerformance Collection of double benchmark daily performance values
+         * @param riskFreeRate Risk free rate of return
         @returns double Treynor ratio
         public static double TreynorRatio(List<double> algoPerformance, List<double> benchmarkPerformance, double riskFreeRate) {
             return (AnnualPerformance(algoPerformance) - riskFreeRate) / (Beta(algoPerformance, benchmarkPerformance));

@@ -19,15 +19,15 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Tristar candlestick pattern indicator
+     * Tristar candlestick pattern indicator
     */
-    /// 
-    /// Must have:
-    /// - 3 consecutive doji days
-    /// - the second doji is a star
-    /// The meaning of "doji" is specified with SetCandleSettings
-    /// The returned value is positive(+1) when bullish or negative(-1) when bearish
-    /// 
+     * 
+     * Must have:
+     * - 3 consecutive doji days
+     * - the second doji is a star
+     * The meaning of "doji" is specified with SetCandleSettings
+     * The returned value is positive(+1) when bullish or negative(-1) when bearish
+     * 
     public class Tristar : CandlestickPattern
     {
         private final int _bodyDojiAveragePeriod;
@@ -35,23 +35,23 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _bodyDojiPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="Tristar"/> class using the specified name.
+         * Initializes a new instance of the <see cref="Tristar"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public Tristar( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod + 2 + 1) {
             _bodyDojiAveragePeriod = CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Tristar"/> class.
+         * Initializes a new instance of the <see cref="Tristar"/> class.
         */
         public Tristar()
             : this( "TRISTAR") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -59,10 +59,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -70,7 +70,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _bodyDojiPeriodTotal += GetCandleRange(CandleSettingType.BodyDoji, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -98,7 +98,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     value = 1m;
             }
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -110,10 +110,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
-            _bodyDojiPeriodTotal = 0m;
+            _bodyDojiPeriodTotal = BigDecimal.ZERO;
             base.Reset();
         }
     }

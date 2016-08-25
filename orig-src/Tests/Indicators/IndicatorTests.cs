@@ -23,7 +23,7 @@ using QuantConnect.Indicators;
 package com.quantconnect.lean.Tests.Indicators
 {
     /**
-    ///     Test class for QuantConnect.Indicators.Indicator
+     *     Test class for QuantConnect.Indicators.Indicator
     */
     [TestFixture]
     public class IndicatorTests
@@ -164,21 +164,21 @@ package com.quantconnect.lean.Tests.Indicators
         private class TestIndicator : Indicator
         {
             /**
-            ///     Initializes a new instance of the Indicator class using the specified name.
+             *     Initializes a new instance of the Indicator class using the specified name.
             */
-             * @param name">The name of this indicator
+             * @param name The name of this indicator
             public TestIndicator( String name)
                 : base(name) {
             }
             /**
-            ///     Initializes a new instance of the Indicator class using the name "test"
+             *     Initializes a new instance of the Indicator class using the name "test"
             */
             public TestIndicator()
                 : base( "test") {
             }
 
             /**
-            ///     Gets a flag indicating when this indicator is ready and fully initialized
+             *     Gets a flag indicating when this indicator is ready and fully initialized
             */
             public @Override boolean IsReady
             {
@@ -186,9 +186,9 @@ package com.quantconnect.lean.Tests.Indicators
             }
 
             /**
-            ///     Computes the next value of this indicator from the given state
+             *     Computes the next value of this indicator from the given state
             */
-             * @param input">The input given to the indicator
+             * @param input The input given to the indicator
             @returns A new value for this indicator
             protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
                 return input;

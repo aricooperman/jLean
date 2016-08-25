@@ -22,7 +22,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
     /**
-    /// Represents a Transaction object with details about an Oanda transaction.
+     * Represents a Transaction object with details about an Oanda transaction.
     */
     public class Transaction : Response
     {
@@ -50,7 +50,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 		public String expiry { get; set; }
 
         /**
-        /// Gets a basic title for the type of transaction
+         * Gets a basic title for the type of transaction
         */
         @returns 
         public String GetTitle() {
@@ -66,7 +66,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
         }
 
         /**
-        /// 
+         * 
         */
         @returns 
         public String GetReadableString() {

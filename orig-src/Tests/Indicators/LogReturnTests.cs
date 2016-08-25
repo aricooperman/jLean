@@ -32,7 +32,7 @@ package com.quantconnect.lean.Tests.Indicators
             seen = new List<decimal>();
             for (int i = 0; i < data.Length; i++) {
                 datum = data[i];
-                value0 = 0m;
+                value0 = BigDecimal.ZERO;
 
                 if( seen.Count >= 0 && seen.Count < period)
                     value0 = data[0];

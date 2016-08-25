@@ -20,9 +20,9 @@ using System.Threading;
 package com.quantconnect.lean 
 {
     /**
-    /// Real time timer class for precise callbacks on a millisecond resolution in a self managed thread.
+     * Real time timer class for precise callbacks on a millisecond resolution in a self managed thread.
     */
-    /// Due to the way Window's system clock works the clock is only accurate to the nearest 16ms. In linux it is accurate to the millisecond.
+     * Due to the way Window's system csynchronizedworks the csynchronizedis only accurate to the nearest 16ms. In linux it is accurate to the millisecond.
     public class RealTimeSynchronizedTimer
     {        
         private boolean _stopped;
@@ -34,7 +34,7 @@ package com.quantconnect.lean
         private boolean _paused;
 
         /**
-        /// Constructor for Real Time Event Driver:
+         * Constructor for Real Time Event Driver:
         */
         public RealTimeSynchronizedTimer() {
             _period = Duration.ofSeconds(0);
@@ -42,11 +42,11 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Trigger an event callback after precisely milliseconds-lapsed. 
-        /// This is expensive, it creates a new thread and closely monitors the loop.
+         * Trigger an event callback after precisely milliseconds-lapsed. 
+         * This is expensive, it creates a new thread and closely monitors the loop.
         */
-         * @param period">delay period between event callbacks
-         * @param callback">Callback event passed the UTC time the event is intended to be triggered
+         * @param period delay period between event callbacks
+         * @param callback Callback event passed the UTC time the event is intended to be triggered
         public RealTimeSynchronizedTimer(TimeSpan period, Action<DateTime> callback) {
             _period = period;
             _callback = callback;
@@ -57,7 +57,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Start the synchronized real time timer - fire events at start of each second or minute 
+         * Start the synchronized real time timer - fire events at start of each second or minute 
         */
         public void Start() { 
             _timer.Start();
@@ -66,7 +66,7 @@ package com.quantconnect.lean
         }
         
         /**
-        /// Scan the stopwatch for the desired millisecond delay:
+         * Scan the stopwatch for the desired millisecond delay:
         */
         public void Scanner() {
             while (!_stopped) {
@@ -83,21 +83,21 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Hang the real time event:
+         * Hang the real time event:
         */
         public void Pause() {
             _paused = true;
         }
 
         /**
-        /// Resume clock
+         * Resume clock
         */
         public void Resume() {
             _paused = false;
         }
 
         /**
-        /// Stop the real time timer:
+         * Stop the real time timer:
         */
         public void Stop() {
             _stopped = true;

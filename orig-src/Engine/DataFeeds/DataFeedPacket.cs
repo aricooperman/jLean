@@ -21,14 +21,14 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Defines a container type to hold data produced by a data feed subscription
+     * Defines a container type to hold data produced by a data feed subscription
     */
     public class DataFeedPacket
     {
         private final List<BaseData> _data;
 
         /**
-        /// The security
+         * The security
         */
         public Security Security
         {
@@ -36,7 +36,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// The subscription configuration that produced this data
+         * The subscription configuration that produced this data
         */
         public SubscriptionDataConfig Configuration
         {
@@ -44,7 +44,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets the number of data points held within this packet
+         * Gets the number of data points held within this packet
         */
         public int Count
         {
@@ -52,7 +52,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// The data for the security
+         * The data for the security
         */
         public List<BaseData> Data
         {
@@ -60,10 +60,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Initializes a new instance of the <see cref="DataFeedPacket"/> class
+         * Initializes a new instance of the <see cref="DataFeedPacket"/> class
         */
-         * @param security">The security whose data is held in this packet
-         * @param configuration">The subscription configuration that produced this data
+         * @param security The security whose data is held in this packet
+         * @param configuration The subscription configuration that produced this data
         public DataFeedPacket(Security security, SubscriptionDataConfig configuration) {
             Security = security;
             Configuration = configuration;
@@ -71,12 +71,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Initializes a new instance of the <see cref="DataFeedPacket"/> class
+         * Initializes a new instance of the <see cref="DataFeedPacket"/> class
         */
-         * @param security">The security whose data is held in this packet
-         * @param configuration">The subscription configuration that produced this data
-         * @param data">The data to add to this packet. The list reference is reused
-        /// internally and NOT copied.
+         * @param security The security whose data is held in this packet
+         * @param configuration The subscription configuration that produced this data
+         * @param data The data to add to this packet. The list reference is reused
+         * internally and NOT copied.
         public DataFeedPacket(Security security, SubscriptionDataConfig configuration, List<BaseData> data) {
             Security = security;
             Configuration = configuration;
@@ -84,9 +84,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Adds the specified data to this packet
+         * Adds the specified data to this packet
         */
-         * @param data">The data to be added to this packet
+         * @param data The data to be added to this packet
         public void Add(BaseData data) {
             _data.Add(data);
         }

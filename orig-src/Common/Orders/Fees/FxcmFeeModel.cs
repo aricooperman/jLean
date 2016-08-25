@@ -20,7 +20,7 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Orders.Fees
 {
     /**
-    /// Provides an implementation of <see cref="IFeeModel"/> that models FXCM order fees
+     * Provides an implementation of <see cref="IFeeModel"/> that models FXCM order fees
     */
     public class FxcmFeeModel : IFeeModel
     {
@@ -36,10 +36,10 @@ package com.quantconnect.lean.Orders.Fees
         };
 
         /**
-        /// Get the fee for this order
+         * Get the fee for this order
         */
-         * @param security">The security matching the order
-         * @param order">The order to compute fees for
+         * @param security The security matching the order
+         * @param order The order to compute fees for
         @returns The cost of the order in units of the account currency
         public BigDecimal GetOrderFee(Security security, Order order) {
             // From http://www.fxcm.com/forex/forex-pricing/ (on Oct 6th, 2015)
@@ -50,7 +50,7 @@ package com.quantconnect.lean.Orders.Fees
             // CFD: no commissions
 
             if( security.Type != SecurityType.Forex)
-                return 0m;
+                return BigDecimal.ZERO;
 
             commissionRate = _groupCommissionSchedule1.Contains(security.Symbol) ? 0.04m : 0.06m;
 

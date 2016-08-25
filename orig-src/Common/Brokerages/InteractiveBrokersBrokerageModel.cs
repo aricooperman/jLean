@@ -22,29 +22,29 @@ using QuantConnect.Securities.Forex;
 package com.quantconnect.lean.Brokerages
 {
     /**
-    /// Provides properties specific to interactive brokers
+     * Provides properties specific to interactive brokers
     */
     public class InteractiveBrokersBrokerageModel : DefaultBrokerageModel
     {
         /**
-        /// Initializes a new instance of the <see cref="InteractiveBrokersBrokerageModel"/> class
+         * Initializes a new instance of the <see cref="InteractiveBrokersBrokerageModel"/> class
         */
-         * @param accountType">The type of account to be modelled, defaults to 
-        /// <see cref="QuantConnect.AccountType.Margin"/>
+         * @param accountType The type of account to be modelled, defaults to 
+         * <see cref="QuantConnect.AccountType.Margin"/>
         public InteractiveBrokersBrokerageModel(AccountType accountType = AccountType.Margin)
             : base(accountType) {
         }
 
         /**
-        /// Returns true if the brokerage could accept this order. This takes into account
-        /// order type, security type, and order size limits.
+         * Returns true if the brokerage could accept this order. This takes into account
+         * order type, security type, and order size limits.
         */
-        /// 
-        /// For example, a brokerage may have no connectivity at certain times, or an order rate/size limit
-        /// 
-         * @param security">The security being ordered
-         * @param order">The order to be processed
-         * @param message">If this function returns false, a brokerage message detailing why the order may not be submitted
+         * 
+         * For example, a brokerage may have no connectivity at certain times, or an order rate/size limit
+         * 
+         * @param security The security being ordered
+         * @param order The order to be processed
+         * @param message If this function returns false, a brokerage message detailing why the order may not be submitted
         @returns True if the brokerage could process the order, false otherwise
         public @Override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
             message = null;
@@ -69,12 +69,12 @@ package com.quantconnect.lean.Brokerages
         }
 
         /**
-        /// Returns true if the brokerage would allow updating the order as specified by the request
+         * Returns true if the brokerage would allow updating the order as specified by the request
         */
-         * @param security">The security of the order
-         * @param order">The order to be updated
-         * @param request">The requested update to be made to the order
-         * @param message">If this function returns false, a brokerage message detailing why the order may not be updated
+         * @param security The security of the order
+         * @param order The order to be updated
+         * @param request The requested update to be made to the order
+         * @param message If this function returns false, a brokerage message detailing why the order may not be updated
         @returns True if the brokerage would allow updating the order, false otherwise
         public @Override boolean CanUpdateOrder(Security security, Order order, UpdateOrderRequest request, out BrokerageMessageEvent message) {
             message = null;
@@ -87,21 +87,21 @@ package com.quantconnect.lean.Brokerages
         }
 
         /**
-        /// Returns true if the brokerage would be able to execute this order at this time assuming
-        /// market prices are sufficient for the fill to take place. This is used to emulate the 
-        /// brokerage fills in backtesting and paper trading. For example some brokerages may not perform
-        /// executions during extended market hours. This is not intended to be checking whether or not
-        /// the exchange is open, that is handled in the Security.Exchange property.
+         * Returns true if the brokerage would be able to execute this order at this time assuming
+         * market prices are sufficient for the fill to take place. This is used to emulate the 
+         * brokerage fills in backtesting and paper trading. For example some brokerages may not perform
+         * executions during extended market hours. This is not intended to be checking whether or not
+         * the exchange is open, that is handled in the Security.Exchange property.
         */
          * @param security">
-         * @param order">The order to test for execution
+         * @param order The order to test for execution
         @returns True if the brokerage would be able to perform the execution, false otherwise
         public @Override boolean CanExecuteOrder(Security security, Order order) {
             return order.SecurityType != SecurityType.Base;
         }
 
         /**
-        /// Returns true if the specified order is within IB's order size limits
+         * Returns true if the specified order is within IB's order size limits
         */
         private boolean IsForexWithinOrderSizeLimits( String currencyPair, int quantity, out BrokerageMessageEvent message) {
             /* https://www.interactivebrokers.com/en/?f=%2Fen%2Ftrading%2FforexOrderSize.php
@@ -148,19 +148,19 @@ package com.quantconnect.lean.Brokerages
         }
 
 
-        private static final IReadOnlyMap<String, decimal> ForexCurrencyLimits = new Map<String, decimal>() {
+        private static final ImmutableMap<String, decimal> ForexCurrencyLimits = new Map<String, decimal>() {
             {"USD", 7000000m},
             {"AUD", 6000000m},
             {"CAD", 6000000m},
             {"CHF", 6000000m},
             {"CNH", 40000000m},
-            {"CZK", 0m}, // need market price in USD or EUR -- do later when we support
+            {"CZK", BigDecimal.ZERO}, // need market price in USD or EUR -- do later when we support
             {"DKK", 35000000m},
             {"EUR", 5000000m},
             {"GBP", 4000000m},
             {"HKD", 50000000m},
-            {"HUF", 0m}, // need market price in USD or EUR -- do later when we support
-            {"ILS", 0m}, // need market price in USD or EUR -- do later when we support
+            {"HUF", BigDecimal.ZERO}, // need market price in USD or EUR -- do later when we support
+            {"ILS", BigDecimal.ZERO}, // need market price in USD or EUR -- do later when we support
             {"KRW", 750000000m},
             {"JPY", 550000000m},
             {"MXN", 70000000m},

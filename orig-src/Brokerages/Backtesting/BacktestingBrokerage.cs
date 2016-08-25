@@ -25,7 +25,7 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Brokerages.Backtesting
 {
     /**
-    /// Represents a brokerage to be used during backtesting. This is intended to be only be used with the BacktestingTransactionHandler
+     * Represents a brokerage to be used during backtesting. This is intended to be only be used with the BacktestingTransactionHandler
     */
     public class BacktestingBrokerage : Brokerage
     {
@@ -40,9 +40,9 @@ package com.quantconnect.lean.Brokerages.Backtesting
         private final object _needsScanLock = new object();
 
         /**
-        /// Creates a new BacktestingBrokerage for the specified algorithm
+         * Creates a new BacktestingBrokerage for the specified algorithm
         */
-         * @param algorithm">The algorithm instance
+         * @param algorithm The algorithm instance
         public BacktestingBrokerage(IAlgorithm algorithm)
             : base( "Backtesting Brokerage") {
             Algorithm = algorithm;
@@ -50,10 +50,10 @@ package com.quantconnect.lean.Brokerages.Backtesting
         }
 
         /**
-        /// Creates a new BacktestingBrokerage for the specified algorithm
+         * Creates a new BacktestingBrokerage for the specified algorithm
         */
-         * @param algorithm">The algorithm instance
-         * @param name">The name of the brokerage
+         * @param algorithm The algorithm instance
+         * @param name The name of the brokerage
         protected BacktestingBrokerage(IAlgorithm algorithm, String name)
             : base(name) {
             Algorithm = algorithm;
@@ -61,18 +61,18 @@ package com.quantconnect.lean.Brokerages.Backtesting
         }
 
         /**
-        /// Gets the connection status
+         * Gets the connection status
         */
-        /// 
-        /// The BacktestingBrokerage is always connected
-        /// 
+         * 
+         * The BacktestingBrokerage is always connected
+         * 
         public @Override boolean IsConnected
         {
             get { return true; }
         }
 
         /**
-        /// Gets all open orders on the account
+         * Gets all open orders on the account
         */
         @returns The open orders returned from IB
         public @Override List<Order> GetOpenOrders() {
@@ -80,7 +80,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
         }
 
         /**
-        /// Gets all holdings for the account
+         * Gets all holdings for the account
         */
         @returns The current holdings from the account
         public @Override List<Holding> GetAccountHoldings() {
@@ -91,7 +91,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
         }
 
         /**
-        /// Gets the current cash balance for each currency held in the brokerage account
+         * Gets the current cash balance for each currency held in the brokerage account
         */
         @returns The current cash balance for each currency available for trading
         public @Override List<Cash> GetCashBalance() {
@@ -99,13 +99,13 @@ package com.quantconnect.lean.Brokerages.Backtesting
         }
 
         /**
-        /// Places a new order and assigns a new broker ID to the order
+         * Places a new order and assigns a new broker ID to the order
         */
-         * @param order">The order to be placed
+         * @param order The order to be placed
         @returns True if the request for a new order has been placed, false otherwise
         public @Override boolean PlaceOrder(Order order) {
             if( order.Status == OrderStatus.New) {
-                lock (_needsScanLock) {
+                synchronized(_needsScanLock) {
                     _needsScan = true;
                     SetPendingOrder(order);
                 }
@@ -124,9 +124,9 @@ package com.quantconnect.lean.Brokerages.Backtesting
         }
 
         /**
-        /// Updates the order with the same ID
+         * Updates the order with the same ID
         */
-         * @param order">The new order information
+         * @param order The new order information
         @returns True if the request was made for the order to be updated, false otherwise
         public @Override boolean UpdateOrder(Order order) {
             if( true) {
@@ -136,7 +136,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
                     return false;
                 }
 
-                lock (_needsScanLock) {
+                synchronized(_needsScanLock) {
                     _needsScan = true;
                     SetPendingOrder(order);
                 }
@@ -154,9 +154,9 @@ package com.quantconnect.lean.Brokerages.Backtesting
         }
 
         /**
-        /// Cancels the order with the specified ID
+         * Cancels the order with the specified ID
         */
-         * @param order">The order to cancel
+         * @param order The order to cancel
         @returns True if the request was made for the order to be canceled, false otherwise
         public @Override boolean CancelOrder(Order order) {
             Order pending;
@@ -177,10 +177,10 @@ package com.quantconnect.lean.Brokerages.Backtesting
         }
 
         /**
-        /// Scans all the outstanding orders and applies the algorithm model fills to generate the order events
+         * Scans all the outstanding orders and applies the algorithm model fills to generate the order events
         */
         public void Scan() {
-            lock (_needsScanLock) {
+            synchronized(_needsScanLock) {
                 // there's usually nothing in here
                 if( !_needsScan) {
                     return;
@@ -210,7 +210,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
                     if( !Algorithm.Securities.TryGetValue(order.Symbol, out security)) {
                         Log.Error( "BacktestingBrokerage.Scan(): Unable to process order: " + order.Id + ". The security no longer exists.");
                         // invalidate the order in the algorithm before removing
-                        OnOrderEvent(new OrderEvent(order, Algorithm.UtcTime, 0m){Status = OrderStatus.Invalid});
+                        OnOrderEvent(new OrderEvent(order, Algorithm.UtcTime, BigDecimal.ZERO){Status = OrderStatus.Invalid});
                         _pending.TryRemove(order.Id, out order);
                         continue;
                     }
@@ -307,23 +307,23 @@ package com.quantconnect.lean.Brokerages.Backtesting
         }
 
         /**
-        /// The BacktestingBrokerage is always connected. This is a no-op.
+         * The BacktestingBrokerage is always connected. This is a no-op.
         */
         public @Override void Connect() {
             //NOP
         }
 
         /**
-        /// The BacktestingBrokerage is always connected. This is a no-op.
+         * The BacktestingBrokerage is always connected. This is a no-op.
         */
         public @Override void Disconnect() {
             //NOP
         }
 
         /**
-        /// Sets the pending order as a clone to prevent object reference nastiness
+         * Sets the pending order as a clone to prevent object reference nastiness
         */
-         * @param order">The order to be added to the pending orders Map
+         * @param order The order to be added to the pending orders Map
         @returns 
         private void SetPendingOrder(Order order) {
             // only save off clones!

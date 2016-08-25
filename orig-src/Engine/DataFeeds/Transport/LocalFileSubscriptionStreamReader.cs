@@ -20,7 +20,7 @@ using Ionic.Zip;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
 {
     /**
-    /// Represents a stream reader capable of reading lines from disk
+     * Represents a stream reader capable of reading lines from disk
     */
     public class LocalFileSubscriptionStreamReader : IStreamReader
     {
@@ -28,11 +28,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         private final ZipFile _zipFile;
 
         /**
-        /// Initializes a new instance of the <see cref="LocalFileSubscriptionStreamReader"/> class.
+         * Initializes a new instance of the <see cref="LocalFileSubscriptionStreamReader"/> class.
         */
-         * @param source">The local file to be read
-         * @param entryName">Specifies the zip entry to be opened. Leave null if not applicable,
-        /// or to open the first zip entry found regardless of name
+         * @param source The local file to be read
+         * @param entryName Specifies the zip entry to be opened. Leave null if not applicable,
+         * or to open the first zip entry found regardless of name
         public LocalFileSubscriptionStreamReader( String source, String entryName = null ) {
             // unzip if necessary
             _streamReader = source.GetExtension() == ".zip"
@@ -41,7 +41,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         }
 
         /**
-        /// Gets <see cref="SubscriptionTransportMedium.LocalFile"/>
+         * Gets <see cref="SubscriptionTransportMedium.LocalFile"/>
         */
         public SubscriptionTransportMedium TransportMedium
         {
@@ -49,7 +49,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         }
 
         /**
-        /// Gets whether or not there's more data to be read in the stream
+         * Gets whether or not there's more data to be read in the stream
         */
         public boolean EndOfStream
         {
@@ -57,14 +57,14 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
         }
 
         /**
-        /// Gets the next line/batch of content from the stream 
+         * Gets the next line/batch of content from the stream 
         */
         public String ReadLine() {
             return _streamReader.ReadLine();
         }
 
         /**
-        /// Disposes of the stream
+         * Disposes of the stream
         */
         public void Dispose() {
             if( _streamReader != null ) {

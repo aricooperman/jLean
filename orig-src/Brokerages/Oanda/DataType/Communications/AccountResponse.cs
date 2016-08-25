@@ -20,7 +20,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType.Communications
 {
 #pragma warning disable 1591
     /**
-    /// Represents the web response when creating a new account with Oanda.
+     * Represents the web response when creating a new account with Oanda.
     */
 	public class AccountResponse
 	{

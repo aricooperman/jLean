@@ -19,42 +19,42 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Data.Consolidators
 {    
     /**
-    /// A data consolidator that can make bigger bars from ticks over a given
-    /// time span or a count of pieces of data.
+     * A data consolidator that can make bigger bars from ticks over a given
+     * time span or a count of pieces of data.
     */
     public class TickConsolidator : TradeBarConsolidatorBase<Tick>
     {
         /**
-        /// Creates a consolidator to produce a new 'TradeBar' representing the period
+         * Creates a consolidator to produce a new 'TradeBar' representing the period
         */
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         public TickConsolidator(TimeSpan period)
             : base(period) {
         }
 
         /**
-        /// Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data
+         * Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
         public TickConsolidator(int maxCount)
             : base(maxCount) {
         }
 
         /**
-        /// Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data or the period, whichever comes first
+         * Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data or the period, whichever comes first
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         public TickConsolidator(int maxCount, Duration period)
             : base(maxCount, period) {
         }
 
         /**
-        /// Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
-        /// null following the event firing
+         * Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
+         * null following the event firing
         */
-         * @param workingBar">The bar we're building
-         * @param data">The new data
+         * @param workingBar The bar we're building
+         * @param data The new data
         protected @Override void AggregateBar(ref TradeBar workingBar, Tick data) {
             if( workingBar == null ) {
                 workingBar = new TradeBar

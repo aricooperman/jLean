@@ -16,17 +16,17 @@
 package com.quantconnect.lean.Logging
 {
     /**
-    /// Provides an implementation of <see cref="ILogHandler"/> that writes all log messages to a file on disk
-    /// without timestamps.
+     * Provides an implementation of <see cref="ILogHandler"/> that writes all log messages to a file on disk
+     * without timestamps.
     */
-    /// 
-    /// This type is provided for convenience/setting from configuration
-    /// 
+     * 
+     * This type is provided for convenience/setting from configuration
+     * 
     public class RegressionFileLogHandler : FileLogHandler
     {
         /**
-        /// Initializes a new instance of the <see cref="RegressionFileLogHandler"/> class
-        /// that will write to a 'regression.log' file in the executing directory
+         * Initializes a new instance of the <see cref="RegressionFileLogHandler"/> class
+         * that will write to a 'regression.log' file in the executing directory
         */
         public RegressionFileLogHandler()
             : base( "regression.log", false) {

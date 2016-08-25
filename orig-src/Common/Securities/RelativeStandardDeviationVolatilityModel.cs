@@ -21,8 +21,8 @@ using QuantConnect.Indicators;
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Provides an implementation of <see cref="IVolatilityModel"/> that computes the
-    /// relative standard deviation as the volatility of the security
+     * Provides an implementation of <see cref="IVolatilityModel"/> that computes the
+     * relative standard deviation as the volatility of the security
     */
     public class RelativeStandardDeviationVolatilityModel : IVolatilityModel
     {
@@ -34,21 +34,21 @@ package com.quantconnect.lean.Securities
         private final RollingWindow<double> _window;
 
         /**
-        /// Gets the volatility of the security as a percentage
+         * Gets the volatility of the security as a percentage
         */
         public BigDecimal Volatility
         {
             get
             {
-                lock (_sync) {
+                synchronized(_sync) {
                     if( _window.Count < 2) {
-                        return 0m;
+                        return BigDecimal.ZERO;
                     }
 
                     if( _needsUpdate) {
                         _needsUpdate = false;
                         mean = Math.Abs(_window.Mean().SafeDecimalCast());
-                        if( mean != 0m) {
+                        if( mean != BigDecimal.ZERO) {
                             // volatility here is supposed to be a percentage
                             std = _window.StandardDeviation().SafeDecimalCast();
                             _volatility = std/mean;
@@ -60,10 +60,10 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Initializes a new instance of the <see cref="RelativeStandardDeviationVolatilityModel"/> class
+         * Initializes a new instance of the <see cref="RelativeStandardDeviationVolatilityModel"/> class
         */
-         * @param periodSpan">The time span representing one 'period' length
-         * @param periods">The nuber of 'period' lengths to wait until updating the value
+         * @param periodSpan The time span representing one 'period' length
+         * @param periods The nuber of 'period' lengths to wait until updating the value
         public RelativeStandardDeviationVolatilityModel(TimeSpan periodSpan, int periods) {
             if( periods < 2) throw new ArgumentOutOfRangeException( "periods", "'periods' must be greater than or equal to 2.");
             _periodSpan = periodSpan;
@@ -72,15 +72,15 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Updates this model using the new price information in
-        /// the specified security instance
+         * Updates this model using the new price information in
+         * the specified security instance
         */
-         * @param security">The security to calculate volatility for
+         * @param security The security to calculate volatility for
          * @param data">
         public void Update(Security security, BaseData data) {
             timeSinceLastUpdate = data.EndTime - _lastUpdate;
             if( timeSinceLastUpdate >= _periodSpan) {
-                lock (_sync) {
+                synchronized(_sync) {
                     _needsUpdate = true;
                     // we purposefully use security.Price for consistency in our reporting
                     // some streams of data will have trade/quote data, so if we just use

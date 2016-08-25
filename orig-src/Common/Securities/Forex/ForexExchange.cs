@@ -16,13 +16,13 @@
 package com.quantconnect.lean.Securities.Forex 
 {
     /**
-    /// Forex exchange class - information and helper tools for forex exchange properties
+     * Forex exchange class - information and helper tools for forex exchange properties
     */
-    /// <seealso cref="SecurityExchange"/>
+     * <seealso cref="SecurityExchange"/>
     public class ForexExchange : SecurityExchange
     {
         /**
-        /// Number of trading days per year for this security, used for performance statistics.
+         * Number of trading days per year for this security, used for performance statistics.
         */
         public @Override int TradingDaysPerYear
         {
@@ -31,18 +31,18 @@ package com.quantconnect.lean.Securities.Forex
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ForexExchange"/> class using market hours
-        /// derived from the market-hours-database for the FXCM Forex market
+         * Initializes a new instance of the <see cref="ForexExchange"/> class using market hours
+         * derived from the market-hours-database for the FXCM Forex market
         */
         public ForexExchange()
             : base(MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.FXCM, null, SecurityType.Forex, TimeZones.NewYork)) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ForexExchange"/> class using the specified
-        /// exchange hours to determine open/close times
+         * Initializes a new instance of the <see cref="ForexExchange"/> class using the specified
+         * exchange hours to determine open/close times
         */
-         * @param exchangeHours">Contains the weekly exchange schedule plus holidays
+         * @param exchangeHours Contains the weekly exchange schedule plus holidays
         public ForexExchange(SecurityExchangeHours exchangeHours)
             : base(exchangeHours) {
         }

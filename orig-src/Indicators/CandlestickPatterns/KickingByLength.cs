@@ -20,17 +20,17 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Kicking (bull/bear determined by the longer marubozu) candlestick pattern
+     * Kicking (bull/bear determined by the longer marubozu) candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - first candle: marubozu
-    /// - second candle: opposite color marubozu
-    /// - gap between the two candles: upside gap if black then white, downside gap if white then black
-    /// The meaning of "long body" and "very short shadow" is specified with SetCandleSettings
-    /// The returned value is positive(+1) when bullish or negative(-1) when bearish; the longer of the two
-    /// marubozu determines the bullishness or bearishness of this pattern
-    /// 
+     * 
+     * Must have:
+     * - first candle: marubozu
+     * - second candle: opposite color marubozu
+     * - gap between the two candles: upside gap if black then white, downside gap if white then black
+     * The meaning of "long body" and "very short shadow" is specified with SetCandleSettings
+     * The returned value is positive(+1) when bullish or negative(-1) when bearish; the longer of the two
+     * marubozu determines the bullishness or bearishness of this pattern
+     * 
     public class KickingByLength : CandlestickPattern
     {
         private final int _shadowVeryShortAveragePeriod;
@@ -40,9 +40,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private decimal[] _bodyLongPeriodTotal = new decimal[2];
 
         /**
-        /// Initializes a new instance of the <see cref="KickingByLength"/> class using the specified name.
+         * Initializes a new instance of the <see cref="KickingByLength"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public KickingByLength( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 1 + 1) {
             _shadowVeryShortAveragePeriod = CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod;
@@ -50,14 +50,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="KickingByLength"/> class.
+         * Initializes a new instance of the <see cref="KickingByLength"/> class.
         */
         public KickingByLength()
             : this( "KICKINGBYLENGTH") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -65,10 +65,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -82,7 +82,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _bodyLongPeriodTotal[0] += GetCandleRange(CandleSettingType.BodyLong, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -106,7 +106,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = (int)GetCandleColor(GetRealBody(input) > GetRealBody(window[1]) ? input : window[1]);
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -123,7 +123,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _shadowVeryShortPeriodTotal = new decimal[2];

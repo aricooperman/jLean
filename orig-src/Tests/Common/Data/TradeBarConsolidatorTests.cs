@@ -298,10 +298,10 @@ package com.quantconnect.lean.Tests.Common.Data
         }
 
         /**
-        /// Testing the behaviors where, the bar range is closed on the left and open on 
-        /// the right in time span mode: [T, T+TimeSpan).
-        /// For example, if time span is 1 minute, we have [10:00, 10:01): so data at 
-        /// 10:01 is not included in the bar starting at 10:00.
+         * Testing the behaviors where, the bar range is closed on the left and open on 
+         * the right in time span mode: [T, T+TimeSpan).
+         * For example, if time span is 1 minute, we have [10:00, 10:01): so data at 
+         * 10:01 is not included in the bar starting at 10:00.
         */
         [Test]
         public void ClosedLeftOpenRightInTimeSpanModeTest() {

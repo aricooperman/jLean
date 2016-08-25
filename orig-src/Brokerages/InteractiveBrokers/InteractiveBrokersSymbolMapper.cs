@@ -18,43 +18,43 @@ using System;
 package com.quantconnect.lean.Brokerages.InteractiveBrokers
 {
     /**
-    /// Provides the mapping between Lean symbols and InteractiveBrokers symbols.
+     * Provides the mapping between Lean symbols and InteractiveBrokers symbols.
     */
     public class InteractiveBrokersSymbolMapper : ISymbolMapper
     {
         /**
-        /// Converts a Lean symbol instance to an InteractiveBrokers symbol
+         * Converts a Lean symbol instance to an InteractiveBrokers symbol
         */
-         * @param symbol">A Lean symbol instance
+         * @param symbol A Lean symbol instance
         @returns The InteractiveBrokers symbol
         public String GetBrokerageSymbol(Symbol symbol) {
-            if( symbol == null || symbol == Symbol.Empty || string.IsNullOrWhiteSpace(symbol.Value))
-                throw new ArgumentException( "Invalid symbol: " + (symbol == null ? "null" : symbol.toString()));
+            if( symbol == null || symbol == Symbol.Empty || StringUtils.isBlank(symbol.Value))
+                throw new IllegalArgumentException( "Invalid symbol: " + (symbol == null ? "null" : symbol.toString()));
 
             if( symbol.ID.SecurityType != SecurityType.Forex &&
                 symbol.ID.SecurityType != SecurityType.Equity &&
                 symbol.ID.SecurityType != SecurityType.Option)
-                throw new ArgumentException( "Invalid security type: " + symbol.ID.SecurityType);
+                throw new IllegalArgumentException( "Invalid security type: " + symbol.ID.SecurityType);
 
             if( symbol.ID.SecurityType == SecurityType.Forex && symbol.Value.Length != 6)
-                throw new ArgumentException( "Forex symbol length must be equal to 6: " + symbol.Value);
+                throw new IllegalArgumentException( "Forex symbol length must be equal to 6: " + symbol.Value);
 
             return symbol.Value;
         }
 
         /**
-        /// Converts an InteractiveBrokers symbol to a Lean symbol instance
+         * Converts an InteractiveBrokers symbol to a Lean symbol instance
         */
-         * @param brokerageSymbol">The InteractiveBrokers symbol
-         * @param securityType">The security type
-         * @param market">The market
+         * @param brokerageSymbol The InteractiveBrokers symbol
+         * @param securityType The security type
+         * @param market The market
         @returns A new Lean Symbol instance
         public Symbol GetLeanSymbol( String brokerageSymbol, SecurityType securityType, String market) {
             if(  String.IsNullOrWhiteSpace(brokerageSymbol))
-                throw new ArgumentException( "Invalid symbol: " + brokerageSymbol);
+                throw new IllegalArgumentException( "Invalid symbol: " + brokerageSymbol);
 
             if( securityType != SecurityType.Forex && securityType != SecurityType.Equity)
-                throw new ArgumentException( "Invalid security type: " + securityType);
+                throw new IllegalArgumentException( "Invalid security type: " + securityType);
 
             return Symbol.Create(brokerageSymbol, securityType, market);
         }

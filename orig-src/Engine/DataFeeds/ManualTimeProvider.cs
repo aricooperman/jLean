@@ -20,8 +20,8 @@ using NodaTime;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Provides an implementation of <see cref="ITimeProvider"/> that can be
-    /// manually advanced through time
+     * Provides an implementation of <see cref="ITimeProvider"/> that can be
+     * manually advanced through time
     */
     public class ManualTimeProvider : ITimeProvider
     {
@@ -29,28 +29,28 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         private final ZoneId _setCurrentTimeTimeZone;
 
         /**
-        /// Initializes a new instance of the <see cref="ManualTimeProvider"/>
+         * Initializes a new instance of the <see cref="ManualTimeProvider"/>
         */
-         * @param setCurrentTimeTimeZone">Specify to use this time zone when calling <see cref="SetCurrentTime"/>,
-        /// leave null for the deault of <see cref="TimeZones.Utc"/>
+         * @param setCurrentTimeTimeZone Specify to use this time zone when calling <see cref="SetCurrentTime"/>,
+         * leave null for the deault of <see cref="TimeZones.Utc"/>
         public ManualTimeProvider(ZoneId setCurrentTimeTimeZone = null ) {
             _setCurrentTimeTimeZone = setCurrentTimeTimeZone ?? TimeZones.Utc;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ManualTimeProvider"/> class
+         * Initializes a new instance of the <see cref="ManualTimeProvider"/> class
         */
-         * @param currentTime">The current time in the specified time zone, if the time zone is
-        /// null then the time is interpreted as being in <see cref="TimeZones.Utc"/>
-         * @param setCurrentTimeTimeZone">Specify to use this time zone when calling <see cref="SetCurrentTime"/>,
-        /// leave null for the deault of <see cref="TimeZones.Utc"/>
+         * @param currentTime The current time in the specified time zone, if the time zone is
+         * null then the time is interpreted as being in <see cref="TimeZones.Utc"/>
+         * @param setCurrentTimeTimeZone Specify to use this time zone when calling <see cref="SetCurrentTime"/>,
+         * leave null for the deault of <see cref="TimeZones.Utc"/>
         public ManualTimeProvider(DateTime currentTime, ZoneId setCurrentTimeTimeZone = null ) {
             _setCurrentTimeTimeZone = setCurrentTimeTimeZone ?? TimeZones.Utc;
             _currentTime = currentTime.ConvertToUtc(_setCurrentTimeTimeZone);
         }
 
         /**
-        /// Gets the current time in UTC
+         * Gets the current time in UTC
         */
         @returns The current time in UTC
         public DateTime GetUtcNow() {
@@ -58,35 +58,35 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Sets the current time interpreting the specified time as a UTC time
+         * Sets the current time interpreting the specified time as a UTC time
         */
-         * @param time">The current time in UTC
+         * @param time The current time in UTC
         public void SetCurrentTimeUtc(DateTime time) {
             _currentTime = time;
         }
 
         /**
-        /// Sets the current time interpeting the specified time as a local time
-        /// using the time zone used at instatiation.
+         * Sets the current time interpeting the specified time as a local time
+         * using the time zone used at instatiation.
         */
-         * @param time">The local time to set the current time time, will be
-        /// converted into UTC
+         * @param time The local time to set the current time time, will be
+         * converted into UTC
         public void SetCurrentTime(DateTime time) {
             _currentTime = time.ConvertToUtc(_setCurrentTimeTimeZone);
         }
 
         /**
-        /// Advances the current time by the specified span
+         * Advances the current time by the specified span
         */
-         * @param span">The amount of time to advance the current time by
+         * @param span The amount of time to advance the current time by
         public void Advance(TimeSpan span) {
             _currentTime += span;
         }
 
         /**
-        /// Advances the current time by the specified number of seconds
+         * Advances the current time by the specified number of seconds
         */
-         * @param seconds">The number of seconds to advance the current time by
+         * @param seconds The number of seconds to advance the current time by
         public void AdvanceSeconds(double seconds) {
             Advance(Duration.ofSeconds(seconds));
         }

@@ -19,14 +19,14 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Commands
 {
     /**
-    /// Represents a command that will liquidate the entire algorithm
+     * Represents a command that will liquidate the entire algorithm
     */
     public sealed class LiquidateCommand : ICommand
     {
         /**
-        /// Submits orders to liquidate all current holdings in the algorithm
+         * Submits orders to liquidate all current holdings in the algorithm
         */
-         * @param algorithm">The algorithm to be liquidated
+         * @param algorithm The algorithm to be liquidated
         public CommandResultPacket Run(IAlgorithm algorithm) {
             algorithm.Liquidate();
             return new CommandResultPacket(this, true);

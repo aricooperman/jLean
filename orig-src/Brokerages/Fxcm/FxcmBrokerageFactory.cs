@@ -23,7 +23,7 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages.Fxcm
 {
     /**
-    /// Provides an implementation of <see cref="IBrokerageFactory"/> that produces a <see cref="FxcmBrokerage"/>
+     * Provides an implementation of <see cref="IBrokerageFactory"/> that produces a <see cref="FxcmBrokerage"/>
     */
     public class FxcmBrokerageFactory : BrokerageFactory
     {
@@ -31,19 +31,19 @@ package com.quantconnect.lean.Brokerages.Fxcm
         private static final String DefaultTerminal = "Demo";
 
         /**
-        /// Initializes a new instance of the <see cref="FxcmBrokerageFactory"/> class
+         * Initializes a new instance of the <see cref="FxcmBrokerageFactory"/> class
         */
         public FxcmBrokerageFactory()
             : base(typeof(FxcmBrokerage)) {
         }
 
         /**
-        /// Gets the brokerage data required to run the brokerage from configuration/disk
+         * Gets the brokerage data required to run the brokerage from configuration/disk
         */
-        /// 
-        /// The implementation of this property will create the brokerage data dictionary required for
-        /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
-        /// 
+         * 
+         * The implementation of this property will create the brokerage data dictionary required for
+         * running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
+         * 
         public @Override Map<String,String> BrokerageData
         {
             get
@@ -60,7 +60,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Gets a new instance of the <see cref="FxcmBrokerageModel"/>
+         * Gets a new instance of the <see cref="FxcmBrokerageModel"/>
         */
         public @Override IBrokerageModel BrokerageModel
         {
@@ -68,10 +68,10 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Creates a new <see cref="IBrokerage"/> instance
+         * Creates a new <see cref="IBrokerage"/> instance
         */
-         * @param job">The job packet to create the brokerage for
-         * @param algorithm">The algorithm instance
+         * @param job The job packet to create the brokerage for
+         * @param algorithm The algorithm instance
         @returns A new brokerage instance
         public @Override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm) {
             errors = new List<String>();
@@ -95,9 +95,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public @Override void Dispose() {
         }
 

@@ -19,8 +19,8 @@ using QuantConnect.Data;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Provides an implementation of <see cref="IDataProcessor"/> that filters the incoming
-    /// stream of data before passing it along to the wrapped processor
+     * Provides an implementation of <see cref="IDataProcessor"/> that filters the incoming
+     * stream of data before passing it along to the wrapped processor
     */
     public class FilteredDataProcessor : IDataProcessor
     {
@@ -28,19 +28,19 @@ package com.quantconnect.lean.ToolBox
         private final IDataProcessor _processor;
 
         /**
-        /// Initializes a new instance of the <see cref="FilteredDataProcessor"/> class
+         * Initializes a new instance of the <see cref="FilteredDataProcessor"/> class
         */
-         * @param processor">The processor to filter data for
-         * @param predicate">The filtering predicate to be applied
+         * @param processor The processor to filter data for
+         * @param predicate The filtering predicate to be applied
         public FilteredDataProcessor(IDataProcessor processor, Func<BaseData, bool> predicate) {
             _predicate = predicate;
             _processor = processor;
         }
 
         /**
-        /// Invoked for each piece of data from the source file
+         * Invoked for each piece of data from the source file
         */
-         * @param data">The data to be processed
+         * @param data The data to be processed
         public void Process(BaseData data) {
             if( _predicate(data)) {
                 _processor.Process(data);
@@ -48,7 +48,7 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
             _processor.Dispose();

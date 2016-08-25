@@ -26,16 +26,16 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Brokerages.Fxcm
 {
     /**
-    /// FXCM brokerage - private helper functions
+     * FXCM brokerage - private helper functions
     */
     public partial class FxcmBrokerage
     {
         private static ZoneId _configTimeZone = null;
 
         /**
-        /// Converts an FXCM order to a QuantConnect order.
+         * Converts an FXCM order to a QuantConnect order.
         */
-         * @param fxcmOrder">The FXCM order
+         * @param fxcmOrder The FXCM order
         private Order ConvertOrder(ExecutionReport fxcmOrder) {
             Order order;
 
@@ -74,7 +74,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Converts an FXCM order duration to QuantConnect order duration
+         * Converts an FXCM order duration to QuantConnect order duration
         */
         private static OrderDuration ConvertDuration(ITimeInForce timeInForce) {
             if( timeInForce == TimeInForceFactory.GOOD_TILL_CANCEL)
@@ -87,9 +87,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Converts an FXCM position to a QuantConnect holding.
+         * Converts an FXCM position to a QuantConnect holding.
         */
-         * @param fxcmPosition">The FXCM position
+         * @param fxcmPosition The FXCM position
         private Holding ConvertHolding(PositionReport fxcmPosition) {
             securityType = _symbolMapper.GetBrokerageSecurityType(fxcmPosition.getInstrument().getSymbol());
 
@@ -107,7 +107,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Converts an FXCM OrderStatus to a QuantConnect <see cref="OrderStatus"/>
+         * Converts an FXCM OrderStatus to a QuantConnect <see cref="OrderStatus"/>
         */
          * @param status">
         @returns 
@@ -139,14 +139,14 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Returns true if the specified order is considered open, otherwise false
+         * Returns true if the specified order is considered open, otherwise false
         */
         private static boolean OrderIsOpen( String orderStatus) {
             return orderStatus == IFixValueDefs.__Fields.FXCMORDSTATUS_WAITING;
         }
 
         /**
-        /// Returns true if the specified order is considered close, otherwise false
+         * Returns true if the specified order is considered close, otherwise false
         */
         protected static boolean OrderIsClosed( String orderStatus) {
             return orderStatus == IFixValueDefs.__Fields.FXCMORDSTATUS_EXECUTED
@@ -156,16 +156,16 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Returns true if the specified order is being processed, otherwise false
+         * Returns true if the specified order is being processed, otherwise false
         */
         private static boolean OrderIsBeingProcessed( String orderStatus) {
             return !OrderIsOpen(orderStatus) && !OrderIsClosed(orderStatus);
         }
 
         /**
-        /// Converts a Java Date value to a DateTime value
+         * Converts a Java Date value to a DateTime value
         */
-         * @param javaDate">The Java date
+         * @param javaDate The Java date
         @returns 
         private static DateTime FromJavaDate(java.util.Date javaDate) {
             if( _configTimeZone == null ) {

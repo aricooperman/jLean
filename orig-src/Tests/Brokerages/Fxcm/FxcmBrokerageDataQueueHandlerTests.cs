@@ -35,7 +35,7 @@ package com.quantconnect.lean.Tests.Brokerages.Fxcm
 
             for (i = 0; i < 10; i++) {
                 foreach (tick in brokerage.GetNextTicks()) {
-                    Log.Trace( "%1$s: %2$s - %3$s / {3}", tick.Time, tick.Symbol, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
+                    Log.Trace( "%1$s: %2$s - %3$s / %4$s", tick.Time, tick.Symbol, ((Tick)tick).BidPrice, ((Tick)tick).AskPrice);
                 }
             }
         }

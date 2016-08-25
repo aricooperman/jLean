@@ -22,29 +22,29 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Interfaces
 {
     /**
-    /// Task requestor interface with cloud system
+     * Task requestor interface with cloud system
     */
     [InheritedExport(typeof(IDataQueueHandler))]
     public interface IDataQueueHandler
     {
         /**
-        /// Get the next ticks from the live trading data queue
+         * Get the next ticks from the live trading data queue
         */
         @returns IEnumerable list of ticks since the last update.
         IEnumerable<BaseData> GetNextTicks();
 
         /**
-        /// Adds the specified symbols to the subscription
+         * Adds the specified symbols to the subscription
         */
-         * @param job">Job we're subscribing for:
-         * @param symbols">The symbols to be added keyed by SecurityType
+         * @param job Job we're subscribing for:
+         * @param symbols The symbols to be added keyed by SecurityType
         void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols);
 
         /**
-        /// Removes the specified symbols to the subscription
+         * Removes the specified symbols to the subscription
         */
-         * @param job">Job we're processing.
-         * @param symbols">The symbols to be removed keyed by SecurityType
+         * @param job Job we're processing.
+         * @param symbols The symbols to be removed keyed by SecurityType
         void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols);
     }
 }

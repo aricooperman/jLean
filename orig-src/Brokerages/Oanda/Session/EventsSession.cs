@@ -25,7 +25,7 @@ package com.quantconnect.lean.Brokerages.Oanda.Session
 {
 #pragma warning disable 1591
     /**
-    /// Initialise an events sessions for Oanda Brokerage.
+     * Initialise an events sessions for Oanda Brokerage.
     */
     public class EventsSession : StreamSession<Event>
     {

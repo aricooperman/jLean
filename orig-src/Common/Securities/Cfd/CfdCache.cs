@@ -16,10 +16,10 @@
 package com.quantconnect.lean.Securities.Cfd
 {
     /**
-    /// CFD specific caching support
+     * CFD specific caching support
     */
-    /// Class is virtually empty and scheduled to be made obsolete. Potentially could be used for user data storage.
-    /// <seealso cref="SecurityCache"/>
+     * Class is virtually empty and scheduled to be made obsolete. Potentially could be used for user data storage.
+     * <seealso cref="SecurityCache"/>
     public class CfdCache : SecurityCache
     {
     }

@@ -16,44 +16,44 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// Defines the different types of moving averages
+     * Defines the different types of moving averages
     */  
     public enum MovingAverageType
     {
         /**
-        /// An unweighted, arithmetic mean
+         * An unweighted, arithmetic mean
         */
         Simple,
         /**
-        /// The standard exponential moving average, using a smoothing factor of 2/(n+1)
+         * The standard exponential moving average, using a smoothing factor of 2/(n+1)
         */
         Exponential,
         /**
-        /// The standard exponential moving average, using a smoothing factor of 1/n
+         * The standard exponential moving average, using a smoothing factor of 1/n
         */
         Wilders,
         /**
-        /// A weighted moving average type
+         * A weighted moving average type
         */
         LinearWeightedMovingAverage,
         /**
-        /// The double exponential moving average
+         * The double exponential moving average
         */
         DoubleExponential,
         /**
-        /// The triple exponential moving average
+         * The triple exponential moving average
         */
         TripleExponential,
         /**
-        /// The triangular moving average
+         * The triangular moving average
         */
         Triangular,
         /**
-        /// The T3 moving average
+         * The T3 moving average
         */
         T3,
         /**
-        /// The Kaufman Adaptive Moving Average
+         * The Kaufman Adaptive Moving Average
         */
         Kama
     }

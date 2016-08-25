@@ -20,19 +20,19 @@ using QuantConnect.Indicators;
 package com.quantconnect.lean.Algorithm.Examples
 {
     /**
-    /// QuantConnect University: Generic Quandl Data Importer
-    /// Using the underlying dynamic data class "Quandl" we take care of the data 
-    /// importing and definition for you. Simply point QuantConnect to the Quandl Short Code.
-    /// 
-    /// The Quandl object has properties which match the spreadsheet headers.
-    /// If you have multiple quandl streams look at data.Symbol to distinguish them.
+     * QuantConnect University: Generic Quandl Data Importer
+     * Using the underlying dynamic data class "Quandl" we take care of the data 
+     * importing and definition for you. Simply point QuantConnect to the Quandl Short Code.
+     * 
+     * The Quandl object has properties which match the spreadsheet headers.
+     * If you have multiple quandl streams look at data.Symbol to distinguish them.
     */
     public class QuandlImporterAlgorithm : QCAlgorithm
     {
         private SimpleMovingAverage sma;
         String _quandlCode = "YAHOO/INDEX_SPY";
 
-        /// Initialize the data and resolution you require for your strategy:
+         * Initialize the data and resolution you require for your strategy:
         public @Override void Initialize() {
             //Start and End Date range for the backtest:
             SetStartDate(2013, 1, 1);
@@ -47,7 +47,7 @@ package com.quantconnect.lean.Algorithm.Examples
             sma = SMA(_quandlCode, 14);
         }
 
-        /// Data Event Handler: New data arrives here. "TradeBars" type is a dictionary of strings so you can access it by symbol
+         * Data Event Handler: New data arrives here. "TradeBars" type is a dictionary of strings so you can access it by symbol
         public void OnData(Quandl data) {
             if( !Portfolio.HoldStock) {
                 //Order function places trades: enter the String symbol and the quantity you want:

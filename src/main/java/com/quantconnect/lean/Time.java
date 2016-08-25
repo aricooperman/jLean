@@ -116,7 +116,7 @@ public class Time {
 
         /**
          * Gets the time zone.
-         * @return The time zone.</value>
+         * @return The time zone.
          */
         public ZoneId getTimeZone() { 
             return timeZone;
@@ -151,13 +151,13 @@ public class Time {
 
     /**
      * Convert a Datetime to Unix Timestamp
-     * @param time C# datetime object
-     * @returns Double unix timestamp
+     * @param time LocalDateTime object
+     * @returns long unix timestamp
      */
-    public static double dateTimeToUnixTimeStamp( LocalDateTime time) {
+    public static long dateTimeToUnixTimeStamp( LocalDateTime time ) {
         double timestamp = 0;
         try {
-            timestamp = (time - new DateTime(1970, 1, 1, 0, 0, 0, 0)).TotalSeconds;
+            timestamp = (time - new DateTime( 1970, 1, 1, 0, 0, 0, 0 ) ).TotalSeconds;
         } 
         catch (Exception err) {
             LOG.error( time.toString( "o" ), err );
@@ -167,7 +167,7 @@ public class Time {
 
     /**
      * Get the current time as a unix timestamp
-     * @returns Double value of the unix as UTC timestamp
+     * @returns long value of the unix as UTC timestamp
      */
     public static double timeStamp() {
         return dateTimeToUnixTimeStamp( DateTime.UtcNow );
@@ -189,7 +189,7 @@ public class Time {
 
     /**
      * Parse a standard YY MM DD date into a DateTime. Attempt common date formats 
-     * @param dateToParse">String date time to parse
+     * @param dateToParse String date time to parse
      * @returns Date time
      */
     public static DateTime ParseDate( String dateToParse) {
@@ -282,18 +282,18 @@ public class Time {
     }
 
     /**
-    /// Define an enumerable date range of tradeable dates but expressed in a different time zone.
+     * Define an enumerable date range of tradeable dates but expressed in a different time zone.
+     * 
+     * This is mainly used to bridge the gap between exchange time zone and data time zone for file written to disk. The returned
+     * enumerable of dates is gauranteed to be the same size or longer than those generated via <see cref="EachTradeableDay(ICollection{Security},DateTime,DateTime)"/>
+     * 
+     * @param exchange The exchange hours
+     * @param from The start time in the exchange time zone
+     * @param thru The end time in the exchange time zone (inclusive of the final day)
+     * @param timeZone The timezone to project the dates into (inclusive of the final day)
+     * @param includeExtendedMarketHours True to include extended market hours trading in the search, false otherwise
+     * @returns 
     */
-    /// 
-    /// This is mainly used to bridge the gap between exchange time zone and data time zone for file written to disk. The returned
-    /// enumerable of dates is gauranteed to be the same size or longer than those generated via <see cref="EachTradeableDay(ICollection{Security},DateTime,DateTime)"/>
-    /// 
-     * @param exchange">The exchange hours
-     * @param from">The start time in the exchange time zone
-     * @param thru">The end time in the exchange time zone (inclusive of the final day)
-     * @param timeZone">The timezone to project the dates into (inclusive of the final day)
-     * @param includeExtendedMarketHours">True to include extended market hours trading in the search, false otherwise
-    @returns 
     public static IEnumerable<DateTime> EachTradeableDayInTimeZone(SecurityExchangeHours exchange, DateTime from, DateTime thru, ZoneId timeZone, boolean includeExtendedMarketHours = true) {
         currentExchangeTime = from;
         thru = thru.Date.AddDays(1); // we want to include the full thru date
@@ -318,10 +318,10 @@ public class Time {
     } 
 
     /**
-    /// Make sure this date is not a holiday, or weekend for the securities in this algorithm.
+     * Make sure this date is not a holiday, or weekend for the securities in this algorithm.
     */
-     * @param securities">Security manager from the algorithm
-     * @param day">DateTime to check if trade-able.
+     * @param securities Security manager from the algorithm
+     * @param day DateTime to check if trade-able.
     @returns True if tradeable date
     public static boolean TradableDate(IEnumerable<Security> securities, DateTime day) {
         try
@@ -338,11 +338,11 @@ public class Time {
 
 
     /**
-    /// Could of the number of tradeable dates within this period.
+     * Could of the number of tradeable dates within this period.
     */
-     * @param securities">Securities we're trading
-     * @param start">Start of Date Loop
-     * @param finish">End of Date Loop
+     * @param securities Securities we're trading
+     * @param start Start of Date Loop
+     * @param finish End of Date Loop
     @returns Number of dates
     public static int TradeableDates(ICollection<Security> securities, DateTime start, DateTime finish) {
         count = 0;
@@ -362,17 +362,17 @@ public class Time {
     }
 
     /**
-    /// Determines the start time required to produce the requested number of bars and the given size
+     * Determines the start time required to produce the requested number of bars and the given size
     */
-     * @param exchange">The exchange used to test for market open hours
-     * @param end">The end time of the last bar over the requested period
-     * @param barSize">The length of each bar
-     * @param barCount">The number of bars requested
-     * @param extendedMarketHours">True to allow extended market hours bars, otherwise false for only normal market hours
+     * @param exchange The exchange used to test for market open hours
+     * @param end The end time of the last bar over the requested period
+     * @param barSize The length of each bar
+     * @param barCount The number of bars requested
+     * @param extendedMarketHours True to allow extended market hours bars, otherwise false for only normal market hours
     @returns The start time that would provide the specified number of bars ending at the specified end time, rounded down by the requested bar size
     public static DateTime GetStartTimeForTradeBars(SecurityExchangeHours exchange, DateTime end, Duration barSize, int barCount, boolean extendedMarketHours) {
         if( barSize <= Duration.ZERO) {
-            throw new ArgumentException( "barSize must be greater than Duration.ZERO", "barSize");
+            throw new IllegalArgumentException( "barSize must be greater than Duration.ZERO", "barSize");
         }
 
         current = end.RoundDown(barSize);

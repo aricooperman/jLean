@@ -18,7 +18,7 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Indicators
 {
     /**
-    ///     Represents an indicator that acts on a rolling window of data
+     *     Represents an indicator that acts on a rolling window of data
     */
     public abstract class WindowIndicator<T> : IndicatorBase<T>
         where T : BaseData
@@ -27,7 +27,7 @@ package com.quantconnect.lean.Indicators
         private final RollingWindow<T> _window;
 
         /**
-        /// Gets the period of this window indicator
+         * Gets the period of this window indicator
         */
         public int Period
         {
@@ -35,17 +35,17 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        ///     Initializes a new instance of the WindowIndicator class
+         *     Initializes a new instance of the WindowIndicator class
         */
-         * @param name">The name of this indicator
-         * @param period">The number of data points to hold in the window
+         * @param name The name of this indicator
+         * @param period The number of data points to hold in the window
         protected WindowIndicator( String name, int period)
             : base(name) {
             _window = new RollingWindow<T>(period);
         }
 
         /**
-        ///     Gets a flag indicating when this indicator is ready and fully initialized
+         *     Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -53,9 +53,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        ///     Computes the next value of this indicator from the given state
+         *     Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(T input) {
             _window.Add(input);
@@ -63,7 +63,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        ///     Resets this indicator to its initial state
+         *     Resets this indicator to its initial state
         */
         public @Override void Reset() {
             base.Reset();
@@ -71,10 +71,10 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        ///     Computes the next value for this indicator from the given state.
+         *     Computes the next value for this indicator from the given state.
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input value to this indicator on this time step
+         * @param window The window of data held in this indicator
+         * @param input The input value to this indicator on this time step
         @returns A new value for this indicator
         protected abstract BigDecimal ComputeNextValue(IReadOnlyWindow<T> window, T input);
     }

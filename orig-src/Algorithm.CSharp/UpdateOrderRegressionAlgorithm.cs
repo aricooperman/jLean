@@ -25,7 +25,7 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// Provides a regression baseline focused on updating orders
+     * Provides a regression baseline focused on updating orders
     */
     public class UpdateOrderRegressionAlgorithm : QCAlgorithm
     {
@@ -46,7 +46,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         private final List<OrderTicket> _tickets = new List<OrderTicket>(); 
 
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             SetStartDate(2013, 01, 01);  //Set Start Date
@@ -64,9 +64,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">Slice object keyed by symbol containing the stock data
+         * @param data Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             if( !data.Bars.ContainsKey(Symbol)) return;
 

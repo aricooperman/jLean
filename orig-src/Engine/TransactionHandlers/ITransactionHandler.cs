@@ -24,15 +24,15 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Lean.Engine.TransactionHandlers
 {
     /**
-    /// Transaction handlers define how the transactions are processed and set the order fill information.
-    /// The pass this information back to the algorithm portfolio and ensure the cash and portfolio are synchronized.
+     * Transaction handlers define how the transactions are processed and set the order fill information.
+     * The pass this information back to the algorithm portfolio and ensure the cash and portfolio are synchronized.
     */
     [InheritedExport(typeof(ITransactionHandler))]
     public interface ITransactionHandler : IOrderProcessor
     {
         /**
-        /// Boolean flag indicating the thread is busy. 
-        /// False indicates it is completely finished processing and ready to be terminated.
+         * Boolean flag indicating the thread is busy. 
+         * False indicates it is completely finished processing and ready to be terminated.
         */
         boolean IsActive
         {
@@ -40,7 +40,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Gets the permanent storage for all orders
+         * Gets the permanent storage for all orders
         */
         ConcurrentMap<Integer, Order> Orders
         {
@@ -48,22 +48,22 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
         }
 
         /**
-        /// Initializes the transaction handler for the specified algorithm using the specified brokerage implementation
+         * Initializes the transaction handler for the specified algorithm using the specified brokerage implementation
         */
         void Initialize(IAlgorithm algorithm, IBrokerage brokerage, IResultHandler resultHandler);
 
         /**
-        /// Primary thread entry point to launch the transaction thread.
+         * Primary thread entry point to launch the transaction thread.
         */
         void Run();
 
         /**
-        /// Signal a end of thread request to stop montioring the transactions.
+         * Signal a end of thread request to stop montioring the transactions.
         */
         void Exit();
 
         /**
-        /// Process any synchronous events from the primary algorithm thread.
+         * Process any synchronous events from the primary algorithm thread.
         */
         void ProcessSynchronousEvents();
     }

@@ -22,7 +22,7 @@ package com.quantconnect.lean.ToolBox.CryptoiqDownloader
     class Program
     {
         /**
-        /// Cryptoiq Downloader Toolbox Project For LEAN Algorithmic Trading Engine.
+         * Cryptoiq Downloader Toolbox Project For LEAN Algorithmic Trading Engine.
         */
         static void Main( String[] args) {
             if( args.Length == 3) {

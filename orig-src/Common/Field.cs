@@ -20,12 +20,12 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean
 {
     /**
-    /// Provides static properties to be used as selectors with the indicator system
+     * Provides static properties to be used as selectors with the indicator system
     */
     public static partial class Field
     {
         /**
-        /// Gets a selector that selects the Open value
+         * Gets a selector that selects the Open value
         */
         public static Func<BaseData, decimal> Open
         {
@@ -33,7 +33,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Gets a selector that selects the High value
+         * Gets a selector that selects the High value
         */
         public static Func<BaseData, decimal> High
         {
@@ -41,7 +41,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Gets a selector that selects the Low value
+         * Gets a selector that selects the Low value
         */
         public static Func<BaseData, decimal> Low
         {
@@ -49,7 +49,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Gets a selector that selects the Close value
+         * Gets a selector that selects the Close value
         */
         public static Func<BaseData, decimal> Close
         {
@@ -57,7 +57,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Defines an average price that is equal to (O + H + L + C) / 4
+         * Defines an average price that is equal to (O + H + L + C) / 4
         */
         public static Func<BaseData, decimal> Average
         {
@@ -65,7 +65,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Defines an average price that is equal to (H + L) / 2
+         * Defines an average price that is equal to (H + L) / 2
         */
         public static Func<BaseData, decimal> Median
         {
@@ -73,7 +73,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Defines an average price that is equal to (H + L + C) / 3
+         * Defines an average price that is equal to (H + L + C) / 3
         */
         public static Func<BaseData, decimal> Typical
         {
@@ -81,7 +81,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Defines an average price that is equal to (H + L + 2*C) / 4
+         * Defines an average price that is equal to (H + L + 2*C) / 4
         */
         public static Func<BaseData, decimal> Weighted
         {
@@ -89,7 +89,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Defines an average price that is equal to (2*O + H + L + 3*C)/7
+         * Defines an average price that is equal to (2*O + H + L + 3*C)/7
         */
         public static Func<BaseData, decimal> SevenBar
         {
@@ -97,11 +97,11 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Gets a selector that selectors the Volume value
+         * Gets a selector that selectors the Volume value
         */
         public static Func<BaseData, decimal> Volume
         {
-            get { return TradeBarPropertyOrValue(x -> x.Volume, x -> 0m); }
+            get { return TradeBarPropertyOrValue(x -> x.Volume, x -> BigDecimal.ZERO); }
         }
 
         private static Func<BaseData, decimal> TradeBarPropertyOrValue(Func<TradeBar, decimal> selector, Func<BaseData, decimal> defaultSelector = null ) {

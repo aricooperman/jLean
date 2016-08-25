@@ -29,14 +29,14 @@ using QuantConnect.Statistics;
 package com.quantconnect.lean.Interfaces
 {
     /**
-    /// Interface for QuantConnect algorithm implementations. All algorithms must implement these
-    /// basic members to allow interaction with the Lean Backtesting Engine.
+     * Interface for QuantConnect algorithm implementations. All algorithms must implement these
+     * basic members to allow interaction with the Lean Backtesting Engine.
     */
     public interface IAlgorithm
     {
         /**
-        /// Data subscription manager controls the information and subscriptions the algorithms recieves.
-        /// Subscription configurations can be added through the Subscription Manager.
+         * Data subscription manager controls the information and subscriptions the algorithms recieves.
+         * Subscription configurations can be added through the Subscription Manager.
         */
         SubscriptionManager SubscriptionManager
         {
@@ -44,17 +44,17 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Security object collection class stores an array of objects representing representing each security/asset
-        /// we have a subscription for.
+         * Security object collection class stores an array of objects representing representing each security/asset
+         * we have a subscription for.
         */
-        /// It is an IDictionary implementation and can be indexed by symbol
+         * It is an IDictionary implementation and can be indexed by symbol
         SecurityManager Securities
         {
             get;
         }
 
         /**
-        /// Gets the collection of universes for the algorithm
+         * Gets the collection of universes for the algorithm
         */
         UniverseManager UniverseManager
         {
@@ -62,26 +62,26 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Security portfolio management class provides wrapper and helper methods for the Security.Holdings class such as
-        /// IsLong, IsShort, TotalProfit
+         * Security portfolio management class provides wrapper and helper methods for the Security.Holdings class such as
+         * IsLong, IsShort, TotalProfit
         */
-        /// Portfolio is a wrapper and helper class encapsulating the Securities[].Holdings objects
+         * Portfolio is a wrapper and helper class encapsulating the Securities[].Holdings objects
         SecurityPortfolioManager Portfolio
         {
             get;
         }
 
         /**
-        /// Security transaction manager class controls the store and processing of orders.
+         * Security transaction manager class controls the store and processing of orders.
         */
-        /// The orders and their associated events are accessible here. When a new OrderEvent is recieved the algorithm portfolio is updated.
+         * The orders and their associated events are accessible here. When a new OrderEvent is recieved the algorithm portfolio is updated.
         SecurityTransactionManager Transactions
         {
             get;
         }
 
         /**
-        /// Gets the brokerage model used to emulate a real brokerage
+         * Gets the brokerage model used to emulate a real brokerage
         */
         IBrokerageModel BrokerageModel
         {
@@ -89,8 +89,8 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Gets the brokerage message handler used to decide what to do
-        /// with each message sent from the brokerage
+         * Gets the brokerage message handler used to decide what to do
+         * with each message sent from the brokerage
         */
         IBrokerageMessageHandler BrokerageMessageHandler
         {
@@ -99,7 +99,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Notification manager for storing and processing live event messages
+         * Notification manager for storing and processing live event messages
         */
         NotificationManager Notify
         {
@@ -107,7 +107,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Gets schedule manager for adding/removing scheduled events
+         * Gets schedule manager for adding/removing scheduled events
         */
         ScheduleManager Schedule
         {
@@ -115,7 +115,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Gets or sets the history provider for the algorithm
+         * Gets or sets the history provider for the algorithm
         */
         IHistoryProvider HistoryProvider
         {
@@ -124,7 +124,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Gets or sets the current status of the algorithm
+         * Gets or sets the current status of the algorithm
         */
         AlgorithmStatus Status
         {
@@ -133,7 +133,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Gets whether or not this algorithm is still warming up
+         * Gets whether or not this algorithm is still warming up
         */
         boolean IsWarmingUp
         {
@@ -141,16 +141,16 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Public name for the algorithm.
+         * Public name for the algorithm.
         */
-        /// Not currently used but preserved for API integrity
+         * Not currently used but preserved for API integrity
         String Name
         {
             get;
         }
 
         /**
-        /// Current date/time in the algorithm's local time zone
+         * Current date/time in the algorithm's local time zone
         */
         DateTime Time
         {
@@ -158,7 +158,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Gets the time zone of the algorithm
+         * Gets the time zone of the algorithm
         */
         ZoneId TimeZone
         {
@@ -166,7 +166,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Current date/time in UTC.
+         * Current date/time in UTC.
         */
         DateTime UtcTime
         {
@@ -174,7 +174,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Algorithm start date for backtesting, set by the SetStartDate methods.
+         * Algorithm start date for backtesting, set by the SetStartDate methods.
         */
         DateTime StartDate
         {
@@ -182,7 +182,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Get Requested Backtest End Date
+         * Get Requested Backtest End Date
         */
         DateTime EndDate
         {
@@ -190,7 +190,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// AlgorithmId for the backtest
+         * AlgorithmId for the backtest
         */
         String AlgorithmId
         {
@@ -198,7 +198,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Algorithm is running on a live server.
+         * Algorithm is running on a live server.
         */
         boolean LiveMode
         {
@@ -206,7 +206,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Gets the subscription settings to be used when adding securities via universe selection
+         * Gets the subscription settings to be used when adding securities via universe selection
         */
         UniverseSettings UniverseSettings
         {
@@ -214,7 +214,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Debug messages from the strategy:
+         * Debug messages from the strategy:
         */
         List<String> DebugMessages
         {
@@ -222,7 +222,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Error messages from the strategy:
+         * Error messages from the strategy:
         */
         List<String> ErrorMessages
         {
@@ -230,7 +230,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Log messages from the strategy:
+         * Log messages from the strategy:
         */
         List<String> LogMessages
         {
@@ -238,7 +238,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Gets the run time error from the algorithm, or null if none was encountered.
+         * Gets the run time error from the algorithm, or null if none was encountered.
         */
         Exception RunTimeError
         {
@@ -247,7 +247,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Customizable dynamic statistics displayed during live trading:
+         * Customizable dynamic statistics displayed during live trading:
         */
         Map<String,String> RuntimeStatistics
         {
@@ -255,8 +255,8 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Gets the function used to define the benchmark. This function will return
-        /// the value of the benchmark at a requested date/time
+         * Gets the function used to define the benchmark. This function will return
+         * the value of the benchmark at a requested date/time
         */
         IBenchmark Benchmark
         { 
@@ -264,7 +264,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Gets an instance that is to be used to initialize newly created securities.
+         * Gets an instance that is to be used to initialize newly created securities.
         */
         ISecurityInitializer SecurityInitializer
         {
@@ -272,7 +272,7 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Gets the Trade Builder to generate trades from executions
+         * Gets the Trade Builder to generate trades from executions
         */
         TradeBuilder TradeBuilder
         {
@@ -280,48 +280,48 @@ package com.quantconnect.lean.Interfaces
         }
 
         /**
-        /// Initialise the Algorithm and Prepare Required Data:
+         * Initialise the Algorithm and Prepare Required Data:
         */
         void Initialize();
 
         /**
-        /// Called by setup handlers after Initialize and allows the algorithm a chance to organize
-        /// the data gather in the Initialize method
+         * Called by setup handlers after Initialize and allows the algorithm a chance to organize
+         * the data gather in the Initialize method
         */
         void PostInitialize();
 
         /**
-        /// Gets the parameter with the specified name. If a parameter
-        /// with the specified name does not exist, null is returned
+         * Gets the parameter with the specified name. If a parameter
+         * with the specified name does not exist, null is returned
         */
-         * @param name">The name of the parameter to get
+         * @param name The name of the parameter to get
         @returns The value of the specified parameter, or null if not found
         String GetParameter( String name);
 
         /**
-        /// Sets the parameters from the dictionary
+         * Sets the parameters from the dictionary
         */
-         * @param parameters">Dictionary containing the parameter names to values
+         * @param parameters Dictionary containing the parameter names to values
         void SetParameters(Map<String,String> parameters);
 
         /**
-        /// Sets the brokerage model used to resolve transaction models, settlement models,
-        /// and brokerage specified ordering behaviors.
+         * Sets the brokerage model used to resolve transaction models, settlement models,
+         * and brokerage specified ordering behaviors.
         */
-         * @param brokerageModel">The brokerage model used to emulate the real
-        /// brokerage
+         * @param brokerageModel The brokerage model used to emulate the real
+         * brokerage
         void SetBrokerageModel(IBrokerageModel brokerageModel);
 
         // <summary>
         // v1.0 Handler for Tick Events [DEPRECATED June-2014]
         // </summary>
-        // <param name="ticks">Tick Data Packet
+        // <param name="ticks Tick Data Packet
         //void OnTick(Map<String, List<Tick>> ticks);
 
         // <summary>
         // v1.0 Handler for TradeBar Events [DEPRECATED June-2014]
         // </summary>
-        // <param name="tradebars">TradeBar Data Packet
+        // <param name="tradebars TradeBar Data Packet
         //void OnTradeBar(Map<String, TradeBar> tradebars);
 
         // <summary>
@@ -331,166 +331,166 @@ package com.quantconnect.lean.Interfaces
         //void OnData(TradeBars tradebars);
 
         /**
-        /// v3.0 Handler for all data types
+         * v3.0 Handler for all data types
         */
-         * @param slice">The current slice of data
+         * @param slice The current slice of data
         void OnData(Slice slice);
 
         /**
-        /// Event fired each time the we add/remove securities from the data feed
+         * Event fired each time the we add/remove securities from the data feed
         */
          * @param changes">
         void OnSecuritiesChanged(SecurityChanges changes);
 
         /**
-        /// Send debug message
+         * Send debug message
         */
          * @param message">
         void Debug( String message);
 
         /**
-        /// Save entry to the Log
+         * Save entry to the Log
         */
-         * @param message">String message
+         * @param message String message
         void Log( String message);
 
         /**
-        /// Send an error message for the algorithm
+         * Send an error message for the algorithm
         */
-         * @param message">String message
+         * @param message String message
         void Error( String message);
 
         /**
-        /// Margin call event handler. This method is called right before the margin call orders are placed in the market.
+         * Margin call event handler. This method is called right before the margin call orders are placed in the market.
         */
-         * @param requests">The orders to be executed to bring this algorithm within margin limits
+         * @param requests The orders to be executed to bring this algorithm within margin limits
         void OnMarginCall(List<SubmitOrderRequest> requests);
 
         /**
-        /// Margin call warning event handler. This method is called when Portoflio.MarginRemaining is under 5% of your Portfolio.TotalPortfolioValue
+         * Margin call warning event handler. This method is called when Portoflio.MarginRemaining is under 5% of your Portfolio.TotalPortfolioValue
         */
         void OnMarginCallWarning();
 
         /**
-        /// Call this method at the end of each day of data.
+         * Call this method at the end of each day of data.
         */
         void OnEndOfDay();
 
         /**
-        /// Call this method at the end of each day of data.
+         * Call this method at the end of each day of data.
         */
         void OnEndOfDay(Symbol symbol);
 
         /**
-        /// Call this event at the end of the algorithm running.
+         * Call this event at the end of the algorithm running.
         */
         void OnEndOfAlgorithm();
 
         /**
-        /// EXPERTS ONLY:: [-!-Async Code-!-]
-        /// New order event handler: on order status changes (filled, partially filled, cancelled etc).
+         * EXPERTS ONLY:: [-!-Async Code-!-]
+         * New order event handler: on order status changes (filled, partially filled, cancelled etc).
         */
-         * @param newEvent">Event information
+         * @param newEvent Event information
         void OnOrderEvent(OrderEvent newEvent);
 
         /**
-        /// Brokerage message event handler. This method is called for all types of brokerage messages.
+         * Brokerage message event handler. This method is called for all types of brokerage messages.
         */
         void OnBrokerageMessage(BrokerageMessageEvent messageEvent);
 
         /**
-        /// Brokerage disconnected event handler. This method is called when the brokerage connection is lost.
+         * Brokerage disconnected event handler. This method is called when the brokerage connection is lost.
         */
         void OnBrokerageDisconnect();
 
         /**
-        /// Brokerage reconnected event handler. This method is called when the brokerage connection is restored after a disconnection.
+         * Brokerage reconnected event handler. This method is called when the brokerage connection is restored after a disconnection.
         */
         void OnBrokerageReconnect();
 
         /**
-        /// Set the DateTime Frontier: This is the master time and is
+         * Set the DateTime Frontier: This is the master time and is
         */
          * @param time">
         void SetDateTime(DateTime time);
 
         /**
-        /// Set the algorithm Id for this backtest or live run. This can be used to identify the order and equity records.
+         * Set the algorithm Id for this backtest or live run. This can be used to identify the order and equity records.
         */
-         * @param algorithmId">unique 32 character identifier for backtest or live server
+         * @param algorithmId unique 32 character identifier for backtest or live server
         void SetAlgorithmId( String algorithmId);
 
         /**
-        /// Set the algorithm as initialized and locked. No more cash or security changes.
+         * Set the algorithm as initialized and locked. No more cash or security changes.
         */
         void SetLocked();
 
         /**
-        /// Gets whether or not this algorithm has been locked and fully initialized
+         * Gets whether or not this algorithm has been locked and fully initialized
         */
         boolean GetLocked();
 
         /**
-        /// Get the chart updates since the last request:
+         * Get the chart updates since the last request:
         */
          * @param clearChartData">
         @returns List of Chart Updates
         List<Chart> GetChartUpdates( boolean clearChartData = false);
 
         /**
-        /// Set a required SecurityType-symbol and resolution for algorithm
+         * Set a required SecurityType-symbol and resolution for algorithm
         */
-         * @param securityType">SecurityType Enum: Equity, Commodity, FOREX or Future
-         * @param symbol">Symbol Representation of the MarketType, e.g. AAPL
-         * @param resolution">Resolution of the MarketType required: MarketData, Second or Minute
-         * @param market">The market the requested security belongs to, such as 'usa' or 'fxcm'
-         * @param fillDataForward">If true, returns the last available data even if none in that timeslice.
-         * @param leverage">leverage for this security
-         * @param extendedMarketHours">ExtendedMarketHours send in data from 4am - 8pm, not used for FOREX
+         * @param securityType SecurityType Enum: Equity, Commodity, FOREX or Future
+         * @param symbol Symbol Representation of the MarketType, e.g. AAPL
+         * @param resolution Resolution of the MarketType required: MarketData, Second or Minute
+         * @param market The market the requested security belongs to, such as 'usa' or 'fxcm'
+         * @param fillDataForward If true, returns the last available data even if none in that timeslice.
+         * @param leverage leverage for this security
+         * @param extendedMarketHours ExtendedMarketHours send in data from 4am - 8pm, not used for FOREX
         Security AddSecurity(SecurityType securityType, String symbol, Resolution resolution, String market, boolean fillDataForward, BigDecimal leverage, boolean extendedMarketHours);
 
         /**
-        /// Set the starting capital for the strategy
+         * Set the starting capital for the strategy
         */
-         * @param startingCash">decimal starting capital, default $100,000
+         * @param startingCash decimal starting capital, default $100,000
         void SetCash( BigDecimal startingCash);
 
         /**
-        /// Set the cash for the specified symbol
+         * Set the cash for the specified symbol
         */
-         * @param symbol">The cash symbol to set
-         * @param startingCash">Decimal cash value of portfolio
-         * @param conversionRate">The current conversion rate for the
+         * @param symbol The cash symbol to set
+         * @param startingCash Decimal cash value of portfolio
+         * @param conversionRate The current conversion rate for the
         void SetCash( String symbol, BigDecimal startingCash, BigDecimal conversionRate);
 
         /**
-        /// Liquidate your portfolio holdings:
+         * Liquidate your portfolio holdings:
         */
-         * @param symbolToLiquidate">Specific asset to liquidate, defaults to all.
+         * @param symbolToLiquidate Specific asset to liquidate, defaults to all.
         @returns list of order ids
         List<Integer> Liquidate(Symbol symbolToLiquidate = null );
 
         /**
-        /// Set live mode state of the algorithm run: Public setter for the algorithm property LiveMode.
+         * Set live mode state of the algorithm run: Public setter for the algorithm property LiveMode.
         */
-         * @param live">Bool live mode flag
+         * @param live Bool live mode flag
         void SetLiveMode( boolean live);
 
         /**
-        /// Sets <see cref="IsWarmingUp"/> to false to indicate this algorithm has finished its warm up
+         * Sets <see cref="IsWarmingUp"/> to false to indicate this algorithm has finished its warm up
         */
         void SetFinishedWarmingUp();
 
         /**
-        /// Gets the date/time warmup should begin
+         * Gets the date/time warmup should begin
         */
         @returns 
         IEnumerable<HistoryRequest> GetWarmupHistoryRequests();
 
         /**
-        /// Set the maximum number of orders the algortihm is allowed to process.
+         * Set the maximum number of orders the algortihm is allowed to process.
         */
-         * @param max">Maximum order count int
+         * @param max Maximum order count int
         void SetMaximumOrders(int max);
     }
 }

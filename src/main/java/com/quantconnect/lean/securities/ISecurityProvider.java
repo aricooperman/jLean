@@ -26,15 +26,15 @@ import com.quantconnect.lean.securities.Security;
 public interface ISecurityProvider {
     /**
      * Retrieves a summary of the holdings for the specified symbol
-     * @param symbol">The symbol to get holdings for
+     * @param symbol The symbol to get holdings for
      * @returns The holdings for the symbol or null if the symbol is invalid and/or not in the portfolio
      */
     Security getSecurity( Symbol symbol );
 
     /**
      * Extension method to return the quantity of holdings, if no holdings are present, then zero is returned.
-     * @param provider">The <see cref="ISecurityProvider"/>
-     * @param symbol">The symbol we want holdings quantity for
+     * @param provider The <see cref="ISecurityProvider"/>
+     * @param symbol The symbol we want holdings quantity for
      * @returns The quantity of holdings for the specified symbol
      */
     default BigDecimal getHoldingsQuantity( Symbol symbol ) {

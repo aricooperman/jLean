@@ -24,33 +24,33 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     /**
-    /// Provides an implementation of <see cref="IDataQueueHandler"/> that can be specified
-    /// via a function
+     * Provides an implementation of <see cref="IDataQueueHandler"/> that can be specified
+     * via a function
     */
     public class FuncDataQueueHandler : IDataQueueHandler
     {
-        private final object _lock = new object();
+        private final object _synchronized= new object();
         private final HashSet<Symbol> _subscriptions = new HashSet<Symbol>();
         private final Func<FuncDataQueueHandler, IEnumerable<BaseData>> _getNextTicksFunction;
 
         /**
-        /// Gets the subscriptions currently being managed by the queue handler
+         * Gets the subscriptions currently being managed by the queue handler
         */
         public List<Symbol> Subscriptions
         {
-            get { lock (_lock) return _subscriptions.ToList(); }
+            get { synchronized(_lock) return _subscriptions.ToList(); }
         }
 
         /**
-        /// Initializes a new instance of the <see cref="FuncDataQueueHandler"/> class
+         * Initializes a new instance of the <see cref="FuncDataQueueHandler"/> class
         */
-         * @param getNextTicksFunction">The functional implementation for the <see cref="GetNextTicks"/> function
+         * @param getNextTicksFunction The functional implementation for the <see cref="GetNextTicks"/> function
         public FuncDataQueueHandler(Func<FuncDataQueueHandler, IEnumerable<BaseData>> getNextTicksFunction) {
             _getNextTicksFunction = getNextTicksFunction;
         }
 
         /**
-        /// Get the next ticks from the live trading data queue
+         * Get the next ticks from the live trading data queue
         */
         @returns IEnumerable list of ticks since the last update.
         public IEnumerable<BaseData> GetNextTicks() {
@@ -58,24 +58,24 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
         }
 
         /**
-        /// Adds the specified symbols to the subscription
+         * Adds the specified symbols to the subscription
         */
-         * @param job">Job we're subscribing for:
-         * @param symbols">The symbols to be added keyed by SecurityType
+         * @param job Job we're subscribing for:
+         * @param symbols The symbols to be added keyed by SecurityType
         public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             foreach (symbol in symbols) {
-                lock (_lock) _subscriptions.Add(symbol);
+                synchronized(_lock) _subscriptions.Add(symbol);
             }
         }
 
         /**
-        /// Removes the specified symbols to the subscription
+         * Removes the specified symbols to the subscription
         */
-         * @param job">Job we're processing.
-         * @param symbols">The symbols to be removed keyed by SecurityType
+         * @param job Job we're processing.
+         * @param symbols The symbols to be removed keyed by SecurityType
         public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
             foreach (symbol in symbols) {
-                lock (_lock) _subscriptions.Remove(symbol);
+                synchronized(_lock) _subscriptions.Remove(symbol);
             }
         }
     }

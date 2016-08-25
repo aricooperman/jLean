@@ -79,7 +79,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
         }
 
 
-        protected virtual void OnTextLineEvent(TextLineEventArgs e) {
+        protected void OnTextLineEvent(TextLineEventArgs e) {
             if( TextLineEvent != null ) TextLineEvent(this, e);
         }
 

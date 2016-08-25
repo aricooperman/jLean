@@ -17,18 +17,18 @@ package com.quantconnect.lean.data.market;
 
 import java.math.BigDecimal;
 
-/// Generic bar interface with Open, High, Low and Close.
+ * Generic bar interface with Open, High, Low and Close.
 public interface IBar {
 
-    /// Opening price of the bar: Defined as the price at the start of the time period.
+     * Opening price of the bar: Defined as the price at the start of the time period.
     BigDecimal getOpen();
 
-    /// High price of the bar during the time period.
+     * High price of the bar during the time period.
     BigDecimal getHigh();
 
-    /// Low price of the bar during the time period.
+     * Low price of the bar during the time period.
     BigDecimal getLow();
     
-    /// Closing price of the bar. Defined as the price at Start Time + TimeSpan.
+     * Closing price of the bar. Defined as the price at Start Time + TimeSpan.
     BigDecimal getClose();
 }

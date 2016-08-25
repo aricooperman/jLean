@@ -19,19 +19,19 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Securities.Option
 {
     /**
-    /// Defines a model used to calculate the theoretical price of an option contract.
+     * Defines a model used to calculate the theoretical price of an option contract.
     */
     public interface IOptionPriceModel
     {
         /**
-        /// Evaluates the specified option contract to compute a theoretical price and greeks
+         * Evaluates the specified option contract to compute a theoretical price and greeks
         */
-         * @param security">The option security object
-         * @param slice">The current data slice. This can be used to access other information
-        /// available to the algorithm
-         * @param contract">The option contract to evaluate
+         * @param security The option security object
+         * @param slice The current data slice. This can be used to access other information
+         * available to the algorithm
+         * @param contract The option contract to evaluate
         @returns An instance of <see cref="OptionPriceModelResult"/> containing the theoretical
-        /// price of the specified option contract
+         * price of the specified option contract
         OptionPriceModelResult Evaluate(Security security, Slice slice, OptionContract contract);
     }
 }

@@ -16,32 +16,32 @@
 package com.quantconnect.lean.Brokerages
 {
     /**
-    /// Specifices what transaction model and submit/execution rules to use
+     * Specifices what transaction model and submit/execution rules to use
     */
     public enum BrokerageName
     {
         /**
-        /// Transaction and submit/execution rules will be the default as initialized
+         * Transaction and submit/execution rules will be the default as initialized
         */
         Default,
 
         /**
-        /// Transaction and submit/execution rules will use interactive brokers models
+         * Transaction and submit/execution rules will use interactive brokers models
         */
         InteractiveBrokersBrokerage,
 
         /**
-        /// Transaction and submit/execution rules will use tradier models
+         * Transaction and submit/execution rules will use tradier models
         */
         TradierBrokerage,
 
         /**
-        /// Transaction and submit/execution rules will use oanda models
+         * Transaction and submit/execution rules will use oanda models
         */
         OandaBrokerage,
 
         /**
-        /// Transaction and submit/execution rules will use fxcm models
+         * Transaction and submit/execution rules will use fxcm models
         */
         FxcmBrokerage
     }

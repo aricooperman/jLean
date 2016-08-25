@@ -22,15 +22,15 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// Showcases the delisting event of QCAlgorithm
+     * Showcases the delisting event of QCAlgorithm
     */
-    /// 
-    /// The data for this algorithm isn't in the github repo, so this will need to be run on the QC site
-    /// 
+     * 
+     * The data for this algorithm isn't in the github repo, so this will need to be run on the QC site
+     * 
     public class DelistingEventsAlgorithm : QCAlgorithm
     {
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             SetStartDate(2007, 05, 16);  //Set Start Date
@@ -42,9 +42,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">Slice object keyed by symbol containing the stock data
+         * @param data Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             if( Transactions.OrdersCount == 0) {
                 SetHoldings( "AAA", 1);

@@ -18,12 +18,12 @@ using System;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Event arguments for the <see cref="TextSubscriptionDataSourceReader.ReaderError"/> event.
+     * Event arguments for the <see cref="TextSubscriptionDataSourceReader.ReaderError"/> event.
     */
     public sealed class ReaderErrorEventArgs : EventArgs
     {
         /**
-        /// Gets the line that caused the error
+         * Gets the line that caused the error
         */
         public String Line
         {
@@ -31,7 +31,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets the exception that was caught
+         * Gets the exception that was caught
         */
         public Exception Exception
         {
@@ -39,10 +39,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ReaderErrorEventArgs"/> class
+         * Initializes a new instance of the <see cref="ReaderErrorEventArgs"/> class
         */
-         * @param line">The line that caused the error
-         * @param exception">The exception that was caught during the read
+         * @param line The line that caused the error
+         * @param exception The exception that was caught during the read
         public ReaderErrorEventArgs( String line, Exception exception) {
             Line = line;
             Exception = exception;

@@ -22,9 +22,9 @@ using NodaTime.TimeZones;
 package com.quantconnect.lean
 {
     /**
-    /// Represents the discontinuties in a single time zone and provides offsets to UTC.
-    /// This type assumes that times will be asked in a forward marching manner.
-    /// This type is not thread safe.
+     * Represents the discontinuties in a single time zone and provides offsets to UTC.
+     * This type assumes that times will be asked in a forward marching manner.
+     * This type is not thread safe.
     */
     public class TimeZoneOffsetProvider
     {
@@ -36,7 +36,7 @@ package com.quantconnect.lean
         private final Queue<long> _discontinuities;
 
         /**
-        /// Gets the time zone this instances provides offsets for
+         * Gets the time zone this instances provides offsets for
         */
         public ZoneId TimeZone
         {
@@ -44,11 +44,11 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Initializes a new instance of the <see cref="TimeZoneOffsetProvider"/> class
+         * Initializes a new instance of the <see cref="TimeZoneOffsetProvider"/> class
         */
-         * @param timeZone">The time zone to provide offsets for
-         * @param utcStartTime">The start of the range of offsets
-         * @param utcEndTime">The en of the range of offsets
+         * @param timeZone The time zone to provide offsets for
+         * @param utcStartTime The start of the range of offsets
+         * @param utcEndTime The en of the range of offsets
         public TimeZoneOffsetProvider(ZoneId timeZone, DateTime utcStartTime, DateTime utcEndTime) {
             _timeZone = timeZone;
 
@@ -76,9 +76,9 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Gets the offset in ticks from this time zone to UTC, such that UTC time + offset = local time
+         * Gets the offset in ticks from this time zone to UTC, such that UTC time + offset = local time
         */
-         * @param utcTime">The time in UTC to get an offset to local
+         * @param utcTime The time in UTC to get an offset to local
         @returns The offset in ticks between UTC and the local time zone
         public long GetOffsetTicks(DateTime utcTime) {
             // keep advancing our discontinuity until the requested time, don't recompute if already at max value
@@ -97,7 +97,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Gets this offset provider's next discontinuity
+         * Gets this offset provider's next discontinuity
         */
         @returns The next discontinuity in UTC ticks
         public long GetNextDiscontinuity() {
@@ -105,17 +105,17 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Converts the specified <paramref name="utcTime"/> using the offset resolved from
-        /// a call to <see cref="GetOffsetTicks"/>
+         * Converts the specified <paramref name="utcTime"/> using the offset resolved from
+         * a call to <see cref="GetOffsetTicks"/>
         */
-         * @param utcTime">The time to convert from utc
+         * @param utcTime The time to convert from utc
         @returns The same instant in time represented in the <see cref="TimeZone"/>
         public DateTime ConvertFromUtc(DateTime utcTime) {
             return new DateTime(utcTime.Ticks + GetOffsetTicks(utcTime));
         }
 
         /**
-        /// Gets the zone interval's start time in DateTimeKind.Utc ticks
+         * Gets the zone interval's start time in DateTimeKind.Utc ticks
         */
         private static long GetDateTimeUtcTicks(ZoneInterval zoneInterval) {
             // can't convert these values directly to date times, so just shortcut these here

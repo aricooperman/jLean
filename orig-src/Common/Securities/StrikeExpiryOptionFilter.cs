@@ -23,8 +23,8 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Provides an implementation of <see cref="IDerivativeSecurityFilter"/> for use in selecting
-    /// options contracts based on a range of strikes and expiries
+     * Provides an implementation of <see cref="IDerivativeSecurityFilter"/> for use in selecting
+     * options contracts based on a range of strikes and expiries
     */
     public class StrikeExpiryOptionFilter : IDerivativeSecurityFilter
     {
@@ -37,12 +37,12 @@ package com.quantconnect.lean.Securities
         private final Duration _maxExpiry;
 
         /**
-        /// Initializes a new instance of the <see cref="StrikeExpiryOptionFilter"/> class
+         * Initializes a new instance of the <see cref="StrikeExpiryOptionFilter"/> class
         */
-         * @param minStrike">The minimum strike relative to the underlying price, for example, -1 would filter out contracts further than 1 strike below market price
-         * @param maxStrike">The maximum strike relative to the underlying price, for example, +1 would filter out contracts further than 1 strike above market price
-         * @param minExpiry">The minium time until expiry, for example, 7 days would filter out contracts expiring sooner than 7 days
-         * @param maxExpiry">The maximum time until expiry, for example, 30 days would filter out contracts expriring later than 30 days
+         * @param minStrike The minimum strike relative to the underlying price, for example, -1 would filter out contracts further than 1 strike below market price
+         * @param maxStrike The maximum strike relative to the underlying price, for example, +1 would filter out contracts further than 1 strike above market price
+         * @param minExpiry The minium time until expiry, for example, 7 days would filter out contracts expiring sooner than 7 days
+         * @param maxExpiry The maximum time until expiry, for example, 30 days would filter out contracts expriring later than 30 days
         public StrikeExpiryOptionFilter(int minStrike, int maxStrike, Duration minExpiry, Duration maxExpiry) {
             _minStrike = minStrike;
             _maxStrike = maxStrike;
@@ -50,18 +50,18 @@ package com.quantconnect.lean.Securities
             _maxExpiry = maxExpiry;
 
             // prevent parameter mistakes that would prevent all contracts from coming through
-            if( maxStrike < minStrike) throw new ArgumentException( "maxStrike must be greater than minStrike");
-            if( maxExpiry < minExpiry) throw new ArgumentException( "maxExpiry must be greater than minExpiry");
+            if( maxStrike < minStrike) throw new IllegalArgumentException( "maxStrike must be greater than minStrike");
+            if( maxExpiry < minExpiry) throw new IllegalArgumentException( "maxExpiry must be greater than minExpiry");
 
             // protect from overflow on additions
             if( _maxExpiry > Time.MaxTimeSpan) _maxExpiry = Time.MaxTimeSpan;
         }
 
         /**
-        /// Filters the input set of symbols using the underlying price data
+         * Filters the input set of symbols using the underlying price data
         */
-         * @param symbols">The derivative symbols to be filtered
-         * @param underlying">The underlying price data
+         * @param symbols The derivative symbols to be filtered
+         * @param underlying The underlying price data
         @returns The filtered set of symbols
         public IEnumerable<Symbol> Filter(IEnumerable<Symbol> symbols, BaseData underlying) {
             // we can't properly apply this filter without knowing the underlying price

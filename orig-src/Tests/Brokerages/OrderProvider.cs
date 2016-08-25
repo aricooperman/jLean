@@ -23,7 +23,7 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Tests.Brokerages
 {
     /**
-    /// Provides a test implementation of order mapping
+     * Provides a test implementation of order mapping
     */
     public class OrderProvider : IOrderProvider
     {

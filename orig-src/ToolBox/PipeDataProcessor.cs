@@ -20,41 +20,41 @@ using QuantConnect.Util;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Provides an implementation of <see cref="IDataProcessor"/> that simply forwards all
-    /// received data to other attached processors
+     * Provides an implementation of <see cref="IDataProcessor"/> that simply forwards all
+     * received data to other attached processors
     */
     public class PipeDataProcessor : IDataProcessor
     {
         private final HashSet<IDataProcessor> _processors;
 
         /**
-        /// Initializes a new instance of the <see cref="PipeDataProcessor"/> class
+         * Initializes a new instance of the <see cref="PipeDataProcessor"/> class
         */
-         * @param processors">The processors to pipe the data to
+         * @param processors The processors to pipe the data to
         public PipeDataProcessor(IEnumerable<IDataProcessor> processors) {
             _processors = processors.ToHashSet();
         }
 
         /**
-        /// Initializes a new instance of the <see cref="PipeDataProcessor"/> class
+         * Initializes a new instance of the <see cref="PipeDataProcessor"/> class
         */
-         * @param processors">The processors to pipe the data to
+         * @param processors The processors to pipe the data to
         public PipeDataProcessor(params IDataProcessor[] processors)
             : this((IEnumerable<IDataProcessor>)processors) {
         }
 
         /**
-        /// Adds the specified processor to the output pipe
+         * Adds the specified processor to the output pipe
         */
-         * @param processor">Processor to receive data from this pipe
+         * @param processor Processor to receive data from this pipe
         public void PipeTo(IDataProcessor processor) {
             _processors.Add(processor);
         }
 
         /**
-        /// Invoked for each piece of data from the source file
+         * Invoked for each piece of data from the source file
         */
-         * @param data">The data to be processed
+         * @param data The data to be processed
         public void Process(BaseData data) {
             foreach (processor in _processors) {
                 processor.Process(data);
@@ -62,7 +62,7 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
             foreach (processor in _processors) {

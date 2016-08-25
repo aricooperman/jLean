@@ -19,10 +19,10 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Data.Consolidators
 {
     /**
-    /// Represents the simplest DataConsolidator implementation, one that is defined
-    /// by a straight pass through of the data. No projection or aggregation is performed.
+     * Represents the simplest DataConsolidator implementation, one that is defined
+     * by a straight pass through of the data. No projection or aggregation is performed.
     */
-    /// <typeparam name="T">The type of data</typeparam>
+     * <typeparam name="T The type of data</typeparam>
     public class IdentityDataConsolidator<T> : DataConsolidator<T>
         where T : BaseData
     {
@@ -31,7 +31,7 @@ package com.quantconnect.lean.Data.Consolidators
         private T _last;
 
         /**
-        /// Gets a clone of the data being currently consolidated
+         * Gets a clone of the data being currently consolidated
         */
         public @Override BaseData WorkingData
         {
@@ -39,7 +39,7 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Gets the type produced by this consolidator
+         * Gets the type produced by this consolidator
         */
         public @Override Type OutputType
         {
@@ -47,9 +47,9 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Updates this consolidator with the specified data
+         * Updates this consolidator with the specified data
         */
-         * @param data">The new data for the consolidator
+         * @param data The new data for the consolidator
         public @Override void Update(T data) {
             if( IsTick || _last == null || _last.EndTime != data.EndTime) {
                 OnDataConsolidated(data);
@@ -58,9 +58,9 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Scans this consolidator to see if it should emit a bar due to time passing
+         * Scans this consolidator to see if it should emit a bar due to time passing
         */
-         * @param currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)
+         * @param currentLocalTime The current time in the local time zone (same as <see cref="BaseData.Time"/>)
         public @Override void Scan(DateTime currentLocalTime) {
         }
     }

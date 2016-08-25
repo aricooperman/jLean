@@ -36,55 +36,55 @@ import com.quantconnect.lean.data.consolidators.IDataConsolidator;
 //using QuantConnect.Data.Consolidators;
 //using QuantConnect.Securities;
 
-/// Subscription data required including the type of data.
+ * Subscription data required including the type of data.
 public class SubscriptionDataConfig {
     
     private Symbol symbol;
     private String mappedSymbol;
     private final SecurityIdentifier sid;
 
-    /// Type of data
+     * Type of data
     public final Class<?> type;
 
-    /// Security type of this data subscription
+     * Security type of this data subscription
     public final SecurityType securityType;
 
-    /// Symbol of the asset we're requesting: this is really a perm tick!!
+     * Symbol of the asset we're requesting: this is really a perm tick!!
     public Symbol getSymbol() {
         return symbol;
     }
 
-    /// Trade or quote data
+     * Trade or quote data
     public final TickType tickType;
 
-    /// Resolution of the asset we're requesting, second minute or tick
+     * Resolution of the asset we're requesting, second minute or tick
     public final Resolution resolution;
 
-    /// Timespan increment between triggers of this data:
+     * Timespan increment between triggers of this data:
     public final Duration increment;
 
-    /// True if wish to send old data when time gaps in data feed.
+     * True if wish to send old data when time gaps in data feed.
     public final boolean fillDataForward;
 
-    /// Boolean Send Data from between 4am - 8am (Equities Setting Only)
+     * Boolean Send Data from between 4am - 8am (Equities Setting Only)
     public final boolean extendedMarketHours;
 
-    /// True if this subscription was added for the sole purpose of providing currency conversion rates via <see cref="CashBook.EnsureCurrencyDataFeeds"/>
+     * True if this subscription was added for the sole purpose of providing currency conversion rates via <see cref="CashBook.EnsureCurrencyDataFeeds"/>
     public final boolean isInternalFeed;
 
-    /// True if this subscription is for custom user data, false for QC data
+     * True if this subscription is for custom user data, false for QC data
     public final boolean isCustomData;
 
-    /// The sum of dividends accrued in this subscription, used for scaling total return prices
+     * The sum of dividends accrued in this subscription, used for scaling total return prices
     public BigDecimal sumOfDividends;
 
-    /// Gets the normalization mode used for this subscription
+     * Gets the normalization mode used for this subscription
     public DataNormalizationMode dataNormalizationMode = DataNormalizationMode.Adjusted;
 
-    /// Price Scaling Factor:
+     * Price Scaling Factor:
     public BigDecimal priceScaleFactor;
 
-    /// Symbol Mapping: When symbols change over time (e.g. CHASE-> JPM) need to update the symbol requested.
+     * Symbol Mapping: When symbols change over time (e.g. CHASE-> JPM) need to update the symbol requested.
     public String getMappedSymbol() { 
         return mappedSymbol;
     }
@@ -94,35 +94,35 @@ public class SubscriptionDataConfig {
         symbol = new Symbol( sid, value );
     }
 
-    /// Gets the market / scope of the symbol
+     * Gets the market / scope of the symbol
     public final String market;
 
-    /// Gets the data time zone for this subscription
+     * Gets the data time zone for this subscription
     public final ZoneId dataTimeZone;
 
-    /// Gets the exchange time zone for this subscription
+     * Gets the exchange time zone for this subscription
     public final ZoneId exchangeTimeZone;
 
-    /// Consolidators that are registred with this subscription
+     * Consolidators that are registred with this subscription
     public final Set<IDataConsolidator> consolidators;
 
-    /// Gets whether or not this subscription should have filters applied to it (market hours/user filters from security)
+     * Gets whether or not this subscription should have filters applied to it (market hours/user filters from security)
     public final boolean isFilteredSubscription;
 
-    /// Constructor for Data Subscriptions
-     * @param objectType">Type of the data objects.
-     * @param symbol">Symbol of the asset we're requesting
-     * @param resolution">Resolution of the asset we're requesting
-     * @param dataTimeZone">The time zone the raw data is time stamped in
-     * @param exchangeTimeZone">Specifies the time zone of the exchange for the security this subscription is for. This
-    /// is this output time zone, that is, the time zone that will be used on BaseData instances
-     * @param fillForward">Fill in gaps with historical data
-     * @param extendedHours">Equities only - send in data from 4am - 8pm
-     * @param isInternalFeed">Set to true if this subscription is added for the sole purpose of providing currency conversion rates,
-    /// setting this flag to true will prevent the data from being sent into the algorithm's OnData methods
-     * @param isCustom">True if this is user supplied custom data, false for normal QC data
-     * @param tickType">Specifies if trade or quote data is subscribed
-     * @param isFilteredSubscription">True if this subscription should have filters applied to it (market hours/user filters from security), false otherwise
+     * Constructor for Data Subscriptions
+     * @param objectType Type of the data objects.
+     * @param symbol Symbol of the asset we're requesting
+     * @param resolution Resolution of the asset we're requesting
+     * @param dataTimeZone The time zone the raw data is time stamped in
+     * @param exchangeTimeZone Specifies the time zone of the exchange for the security this subscription is for. This
+     * is this output time zone, that is, the time zone that will be used on BaseData instances
+     * @param fillForward Fill in gaps with historical data
+     * @param extendedHours Equities only - send in data from 4am - 8pm
+     * @param isInternalFeed Set to true if this subscription is added for the sole purpose of providing currency conversion rates,
+     * setting this flag to true will prevent the data from being sent into the algorithm's OnData methods
+     * @param isCustom True if this is user supplied custom data, false for normal QC data
+     * @param tickType Specifies if trade or quote data is subscribed
+     * @param isFilteredSubscription True if this subscription should have filters applied to it (market hours/user filters from security), false otherwise
     public SubscriptionDataConfig( Class<?> objectType,
             Symbol symbol,
             Resolution resolution,
@@ -201,21 +201,21 @@ public class SubscriptionDataConfig {
         this.fillDataForward = fillForward;
     }
 
-    /// Copy constructor with @Overrides
-     * @param config">The config to copy, then @Overrides are applied and all option
-     * @param objectType">Type of the data objects.
-     * @param symbol">Symbol of the asset we're requesting
-     * @param resolution">Resolution of the asset we're requesting
-     * @param dataTimeZone">The time zone the raw data is time stamped in
-     * @param exchangeTimeZone">Specifies the time zone of the exchange for the security this subscription is for. This
-    /// is this output time zone, that is, the time zone that will be used on BaseData instances
-     * @param fillForward">Fill in gaps with historical data
-     * @param extendedHours">Equities only - send in data from 4am - 8pm
-     * @param isInternalFeed">Set to true if this subscription is added for the sole purpose of providing currency conversion rates,
-    /// setting this flag to true will prevent the data from being sent into the algorithm's OnData methods
-     * @param isCustom">True if this is user supplied custom data, false for normal QC data
-     * @param tickType">Specifies if trade or quote data is subscribed
-     * @param isFilteredSubscription">True if this subscription should have filters applied to it (market hours/user filters from security), false otherwise
+     * Copy constructor with @Overrides
+     * @param config The config to copy, then @Overrides are applied and all option
+     * @param objectType Type of the data objects.
+     * @param symbol Symbol of the asset we're requesting
+     * @param resolution Resolution of the asset we're requesting
+     * @param dataTimeZone The time zone the raw data is time stamped in
+     * @param exchangeTimeZone Specifies the time zone of the exchange for the security this subscription is for. This
+     * is this output time zone, that is, the time zone that will be used on BaseData instances
+     * @param fillForward Fill in gaps with historical data
+     * @param extendedHours Equities only - send in data from 4am - 8pm
+     * @param isInternalFeed Set to true if this subscription is added for the sole purpose of providing currency conversion rates,
+     * setting this flag to true will prevent the data from being sent into the algorithm's OnData methods
+     * @param isCustom True if this is user supplied custom data, false for normal QC data
+     * @param tickType Specifies if trade or quote data is subscribed
+     * @param isFilteredSubscription True if this subscription should have filters applied to it (market hours/user filters from security), false otherwise
     public SubscriptionDataConfig( SubscriptionDataConfig config ) {
         this( config, null, null, null, null, null, null, null, null, null, null, null );
     }
@@ -246,7 +246,7 @@ public class SubscriptionDataConfig {
               isFilteredSubscription != null ? isFilteredSubscription : config.isFilteredSubscription );
     }
 
-    /// Normalizes the specified price based on the DataNormalizationMode
+     * Normalizes the specified price based on the DataNormalizationMode
 //    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public BigDecimal getNormalizedPrice( BigDecimal price ) {
         switch( dataNormalizationMode ) {
@@ -266,11 +266,11 @@ public class SubscriptionDataConfig {
         }
     }
 
-    /// Indicates whether the current object is equal to another object of the same type.
+     * Indicates whether the current object is equal to another object of the same type.
     @returns 
-    /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-    /// 
-     * @param other">An object to compare with this object.
+     * true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
+     * 
+     * @param other An object to compare with this object.
     public boolean equals( SubscriptionDataConfig other ) {
         if( null == other ) return false;
         if( this == other ) return true;
@@ -286,11 +286,11 @@ public class SubscriptionDataConfig {
             && isFilteredSubscription == other.isFilteredSubscription;
     }
 
-    /// Determines whether the specified object is equal to the current object.
+     * Determines whether the specified object is equal to the current object.
     @returns 
-    /// true if the specified object  is equal to the current object; otherwise, false.
-    /// 
-     * @param obj">The object to compare with the current object. 
+     * true if the specified object  is equal to the current object; otherwise, false.
+     * 
+     * @param obj The object to compare with the current object. 
     public boolean equals( Object obj ) {
         if( null == obj ) return false;
         if( this == obj ) return true;
@@ -298,10 +298,10 @@ public class SubscriptionDataConfig {
         return equals( (SubscriptionDataConfig) obj );
     }
 
-    /// Serves as the default hash function. 
+     * Serves as the default hash function. 
     @returns 
-    /// A hash code for the current object.
-    /// 
+     * A hash code for the current object.
+     * 
     public int hashCode() {
         int hashCode = sid.hashCode();
         hashCode = (hashCode*397) ^ type.hashCode();
@@ -317,25 +317,25 @@ public class SubscriptionDataConfig {
         return hashCode;
     }
 
-//    /// Override equals operator
+//     * Override equals operator
 //    public static boolean operator ==(SubscriptionDataConfig left, SubscriptionDataConfig right)
 //    {
 //        return Equals(left, right);
 //    }
 //
 //    /**
-//    /// Override not equals operator
+//     * Override not equals operator
 //    */
 //    public static boolean operator !=(SubscriptionDataConfig left, SubscriptionDataConfig right)
 //    {
 //        return !Equals(left, right);
 //    }
 
-    /// Returns a String that represents the current object.
+     * Returns a String that represents the current object.
     @returns 
-    /// A String that represents the current object.
-    /// 
-    /// <filterpriority>2</filterpriority>
+     * A String that represents the current object.
+     * 
+     * <filterpriority>2</filterpriority>
     public String toString() {
         return symbol.toString() + "," + getMappedSymbol() + "," + resolution;
     }

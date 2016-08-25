@@ -16,11 +16,11 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the Chande Momentum Oscillator (CMO). 
-    /// CMO calculation is mostly identical to RSI.
-    /// The only difference is in the last step of calculation:
-    /// RSI = gain / (gain+loss)
-    /// CMO = (gain-loss) / (gain+loss)
+     * This indicator computes the Chande Momentum Oscillator (CMO). 
+     * CMO calculation is mostly identical to RSI.
+     * The only difference is in the last step of calculation:
+     * RSI = gain / (gain+loss)
+     * CMO = (gain-loss) / (gain+loss)
     */
     public class ChandeMomentumOscillator : WindowIndicator<IndicatorDataPoint>
     {
@@ -29,24 +29,24 @@ package com.quantconnect.lean.Indicators
         private BigDecimal _prevLoss;
 
         /**
-        /// Initializes a new instance of the <see cref="ChandeMomentumOscillator"/> class using the specified period.
+         * Initializes a new instance of the <see cref="ChandeMomentumOscillator"/> class using the specified period.
         */ 
-         * @param period">The period of the indicator
+         * @param period The period of the indicator
         public ChandeMomentumOscillator(int period)
             : this( "CMO" + period, period) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="ChandeMomentumOscillator"/> class using the specified name and period.
+         * Initializes a new instance of the <see cref="ChandeMomentumOscillator"/> class using the specified name and period.
         */ 
-         * @param name">The name of this indicator
-         * @param period">The period of the indicator
+         * @param name The name of this indicator
+         * @param period The period of the indicator
         public ChandeMomentumOscillator( String name, int period)
             : base(name, period) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -54,15 +54,15 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
-         * @param window">The window for the input history
+         * @param input The input given to the indicator
+         * @param window The window for the input history
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             if( Samples == 1) {
                 _prevValue = input;
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             difference = input.Value - _prevValue;
@@ -80,17 +80,17 @@ package com.quantconnect.lean.Indicators
                 _prevGain += difference;
 
             if( !IsReady)
-                return 0m;
+                return BigDecimal.ZERO;
 
             _prevLoss /= Period;
             _prevGain /= Period;
 
             sum = _prevGain + _prevLoss;
-            return sum != 0 ? 100m * ((_prevGain - _prevLoss) / sum) : 0m;
+            return sum != 0 ? 100m * ((_prevGain - _prevLoss) / sum) : BigDecimal.ZERO;
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _prevValue = 0;

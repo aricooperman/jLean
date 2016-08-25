@@ -19,15 +19,15 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Orders.Slippage
 {
     /**
-    /// A slippage model that uses half of the bid/ask spread if available,
-    /// if not available, zero slippage is assumed.
+     * A slippage model that uses half of the bid/ask spread if available,
+     * if not available, zero slippage is assumed.
     */
     public class SpreadSlippageModel : ISlippageModel
     {
         /**
-        /// Slippage Model. Return a BigDecimal cash slippage approximation on the order.
+         * Slippage Model. Return a BigDecimal cash slippage approximation on the order.
         */
-        public virtual BigDecimal GetSlippageApproximation(Security asset, Order order) {
+        public BigDecimal GetSlippageApproximation(Security asset, Order order) {
             lastData = asset.GetLastData();
             lastTick = lastData as Tick;
 
@@ -36,7 +36,7 @@ package com.quantconnect.lean.Orders.Slippage
                 return (lastTick.AskPrice - lastTick.BidPrice) / 2;
             }
 
-            return 0m;
+            return BigDecimal.ZERO;
         }
     }
 }

@@ -22,11 +22,11 @@ using QuantConnect.Indicators;
 package com.quantconnect.lean.Algorithm.Examples
 {
     /**
-    /// Constructs a displaced moving average ribbon and buys when all are lined up, liquidates when they all line down
-    /// Ribbons are great for visualizing trends
-    ///   Signals are generated when they all line up in a paricular direction
-    ///     A buy signal is when the values of the indicators are increasing (from slowest to fastest)
-    ///     A sell signal is when the values of the indicators are decreasing (from slowest to fastest)
+     * Constructs a displaced moving average ribbon and buys when all are lined up, liquidates when they all line down
+     * Ribbons are great for visualizing trends
+     *   Signals are generated when they all line up in a paricular direction
+     *     A buy signal is when the values of the indicators are increasing (from slowest to fastest)
+     *     A sell signal is when the values of the indicators are decreasing (from slowest to fastest)
     */
     public class DisplacedMovingAverageRibbon : QCAlgorithm
     {
@@ -34,11 +34,11 @@ package com.quantconnect.lean.Algorithm.Examples
         private IndicatorBase<IndicatorDataPoint>[] _ribbon;
 
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
-        /// <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
-        /// <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
-        /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
+         * <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
+         * <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
+         * <seealso cref="QCAlgorithm.SetCash(decimal)"/>
         public @Override void Initialize() {
             SetStartDate(2009, 01, 01);
             SetEndDate(2015, 01, 01);
@@ -70,9 +70,9 @@ package com.quantconnect.lean.Algorithm.Examples
         private DateTime _previous;
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">TradeBars IDictionary object with your stock data
+         * @param data TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             // wait for our entire ribbon to be ready
             if( !_ribbon.All(x -> x.IsReady)) return;
@@ -99,10 +99,10 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// Returns true if the specified values are in ascending order
+         * Returns true if the specified values are in ascending order
         */
         private boolean IsAscending(IEnumerable<decimal> values) {
-            decimal? last = null;
+            Optional<BigDecimal> last = null;
             foreach (val in values) {
                 if( last == null ) {
                     last = val;
@@ -118,10 +118,10 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// Returns true if the specified values are in descending order
+         * Returns true if the specified values are in descending order
         */
         private boolean IsDescending(IEnumerable<decimal> values) {
-            decimal? last = null;
+            Optional<BigDecimal> last = null;
             foreach (val in values) {
                 if( last == null ) {
                     last = val;

@@ -18,35 +18,35 @@ using System;
 package com.quantconnect.lean.Indicators
 {
     /**
-    ///     Represents the LogReturn indicator (LOGR)
-    ///      - log returns are useful for identifying price convergence/divergence in a given period
-    ///      - logr = log (current price / last price in period)
+     *     Represents the LogReturn indicator (LOGR)
+     *      - log returns are useful for identifying price convergence/divergence in a given period
+     *      - logr = log (current price / last price in period)
     */
     public class LogReturn : WindowIndicator<IndicatorDataPoint>
     {
         /**
-        ///     Initializes a new instance of the LogReturn class with the specified name and period
+         *     Initializes a new instance of the LogReturn class with the specified name and period
         */
-         * @param name">The name of this indicator
-         * @param period">The period of the LOGR
+         * @param name The name of this indicator
+         * @param period The period of the LOGR
         public LogReturn( String name, int period)
             : base(name, period) {
         }
 
         /**
-        ///     Initializes a new instance of the LogReturn class with the default name and period
+         *     Initializes a new instance of the LogReturn class with the default name and period
         */
-         * @param period">The period of the SMA
+         * @param period The period of the SMA
         public LogReturn(int period)
             : base( "LOGR" + period, period) {
         }
 
         /**
-        ///     Computes the next value for this indicator from the given state.
-        ///      - logr = log (current price / last price in period)
+         *     Computes the next value for this indicator from the given state.
+         *      - logr = log (current price / last price in period)
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input value to this indicator on this time step
+         * @param window The window of data held in this indicator
+         * @param input The input value to this indicator on this time step
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             BigDecimal valuef = input;

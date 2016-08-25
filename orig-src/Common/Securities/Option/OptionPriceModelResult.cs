@@ -18,12 +18,12 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Securities.Option
 {
     /**
-    /// Result type for <see cref="IOptionPriceModel.Evaluate"/>
+     * Result type for <see cref="IOptionPriceModel.Evaluate"/>
     */
     public class OptionPriceModelResult
     {
         /**
-        /// Gets the theoretical price as computed by the <see cref="IOptionPriceModel"/>
+         * Gets the theoretical price as computed by the <see cref="IOptionPriceModel"/>
         */
         public BigDecimal TheoreticalPrice
         {
@@ -31,7 +31,7 @@ package com.quantconnect.lean.Securities.Option
         }
 
         /**
-        /// Gets the various sensitivities as computed by the <see cref="IOptionPriceModel"/>
+         * Gets the various sensitivities as computed by the <see cref="IOptionPriceModel"/>
         */
         public FirstOrderGreeks Greeks
         {
@@ -39,10 +39,10 @@ package com.quantconnect.lean.Securities.Option
         }
 
         /**
-        /// Initializes a new instance of the <see cref="OptionPriceModelResult"/> class
+         * Initializes a new instance of the <see cref="OptionPriceModelResult"/> class
         */
-         * @param theoreticalPrice">The theoretical price computed by the price model
-         * @param greeks">The sensitivities (greeks) computed by the price model
+         * @param theoreticalPrice The theoretical price computed by the price model
+         * @param greeks The sensitivities (greeks) computed by the price model
         public OptionPriceModelResult( BigDecimal theoreticalPrice, FirstOrderGreeks greeks) {
             TheoreticalPrice = theoreticalPrice;
             Greeks = greeks;

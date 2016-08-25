@@ -20,41 +20,41 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Data.Consolidators
 {
     /**
-    /// A data consolidator that can make bigger bars from any base data
-    /// 
-    /// This type acts as the base for other consolidators that produce bars on a given time step or for a count of data.
+     * A data consolidator that can make bigger bars from any base data
+     * 
+     * This type acts as the base for other consolidators that produce bars on a given time step or for a count of data.
     */
-    /// <typeparam name="T">The input type into the consolidator's Update method</typeparam>
+     * <typeparam name="T The input type into the consolidator's Update method</typeparam>
     public abstract class TradeBarConsolidatorBase<T> : PeriodCountConsolidatorBase<T, TradeBar>
         where T : BaseData
     {
         /**
-        /// Creates a consolidator to produce a new 'TradeBar' representing the period
+         * Creates a consolidator to produce a new 'TradeBar' representing the period
         */
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         protected TradeBarConsolidatorBase(TimeSpan period)
             : base(period) {
         }
 
         /**
-        /// Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data
+         * Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
         protected TradeBarConsolidatorBase(int maxCount)
             : base(maxCount) {
         }
 
         /**
-        /// Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data or the period, whichever comes first
+         * Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data or the period, whichever comes first
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         protected TradeBarConsolidatorBase(int maxCount, Duration period)
             : base(maxCount, period) {
         }
         
         /**
-        /// Gets a copy of the current 'workingBar'.
+         * Gets a copy of the current 'workingBar'.
         */
         public TradeBar WorkingBar
         {

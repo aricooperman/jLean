@@ -18,16 +18,16 @@ using System;
 package com.quantconnect.lean.Logging
 {
     /**
-    /// Logging extensions.
+     * Logging extensions.
     */
     public static class LogHandlerExtensions
     {
         /**
-        /// Write error message to log
+         * Write error message to log
         */
          * @param logHandler">
-         * @param text">Message
-         * @param args">Arguments to format.
+         * @param text Message
+         * @param args Arguments to format.
         public static void Error(this ILogHandler logHandler, String text, params object[] args) {
             if( logHandler == null ) {
                 throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");
@@ -37,11 +37,11 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write debug message to log
+         * Write debug message to log
         */
          * @param logHandler">
-         * @param text">Message
-         * @param args">Arguments to format.
+         * @param text Message
+         * @param args Arguments to format.
         public static void Debug(this ILogHandler logHandler, String text, params object[] args) {
             if( logHandler == null ) {
                 throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");
@@ -51,11 +51,11 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write debug message to log
+         * Write debug message to log
         */
          * @param logHandler">
-         * @param text">Message
-         * @param args">Arguments to format.
+         * @param text Message
+         * @param args Arguments to format.
         public static void Trace(this ILogHandler logHandler, String text, params object[] args) {
             if( logHandler == null ) {
                 throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");

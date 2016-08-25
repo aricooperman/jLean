@@ -24,12 +24,12 @@ using RestSharp.Authenticators;
 package com.quantconnect.lean.Api
 {
     /**
-    /// API Connection and Hash Manager
+     * API Connection and Hash Manager
     */
     public class ApiConnection
     {
         /**
-        /// Authorized client to use for requests.
+         * Authorized client to use for requests.
         */
         public RestClient Client;
 
@@ -38,10 +38,10 @@ package com.quantconnect.lean.Api
         private final String _token;
 
         /**
-        /// Create a new Api Connection Class.
+         * Create a new Api Connection Class.
         */
-         * @param userId">User Id number from QuantConnect.com account. Found at www.quantconnect.com/account 
-         * @param token">Access token for the QuantConnect account. Found at www.quantconnect.com/account 
+         * @param userId User Id number from QuantConnect.com account. Found at www.quantconnect.com/account 
+         * @param token Access token for the QuantConnect account. Found at www.quantconnect.com/account 
         public ApiConnection(int userId, String token) {
             _token = token;
             _userId = userId.toString();
@@ -49,7 +49,7 @@ package com.quantconnect.lean.Api
         }
 
         /**
-        /// Return true if connected successfully.
+         * Return true if connected successfully.
         */
         public boolean Connected
         {
@@ -65,11 +65,11 @@ package com.quantconnect.lean.Api
         }
 
         /**
-        /// Place a secure request and get back an object of type T.
+         * Place a secure request and get back an object of type T.
         */
-        /// <typeparam name="T"></typeparam>
+         * <typeparam name="T"></typeparam>
          * @param request">
-         * @param result">Result object from the 
+         * @param result Result object from the 
         @returns T typed object response
         public boolean TryRequest<T>(RestRequest request, out T result)
             where T : RestResponse
@@ -103,7 +103,7 @@ package com.quantconnect.lean.Api
         }
 
         /**
-        /// Generate a secure hash for the authorization headers.
+         * Generate a secure hash for the authorization headers.
         */
         @returns Time based hash of user token and timestamp.
         private String CreateSecureHash(int timestamp) {
@@ -114,9 +114,9 @@ package com.quantconnect.lean.Api
         }
 
         /**
-        /// Encrypt the token:time data to make our API hash.
+         * Encrypt the token:time data to make our API hash.
         */
-         * @param data">Data to be hashed by SHA256
+         * @param data Data to be hashed by SHA256
         @returns Hashed string.
         private String SHA256( String data) {
             crypt = new SHA256Managed();

@@ -32,16 +32,16 @@ using ZipOutputStream = ICSharpCode.SharpZipLib.Zip.ZipOutputStream;
 package com.quantconnect.lean 
 {
     /**
-    /// Compression class manages the opening and extraction of compressed files (zip, tar, tar.gz).
+     * Compression class manages the opening and extraction of compressed files (zip, tar, tar.gz).
     */
-    /// QuantConnect's data library is stored in zip format locally on the hard drive.
+     * QuantConnect's data library is stored in zip format locally on the hard drive.
     public static class Compression
     {
         /**
-        /// Create a zip file of the supplied file names and String data source
+         * Create a zip file of the supplied file names and String data source
         */
-         * @param zipPath">Output location to save the file.
-         * @param filenamesAndData">File names and data in a dictionary format.
+         * @param zipPath Output location to save the file.
+         * @param filenamesAndData File names and data in a dictionary format.
         @returns True on successfully creating the zip file.
         public static boolean ZipData( String zipPath, Map<String,String> filenamesAndData) {
             success = true;
@@ -82,10 +82,10 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Create a zip file of the supplied file names and data using a byte array
+         * Create a zip file of the supplied file names and data using a byte array
         */
-         * @param zipPath">Output location to save the file.
-         * @param filenamesAndData">File names and data in a dictionary format.
+         * @param zipPath Output location to save the file.
+         * @param filenamesAndData File names and data in a dictionary format.
         @returns True on successfully saving the file
         public static boolean ZipData( String zipPath, IEnumerable<KeyValuePair<String, byte[]>> filenamesAndData) {
             success = true;
@@ -125,11 +125,11 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Zips the specified lines of text into the zipPath
+         * Zips the specified lines of text into the zipPath
         */
-         * @param zipPath">The destination zip file path
-         * @param zipEntry">The entry name in the zip
-         * @param lines">The lines to be written to the zip
+         * @param zipPath The destination zip file path
+         * @param zipEntry The entry name in the zip
+         * @param lines The lines to be written to the zip
         @returns True if successful, otherwise false
         public static boolean ZipData( String zipPath, String zipEntry, IEnumerable<String> lines) {
             try
@@ -151,9 +151,9 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Uncompress zip data byte array into a dictionary String array of filename-contents.
+         * Uncompress zip data byte array into a dictionary String array of filename-contents.
         */
-         * @param zipData">Byte data array of zip compressed information
+         * @param zipData Byte data array of zip compressed information
         @returns Uncompressed dictionary string-sting of files in the zip
         public static Map<String,String> UnzipData(byte[] zipData) {
             // Initialize:
@@ -192,10 +192,10 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Performs an in memory zip of the specified bytes
+         * Performs an in memory zip of the specified bytes
         */
-         * @param bytes">The file contents in bytes to be zipped
-         * @param zipEntryName">The zip entry name
+         * @param bytes The file contents in bytes to be zipped
+         * @param zipEntryName The zip entry name
         @returns The zipped file as a byte array
         public static byte[] ZipBytes(byte[] bytes, String zipEntryName) {
             using (memoryStream = new MemoryStream())
@@ -209,11 +209,11 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Compress a given file and delete the original file. Automatically rename the file to name.zip.
+         * Compress a given file and delete the original file. Automatically rename the file to name.zip.
         */
-         * @param textPath">Path of the original file
-         * @param zipEntryName">The name of the entry inside the zip file
-         * @param deleteOriginal">Boolean flag to delete the original file after completion
+         * @param textPath Path of the original file
+         * @param zipEntryName The name of the entry inside the zip file
+         * @param deleteOriginal Boolean flag to delete the original file after completion
         @returns String path for the new zip file
         public static String Zip( String textPath, String zipEntryName, boolean deleteOriginal = true) {
             zipPath = "";
@@ -252,10 +252,10 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Compress a given file and delete the original file. Automatically rename the file to name.zip.
+         * Compress a given file and delete the original file. Automatically rename the file to name.zip.
         */
-         * @param textPath">Path of the original file
-         * @param deleteOriginal">Boolean flag to delete the original file after completion
+         * @param textPath Path of the original file
+         * @param deleteOriginal Boolean flag to delete the original file after completion
         @returns String path for the new zip file
         public static String Zip( String textPath, boolean deleteOriginal = true) {
             return Zip(textPath, Path.GetFileName(textPath), deleteOriginal);
@@ -279,11 +279,11 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Zips the specified directory, preserving folder structure
+         * Zips the specified directory, preserving folder structure
         */
-         * @param directory">The directory to be zipped
-         * @param destination">The output zip file destination
-         * @param includeRootInZip">True to include the root 'directory' in the zip, false otherwise
+         * @param directory The directory to be zipped
+         * @param destination The output zip file destination
+         * @param includeRootInZip True to include the root 'directory' in the zip, false otherwise
         @returns True on a successful zip, false otherwise
         public static boolean ZipDirectory( String directory, String destination, boolean includeRootInZip = true) {
             try
@@ -299,11 +299,11 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Unzips the specified zip file to the specified directory
+         * Unzips the specified zip file to the specified directory
         */
-         * @param zip">The zip to be unzipped
-         * @param directory">The directory to place the unzipped files
-         * @param overwrite">Flag specifying whether or not to overwrite existing files
+         * @param zip The zip to be unzipped
+         * @param directory The directory to place the unzipped files
+         * @param overwrite Flag specifying whether or not to overwrite existing files
         public static boolean Unzip( String zip, String directory, boolean overwrite = false) {
             if( !File.Exists(zip)) return false;
 
@@ -338,7 +338,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Zips all files specified to a new zip at the destination path
+         * Zips all files specified to a new zip at the destination path
         */
         public static void ZipFiles( String destination, IEnumerable<String> files) {
             try
@@ -365,23 +365,23 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Streams a local zip file using a streamreader.
-        /// Important: the caller must call Dispose() on the returned ZipFile instance.
+         * Streams a local zip file using a streamreader.
+         * Important: the caller must call Dispose() on the returned ZipFile instance.
         */
-         * @param filename">Location of the original zip file
-         * @param zip">The ZipFile instance to be returned to the caller
+         * @param filename Location of the original zip file
+         * @param zip The ZipFile instance to be returned to the caller
         @returns Stream reader of the first file contents in the zip file
         public static StreamReader Unzip( String filename, out ZipFile zip) {
             return Unzip(filename, null, out zip);
         }
 
         /**
-        /// Streams a local zip file using a streamreader.
-        /// Important: the caller must call Dispose() on the returned ZipFile instance.
+         * Streams a local zip file using a streamreader.
+         * Important: the caller must call Dispose() on the returned ZipFile instance.
         */
-         * @param filename">Location of the original zip file
-         * @param zipEntryName">The zip entry name to open a reader for. Specify null to access the first entry
-         * @param zip">The ZipFile instance to be returned to the caller
+         * @param filename Location of the original zip file
+         * @param zipEntryName The zip entry name to open a reader for. Specify null to access the first entry
+         * @param zip The ZipFile instance to be returned to the caller
         @returns Stream reader of the first file contents in the zip file
         public static StreamReader Unzip( String filename, String zipEntryName, out ZipFile zip) {
             StreamReader reader = null;
@@ -419,15 +419,15 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Streams the unzipped file as key value pairs of file name to file contents.
-        /// NOTE: When the returned enumerable finishes enumerating, the zip stream will be
-        /// closed rendering all key value pair Value properties unaccessible. Ideally this
-        /// would be enumerated depth first.
+         * Streams the unzipped file as key value pairs of file name to file contents.
+         * NOTE: When the returned enumerable finishes enumerating, the zip stream will be
+         * closed rendering all key value pair Value properties unaccessible. Ideally this
+         * would be enumerated depth first.
         */
-        /// 
-        /// This method has the potential for a memory leak if each kvp.Value enumerable is not disposed
-        /// 
-         * @param filename">The zip file to stream
+         * 
+         * This method has the potential for a memory leak if each kvp.Value enumerable is not disposed
+         * 
+         * @param filename The zip file to stream
         @returns The stream zip contents
         public static IEnumerable<KeyValuePair<String, IEnumerable<String>>> Unzip( String filename) {
             if( !File.Exists(filename)) {
@@ -446,11 +446,11 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Lazily unzips the specified stream
+         * Lazily unzips the specified stream
         */
-         * @param stream">The zipped stream to be read
+         * @param stream The zipped stream to be read
         @returns An enumerable whose elements are zip entry key value pairs with
-        /// a key of the zip entry name and the value of the zip entry's file lines
+         * a key of the zip entry name and the value of the zip entry's file lines
         public static IEnumerable<KeyValuePair<String, IEnumerable<String>>> Unzip(Stream stream) {
             using (zip = ZipFile.Read(stream)) {
                 foreach (entry in zip) {
@@ -460,9 +460,9 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Streams each line from the first zip entry in the specified zip file
+         * Streams each line from the first zip entry in the specified zip file
         */
-         * @param filename">The zip file path to stream
+         * @param filename The zip file path to stream
         @returns An enumerable containing each line from the first unzipped entry
         public static IEnumerable<String> ReadLines( String filename) {
             if( !File.Exists(filename)) {
@@ -502,7 +502,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Unzip a local file and return its contents via streamreader:
+         * Unzip a local file and return its contents via streamreader:
         */
         public static StreamReader UnzipStream(Stream zipstream) {
             StreamReader reader = null;
@@ -533,9 +533,9 @@ package com.quantconnect.lean
         } // End UnZip
 
         /**
-        /// Unzip a local file and return its contents via streamreader to a local the same location as the ZIP.
+         * Unzip a local file and return its contents via streamreader to a local the same location as the ZIP.
         */
-         * @param zipFile">Location of the zip on the HD
+         * @param zipFile Location of the zip on the HD
         @returns List of unzipped file names
         public static List<String> UnzipToFolder( String zipFile) {
             //1. Initialize:
@@ -587,10 +587,10 @@ package com.quantconnect.lean
         } // End UnZip
 
         /**
-        /// Extracts all file from a zip archive and copies them to a destination folder.
+         * Extracts all file from a zip archive and copies them to a destination folder.
         */
-         * @param source">The source zip file.
-         * @param destination">The destination folder to extract the file to.
+         * @param source The source zip file.
+         * @param destination The destination folder to extract the file to.
         public static void UnTarFiles( String source, String destination) {
             inStream = File.OpenRead(source);
             tarArchive = TarArchive.CreateInputTarArchive(inStream);
@@ -600,10 +600,10 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Extract tar.gz files to disk
+         * Extract tar.gz files to disk
         */
-         * @param source">Tar.gz source file
-         * @param destination">Location folder to unzip to
+         * @param source Tar.gz source file
+         * @param destination Location folder to unzip to
         public static void UnTarGzFiles( String source, String destination) {
             inStream = File.OpenRead(source);
             gzipStream = new GZipInputStream(inStream);
@@ -615,10 +615,10 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Enumerate through the files of a TAR and get a list of KVP names-byte arrays
+         * Enumerate through the files of a TAR and get a list of KVP names-byte arrays
         */
-         * @param stream">The input tar stream
-         * @param isTarGz">True if the input stream is a .tar.gz or .tgz
+         * @param stream The input tar stream
+         * @param isTarGz True if the input stream is a .tar.gz or .tgz
         @returns An enumerable containing each tar entry and it's contents
         public static IEnumerable<KeyValuePair<String, byte[]>> UnTar(Stream stream, boolean isTarGz) {
             using (tar = new TarInputStream(isTarGz ? (Stream)new GZipInputStream(stream) : stream)) {
@@ -635,7 +635,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Enumerate through the files of a TAR and get a list of KVP names-byte arrays.
+         * Enumerate through the files of a TAR and get a list of KVP names-byte arrays.
         */
          * @param source">
         @returns 

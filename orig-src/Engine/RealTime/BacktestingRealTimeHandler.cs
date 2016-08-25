@@ -27,7 +27,7 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine.RealTime
 {
     /**
-    /// Psuedo realtime event processing for backtesting to simulate realtime events in fast forward.
+     * Psuedo realtime event processing for backtesting to simulate realtime events in fast forward.
     */
     public class BacktestingRealTimeHandler : IRealTimeHandler
     {
@@ -38,7 +38,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         private final ConcurrentMap<String, ScheduledEvent> _scheduledEvents = new ConcurrentMap<String, ScheduledEvent>();
 
         /**
-        /// Flag indicating the hander thread is completely finished and ready to dispose.
+         * Flag indicating the hander thread is completely finished and ready to dispose.
         */
         public boolean IsActive
         {
@@ -47,7 +47,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
 
         /**
-        /// Intializes the real time handler for the specified algorithm and job
+         * Intializes the real time handler for the specified algorithm and job
         */
         public void Setup(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler resultHandler, IApi api) {
             //Initialize:
@@ -71,16 +71,16 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
         
         /**
-        /// Normally this would run the realtime event monitoring. Backtesting is in fastforward so the realtime is linked to the backtest clock.
-        /// This thread does nothing. Wait until the job is over.
+         * Normally this would run the realtime event monitoring. Backtesting is in fastforward so the realtime is linked to the backtest clock.
+         * This thread does nothing. Wait until the job is over.
         */
         public void Run() {
         }
 
         /**
-        /// Adds the specified event to the schedule
+         * Adds the specified event to the schedule
         */
-         * @param scheduledEvent">The event to be scheduled, including the date/times the event fires and the callback
+         * @param scheduledEvent The event to be scheduled, including the date/times the event fires and the callback
         public void Add(ScheduledEvent scheduledEvent) {
             if( _algorithm != null ) {
                 scheduledEvent.SkipEventsUntil(_algorithm.UtcTime);
@@ -93,18 +93,18 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
 
         /**
-        /// Removes the specified event from the schedule
+         * Removes the specified event from the schedule
         */
-         * @param name">The name of the event to remove
+         * @param name The name of the event to remove
         public void Remove( String name) {
             ScheduledEvent scheduledEvent;
             _scheduledEvents.TryRemove(name, out scheduledEvent);
         }
 
         /**
-        /// Set the time for the realtime event handler.
+         * Set the time for the realtime event handler.
         */
-         * @param time">Current time.
+         * @param time Current time.
         public void SetTime(DateTime time) {
             // poke each event to see if it has fired, be sure to invoke these in time order
             foreach (scheduledEvent in _scheduledEvents)//.OrderBy(x -> x.Value.NextEventUtcTime)) {
@@ -113,7 +113,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
 
         /**
-        /// Stop the real time thread
+         * Stop the real time thread
         */
         public void Exit() {
             // this doesn't run as it's own thread, so nothing to exit

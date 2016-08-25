@@ -19,22 +19,22 @@ using System;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
 {
     /**
-    /// Defines a transport mechanism for data from its source into various reader methods
+     * Defines a transport mechanism for data from its source into various reader methods
     */
     public interface IStreamReader : IDisposable
     {
         /**
-        /// Gets the transport medium of this stream reader
+         * Gets the transport medium of this stream reader
         */
         SubscriptionTransportMedium TransportMedium { get; }
 
         /**
-        /// Gets whether or not there's more data to be read in the stream
+         * Gets whether or not there's more data to be read in the stream
         */
         boolean EndOfStream { get; }
         
         /**
-        /// Gets the next line/batch of content from the stream 
+         * Gets the next line/batch of content from the stream 
         */
         String ReadLine();
     }

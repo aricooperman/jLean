@@ -20,56 +20,56 @@ using Newtonsoft.Json.Converters;
 package com.quantconnect.lean.Packets
 {
     /**
-    /// Algorithm status update information packet
+     * Algorithm status update information packet
     */
     public class AlgorithmStatusPacket : Packet
     {
         /**
-        /// Current algorithm status
+         * Current algorithm status
         */
         @JsonProperty( "eStatus")]
         [JsonConverter(typeof(StringEnumConverter))]
         public AlgorithmStatus Status;
 
         /**
-        /// Chart we're subscribed to for live trading.
+         * Chart we're subscribed to for live trading.
         */
         @JsonProperty( "sChartSubscription")]
         public String ChartSubscription;
 
         /**
-        /// Optional message or reason for state change.
+         * Optional message or reason for state change.
         */
         @JsonProperty( "sMessage")]
         public String Message;
 
         /**
-        /// Algorithm Id associated with this status packet
+         * Algorithm Id associated with this status packet
         */
         @JsonProperty( "sAlgorithmID")]
         public String AlgorithmId;
 
         /**
-        /// Project Id associated with this status packet
+         * Project Id associated with this status packet
         */
         @JsonProperty( "iProjectID")]
         public int ProjectId;
 
         /**
-        /// The current state of the channel
+         * The current state of the channel
         */
         @JsonProperty( "sChannelStatus")]
         public String ChannelStatus;
 
         /**
-        /// Default constructor for JSON
+         * Default constructor for JSON
         */
         public AlgorithmStatusPacket()
             : base(PacketType.AlgorithmStatus) {
         }
 
         /**
-        /// Initialize algorithm state packet:
+         * Initialize algorithm state packet:
         */
         public AlgorithmStatusPacket( String algorithmId, int projectId, AlgorithmStatus status, String message = "")
             : base (PacketType.AlgorithmStatus) {

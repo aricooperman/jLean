@@ -20,7 +20,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
     /**
-    /// Represent a Position in Oanda.
+     * Represent a Position in Oanda.
     */
     public class Position
     {

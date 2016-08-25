@@ -19,6 +19,7 @@ import java.math.BigDecimal;
 
 import com.quantconnect.lean.orders.Order;
 import com.quantconnect.lean.orders.OrderTypes.OrderDirection;
+import com.quantconnect.lean.orders.SubmitOrderRequest;
 import com.quantconnect.lean.securities.Security;
 
 /**

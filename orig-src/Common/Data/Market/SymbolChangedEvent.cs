@@ -19,35 +19,35 @@ using System;
 package com.quantconnect.lean.Data.Market
 {
     /**
-    /// Symbol changed event of a security. This is generated when a symbol is remapped for a given
-    /// security, for example, at EOD 2014.04.02 GOOG turned into GOOGL, but are the same
+     * Symbol changed event of a security. This is generated when a symbol is remapped for a given
+     * security, for example, at EOD 2014.04.02 GOOG turned into GOOGL, but are the same
     */
     public class SymbolChangedEvent : BaseData
     {
         /**
-        /// Gets the symbol before the change
+         * Gets the symbol before the change
         */
         public String OldSymbol { get; private set; }
 
         /**
-        /// Gets the symbol after the change
+         * Gets the symbol after the change
         */
         public String NewSymbol { get; private set; }
 
         /**
-        /// Initializes a new default instance of the <see cref="SymbolChangedEvent"/> class
+         * Initializes a new default instance of the <see cref="SymbolChangedEvent"/> class
         */
         public SymbolChangedEvent() {
             DataType = MarketDataType.Auxiliary;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="SymbolChangedEvent"/>
+         * Initializes a new instance of the <see cref="SymbolChangedEvent"/>
         */
-         * @param requestedSymbol">The symbol that was originally requested
-         * @param date">The date/time this symbol remapping took place
-         * @param oldSymbol">The old symbol mapping
-         * @param newSymbol">The new symbol mapping
+         * @param requestedSymbol The symbol that was originally requested
+         * @param date The date/time this symbol remapping took place
+         * @param oldSymbol The old symbol mapping
+         * @param newSymbol The new symbol mapping
         public SymbolChangedEvent(Symbol requestedSymbol, DateTime date, String oldSymbol, String newSymbol)
             : this() {
             Time = date;
@@ -57,11 +57,11 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Return a new instance clone of this object, used in fill forward
+         * Return a new instance clone of this object, used in fill forward
         */
-        /// 
-        /// This base implementation uses reflection to copy all public fields and properties
-        /// 
+         * 
+         * This base implementation uses reflection to copy all public fields and properties
+         * 
         @returns A clone of the current object
         public @Override BaseData Clone() {
             return new SymbolChangedEvent(Symbol, Time, OldSymbol, NewSymbol);

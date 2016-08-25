@@ -19,15 +19,15 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Long Legged Doji candlestick pattern indicator
+     * Long Legged Doji candlestick pattern indicator
     */
-    /// 
-    /// Must have:
-    /// - doji body
-    /// - one or two long shadows
-    /// The meaning of "doji" is specified with SetCandleSettings
-    /// The returned value is always positive(+1) but this does not mean it is bullish: long legged doji shows uncertainty
-    /// 
+     * 
+     * Must have:
+     * - doji body
+     * - one or two long shadows
+     * The meaning of "doji" is specified with SetCandleSettings
+     * The returned value is always positive(+1) but this does not mean it is bullish: long legged doji shows uncertainty
+     * 
     public class LongLeggedDoji : CandlestickPattern
     {
         private final int _bodyDojiAveragePeriod;
@@ -37,9 +37,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _shadowLongPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="LongLeggedDoji"/> class using the specified name.
+         * Initializes a new instance of the <see cref="LongLeggedDoji"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public LongLeggedDoji( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowLong).AveragePeriod) + 1) {
             _bodyDojiAveragePeriod = CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod;
@@ -47,14 +47,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="LongLeggedDoji"/> class.
+         * Initializes a new instance of the <see cref="LongLeggedDoji"/> class.
         */
         public LongLeggedDoji()
             : this( "LONGLEGGEDDOJI") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -62,10 +62,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -77,7 +77,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _shadowLongPeriodTotal += GetCandleRange(CandleSettingType.ShadowLong, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -89,7 +89,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = 1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -104,11 +104,11 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
-            _bodyDojiPeriodTotal = 0m;
-            _shadowLongPeriodTotal = 0m;
+            _bodyDojiPeriodTotal = BigDecimal.ZERO;
+            _shadowLongPeriodTotal = BigDecimal.ZERO;
             base.Reset();
         }
     }

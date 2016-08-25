@@ -18,40 +18,40 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the upper and lower band of the Donchian Channel.
-    /// The upper band is computed by finding the highest high over the given period.
-    /// The lower band is computed by finding the lowest low over the given period.
-    /// The primary output value of the indicator is the mean of the upper and lower band for 
-    /// the given timeframe.
+     * This indicator computes the upper and lower band of the Donchian Channel.
+     * The upper band is computed by finding the highest high over the given period.
+     * The lower band is computed by finding the lowest low over the given period.
+     * The primary output value of the indicator is the mean of the upper and lower band for 
+     * the given timeframe.
     */
     public class DonchianChannel : TradeBarIndicator
     {
         private TradeBar _previousInput;
         /**
-        /// Gets the upper band of the Donchian Channel.
+         * Gets the upper band of the Donchian Channel.
         */
         public IndicatorBase<IndicatorDataPoint> UpperBand { get; private set; }
 
         /**
-        /// Gets the lower band of the Donchian Channel.
+         * Gets the lower band of the Donchian Channel.
         */
         public IndicatorBase<IndicatorDataPoint> LowerBand { get; private set; }
 
         /**
-        /// Initializes a new instance of the <see cref="DonchianChannel"/> class.
+         * Initializes a new instance of the <see cref="DonchianChannel"/> class.
         */
-         * @param name">The name.
-         * @param period">The period for both the upper and lower channels.
+         * @param name The name.
+         * @param period The period for both the upper and lower channels.
         public DonchianChannel( String name, int period)
             : this(name, period, period) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="DonchianChannel"/> class.
+         * Initializes a new instance of the <see cref="DonchianChannel"/> class.
         */
-         * @param name">The name.
-         * @param upperPeriod">The period for the upper channel.
-         * @param lowerPeriod">The period for the lower channel
+         * @param name The name.
+         * @param upperPeriod The period for the upper channel.
+         * @param lowerPeriod The period for the lower channel
         public DonchianChannel( String name, int upperPeriod, int lowerPeriod)
             : base(name) {
             UpperBand = new Maximum(name + "_UpperBand", upperPeriod);
@@ -59,7 +59,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -67,9 +67,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator, which by convention is the mean value of the upper band and lower band.
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             if( _previousInput != null ) {
@@ -82,7 +82,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             base.Reset();

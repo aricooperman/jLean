@@ -22,46 +22,46 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Data
 {
     /**
-    /// Provides extension methods to slice enumerables
+     * Provides extension methods to slice enumerables
     */
     public static class SliceExtensions
     {
         /**
-        /// Selects into the slice and returns the TradeBars that have data in order
+         * Selects into the slice and returns the TradeBars that have data in order
         */
-         * @param slices">The enumerable of slice
+         * @param slices The enumerable of slice
         @returns An enumerable of TradeBars
         public static IEnumerable<TradeBars> TradeBars(this IEnumerable<Slice> slices) {
             return slices.Where(x -> x.Bars.Count > 0).Select(x -> x.Bars);
         }
 
         /**
-        /// Selects into the slice and returns the Ticks that have data in order
+         * Selects into the slice and returns the Ticks that have data in order
         */
-         * @param slices">The enumerable of slice
+         * @param slices The enumerable of slice
         @returns An enumerable of Ticks
         public static IEnumerable<Ticks> Ticks(this IEnumerable<Slice> slices) {
             return slices.Where(x -> x.Ticks.Count > 0).Select(x -> x.Ticks);
         }
 
         /**
-        /// Gets an enumerable of TradeBar for the given symbol. This method does not verify
-        /// that the specified symbol points to a TradeBar
+         * Gets an enumerable of TradeBar for the given symbol. This method does not verify
+         * that the specified symbol points to a TradeBar
         */
-         * @param slices">The enumerable of slice
-         * @param symbol">The symbol to retrieve
+         * @param slices The enumerable of slice
+         * @param symbol The symbol to retrieve
         @returns An enumerable of TradeBar for the matching symbol, of no TradeBar found for symbol, empty enumerable is returned
         public static IEnumerable<TradeBar> Get(this IEnumerable<Slice> slices, Symbol symbol) {
             return slices.TradeBars().Where(x -> x.ContainsKey(symbol)).Select(x -> x[symbol]);
         }
 
         /**
-        /// Gets an enumerable of T for the given symbol. This method does not vify
-        /// that the specified symbol points to a T
+         * Gets an enumerable of T for the given symbol. This method does not vify
+         * that the specified symbol points to a T
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param dataDictionaries">The data dictionary enumerable to access
-         * @param symbol">The symbol to retrieve
+         * <typeparam name="T The data type</typeparam>
+         * @param dataDictionaries The data dictionary enumerable to access
+         * @param symbol The symbol to retrieve
         @returns An enumerable of T for the matching symbol, if no T is found for symbol, empty enumerable is returned
         public static IEnumerable<T> Get<T>(this IEnumerable<DataMap<T>> dataDictionaries, Symbol symbol)
             where T : BaseData
@@ -70,12 +70,12 @@ package com.quantconnect.lean.Data
         }
 
         /**
-        /// Gets an enumerable of decimals by accessing the specified field on data for the symbol
+         * Gets an enumerable of decimals by accessing the specified field on data for the symbol
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param dataDictionaries">An enumerable of data dictionaries
-         * @param symbol">The symbol to retrieve
-         * @param field">The field to access
+         * <typeparam name="T The data type</typeparam>
+         * @param dataDictionaries An enumerable of data dictionaries
+         * @param symbol The symbol to retrieve
+         * @param field The field to access
         @returns An enumerable of decimals
         public static IEnumerable<decimal> Get<T>(this IEnumerable<DataMap<T>> dataDictionaries, Symbol symbol, String field) {
             Func<T, decimal> selector;
@@ -106,10 +106,10 @@ package com.quantconnect.lean.Data
         }
 
         /**
-        /// Gets the data dictionaries of the requested type in each slice
+         * Gets the data dictionaries of the requested type in each slice
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param slices">The enumerable of slice
+         * <typeparam name="T The data type</typeparam>
+         * @param slices The enumerable of slice
         @returns An enumerable of data dictionary of the requested type
         public static IEnumerable<DataMap<T>> Get<T>(this IEnumerable<Slice> slices)
             where T : BaseData
@@ -118,11 +118,11 @@ package com.quantconnect.lean.Data
         }
 
         /**
-        /// Gets an enumerable of T by accessing the slices for the requested symbol
+         * Gets an enumerable of T by accessing the slices for the requested symbol
         */
-        /// <typeparam name="T">The data type</typeparam>
-         * @param slices">The enumerable of slice
-         * @param symbol">The symbol to retrieve
+         * <typeparam name="T The data type</typeparam>
+         * @param slices The enumerable of slice
+         * @param symbol The symbol to retrieve
         @returns An enumerable of T by accessing each slice for the requested symbol
         public static IEnumerable<T> Get<T>(this IEnumerable<Slice> slices, Symbol symbol)
             where T : BaseData
@@ -131,12 +131,12 @@ package com.quantconnect.lean.Data
         }
 
         /**
-        /// Gets an enumerable of BigDecimal by accessing the slice for the symbol and then retrieving the specified
-        /// field on each piece of data
+         * Gets an enumerable of BigDecimal by accessing the slice for the symbol and then retrieving the specified
+         * field on each piece of data
         */
-         * @param slices">The enumerable of slice
-         * @param symbol">The symbol to retrieve
-         * @param field">The field selector used to access the dats
+         * @param slices The enumerable of slice
+         * @param symbol The symbol to retrieve
+         * @param field The field selector used to access the dats
         @returns An enumerable of decimal
         public static IEnumerable<decimal> Get(this IEnumerable<Slice> slices, Symbol symbol, Func<BaseData, decimal> field) {
             foreach (slice in slices) {
@@ -149,9 +149,9 @@ package com.quantconnect.lean.Data
         }
 
         /**
-        /// Converts the specified enumerable of decimals into a double array
+         * Converts the specified enumerable of decimals into a double array
         */
-         * @param decimals">The enumerable of decimal
+         * @param decimals The enumerable of decimal
         @returns Double array representing the enumerable of decimal
         public static double[] ToDoubleArray(this IEnumerable<decimal> decimals) {
             return decimals.Select(x -> (double) x).ToArray();

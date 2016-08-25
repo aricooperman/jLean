@@ -39,7 +39,7 @@ public class Global {
     
     public static final ZoneId UTC_ZONE_ID = ZoneId.of( "UTC" );
     
-    public static final EventBus APP_EVENT_BUS = new EventBus( "Main Bus" );
+//    public static final EventBus APP_EVENT_BUS = new EventBus( "Main Bus" );
     
     public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper()
             .registerModule( new GuavaModule() )
@@ -99,10 +99,10 @@ public class Global {
 //            ConversionRate = 1m;
 //        }
 //
-//        /**
+//        /// <summary>
 //        /// Create a simple JSON holdings from a Security holding class.
-//        */
-//         * @param security">The security instance
+//        /// </summary>
+//        /// <param name="security The security instance</param>
 //        public Holding(Security security)
 //             : this()
 //        {
@@ -124,10 +124,10 @@ public class Global {
 //            MarketPrice = Math.Round(holding.Price, rounding);
 //        }
 //
-//        /**
+//        /// <summary>
 //        /// Clones this instance
-//        */
-//        @returns A new Holding object with the same values as this one
+//        /// </summary>
+//        /// <returns>A new Holding object with the same values as this one</returns>
 //        public Holding Clone()
 //        {
 //            return new Holding
@@ -142,9 +142,9 @@ public class Global {
 //            };
 //        }
 //
-//        /**
+//        /// <summary>
 //        /// Writes out the properties of this instance to string
-//        */
+//        /// </summary>
 //        public @Override String toString()
 //        {
 //            if( ConversionRate == 1.0m)
@@ -233,6 +233,20 @@ public class Global {
         public static SecurityType fromOrdinal( int ord ) {
             return ordinalToTypeMap.get( ord );
         }
+
+        public static SecurityType valueOfIgnoreCase( String string ) {
+            try {
+                return SecurityType.valueOf( string );
+            }
+            catch( Exception e ) {
+                string = string.toLowerCase();
+                for( SecurityType st : SecurityType.values() ) {
+                    if( st.name().toLowerCase().equals( string ) )
+                        return st;
+                }
+                return null;
+            }
+        }
     }
 
     /// Account type: margin or cash
@@ -282,7 +296,7 @@ public class Global {
     }
 
     /// Types of tick data - trades or quote ticks.
-    /// QuantConnect currently only has trade tick data but can handle quote tick data with the same data structures.
+    /// <remarks>QuantConnect currently only has trade tick data but can handle quote tick data with the same data structures.</remarks>
     public enum TickType {
         /// Trade type tick object.
         Trade,
@@ -300,7 +314,7 @@ public class Global {
     }
 
     /// Resolution of data requested.
-    /// Always sort the enum from the smallest to largest resolution
+    /// <remarks>Always sort the enum from the smallest to largest resolution</remarks>
     public enum Resolution {
         /// Tick Resolution (1)
         Tick,
@@ -716,9 +730,9 @@ using QuantConnect.Securities.Forex;
 
 package com.quantconnect.lean
 {
-    /**
+    /// <summary>
     /// Shortcut date format strings
-    */
+    /// </summary>
     public static class DateFormat
     {
         /// Year-Month-Date 6 Character Date Representation
@@ -739,9 +753,9 @@ package com.quantconnect.lean
         public static final String Forex = "yyyyMMdd HH:mm:ss.ffff";
     }
 
-    /**
+    /// <summary>
     /// Singular holding of assets from backend live nodes:
-    */
+    /// </summary>
     [JsonObject]
     public class Holding
     {
@@ -772,10 +786,10 @@ package com.quantconnect.lean
             ConversionRate = 1m;
         }
 
-        /**
+        /// <summary>
         /// Create a simple JSON holdings from a Security holding class.
-        */
-         * @param security">The security instance
+        /// </summary>
+        /// <param name="security The security instance</param>
         public Holding(Security security)
              : this() {
             holding = security.Holdings;
@@ -795,10 +809,10 @@ package com.quantconnect.lean
             MarketPrice = Math.Round(holding.Price, rounding);
         }
 
-        /**
+        /// <summary>
         /// Clones this instance
-        */
-        @returns A new Holding object with the same values as this one
+        /// </summary>
+        /// <returns>A new Holding object with the same values as this one</returns>
         public Holding Clone() {
             return new Holding
             {
@@ -812,9 +826,9 @@ package com.quantconnect.lean
             };
         }
 
-        /**
+        /// <summary>
         /// Writes out the properties of this instance to string
-        */
+        /// </summary>
         public @Override String toString() {
             if( ConversionRate == 1.0m) {
                 return String.format( "%1$s: %2$s @ %3$s{3} - Market: %3$s{4}", Symbol, Quantity, CurrencySymbol, AveragePrice, MarketPrice);
@@ -823,9 +837,9 @@ package com.quantconnect.lean
         }
     }
 
-    /**
+    /// <summary>
     /// Processing runmode of the backtest.
-    */
+    /// </summary>
     /// <obsolete>The runmode enum is now obsolete and all tasks are run in series mode. This was done to ensure algorithms have memory of the day before.</obsolete>
     public enum RunMode
     {
@@ -838,143 +852,143 @@ package com.quantconnect.lean
     }
 
 
-    /**
+    /// <summary>
     /// Multilanguage support enum: which language is this project for the interop bridge converter.
-    */
+    /// </summary>
     [JsonConverter(typeof(StringEnumConverter))]
     public enum Language
     {
-        /**
+        /// <summary>
         /// C# Language Project
-        */
+        /// </summary>
         [EnumMember(Value = "C#")]
         CSharp,
 
-        /**
+        /// <summary>
         /// FSharp Project
-        */
+        /// </summary>
         [EnumMember(Value = "F#")]
         FSharp,
 
-        /**
+        /// <summary>
         /// Visual Basic Project
-        */
+        /// </summary>
         [EnumMember(Value = "VB")]
         VisualBasic,
 
-        /**
+        /// <summary>
         /// Java Language Project
-        */
+        /// </summary>
         [EnumMember(Value = "Ja")]
         Java,
 
-        /**
+        /// <summary>
         /// Python Language Project
-        */
+        /// </summary>
         [EnumMember(Value = "Py")]
         Python
     }
 
 
-    /**
+    /// <summary>
     /// User / Algorithm Job Subscription Level
-    */
+    /// </summary>
     public enum UserPlan
     {
-        /**
+        /// <summary>
         /// Free User (Backtesting).
-        */
+        /// </summary>
         Free,
 
-        /**
+        /// <summary>
         /// Hobbyist User with Included 512mb Server.
-        */
+        /// </summary>
         Hobbyist
     }
 
 
-    /**
+    /// <summary>
     /// Live server types available through the web IDE. / QC deployment.
-    */
+    /// </summary>
     public enum ServerType
     {
-        /**
+        /// <summary>
         /// Additional server
-        */
+        /// </summary>
         Server512,
 
-        /**
+        /// <summary>
         /// Upgraded server
-        */
+        /// </summary>
         Server1024,
 
-        /**
+        /// <summary>
         /// Server with 2048 MB Ram.
-        */
+        /// </summary>
         Server2048
     }
 
 
-    /**
+    /// <summary>
     /// Type of tradable security / underlying asset
-    */
+    /// </summary>
     public enum SecurityType
     {
-        /**
+        /// <summary>
         /// Base class for all security types:
-        */
+        /// </summary>
         Base,
 
-        /**
+        /// <summary>
         /// US Equity Security
-        */
+        /// </summary>
         Equity,
 
-        /**
+        /// <summary>
         /// Option Security Type
-        */
+        /// </summary>
         Option,
 
-        /**
+        /// <summary>
         /// Commodity Security Type
-        */
+        /// </summary>
         Commodity,
 
-        /**
+        /// <summary>
         /// FOREX Security
-        */
+        /// </summary>
         Forex,
 
-        /**
+        /// <summary>
         /// Future Security Type
-        */
+        /// </summary>
         Future,
 
-        /**
+        /// <summary>
         /// Contract For a Difference Security Type.
-        */
+        /// </summary>
         Cfd
     }
 
-    /**
+    /// <summary>
     /// Account type: margin or cash
-    */
+    /// </summary>
     public enum AccountType
     {
-        /**
+        /// <summary>
         /// Margin account type
-        */
+        /// </summary>
         Margin,
 
-        /**
+        /// <summary>
         /// Cash account type
-        */
+        /// </summary>
         Cash
     }
 
-    /**
+    /// <summary>
     /// Market data style: is the market data a summary (OHLC style) bar, or is it a time-price value.
-    */
+    /// </summary>
     public enum MarketDataType
     {
         /// Base market data type
@@ -991,9 +1005,9 @@ package com.quantconnect.lean
         OptionChain
     }
 
-    /**
+    /// <summary>
     /// Datafeed enum options for selecting the source of the datafeed.
-    */
+    /// </summary>
     public enum DataFeedEndpoint
     {
         /// Backtesting Datafeed Endpoint
@@ -1006,9 +1020,9 @@ package com.quantconnect.lean
         Database
     }
 
-    /**
+    /// <summary>
     /// Cloud storage permission options.
-    */
+    /// </summary>
     public enum StoragePermissions
     {
         /// Public Storage Permissions
@@ -1018,10 +1032,10 @@ package com.quantconnect.lean
         Authenticated
     }
 
-    /**
+    /// <summary>
     /// Types of tick data - trades or quote ticks.
-    */
-    /// QuantConnect currently only has trade tick data but can handle quote tick data with the same data structures.
+    /// </summary>
+    /// <remarks>QuantConnect currently only has trade tick data but can handle quote tick data with the same data structures.</remarks>
     public enum TickType
     {
         /// Trade type tick object.
@@ -1030,26 +1044,26 @@ package com.quantconnect.lean
         Quote
     }
 
-    /**
+    /// <summary>
     /// Specifies the type of <see cref="QuantConnect.Data.Market.Delisting"/> data
-    */
+    /// </summary>
     public enum DelistingType
     {
-        /**
+        /// <summary>
         /// Specifies a warning of an imminent delisting
-        */
+        /// </summary>
         Warning = 0,
 
-        /**
+        /// <summary>
         /// Specifies the symbol has been delisted
-        */
+        /// </summary>
         Delisted = 1
     }
 
-    /**
+    /// <summary>
     /// Resolution of data requested.
-    */
-    /// Always sort the enum from the smallest to largest resolution
+    /// </summary>
+    /// <remarks>Always sort the enum from the smallest to largest resolution</remarks>
     public enum Resolution
     {
         /// Tick Resolution (1)
@@ -1064,46 +1078,46 @@ package com.quantconnect.lean
         Daily
     }
 
-    /**
+    /// <summary>
     /// Specifies the different types of options
-    */
+    /// </summary>
     public enum OptionRight
     {
-        /**
+        /// <summary>
         /// A call option, the right to buy at the strike price
-        */
+        /// </summary>
         Call,
 
-        /**
+        /// <summary>
         /// A put option, the right to sell at the strike price
-        */
+        /// </summary>
         Put
     }
 
-    /**
+    /// <summary>
     /// Specifies the style of an option
-    */
+    /// </summary>
     public enum OptionStyle
     {
-        /**
+        /// <summary>
         /// American style options are able to be exercised at any time on or before the expiration date
-        */
+        /// </summary>
         American,
 
-        /**
+        /// <summary>
         /// European style options are able to be exercised on the expiration date only.
-        */
+        /// </summary>
         European
     }
 
-    /**
+    /// <summary>
     /// Wrapper for algorithm status enum to include the charting subscription.
-    */
+    /// </summary>
     public class AlgorithmControl
     {
-        /**
+        /// <summary>
         /// Default initializer for algorithm control class.
-        */
+        /// </summary>
         public AlgorithmControl() {
             // default to true, API can @Override
             HasSubscribers = true;
@@ -1111,25 +1125,25 @@ package com.quantconnect.lean
             ChartSubscription = "Strategy Equity";
         }
 
-        /**
+        /// <summary>
         /// Current run status of the algorithm id.
-        */
+        /// </summary>
         public AlgorithmStatus Status;
 
-        /**
+        /// <summary>
         /// Currently requested chart.
-        */
+        /// </summary>
         public String ChartSubscription;
 
-        /**
+        /// <summary>
         /// True if there's subscribers on the channel
-        */
+        /// </summary>
         public boolean HasSubscribers;
     }
 
-    /**
+    /// <summary>
     /// States of a live deployment.
-    */
+    /// </summary>
     public enum AlgorithmStatus
     {
         /// Error compiling algorithm at start
@@ -1158,30 +1172,30 @@ package com.quantconnect.lean
         History
     }
 
-    /**
+    /// <summary>
     /// Specifies where a subscription's data comes from
-    */
+    /// </summary>
     public enum SubscriptionTransportMedium
     {
-        /**
+        /// <summary>
         /// The subscription's data comes from disk
-        */
+        /// </summary>
         LocalFile,
 
-        /**
+        /// <summary>
         /// The subscription's data is downloaded from a remote source
-        */
+        /// </summary>
         RemoteFile,
 
-        /**
+        /// <summary>
         /// The subscription's data comes from a rest call that is polled and returns a single line/data point of information
-        */
+        /// </summary>
         Rest
     }
 
-    /**
+    /// <summary>
     /// enum Period - Enum of all the analysis periods, AS integers. Reference "Period" Array to access the values
-    */
+    /// </summary>
     public enum Period
     {
         /// Period Short Codes - 10
@@ -1214,32 +1228,32 @@ package com.quantconnect.lean
         SixHours = 21600
     }
 
-    /**
+    /// <summary>
     /// Specifies how data is normalized before being sent into an algorithm
-    */
+    /// </summary>
     public enum DataNormalizationMode
     {
-        /**
+        /// <summary>
         /// The raw price with dividends added to cash book
-        */
+        /// </summary>
         Raw,
-        /**
+        /// <summary>
         /// The adjusted prices with splits and dividendends factored in
-        */
+        /// </summary>
         Adjusted,
-        /**
+        /// <summary>
         /// The adjusted prices with only splits factored in, dividends paid out to the cash book
-        */
+        /// </summary>
         SplitAdjusted,
-        /**
+        /// <summary>
         /// The split adjusted price plus dividends
-        */
+        /// </summary>
         TotalReturn
     }
 
-    /**
+    /// <summary>
     /// Global Market Short Codes and their full versions: (used in tick objects)
-    */
+    /// </summary>
     public static class MarketCodes
     {
         /// US Market Codes
@@ -1271,30 +1285,30 @@ package com.quantconnect.lean
         };
     }
 
-    /**
+    /// <summary>
     /// Defines the different channel status values
-    */
+    /// </summary>
     public static class ChannelStatus
     {
-        /**
+        /// <summary>
         /// The channel is empty
-        */
+        /// </summary>
         public static final String Vacated = "channel_vacated";
-        /**
+        /// <summary>
         /// The channel has subscribers
-        */
+        /// </summary>
         public static final String Occupied = "channel_occupied";
     }
 
-    /**
+    /// <summary>
     /// US Public Holidays - Not Tradeable:
-    */
+    /// </summary>
     public static class USHoliday
     {
-        /**
+        /// <summary>
         /// Public Holidays
-        */
-        public static final HashSet<DateTime> Dates = new HashSet<DateTime>
+        /// </summary>
+        public static readonly HashSet<DateTime> Dates = new HashSet<DateTime>
         {
             /* New Years Day
             new DateTime(1998, 01, 01),

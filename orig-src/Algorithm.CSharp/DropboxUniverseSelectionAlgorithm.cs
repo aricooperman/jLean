@@ -23,9 +23,9 @@ using QuantConnect.Data.UniverseSelection;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// In this algortihm we show how you can easily use the universe selection feature to fetch symbols
-    /// to be traded using the AddUniverse method. This method accepts a function that will return the
-    /// desired current set of symbols. Return Universe.Unchanged if no universe changes should be made
+     * In this algortihm we show how you can easily use the universe selection feature to fetch symbols
+     * to be traded using the AddUniverse method. This method accepts a function that will return the
+     * desired current set of symbols. Return Universe.Unchanged if no universe changes should be made
     */
     public class DropboxUniverseSelectionAlgorithm : QCAlgorithm
     {
@@ -35,11 +35,11 @@ package com.quantconnect.lean.Algorithm.CSharp
         private final Map<DateTime, List<String>> _backtestSymbolsPerDay = new Map<DateTime, List<String>>();
 
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
-        /// <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
-        /// <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
-        /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
+         * <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
+         * <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
+         * <seealso cref="QCAlgorithm.SetCash(decimal)"/>
         public @Override void Initialize() {
             // this sets the resolution for data subscriptions added by our universe
             UniverseSettings.Resolution = Resolution.Daily;
@@ -90,19 +90,19 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Event - v3.0 DATA EVENT HANDLER: (Pattern) Basic template for user to @Override for receiving all subscription data in a single event
+         * Event - v3.0 DATA EVENT HANDLER: (Pattern) Basic template for user to @Override for receiving all subscription data in a single event
         */
-        /// <code>
-        /// TradeBars bars = slice.Bars;
-        /// Ticks ticks = slice.Ticks;
-        /// TradeBar spy = slice["SPY"];
-        /// List{Tick} aaplTicks = slice["AAPL"]
-        /// Quandl oil = slice["OIL"]
-        /// dynamic anySymbol = slice[symbol];
-        /// DataDictionary{Quandl} allQuandlData = slice.Get{Quand}
-        /// Quandl oil = slice.Get{Quandl}( "OIL")
-        /// </code>
-         * @param slice">The current slice of data keyed by symbol string
+         * <code>
+         * TradeBars bars = slice.Bars;
+         * Ticks ticks = slice.Ticks;
+         * TradeBar spy = slice["SPY"];
+         * List{Tick} aaplTicks = slice["AAPL"]
+         * Quandl oil = slice["OIL"]
+         * dynamic anySymbol = slice[symbol];
+         * DataDictionary{Quandl} allQuandlData = slice.Get{Quand}
+         * Quandl oil = slice.Get{Quandl}( "OIL")
+         * </code>
+         * @param slice The current slice of data keyed by symbol string
         public @Override void OnData(Slice slice) {
             if( slice.Bars.Count == 0) return;
             if( _changes == SecurityChanges.None) return;
@@ -120,7 +120,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Event fired each time the we add/remove securities from the data feed
+         * Event fired each time the we add/remove securities from the data feed
         */
          * @param changes">
         public @Override void OnSecuritiesChanged(SecurityChanges changes) {

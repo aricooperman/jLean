@@ -20,7 +20,7 @@
 {
 #pragma warning disable 1591
     /**
-    /// Represents the Oanda Account.
+     * Represents the Oanda Account.
     */
     public class Account
     {

@@ -22,8 +22,8 @@ using System.Windows.Forms;
 package com.quantconnect.lean.Views.WinForms
 {
     /**
-    /// Public extensions methods for the forms.
-    /// Credit: http://stackoverflow.com/questions/1926264/color-different-parts-of-a-richtextbox-string/1926822#1926822
+     * Public extensions methods for the forms.
+     * Credit: http://stackoverflow.com/questions/1926264/color-different-parts-of-a-richtextbox-string/1926822#1926822
     */
     public static class Extensions
     {
@@ -37,7 +37,7 @@ package com.quantconnect.lean.Views.WinForms
         }
 
         /**
-        /// Cross thread invokation
+         * Cross thread invokation
         */
         public static TResult SafeInvoke<T, TResult>(this T isi, Func<T, TResult> call) where T : ISynchronizeInvoke
         {

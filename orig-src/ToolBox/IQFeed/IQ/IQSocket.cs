@@ -112,7 +112,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
         }
         internal void Update( String line) {
             fields = line.split(',');
-            lock (this) {
+            synchronized(this) {
                 _serverIp = fields[2];
                 if( !int.TryParse(fields[3], out _serverPort)) _serverPort = 0;
                 if( !int.TryParse(fields[4], out _maxSymbols)) _maxSymbols = 0;
@@ -136,25 +136,25 @@ package com.quantconnect.lean.ToolBox.IQFeed
             }
         }
 
-        public String serverIp { get { lock (this) return _serverIp; } }
-        public int serverPort { get { lock (this) return _serverPort; } }
-        public int maxSymbols { get { lock (this) return _maxSymbols; } }
-        public int numberOfSymbols { get { lock (this) return _numberOfSymbols; } }
-        public int clientsConnected { get { lock (this) return _clientsConnected; } }
-        public int secondsSinceLastUpdate { get { lock (this) return _secondsSinceLastUpdate; } }
-        public int reconnections { get { lock (this) return _reconnections; } }
-        public int attemptedReconnections { get { lock (this) return _attemptedReconnections; } }
-        public DateTime startTime { get { lock (this) return _startTime; } }
-        public DateTime marketTime { get { lock (this) return _marketTime; } }
-        public boolean connected { get { lock (this) return _connected; } }
-        public String iqFeedVersion { get { lock (this) return _iqFeedVersion; } }
-        public String loginId { get { lock (this) return _loginId; } }
-        public double totalKbsRecv { get { lock (this) return _totalKbsRecv; } }
-        public double kbsPerSecRecv { get { lock (this) return _kbsPerSecRecv; } }
-        public double avgKbsPerSecRecv { get { lock (this) return _avgKbsPerSecRecv; } }
-        public double totalKbsSent { get { lock (this) return _totalKbsSent; } }
-        public double kbsPerSecSent { get { lock (this) return _kbsPerSecSent; } }
-        public double avgKbsPerSecSent { get { lock (this) return _avgKbsPerSecSent; } }
+        public String serverIp { get { synchronized(this) return _serverIp; } }
+        public int serverPort { get { synchronized(this) return _serverPort; } }
+        public int maxSymbols { get { synchronized(this) return _maxSymbols; } }
+        public int numberOfSymbols { get { synchronized(this) return _numberOfSymbols; } }
+        public int clientsConnected { get { synchronized(this) return _clientsConnected; } }
+        public int secondsSinceLastUpdate { get { synchronized(this) return _secondsSinceLastUpdate; } }
+        public int reconnections { get { synchronized(this) return _reconnections; } }
+        public int attemptedReconnections { get { synchronized(this) return _attemptedReconnections; } }
+        public DateTime startTime { get { synchronized(this) return _startTime; } }
+        public DateTime marketTime { get { synchronized(this) return _marketTime; } }
+        public boolean connected { get { synchronized(this) return _connected; } }
+        public String iqFeedVersion { get { synchronized(this) return _iqFeedVersion; } }
+        public String loginId { get { synchronized(this) return _loginId; } }
+        public double totalKbsRecv { get { synchronized(this) return _totalKbsRecv; } }
+        public double kbsPerSecRecv { get { synchronized(this) return _kbsPerSecRecv; } }
+        public double avgKbsPerSecRecv { get { synchronized(this) return _avgKbsPerSecRecv; } }
+        public double totalKbsSent { get { synchronized(this) return _totalKbsSent; } }
+        public double kbsPerSecSent { get { synchronized(this) return _kbsPerSecSent; } }
+        public double avgKbsPerSecSent { get { synchronized(this) return _avgKbsPerSecSent; } }
 
         #region private
         private String _serverIp;

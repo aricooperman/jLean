@@ -140,7 +140,7 @@ public class Program {
     }
 
     //    /**
-    //    /// Form launcher method for thread.
+    //     * Form launcher method for thread.
     //    */
     //    static void LaunchUX( IMessagingHandler messaging, AlgorithmNodePacket job ) {
     //            //Launch the UX
@@ -274,7 +274,7 @@ public class Program {
  * }
  * }
  * /**
- * /// Form launcher method for thread.
+ *  * Form launcher method for thread.
  * */
  * static void LaunchUX(IMessagingHandler messaging, AlgorithmNodePacket job)
  * {

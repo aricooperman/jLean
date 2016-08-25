@@ -333,7 +333,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 currentTime = DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork);
                 Console.WriteLine(currentTime + ": timer.Elapsed");
 
-                lock (state) {
+                synchronized(state) {
                     list = new BaseDataCollection {Symbol = symbol};
                     list.Data.AddRange(Enumerable.Range(0, coarseDataPointCount).Select(x -> new CoarseFundamental
                     {
@@ -346,7 +346,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             boolean yieldedUniverseData = false;
             feed = RunDataFeed(algorithm, fdqh =>
             {
-                lock (lck) {
+                synchronized(lck) {
                     if( list != null )
                         try
                         {

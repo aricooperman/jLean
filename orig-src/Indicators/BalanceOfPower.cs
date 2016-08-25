@@ -18,22 +18,22 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the Balance Of Power (BOP). 
-    /// The Balance Of Power is calculated with the following formula:
-    /// BOP = (Close - Open) / (High - Low)
+     * This indicator computes the Balance Of Power (BOP). 
+     * The Balance Of Power is calculated with the following formula:
+     * BOP = (Close - Open) / (High - Low)
     */
     public class BalanceOfPower : TradeBarIndicator
     {
         /**
-        /// Initializes a new instance of the <see cref="BalanceOfPower"/> class using the specified name.
+         * Initializes a new instance of the <see cref="BalanceOfPower"/> class using the specified name.
         */ 
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public BalanceOfPower( String name)
             : base(name) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -41,13 +41,13 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             range = input.High - input.Low;
-            return range > 0 ? (input.Close - input.Open) / range : 0m;
+            return range > 0 ? (input.Close - input.Open) / range : BigDecimal.ZERO;
         }
 
     }

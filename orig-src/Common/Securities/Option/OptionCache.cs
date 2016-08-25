@@ -16,10 +16,10 @@
 package com.quantconnect.lean.Securities.Option
 {
     /**
-    /// Option specific caching support
+     * Option specific caching support
     */
-    /// Class is virtually empty and scheduled to be made obsolete. Potentially could be used for user data storage.
-    /// <seealso cref="SecurityCache"/>
+     * Class is virtually empty and scheduled to be made obsolete. Potentially could be used for user data storage.
+     * <seealso cref="SecurityCache"/>
     public class OptionCache : SecurityCache
     {
     }

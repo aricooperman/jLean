@@ -26,8 +26,8 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Queues
 {
     /**
-    /// Represents a command queue handler that sources it's commands from
-    /// a file on the local disk
+     * Represents a command queue handler that sources it's commands from
+     * a file on the local disk
     */
     public class FileCommandQueueHandler : ICommandQueueHandler
     {
@@ -35,31 +35,31 @@ package com.quantconnect.lean.Queues
         private final Queue<ICommand> _commands = new Queue<ICommand>();
 
         /**
-        /// Initializes a new instance of the <see cref="FileCommandQueueHandler"/> class
-        /// using the 'command-json-file' configuration value for the command json file
+         * Initializes a new instance of the <see cref="FileCommandQueueHandler"/> class
+         * using the 'command-json-file' configuration value for the command json file
         */
         public FileCommandQueueHandler()
             : this(Config.Get( "command-json-file", "command.json")) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="FileCommandQueueHandler"/> class
+         * Initializes a new instance of the <see cref="FileCommandQueueHandler"/> class
         */
-         * @param commandJsonFilePath">The file path to the commands json file
+         * @param commandJsonFilePath The file path to the commands json file
         public FileCommandQueueHandler( String commandJsonFilePath) {
             _commandJsonFilePath = commandJsonFilePath;
         }
 
         /**
-        /// Initializes this command queue for the specified job
+         * Initializes this command queue for the specified job
         */
-         * @param job">The job that defines what queue to bind to
-         * @param algorithm">The algorithm instance
+         * @param job The job that defines what queue to bind to
+         * @param algorithm The algorithm instance
         public void Initialize(AlgorithmNodePacket job, IAlgorithm algorithm) {
         }
 
         /**
-        /// Gets the next command in the queue
+         * Gets the next command in the queue
         */
         @returns The next command in the queue, if present, null if no commands present
         public IEnumerable<ICommand> GetCommands() {
@@ -74,7 +74,7 @@ package com.quantconnect.lean.Queues
         }
 
         /**
-        /// Reads the commnd file on disk and populates the queue with the commands
+         * Reads the commnd file on disk and populates the queue with the commands
         */
         private void ReadCommandFile() {
             object deserialized;
@@ -109,9 +109,9 @@ package com.quantconnect.lean.Queues
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
         }
     }

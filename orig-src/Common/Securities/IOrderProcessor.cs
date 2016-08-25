@@ -18,14 +18,14 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Represents a type capable of processing orders
+     * Represents a type capable of processing orders
     */
     public interface IOrderProcessor : IOrderProvider
     {
         /**
-        /// Adds the specified order to be processed
+         * Adds the specified order to be processed
         */
-         * @param request">The <see cref="OrderRequest"/> to be processed
+         * @param request The <see cref="OrderRequest"/> to be processed
         @returns The <see cref="OrderTicket"/> for the corresponding <see cref="OrderRequest.OrderId"/>
         OrderTicket Process(OrderRequest request);
     }

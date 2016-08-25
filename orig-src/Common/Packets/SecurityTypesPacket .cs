@@ -20,18 +20,18 @@ using Newtonsoft.Json;
 package com.quantconnect.lean.Packets
 {
     /**
-    /// Security types packet contains information on the markets the user data has requested.
+     * Security types packet contains information on the markets the user data has requested.
     */
     public class SecurityTypesPacket : Packet
     {
         /**
-        /// List of Security Type the user has requested (Equity, Forex, Futures etc).
+         * List of Security Type the user has requested (Equity, Forex, Futures etc).
         */
         @JsonProperty( "aMarkets")]
         public List<SecurityType> Types = new List<SecurityType>();
 
         /**
-        /// CSV formatted, lower case list of SecurityTypes for the web API.
+         * CSV formatted, lower case list of SecurityTypes for the web API.
         */
         public String TypesCSV
         {
@@ -47,7 +47,7 @@ package com.quantconnect.lean.Packets
         }
 
         /**
-        /// Default constructor for JSON
+         * Default constructor for JSON
         */
         public SecurityTypesPacket()
             : base (PacketType.SecurityTypes) { }

@@ -23,7 +23,7 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Scheduling
 {
     /**
-    /// Helper class used to provide better syntax when defining time rules
+     * Helper class used to provide better syntax when defining time rules
     */
     public class TimeRules
     {
@@ -32,71 +32,71 @@ package com.quantconnect.lean.Scheduling
         private final SecurityManager _securities;
 
         /**
-        /// Initializes a new instance of the <see cref="TimeRules"/> helper class
+         * Initializes a new instance of the <see cref="TimeRules"/> helper class
         */
-         * @param securities">The security manager
-         * @param timeZone">The algorithm's default time zone
+         * @param securities The security manager
+         * @param timeZone The algorithm's default time zone
         public TimeRules(SecurityManager securities, ZoneId timeZone) {
             _securities = securities;
             _timeZone = timeZone;
         }
 
         /**
-        /// Sets the default time zone
+         * Sets the default time zone
         */
-         * @param timeZone">The time zone to use for helper methods that can't resolve a time zone
+         * @param timeZone The time zone to use for helper methods that can't resolve a time zone
         public void SetDefaultTimeZone(ZoneId timeZone) {
             _timeZone = timeZone;
         }
 
         /**
-        /// Specifies an event should fire at the specified time of day in the algorithm's time zone
+         * Specifies an event should fire at the specified time of day in the algorithm's time zone
         */
-         * @param timeOfDay">The time of day in the algorithm's time zone the event should fire
+         * @param timeOfDay The time of day in the algorithm's time zone the event should fire
         @returns A time rule that fires at the specified time in the algorithm's time zone
         public ITimeRule At(TimeSpan timeOfDay) {
             return At(timeOfDay, _timeZone);
         }
 
         /**
-        /// Specifies an event should fire at the specified time of day in the algorithm's time zone
+         * Specifies an event should fire at the specified time of day in the algorithm's time zone
         */
-         * @param hour">The hour
-         * @param minute">The minute
-         * @param second">The second
+         * @param hour The hour
+         * @param minute The minute
+         * @param second The second
         @returns A time rule that fires at the specified time in the algorithm's time zone
         public ITimeRule At(int hour, int minute, int second = 0) {
             return At(new TimeSpan(hour, minute, second), _timeZone);
         }
 
         /**
-        /// Specifies an event should fire at the specified time of day in the specified time zone
+         * Specifies an event should fire at the specified time of day in the specified time zone
         */
-         * @param hour">The hour
-         * @param minute">The minute
-         * @param timeZone">The time zone the event time is represented in
+         * @param hour The hour
+         * @param minute The minute
+         * @param timeZone The time zone the event time is represented in
         @returns A time rule that fires at the specified time in the algorithm's time zone
         public ITimeRule At(int hour, int minute, ZoneId timeZone) {
             return At(new TimeSpan(hour, minute, 0), timeZone);
         }
 
         /**
-        /// Specifies an event should fire at the specified time of day in the specified time zone
+         * Specifies an event should fire at the specified time of day in the specified time zone
         */
-         * @param hour">The hour
-         * @param minute">The minute
-         * @param second">The second
-         * @param timeZone">The time zone the event time is represented in
+         * @param hour The hour
+         * @param minute The minute
+         * @param second The second
+         * @param timeZone The time zone the event time is represented in
         @returns A time rule that fires at the specified time in the algorithm's time zone
         public ITimeRule At(int hour, int minute, int second, ZoneId timeZone) {
             return At(new TimeSpan(hour, minute, second), timeZone);
         }
 
         /**
-        /// Specifies an event should fire at the specified time of day in the specified time zone
+         * Specifies an event should fire at the specified time of day in the specified time zone
         */
-         * @param timeOfDay">The time of day in the algorithm's time zone the event should fire
-         * @param timeZone">The time zone the date time is expressed in
+         * @param timeOfDay The time of day in the algorithm's time zone the event should fire
+         * @param timeZone The time zone the date time is expressed in
         @returns A time rule that fires at the specified time in the algorithm's time zone
         public ITimeRule At(TimeSpan timeOfDay, ZoneId timeZone) {
             name = String.join( ",", timeOfDay.TotalHours.toString( "0.##"));
@@ -110,9 +110,9 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Specifies an event should fire periodically on the requested interval
+         * Specifies an event should fire periodically on the requested interval
         */
-         * @param interval">The frequency with which the event should fire
+         * @param interval The frequency with which the event should fire
         @returns A time rule that fires after each interval passes
         public ITimeRule Every(TimeSpan interval) {
             name = "Every " + interval.TotalMinutes.toString( "0.##") + " min";
@@ -121,11 +121,11 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Specifies an event should fire at market open +- <paramref name="minutesAfterOpen"/>
+         * Specifies an event should fire at market open +- <paramref name="minutesAfterOpen"/>
         */
-         * @param symbol">The symbol whose market open we want an event for
-         * @param minutesAfterOpen">The time after market open that the event should fire
-         * @param extendedMarketOpen">True to use extended market open, false to use regular market open
+         * @param symbol The symbol whose market open we want an event for
+         * @param minutesAfterOpen The time after market open that the event should fire
+         * @param extendedMarketOpen True to use extended market open, false to use regular market open
         @returns A time rule that fires the specified number of minutes after the symbol's market open
         public ITimeRule AfterMarketOpen(Symbol symbol, double minutesAfterOpen = 0, boolean extendedMarketOpen = false) {
             security = GetSecurity(symbol);
@@ -146,11 +146,11 @@ package com.quantconnect.lean.Scheduling
         }
 
         /**
-        /// Specifies an event should fire at the market close +- <paramref name="minutesBeforeClose"/>
+         * Specifies an event should fire at the market close +- <paramref name="minutesBeforeClose"/>
         */
-         * @param symbol">The symbol whose market close we want an event for
-         * @param minutesBeforeClose">The time before market close that the event should fire
-         * @param extendedMarketClose">True to use extended market close, false to use regular market close
+         * @param symbol The symbol whose market close we want an event for
+         * @param minutesBeforeClose The time before market close that the event should fire
+         * @param extendedMarketClose True to use extended market close, false to use regular market close
         @returns A time rule that fires the specified number of minutes before the symbol's market close
         public ITimeRule BeforeMarketClose(Symbol symbol, double minutesBeforeClose = 0, boolean extendedMarketClose = false) {
             security = GetSecurity(symbol);

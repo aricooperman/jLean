@@ -18,23 +18,23 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Securities.Equity 
 {
     /**
-    /// Equity security type data filter 
+     * Equity security type data filter 
     */
-    /// <seealso cref="SecurityDataFilter"/>
+     * <seealso cref="SecurityDataFilter"/>
     public class EquityDataFilter : SecurityDataFilter
     {
         /**
-        /// Initialize Data Filter Class:
+         * Initialize Data Filter Class:
         */
         public EquityDataFilter() : base() {
 
         }
 
         /**
-        /// Equity filter the data: true - accept, false - fail.
+         * Equity filter the data: true - accept, false - fail.
         */
-         * @param data">Data class
-         * @param vehicle">Security asset
+         * @param data Data class
+         * @param vehicle Security asset
         public @Override boolean Filter(Security vehicle, BaseData data) {
             // No data filter for bad ticks. All raw data will be piped into algorithm
             return true;

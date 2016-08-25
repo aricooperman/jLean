@@ -16,37 +16,37 @@
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Messaging class signifying a change in a user's account
+     * Messaging class signifying a change in a user's account
     */
     public class AccountEvent
     {
         /**
-        /// Gets the total cash balance of the account in units of <see cref="CurrencySymbol"/>
+         * Gets the total cash balance of the account in units of <see cref="CurrencySymbol"/>
         */
         public BigDecimal CashBalance { get; private set; }
 
         /**
-        /// Gets the currency symbol
+         * Gets the currency symbol
         */
         public String CurrencySymbol { get; private set; }
 
         /**
-        /// Creates an AccountEvent
+         * Creates an AccountEvent
         */
-         * @param currencySymbol">The currency's symbol
-         * @param cashBalance">The total cash balance of the account
+         * @param currencySymbol The currency's symbol
+         * @param cashBalance The total cash balance of the account
         public AccountEvent( String currencySymbol, BigDecimal cashBalance) {
             CashBalance = cashBalance;
             CurrencySymbol = currencySymbol;
         }
 
         /**
-        /// Returns a String that represents the current object.
+         * Returns a String that represents the current object.
         */
         @returns 
-        /// A String that represents the current object.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * A String that represents the current object.
+         * 
+         * <filterpriority>2</filterpriority>
         public @Override String toString() {
             return String.format( "Account %1$s Balance: %2$s", CurrencySymbol, CashBalance.toString( "0.00"));
         }

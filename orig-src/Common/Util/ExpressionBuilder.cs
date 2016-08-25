@@ -21,15 +21,15 @@ using System.Linq.Expressions;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Provides methods for constructing expressions at runtime
+     * Provides methods for constructing expressions at runtime
     */
     public static class ExpressionBuilder
     {
         /**
-        /// Constructs a selector of the form: x -> x.propertyOrField where x is an instance of 'type'
+         * Constructs a selector of the form: x -> x.propertyOrField where x is an instance of 'type'
         */
-         * @param type">The type of the parameter in the expression
-         * @param propertyOrField">The name of the property or field to bind to
+         * @param type The type of the parameter in the expression
+         * @param propertyOrField The name of the property or field to bind to
         @returns A new lambda expression that represents accessing the property or field on 'type'
         public static LambdaExpression MakePropertyOrFieldSelector(Type type, String propertyOrField) {
             parameter = Expression.Parameter(type);
@@ -39,20 +39,20 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Constructs a selector of the form: x -> x.propertyOrField where x is an instance of 'type'
+         * Constructs a selector of the form: x -> x.propertyOrField where x is an instance of 'type'
         */
-        /// <typeparam name="T">The type of the parameter in the expression</typeparam>
-        /// <typeparam name="TProperty">The type of the property or field being accessed in the expression</typeparam>
-         * @param propertyOrField">The name of the property or field to bind to
+         * <typeparam name="T The type of the parameter in the expression</typeparam>
+         * <typeparam name="TProperty The type of the property or field being accessed in the expression</typeparam>
+         * @param propertyOrField The name of the property or field to bind to
         @returns A new lambda expression that represents accessing the property or field on 'type'
         public static Expression<Func<T, TProperty>> MakePropertyOrFieldSelector<T, TProperty>( String propertyOrField) {
             return (Expression<Func<T, TProperty>>) MakePropertyOrFieldSelector(typeof (T), propertyOrField);
         }
 
         /**
-        /// Converts the specified expression into an enumerable of expressions by walking the expression tree
+         * Converts the specified expression into an enumerable of expressions by walking the expression tree
         */
-         * @param expression">The expression to enumerate
+         * @param expression The expression to enumerate
         @returns An enumerable containing all expressions in the input expression
         public static IEnumerable<Expression> AsEnumerable(this Expression expression) {
             walker = new ExpressionWalker();
@@ -61,10 +61,10 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Returns all the expressions of the specified type in the given expression tree
+         * Returns all the expressions of the specified type in the given expression tree
         */
-        /// <typeparam name="T">The type of expression to search for</typeparam>
-         * @param expression">The expression to search
+         * <typeparam name="T The type of expression to search for</typeparam>
+         * @param expression The expression to search
         @returns All expressions of the given type in the specified expression
         public static IEnumerable<T> OfType<T>(this Expression expression)
             where T : Expression

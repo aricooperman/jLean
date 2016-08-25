@@ -27,17 +27,17 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages.Tradier
 {
     /**
-    /// Provides an implementations of IBrokerageFactory that produces a TradierBrokerage
+     * Provides an implementations of IBrokerageFactory that produces a TradierBrokerage
     */
     public class TradierBrokerageFactory : BrokerageFactory
     {
         /**
-        /// Gets tradier values from configuration
+         * Gets tradier values from configuration
         */
         public static class Configuration
         {
             /**
-            /// Gets the account ID to be used when instantiating a brokerage
+             * Gets the account ID to be used when instantiating a brokerage
             */
             public static int QuantConnectUserID
             {
@@ -45,7 +45,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
 
             /**
-            /// Gets the account ID to be used when instantiating a brokerage
+             * Gets the account ID to be used when instantiating a brokerage
             */
             public static long AccountID
             {
@@ -53,7 +53,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
 
             /**
-            /// Gets the access token from configuration
+             * Gets the access token from configuration
             */
             public static String AccessToken
             {
@@ -61,7 +61,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
 
             /**
-            /// Gets the refresh token from configuration
+             * Gets the refresh token from configuration
             */
             public static String RefreshToken
             {
@@ -69,7 +69,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
 
             /**
-            /// Gets the date time the tokens were issued at from configuration
+             * Gets the date time the tokens were issued at from configuration
             */
             public static DateTime TokensIssuedAt
             {
@@ -77,7 +77,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             }
 
             /**
-            /// Gets the life span of the tokens from configuration
+             * Gets the life span of the tokens from configuration
             */
             public static Duration LifeSpan
             {
@@ -86,24 +86,24 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// File path used to store tradier token data
+         * File path used to store tradier token data
         */
         public static final String TokensFile = "tradier-tokens.txt";
 
         /**
-        /// Initializes a new instance of he TradierBrokerageFactory class
+         * Initializes a new instance of he TradierBrokerageFactory class
         */
         public TradierBrokerageFactory()
             : base(typeof(TradierBrokerage)) {
         }
 
         /**
-        /// Gets the brokerage data required to run the brokerage from configuration/disk
+         * Gets the brokerage data required to run the brokerage from configuration/disk
         */
-        /// 
-        /// The implementation of this property will create the brokerage data dictionary required for
-        /// running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
-        /// 
+         * 
+         * The implementation of this property will create the brokerage data dictionary required for
+         * running live jobs. See <see cref="IJobQueueHandler.NextJob"/>
+         * 
         public @Override Map<String,String> BrokerageData
         {
             get
@@ -137,7 +137,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Gets a new instance of the <see cref="TradierBrokerageModel"/>
+         * Gets a new instance of the <see cref="TradierBrokerageModel"/>
         */
         public @Override IBrokerageModel BrokerageModel
         {
@@ -145,10 +145,10 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Creates a new IBrokerage instance
+         * Creates a new IBrokerage instance
         */
-         * @param job">The job packet to create the brokerage for
-         * @param algorithm">The algorithm instance
+         * @param job The job packet to create the brokerage for
+         * @param algorithm The algorithm instance
         @returns A new brokerage instance
         public @Override IBrokerage CreateBrokerage(LiveNodePacket job, IAlgorithm algorithm) {
             errors = new List<String>();
@@ -174,15 +174,15 @@ package com.quantconnect.lean.Brokerages.Tradier
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public @Override void Dispose() {
         }
 
 
         /**
-        /// Reads the tradier tokens from the <see cref="TokensFile"/> or from configuration
+         * Reads the tradier tokens from the <see cref="TokensFile"/> or from configuration
         */
         public static TokenResponse GetTokens() {
             // pick a source for our tokens

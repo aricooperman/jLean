@@ -1,9 +1,9 @@
 package com.quantconnect.lean.charting;
 
-/// Type of chart - should we draw the series as overlayed or stacked
+ * Type of chart - should we draw the series as overlayed or stacked
 public enum ChartType { 
-    /// Overlayed stacked
+     * Overlayed stacked
     Overlay,
-    /// Stacked series on top of each other.
+     * Stacked series on top of each other.
     Stacked
 }

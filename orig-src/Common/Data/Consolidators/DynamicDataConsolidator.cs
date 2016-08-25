@@ -19,42 +19,42 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Data.Consolidators
 {
     /**
-    /// A data csolidator that can make trade bars from DynamicData derived types. This is useful for
-    /// aggregating Quandl and other highly flexible dynamic custom data types.
+     * A data csolidator that can make trade bars from DynamicData derived types. This is useful for
+     * aggregating Quandl and other highly flexible dynamic custom data types.
     */
     public class DynamicDataConsolidator : TradeBarConsolidatorBase<DynamicData>
     {
         /**
-        /// Creates a consolidator to produce a new 'TradeBar' representing the period.
+         * Creates a consolidator to produce a new 'TradeBar' representing the period.
         */
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         public DynamicDataConsolidator(TimeSpan period)
             : base(period) {
         }
 
         /**
-        /// Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data.
+         * Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data.
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
         public DynamicDataConsolidator(int maxCount)
             : base(maxCount) {
         }
 
         /**
-        /// Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data or the period, whichever comes first.
+         * Creates a consolidator to produce a new 'TradeBar' representing the last count pieces of data or the period, whichever comes first.
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         public DynamicDataConsolidator(int maxCount, Duration period)
             : base(maxCount, period) {
         }
 
         /**
-        /// Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
-        /// null following the event firing
+         * Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
+         * null following the event firing
         */
-         * @param workingBar">The bar we're building, null if the event was just fired and we're starting a new trade bar
-         * @param data">The new data
+         * @param workingBar The bar we're building, null if the event was just fired and we're starting a new trade bar
+         * @param data The new data
         protected @Override void AggregateBar(ref TradeBar workingBar, DynamicData data) {
             // grab the properties, if they don't exist just use the .Value property
             open = GetNamedPropertyOrValueProperty(data, "Open");

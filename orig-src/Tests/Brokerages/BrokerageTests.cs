@@ -37,9 +37,9 @@ package com.quantconnect.lean.Tests.Brokerages
         private SecurityProvider _securityProvider;
 
         /**
-        /// Provides the data required to test each order type in various cases
+         * Provides the data required to test each order type in various cases
         */
-        public virtual TestCaseData[] OrderParameters
+        public TestCaseData[] OrderParameters
         {
             get
             {
@@ -185,20 +185,20 @@ package com.quantconnect.lean.Tests.Brokerages
         }
 
         /**
-        /// Creates the brokerage under test and connects it
+         * Creates the brokerage under test and connects it
         */
         @returns A connected brokerage instance
         protected abstract IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider);
 
         /**
-        /// Disposes of the brokerage and any external resources started in order to create it
+         * Disposes of the brokerage and any external resources started in order to create it
         */
-         * @param brokerage">The brokerage instance to be disposed of
-        protected virtual void DisposeBrokerage(IBrokerage brokerage) {
+         * @param brokerage The brokerage instance to be disposed of
+        protected void DisposeBrokerage(IBrokerage brokerage) {
         }
 
         /**
-        /// This is used to ensure each test starts with a clean, known state.
+         * This is used to ensure each test starts with a clean, known state.
         */
         protected void LiquidateHoldings() {
             Log.Trace( "");
@@ -230,34 +230,34 @@ package com.quantconnect.lean.Tests.Brokerages
         #endregion
 
         /**
-        /// Gets the symbol to be traded, must be shortable
+         * Gets the symbol to be traded, must be shortable
         */
         protected abstract Symbol Symbol { get; }
 
         /**
-        /// Gets the security type associated with the <see cref="Symbol"/>
+         * Gets the security type associated with the <see cref="Symbol"/>
         */
         protected abstract SecurityType SecurityType { get; }
 
         /**
-        /// Gets a high price for the specified symbol so a limit sell won't fill
+         * Gets a high price for the specified symbol so a limit sell won't fill
         */
         protected abstract BigDecimal HighPrice { get; }
 
         /**
-        /// Gets a low price for the specified symbol so a limit buy won't fill
+         * Gets a low price for the specified symbol so a limit buy won't fill
         */
         protected abstract BigDecimal LowPrice { get; }
 
         /**
-        /// Gets the current market price of the specified security
+         * Gets the current market price of the specified security
         */
         protected abstract BigDecimal GetAskPrice(Symbol symbol);
 
         /**
-        /// Gets the default order quantity
+         * Gets the default order quantity
         */
-        protected virtual int GetDefaultQuantity() {
+        protected int GetDefaultQuantity() {
             return 1; 
         }
 
@@ -377,7 +377,7 @@ package com.quantconnect.lean.Tests.Brokerages
             sync = new object();
             Brokerage.OrderStatusChanged += (sender, orderEvent) =>
             {
-                lock (sync) {
+                synchronized(sync) {
                     remaining -= orderEvent.FillQuantity;
                     Console.WriteLine( "Remaining: " + remaining + " FillQuantity: " + orderEvent.FillQuantity);
                     if( orderEvent.Status == OrderStatus.Filled) {
@@ -402,11 +402,11 @@ package com.quantconnect.lean.Tests.Brokerages
         }
 
         /**
-        /// Updates the specified order in the brokerage until it fills or reaches a timeout
+         * Updates the specified order in the brokerage until it fills or reaches a timeout
         */
-         * @param order">The order to be modified
-         * @param parameters">The order test parameters that define how to modify the order
-         * @param secondsTimeout">Maximum amount of time to wait until the order fills
+         * @param order The order to be modified
+         * @param parameters The order test parameters that define how to modify the order
+         * @param secondsTimeout Maximum amount of time to wait until the order fills
         protected void ModifyOrderUntilFilled(Order order, OrderTestParameters parameters, double secondsTimeout = 90) {
             if( order.Status == OrderStatus.Filled) {
                 return;
@@ -452,12 +452,12 @@ package com.quantconnect.lean.Tests.Brokerages
         }
 
         /**
-        /// Places the specified order with the brokerage and wait until we get the <paramref name="expectedStatus"/> back via an OrderStatusChanged event.
-        /// This function handles adding the order to the <see cref="IOrderProvider"/> instance as well as incrementing the order ID.
+         * Places the specified order with the brokerage and wait until we get the <paramref name="expectedStatus"/> back via an OrderStatusChanged event.
+         * This function handles adding the order to the <see cref="IOrderProvider"/> instance as well as incrementing the order ID.
         */
-         * @param order">The order to be submitted
-         * @param expectedStatus">The status to wait for
-         * @param secondsTimeout">Maximum amount of time to wait for <paramref name="expectedStatus"/>
+         * @param order The order to be submitted
+         * @param expectedStatus The status to wait for
+         * @param secondsTimeout Maximum amount of time to wait for <paramref name="expectedStatus"/>
         @returns The same order that was submitted.
         protected Order PlaceOrderWaitForStatus(Order order, OrderStatus expectedStatus = OrderStatus.Filled, double secondsTimeout = 10.0, boolean allowFailedSubmission = false) {
             requiredStatusEvent = new ManualResetEvent(false);

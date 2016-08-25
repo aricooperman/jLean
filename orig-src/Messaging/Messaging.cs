@@ -23,7 +23,7 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Messaging
 {
     /**
-    /// Local/desktop implementation of messaging system for Lean Engine.
+     * Local/desktop implementation of messaging system for Lean Engine.
     */
     public class Messaging : IMessagingHandler
     {
@@ -33,8 +33,8 @@ package com.quantconnect.lean.Messaging
         private AlgorithmNodePacket _job;
 
         /**
-        /// This implementation ignores the <seealso cref="HasSubscribers"/> flag and
-        /// instead will always write to the log.
+         * This implementation ignores the <seealso cref="HasSubscribers"/> flag and
+         * instead will always write to the log.
         */
         public boolean HasSubscribers
         {
@@ -43,21 +43,21 @@ package com.quantconnect.lean.Messaging
         }
 
         /**
-        /// Initialize the messaging system
+         * Initialize the messaging system
         */
         public void Initialize() {
             //
         }
 
         /**
-        /// Set the messaging channel
+         * Set the messaging channel
         */
         public void SetAuthentication(AlgorithmNodePacket job) {
             _job = job;
         }
 
         /**
-        /// Send a generic base packet without processing
+         * Send a generic base packet without processing
         */
         public void Send(Packet packet) {
             switch (packet.Type) {
@@ -111,7 +111,7 @@ package com.quantconnect.lean.Messaging
         }
 
         /**
-        /// Send any notification with a base type of Notification.
+         * Send any notification with a base type of Notification.
         */
         public void SendNotification(Notification notification) {
             type = notification.GetType();

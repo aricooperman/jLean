@@ -18,22 +18,22 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the Accumulation/Distribution (AD)
-    /// The Accumulation/Distribution is calculated using the following formula:
-    /// AD = AD + ((Close - Low) - (High - Close)) / (High - Low) * Volume
+     * This indicator computes the Accumulation/Distribution (AD)
+     * The Accumulation/Distribution is calculated using the following formula:
+     * AD = AD + ((Close - Low) - (High - Close)) / (High - Low) * Volume
     */
     public class AccumulationDistribution : TradeBarIndicator
     {
         /**
-        /// Initializes a new instance of the <see cref="AccumulationDistribution"/> class using the specified name.
+         * Initializes a new instance of the <see cref="AccumulationDistribution"/> class using the specified name.
         */ 
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public AccumulationDistribution( String name)
             : base(name) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -41,13 +41,13 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             range = input.High - input.Low;
-            return Current.Value + (range > 0 ? ((input.Close - input.Low) - (input.High - input.Close)) / range * input.Volume : 0m);
+            return Current.Value + (range > 0 ? ((input.Close - input.Low) - (input.High - input.Close)) / range * input.Volume : BigDecimal.ZERO);
         }
     }
 }

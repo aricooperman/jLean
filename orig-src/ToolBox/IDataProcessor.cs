@@ -23,31 +23,31 @@ using QuantConnect.Util;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Specifies a piece of processing that should be performed against a source file
+     * Specifies a piece of processing that should be performed against a source file
     */
     public interface IDataProcessor : IDisposable
     {
         /**
-        /// Invoked for each piece of data from the source file
+         * Invoked for each piece of data from the source file
         */
-         * @param data">The data to be processed
+         * @param data The data to be processed
         void Process(BaseData data);
     }
 
     /**
-    /// Provides methods for creating data processor stacks
+     * Provides methods for creating data processor stacks
     */
     public static class DataProcessor
     {
         /**
-        /// Creates a new data processor that will filter in input data before piping it into the specified processor
+         * Creates a new data processor that will filter in input data before piping it into the specified processor
         */
         public static IDataProcessor FilteredBy(this IDataProcessor processor, Func<BaseData, bool> predicate) {
             return new FilteredDataProcessor(processor, predicate);
         }
 
         /**
-        /// Creates a data processor that will aggregate and zip the requested resolutions of data
+         * Creates a data processor that will aggregate and zip the requested resolutions of data
         */
         public static IDataProcessor Zip( String dataDirectory, IEnumerable<Resolution> resolutions, TickType tickType, boolean sourceIsTick) {
             set = resolutions.ToHashSet();

@@ -22,14 +22,14 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Algorithm.Examples
 {
     /**
-    /// Quick demo algorithm showing usage of the BrokerageModel property. The BrokerageModel helps to
-    /// improve backtesting fidelity through simulation of a specific brokerage's rules around restrictions
-    /// on submitting orders as well as fee structure.
+     * Quick demo algorithm showing usage of the BrokerageModel property. The BrokerageModel helps to
+     * improve backtesting fidelity through simulation of a specific brokerage's rules around restrictions
+     * on submitting orders as well as fee structure.
     */
     public class BrokerageModelAlgorithm : QCAlgorithm
     {
         /**
-        /// Initialize the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must be initialized.
+         * Initialize the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must be initialized.
         */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 07);  //Set Start Date
@@ -55,9 +55,9 @@ package com.quantconnect.lean.Algorithm.Examples
         private BigDecimal last = 1.0m;
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">TradeBars IDictionary object with your stock data
+         * @param data TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             if( !Portfolio.Invested) {
                 //fails first several times, we'll keep decrementing until it succeeds
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// Custom brokerage model that requires clients to maintain a minimum cash balance
+         * Custom brokerage model that requires clients to maintain a minimum cash balance
         */
         class MinimumAccountBalanceBrokerageModel : DefaultBrokerageModel
         {
@@ -88,7 +88,7 @@ package com.quantconnect.lean.Algorithm.Examples
             }
 
             /**
-            /// Prevent orders which would bring the account below a minimum cash balance
+             * Prevent orders which would bring the account below a minimum cash balance
             */
             public @Override boolean CanSubmitOrder(Security security, Order order, out BrokerageMessageEvent message) {
                 message = null;

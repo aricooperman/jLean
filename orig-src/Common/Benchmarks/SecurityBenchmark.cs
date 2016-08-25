@@ -19,24 +19,24 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Benchmarks
 {
     /**
-    /// Creates a benchmark defined by the closing price of a <see cref="Security"/> instance
+     * Creates a benchmark defined by the closing price of a <see cref="Security"/> instance
     */
     public class SecurityBenchmark : IBenchmark
     {
         private final Security _security;
 
         /**
-        /// Initializes a new instance of the <see cref="SecurityBenchmark"/> class
+         * Initializes a new instance of the <see cref="SecurityBenchmark"/> class
         */
-         * @param security">The security to use as the benchmark
+         * @param security The security to use as the benchmark
         public SecurityBenchmark(Security security) {
             _security = security;
         }
 
         /**
-        /// Evaluates this benchmark at the specified time
+         * Evaluates this benchmark at the specified time
         */
-         * @param time">The time to evaluate the benchmark at
+         * @param time The time to evaluate the benchmark at
         @returns The value of the benchmark at the specified time
         public BigDecimal Evaluate(DateTime time) {
             return _security.Close;

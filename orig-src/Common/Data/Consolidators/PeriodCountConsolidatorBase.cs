@@ -20,11 +20,11 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Data.Consolidators
 {
     /**
-    /// Provides a base class for consolidators that emit data based on the passing of a period of time
-    /// or after seeing a max count of data points.
+     * Provides a base class for consolidators that emit data based on the passing of a period of time
+     * or after seeing a max count of data points.
     */
-    /// <typeparam name="T">The input type of the consolidator</typeparam>
-    /// <typeparam name="TConsolidated">The output type of the consolidator</typeparam>
+     * <typeparam name="T The input type of the consolidator</typeparam>
+     * <typeparam name="TConsolidated The output type of the consolidator</typeparam>
     public abstract class PeriodCountConsolidatorBase<T, TConsolidated> : DataConsolidator<T>
         where T : class, IBaseData
         where TConsolidated : BaseData
@@ -32,7 +32,7 @@ package com.quantconnect.lean.Data.Consolidators
         //The minimum timespan between creating new bars.
         private final TimeSpan? _period;
         //The number of data updates between creating new bars.
-        private final int? _maxCount;
+        private final OptionalInt _maxCount;
         //The number of pieces of data we've accumulated since our last emit
         private int _currentCount;
         //The working bar used for aggregating the data
@@ -41,33 +41,33 @@ package com.quantconnect.lean.Data.Consolidators
         private DateTime? _lastEmit;
 
         /**
-        /// Creates a consolidator to produce a new <typeparamref name="TConsolidated"/> instance representing the period
+         * Creates a consolidator to produce a new <typeparamref name="TConsolidated"/> instance representing the period
         */
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         protected PeriodCountConsolidatorBase(TimeSpan period) {
             _period = period;
         }
 
         /**
-        /// Creates a consolidator to produce a new <typeparamref name="TConsolidated"/> instance representing the last count pieces of data
+         * Creates a consolidator to produce a new <typeparamref name="TConsolidated"/> instance representing the last count pieces of data
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
         protected PeriodCountConsolidatorBase(int maxCount) {
             _maxCount = maxCount;
         }
 
         /**
-        /// Creates a consolidator to produce a new <typeparamref name="TConsolidated"/> instance representing the last count pieces of data or the period, whichever comes first
+         * Creates a consolidator to produce a new <typeparamref name="TConsolidated"/> instance representing the last count pieces of data or the period, whichever comes first
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         protected PeriodCountConsolidatorBase(int maxCount, Duration period) {
             _maxCount = maxCount;
             _period = period;
         }
 
         /**
-        /// Gets the type produced by this consolidator
+         * Gets the type produced by this consolidator
         */
         public @Override Type OutputType
         {
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Gets a clone of the data being currently consolidated
+         * Gets a clone of the data being currently consolidated
         */
         public @Override BaseData WorkingData
         {
@@ -83,19 +83,19 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Event handler that fires when a new piece of data is produced. We define this as a 'new'
-        /// event so we can expose it as a <typeparamref name="TConsolidated"/> instead of a <see cref="BaseData"/> instance
+         * Event handler that fires when a new piece of data is produced. We define this as a 'new'
+         * event so we can expose it as a <typeparamref name="TConsolidated"/> instead of a <see cref="BaseData"/> instance
         */
         public new event EventHandler<TConsolidated> DataConsolidated;
 
         /**
-        /// Updates this consolidator with the specified data. This method is
-        /// responsible for raising the DataConsolidated event
-        /// In time span mode, the bar range is closed on the left and open on the right: [T, T+TimeSpan).
-        /// For example, if time span is 1 minute, we have [10:00, 10:01): so data at 10:01 is not 
-        /// included in the bar starting at 10:00.
+         * Updates this consolidator with the specified data. This method is
+         * responsible for raising the DataConsolidated event
+         * In time span mode, the bar range is closed on the left and open on the right: [T, T+TimeSpan).
+         * For example, if time span is 1 minute, we have [10:00, 10:01): so data at 10:01 is not 
+         * included in the bar starting at 10:00.
         */
-         * @param data">The new data for the consolidator
+         * @param data The new data for the consolidator
         public @Override void Update(T data) {
             if( !ShouldProcess(data)) {
                 // first allow the base class a chance to filter out data it doesn't want
@@ -166,9 +166,9 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Scans this consolidator to see if it should emit a bar due to time passing
+         * Scans this consolidator to see if it should emit a bar due to time passing
         */
-         * @param currentLocalTime">The current time in the local time zone (same as <see cref="BaseData.Time"/>)
+         * @param currentLocalTime The current time in the local time zone (same as <see cref="BaseData.Time"/>)
         public @Override void Scan(DateTime currentLocalTime) {
             if( _period.HasValue) {
                 if( _workingBar != null ) {
@@ -186,26 +186,26 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Determines whether or not the specified data should be processd
+         * Determines whether or not the specified data should be processd
         */
-         * @param data">The data to check
+         * @param data The data to check
         @returns True if the consolidator should process this data, false otherwise
-        protected virtual boolean ShouldProcess(T data) {
+        protected boolean ShouldProcess(T data) {
             return true;
         }
 
         /**
-        /// Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
-        /// null following the event firing
+         * Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
+         * null following the event firing
         */
-         * @param workingBar">The bar we're building, null if the event was just fired and we're starting a new consolidated bar
-         * @param data">The new data
+         * @param workingBar The bar we're building, null if the event was just fired and we're starting a new consolidated bar
+         * @param data The new data
         protected abstract void AggregateBar(ref TConsolidated workingBar, T data);
 
         /**
-        /// Gets a rounded-down bar time. Called by AggregateBar in derived classes.
+         * Gets a rounded-down bar time. Called by AggregateBar in derived classes.
         */
-         * @param time">The bar time to be rounded down
+         * @param time The bar time to be rounded down
         @returns The rounded bar time
         protected DateTime GetRoundedBarTime(DateTime time) {
             // rounding is performed only in time span mode
@@ -213,10 +213,10 @@ package com.quantconnect.lean.Data.Consolidators
         }
 
         /**
-        /// Event invocator for the <see cref="DataConsolidated"/> event
+         * Event invocator for the <see cref="DataConsolidated"/> event
         */
-         * @param e">The consolidated data
-        protected virtual void OnDataConsolidated(TConsolidated e) {
+         * @param e The consolidated data
+        protected void OnDataConsolidated(TConsolidated e) {
             handler = DataConsolidated;
             if( handler != null ) handler(this, e);
             base.OnDataConsolidated(e);

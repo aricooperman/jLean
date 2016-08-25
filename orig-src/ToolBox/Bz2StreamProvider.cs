@@ -22,23 +22,23 @@ package com.quantconnect.lean.ToolBox
     public class Bz2StreamProvider : IStreamProvider
     {
         /**
-        /// Opens the specified source as read to be consumed stream
+         * Opens the specified source as read to be consumed stream
         */
-         * @param source">The source file to be opened
+         * @param source The source file to be opened
         @returns The stream representing the specified source
         public IEnumerable<Stream> Open( String source) {
             yield return new BZip2InputStream(File.OpenRead(source));
         }
 
         /**
-        /// Closes the specified source file stream
+         * Closes the specified source file stream
         */
-         * @param source">The source file to be closed
+         * @param source The source file to be closed
         public void Close( String source) {
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
         }

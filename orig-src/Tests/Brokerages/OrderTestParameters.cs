@@ -20,7 +20,7 @@ using QuantConnect.Orders;
 package com.quantconnect.lean.Tests.Brokerages
 {
     /**
-    /// Helper class to abstract test cases from individual order types
+     * Helper class to abstract test cases from individual order types
     */
     public abstract class OrderTestParameters
     {
@@ -40,27 +40,27 @@ package com.quantconnect.lean.Tests.Brokerages
         }
 
         /**
-        /// Creates a sell order of this type
+         * Creates a sell order of this type
         */
         public abstract Order CreateShortOrder(int quantity);
         /**
-        /// Creates a long order of this type
+         * Creates a long order of this type
         */
         public abstract Order CreateLongOrder(int quantity);
         /**
-        /// Modifies the order so it is more likely to fill
+         * Modifies the order so it is more likely to fill
         */
         public abstract boolean ModifyOrderToFill(IBrokerage brokerage, Order order, BigDecimal lastMarketPrice);
         /**
-        /// The status to expect when submitting this order, typically just Submitted,
-        /// unless market order, then Filled
+         * The status to expect when submitting this order, typically just Submitted,
+         * unless market order, then Filled
         */
         public abstract OrderStatus ExpectedStatus { get; }
 
         /**
-        /// True to continue modifying the order until it is filled, false otherwise
+         * True to continue modifying the order until it is filled, false otherwise
         */
-        public virtual boolean ModifyUntilFilled
+        public boolean ModifyUntilFilled
         {
             get { return true; }
         }

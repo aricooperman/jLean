@@ -16,12 +16,12 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the T3 Moving Average (T3). 
-    /// The T3 Moving Average is calculated with the following formula:
-    /// EMA1(x, Period) = EMA(x, Period)
-    /// EMA2(x, Period) = EMA(EMA1(x, Period),Period)
-    /// GD(x, Period, volumeFactor) = (EMA1(x, Period)*(1+volumeFactor)) - (EMA2(x, Period)* volumeFactor)
-    /// T3 = GD(GD(GD(t, Period, volumeFactor), Period, volumeFactor), Period, volumeFactor);
+     * This indicator computes the T3 Moving Average (T3). 
+     * The T3 Moving Average is calculated with the following formula:
+     * EMA1(x, Period) = EMA(x, Period)
+     * EMA2(x, Period) = EMA(EMA1(x, Period),Period)
+     * GD(x, Period, volumeFactor) = (EMA1(x, Period)*(1+volumeFactor)) - (EMA2(x, Period)* volumeFactor)
+     * T3 = GD(GD(GD(t, Period, volumeFactor), Period, volumeFactor), Period, volumeFactor);
     */
     public class T3MovingAverage : IndicatorBase<IndicatorDataPoint>
     {
@@ -31,11 +31,11 @@ package com.quantconnect.lean.Indicators
         private final DoubleExponentialMovingAverage _gd3;
 
         /**
-        /// Initializes a new instance of the <see cref="T3MovingAverage"/> class using the specified name and period.
+         * Initializes a new instance of the <see cref="T3MovingAverage"/> class using the specified name and period.
         */ 
-         * @param name">The name of this indicator
-         * @param period">The period of the T3MovingAverage
-         * @param volumeFactor">The volume factor of the T3MovingAverage (value must be in the [0,1] range, defaults to 0.7)
+         * @param name The name of this indicator
+         * @param period The period of the T3MovingAverage
+         * @param volumeFactor The volume factor of the T3MovingAverage (value must be in the [0,1] range, defaults to 0.7)
         public T3MovingAverage( String name, int period, BigDecimal volumeFactor = 0.7m) 
             : base(name) {
             _period = period;
@@ -45,16 +45,16 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Initializes a new instance of the <see cref="T3MovingAverage"/> class using the specified period.
+         * Initializes a new instance of the <see cref="T3MovingAverage"/> class using the specified period.
         */ 
-         * @param period">The period of the T3MovingAverage
-         * @param volumeFactor">The volume factor of the T3MovingAverage (value must be in the [0,1] range, defaults to 0.7)
+         * @param period The period of the T3MovingAverage
+         * @param volumeFactor The volume factor of the T3MovingAverage (value must be in the [0,1] range, defaults to 0.7)
         public T3MovingAverage(int period, BigDecimal volumeFactor = 0.7m)
             : this( String.format( "T3(%1$s,%2$s)", period, volumeFactor), period, volumeFactor) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -62,9 +62,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _gd1.Update(input);
@@ -83,7 +83,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _gd1.Reset();

@@ -21,10 +21,10 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Defines an enumerable that can be enumerated many times while
-    /// only performing a single enumeration of the root enumerable
+     * Defines an enumerable that can be enumerated many times while
+     * only performing a single enumeration of the root enumerable
     */
-    /// <typeparam name="T"></typeparam>
+     * <typeparam name="T"></typeparam>
     public class MemoizingEnumerable<T> : IEnumerable<T>
     {
         private boolean _finished;
@@ -32,39 +32,39 @@ package com.quantconnect.lean.Util
         private final List<T> _buffer;
         private final IEnumerator<T> _enumerator;
 
-        private final object _lock = new object();
+        private final object _synchronized= new object();
 
         /**
-        /// Initializes a new instance of the <see cref="MemoizingEnumerable{T}"/> class
+         * Initializes a new instance of the <see cref="MemoizingEnumerable{T}"/> class
         */
-         * @param enumerable">The source enumerable to be memoized
+         * @param enumerable The source enumerable to be memoized
         public MemoizingEnumerable(IEnumerable<T> enumerable)
             : this(enumerable.GetEnumerator()) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="MemoizingEnumerable{T}"/> class
+         * Initializes a new instance of the <see cref="MemoizingEnumerable{T}"/> class
         */
-         * @param enumerator">The source enumerator to be memoized
+         * @param enumerator The source enumerator to be memoized
         public MemoizingEnumerable(IEnumerator<T> enumerator) {
             _buffer = new List<T>();
             _enumerator = enumerator;
         }
 
         /**
-        /// Returns an enumerator that iterates through the collection.
+         * Returns an enumerator that iterates through the collection.
         */
         @returns 
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// 
-        /// <filterpriority>1</filterpriority>
+         * A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+         * 
+         * <filterpriority>1</filterpriority>
         public IEnumerator<T> GetEnumerator() {
             int i = 0;
             while (true) {
                 boolean hasValue;
                 
                 // sync for multiple threads access to _enumerator and _buffer
-                lock (_lock) {
+                synchronized(_lock) {
                     // check to see if we need to move next
                     if( !_finished && i >= _buffer.Count) {
                         hasValue = _enumerator.MoveNext();
@@ -98,12 +98,12 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Returns an enumerator that iterates through a collection.
+         * Returns an enumerator that iterates through a collection.
         */
         @returns 
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+         * 
+         * <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }

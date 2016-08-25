@@ -19,15 +19,15 @@ using QuantConnect.Indicators;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// This algorithm demonstrates using the history provider to retrieve data
-    /// to warm up indicators before data is received
+     * This algorithm demonstrates using the history provider to retrieve data
+     * to warm up indicators before data is received
     */
     public class WarmupHistoryAlgorithm : QCAlgorithm
     {
         private ExponentialMovingAverage fast, slow;
 
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 07);  //Set Start Date
@@ -51,9 +51,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">Slice object keyed by symbol containing the stock data
+         * @param data Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             if( fast > slow) {
                 SetHoldings( "EURUSD", 1);

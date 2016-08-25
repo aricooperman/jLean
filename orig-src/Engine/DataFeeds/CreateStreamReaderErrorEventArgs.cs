@@ -19,12 +19,12 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Event arguments for the <see cref="TextSubscriptionDataSourceReader.CreateStreamReader"/> event
+     * Event arguments for the <see cref="TextSubscriptionDataSourceReader.CreateStreamReader"/> event
     */
     public sealed class CreateStreamReaderErrorEventArgs : EventArgs
     {
         /**
-        /// Gets the date of the source
+         * Gets the date of the source
         */
         public DateTime Date
         {
@@ -32,7 +32,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets the source that caused the error
+         * Gets the source that caused the error
         */
         public SubscriptionDataSource Source
         {
@@ -40,10 +40,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Initializes a new instance of the <see cref="CreateStreamReaderErrorEventArgs"/> class
+         * Initializes a new instance of the <see cref="CreateStreamReaderErrorEventArgs"/> class
         */
-         * @param date">The date of the source
-         * @param source">The source that cause the error
+         * @param date The date of the source
+         * @param source The source that cause the error
         public CreateStreamReaderErrorEventArgs(DateTime date, SubscriptionDataSource source) {
             Date = date;
             Source = source;

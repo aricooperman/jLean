@@ -19,9 +19,9 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the Accumulation/Distribution Oscillator (ADOSC)
-    /// The Accumulation/Distribution Oscillator is calculated using the following formula:
-    /// ADOSC = EMA(fast,AD) - EMA(slow,AD)
+     * This indicator computes the Accumulation/Distribution Oscillator (ADOSC)
+     * The Accumulation/Distribution Oscillator is calculated using the following formula:
+     * ADOSC = EMA(fast,AD) - EMA(slow,AD)
     */
     public class AccumulationDistributionOscillator : TradeBarIndicator
     {
@@ -31,20 +31,20 @@ package com.quantconnect.lean.Indicators
         private final ExponentialMovingAverage _emaSlow;
 
         /**
-        /// Initializes a new instance of the <see cref="AccumulationDistributionOscillator"/> class using the specified parameters
+         * Initializes a new instance of the <see cref="AccumulationDistributionOscillator"/> class using the specified parameters
         */ 
-         * @param fastPeriod">The fast moving average period
-         * @param slowPeriod">The slow moving average period
+         * @param fastPeriod The fast moving average period
+         * @param slowPeriod The slow moving average period
         public AccumulationDistributionOscillator(int fastPeriod, int slowPeriod)
             : this( String.format( "ADOSC(%1$s,%2$s)", fastPeriod, slowPeriod), fastPeriod, slowPeriod) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="AccumulationDistributionOscillator"/> class using the specified parameters
+         * Initializes a new instance of the <see cref="AccumulationDistributionOscillator"/> class using the specified parameters
         */ 
-         * @param name">The name of this indicator
-         * @param fastPeriod">The fast moving average period
-         * @param slowPeriod">The slow moving average period
+         * @param name The name of this indicator
+         * @param fastPeriod The fast moving average period
+         * @param slowPeriod The slow moving average period
         public AccumulationDistributionOscillator( String name, int fastPeriod, int slowPeriod)
             : base(name) {
             _period = Math.Max(fastPeriod, slowPeriod);
@@ -54,7 +54,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -62,20 +62,20 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _ad.Update(input);
             _emaFast.Update(_ad.Current);
             _emaSlow.Update(_ad.Current);
 
-            return IsReady ? _emaFast.Current.Value - _emaSlow.Current.Value : 0m;
+            return IsReady ? _emaFast.Current.Value - _emaSlow.Current.Value : BigDecimal.ZERO;
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _ad.Reset();

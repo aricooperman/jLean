@@ -18,10 +18,10 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the Slow Stochastics %K and %D. The Fast Stochastics %K is is computed by 
-    /// (Current Close Price - Lowest Price of given Period) / (Highest Price of given Period - Lowest Price of given Period)
-    /// multiplied by 100. Once the Fast Stochastics %K is calculated the Slow Stochastic %K is calculated by the average/smoothed price of
-    /// of the Fast %K with the given period. The Slow Stochastics %D is then derived from the Slow Stochastics %K with the given period.
+     * This indicator computes the Slow Stochastics %K and %D. The Fast Stochastics %K is is computed by 
+     * (Current Close Price - Lowest Price of given Period) / (Highest Price of given Period - Lowest Price of given Period)
+     * multiplied by 100. Once the Fast Stochastics %K is calculated the Slow Stochastic %K is calculated by the average/smoothed price of
+     * of the Fast %K with the given period. The Slow Stochastics %D is then derived from the Slow Stochastics %K with the given period.
     */
     public class Stochastic : TradeBarIndicator
     {
@@ -31,27 +31,27 @@ package com.quantconnect.lean.Indicators
         private final IndicatorBase<IndicatorDataPoint> _sumSlowK;
 
         /**
-        /// Gets the value of the Fast Stochastics %K given Period.
+         * Gets the value of the Fast Stochastics %K given Period.
         */
         public IndicatorBase<TradeBar> FastStoch { get; private set; }
 
         /**
-        /// Gets the value of the Slow Stochastics given Period K.
+         * Gets the value of the Slow Stochastics given Period K.
         */
         public IndicatorBase<TradeBar> StochK { get; private set; }
 
         /**
-        /// Gets the value of the Slow Stochastics given Period D.
+         * Gets the value of the Slow Stochastics given Period D.
         */
         public IndicatorBase<TradeBar> StochD { get; private set; }
 
         /**
-        /// Creates a new Stochastics Indicator from the specified periods.
+         * Creates a new Stochastics Indicator from the specified periods.
         */
-         * @param name">The name of this indicator.
-         * @param period">The period given to calculate the Fast %K
-         * @param kPeriod">The K period given to calculated the Slow %K
-         * @param dPeriod">The D period given to calculated the Slow %D
+         * @param name The name of this indicator.
+         * @param period The period given to calculate the Fast %K
+         * @param kPeriod The K period given to calculated the Slow %K
+         * @param dPeriod The D period given to calculated the Slow %D
         public Stochastic( String name, int period, int kPeriod, int dPeriod)
             : base(name) {
             _maximum = new Maximum(name + "_Max", period);
@@ -79,26 +79,26 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new <see cref="Stochastic"/> indicator from the specified inputs.
+         * Creates a new <see cref="Stochastic"/> indicator from the specified inputs.
         */
-         * @param period">The period given to calculate the Fast %K
-         * @param kPeriod">The K period given to calculated the Slow %K
-         * @param dPeriod">The D period given to calculated the Slow %D
+         * @param period The period given to calculate the Fast %K
+         * @param kPeriod The K period given to calculated the Slow %K
+         * @param dPeriod The D period given to calculated the Slow %D
         public Stochastic(int period, int kPeriod, int dPeriod)
             : this( "STO" + period, period, kPeriod, dPeriod) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
             get { return FastStoch.IsReady && StochK.IsReady && StochD.IsReady; }
         }
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _maximum.Update(input.Time, input.High);
             _mininum.Update(input.Time, input.Low);
@@ -109,18 +109,18 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the Fast Stochastic %K.
+         * Computes the Fast Stochastic %K.
         */
-         * @param period">The period.
-         * @param input">The input.
+         * @param period The period.
+         * @param input The input.
         @returns The Fast Stochastics %K value.
         private BigDecimal ComputeFastStoch(int period, TradeBar input) {
             denominator = (_maximum - _mininum);
             numerator = (input.Close - _mininum);
             BigDecimal fastStoch;
-            if( denominator == 0m) {
+            if( denominator == BigDecimal.ZERO) {
                 // if there's no range, just return constant zero
-                fastStoch = 0m;
+                fastStoch = BigDecimal.ZERO;
             }
             else
             {
@@ -131,11 +131,11 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the Slow Stochastic %K.
+         * Computes the Slow Stochastic %K.
         */
-         * @param period">The period.
-         * @param constantK">The constant k.
-         * @param input">The input.
+         * @param period The period.
+         * @param constantK The constant k.
+         * @param input The input.
         @returns The Slow Stochastics %K value.
         private BigDecimal ComputeStochK(int period, int constantK, TradeBar input) {
             stochK = _maximum.Samples >= (period + constantK - 1) ? _sumFastK / constantK : new decimal(0.0);
@@ -144,18 +144,18 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the Slow Stochastic %D.
+         * Computes the Slow Stochastic %D.
         */
-         * @param period">The period.
-         * @param constantK">The constant k.
-         * @param constantD">The constant d.
+         * @param period The period.
+         * @param constantK The constant k.
+         * @param constantD The constant d.
         @returns The Slow Stochastics %D value.
         private BigDecimal ComputeStochD(int period, int constantK, int constantD) {
             stochD = _maximum.Samples >= (period + constantK + constantD - 2) ? _sumSlowK / constantD : new decimal(0.0);
             return stochD * 100;
         }
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             FastStoch.Reset();

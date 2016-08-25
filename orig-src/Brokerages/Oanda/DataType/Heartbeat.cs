@@ -20,7 +20,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
     /**
-    /// Represent a Heartbeat for an <see cref="Event"/> class.
+     * Represent a Heartbeat for an <see cref="Event"/> class.
     */
 	public class Heartbeat
 	{

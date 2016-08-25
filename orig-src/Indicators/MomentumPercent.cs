@@ -15,26 +15,26 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the n-period percentage rate of change in a value using the following:
-    /// 100 * (value_0 - value_n) / value_n
-    /// 
-    /// This indicator yields the same results of RateOfChangePercent
+     * This indicator computes the n-period percentage rate of change in a value using the following:
+     * 100 * (value_0 - value_n) / value_n
+     * 
+     * This indicator yields the same results of RateOfChangePercent
     */
     public class MomentumPercent : RateOfChangePercent
     {
         /**
-        /// Creates a new MomentumPercent indicator with the specified period
+         * Creates a new MomentumPercent indicator with the specified period
         */
-         * @param period">The period over which to perform to computation
+         * @param period The period over which to perform to computation
         public MomentumPercent(int period)
             : this( "MOMP" + period, period) {
         }
 
         /**
-        /// Creates a new MomentumPercent indicator with the specified period
+         * Creates a new MomentumPercent indicator with the specified period
         */
-         * @param name">The name of this indicator
-         * @param period">The period over which to perform to computation
+         * @param name The name of this indicator
+         * @param period The period over which to perform to computation
         public MomentumPercent( String name, int period)
             : base(name, period) {
         }

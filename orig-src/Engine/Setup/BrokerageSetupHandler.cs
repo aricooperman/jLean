@@ -31,32 +31,32 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine.Setup
 {
     /**
-    /// Defines a set up handler that initializes the algorithm instance using values retrieved from the user's brokerage account
+     * Defines a set up handler that initializes the algorithm instance using values retrieved from the user's brokerage account
     */
     public class BrokerageSetupHandler : ISetupHandler
     {
         /**
-        /// Any errors from the initialization stored here:
+         * Any errors from the initialization stored here:
         */
         public List<String> Errors { get; set; }
 
         /**
-        /// Get the maximum runtime for this algorithm job.
+         * Get the maximum runtime for this algorithm job.
         */
         public Duration MaximumRuntime { get; private set; }
 
         /**
-        /// Algorithm starting capital for statistics calculations
+         * Algorithm starting capital for statistics calculations
         */
         public BigDecimal StartingPortfolioValue { get; private set; }
 
         /**
-        /// Start date for analysis loops to search for data.
+         * Start date for analysis loops to search for data.
         */
         public DateTime StartingDate { get; private set; }
 
         /**
-        /// Maximum number of orders for the algorithm run -- applicable for backtests only.
+         * Maximum number of orders for the algorithm run -- applicable for backtests only.
         */
         public int MaxOrders { get; private set; }
 
@@ -65,7 +65,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
         private IBrokerageFactory _factory;
 
         /**
-        /// Initializes a new BrokerageSetupHandler
+         * Initializes a new BrokerageSetupHandler
         */
         public BrokerageSetupHandler() {
             Errors = new List<String>();
@@ -74,10 +74,10 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Create a new instance of an algorithm from a physical dll path.
+         * Create a new instance of an algorithm from a physical dll path.
         */
-         * @param assemblyPath">The path to the assembly's location
-         * @param language">The algorithm's language
+         * @param assemblyPath The path to the assembly's location
+         * @param language The algorithm's language
         @returns A new instance of IAlgorithm, or throws an exception if there was an error
         public IAlgorithm CreateAlgorithmInstance( String assemblyPath, Language language) {
             String error;
@@ -103,15 +103,15 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Creates the brokerage as specified by the job packet
+         * Creates the brokerage as specified by the job packet
         */
-         * @param algorithmNodePacket">Job packet
-         * @param uninitializedAlgorithm">The algorithm instance before Initialize has been called
+         * @param algorithmNodePacket Job packet
+         * @param uninitializedAlgorithm The algorithm instance before Initialize has been called
         @returns The brokerage instance, or throws if error creating instance
         public IBrokerage CreateBrokerage(AlgorithmNodePacket algorithmNodePacket, IAlgorithm uninitializedAlgorithm) {
             liveJob = algorithmNodePacket as LiveNodePacket;
             if( liveJob == null ) {
-                throw new ArgumentException( "BrokerageSetupHandler.CreateBrokerage requires a live node packet");
+                throw new IllegalArgumentException( "BrokerageSetupHandler.CreateBrokerage requires a live node packet");
             }
 
             // find the correct brokerage factory based on the specified brokerage in the live job packet
@@ -124,14 +124,14 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Primary entry point to setup a new algorithm
+         * Primary entry point to setup a new algorithm
         */
-         * @param algorithm">Algorithm instance
-         * @param brokerage">New brokerage output instance
-         * @param job">Algorithm job task
-         * @param resultHandler">The configured result handler
-         * @param transactionHandler">The configurated transaction handler
-         * @param realTimeHandler">The configured real time handler
+         * @param algorithm Algorithm instance
+         * @param brokerage New brokerage output instance
+         * @param job Algorithm job task
+         * @param resultHandler The configured result handler
+         * @param transactionHandler The configurated transaction handler
+         * @param realTimeHandler The configured real time handler
         @returns True on successfully setting up the algorithm state, or false on error.
         public boolean Setup(IAlgorithm algorithm, IBrokerage brokerage, AlgorithmNodePacket job, IResultHandler resultHandler, ITransactionHandler transactionHandler, IRealTimeHandler realTimeHandler) {
             _algorithm = algorithm;
@@ -324,17 +324,17 @@ package com.quantconnect.lean.Lean.Engine.Setup
         }
 
         /**
-        /// Adds initializaion error to the Errors list
+         * Adds initializaion error to the Errors list
         */
-         * @param message">The error message to be added
+         * @param message The error message to be added
         private void AddInitializationError( String message) {
             Errors.Add( "Failed to initialize algorithm: " + message);
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
             if( _factory != null ) {
                 _factory.Dispose();

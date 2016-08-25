@@ -23,19 +23,19 @@ using QuantConnect.Logging;
 package com.quantconnect.lean.Data.Auxiliary
 {
     /**
-    /// Represents an entire factor file for a specified symbol
+     * Represents an entire factor file for a specified symbol
     */
     public class FactorFile
     {
         private final SortedList<DateTime, FactorFileRow> _data;
 
         /**
-        /// Gets the symbol this factor file represents
+         * Gets the symbol this factor file represents
         */
         public String Permtick { get; private set; }
 
         /**
-        /// Initializes a new instance of the <see cref="FactorFile"/> class.
+         * Initializes a new instance of the <see cref="FactorFile"/> class.
         */
         public FactorFile( String permtick, IEnumerable<FactorFileRow> data) {
             Permtick = permtick.toUpperCase();
@@ -43,14 +43,14 @@ package com.quantconnect.lean.Data.Auxiliary
         }
 
         /**
-        /// Reads a FactorFile in from the <see cref="Globals.DataFolder"/>.
+         * Reads a FactorFile in from the <see cref="Globals.DataFolder"/>.
         */
         public static FactorFile Read( String permtick, String market) {
             return new FactorFile(permtick, FactorFileRow.Read(permtick, market));
         }
 
         /**
-        /// Gets the price scale factor that includes dividend and split adjustments for the specified search date
+         * Gets the price scale factor that includes dividend and split adjustments for the specified search date
         */
         public BigDecimal GetPriceScaleFactor(DateTime searchDate) {
             BigDecimal factor = 1;
@@ -63,7 +63,7 @@ package com.quantconnect.lean.Data.Auxiliary
         }
 
         /**
-        /// Gets the split factor to be applied at the specified date
+         * Gets the split factor to be applied at the specified date
         */
         public BigDecimal GetSplitFactor(DateTime searchDate) {
             BigDecimal factor = 1;
@@ -76,7 +76,7 @@ package com.quantconnect.lean.Data.Auxiliary
         }
 
         /**
-        /// Checks whether or not a symbol has scaling factors
+         * Checks whether or not a symbol has scaling factors
         */
         public static boolean HasScalingFactors( String permtick, String market) {
             // check for factor files
@@ -89,18 +89,18 @@ package com.quantconnect.lean.Data.Auxiliary
         }
 
         /**
-        /// Returns true if the specified date is the last trading day before a dividend event
-        /// is to be fired
+         * Returns true if the specified date is the last trading day before a dividend event
+         * is to be fired
         */
-        /// 
-        /// NOTE: The dividend event in the algorithm should be fired at the end or AFTER
-        /// this date. This is the date in the file that a factor is applied, so for example,
-        /// MSFT has a 31 cent dividend on 2015.02.17, but in the factor file the factor is applied
-        /// to 2015.02.13, which is the first trading day BEFORE the actual effective date.
-        /// 
-         * @param date">The date to check the factor file for a dividend event
-         * @param priceFactorRatio">When this function returns true, this value will be populated
-        /// with the price factor ratio required to scale the closing value (pf_i/pf_i+1)
+         * 
+         * NOTE: The dividend event in the algorithm should be fired at the end or AFTER
+         * this date. This is the date in the file that a factor is applied, so for example,
+         * MSFT has a 31 cent dividend on 2015.02.17, but in the factor file the factor is applied
+         * to 2015.02.13, which is the first trading day BEFORE the actual effective date.
+         * 
+         * @param date The date to check the factor file for a dividend event
+         * @param priceFactorRatio When this function returns true, this value will be populated
+         * with the price factor ratio required to scale the closing value (pf_i/pf_i+1)
         public boolean HasDividendEventOnNextTradingDay(DateTime date, out BigDecimal priceFactorRatio) {
             priceFactorRatio = 0;
             index = _data.IndexOfKey(date);
@@ -119,15 +119,15 @@ package com.quantconnect.lean.Data.Auxiliary
         }
 
         /**
-        /// Returns true if the specified date is the last trading day before a split event
-        /// is to be fired
+         * Returns true if the specified date is the last trading day before a split event
+         * is to be fired
         */
-        /// 
-        /// NOTE: The split event in the algorithm should be fired at the end or AFTER this
-        /// date. This is the date in the file that a factor is applied, so for example MSFT
-        /// has a split on 1999.03.29, but in the factor file the split factor is applied on
-        /// 1999.03.26, which is the first trading day BEFORE the actual split date.
-        /// 
+         * 
+         * NOTE: The split event in the algorithm should be fired at the end or AFTER this
+         * date. This is the date in the file that a factor is applied, so for example MSFT
+         * has a split on 1999.03.29, but in the factor file the split factor is applied on
+         * 1999.03.26, which is the first trading day BEFORE the actual split date.
+         * 
         public boolean HasSplitEventOnNextTradingDay(DateTime date, out BigDecimal splitFactor) {
             splitFactor = 1;
             index = _data.IndexOfKey(date);

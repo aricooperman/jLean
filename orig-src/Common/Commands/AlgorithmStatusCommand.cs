@@ -19,34 +19,34 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Commands
 {
     /**
-    /// Represents a command that will change the algorithm's status
+     * Represents a command that will change the algorithm's status
     */
     public class AlgorithmStatusCommand : ICommand
     {
         /**
-        /// Gets or sets the algorithm status
+         * Gets or sets the algorithm status
         */
         public AlgorithmStatus Status { get; set; }
 
         /**
-        /// Initializes a new instance of the <see cref="AlgorithmStatusCommand"/>
+         * Initializes a new instance of the <see cref="AlgorithmStatusCommand"/>
         */
         public AlgorithmStatusCommand() {
             Status = AlgorithmStatus.Running;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="AlgorithmStatusCommand"/> with
-        /// the specified status
+         * Initializes a new instance of the <see cref="AlgorithmStatusCommand"/> with
+         * the specified status
         */
         public AlgorithmStatusCommand(AlgorithmStatus status) {
             Status = status;
         }
 
         /**
-        /// Sets the algoritm's status to <see cref="Status"/>
+         * Sets the algoritm's status to <see cref="Status"/>
         */
-         * @param algorithm">The algorithm to run this command against
+         * @param algorithm The algorithm to run this command against
         public CommandResultPacket Run(IAlgorithm algorithm) {
             algorithm.Status = Status;
             return new CommandResultPacket(this, true);

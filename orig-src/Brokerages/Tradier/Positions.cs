@@ -22,52 +22,52 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages.Tradier
 {
     /**
-    /// Empty class for deserializing positions held.
+     * Empty class for deserializing positions held.
     */
     public class TradierPositionsContainer
     {
-        /// Positions Class
+         * Positions Class
         @JsonProperty( "positions")]
         [JsonConverter(typeof(NullStringValueConverter<TradierPositions>))]
         public TradierPositions TradierPositions;
 
-        /// Default Constructor:
+         * Default Constructor:
         public TradierPositionsContainer() { }
     }
 
     /**
-    /// Position array container.
+     * Position array container.
     */
     public class TradierPositions 
     { 
-        /// Positions Class List
+         * Positions Class List
         @JsonProperty( "position")]
         [JsonConverter(typeof(SingleValueListConverter<TradierPosition>))]
         public List<TradierPosition> Positions;
 
-        /// Default Constructor for JSON
+         * Default Constructor for JSON
         public TradierPositions() { }
     }
 
 
     /**
-    /// Individual Tradier position model.
+     * Individual Tradier position model.
     */
     public class TradierPosition
     { 
-        /// Position Id
+         * Position Id
         @JsonProperty( "id")]
         public long Id;
 
-        /// Postion Date Acquired,
+         * Postion Date Acquired,
         @JsonProperty( "date_acquired")]
         public DateTime DateAcquired;
 
-        /// Position Quantity
+         * Position Quantity
         @JsonProperty( "quantity")]
         public long Quantity;
 
-        /// Position Cost:
+         * Position Cost:
         @JsonProperty( "cost_basis")]
         public BigDecimal CostBasis;
 

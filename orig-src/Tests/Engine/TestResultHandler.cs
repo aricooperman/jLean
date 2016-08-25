@@ -30,10 +30,10 @@ using QuantConnect.Statistics;
 package com.quantconnect.lean.Tests.Engine
 {
     /**
-    /// Provides a result handler implementation that handles result packets via
-    /// a constructor defined function. Also, this implementation does not require
-    /// the Run method to be called at all, a task is launched via ctor to process
-    /// the packets
+     * Provides a result handler implementation that handles result packets via
+     * a constructor defined function. Also, this implementation does not require
+     * the Run method to be called at all, a task is launched via ctor to process
+     * the packets
     */
     public class TestResultHandler : IResultHandler
     {

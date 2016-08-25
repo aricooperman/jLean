@@ -21,8 +21,8 @@ using QuantConnect.Data.UniverseSelection;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// In this algorithm we demonstrate how to use the coarse fundamental data to
-    /// define a universe as the top dollar volume
+     * In this algorithm we demonstrate how to use the coarse fundamental data to
+     * define a universe as the top dollar volume
     */
     public class CoarseFundamentalTop5Algorithm : QCAlgorithm
     {

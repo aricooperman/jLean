@@ -20,17 +20,17 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Provides a factory method for creating <see cref="ISubscriptionDataSourceReader"/> instances
+     * Provides a factory method for creating <see cref="ISubscriptionDataSourceReader"/> instances
     */
     public static class SubscriptionDataSourceReader
     {
         /**
-        /// Creates a new <see cref="ISubscriptionDataSourceReader"/> capable of handling the specified <paramref name="source"/>
+         * Creates a new <see cref="ISubscriptionDataSourceReader"/> capable of handling the specified <paramref name="source"/>
         */
-         * @param source">The subscription data source to create a factory for
-         * @param config">The configuration of the subscription
-         * @param date">The date to be processed
-         * @param isLiveMode">True for live mode, false otherwise
+         * @param source The subscription data source to create a factory for
+         * @param config The configuration of the subscription
+         * @param date The date to be processed
+         * @param isLiveMode True for live mode, false otherwise
         @returns A new <see cref="ISubscriptionDataSourceReader"/> that can read the specified <paramref name="source"/>
         public static ISubscriptionDataSourceReader ForSource(SubscriptionDataSource source, SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
             switch (source.Format) {

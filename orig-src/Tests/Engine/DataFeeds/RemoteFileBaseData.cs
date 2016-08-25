@@ -20,7 +20,7 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     /**
-    /// Custom data type that uses a remote file download
+     * Custom data type that uses a remote file download
     */
     public class RemoteFileBaseData : BaseData
     {

@@ -25,8 +25,8 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /**
-    /// The FillForwardEnumerator wraps an existing base data enumerator and inserts extra 'base data' instances
-    /// on a specified fill forward resolution
+     * The FillForwardEnumerator wraps an existing base data enumerator and inserts extra 'base data' instances
+     * on a specified fill forward resolution
     */
     public class FillForwardEnumerator : IEnumerator<BaseData>
     {
@@ -42,21 +42,21 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         private final IReadOnlyRef<TimeSpan> _fillForwardResolution;
 
         /**
-        /// The exchange used to determine when to insert fill forward data
+         * The exchange used to determine when to insert fill forward data
         */
         protected final SecurityExchange Exchange;
 
         /**
-        /// Initializes a new instance of the <see cref="FillForwardEnumerator"/> class that accepts
-        /// a reference to the fill forward resolution, useful if the fill forward resolution is dynamic
-        /// and changing as the enumeration progresses
+         * Initializes a new instance of the <see cref="FillForwardEnumerator"/> class that accepts
+         * a reference to the fill forward resolution, useful if the fill forward resolution is dynamic
+         * and changing as the enumeration progresses
         */
-         * @param enumerator">The source enumerator to be filled forward
-         * @param exchange">The exchange used to determine when to insert fill forward data
-         * @param fillForwardResolution">The resolution we'd like to receive data on
-         * @param isExtendedMarketHours">True to use the exchange's extended market hours, false to use the regular market hours
-         * @param subscriptionEndTime">The end time of the subscrition, once passing this date the enumerator will stop
-         * @param dataResolution">The source enumerator's data resolution
+         * @param enumerator The source enumerator to be filled forward
+         * @param exchange The exchange used to determine when to insert fill forward data
+         * @param fillForwardResolution The resolution we'd like to receive data on
+         * @param isExtendedMarketHours True to use the exchange's extended market hours, false to use the regular market hours
+         * @param subscriptionEndTime The end time of the subscrition, once passing this date the enumerator will stop
+         * @param dataResolution The source enumerator's data resolution
         public FillForwardEnumerator(IEnumerator<BaseData> enumerator,
             SecurityExchange exchange,
             IReadOnlyRef<TimeSpan> fillForwardResolution,
@@ -73,11 +73,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Gets the element in the collection at the current position of the enumerator.
+         * Gets the element in the collection at the current position of the enumerator.
         */
         @returns 
-        /// The element in the collection at the current position of the enumerator.
-        /// 
+         * The element in the collection at the current position of the enumerator.
+         * 
         public BaseData Current
         {
             get;
@@ -85,24 +85,24 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Gets the current element in the collection.
+         * Gets the current element in the collection.
         */
         @returns 
-        /// The current element in the collection.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * The current element in the collection.
+         * 
+         * <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
         /**
-        /// Advances the enumerator to the next element of the collection.
+         * Advances the enumerator to the next element of the collection.
         */
         @returns 
-        /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// 
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+         * true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+         * 
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public boolean MoveNext() {
             if( _delistedTime.HasValue) {
                 // don't fill forward after data after the delisted date
@@ -187,32 +187,32 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
             _enumerator.Dispose();
         }
 
         /**
-        /// Sets the enumerator to its initial position, which is before the first element in the collection.
+         * Sets the enumerator to its initial position, which is before the first element in the collection.
         */
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             _enumerator.Reset();
         }
 
         /**
-        /// Determines whether or not fill forward is required, and if true, will produce the new fill forward data
+         * Determines whether or not fill forward is required, and if true, will produce the new fill forward data
         */
          * @param fillForwardResolution">
-         * @param previous">The last piece of data emitted by this enumerator
-         * @param next">The next piece of data on the source enumerator
-         * @param fillForward">When this function returns true, this will have a non-null value, null when the function returns false
+         * @param previous The last piece of data emitted by this enumerator
+         * @param next The next piece of data on the source enumerator
+         * @param fillForward When this function returns true, this will have a non-null value, null when the function returns false
         @returns True when a new fill forward piece of data was produced and should be emitted by this enumerator
-        protected virtual boolean RequiresFillForwardData(TimeSpan fillForwardResolution, BaseData previous, BaseData next, out BaseData fillForward) {
+        protected boolean RequiresFillForwardData(TimeSpan fillForwardResolution, BaseData previous, BaseData next, out BaseData fillForward) {
             if( next.EndTime < previous.Time) {
-                throw new ArgumentException( "FillForwardEnumerator received data out of order. Symbol: " + previous.Symbol.ID);
+                throw new IllegalArgumentException( "FillForwardEnumerator received data out of order. Symbol: " + previous.Symbol.ID);
             }
 
             // check to see if the gap between previous and next warrants fill forward behavior
@@ -257,7 +257,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Finds the next open date that follows the specified date, this functions expects a date, not a date time
+         * Finds the next open date that follows the specified date, this functions expects a date, not a date time
         */
         private DateTime GetNextOpenDateAfter(DateTime date) {
             do

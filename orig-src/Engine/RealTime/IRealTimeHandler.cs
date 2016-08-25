@@ -24,13 +24,13 @@ using QuantConnect.Scheduling;
 package com.quantconnect.lean.Lean.Engine.RealTime
 {
     /**
-    /// Real time event handler, trigger functions at regular or pretimed intervals
+     * Real time event handler, trigger functions at regular or pretimed intervals
     */
     [InheritedExport(typeof(IRealTimeHandler))]
     public interface IRealTimeHandler : IEventSchedule
     {
         /**
-        /// Thread status flag.
+         * Thread status flag.
         */
         boolean IsActive
         {
@@ -38,23 +38,23 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
 
         /**
-        /// Intializes the real time handler for the specified algorithm and job
+         * Intializes the real time handler for the specified algorithm and job
         */
         void Setup(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler resultHandler, IApi api);
 
         /**
-        /// Main entry point to scan and trigger the realtime events.
+         * Main entry point to scan and trigger the realtime events.
         */
         void Run();
         
         /**
-        /// Set the current time for the event scanner (so we can use same code for backtesting and live events)
+         * Set the current time for the event scanner (so we can use same code for backtesting and live events)
         */
-         * @param time">Current real or backtest time.
+         * @param time Current real or backtest time.
         void SetTime(DateTime time);
 
         /**
-        /// Trigger and exit signal to terminate real time event scanner.
+         * Trigger and exit signal to terminate real time event scanner.
         */
         void Exit();
     }

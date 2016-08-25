@@ -19,223 +19,223 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Statistics
 {
     /**
-    /// The <see cref="TradeStatistics"/> class represents a set of statistics calculated from a list of closed trades
+     * The <see cref="TradeStatistics"/> class represents a set of statistics calculated from a list of closed trades
     */
     public class TradeStatistics
     {
         /**
-        /// The entry date/time of the first trade
+         * The entry date/time of the first trade
         */
         public DateTime? StartDateTime { get; private set; }
 
         /**
-        /// The exit date/time of the last trade
+         * The exit date/time of the last trade
         */
         public DateTime? EndDateTime { get; private set; }
 
         /**
-        /// The total number of trades
+         * The total number of trades
         */
         public int TotalNumberOfTrades { get; private set; }
 
         /**
-        /// The total number of winning trades
+         * The total number of winning trades
         */
         public int NumberOfWinningTrades { get; private set; }
 
         /**
-        /// The total number of losing trades
+         * The total number of losing trades
         */
         public int NumberOfLosingTrades { get; private set; }
 
         /**
-        /// The total profit/loss for all trades (as symbol currency)
+         * The total profit/loss for all trades (as symbol currency)
         */
         public BigDecimal TotalProfitLoss { get; private set; }
 
         /**
-        /// The total profit for all winning trades (as symbol currency)
+         * The total profit for all winning trades (as symbol currency)
         */
         public BigDecimal TotalProfit { get; private set; }
 
         /**
-        /// The total loss for all losing trades (as symbol currency)
+         * The total loss for all losing trades (as symbol currency)
         */
         public BigDecimal TotalLoss { get; private set; }
 
         /**
-        /// The largest profit in a single trade (as symbol currency)
+         * The largest profit in a single trade (as symbol currency)
         */
         public BigDecimal LargestProfit { get; private set; }
 
         /**
-        /// The largest loss in a single trade (as symbol currency)
+         * The largest loss in a single trade (as symbol currency)
         */
         public BigDecimal LargestLoss { get; private set; }
 
         /**
-        /// The average profit/loss (a.k.a. Expectancy or Average Trade) for all trades (as symbol currency)
+         * The average profit/loss (a.k.a. Expectancy or Average Trade) for all trades (as symbol currency)
         */
         public BigDecimal AverageProfitLoss { get; private set; }
 
         /**
-        /// The average profit for all winning trades (as symbol currency)
+         * The average profit for all winning trades (as symbol currency)
         */
         public BigDecimal AverageProfit { get; private set; }
 
         /**
-        /// The average loss for all winning trades (as symbol currency)
+         * The average loss for all winning trades (as symbol currency)
         */
         public BigDecimal AverageLoss { get; private set; }
 
         /**
-        /// The average duration for all trades
+         * The average duration for all trades
         */
         public Duration AverageTradeDuration { get; private set; }
 
         /**
-        /// The average duration for all winning trades
+         * The average duration for all winning trades
         */
         public Duration AverageWinningTradeDuration { get; private set; }
 
         /**
-        /// The average duration for all losing trades
+         * The average duration for all losing trades
         */
         public Duration AverageLosingTradeDuration { get; private set; }
 
         /**
-        /// The maximum number of consecutive winning trades
+         * The maximum number of consecutive winning trades
         */
         public int MaxConsecutiveWinningTrades { get; private set; }
 
         /**
-        /// The maximum number of consecutive losing trades
+         * The maximum number of consecutive losing trades
         */
         public int MaxConsecutiveLosingTrades { get; private set; }
 
         /**
-        /// The ratio of the average profit per trade to the average loss per trade
+         * The ratio of the average profit per trade to the average loss per trade
         */
-        /// If the average loss is zero, ProfitLossRatio is set to 0
+         * If the average loss is zero, ProfitLossRatio is set to 0
         public BigDecimal ProfitLossRatio { get; private set; }
 
         /**
-        /// The ratio of the number of winning trades to the number of losing trades
+         * The ratio of the number of winning trades to the number of losing trades
         */
-        /// If the total number of trades is zero, WinLossRatio is set to zero
-        /// If the number of losing trades is zero and the number of winning trades is nonzero, WinLossRatio is set to 10
+         * If the total number of trades is zero, WinLossRatio is set to zero
+         * If the number of losing trades is zero and the number of winning trades is nonzero, WinLossRatio is set to 10
         public BigDecimal WinLossRatio { get; private set; }
 
         /**
-        /// The ratio of the number of winning trades to the total number of trades
+         * The ratio of the number of winning trades to the total number of trades
         */
-        /// If the total number of trades is zero, WinRate is set to zero
+         * If the total number of trades is zero, WinRate is set to zero
         public BigDecimal WinRate { get; private set; }
 
         /**
-        /// The ratio of the number of losing trades to the total number of trades
+         * The ratio of the number of losing trades to the total number of trades
         */
-        /// If the total number of trades is zero, LossRate is set to zero
+         * If the total number of trades is zero, LossRate is set to zero
         public BigDecimal LossRate { get; private set; }
 
         /**
-        /// The average Maximum Adverse Excursion for all trades
+         * The average Maximum Adverse Excursion for all trades
         */
         public BigDecimal AverageMAE { get; private set; }
 
         /**
-        /// The average Maximum Favorable Excursion for all trades
+         * The average Maximum Favorable Excursion for all trades
         */
         public BigDecimal AverageMFE { get; private set; }
 
         /**
-        /// The largest Maximum Adverse Excursion in a single trade (as symbol currency)
+         * The largest Maximum Adverse Excursion in a single trade (as symbol currency)
         */
         public BigDecimal LargestMAE { get; private set; }
 
         /**
-        /// The largest Maximum Favorable Excursion in a single trade (as symbol currency)
+         * The largest Maximum Favorable Excursion in a single trade (as symbol currency)
         */
         public BigDecimal LargestMFE { get; private set; }
 
         /**
-        /// The maximum closed-trade drawdown for all trades (as symbol currency)
+         * The maximum closed-trade drawdown for all trades (as symbol currency)
         */
-        /// The calculation only takes into account the profit/loss of each trade
+         * The calculation only takes into account the profit/loss of each trade
         public BigDecimal MaximumClosedTradeDrawdown { get; private set; }
 
         /**
-        /// The maximum intra-trade drawdown for all trades (as symbol currency)
+         * The maximum intra-trade drawdown for all trades (as symbol currency)
         */
-        /// The calculation takes into account MAE and MFE of each trade
+         * The calculation takes into account MAE and MFE of each trade
         public BigDecimal MaximumIntraTradeDrawdown { get; private set; }
 
         /**
-        /// The standard deviation of the profits/losses for all trades (as symbol currency)
+         * The standard deviation of the profits/losses for all trades (as symbol currency)
         */
         public BigDecimal ProfitLossStandardDeviation { get; private set; }
 
         /**
-        /// The downside deviation of the profits/losses for all trades (as symbol currency)
+         * The downside deviation of the profits/losses for all trades (as symbol currency)
         */
-        /// This metric only considers deviations of losing trades
+         * This metric only considers deviations of losing trades
         public BigDecimal ProfitLossDownsideDeviation { get; private set; }
 
         /**
-        /// The ratio of the total profit to the total loss
+         * The ratio of the total profit to the total loss
         */
-        /// If the total profit is zero, ProfitFactor is set to zero
-        /// if the total loss is zero and the total profit is nonzero, ProfitFactor is set to 10
+         * If the total profit is zero, ProfitFactor is set to zero
+         * if the total loss is zero and the total profit is nonzero, ProfitFactor is set to 10
         public BigDecimal ProfitFactor { get; private set; }
 
         /**
-        /// The ratio of the average profit/loss to the standard deviation
+         * The ratio of the average profit/loss to the standard deviation
         */
         public BigDecimal SharpeRatio { get; private set; }
 
         /**
-        /// The ratio of the average profit/loss to the downside deviation
+         * The ratio of the average profit/loss to the downside deviation
         */
         public BigDecimal SortinoRatio { get; private set; }
 
         /**
-        /// The ratio of the total profit/loss to the maximum closed trade drawdown
+         * The ratio of the total profit/loss to the maximum closed trade drawdown
         */
-        /// If the total profit/loss is zero, ProfitToMaxDrawdownRatio is set to zero
-        /// if the drawdown is zero and the total profit is nonzero, ProfitToMaxDrawdownRatio is set to 10
+         * If the total profit/loss is zero, ProfitToMaxDrawdownRatio is set to zero
+         * if the drawdown is zero and the total profit is nonzero, ProfitToMaxDrawdownRatio is set to 10
         public BigDecimal ProfitToMaxDrawdownRatio { get; private set; }
 
         /**
-        /// The maximum amount of profit given back by a single trade before exit (as symbol currency)
+         * The maximum amount of profit given back by a single trade before exit (as symbol currency)
         */
         public BigDecimal MaximumEndTradeDrawdown { get; private set; }
 
         /**
-        /// The average amount of profit given back by all trades before exit (as symbol currency)
+         * The average amount of profit given back by all trades before exit (as symbol currency)
         */
         public BigDecimal AverageEndTradeDrawdown { get; private set; }
 
         /**
-        /// The maximum amount of time to recover from a drawdown (longest time between new equity highs or peaks)
+         * The maximum amount of time to recover from a drawdown (longest time between new equity highs or peaks)
         */
         public Duration MaximumDrawdownDuration { get; private set; }
 
         /**
-        /// The sum of fees for all trades
+         * The sum of fees for all trades
         */
         public BigDecimal TotalFees { get; private set; }
 
         /**
-        /// Initializes a new instance of the <see cref="TradeStatistics"/> class
+         * Initializes a new instance of the <see cref="TradeStatistics"/> class
         */
-         * @param trades">The list of closed trades
+         * @param trades The list of closed trades
         public TradeStatistics(IEnumerable<Trade> trades) {
             maxConsecutiveWinners = 0;
             maxConsecutiveLosers = 0;
-            maxTotalProfitLoss = 0m;
-            maxTotalProfitLossWithMfe = 0m;
-            sumForVariance = 0m;
-            sumForDownsideVariance = 0m;
+            maxTotalProfitLoss = BigDecimal.ZERO;
+            maxTotalProfitLossWithMfe = BigDecimal.ZERO;
+            sumForVariance = BigDecimal.ZERO;
+            sumForDownsideVariance = BigDecimal.ZERO;
             lastPeakTime = DateTime.MinValue;
             isInDrawdown = false;
 
@@ -351,7 +351,7 @@ package com.quantconnect.lean.Statistics
         }
 
         /**
-        /// Initializes a new instance of the <see cref="TradeStatistics"/> class
+         * Initializes a new instance of the <see cref="TradeStatistics"/> class
         */
         public TradeStatistics() {
         }

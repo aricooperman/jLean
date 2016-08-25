@@ -19,13 +19,13 @@ using System;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Provides an implementation of <see cref="ITimeProvider"/> that
-    /// uses <see cref="DateTime.UtcNow"/> to provide the current time
+     * Provides an implementation of <see cref="ITimeProvider"/> that
+     * uses <see cref="DateTime.UtcNow"/> to provide the current time
     */
     public sealed class RealTimeProvider : ITimeProvider
     {
         /**
-        /// Gets the current time in UTC
+         * Gets the current time in UTC
         */
         @returns The current time in UTC
         public DateTime GetUtcNow() {

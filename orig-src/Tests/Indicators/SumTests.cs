@@ -48,7 +48,7 @@ package com.quantconnect.lean.Tests.Indicators {
             sum.Reset();
 
             TestHelper.AssertIndicatorIsInDefaultState(sum);
-            Assert.AreEqual(sum.Current.Value, 0m);
+            Assert.AreEqual(sum.Current.Value, BigDecimal.ZERO);
             sum.Update(time.AddDays(1), 1);
             Assert.AreEqual(sum.Current.Value, 1m);
         }

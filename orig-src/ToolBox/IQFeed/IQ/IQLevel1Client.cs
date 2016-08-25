@@ -637,7 +637,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
         public boolean IsNewsOn { get; private set; }
 
         /**
-        /// Add this symbol to our subscription list.
+         * Add this symbol to our subscription list.
         */
         public void Subscribe( String symbol, boolean requestFundamental = true, boolean active = true, boolean regionOn = false) {
             item = new IQLevel1WatchItem(symbol, active, regionOn);
@@ -652,7 +652,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
         }
 
         /**
-        /// Remove this symbol from our subscriptions.
+         * Remove this symbol from our subscriptions.
         */
         public void Unsubscribe( String symbol) {
             if( !_key.ContainsKey(symbol)) {
@@ -663,14 +663,14 @@ package com.quantconnect.lean.ToolBox.IQFeed
         }
 
         /**
-        /// Check if the storage contains this symbol
+         * Check if the storage contains this symbol
         */
         public boolean Contains( String symbol) {
             return _key.Keys.Contains(symbol);
         }
 
         /**
-        /// Unsubscribe from all symbols and clear the internal storage.
+         * Unsubscribe from all symbols and clear the internal storage.
         */
         public void Clear() {
             Send( "S,UNWATCH ALL\r\n");
@@ -681,7 +681,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
         }
 
         /**
-        /// Number of subscribed items
+         * Number of subscribed items
         */
         public int Count
         {
@@ -743,31 +743,31 @@ package com.quantconnect.lean.ToolBox.IQFeed
             OnLevel1UnknownEvent(new Level1TextLineEventArgs(e.textLine));    
         }
 
-        protected virtual void OnLevel1UnknownEvent(Level1TextLineEventArgs e) {
+        protected void OnLevel1UnknownEvent(Level1TextLineEventArgs e) {
             if( Level1UnknownEvent != null ) Level1UnknownEvent(this, e); 
         }
 
-        protected virtual void OnLevel1ServerReconnectFailed(Level1ServerReconnectFailedArgs e) {
+        protected void OnLevel1ServerReconnectFailed(Level1ServerReconnectFailedArgs e) {
             if( Level1ServerReconnectFailed != null ) Level1ServerReconnectFailed(this, e); 
         }
 
-        protected virtual void OnLevel1ServerDisconnected(Level1ServerDisconnectedArgs e) {
+        protected void OnLevel1ServerDisconnected(Level1ServerDisconnectedArgs e) {
             if( Level1ServerDisconnectedEvent != null ) Level1ServerDisconnectedEvent(this, e); 
         }
 
-        protected virtual void OnLevel1SummaryUpdateEvent(Level1SummaryUpdateEventArgs e) {
+        protected void OnLevel1SummaryUpdateEvent(Level1SummaryUpdateEventArgs e) {
             if( Level1SummaryUpdateEvent != null ) Level1SummaryUpdateEvent(this, e);
         }
-        protected virtual void OnLevel1FundamentalEvent(Level1FundamentalEventArgs e) {
+        protected void OnLevel1FundamentalEvent(Level1FundamentalEventArgs e) {
             if( Level1FundamentalEvent != null ) Level1FundamentalEvent(this, e);
         }
-        protected virtual void OnLevel1TimerEvent(Level1TimerEventArgs e) {
+        protected void OnLevel1TimerEvent(Level1TimerEventArgs e) {
             if( Level1TimerEvent != null ) Level1TimerEvent(this, e);
         }
-        protected virtual void OnLevel1RegionalEvent(Level1RegionalEventArgs e) {
+        protected void OnLevel1RegionalEvent(Level1RegionalEventArgs e) {
             if( Level1RegionalEvent != null ) Level1RegionalEvent(this, e);
         }
-        protected virtual void OnLevel1NewsEvent(Level1NewsEventArgs e) {
+        protected void OnLevel1NewsEvent(Level1NewsEventArgs e) {
             if( Level1NewsEvent != null ) Level1NewsEvent(this, e);
         }
 

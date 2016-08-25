@@ -19,50 +19,50 @@ using System.Linq;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Provides methods for dealing with lean assembly versions
+     * Provides methods for dealing with lean assembly versions
     */
     public static class VersionHelper
     {
         private static final boolean IgnoreVersionChecks = Configuration.Config.GetBool( "ignore-version-checks");
 
         /**
-        /// Determines whether or not the specified version is older than this instance
+         * Determines whether or not the specified version is older than this instance
         */
-         * @param version">The version to compare
+         * @param version The version to compare
         @returns True if the specified version is older, false otherwise
         public static boolean IsOlderVersion( String version) {
             return CompareVersions(version, Globals.Version) < 0;
         }
 
         /**
-        /// Determines whether or not the specified version is newer than this instance
+         * Determines whether or not the specified version is newer than this instance
         */
-         * @param version">The version to compare
+         * @param version The version to compare
         @returns True if the specified version is newer, false otherwise
         public static boolean IsNewerVersion( String version) {
             return CompareVersions(version, Globals.Version) > 0;
         }
 
         /**
-        /// Determines whether or not the specified version is equal to this instance
+         * Determines whether or not the specified version is equal to this instance
         */
-         * @param version">The version to compare
+         * @param version The version to compare
         @returns True if the specified version is equal, false otherwise
         public static boolean IsEqualVersion( String version) {
             return CompareVersions(version, Globals.Version) == 0;
         }
 
         /**
-        /// Determines whether or not the specified version is not equal to this instance
+         * Determines whether or not the specified version is not equal to this instance
         */
-         * @param version">The version to compare
+         * @param version The version to compare
         @returns True if the specified version is not equal, false otherwise
         public static boolean IsNotEqualVersion( String version) {
             return !IsEqualVersion(version);
         }
 
         /**
-        /// Compares two versions
+         * Compares two versions
         */
         @returns 1 if the left version is after the right, 0 if they're the same, -1 if the left is before the right
         public static int CompareVersions( String left, String right) {

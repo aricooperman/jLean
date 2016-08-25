@@ -19,41 +19,41 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Data.Consolidators
 {
     /**
-    /// Consolidates quotebars into larger quotebars
+     * Consolidates quotebars into larger quotebars
     */
     public class QuoteBarConsolidator : PeriodCountConsolidatorBase<QuoteBar, QuoteBar>
     {
         /**
-        /// Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
+         * Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
         */
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         public QuoteBarConsolidator(TimeSpan period)
             : base(period) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
+         * Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
         public QuoteBarConsolidator(int maxCount)
             : base(maxCount) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
+         * Initializes a new instance of the <see cref="TickQuoteBarConsolidator"/> class
         */
-         * @param maxCount">The number of pieces to accept before emiting a consolidated bar
-         * @param period">The minimum span of time before emitting a consolidated bar
+         * @param maxCount The number of pieces to accept before emiting a consolidated bar
+         * @param period The minimum span of time before emitting a consolidated bar
         public QuoteBarConsolidator(int maxCount, Duration period)
             : base(maxCount, period) {
         }
 
         /**
-        /// Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
-        /// null following the event firing
+         * Aggregates the new 'data' into the 'workingBar'. The 'workingBar' will be
+         * null following the event firing
         */
-         * @param workingBar">The bar we're building, null if the event was just fired and we're starting a new consolidated bar
-         * @param data">The new data
+         * @param workingBar The bar we're building, null if the event was just fired and we're starting a new consolidated bar
+         * @param data The new data
         protected @Override void AggregateBar(ref QuoteBar workingBar, QuoteBar data) {
             bid = data.Bid;
             ask = data.Ask;

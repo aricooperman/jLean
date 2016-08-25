@@ -18,26 +18,26 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the On Balance Volume (OBV). 
-    /// The On Balance Volume is calculated by determining the price of the current close price and previous close price.
-    /// If the current close price is equivalent to the previous price the OBV remains the same,
-    /// If the current close price is higher the volume of that day is added to the OBV, while a lower close price will
-    /// result in negative value.
+     * This indicator computes the On Balance Volume (OBV). 
+     * The On Balance Volume is calculated by determining the price of the current close price and previous close price.
+     * If the current close price is equivalent to the previous price the OBV remains the same,
+     * If the current close price is higher the volume of that day is added to the OBV, while a lower close price will
+     * result in negative value.
     */
     public class OnBalanceVolume : TradeBarIndicator
     {
         private TradeBar _previousInput;
 
         /**
-        /// Initializes a new instance of the Indicator class using the specified name.
+         * Initializes a new instance of the Indicator class using the specified name.
         */ 
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public OnBalanceVolume( String name)
             : base(name) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -45,9 +45,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns  A new value for this indicator 
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             obv = Current.Value;
@@ -73,7 +73,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _previousInput = null;

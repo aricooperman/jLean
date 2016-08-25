@@ -17,25 +17,25 @@
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Provides an implementation of <see cref="ISecurityInitializer"/> that executes
-    /// each initializer in order
+     * Provides an implementation of <see cref="ISecurityInitializer"/> that executes
+     * each initializer in order
     */
     public class CompositeSecurityInitializer : ISecurityInitializer
     {
         private final ISecurityInitializer[] _initializers;
 
         /**
-        /// Initializes a new instance of the <see cref="CompositeSecurityInitializer"/> class
+         * Initializes a new instance of the <see cref="CompositeSecurityInitializer"/> class
         */
-         * @param initializers">The initializers to execute in order
+         * @param initializers The initializers to execute in order
         public CompositeSecurityInitializer(params ISecurityInitializer[] initializers) {
             _initializers = initializers;
         }
 
         /**
-        /// Execute each of the internally held initializers in sequence
+         * Execute each of the internally held initializers in sequence
         */
-         * @param security">The security to be initialized
+         * @param security The security to be initialized
         public void Initialize(Security security) {
             foreach (initializer in _initializers) {
                 initializer.Initialize(security);

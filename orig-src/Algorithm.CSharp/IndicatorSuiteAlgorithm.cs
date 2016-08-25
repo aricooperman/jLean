@@ -22,7 +22,7 @@ using QuantConnect.Indicators;
 package com.quantconnect.lean
 {
     /**
-    /// QuantConnect University: Indicator Suite Example.
+     * QuantConnect University: Indicator Suite Example.
     */
     public class IndicatorSuiteAlgorithm : QCAlgorithm
     {
@@ -42,7 +42,7 @@ package com.quantconnect.lean
         BigDecimal _price;
 
         /**
-        /// Initialize the data and resolution you require for your strategy
+         * Initialize the data and resolution you require for your strategy
         */
         public @Override void Initialize() {
             //Initialize
@@ -116,16 +116,16 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Custom data event handler:
+         * Custom data event handler:
         */
-         * @param data">Bitcoin - dictionary of TradeBarlike Bars of Bitcoin Data
+         * @param data Bitcoin - dictionary of TradeBarlike Bars of Bitcoin Data
         public void OnData(Bitcoin data) {
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">TradeBars IDictionary object with your stock data
+         * @param data TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             if( !_indicators.BB.IsReady || !_indicators.RSI.IsReady) return;
 
@@ -143,7 +143,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Fire plotting events once per day.
+         * Fire plotting events once per day.
         */
         public @Override void OnEndOfDay() {
             if( !_indicators.BB.IsReady) return;
@@ -172,7 +172,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Class to hold a bunch of different indicators for this example
+         * Class to hold a bunch of different indicators for this example
         */
         class Indicators
         {
@@ -191,7 +191,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Function used to select a trade bar that has double the values of the input trade bar
+         * Function used to select a trade bar that has double the values of the input trade bar
         */
         private static TradeBar SelectorDoubleTradeBar(BaseData baseData) {
             bar = (TradeBar)baseData;

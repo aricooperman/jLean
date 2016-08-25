@@ -32,7 +32,7 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Brokerages.Fxcm
 {
     /**
-    /// FXCM brokerage - implementation of IBrokerage interface
+     * FXCM brokerage - implementation of IBrokerage interface
     */
     public partial class FxcmBrokerage : Brokerage, IDataQueueHandler, IGenericMessageListener, IStatusMessageListener
     {
@@ -57,15 +57,15 @@ package com.quantconnect.lean.Brokerages.Fxcm
         private final FxcmSymbolMapper _symbolMapper = new FxcmSymbolMapper();
 
         /**
-        /// Creates a new instance of the <see cref="FxcmBrokerage"/> class
+         * Creates a new instance of the <see cref="FxcmBrokerage"/> class
         */
-         * @param orderProvider">The order provider
-         * @param securityProvider">The holdings provider
-         * @param server">The url of the server
-         * @param terminal">The terminal name
-         * @param userName">The user name (login id)
-         * @param password">The user password
-         * @param accountId">The account id
+         * @param orderProvider The order provider
+         * @param securityProvider The holdings provider
+         * @param server The url of the server
+         * @param terminal The terminal name
+         * @param userName The user name (login id)
+         * @param password The user password
+         * @param accountId The account id
         public FxcmBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider, String server, String terminal, String userName, String password, String accountId)
             : base( "FXCM Brokerage") {
             _orderProvider = orderProvider;
@@ -80,7 +80,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         #region IBrokerage implementation
 
         /**
-        /// Returns true if we're currently connected to the broker
+         * Returns true if we're currently connected to the broker
         */
         public @Override boolean IsConnected
         {
@@ -91,7 +91,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Connects the client to the broker's remote servers
+         * Connects the client to the broker's remote servers
         */
         public @Override void Connect() {
             if( IsConnected) return;
@@ -140,7 +140,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 {
                     while (!_cancellationTokenSource.IsCancellationRequested) {
                         Duration elapsed;
-                        lock (_lockerConnectionMonitor) {
+                        synchronized(_lockerConnectionMonitor) {
                             elapsed = DateTime.UtcNow - _lastReadyMessageTime;
                         }
 
@@ -216,7 +216,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Disconnects the client from the broker's remote servers
+         * Disconnects the client from the broker's remote servers
         */
         public @Override void Disconnect() {
             if( !IsConnected) return;
@@ -237,8 +237,8 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Gets all open orders on the account. 
-        /// NOTE: The order objects returned do not have QC order IDs.
+         * Gets all open orders on the account. 
+         * NOTE: The order objects returned do not have QC order IDs.
         */
         @returns The open orders returned from FXCM
         public @Override List<Order> GetOpenOrders() {
@@ -251,7 +251,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Gets all holdings for the account
+         * Gets all holdings for the account
         */
         @returns The current holdings from the account
         public @Override List<Holding> GetAccountHoldings() {
@@ -278,7 +278,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Gets the current cash balance for each currency held in the brokerage account
+         * Gets the current cash balance for each currency held in the brokerage account
         */
         @returns The current cash balance for each currency available for trading
         public @Override List<Cash> GetCashBalance() {
@@ -333,9 +333,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Places a new order and assigns a new broker ID to the order
+         * Places a new order and assigns a new broker ID to the order
         */
-         * @param order">The order to be placed
+         * @param order The order to be placed
         @returns True if the request for a new order has been placed, false otherwise
         public @Override boolean PlaceOrder(Order order) {
             Log.Trace( "FxcmBrokerage.PlaceOrder(): %1$s", order);
@@ -344,7 +344,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 throw new InvalidOperationException( "FxcmBrokerage.PlaceOrder(): Unable to place order while not connected.");
 
             if( order.Direction != OrderDirection.Buy && order.Direction != OrderDirection.Sell)
-                throw new ArgumentException( "FxcmBrokerage.PlaceOrder(): Invalid Order Direction");
+                throw new IllegalArgumentException( "FxcmBrokerage.PlaceOrder(): Invalid Order Direction");
 
             fxcmSymbol = _symbolMapper.GetBrokerageSymbol(order.Symbol);
             orderSide = order.Direction == OrderDirection.Buy ? SideFactory.BUY : SideFactory.SELL;
@@ -376,7 +376,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
 
             _isOrderSubmitRejected = false;
             AutoResetEvent autoResetEvent;
-            lock (_locker) {
+            synchronized(_locker) {
                 _currentRequest = _gateway.sendMessage(orderRequest);
                 _mapRequestsToOrders[_currentRequest] = order;
                 autoResetEvent = new AutoResetEvent(false);
@@ -389,9 +389,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Updates the order with the same id
+         * Updates the order with the same id
         */
-         * @param order">The new order information
+         * @param order The new order information
         @returns True if the request was made for the order to be updated, false otherwise
         public @Override boolean UpdateOrder(Order order) {
             Log.Trace( "FxcmBrokerage.UpdateOrder(): %1$s", order);
@@ -409,7 +409,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
 
             ExecutionReport fxcmOrder;
             if( !_openOrders.TryGetValue(fxcmOrderId, out fxcmOrder))
-                throw new ArgumentException( "FxcmBrokerage.UpdateOrder(): FXCM order id not found: " + fxcmOrderId);
+                throw new IllegalArgumentException( "FxcmBrokerage.UpdateOrder(): FXCM order id not found: " + fxcmOrderId);
 
             double price;
             switch (order.Type) {
@@ -431,7 +431,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
             orderReplaceRequest.setOrderQty((double)order.AbsoluteQuantity);
 
             AutoResetEvent autoResetEvent;
-            lock (_locker) {
+            synchronized(_locker) {
                 _currentRequest = _gateway.sendMessage(orderReplaceRequest);
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;
@@ -443,9 +443,9 @@ package com.quantconnect.lean.Brokerages.Fxcm
         }
 
         /**
-        /// Cancels the order with the specified ID
+         * Cancels the order with the specified ID
         */
-         * @param order">The order to cancel
+         * @param order The order to cancel
         @returns True if the request was made for the order to be canceled, false otherwise
         public @Override boolean CancelOrder(Order order) {
             Log.Trace( "FxcmBrokerage.CancelOrder(): %1$s", order);
@@ -463,12 +463,12 @@ package com.quantconnect.lean.Brokerages.Fxcm
 
             ExecutionReport fxcmOrder;
             if( !_openOrders.TryGetValue(fxcmOrderId, out fxcmOrder))
-                throw new ArgumentException( "FxcmBrokerage.CancelOrder(): FXCM order id not found: " + fxcmOrderId);
+                throw new IllegalArgumentException( "FxcmBrokerage.CancelOrder(): FXCM order id not found: " + fxcmOrderId);
 
             _isOrderUpdateOrCancelRejected = false;
             orderCancelRequest = MessageGenerator.generateOrderCancelRequest( "", fxcmOrder.getOrderID(), fxcmOrder.getSide(), fxcmOrder.getAccount());
             AutoResetEvent autoResetEvent;
-            lock (_locker) {
+            synchronized(_locker) {
                 _currentRequest = _gateway.sendMessage(orderCancelRequest);
                 autoResetEvent = new AutoResetEvent(false);
                 _mapRequestsToAutoResetEvents[_currentRequest] = autoResetEvent;

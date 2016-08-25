@@ -20,16 +20,16 @@ using System.Xml.Linq;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Provides extension methods for the XML to LINQ types
+     * Provides extension methods for the XML to LINQ types
     */
     public static class XElementExtensions
     {
         /**
-        /// Gets the value from the element and converts it to the specified type.
+         * Gets the value from the element and converts it to the specified type.
         */
-        /// <typeparam name="T">The output type</typeparam>
-         * @param element">The element to access
-         * @param name">The attribute name to access on the element
+         * <typeparam name="T The output type</typeparam>
+         * @param element The element to access
+         * @param name The attribute name to access on the element
         @returns The converted value
         public static T Get<T>(this XElement element, String name) 
             where T : IConvertible

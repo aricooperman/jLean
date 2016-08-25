@@ -16,39 +16,39 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the Rate Of Change Ratio (ROCR). 
-    /// The Rate Of Change Ratio is calculated with the following formula:
-    /// ROCR = price / prevPrice
+     * This indicator computes the Rate Of Change Ratio (ROCR). 
+     * The Rate Of Change Ratio is calculated with the following formula:
+     * ROCR = price / prevPrice
     */
     public class RateOfChangeRatio : WindowIndicator<IndicatorDataPoint>
     {
         /**
-        /// Initializes a new instance of the <see cref="RateOfChangeRatio"/> class using the specified name and period.
+         * Initializes a new instance of the <see cref="RateOfChangeRatio"/> class using the specified name and period.
         */ 
-         * @param name">The name of this indicator
-         * @param period">The period of the ROCR
+         * @param name The name of this indicator
+         * @param period The period of the ROCR
         public RateOfChangeRatio( String name, int period)
             : base(name, period) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="RateOfChangeRatio"/> class using the specified period.
+         * Initializes a new instance of the <see cref="RateOfChangeRatio"/> class using the specified period.
         */ 
-         * @param period">The period of the ROCR
+         * @param period The period of the ROCR
         public RateOfChangeRatio(int period)
             : base( "ROCR" + period, period) {
         }
 
         /**
-        /// Computes the next value for this indicator from the given state.
+         * Computes the next value for this indicator from the given state.
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input value to this indicator on this time step
+         * @param window The window of data held in this indicator
+         * @param input The input value to this indicator on this time step
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             denominator = IsReady ? window.MostRecentlyRemoved : window[window.Count - 1];
 
-            return denominator != 0 ? input / denominator : 0m;
+            return denominator != 0 ? input / denominator : BigDecimal.ZERO;
         }
     }
 }

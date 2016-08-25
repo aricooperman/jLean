@@ -23,15 +23,15 @@ using QuantConnect.ToolBox.AlgoSeekOptionsConverter;
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Provides an implementation of <see cref="IStreamParser"/> that reads files in the lean format
+     * Provides an implementation of <see cref="IStreamParser"/> that reads files in the lean format
     */
     public class LeanParser : IStreamParser
     {
         /**
-        /// Parses the specified input stream into an enumerable of data
+         * Parses the specified input stream into an enumerable of data
         */
-         * @param source">The source file corresponding the the stream
-         * @param stream">The input stream to be parsed
+         * @param source The source file corresponding the the stream
+         * @param stream The input stream to be parsed
         @returns An enumerable of base data
         public IEnumerable<BaseData> Parse( String source, Stream stream) {
             pathComponents = LeanDataPathComponents.Parse(source);
@@ -53,7 +53,7 @@ package com.quantconnect.lean.ToolBox
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
         }

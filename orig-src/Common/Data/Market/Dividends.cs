@@ -19,20 +19,20 @@ using System;
 package com.quantconnect.lean.Data.Market
 {
     /**
-    /// Collection of dividends keyed by <see cref="Symbol"/>
+     * Collection of dividends keyed by <see cref="Symbol"/>
     */
     public class Dividends : DataMap<Dividend>
     {
         /**
-        /// Initializes a new instance of the <see cref="Dividends"/> dictionary
+         * Initializes a new instance of the <see cref="Dividends"/> dictionary
         */
         public Dividends() {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Dividends"/> dictionary
+         * Initializes a new instance of the <see cref="Dividends"/> dictionary
         */
-         * @param frontier">The time associated with the data in this Map
+         * @param frontier The time associated with the data in this Map
         public Dividends(DateTime frontier)
             : base(frontier) {
         }

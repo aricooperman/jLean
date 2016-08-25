@@ -18,12 +18,12 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Candle settings for all candlestick patterns
+     * Candle settings for all candlestick patterns
     */
     public static class CandleSettings
     {
         /**
-        /// Default settings for all candle setting types
+         * Default settings for all candle setting types
         */
         private static final Map<CandleSettingType, CandleSetting> DefaultSettings = new Map<CandleSettingType, CandleSetting>
         {
@@ -41,9 +41,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         };
 
         /**
-        /// Returns the candle setting for the requested type
+         * Returns the candle setting for the requested type
         */
-         * @param type">The candle setting type
+         * @param type The candle setting type
         public static CandleSetting Get(CandleSettingType type) {
             CandleSetting setting;
             DefaultSettings.TryGetValue(type, out setting);
@@ -51,22 +51,22 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Changes the default candle setting for the requested type
+         * Changes the default candle setting for the requested type
         */
-         * @param type">The candle setting type
-         * @param setting">The candle setting
+         * @param type The candle setting type
+         * @param setting The candle setting
         public static void Set(CandleSettingType type, CandleSetting setting) {
             DefaultSettings[type] = setting;
         }
     }
 
     /**
-    /// Represents a candle setting
+     * Represents a candle setting
     */
     public class CandleSetting
     {
         /**
-        /// The candle range type
+         * The candle range type
         */
         public CandleRangeType RangeType
         {
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// The number of previous candles to average
+         * The number of previous candles to average
         */
         public int AveragePeriod
         {
@@ -84,7 +84,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// A multiplier to calculate candle ranges
+         * A multiplier to calculate candle ranges
         */
         public BigDecimal Factor
         {
@@ -93,11 +93,11 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Creates an instance of the <see cref="CandleSetting"/> class
+         * Creates an instance of the <see cref="CandleSetting"/> class
         */
-         * @param rangeType">The range type
-         * @param averagePeriod">The average period
-         * @param factor">The factor
+         * @param rangeType The range type
+         * @param averagePeriod The average period
+         * @param factor The factor
         public CandleSetting(CandleRangeType rangeType, int averagePeriod, BigDecimal factor) {
             RangeType = rangeType;
             AveragePeriod = averagePeriod;

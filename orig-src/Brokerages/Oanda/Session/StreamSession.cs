@@ -29,9 +29,9 @@ package com.quantconnect.lean.Brokerages.Oanda.Session
 {
 #pragma warning disable 1591
     /**
-    /// StreamSession abstract class used to model the Oanda Events Sessions.
+     * StreamSession abstract class used to model the Oanda Events Sessions.
     */
-    /// <typeparam name="T"></typeparam>
+     * <typeparam name="T"></typeparam>
     public abstract class StreamSession<T> where T : IHeartbeat
     {
         public delegate void DataHandler(T data);

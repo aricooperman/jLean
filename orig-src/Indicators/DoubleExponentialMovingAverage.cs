@@ -16,12 +16,12 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the Double Exponential Moving Average (DEMA).
-    /// The Double Exponential Moving Average is calculated with the following formula:
-    /// EMA2 = EMA(EMA(t,period),period)
-    /// DEMA = 2 * EMA(t,period) - EMA2
-    /// The Generalized DEMA (GD) is calculated with the following formula:
-    /// GD = (volumeFactor+1) * EMA(t,period) - volumeFactor * EMA2
+     * This indicator computes the Double Exponential Moving Average (DEMA).
+     * The Double Exponential Moving Average is calculated with the following formula:
+     * EMA2 = EMA(EMA(t,period),period)
+     * DEMA = 2 * EMA(t,period) - EMA2
+     * The Generalized DEMA (GD) is calculated with the following formula:
+     * GD = (volumeFactor+1) * EMA(t,period) - volumeFactor * EMA2
     */
     public class DoubleExponentialMovingAverage : IndicatorBase<IndicatorDataPoint>
     {
@@ -31,11 +31,11 @@ package com.quantconnect.lean.Indicators
         private final ExponentialMovingAverage _ema2;
 
         /**
-        /// Initializes a new instance of the <see cref="DoubleExponentialMovingAverage"/> class using the specified name and period.
+         * Initializes a new instance of the <see cref="DoubleExponentialMovingAverage"/> class using the specified name and period.
         */ 
-         * @param name">The name of this indicator
-         * @param period">The period of the DEMA
-         * @param volumeFactor">The volume factor of the DEMA (value must be in the [0,1] range, set to 1 for standard DEMA)
+         * @param name The name of this indicator
+         * @param period The period of the DEMA
+         * @param volumeFactor The volume factor of the DEMA (value must be in the [0,1] range, set to 1 for standard DEMA)
         public DoubleExponentialMovingAverage( String name, int period, BigDecimal volumeFactor = 1m)
             : base(name) {
             _period = period;
@@ -45,16 +45,16 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Initializes a new instance of the <see cref="DoubleExponentialMovingAverage"/> class using the specified period.
+         * Initializes a new instance of the <see cref="DoubleExponentialMovingAverage"/> class using the specified period.
         */ 
-         * @param period">The period of the DEMA
-         * @param volumeFactor">The volume factor of the DEMA (value must be in the [0,1] range, set to 1 for standard DEMA)
+         * @param period The period of the DEMA
+         * @param volumeFactor The volume factor of the DEMA (value must be in the [0,1] range, set to 1 for standard DEMA)
         public DoubleExponentialMovingAverage(int period, BigDecimal volumeFactor = 1m)
             : this( "DEMA" + period, period, volumeFactor) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -62,9 +62,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _ema1.Update(input);
@@ -78,7 +78,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _ema1.Reset();

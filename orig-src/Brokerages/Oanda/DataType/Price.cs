@@ -20,7 +20,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
     /**
-    /// Represents the Price object creating Orders for each instrument.
+     * Represents the Price object creating Orders for each instrument.
     */
     public class Price
     {

@@ -23,7 +23,7 @@ using System.Linq;
 package com.quantconnect.lean.ToolBox.CryptoiqDownloader
 {
     /**
-    /// Cryptoiq Data Downloader class 
+     * Cryptoiq Data Downloader class 
     */
     public class CryptoiqDownloader : IDataDownloader
     {
@@ -31,31 +31,31 @@ package com.quantconnect.lean.ToolBox.CryptoiqDownloader
         private final BigDecimal _scaleFactor;
 
         /**
-        /// Initializes a new instance of the <see cref="CryptoiqDownloader"/> class
+         * Initializes a new instance of the <see cref="CryptoiqDownloader"/> class
         */
-         * @param exchange">The bitcoin exchange
-         * @param scaleFactor">Scale factor used to scale the data, useful for changing the BTC units
+         * @param exchange The bitcoin exchange
+         * @param scaleFactor Scale factor used to scale the data, useful for changing the BTC units
         public CryptoiqDownloader( String exchange = "bitfinex", BigDecimal scaleFactor = 1m) {
             _exchange = exchange;
             _scaleFactor = scaleFactor;
         }
 
         /**
-        /// Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
+         * Get historical data enumerable for a single symbol, type and resolution given this start and end time (in UTC).
         */
-         * @param symbol">Symbol for the data we're looking for.
-         * @param resolution">Only Tick is currently supported
-         * @param startUtc">Start time of the data in UTC
-         * @param endUtc">End time of the data in UTC
+         * @param symbol Symbol for the data we're looking for.
+         * @param resolution Only Tick is currently supported
+         * @param startUtc Start time of the data in UTC
+         * @param endUtc End time of the data in UTC
         @returns Enumerable of base data for this symbol
         public IEnumerable<BaseData> Get(Symbol symbol, Resolution resolution, DateTime startUtc, DateTime endUtc) {
             if( resolution != Resolution.Tick) {
-                throw new ArgumentException( "Only tick data is currently supported.");
+                throw new IllegalArgumentException( "Only tick data is currently supported.");
             }
 
             hour = 1;
             counter = startUtc;
-            static final String url = "http://cryptoiq.io/api/marketdata/ticker/{3}/%3$s/%1$s/%2$s";
+            static final String url = "http://cryptoiq.io/api/marketdata/ticker/%4$s/%3$s/%1$s/%2$s";
 
             while (counter <= endUtc) {
                 while (hour < 24) {

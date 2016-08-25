@@ -16,9 +16,9 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the TRIX (1-period ROC of a Triple EMA)
-    /// The Accumulation/Distribution Oscillator is calculated as explained here:
-    /// http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:trix
+     * This indicator computes the TRIX (1-period ROC of a Triple EMA)
+     * The Accumulation/Distribution Oscillator is calculated as explained here:
+     * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:trix
     */
     public class Trix : IndicatorBase<IndicatorDataPoint>
     {
@@ -29,10 +29,10 @@ package com.quantconnect.lean.Indicators
         private final RateOfChangePercent _roc;
 
         /**
-        /// Initializes a new instance of the <see cref="Trix"/> class using the specified name and period.
+         * Initializes a new instance of the <see cref="Trix"/> class using the specified name and period.
         */ 
-         * @param name">The name of this indicator
-         * @param period">The period of the indicator
+         * @param name The name of this indicator
+         * @param period The period of the indicator
         public Trix( String name, int period)
             : base(name) {
             _period = period;
@@ -43,15 +43,15 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Trix"/> class using the specified period.
+         * Initializes a new instance of the <see cref="Trix"/> class using the specified period.
         */ 
-         * @param period">The period of the indicator
+         * @param period The period of the indicator
         public Trix(int period)
             : this( "TRIX" + period, period) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -59,9 +59,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _ema1.Update(input);
@@ -79,7 +79,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _ema1.Reset();

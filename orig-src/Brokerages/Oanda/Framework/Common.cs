@@ -23,7 +23,7 @@ package com.quantconnect.lean.Brokerages.Oanda.Framework
 {
 #pragma warning disable 1591
     /**
-    /// Common reflection helper methods for Oanda data types.
+     * Common reflection helper methods for Oanda data types.
     */
 	public class Common
 	{

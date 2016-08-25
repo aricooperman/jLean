@@ -25,7 +25,7 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// This algorithm uses Math.NET Numerics library, specifically Linear Algebra object (Vector and Matrix) and operations, in order to solve a portfolio optimization problem.
+     * This algorithm uses Math.NET Numerics library, specifically Linear Algebra object (Vector and Matrix) and operations, in order to solve a portfolio optimization problem.
     */
     public class PortfolioOptimizationNumericsAlgorithm : QCAlgorithm
     {
@@ -52,7 +52,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
 
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 07);  //Set Start Date
@@ -91,9 +91,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">Slice object keyed by symbol containing the stock data
+         * @param data Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             if( !Portfolio.Invested) {
                 foreach (symbolData in SymbolDataList.OrderBy(x -> x.Weight)) {
@@ -104,7 +104,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Computes Lagrange Multiplier
+         * Computes Lagrange Multiplier
         */
         private void ComputeLagrangeMultiplier() {
             denominatorMatrix = DiscountMeanVector * Sigma.Inverse() * DiscountMeanVector.ToColumnMatrix();
@@ -113,7 +113,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Computes weight for each risky asset
+         * Computes weight for each risky asset
         */
         private void ComputeWeights() {
             weights = _lagrangeMultiplier * Sigma.Inverse() * DiscountMeanVector.ToColumnMatrix();
@@ -124,7 +124,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Computes Portfolio Risk
+         * Computes Portfolio Risk
         */
         private void ComputePortfolioRisk() {
             weights = Vector<double>.Build.DenseOfArray(SymbolDataList.Select(x -> (double)x.Return).ToArray());
@@ -133,7 +133,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Symbol Data class to store security data (Return, Risk, Weight)
+         * Symbol Data class to store security data (Return, Risk, Weight)
         */
         class SymbolData
         {

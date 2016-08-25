@@ -20,22 +20,22 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Data.UniverseSelection
 {
     /**
-    /// Defines the universe selection data type for <see cref="OptionChainUniverse"/>
+     * Defines the universe selection data type for <see cref="OptionChainUniverse"/>
     */
     public class OptionChainUniverseDataCollection : BaseDataCollection
     {
         /**
-        /// The option chain's underlying price data
+         * The option chain's underlying price data
         */
         public BaseData Underlying { get; set; }
 
         /**
-        /// Gets or sets the contracts selected by the universe
+         * Gets or sets the contracts selected by the universe
         */
         public HashSet<Symbol> FilteredContracts { get; set; }
         
         /**
-        /// Initializes a new default instance of the <see cref="OptionChainUniverseDataCollection"/> c;ass
+         * Initializes a new default instance of the <see cref="OptionChainUniverseDataCollection"/> c;ass
         */
         public OptionChainUniverseDataCollection()
             : this(DateTime.MinValue, Symbol.Empty) {
@@ -43,35 +43,35 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Initializes a new instance of the <see cref="OptionChainUniverseDataCollection"/> class
+         * Initializes a new instance of the <see cref="OptionChainUniverseDataCollection"/> class
         */
-         * @param time">The time of this data
-         * @param symbol">A common identifier for all data in this packet
-         * @param data">The data to add to this collection
-         * @param underlying">The option chain's underlying price data
+         * @param time The time of this data
+         * @param symbol A common identifier for all data in this packet
+         * @param data The data to add to this collection
+         * @param underlying The option chain's underlying price data
         public OptionChainUniverseDataCollection(DateTime time, Symbol symbol, IEnumerable<BaseData> data = null, BaseData underlying = null )
             : this(time, time, symbol, data, underlying) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="OptionChainUniverseDataCollection"/> class
+         * Initializes a new instance of the <see cref="OptionChainUniverseDataCollection"/> class
         */
-         * @param time">The start time of this data
-         * @param endTime">The end time of this data
-         * @param symbol">A common identifier for all data in this packet
-         * @param data">The data to add to this collection
-         * @param underlying">The option chain's underlying price data
+         * @param time The start time of this data
+         * @param endTime The end time of this data
+         * @param symbol A common identifier for all data in this packet
+         * @param data The data to add to this collection
+         * @param underlying The option chain's underlying price data
         public OptionChainUniverseDataCollection(DateTime time, DateTime endTime, Symbol symbol, IEnumerable<BaseData> data = null, BaseData underlying = null )
             : base(time, endTime, symbol, data) {
             Underlying = underlying;
         }
 
         /**
-        /// Return a new instance clone of this object, used in fill forward
+         * Return a new instance clone of this object, used in fill forward
         */
-        /// 
-        /// This base implementation uses reflection to copy all public fields and properties
-        /// 
+         * 
+         * This base implementation uses reflection to copy all public fields and properties
+         * 
         @returns A clone of the current object
         public @Override BaseData Clone() {
             return new OptionChainUniverseDataCollection

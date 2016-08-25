@@ -20,10 +20,10 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// This algorithm shows how to set a custom security initializer.
-    /// A security initializer is run immediately after a new security object
-    /// has been created and can be used to security models and other settings,
-    /// such as data normalization mode
+     * This algorithm shows how to set a custom security initializer.
+     * A security initializer is run immediately after a new security object
+     * has been created and can be used to security models and other settings,
+     * such as data normalization mode
     */
     public class CustomSecurityInitializerAlgorithm : QCAlgorithm
     {
@@ -45,30 +45,30 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// Our custom initializer that will set the data normalization mode.
-        /// We sub-class the <see cref="BrokerageModelSecurityInitializer"/>
-        /// so we can also take advantage of the default model/leverage setting
-        /// behaviors
+         * Our custom initializer that will set the data normalization mode.
+         * We sub-class the <see cref="BrokerageModelSecurityInitializer"/>
+         * so we can also take advantage of the default model/leverage setting
+         * behaviors
         */
         class CustomSecurityInitializer : BrokerageModelSecurityInitializer
         {
             private final DataNormalizationMode _dataNormalizationMode;
 
             /**
-            /// Initializes a new instance of the <see cref="CustomSecurityInitializer"/> class
-            /// with the specified normalization mode
+             * Initializes a new instance of the <see cref="CustomSecurityInitializer"/> class
+             * with the specified normalization mode
             */
-             * @param brokerageModel">The brokerage model used to get fill/fee/slippage/settlement models
-             * @param dataNormalizationMode">The desired data normalization mode
+             * @param brokerageModel The brokerage model used to get fill/fee/slippage/settlement models
+             * @param dataNormalizationMode The desired data normalization mode
             public CustomSecurityInitializer(IBrokerageModel brokerageModel, DataNormalizationMode dataNormalizationMode)
                 : base(brokerageModel) {
                 _dataNormalizationMode = dataNormalizationMode;
             }
 
             /**
-            /// Initializes the specified security by setting up the models
+             * Initializes the specified security by setting up the models
             */
-             * @param security">The security to be initialized
+             * @param security The security to be initialized
             public @Override void Initialize(Security security) {
                 // first call the default implementation
                 base.Initialize(security);

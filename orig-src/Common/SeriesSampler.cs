@@ -19,26 +19,26 @@ using System.Collections.Generic;
 package com.quantconnect.lean
 {
     /**
-    /// A type capable of taking a chart and resampling using a linear interpolation strategy
+     * A type capable of taking a chart and resampling using a linear interpolation strategy
     */
     public class SeriesSampler
     {
         private final double _seconds;
 
         /**
-        /// Creates a new SeriesSampler to sample Series data on the specified resolution
+         * Creates a new SeriesSampler to sample Series data on the specified resolution
         */
-         * @param resolution">The desired sampling resolution
+         * @param resolution The desired sampling resolution
         public SeriesSampler(TimeSpan resolution) {
             _seconds = resolution.TotalSeconds;
         }
 
         /**
-        /// Samples the given series
+         * Samples the given series
         */
-         * @param series">The series to be sampled
-         * @param start">The date to start sampling, if before start of data then start of data will be used
-         * @param stop">The date to stop sampling, if after stop of data, then stop of data will be used
+         * @param series The series to be sampled
+         * @param start The date to start sampling, if before start of data then start of data will be used
+         * @param stop The date to stop sampling, if after stop of data, then stop of data will be used
         @returns The sampled series
         public Series Sample(Series series, DateTime start, DateTime stop) {
             sampled = new Series(series.Name, series.SeriesType, series.Index, series.Unit);
@@ -110,11 +110,11 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Samples the given charts
+         * Samples the given charts
         */
-         * @param charts">The charts to be sampled
-         * @param start">The date to start sampling
-         * @param stop">The date to stop sampling
+         * @param charts The charts to be sampled
+         * @param start The date to start sampling
+         * @param stop The date to stop sampling
         @returns The sampled charts
         public Map<String, Chart> SampleCharts(Map<String, Chart> charts, DateTime start, DateTime stop) {
             sampledCharts = new Map<String, Chart>();
@@ -130,7 +130,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Linear interpolation used for sampling
+         * Linear interpolation used for sampling
         */
         private static BigDecimal Interpolate(ChartPoint previous, ChartPoint current, long target) {
             deltaTicks = current.x - previous.x;

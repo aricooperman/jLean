@@ -19,12 +19,12 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Brokerages.Oanda
 {
     /**
-    /// Provides the mapping between Lean symbols and Oanda symbols.
+     * Provides the mapping between Lean symbols and Oanda symbols.
     */
     public class OandaSymbolMapper : ISymbolMapper
     {
         /**
-        /// The list of known Oanda symbols.
+         * The list of known Oanda symbols.
         */
         private static final HashSet<String> KnownSymbols = new HashSet<String>
         {
@@ -155,7 +155,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         };
 
         /**
-        /// The list of known Oanda currencies.
+         * The list of known Oanda currencies.
         */
         private static final HashSet<String> KnownCurrencies = new HashSet<String>
         {
@@ -164,57 +164,57 @@ package com.quantconnect.lean.Brokerages.Oanda
         };
 
         /**
-        /// Converts a Lean symbol instance to an Oanda symbol
+         * Converts a Lean symbol instance to an Oanda symbol
         */
-         * @param symbol">A Lean symbol instance
+         * @param symbol A Lean symbol instance
         @returns The Oanda symbol
         public String GetBrokerageSymbol(Symbol symbol) {
-            if( symbol == null || symbol == Symbol.Empty || string.IsNullOrWhiteSpace(symbol.Value))
-                throw new ArgumentException( "Invalid symbol: " + (symbol == null ? "null" : symbol.toString()));
+            if( symbol == null || symbol == Symbol.Empty || StringUtils.isBlank(symbol.Value))
+                throw new IllegalArgumentException( "Invalid symbol: " + (symbol == null ? "null" : symbol.toString()));
 
             if( symbol.ID.SecurityType != SecurityType.Forex && symbol.ID.SecurityType != SecurityType.Cfd)
-                throw new ArgumentException( "Invalid security type: " + symbol.ID.SecurityType);
+                throw new IllegalArgumentException( "Invalid security type: " + symbol.ID.SecurityType);
 
             brokerageSymbol = ConvertLeanSymbolToOandaSymbol(symbol.Value);
 
             if( !IsKnownBrokerageSymbol(brokerageSymbol))
-                throw new ArgumentException( "Unknown symbol: " + symbol.Value);
+                throw new IllegalArgumentException( "Unknown symbol: " + symbol.Value);
 
             return brokerageSymbol;
         }
 
         /**
-        /// Converts an Oanda symbol to a Lean symbol instance
+         * Converts an Oanda symbol to a Lean symbol instance
         */
-         * @param brokerageSymbol">The Oanda symbol
-         * @param securityType">The security type
-         * @param market">The market
+         * @param brokerageSymbol The Oanda symbol
+         * @param securityType The security type
+         * @param market The market
         @returns A new Lean Symbol instance
         public Symbol GetLeanSymbol( String brokerageSymbol, SecurityType securityType, String market) {
             if(  String.IsNullOrWhiteSpace(brokerageSymbol))
-                throw new ArgumentException( "Invalid Oanda symbol: " + brokerageSymbol);
+                throw new IllegalArgumentException( "Invalid Oanda symbol: " + brokerageSymbol);
 
             if( !IsKnownBrokerageSymbol(brokerageSymbol))
-                throw new ArgumentException( "Unknown Oanda symbol: " + brokerageSymbol);
+                throw new IllegalArgumentException( "Unknown Oanda symbol: " + brokerageSymbol);
 
             if( securityType != SecurityType.Forex && securityType != SecurityType.Cfd)
-                throw new ArgumentException( "Invalid security type: " + securityType);
+                throw new IllegalArgumentException( "Invalid security type: " + securityType);
 
             if( market != Market.Oanda)
-                throw new ArgumentException( "Invalid market: " + market);
+                throw new IllegalArgumentException( "Invalid market: " + market);
 
             return Symbol.Create(ConvertOandaSymbolToLeanSymbol(brokerageSymbol), GetBrokerageSecurityType(brokerageSymbol), Market.Oanda);
         }
 
         /**
-        /// Returns the security type for an Oanda symbol
+         * Returns the security type for an Oanda symbol
         */
-         * @param brokerageSymbol">The Oanda symbol
+         * @param brokerageSymbol The Oanda symbol
         @returns The security type
         public SecurityType GetBrokerageSecurityType( String brokerageSymbol) {
             tokens = brokerageSymbol.split('_');
             if( tokens.Length != 2)
-                throw new ArgumentException( "Unable to determine SecurityType for Oanda symbol: " + brokerageSymbol);
+                throw new IllegalArgumentException( "Unable to determine SecurityType for Oanda symbol: " + brokerageSymbol);
 
             return KnownCurrencies.Contains(tokens[0]) && KnownCurrencies.Contains(tokens[1])
                 ? SecurityType.Forex
@@ -222,30 +222,30 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Returns the security type for a Lean symbol
+         * Returns the security type for a Lean symbol
         */
-         * @param leanSymbol">The Lean symbol
+         * @param leanSymbol The Lean symbol
         @returns The security type
         public SecurityType GetLeanSecurityType( String leanSymbol) {
             return GetBrokerageSecurityType(ConvertLeanSymbolToOandaSymbol(leanSymbol));
         }
 
         /**
-        /// Checks if the symbol is supported by Oanda
+         * Checks if the symbol is supported by Oanda
         */
-         * @param brokerageSymbol">The Oanda symbol
+         * @param brokerageSymbol The Oanda symbol
         @returns True if Oanda supports the symbol
         public boolean IsKnownBrokerageSymbol( String brokerageSymbol) {
             return KnownSymbols.Contains(brokerageSymbol);
         }
 
         /**
-        /// Checks if the symbol is supported by Oanda
+         * Checks if the symbol is supported by Oanda
         */
-         * @param symbol">The Lean symbol
+         * @param symbol The Lean symbol
         @returns True if Oanda supports the symbol
         public boolean IsKnownLeanSymbol(Symbol symbol) {
-            if( symbol == null || string.IsNullOrWhiteSpace(symbol.Value)) 
+            if( symbol == null || StringUtils.isBlank(symbol.Value)) 
                 return false;
 
             oandaSymbol = ConvertLeanSymbolToOandaSymbol(symbol.Value);
@@ -254,7 +254,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Converts an Oanda symbol to a Lean symbol string
+         * Converts an Oanda symbol to a Lean symbol string
         */
         private static String ConvertOandaSymbolToLeanSymbol( String oandaSymbol) {
             // Lean symbols are equal to Oanda symbols with underscores removed
@@ -262,7 +262,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Converts a Lean symbol String to an Oanda symbol
+         * Converts a Lean symbol String to an Oanda symbol
         */
         private static String ConvertLeanSymbolToOandaSymbol( String leanSymbol) {
             // All Oanda symbols end with '_XYZ', where XYZ is the quote currency

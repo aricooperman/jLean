@@ -22,61 +22,61 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Data
 {
     /**
-    /// Represents a request for historical data
+     * Represents a request for historical data
     */
     public class HistoryRequest
     {
         /**
-        /// Gets the start time of the request.
+         * Gets the start time of the request.
         */
         public DateTime StartTimeUtc { get; set; }
         /**
-        /// Gets the end time of the request. 
+         * Gets the end time of the request. 
         */
         public DateTime EndTimeUtc { get; set; }
         /**
-        /// Gets the symbol to request data for
+         * Gets the symbol to request data for
         */
         public Symbol Symbol { get; set; }
         /**
-        /// Gets the exchange hours used for processing fill forward requests
+         * Gets the exchange hours used for processing fill forward requests
         */
         public SecurityExchangeHours ExchangeHours { get; set; }
         /**
-        /// Gets the requested data resolution
+         * Gets the requested data resolution
         */
         public Resolution Resolution { get; set; }
         /**
-        /// Gets the requested fill forward resolution, set to null for no fill forward behavior
+         * Gets the requested fill forward resolution, set to null for no fill forward behavior
         */
         public Resolution? FillForwardResolution { get; set; }
         /**
-        /// Gets whether or not to include extended market hours data, set to false for only normal market hours
+         * Gets whether or not to include extended market hours data, set to false for only normal market hours
         */
         public boolean IncludeExtendedMarketHours { get; set; }
         /**
-        /// Gets the data type used to process the subscription request, this type must derive from BaseData
+         * Gets the data type used to process the subscription request, this type must derive from BaseData
         */
         public Type DataType { get; set; }
         /**
-        /// Gets the security type of the subscription
+         * Gets the security type of the subscription
         */
         public SecurityType SecurityType { get; set; }
         /**
-        /// Gets the time zone of the time stamps on the raw input data
+         * Gets the time zone of the time stamps on the raw input data
         */
         public ZoneId TimeZone { get; set; }
         /**
-        /// Gets the market for this subscription
+         * Gets the market for this subscription
         */
         public String Market { get; set; }
         /**
-        /// Gets true if this is a custom data request, false for normal QC data
+         * Gets true if this is a custom data request, false for normal QC data
         */
         public boolean IsCustomData { get; set; }
 
         /**
-        /// Initializes a new default instance of the <see cref="HistoryRequest"/> class
+         * Initializes a new default instance of the <see cref="HistoryRequest"/> class
         */
         public HistoryRequest() {
             StartTimeUtc = EndTimeUtc = DateTime.UtcNow;
@@ -93,19 +93,19 @@ package com.quantconnect.lean.Data
         }
 
         /**
-        /// Initializes a new instance of the <see cref="HistoryRequest"/> class from the specified parameters
+         * Initializes a new instance of the <see cref="HistoryRequest"/> class from the specified parameters
         */
-         * @param startTimeUtc">The start time for this request,
-         * @param endTimeUtc">The start time for this request
-         * @param dataType">The data type of the output data
-         * @param symbol">The symbol to request data for
-         * @param securityType">The security type of the symbol
-         * @param resolution">The requested data resolution
-         * @param market">The market this data belongs to
-         * @param exchangeHours">The exchange hours used in fill forward processing
-         * @param fillForwardResolution">The requested fill forward resolution for this request
-         * @param includeExtendedMarketHours">True to include data from pre/post market hours
-         * @param isCustomData">True for custom user data, false for normal QC data
+         * @param startTimeUtc The start time for this request,
+         * @param endTimeUtc The start time for this request
+         * @param dataType The data type of the output data
+         * @param symbol The symbol to request data for
+         * @param securityType The security type of the symbol
+         * @param resolution The requested data resolution
+         * @param market The market this data belongs to
+         * @param exchangeHours The exchange hours used in fill forward processing
+         * @param fillForwardResolution The requested fill forward resolution for this request
+         * @param includeExtendedMarketHours True to include data from pre/post market hours
+         * @param isCustomData True for custom user data, false for normal QC data
         public HistoryRequest(DateTime startTimeUtc, 
             DateTime endTimeUtc,
             Type dataType,
@@ -133,12 +133,12 @@ package com.quantconnect.lean.Data
         }
 
         /**
-        /// Initializes a new instance of the <see cref="HistoryRequest"/> class from the specified config and exchange hours
+         * Initializes a new instance of the <see cref="HistoryRequest"/> class from the specified config and exchange hours
         */
-         * @param config">The subscription data config used to initalize this request
-         * @param hours">The exchange hours used for fill forward processing
-         * @param startTimeUtc">The start time for this request,
-         * @param endTimeUtc">The start time for this request
+         * @param config The subscription data config used to initalize this request
+         * @param hours The exchange hours used for fill forward processing
+         * @param startTimeUtc The start time for this request,
+         * @param endTimeUtc The start time for this request
         public HistoryRequest(SubscriptionDataConfig config, SecurityExchangeHours hours, DateTime startTimeUtc, DateTime endTimeUtc) {
             StartTimeUtc = startTimeUtc;
             EndTimeUtc = endTimeUtc;

@@ -16,54 +16,54 @@
 package com.quantconnect.lean.Statistics
 {
     /**
-    /// Direction of a trade
+     * Direction of a trade
     */
     public enum TradeDirection
     {
         /**
-        /// Long direction
+         * Long direction
         */
         Long,
 
         /**
-        /// Short direction
+         * Short direction
         */
         Short
     }
 
     /**
-    /// The method used to group order fills into trades
+     * The method used to group order fills into trades
     */
     public enum FillGroupingMethod
     {
         /**
-        /// A Trade is defined by a fill that establishes or increases a position and an offsetting fill that reduces the position size.
+         * A Trade is defined by a fill that establishes or increases a position and an offsetting fill that reduces the position size.
         */
         FillToFill,
 
         /**
-        /// A Trade is defined by a sequence of fills, from a flat position to a non-zero position which may increase or decrease in quantity, and back to a flat position.
+         * A Trade is defined by a sequence of fills, from a flat position to a non-zero position which may increase or decrease in quantity, and back to a flat position.
         */
         FlatToFlat,
 
         /**
-        /// A Trade is defined by a sequence of fills, from a flat position to a non-zero position and an offsetting fill that reduces the position size.
+         * A Trade is defined by a sequence of fills, from a flat position to a non-zero position and an offsetting fill that reduces the position size.
         */
         FlatToReduced,
     }
 
     /**
-    /// The method used to match offsetting order fills
+     * The method used to match offsetting order fills
     */
     public enum FillMatchingMethod
     {
         /**
-        /// First In First Out fill matching method
+         * First In First Out fill matching method
         */
         FIFO,
 
         /**
-        /// Last In Last Out fill matching method
+         * Last In Last Out fill matching method
         */
         LIFO
     }

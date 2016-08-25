@@ -20,36 +20,36 @@ using Newtonsoft.Json;
 package com.quantconnect.lean.Brokerages.Tradier
 {
     /**
-    /// Token response model from QuantConnect terminal
+     * Token response model from QuantConnect terminal
     */
     public class TokenResponse
     {
-        /// Access token for current requests:
+         * Access token for current requests:
         @JsonProperty( "sAccessToken")]
         public String AccessToken;
 
-        /// Refersh token for next time
+         * Refersh token for next time
         @JsonProperty( "sRefreshToken")]
         public String RefreshToken;
 
-        /// Seconds the tokens expires
+         * Seconds the tokens expires
         @JsonProperty( "iExpiresIn")]
         public int ExpiresIn;
 
-        /// Scope of token access
+         * Scope of token access
         @JsonProperty( "sScope")]
         public String Scope;
 
-        /// Time the token was issued:
+         * Time the token was issued:
         @JsonProperty( "dtIssuedAt")]
         public DateTime IssuedAt;
 
-        /// Success flag:
+         * Success flag:
         @JsonProperty( "success")]
         public boolean Success;
 
         /**
-        ///  Default constructor:
+         *  Default constructor:
         */
         public TokenResponse() { }
     }

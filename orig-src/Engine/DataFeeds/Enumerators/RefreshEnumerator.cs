@@ -20,10 +20,10 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /**
-    /// Provides an implementation of <see cref="IEnumerator{T}"/> that will
-    /// always return true via MoveNext.
+     * Provides an implementation of <see cref="IEnumerator{T}"/> that will
+     * always return true via MoveNext.
     */
-    /// <typeparam name="T"></typeparam>
+     * <typeparam name="T"></typeparam>
     public class RefreshEnumerator<T> : IEnumerator<T>
     {
         private T _current;
@@ -31,21 +31,21 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         private final Func<IEnumerator<T>> _enumeratorFactory;
 
         /**
-        /// Initializes a new instance of the <see cref="RefreshEnumerator{T}"/> class
+         * Initializes a new instance of the <see cref="RefreshEnumerator{T}"/> class
         */
-         * @param enumeratorFactory">Enumerator factory used to regenerate the underlying
-        /// enumerator when it ends
+         * @param enumeratorFactory Enumerator factory used to regenerate the underlying
+         * enumerator when it ends
         public RefreshEnumerator(Func<IEnumerator<T>> enumeratorFactory) {
             _enumeratorFactory = enumeratorFactory;
         }
 
         /**
-        /// Advances the enumerator to the next element of the collection.
+         * Advances the enumerator to the next element of the collection.
         */
         @returns 
-        /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// 
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+         * true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+         * 
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public boolean MoveNext() {
             _enumerator = _enumeratorFactory.Invoke();
 
@@ -63,40 +63,40 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Sets the enumerator to its initial position, which is before the first element in the collection.
+         * Sets the enumerator to its initial position, which is before the first element in the collection.
         */
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             _enumerator.Reset();
         }
 
         /**
-        /// Gets the element in the collection at the current position of the enumerator.
+         * Gets the element in the collection at the current position of the enumerator.
         */
         @returns 
-        /// The element in the collection at the current position of the enumerator.
-        /// 
+         * The element in the collection at the current position of the enumerator.
+         * 
         public T Current
         {
             get { return _current; }
         }
 
         /**
-        /// Gets the current element in the collection.
+         * Gets the current element in the collection.
         */
         @returns 
-        /// The current element in the collection.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * The current element in the collection.
+         * 
+         * <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
             _enumerator.Dispose();
         }

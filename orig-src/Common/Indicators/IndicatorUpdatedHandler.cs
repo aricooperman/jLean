@@ -16,9 +16,9 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// Event handler type for the IndicatorBase.Updated event
+     * Event handler type for the IndicatorBase.Updated event
     */
-     * @param sender">The indicator that fired the event
-     * @param updated">The new piece of data produced by the indicator
+     * @param sender The indicator that fired the event
+     * @param updated The new piece of data produced by the indicator
     public delegate void IndicatorUpdatedHandler(object sender, IndicatorDataPoint updated);
 }

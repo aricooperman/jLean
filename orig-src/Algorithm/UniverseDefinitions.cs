@@ -19,12 +19,12 @@ using QuantConnect.Data.UniverseSelection;
 package com.quantconnect.lean.Algorithm
 {
     /**
-    /// Provides helpers for defining universes in algorithms
+     * Provides helpers for defining universes in algorithms
     */
     public class UniverseDefinitions
     {
         /**
-        /// Specifies that universe selection should not make changes on this iteration
+         * Specifies that universe selection should not make changes on this iteration
         */
         public Universe.UnchangedUniverse Unchanged
         {
@@ -32,7 +32,7 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Gets a helper that provides methods for creating universes based on daily dollar volumes
+         * Gets a helper that provides methods for creating universes based on daily dollar volumes
         */
         public DollarVolumeUniverseDefinitions DollarVolume
         {
@@ -40,9 +40,9 @@ package com.quantconnect.lean.Algorithm
         }
 
         /**
-        /// Initializes a new instance of the <see cref="UniverseDefinitions"/> class
+         * Initializes a new instance of the <see cref="UniverseDefinitions"/> class
         */
-         * @param algorithm">The algorithm instance, used for obtaining the default <see cref="UniverseSettings"/>
+         * @param algorithm The algorithm instance, used for obtaining the default <see cref="UniverseSettings"/>
         public UniverseDefinitions(QCAlgorithm algorithm) {
             DollarVolume = new DollarVolumeUniverseDefinitions(algorithm);
         }

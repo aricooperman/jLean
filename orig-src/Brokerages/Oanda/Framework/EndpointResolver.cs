@@ -21,15 +21,15 @@ using System;
 package com.quantconnect.lean.Brokerages.Oanda.Framework
 {
     /**
-    /// Helper class to resolve the endpoint for the Oanda RESTful call.
+     * Helper class to resolve the endpoint for the Oanda RESTful call.
     */
     public static class EndpointResolver
     {
         /**
-        /// Resolves the endpoint.
+         * Resolves the endpoint.
         */
-         * @param environment">The environment.
-         * @param server">The server.
+         * @param environment The environment.
+         * @param server The server.
         @returns 
         public static String ResolveEndpoint(Environment environment, Server server) {
             switch (environment) {
@@ -77,7 +77,7 @@ package com.quantconnect.lean.Brokerages.Oanda.Framework
             }
 
             EnvironmentServerConfigurationNotFound:
-                throw new ArgumentException( String.Concat( "Unexpected or unexpected Oanda Environment: ", environment , "; Server: ", server));
+                throw new IllegalArgumentException( String.Concat( "Unexpected or unexpected Oanda Environment: ", environment , "; Server: ", server));
         }
     }
 }

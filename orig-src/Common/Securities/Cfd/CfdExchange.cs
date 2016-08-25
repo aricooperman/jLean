@@ -16,13 +16,13 @@
 package com.quantconnect.lean.Securities.Cfd
 {
     /**
-    /// CFD exchange class - information and helper tools for CFD exchange properties
+     * CFD exchange class - information and helper tools for CFD exchange properties
     */
-    /// <seealso cref="SecurityExchange"/>
+     * <seealso cref="SecurityExchange"/>
     public class CfdExchange : SecurityExchange
     {
         /**
-        /// Number of trading days per year for this security, used for performance statistics.
+         * Number of trading days per year for this security, used for performance statistics.
         */
         public @Override int TradingDaysPerYear
         {
@@ -31,10 +31,10 @@ package com.quantconnect.lean.Securities.Cfd
         }
 
         /**
-        /// Initializes a new instance of the <see cref="CfdExchange"/> class using the specified
-        /// exchange hours to determine open/close times
+         * Initializes a new instance of the <see cref="CfdExchange"/> class using the specified
+         * exchange hours to determine open/close times
         */
-         * @param exchangeHours">Contains the weekly exchange schedule plus holidays
+         * @param exchangeHours Contains the weekly exchange schedule plus holidays
         public CfdExchange(SecurityExchangeHours exchangeHours)
             : base(exchangeHours) {
         }

@@ -27,7 +27,7 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Provides methods for apply the results of universe selection to an algorithm
+     * Provides methods for apply the results of universe selection to an algorithm
     */
     public class UniverseSelection
     {
@@ -38,11 +38,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         private final SymbolPropertiesDatabase _symbolPropertiesDatabase = SymbolPropertiesDatabase.FromDataFolder();
 
         /**
-        /// Initializes a new instance of the <see cref="UniverseSelection"/> class
+         * Initializes a new instance of the <see cref="UniverseSelection"/> class
         */
-         * @param dataFeed">The data feed to add/remove subscriptions from
-         * @param algorithm">The algorithm to add securities to
-         * @param controls">Specifies limits on the algorithm's memory usage
+         * @param dataFeed The data feed to add/remove subscriptions from
+         * @param algorithm The algorithm to add securities to
+         * @param controls Specifies limits on the algorithm's memory usage
         public UniverseSelection(IDataFeed dataFeed, IAlgorithm algorithm, Controls controls) {
             _dataFeed = dataFeed;
             _algorithm = algorithm;
@@ -50,11 +50,11 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Applies universe selection the the data feed and algorithm
+         * Applies universe selection the the data feed and algorithm
         */
-         * @param universe">The universe to perform selection on
-         * @param dateTimeUtc">The current date time in utc
-         * @param universeData">The data provided to perform selection with
+         * @param universe The universe to perform selection on
+         * @param dateTimeUtc The current date time in utc
+         * @param universeData The data provided to perform selection with
         public SecurityChanges ApplyUniverseSelection(Universe universe, DateTime dateTimeUtc, BaseDataCollection universeData) {
             settings = universe.UniverseSettings;
 

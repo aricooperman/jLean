@@ -24,8 +24,8 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /**
-    /// Represents an enumerator capable of synchronizing other base data enumerators in time.
-    /// This assumes that all enumerators have data time stamped in the same time zone
+     * Represents an enumerator capable of synchronizing other base data enumerators in time.
+     * This assumes that all enumerators have data time stamped in the same time zone
     */
     public class SynchronizingEnumerator : IEnumerator<BaseData>
     {
@@ -33,51 +33,51 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         private final IEnumerator<BaseData>[] _enumerators;
 
         /**
-        /// Gets the element in the collection at the current position of the enumerator.
+         * Gets the element in the collection at the current position of the enumerator.
         */
         @returns 
-        /// The element in the collection at the current position of the enumerator.
-        /// 
+         * The element in the collection at the current position of the enumerator.
+         * 
         public BaseData Current
         {
             get; private set;
         }
 
         /**
-        /// Gets the current element in the collection.
+         * Gets the current element in the collection.
         */
         @returns 
-        /// The current element in the collection.
-        /// 
+         * The current element in the collection.
+         * 
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
         /**
-        /// Initializes a new instance of the <see cref="SynchronizingEnumerator"/> class
+         * Initializes a new instance of the <see cref="SynchronizingEnumerator"/> class
         */
-         * @param enumerators">The enumerators to be synchronized. NOTE: Assumes the same time zone for all data
+         * @param enumerators The enumerators to be synchronized. NOTE: Assumes the same time zone for all data
         public SynchronizingEnumerator(params IEnumerator<BaseData>[] enumerators)
             : this ((IEnumerable<IEnumerator<BaseData>>)enumerators) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="SynchronizingEnumerator"/> class
+         * Initializes a new instance of the <see cref="SynchronizingEnumerator"/> class
         */
-         * @param enumerators">The enumerators to be synchronized. NOTE: Assumes the same time zone for all data
+         * @param enumerators The enumerators to be synchronized. NOTE: Assumes the same time zone for all data
         public SynchronizingEnumerator(IEnumerable<IEnumerator<BaseData>> enumerators) {
             _enumerators = enumerators.ToArray();
             _syncer = GetSynchronizedEnumerator(_enumerators);
         }
 
         /**
-        /// Advances the enumerator to the next element of the collection.
+         * Advances the enumerator to the next element of the collection.
         */
         @returns 
-        /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// 
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+         * true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+         * 
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception>
         public boolean MoveNext() {
             moveNext =  _syncer.MoveNext();
             Current = moveNext ? _syncer.Current : null;
@@ -85,9 +85,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Sets the enumerator to its initial position, which is before the first element in the collection.
+         * Sets the enumerator to its initial position, which is before the first element in the collection.
         */
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception>
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception>
         public void Reset() {
             foreach (enumerator in _enumerators) {
                 enumerator.Reset();
@@ -97,7 +97,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
         public void Dispose() {
             foreach (enumerator in _enumerators) {

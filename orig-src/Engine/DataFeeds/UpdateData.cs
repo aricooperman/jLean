@@ -20,33 +20,33 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Transport type for algorithm update data. This is intended to provide a
-    /// list of base data used to perform updates against the specified target
+     * Transport type for algorithm update data. This is intended to provide a
+     * list of base data used to perform updates against the specified target
     */
-    /// <typeparam name="T">The target type</typeparam>
+     * <typeparam name="T The target type</typeparam>
     public class UpdateData<T>
     {
         /**
-        /// The target, such as a security or subscription data config
+         * The target, such as a security or subscription data config
         */
         public final T Target;
 
         /**
-        /// The data used to update the target
+         * The data used to update the target
         */
         public final IReadOnlyList<BaseData> Data;
 
         /**
-        /// The type of data in the data list
+         * The type of data in the data list
         */
         public final Type DataType;
 
         /**
-        /// Initializes a new instance of the <see cref="UpdateData{T}"/> class
+         * Initializes a new instance of the <see cref="UpdateData{T}"/> class
         */
-         * @param target">The end consumer/user of the dat
-         * @param dataType">The type of data in the list
-         * @param data">The update data
+         * @param target The end consumer/user of the dat
+         * @param dataType The type of data in the list
+         * @param data The update data
         public UpdateData(T target, Type dataType, IReadOnlyList<BaseData> data) {
             Target = target;
             Data = data;

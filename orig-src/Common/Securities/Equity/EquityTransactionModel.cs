@@ -21,14 +21,14 @@ using QuantConnect.Securities.Interfaces;
 package com.quantconnect.lean.Securities.Equity 
 {
     /**
-    /// Transaction model for equity security trades. 
+     * Transaction model for equity security trades. 
     */
-    /// <seealso cref="SecurityTransactionModel"/>
-    /// <seealso cref="ISecurityTransactionModel"/>
+     * <seealso cref="SecurityTransactionModel"/>
+     * <seealso cref="ISecurityTransactionModel"/>
     public class EquityTransactionModel : SecurityTransactionModel 
     {
         /**
-        /// Initializes a new instance of the <see cref="EquityTransactionModel"/>
+         * Initializes a new instance of the <see cref="EquityTransactionModel"/>
         */
         public EquityTransactionModel()
             : base(new ImmediateFillModel(), new InteractiveBrokersFeeModel(), new ConstantSlippageModel(0)) {

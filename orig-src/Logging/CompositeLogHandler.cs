@@ -18,23 +18,23 @@ using System;
 package com.quantconnect.lean.Logging
 {
     /**
-    /// Provides an <see cref="ILogHandler"/> implementation that composes multiple handlers
+     * Provides an <see cref="ILogHandler"/> implementation that composes multiple handlers
     */
     public class CompositeLogHandler : ILogHandler
     {
         private final ILogHandler[] _handlers;
 
         /**
-        /// Initializes a new instance of the <see cref="CompositeLogHandler"/> that pipes log messages to the console and log.txt
+         * Initializes a new instance of the <see cref="CompositeLogHandler"/> that pipes log messages to the console and log.txt
         */
         public CompositeLogHandler()
             : this(new ILogHandler[] {new ConsoleLogHandler(), new FileLogHandler()}) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="CompositeLogHandler"/> class from the specified handlers
+         * Initializes a new instance of the <see cref="CompositeLogHandler"/> class from the specified handlers
         */
-         * @param handlers">The implementations to compose
+         * @param handlers The implementations to compose
         public CompositeLogHandler(ILogHandler[] handlers) {
             if( handlers == null || handlers.Length == 0) {
                 throw new ArgumentNullException( "handlers");
@@ -44,7 +44,7 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write error message to log
+         * Write error message to log
         */
          * @param text">
         public void Error( String text) {
@@ -54,7 +54,7 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write debug message to log
+         * Write debug message to log
         */
          * @param text">
         public void Debug( String text) {
@@ -64,7 +64,7 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Write debug message to log
+         * Write debug message to log
         */
          * @param text">
         public void Trace( String text) {
@@ -74,9 +74,9 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
             foreach (handler in _handlers) {
                 handler.Dispose();

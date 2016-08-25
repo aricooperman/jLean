@@ -16,30 +16,30 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// Represents an indicator that is a ready after ingesting enough samples (# samples > period) 
-    /// and always returns the same value as it is given.
+     * Represents an indicator that is a ready after ingesting enough samples (# samples > period) 
+     * and always returns the same value as it is given.
     */
     public class WindowIdentity : WindowIndicator<IndicatorDataPoint>
     {
         /**
-        /// Initializes a new instance of the WindowIdentity class with the specified name and period
+         * Initializes a new instance of the WindowIdentity class with the specified name and period
         */
-         * @param name">The name of this indicator
-         * @param period">The period of the WindowIdentity
+         * @param name The name of this indicator
+         * @param period The period of the WindowIdentity
         public WindowIdentity( String name, int period)
             : base(name, period) {
         }
 
         /**
-        /// Initializes a new instance of the WindowIdentity class with the default name and period
+         * Initializes a new instance of the WindowIdentity class with the default name and period
         */
-         * @param period">The period of the WindowIdentity
+         * @param period The period of the WindowIdentity
         public WindowIdentity(int period)
             : this( "WIN-ID" + period, period) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -47,10 +47,10 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value for this indicator from the given state.
+         * Computes the next value for this indicator from the given state.
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input value to this indicator on this time step
+         * @param window The window of data held in this indicator
+         * @param input The input value to this indicator on this time step
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             return input.Value;

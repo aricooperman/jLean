@@ -75,12 +75,12 @@ package com.quantconnect.lean.Tests.Common.Util
         #region These methods represent the old way of reading MarketHoursDatabase from csv and are left here to allow users to convert
 
         /**
-        /// Creates a new instance of the <see cref="MarketHoursDatabase"/> class by reading the specified csv file
+         * Creates a new instance of the <see cref="MarketHoursDatabase"/> class by reading the specified csv file
         */
-         * @param file">The csv file to be read
-         * @param holidaysByMarket">The holidays for each market in the file, if no holiday is present then none is used
+         * @param file The csv file to be read
+         * @param holidaysByMarket The holidays for each market in the file, if no holiday is present then none is used
         @returns A new instance of the <see cref="MarketHoursDatabase"/> class representing the data in the specified file
-        public static MarketHoursDatabase FromCsvFile( String file, IReadOnlyMap<String, IEnumerable<DateTime>> holidaysByMarket) {
+        public static MarketHoursDatabase FromCsvFile( String file, ImmutableMap<String, IEnumerable<DateTime>> holidaysByMarket) {
             exchangeHours = new Map<SecurityDatabaseKey, MarketHoursDatabase.Entry>();
 
             if( !File.Exists(file)) {
@@ -102,14 +102,14 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         /**
-        /// Creates a new instance of <see cref="SecurityExchangeHours"/> from the specified csv line and holiday set
+         * Creates a new instance of <see cref="SecurityExchangeHours"/> from the specified csv line and holiday set
         */
-         * @param line">The csv line to be parsed
-         * @param holidaysByMarket">The holidays this exchange isn't open for trading by market
-         * @param key">The key used to uniquely identify these market hours
+         * @param line The csv line to be parsed
+         * @param holidaysByMarket The holidays this exchange isn't open for trading by market
+         * @param key The key used to uniquely identify these market hours
         @returns A new <see cref="SecurityExchangeHours"/> for the specified csv line and holidays
         private static MarketHoursDatabase.Entry FromCsvLine( String line,
-            IReadOnlyMap<String, IEnumerable<DateTime>> holidaysByMarket,
+            ImmutableMap<String, IEnumerable<DateTime>> holidaysByMarket,
             out SecurityDatabaseKey key) {
             csv = line.split(',');
             marketHours = new List<LocalMarketHours>(7);

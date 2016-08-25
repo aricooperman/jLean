@@ -247,7 +247,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             _lastRequestNumber++;
             reqNo = LookupType.REQ_HST_TCK.toString() + _lastRequestNumber.toString( "0000000");
 
-            reqString = String.format( "HTX,%1$s,%2$s,%3$s,{3},{4}\r\n", symbol, dataPoints.toString( "0000000"), oldToNew ? "1" : "0",
+            reqString = String.format( "HTX,%1$s,%2$s,%3$s,%4$s,%5$s\r\n", symbol, dataPoints.toString( "0000000"), oldToNew ? "1" : "0",
                 reqNo, _histDataPointsPerSend.toString( "0000000"));
             Send(reqString);
             OnLookupEvent(new LookupEventArgs(reqNo, LookupType.REQ_HST_TCK, LookupSequence.MessageStart));
@@ -259,7 +259,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             if( timeStartInDay == null ) timeStartInDay = _timeMarketOpen;
             if( timeEndInDay == null ) timeEndInDay = _timeMarketClose;
 
-            reqString = String.format( "HTD,%1$s,%2$s,%3$s,{3},{4},{5},{6},{7}\r\n", symbol, days.toString( "0000000"), _histMaxDataPoints.toString( "0000000"),
+            reqString = String.format( "HTD,%1$s,%2$s,%3$s,%4$s,%5$s,%6$s,%7$s,{7}\r\n", symbol, days.toString( "0000000"), _histMaxDataPoints.toString( "0000000"),
                 timeStartInDay.IQFeedFormat, timeEndInDay.IQFeedFormat, oldToNew ? "1" : "0", reqNo, _histDataPointsPerSend.toString( "0000000"));
             Send(reqString);
             OnLookupEvent(new LookupEventArgs(reqNo, LookupType.REQ_HST_TCK, LookupSequence.MessageStart));
@@ -272,7 +272,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             //if( timeStartInDay == null ) timeStartInDay = _timeMarketOpen;
             //if( timeEndInDay == null ) timeEndInDay = _timeMarketClose;
 
-            reqString = String.format( "HTT,%1$s,%2$s,%3$s,{3},{4},{5},{6},{7},{8}\r\n", symbol, start.toString( "yyyyMMdd HHmmss"),
+            reqString = String.format( "HTT,%1$s,%2$s,%3$s,%4$s,%5$s,%6$s,%7$s,{7},{8}\r\n", symbol, start.toString( "yyyyMMdd HHmmss"),
                 end.HasValue ? end.Value.toString( "yyyyMMdd HHmmss") : "", _histMaxDataPoints.toString( "0000000"),
                 timeStartInDay == null ? "" : timeStartInDay.IQFeedFormat, timeEndInDay == null ? "" : timeEndInDay.IQFeedFormat, oldToNew ? "1" : "0", reqNo, _histDataPointsPerSend.toString( "0000000"));
             Send(reqString);
@@ -284,7 +284,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             _lastRequestNumber++;
             reqNo = LookupType.REQ_HST_INT.toString() + _lastRequestNumber.toString( "0000000");
  
-            reqString = String.format( "HIX,%1$s,%2$s,%3$s,{3},{4},{5}\r\n", symbol, interval.Seconds.toString( "0000000"),
+            reqString = String.format( "HIX,%1$s,%2$s,%3$s,%4$s,%5$s,%6$s\r\n", symbol, interval.Seconds.toString( "0000000"),
                 dataPoints.toString( "0000000"), oldToNew ? "1" : "0", reqNo, _histDataPointsPerSend.toString( "0000000"));
             Send(reqString);
             OnLookupEvent(new LookupEventArgs(reqNo, LookupType.REQ_HST_INT, LookupSequence.MessageStart));
@@ -297,7 +297,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             if( timeStartInDay == null ) timeStartInDay = _timeMarketOpen;
             if( timeEndInDay == null ) timeEndInDay = _timeMarketClose;
 
-            reqString = String.format( "HID,%1$s,%2$s,%3$s,{3},{4},{5},{6},{7},{8}\r\n", symbol, interval.Seconds.toString( "0000000"),
+            reqString = String.format( "HID,%1$s,%2$s,%3$s,%4$s,%5$s,%6$s,%7$s,{7},{8}\r\n", symbol, interval.Seconds.toString( "0000000"),
                 days.toString( "0000000"), _histMaxDataPoints.toString( "0000000"), timeStartInDay.IQFeedFormat, timeEndInDay.IQFeedFormat,
                 oldToNew ? "1" : "0", reqNo, _histDataPointsPerSend.toString( "0000000"));
                  
@@ -312,7 +312,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             //if( timeStartInDay == null ) timeStartInDay = _timeMarketOpen;
             //if( timeEndInDay == null ) timeEndInDay = _timeMarketClose;
 
-            reqString = String.format( "HIT,%1$s,%2$s,%3$s,{3},{4},{5},{6},{7},{8},{9}\r\n", symbol, interval.Seconds.toString( "0000000"),
+            reqString = String.format( "HIT,%1$s,%2$s,%3$s,%4$s,%5$s,%6$s,%7$s,{7},{8},{9}\r\n", symbol, interval.Seconds.toString( "0000000"),
                 start.toString( "yyyyMMdd HHmmss"), end.HasValue ? end.Value.toString( "yyyyMMdd HHmmss") : "",
                 "", timeStartInDay == null ? "" : timeStartInDay.IQFeedFormat, timeEndInDay == null ? "" : timeEndInDay.IQFeedFormat,  oldToNew ? "1" : "0",
                  reqNo, _histDataPointsPerSend.toString( "0000000"));
@@ -326,7 +326,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             _lastRequestNumber++;
             reqNo = LookupType.REQ_HST_DWM.toString() + _lastRequestNumber.toString( "0000000");
 
-            reqString = String.format( "HDX,%1$s,%2$s,%3$s,{3},{4}\r\n", symbol, dataPoints.toString( "0000000"),
+            reqString = String.format( "HDX,%1$s,%2$s,%3$s,%4$s,%5$s\r\n", symbol, dataPoints.toString( "0000000"),
                  oldToNew ? "1" : "0", reqNo, _histDataPointsPerSend.toString( "0000000"));
 
             Send(reqString);
@@ -338,7 +338,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             _lastRequestNumber++;
             reqNo = LookupType.REQ_HST_DWM.toString() + _lastRequestNumber.toString( "0000000");
  
-            reqString = String.format( "HDT,%1$s,%2$s,%3$s,{3},{4},{5},{6}\r\n", symbol, 
+            reqString = String.format( "HDT,%1$s,%2$s,%3$s,%4$s,%5$s,%6$s,%7$s\r\n", symbol, 
                 start.toString( "yyyyMMdd"), end.HasValue ? end.Value.toString( "yyyyMMdd") : "",
                   _histMaxDataPoints.toString( "0000000"), oldToNew ? "1" : "0",
                  reqNo, _histDataPointsPerSend.toString( "0000000"));
@@ -352,7 +352,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             _lastRequestNumber++;
             reqNo = LookupType.REQ_HST_DWM.toString() + _lastRequestNumber.toString( "0000000");
 
-            reqString = String.format( "HWX,%1$s,%2$s,%3$s,{3},{4}\r\n", symbol, dataPoints.toString( "0000000"),
+            reqString = String.format( "HWX,%1$s,%2$s,%3$s,%4$s,%5$s\r\n", symbol, dataPoints.toString( "0000000"),
                  oldToNew ? "1" : "0", reqNo, _histDataPointsPerSend.toString( "0000000"));
 
             Send(reqString);
@@ -364,7 +364,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             _lastRequestNumber++;
             reqNo = LookupType.REQ_HST_DWM.toString() + _lastRequestNumber.toString( "0000000");
 
-            reqString = String.format( "HMX,%1$s,%2$s,%3$s,{3},{4}\r\n", symbol, dataPoints.toString( "0000000"),
+            reqString = String.format( "HMX,%1$s,%2$s,%3$s,%4$s,%5$s\r\n", symbol, dataPoints.toString( "0000000"),
                  oldToNew ? "1" : "0", reqNo, _histDataPointsPerSend.toString( "0000000"));
 
             Send(reqString);
@@ -380,7 +380,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             _lastRequestNumber++;
             reqNo = LookupType.REQ_SYM_SYM.toString() + _lastRequestNumber.toString( "0000000");
 
-            reqString = String.format( "SBF,%1$s,%2$s,%3$s,{3},{4}\r\n", (searchField == SearchField.Symbol) ? "s" : "d",
+            reqString = String.format( "SBF,%1$s,%2$s,%3$s,%4$s,%5$s\r\n", (searchField == SearchField.Symbol) ? "s" : "d",
                 searchText, (filterType == FilterType.Market) ? "e" : "t",  String.Join( " ", filterValue), reqNo);
 
             Send(reqString);
@@ -486,7 +486,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
 
             throw new Exception( "(Lookup) NOT HANDLED:" + e.textLine);
         }
-        protected virtual void OnLookupEvent(LookupEventArgs e) {
+        protected void OnLookupEvent(LookupEventArgs e) {
             if( LookupEvent != null ) LookupEvent(this, e);
         }
 

@@ -19,21 +19,21 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Orders.Slippage
 {
     /**
-    /// Represents a slippage model that uses a constant percentage of slip
+     * Represents a slippage model that uses a constant percentage of slip
     */
     public class ConstantSlippageModel : SpreadSlippageModel
     {
         private final BigDecimal _slippagePercent;
         /**
-        /// Initializes a new instance of the <see cref="ConstantSlippageModel"/> class
+         * Initializes a new instance of the <see cref="ConstantSlippageModel"/> class
         */
-         * @param slippagePercent">The slippage percent for each order. Percent is ranged 0 to 1.
+         * @param slippagePercent The slippage percent for each order. Percent is ranged 0 to 1.
         public ConstantSlippageModel( BigDecimal slippagePercent) {
             _slippagePercent = slippagePercent;
         }
 
         /**
-        /// Slippage Model. Return a BigDecimal cash slippage approximation on the order.
+         * Slippage Model. Return a BigDecimal cash slippage approximation on the order.
         */
         public @Override BigDecimal GetSlippageApproximation(Security asset, Order order) {
             lastData = asset.GetLastData();

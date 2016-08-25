@@ -40,7 +40,7 @@ package com.quantconnect.lean.Tests.Common.Data
             };
 
             reference = DateTime.Today;
-            consolidator.Update(new IndicatorDataPoint(reference, 0m));
+            consolidator.Update(new IndicatorDataPoint(reference, BigDecimal.ZERO));
             Assert.IsNull(bar);
 
             consolidator.Update(new IndicatorDataPoint(reference.AddHours(1), 5m));
@@ -70,7 +70,7 @@ package com.quantconnect.lean.Tests.Common.Data
             consolidator.Update(new IndicatorDataPoint(reference.AddHours(1), 2m));
             Assert.IsNull(bar);
 
-            consolidator.Update(new IndicatorDataPoint(reference.AddHours(2), 0m));
+            consolidator.Update(new IndicatorDataPoint(reference.AddHours(2), BigDecimal.ZERO));
             Assert.IsNotNull(bar);
             
             Assert.AreEqual(10m, bar.Open);
@@ -121,7 +121,7 @@ package com.quantconnect.lean.Tests.Common.Data
             consolidator.Update(new IndicatorDataPoint(reference.AddSeconds(5), .5m));
             Assert.IsNull(bar);
 
-            consolidator.Update(new IndicatorDataPoint(reference.AddSeconds(6), 0m));
+            consolidator.Update(new IndicatorDataPoint(reference.AddSeconds(6), BigDecimal.ZERO));
             Assert.IsNotNull(bar);
 
             // ReSharper disable HeuristicUnreachableCode - ReSharper doesn't realiz this can be set via the event handler

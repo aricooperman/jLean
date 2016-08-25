@@ -31,7 +31,7 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages.Oanda
 {
     /**
-    /// Oanda Brokerage - implementation of IDataQueueHandler interface
+     * Oanda Brokerage - implementation of IDataQueueHandler interface
     */
     public partial class OandaBrokerage
     {
@@ -47,11 +47,11 @@ package com.quantconnect.lean.Brokerages.Oanda
         #region IDataQueueHandler implementation
 
         /**
-        /// Get the next ticks from the live trading data queue
+         * Get the next ticks from the live trading data queue
         */
         @returns IEnumerable list of ticks since the last update.
         public IEnumerable<BaseData> GetNextTicks() {
-            lock (_ticks) {
+            synchronized(_ticks) {
                 copy = _ticks.ToArray();
                 _ticks.Clear();
                 return copy;
@@ -59,12 +59,12 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Adds the specified symbols to the subscription
+         * Adds the specified symbols to the subscription
         */
-         * @param job">Job we're subscribing for:
-         * @param symbols">The symbols to be added keyed by SecurityType
+         * @param job Job we're subscribing for:
+         * @param symbols The symbols to be added keyed by SecurityType
         public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
-            lock (_lockerSubscriptions) {
+            synchronized(_lockerSubscriptions) {
                 symbolsToSubscribe = (from symbol in symbols
                                           where !_subscribedSymbols.Contains(symbol)
                                           select symbol).ToList();
@@ -84,12 +84,12 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Removes the specified symbols from the subscription
+         * Removes the specified symbols from the subscription
         */
-         * @param job">Job we're processing.
-         * @param symbols">The symbols to be removed keyed by SecurityType
+         * @param job Job we're processing.
+         * @param symbols The symbols to be removed keyed by SecurityType
         public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
-            lock (_lockerSubscriptions) {
+            synchronized(_lockerSubscriptions) {
                 symbolsToUnsubscribe = (from symbol in symbols
                                             where _subscribedSymbols.Contains(symbol)
                                             select symbol).ToList();
@@ -109,7 +109,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Groups multiple subscribe/unsubscribe calls to avoid closing and reopening the streaming session on each call
+         * Groups multiple subscribe/unsubscribe calls to avoid closing and reopening the streaming session on each call
         */
         private void ProcessSubscriptionRequest() {
             if( _subscriptionsPending) return;
@@ -122,7 +122,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                 while (true) {
                     DateTime requestTime;
                     List<Symbol> symbolsToSubscribe;
-                    lock (_lockerSubscriptions) {
+                    synchronized(_lockerSubscriptions) {
                         requestTime = _lastSubscribeRequestUtcTime.Add(SubscribeDelay);
                         symbolsToSubscribe = _subscribedSymbols.ToList();
                     }
@@ -131,7 +131,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                         // restart streaming session
                         SubscribeSymbols(symbolsToSubscribe);
 
-                        lock (_lockerSubscriptions) {
+                        synchronized(_lockerSubscriptions) {
                             _lastSubscribeRequestUtcTime = DateTime.UtcNow;
                             if( _subscribedSymbols.Count == symbolsToSubscribe.Count) {
                                 // no more subscriptions pending, task finished
@@ -147,9 +147,9 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Subscribes to the requested symbols (using a single streaming session)
+         * Subscribes to the requested symbols (using a single streaming session)
         */
-         * @param symbolsToSubscribe">The list of symbols to subscribe
+         * @param symbolsToSubscribe The list of symbols to subscribe
         private void SubscribeSymbols(List<Symbol> symbolsToSubscribe) {
             instruments = symbolsToSubscribe
                 .Select(symbol -> new Instrument { instrument = _symbolMapper.GetBrokerageSymbol(symbol) })
@@ -168,20 +168,20 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Returns a DateTime from an RFC3339 String (with microsecond resolution)
+         * Returns a DateTime from an RFC3339 String (with microsecond resolution)
         */
-         * @param time">The time string
+         * @param time The time string
         private static DateTime GetDateTimeFromString( String time) {
             return DateTime.ParseExact(time, "yyyy-MM-dd'T'HH:mm:ss.ffffff'Z'", CultureInfo.InvariantCulture);
         }
 
         /**
-        /// Event handler for streaming ticks
+         * Event handler for streaming ticks
         */
-         * @param data">The data object containing the received tick
+         * @param data The data object containing the received tick
         private void OnDataReceived(RateStreamResponse data) {
             if( data.IsHeartbeat()) {
-                lock (_lockerConnectionMonitor) {
+                synchronized(_lockerConnectionMonitor) {
                     _lastHeartbeatUtcTime = DateTime.UtcNow;
                 }
                 return;
@@ -196,7 +196,7 @@ package com.quantconnect.lean.Brokerages.Oanda
             askPrice = new BigDecimal( data.tick.ask);
             tick = new Tick(time, symbol, bidPrice, askPrice);
 
-            lock (_ticks) {
+            synchronized(_ticks) {
                 _ticks.Add(tick);
             }
         }

@@ -19,16 +19,16 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// High-Wave Candle candlestick pattern indicator
+     * High-Wave Candle candlestick pattern indicator
     */
-    /// 
-    /// Must have:
-    /// - short real body
-    /// - very long upper and lower shadow
-    /// The meaning of "short" and "very long" is specified with SetCandleSettings
-    /// The returned value is positive(+1) when white or negative(-1) when black;
-    /// it does not mean bullish or bearish
-    /// 
+     * 
+     * Must have:
+     * - short real body
+     * - very long upper and lower shadow
+     * The meaning of "short" and "very long" is specified with SetCandleSettings
+     * The returned value is positive(+1) when white or negative(-1) when black;
+     * it does not mean bullish or bearish
+     * 
     public class HighWaveCandle : CandlestickPattern
     {
         private final int _bodyShortAveragePeriod;
@@ -38,9 +38,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _shadowVeryLongPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="HighWaveCandle"/> class using the specified name.
+         * Initializes a new instance of the <see cref="HighWaveCandle"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public HighWaveCandle( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowVeryLong).AveragePeriod) + 1) {
             _bodyShortAveragePeriod = CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod;
@@ -48,14 +48,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="HighWaveCandle"/> class.
+         * Initializes a new instance of the <see cref="HighWaveCandle"/> class.
         */
         public HighWaveCandle()
             : this( "HIGHWAVECANDLE") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -63,10 +63,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -78,7 +78,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _shadowVeryLongPeriodTotal += GetCandleRange(CandleSettingType.ShadowVeryLong, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -88,7 +88,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = (int)GetCandleColor(input);
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -103,11 +103,11 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
-            _bodyShortPeriodTotal = 0m;
-            _shadowVeryLongPeriodTotal = 0m;
+            _bodyShortPeriodTotal = BigDecimal.ZERO;
+            _shadowVeryLongPeriodTotal = BigDecimal.ZERO;
             base.Reset();
         }
     }

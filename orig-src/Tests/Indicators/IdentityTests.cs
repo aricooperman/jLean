@@ -20,7 +20,7 @@ using QuantConnect.Indicators;
 package com.quantconnect.lean.Tests.Indicators
 {
     /**
-    /// Test class for QuantConnect.Indicators.Identity
+     * Test class for QuantConnect.Indicators.Identity
     */
     [TestFixture]
     public class IdentityTests

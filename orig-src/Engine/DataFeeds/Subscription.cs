@@ -25,14 +25,14 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Represents the data required for a data feed to process a single subsciption
+     * Represents the data required for a data feed to process a single subsciption
     */
     public class Subscription : IEnumerator<BaseData>
     {
         private final IEnumerator<BaseData> _enumerator;
 
         /**
-        /// Gets the universe for this subscription
+         * Gets the universe for this subscription
         */
         public Universe Universe
         {
@@ -41,17 +41,17 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets the security this subscription points to
+         * Gets the security this subscription points to
         */
         public final Security Security;
 
         /**
-        /// Gets the configuration for this subscritions
+         * Gets the configuration for this subscritions
         */
         public final SubscriptionDataConfig Configuration;
 
         /**
-        /// Gets the data time zone associated with this subscription
+         * Gets the data time zone associated with this subscription
         */
         public ZoneId TimeZone
         {
@@ -59,48 +59,48 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Gets the offset provider for time zone conversions to and from the data's local time
+         * Gets the offset provider for time zone conversions to and from the data's local time
         */
         public final TimeZoneOffsetProvider OffsetProvider;
 
         /**
-        /// Gets the most current value from the subscription source
+         * Gets the most current value from the subscription source
         */
         public BigDecimal RealtimePrice { get; set; }
 
         /**
-        /// Gets true if this subscription is finished, false otherwise
+         * Gets true if this subscription is finished, false otherwise
         */
         public boolean EndOfStream { get; private set; }
 
         /**
-        /// Gets true if this subscription is used in universe selection
+         * Gets true if this subscription is used in universe selection
         */
         public boolean IsUniverseSelectionSubscription { get; private set; }
 
         /**
-        /// Gets the start time of this subscription in UTC
+         * Gets the start time of this subscription in UTC
         */
         public DateTime UtcStartTime { get; private set; }
 
         /**
-        /// Gets the end time of this subscription in UTC
+         * Gets the end time of this subscription in UTC
         */
         public DateTime UtcEndTime { get; private set; }
 
         /**
-        /// Initializes a new instance of the <see cref="Subscription"/> class with a universe
+         * Initializes a new instance of the <see cref="Subscription"/> class with a universe
         */
-         * @param universe">Specified for universe subscriptions
-         * @param security">The security this subscription is for
-         * @param configuration">The subscription configuration that was used to generate the enumerator
-         * @param enumerator">The subscription's data source
-         * @param timeZoneOffsetProvider">The offset provider used to convert data local times to utc
-         * @param utcStartTime">The start time of the subscription
-         * @param utcEndTime">The end time of the subscription
-         * @param isUniverseSelectionSubscription">True if this is a subscription for universe selection,
-        /// that is, the configuration is used to produce the used to perform universe selection, false for a
-        /// normal data subscription, i.e, SPY
+         * @param universe Specified for universe subscriptions
+         * @param security The security this subscription is for
+         * @param configuration The subscription configuration that was used to generate the enumerator
+         * @param enumerator The subscription's data source
+         * @param timeZoneOffsetProvider The offset provider used to convert data local times to utc
+         * @param utcStartTime The start time of the subscription
+         * @param utcEndTime The end time of the subscription
+         * @param isUniverseSelectionSubscription True if this is a subscription for universe selection,
+         * that is, the configuration is used to produce the used to perform universe selection, false for a
+         * normal data subscription, i.e, SPY
         public Subscription(Universe universe,
             Security security,
             SubscriptionDataConfig configuration,
@@ -121,13 +121,13 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Advances the enumerator to the next element of the collection.
+         * Advances the enumerator to the next element of the collection.
         */
         @returns 
-        /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// 
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
-        public virtual boolean MoveNext() {
+         * true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+         * 
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+        public boolean MoveNext() {
             if( EndOfStream) {
                 return false;
             }
@@ -139,49 +139,49 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Sets the enumerator to its initial position, which is before the first element in the collection.
+         * Sets the enumerator to its initial position, which is before the first element in the collection.
         */
-        /// <exception cref="T:System.InvalidOperationException">The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
+         * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
             _enumerator.Reset();
         }
 
         /**
-        /// Gets the element in the collection at the current position of the enumerator.
+         * Gets the element in the collection at the current position of the enumerator.
         */
         @returns 
-        /// The element in the collection at the current position of the enumerator.
-        /// 
+         * The element in the collection at the current position of the enumerator.
+         * 
         public BaseData Current { get; private set; }
 
         /**
-        /// Gets the current element in the collection.
+         * Gets the current element in the collection.
         */
         @returns 
-        /// The current element in the collection.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * The current element in the collection.
+         * 
+         * <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
             EndOfStream = true;
             _enumerator.Dispose();
         }
 
         /**
-        /// Serves as a hash function for a particular type. 
+         * Serves as a hash function for a particular type. 
         */
         @returns 
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * A hash code for the current <see cref="T:System.Object"/>.
+         * 
+         * <filterpriority>2</filterpriority>
         public @Override int hashCode() {
             return Configuration.Symbol.hashCode();
         }

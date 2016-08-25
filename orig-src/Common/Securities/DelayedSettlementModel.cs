@@ -18,32 +18,32 @@ using System;
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Represents the model responsible for applying cash settlement rules
+     * Represents the model responsible for applying cash settlement rules
     */
-    /// This model applies cash settlement after T+N days
+     * This model applies cash settlement after T+N days
     public class DelayedSettlementModel : ISettlementModel
     {
         private final int _numberOfDays;
         private final Duration _timeOfDay;
 
         /**
-        /// Creates an instance of the <see cref="DelayedSettlementModel"/> class
+         * Creates an instance of the <see cref="DelayedSettlementModel"/> class
         */
-         * @param numberOfDays">The number of days required for settlement
-         * @param timeOfDay">The time of day used for settlement
+         * @param numberOfDays The number of days required for settlement
+         * @param timeOfDay The time of day used for settlement
         public DelayedSettlementModel(int numberOfDays, Duration timeOfDay) {
             _numberOfDays = numberOfDays;
             _timeOfDay = timeOfDay;
         }
 
         /**
-        /// Applies cash settlement rules
+         * Applies cash settlement rules
         */
-         * @param portfolio">The algorithm's portfolio
-         * @param security">The fill's security
-         * @param applicationTimeUtc">The fill time (in UTC)
-         * @param currency">The currency symbol
-         * @param amount">The amount of cash to apply
+         * @param portfolio The algorithm's portfolio
+         * @param security The fill's security
+         * @param applicationTimeUtc The fill time (in UTC)
+         * @param currency The currency symbol
+         * @param amount The amount of cash to apply
         public void ApplyFunds(SecurityPortfolioManager portfolio, Security security, DateTime applicationTimeUtc, String currency, BigDecimal amount) {
             if( amount > 0) {
                 // positive amount: sell order filled

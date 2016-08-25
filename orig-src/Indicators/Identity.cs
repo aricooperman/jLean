@@ -16,21 +16,21 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    ///     Represents an indicator that is a ready after ingesting a single sample and
-    ///     always returns the same value as it is given.
+     *     Represents an indicator that is a ready after ingesting a single sample and
+     *     always returns the same value as it is given.
     */
     public class Identity : Indicator
     {
         /**
-        ///     Initializes a new instance of the Identity indicator with the specified name
+         *     Initializes a new instance of the Identity indicator with the specified name
         */
-         * @param name">The name of the indicator
+         * @param name The name of the indicator
         public Identity( String name)
             : base(name) {
         }
 
         /**
-        ///     Gets a flag indicating when this indicator is ready and fully initialized
+         *     Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -38,9 +38,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        ///     Computes the next value of this indicator from the given state
+         *     Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             return input.Value;

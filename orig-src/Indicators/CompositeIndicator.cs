@@ -19,26 +19,26 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator is capable of wiring up two separate indicators into a single indicator
-    /// such that the output of each will be sent to a user specified function.
+     * This indicator is capable of wiring up two separate indicators into a single indicator
+     * such that the output of each will be sent to a user specified function.
     */
-    /// 
-    /// This type is initialized such that there is no need to call the Update function. This indicator
-    /// will have its values automatically updated each time a new piece of data is received from both
-    /// the left and right indicators.
-    /// 
-    /// <typeparam name="T">The type of data input into this indicator</typeparam>
+     * 
+     * This type is initialized such that there is no need to call the Update function. This indicator
+     * will have its values automatically updated each time a new piece of data is received from both
+     * the left and right indicators.
+     * 
+     * <typeparam name="T The type of data input into this indicator</typeparam>
     public class CompositeIndicator<T> : IndicatorBase<T>
         where T : BaseData, new() {
         /**
-        /// Delegate type used to compose the output of two indicators into a new value.
+         * Delegate type used to compose the output of two indicators into a new value.
         */
-        /// 
-        /// A simple example would be to compute the difference between the two indicators (such as with MACD)
-        /// (left, right) -> left - right
-        /// 
-         * @param left">The left indicator
-         * @param right">The right indicator
+         * 
+         * A simple example would be to compute the difference between the two indicators (such as with MACD)
+         * (left, right) -> left - right
+         * 
+         * @param left The left indicator
+         * @param right The right indicator
         @returns And indicator result representing the composition of the two indicators
         public delegate IndicatorResult IndicatorComposer(IndicatorBase<T> left, IndicatorBase<T> right);
 
@@ -46,17 +46,17 @@ package com.quantconnect.lean.Indicators
         private final IndicatorComposer _composer;
 
         /**
-        /// Gets the 'left' indicator for the delegate
+         * Gets the 'left' indicator for the delegate
         */
         public IndicatorBase<T> Left { get; private set; }
 
         /**
-        /// Gets the 'right' indicator for the delegate
+         * Gets the 'right' indicator for the delegate
         */
         public IndicatorBase<T> Right { get; private set; }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -64,7 +64,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             Left.Reset();
@@ -73,13 +73,13 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new CompositeIndicator capable of taking the output from the left and right indicators
-        /// and producing a new value via the composer delegate specified
+         * Creates a new CompositeIndicator capable of taking the output from the left and right indicators
+         * and producing a new value via the composer delegate specified
         */
-         * @param name">The name of this indicator
-         * @param left">The left indicator for the 'composer'
-         * @param right">The right indidcator for the 'composoer'
-         * @param composer">Function used to compose the left and right indicators
+         * @param name The name of this indicator
+         * @param left The left indicator for the 'composer'
+         * @param right The right indidcator for the 'composoer'
+         * @param composer Function used to compose the left and right indicators
         public CompositeIndicator( String name, IndicatorBase<T> left, IndicatorBase<T> right, IndicatorComposer composer)
             : base(name) {
             _composer = composer;
@@ -89,12 +89,12 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new CompositeIndicator capable of taking the output from the left and right indicators
-        /// and producing a new value via the composer delegate specified
+         * Creates a new CompositeIndicator capable of taking the output from the left and right indicators
+         * and producing a new value via the composer delegate specified
         */
-         * @param left">The left indicator for the 'composer'
-         * @param right">The right indidcator for the 'composoer'
-         * @param composer">Function used to compose the left and right indicators
+         * @param left The left indicator for the 'composer'
+         * @param right The right indidcator for the 'composoer'
+         * @param composer Function used to compose the left and right indicators
         public CompositeIndicator(IndicatorBase<T> left, IndicatorBase<T> right, IndicatorComposer composer)
             : base( String.format( "COMPOSE(%1$s,%2$s)", left.Name, right.Name)) {
             _composer = composer;
@@ -104,22 +104,22 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
-        /// and returns an instance of the <see cref="IndicatorResult"/> class
+         * Computes the next value of this indicator from the given state
+         * and returns an instance of the <see cref="IndicatorResult"/> class
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns An IndicatorResult object including the status of the indicator
         protected @Override IndicatorResult ValidateAndComputeNextValue(T input) {
             return _composer.Invoke(Left, Right);
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-        /// 
-        /// Since this class @Overrides <see cref="ValidateAndComputeNextValue"/>, this method is a no-op
-        /// 
-         * @param input">The input given to the indicator
+         * 
+         * Since this class @Overrides <see cref="ValidateAndComputeNextValue"/>, this method is a no-op
+         * 
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(T input) {
             // this should never actually be invoked
@@ -127,8 +127,8 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Configures the event handlers for Left.Updated and Right.Updated to update this instance when
-        /// they both have new data.
+         * Configures the event handlers for Left.Updated and Right.Updated to update this instance when
+         * they both have new data.
         */
         private void ConfigureEventHandlers() {
             // if either of these are constants then there's no reason

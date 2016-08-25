@@ -18,25 +18,25 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// The Aroon Oscillator is the difference between AroonUp and AroonDown. The value of this
-    /// indicator fluctuats between -100 and +100. An upward trend bias is present when the oscillator
-    /// is positive, and a negative trend bias is present when the oscillator is negative. AroonUp/Down
-    /// values over 75 identify strong trends in their respective direction.
+     * The Aroon Oscillator is the difference between AroonUp and AroonDown. The value of this
+     * indicator fluctuats between -100 and +100. An upward trend bias is present when the oscillator
+     * is positive, and a negative trend bias is present when the oscillator is negative. AroonUp/Down
+     * values over 75 identify strong trends in their respective direction.
     */
     public class AroonOscillator : TradeBarIndicator
     {
         /**
-        /// Gets the AroonUp indicator
+         * Gets the AroonUp indicator
         */
         public IndicatorBase<IndicatorDataPoint> AroonUp { get; private set; }
 
         /**
-        /// Gets the AroonDown indicator
+         * Gets the AroonDown indicator
         */
         public IndicatorBase<IndicatorDataPoint> AroonDown { get; private set; }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -44,20 +44,20 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new AroonOscillator from the specified up/down periods.
+         * Creates a new AroonOscillator from the specified up/down periods.
         */
-         * @param upPeriod">The lookback period to determine the highest high for the AroonDown
-         * @param downPeriod">The lookback period to determine the lowest low for the AroonUp
+         * @param upPeriod The lookback period to determine the highest high for the AroonDown
+         * @param downPeriod The lookback period to determine the lowest low for the AroonUp
         public AroonOscillator(int upPeriod, int downPeriod)
             : this( String.format( "AROON(%1$s,%2$s)", upPeriod, downPeriod), upPeriod, downPeriod) {
         }
 
         /**
-        /// Creates a new AroonOscillator from the specified up/down periods.
+         * Creates a new AroonOscillator from the specified up/down periods.
         */
-         * @param name">The name of this indicator
-         * @param upPeriod">The lookback period to determine the highest high for the AroonDown
-         * @param downPeriod">The lookback period to determine the lowest low for the AroonUp
+         * @param name The name of this indicator
+         * @param upPeriod The lookback period to determine the highest high for the AroonDown
+         * @param downPeriod The lookback period to determine the lowest low for the AroonUp
         public AroonOscillator( String name, int upPeriod, int downPeriod)
             : base(name) {
             max = new Maximum(name + "_Max", upPeriod + 1);
@@ -76,9 +76,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             AroonUp.Update(input.Time, input.High);
@@ -88,11 +88,11 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// AroonUp = 100 * (period - {periods since max})/period
+         * AroonUp = 100 * (period - {periods since max})/period
         */
-         * @param upPeriod">The AroonUp period
-         * @param max">A Maximum indicator used to compute periods since max
-         * @param input">The next input data
+         * @param upPeriod The AroonUp period
+         * @param max A Maximum indicator used to compute periods since max
+         * @param input The next input data
         @returns The AroonUp value
         private static BigDecimal ComputeAroonUp(int upPeriod, Maximum max, IndicatorDataPoint input) {
             max.Update(input);
@@ -100,11 +100,11 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// AroonDown = 100 * (period - {periods since min})/period
+         * AroonDown = 100 * (period - {periods since min})/period
         */
-         * @param downPeriod">The AroonDown period
-         * @param min">A Minimum indicator used to compute periods since min
-         * @param input">The next input data
+         * @param downPeriod The AroonDown period
+         * @param min A Minimum indicator used to compute periods since min
+         * @param input The next input data
         @returns The AroonDown value
         private static BigDecimal ComputeAroonDown(int downPeriod, Minimum min, IndicatorDataPoint input) {
             min.Update(input);
@@ -112,7 +112,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator and both sub-indicators (AroonUp and AroonDown)
+         * Resets this indicator and both sub-indicators (AroonUp and AroonDown)
         */
         public @Override void Reset() {
             AroonUp.Reset();

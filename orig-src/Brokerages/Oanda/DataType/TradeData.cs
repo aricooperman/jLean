@@ -22,7 +22,7 @@ package com.quantconnect.lean.Brokerages.Oanda.DataType
 {
 #pragma warning disable 1591
     /**
-    /// Represents a Trade Data object containing the details of a trade.
+     * Represents a Trade Data object containing the details of a trade.
     */
     public class TradeData : Response
     {

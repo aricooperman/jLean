@@ -19,27 +19,27 @@ using System;
 package com.quantconnect.lean.Logging
 {
     /**
-    /// Log entry wrapper to make logging simpler:
+     * Log entry wrapper to make logging simpler:
     */
     public class LogEntry
     {
         /**
-        /// Time of the log entry
+         * Time of the log entry
         */
         public DateTime Time;
 
         /**
-        /// Message of the log entry
+         * Message of the log entry
         */
         public String Message;
 
         /**
-        /// Descriptor of the message type.
+         * Descriptor of the message type.
         */
         public LogType MessageType;
 
         /**
-        /// Create a default log message with the current time.
+         * Create a default log message with the current time.
         */
          * @param message">
         public LogEntry( String message) {
@@ -49,11 +49,11 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Create a log entry at a specific time in the analysis (for a backtest).
+         * Create a log entry at a specific time in the analysis (for a backtest).
         */
-         * @param message">Message for log
-         * @param time">Time of the message
-         * @param type">Type of the log entry
+         * @param message Message for log
+         * @param time Time of the message
+         * @param type Type of the log entry
         public LogEntry( String message, DateTime time, LogType type = LogType.Trace) {
             Time = time.ToUniversalTime();
             Message = message;
@@ -61,7 +61,7 @@ package com.quantconnect.lean.Logging
         }
 
         /**
-        /// Helper @Override on the log entry.
+         * Helper @Override on the log entry.
         */
         @returns 
         public @Override String toString() {

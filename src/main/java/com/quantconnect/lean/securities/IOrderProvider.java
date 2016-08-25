@@ -15,7 +15,11 @@
 
 package com.quantconnect.lean.securities;
 
+import java.util.function.Function;
+import java.util.stream.Stream;
+
 import com.quantconnect.lean.orders.Order;
+import com.quantconnect.lean.orders.OrderTicket;
 
 /**
  * Represents a type capable of fetching Order instances by its QC order id or by a brokerage id
@@ -23,69 +27,71 @@ import com.quantconnect.lean.orders.Order;
 public interface IOrderProvider {
     
     /**
-    /// Gets the current number of orders that have been processed
-    */
+     * Gets the current number of orders that have been processed
+     */
     int getOrdersCount();
 
     /**
-    /// Get the order by its id
-     * @param orderId">Order id to fetch
-    @returns The order with the specified id, or null if no match is found
-    */
-    Order GetOrderById(int orderId);
+     * Get the order by its id
+     * @param orderId Order id to fetch
+     * @returns The order with the specified id, or null if no match is found
+     */
+    Order getOrderById( int orderId );
 
     /**
-    /// Gets the order by its brokerage id
-    */
-     * @param brokerageId">The brokerage id to fetch
-    @returns The first order matching the brokerage id, or null if no match is found
-    Order GetOrderByBrokerageId( String brokerageId );
+     * Gets the order by its brokerage id
+     * @param brokerageId The brokerage id to fetch
+     * @returns The first order matching the brokerage id, or null if no match is found
+     */
+    Order getOrderByBrokerageId( String brokerageId );
 
     /**
-    /// Gets and enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/>
+     * Gets and enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/>
+     * @param filter The filter predicate used to find the required order tickets. If null is specified then all tickets are returned
+     * @returns An enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/>
+     */
+    Stream<OrderTicket> getOrderTickets( Function<OrderTicket,Boolean> filter );
+
+    default Stream<OrderTicket> getOrderTickets() {
+        return getOrderTickets( null );
+    }
+    
+    /**
+     * Gets the order ticket for the specified order id. Returns null if not found
+     * @param orderId The order's id
+     * @returns The order ticket with the specified id, or null if not found
     */
-     * @param filter">The filter predicate used to find the required order tickets. If null is specified then all tickets are returned
-    @returns An enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/>
-    IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null );
+    OrderTicket getOrderTicket( int orderId );
 
     /**
-    /// Gets the order ticket for the specified order id. Returns null if not found
+     * Gets all orders matching the specified filter. Specifying null will return an enumerable
+     * of all orders.
+     * @param filter Delegate used to filter the orders
+     * @returns All open orders this order provider currently holds
     */
-     * @param orderId">The order's id
-    @returns The order ticket with the specified id, or null if not found
-    OrderTicket GetOrderTicket(int orderId);
-
-    /**
-    /// Gets all orders matching the specified filter. Specifying null will return an enumerable
-    /// of all orders.
-    */
-     * @param filter">Delegate used to filter the orders
-    @returns All open orders this order provider currently holds
-    IEnumerable<Order> GetOrders(Func<Order, bool> filter = null );
-}
-
-/**
-/// Provides extension methods for the <see cref="IOrderProvider"/> interface
-*/
-public static class OrderProviderExtensions
-{
-    /**
-    /// Gets the order by its brokerage id
-    */
-     * @param orderProvider">The order provider to search
-     * @param brokerageId">The brokerage id to fetch
-    @returns The first order matching the brokerage id, or null if no match is found
-    public static Order GetOrderByBrokerageId(this IOrderProvider orderProvider, long brokerageId) {
-        return orderProvider.GetOrderByBrokerageId(brokerageId.toString());
+    Stream<Order> getOrders( Function<Order,Boolean> filter );
+    
+    default Stream<Order> getOrders() {
+        return getOrders( null );
     }
 
     /**
-    /// Gets the order by its brokerage id
-    */
-     * @param orderProvider">The order provider to search
-     * @param brokerageId">The brokerage id to fetch
-    @returns The first order matching the brokerage id, or null if no match is found
-    public static Order GetOrderByBrokerageId(this IOrderProvider orderProvider, int brokerageId) {
-        return orderProvider.GetOrderByBrokerageId(brokerageId.toString());
+     * Gets the order by its brokerage id
+     * @param orderProvider The order provider to search
+     * @param brokerageId The brokerage id to fetch
+     * @returns The first order matching the brokerage id, or null if no match is found
+     */
+    default Order getOrderByBrokerageId( long brokerageId ) {
+        return getOrderByBrokerageId( Long.toString( brokerageId ) );
+    }
+
+    /**
+     * Gets the order by its brokerage id
+     * @param orderProvider The order provider to search
+     * @param brokerageId The brokerage id to fetch
+     * @returns The first order matching the brokerage id, or null if no match is found
+     */
+    default Order getOrderByBrokerageId( int brokerageId ) {
+        return getOrderByBrokerageId( Integer.toString( brokerageId ) );
     }
 }

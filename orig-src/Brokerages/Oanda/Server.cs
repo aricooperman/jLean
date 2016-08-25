@@ -19,27 +19,27 @@
 package com.quantconnect.lean.Brokerages.Oanda
 {
     /**
-    /// Represents the server instance that we will be performing the RESTful call.
+     * Represents the server instance that we will be performing the RESTful call.
     */
     public enum Server
     {
         /**
-        /// The account
+         * The account
         */
         Account,
 
         /**
-        /// The rates
+         * The rates
         */
         Rates,
 
         /**
-        /// The streaming rates
+         * The streaming rates
         */
         StreamingRates,
 
         /**
-        /// The streaming events
+         * The streaming events
         */
         StreamingEvents
     }

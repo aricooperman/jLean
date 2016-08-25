@@ -24,7 +24,7 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
 {
     /**
-    /// Aggregates ticks into trade bars ready to be time synced
+     * Aggregates ticks into trade bars ready to be time synced
     */
     public class TradeBarBuilderEnumerator : IEnumerator<BaseData>
     {
@@ -34,12 +34,12 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         private final ConcurrentQueue<TradeBar> _queue;
 
         /**
-        /// Initializes a new instance of the <see cref="TradeBarBuilderEnumerator"/> class
+         * Initializes a new instance of the <see cref="TradeBarBuilderEnumerator"/> class
         */
-         * @param barSize">The trade bar size to produce
-         * @param timeZone">The time zone the raw data is time stamped in
-         * @param timeProvider">The time provider instance used to determine when bars are completed and
-        /// can be emitted
+         * @param barSize The trade bar size to produce
+         * @param timeZone The time zone the raw data is time stamped in
+         * @param timeProvider The time provider instance used to determine when bars are completed and
+         * can be emitted
         public TradeBarBuilderEnumerator(TimeSpan barSize, ZoneId timeZone, ITimeProvider timeProvider) {
             _barSize = barSize;
             _timeZone = timeZone;
@@ -47,10 +47,10 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             _queue = new ConcurrentQueue<TradeBar>();
         }
         /**
-        /// Pushes the tick into this enumerator. This tick will be aggregated into a bar
-        /// and emitted after the alotted time has passed
+         * Pushes the tick into this enumerator. This tick will be aggregated into a bar
+         * and emitted after the alotted time has passed
         */
-         * @param data">The new data to be aggregated
+         * @param data The new data to be aggregated
         public void ProcessData(BaseData data) {
             TradeBar working;
             tick = data as Tick;
@@ -68,18 +68,18 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
                 // we're still within this bar size's time
                 bidPrice = tick == null ? data.Value : tick.BidPrice;
                 askPrice = tick == null ? data.Value : tick.AskPrice;
-                bidSize = tick == null ? 0m : tick.BidSize;
-                askSize = tick == null ? 0m : tick.AskSize;
+                bidSize = tick == null ? BigDecimal.ZERO : tick.BidSize;
+                askSize = tick == null ? BigDecimal.ZERO : tick.AskSize;
                 working.Update(data.Value, bidPrice, askPrice, qty, bidSize, askSize);
             }
         }
 
         /**
-        /// Advances the enumerator to the next element of the collection.
+         * Advances the enumerator to the next element of the collection.
         */
         @returns 
-        /// true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
-        /// 
+         * true if the enumerator was successfully advanced to the next element; false if the enumerator has passed the end of the collection.
+         * 
         public boolean MoveNext() {
             TradeBar working;
 
@@ -101,39 +101,39 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         }
 
         /**
-        /// Sets the enumerator to its initial position, which is before the first element in the collection.
+         * Sets the enumerator to its initial position, which is before the first element in the collection.
         */
         public void Reset() {
             _queue.Clear();
         }
 
         /**
-        /// Gets the element in the collection at the current position of the enumerator.
+         * Gets the element in the collection at the current position of the enumerator.
         */
         @returns 
-        /// The element in the collection at the current position of the enumerator.
-        /// 
+         * The element in the collection at the current position of the enumerator.
+         * 
         public BaseData Current
         {
             get; private set;
         }
 
         /**
-        /// Gets the current element in the collection.
+         * Gets the current element in the collection.
         */
         @returns 
-        /// The current element in the collection.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * The current element in the collection.
+         * 
+         * <filterpriority>2</filterpriority>
         object IEnumerator.Current
         {
             get { return Current; }
         }
 
         /**
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+         * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         */
-        /// <filterpriority>2</filterpriority>
+         * <filterpriority>2</filterpriority>
         public void Dispose() {
         }
     }

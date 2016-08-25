@@ -18,16 +18,16 @@ using System;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// Provides extension methods for the MovingAverageType enumeration
+     * Provides extension methods for the MovingAverageType enumeration
     */
     public static class MovingAverageTypeExtensions
     {
         /**
-        /// Creates a new indicator from the specified MovingAverageType. So if MovingAverageType.Simple
-        /// is specified, then a new SimpleMovingAverage will be returned.
+         * Creates a new indicator from the specified MovingAverageType. So if MovingAverageType.Simple
+         * is specified, then a new SimpleMovingAverage will be returned.
         */
-         * @param movingAverageType">The type of averaging indicator to create
-         * @param period">The smoothing period
+         * @param movingAverageType The type of averaging indicator to create
+         * @param period The smoothing period
         @returns A new indicator that matches the MovingAverageType
         public static IndicatorBase<IndicatorDataPoint> AsIndicator(this MovingAverageType movingAverageType, int period) {
             switch (movingAverageType) {
@@ -64,12 +64,12 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new indicator from the specified MovingAverageType. So if MovingAverageType.Simple
-        /// is specified, then a new SimpleMovingAverage will be returned.
+         * Creates a new indicator from the specified MovingAverageType. So if MovingAverageType.Simple
+         * is specified, then a new SimpleMovingAverage will be returned.
         */
-         * @param movingAverageType">The type of averaging indicator to create
-         * @param name">The name of the new indicator
-         * @param period">The smoothing period
+         * @param movingAverageType The type of averaging indicator to create
+         * @param name The name of the new indicator
+         * @param period The smoothing period
         @returns A new indicator that matches the MovingAverageType
         public static IndicatorBase<IndicatorDataPoint> AsIndicator(this MovingAverageType movingAverageType, String name, int period) {
             switch (movingAverageType) {

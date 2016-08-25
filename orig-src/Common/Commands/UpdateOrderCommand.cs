@@ -20,41 +20,41 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Commands
 {
     /**
-    /// Represents a command to update an order by id
+     * Represents a command to update an order by id
     */
     public class UpdateOrderCommand : ICommand
     {
         /**
-        /// Gets or sets the id of the order to update
+         * Gets or sets the id of the order to update
         */
         public int OrderId { get; set; }
 
         /**
-        /// Gets or sets the new quantity, specify null to not update the quantity
+         * Gets or sets the new quantity, specify null to not update the quantity
         */
-        public int? Quantity { get; set; }
+        public OptionalInt Quantity { get; set; }
 
         /**
-        /// Gets or sets the new limit price, specify null to not update the limit price.
-        /// This will only be used if the order has a limit price (Limit/StopLimit orders)
+         * Gets or sets the new limit price, specify null to not update the limit price.
+         * This will only be used if the order has a limit price (Limit/StopLimit orders)
         */
-        public decimal? LimitPrice { get; set; }
+        public Optional<BigDecimal> LimitPrice { get; set; }
 
         /**
-        /// Gets or sets the new stop price, specify null to not update the stop price.
-        /// This will onky be used if the order has a stop price (StopLimit/StopMarket orders)
+         * Gets or sets the new stop price, specify null to not update the stop price.
+         * This will onky be used if the order has a stop price (StopLimit/StopMarket orders)
         */
-        public decimal? StopPrice { get; set; }
+        public Optional<BigDecimal> StopPrice { get; set; }
 
         /**
-        /// Gets or sets the new tag for the order, specify null to not update the tag
+         * Gets or sets the new tag for the order, specify null to not update the tag
         */
         public String Tag { get; set; }
 
         /**
-        /// Runs this command against the specified algorithm instance
+         * Runs this command against the specified algorithm instance
         */
-         * @param algorithm">The algorithm to run this command against
+         * @param algorithm The algorithm to run this command against
         public CommandResultPacket Run(IAlgorithm algorithm) {
             ticket = algorithm.Transactions.UpdateOrder(new UpdateOrderRequest(algorithm.UtcTime, OrderId, new UpdateOrderFields
             {

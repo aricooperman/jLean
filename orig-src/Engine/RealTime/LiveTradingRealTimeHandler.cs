@@ -30,7 +30,7 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Lean.Engine.RealTime
 {
     /**
-    /// Live trading realtime event processing.
+     * Live trading realtime event processing.
     */
     public class LiveTradingRealTimeHandler : IRealTimeHandler
     {
@@ -46,7 +46,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         private IResultHandler _resultHandler;
 
         /**
-        /// Boolean flag indicating thread state.
+         * Boolean flag indicating thread state.
         */
         public boolean IsActive
         {
@@ -54,7 +54,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
 
         /**
-        /// Intializes the real time handler for the specified algorithm and job
+         * Intializes the real time handler for the specified algorithm and job
         */
         public void Setup(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler resultHandler, IApi api) {
             //Initialize:
@@ -97,8 +97,8 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
 
         /**
-        /// Execute the live realtime event thread montioring. 
-        /// It scans every second monitoring for an event trigger.
+         * Execute the live realtime event thread montioring. 
+         * It scans every second monitoring for an event trigger.
         */
         public void Run() {
             _isActive = true;
@@ -129,7 +129,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
 
         /**
-        /// Refresh the Today variable holding the market hours information
+         * Refresh the Today variable holding the market hours information
         */
         private void RefreshMarketHoursToday(DateTime date) {
             date = date.Date;
@@ -145,9 +145,9 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
 
         /**
-        /// Adds the specified event to the schedule
+         * Adds the specified event to the schedule
         */
-         * @param scheduledEvent">The event to be scheduled, including the date/times the event fires and the callback
+         * @param scheduledEvent The event to be scheduled, including the date/times the event fires and the callback
         public void Add(ScheduledEvent scheduledEvent) {
             if( _algorithm != null ) {
                 scheduledEvent.SkipEventsUntil(_algorithm.UtcTime);
@@ -157,7 +157,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
 
         /**
-        /// Removes the specified event from the schedule
+         * Removes the specified event from the schedule
         */
          * @param name">
         public void Remove( String name) {
@@ -166,7 +166,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
 
         /**
-        /// Set the current time. If the date changes re-start the realtime event setup routines.
+         * Set the current time. If the date changes re-start the realtime event setup routines.
         */
          * @param time">
         public void SetTime(DateTime time) {
@@ -175,7 +175,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
         }
 
         /**
-        /// Stop the real time thread
+         * Stop the real time thread
         */
         public void Exit() {
             _cancellationTokenSource.Cancel();

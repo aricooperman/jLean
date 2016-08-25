@@ -38,26 +38,26 @@ import com.quantconnect.lean.data.FileFormat;
 import com.quantconnect.lean.data.SubscriptionDataConfig;
 import com.quantconnect.lean.data.SubscriptionDataSource;
 
-/// QuoteBar class for second and minute resolution data: 
-/// An OHLC implementation of the QuantConnect BaseData class with parameters for candles.
+ * QuoteBar class for second and minute resolution data: 
+ * An OHLC implementation of the QuantConnect BaseData class with parameters for candles.
 public class QuoteBar extends BaseData implements IBar {
     
     // scale factor used in QC equity/forex data files
     private static final BigDecimal SCALE_FACTOR = BigDecimal.ONE.divide( BigDecimal.valueOf( 10000 ), RoundingMode.HALF_EVEN );
 
-    /// Average bid size
+     * Average bid size
     private long lastBidSize;
     
-    /// Average ask size
+     * Average ask size
     private long lastAskSize;
 
-    /// Bid OHLC
+     * Bid OHLC
     private Bar bid;
 
-    /// Ask OHLC
+     * Ask OHLC
     private Bar ask;
     
-    /// The period of this quote bar, (second, minute, daily, ect...)
+     * The period of this quote bar, (second, minute, daily, ect...)
     private Duration period;
     
     public long getLastBidSize() {
@@ -100,7 +100,7 @@ public class QuoteBar extends BaseData implements IBar {
         this.period = period;
     }
 
-    /// Opening price of the bar: Defined as the price at the start of the time period.
+     * Opening price of the bar: Defined as the price at the start of the time period.
     public BigDecimal getOpen() {
         if( bid != null && ask != null )
             return Extensions.midPrice( bid.getOpen(), ask.getOpen() );
@@ -112,7 +112,7 @@ public class QuoteBar extends BaseData implements IBar {
         return BigDecimal.ZERO;
     }
 
-    /// High price of the QuoteBar during the time period.
+     * High price of the QuoteBar during the time period.
     public BigDecimal getHigh() {
         if( bid != null && ask != null )
             return Extensions.midPrice( bid.getHigh(), ask.getHigh() );
@@ -124,7 +124,7 @@ public class QuoteBar extends BaseData implements IBar {
         return BigDecimal.ZERO;
     }
 
-    /// Low price of the QuoteBar during the time period.
+     * Low price of the QuoteBar during the time period.
     public BigDecimal getLow() {
         if( bid != null && ask != null )
             return Extensions.midPrice( bid.getLow(), ask.getLow() );
@@ -136,7 +136,7 @@ public class QuoteBar extends BaseData implements IBar {
         return BigDecimal.ZERO;
     }
 
-    /// Closing price of the QuoteBar. Defined as the price at Start Time + TimeSpan.
+     * Closing price of the QuoteBar. Defined as the price at Start Time + TimeSpan.
     public BigDecimal getClose() {
         if( bid != null && ask != null )
             return Extensions.midPrice( bid.getClose(), ask.getClose() );
@@ -148,7 +148,7 @@ public class QuoteBar extends BaseData implements IBar {
         return getValue();
     }
 
-    /// The closing time of this bar, computed via the Time and Period
+     * The closing time of this bar, computed via the Time and Period
     @Override
     public LocalDateTime getEndTime() {
         return getTime().plus( period );
@@ -158,7 +158,7 @@ public class QuoteBar extends BaseData implements IBar {
         period = Duration.between( getTime(), value );
     }
 
-    /// Default initializer to setup an empty quotebar.
+     * Default initializer to setup an empty quotebar.
     public QuoteBar() {
         setSymbol( Symbol.EMPTY );
         setTime( LocalDateTime.now() );
@@ -169,14 +169,14 @@ public class QuoteBar extends BaseData implements IBar {
         period = Duration.ofMinutes( 1 );
     }
 
-    /// Initialize Quote Bar with Bid(OHLC) and Ask(OHLC) Values:
-     * @param time">DateTime Timestamp of the bar
-     * @param symbol">Market MarketType Symbol
-     * @param bid">Bid OLHC bar
-     * @param lastBidSize">Average bid size over period
-     * @param ask">Ask OLHC bar
-     * @param lastAskSize">Average ask size over period
-     * @param period">The period of this bar, specify null for default of 1 minute
+     * Initialize Quote Bar with Bid(OHLC) and Ask(OHLC) Values:
+     * @param time DateTime Timestamp of the bar
+     * @param symbol Market MarketType Symbol
+     * @param bid Bid OLHC bar
+     * @param lastBidSize Average bid size over period
+     * @param ask Ask OLHC bar
+     * @param lastAskSize Average ask size over period
+     * @param period The period of this bar, specify null for default of 1 minute
     public QuoteBar( LocalDateTime time, Symbol symbol, IBar bid, long lastBidSize, IBar ask, long lastAskSize ) {
         this( time, symbol, bid, lastBidSize, ask, lastAskSize, null );
     }
@@ -195,13 +195,13 @@ public class QuoteBar extends BaseData implements IBar {
         setDataType( MarketDataType.QuoteBar );
     }
 
-    /// Update the quotebar - build the bar from this pricing information:
-     * @param lastTrade">The last trade price
-     * @param bidPrice">Current bid price
-     * @param askPrice">Current asking price
-     * @param volume">Volume of this trade
-     * @param bidSize">The size of the current bid, if available, if not, pass 0
-     * @param askSize">The size of the current ask, if available, if not, pass 0
+     * Update the quotebar - build the bar from this pricing information:
+     * @param lastTrade The last trade price
+     * @param bidPrice Current bid price
+     * @param askPrice Current asking price
+     * @param volume Volume of this trade
+     * @param bidSize The size of the current bid, if available, if not, pass 0
+     * @param askSize The size of the current ask, if available, if not, pass 0
     @Override
     public void update( BigDecimal lastTrade, BigDecimal bidPrice, BigDecimal askPrice, BigDecimal volume, BigDecimal bidSize, BigDecimal askSize ) {
         // update our bid and ask bars - handle null values, this is to give good values for midpoint OHLC
@@ -230,11 +230,11 @@ public class QuoteBar extends BaseData implements IBar {
             setValue( bidPrice );
     }
 
-    /// QuoteBar Reader: Fetch the data from the QC storage and feed it line by line into the engine.
-     * @param config">Symbols, Resolution, DataType, 
-     * @param line">Line from the data file requested
-     * @param date">Date of this reader request
-     * @param isLiveMode">true if we're in live mode, false for backtesting mode
+     * QuoteBar Reader: Fetch the data from the QC storage and feed it line by line into the engine.
+     * @param config Symbols, Resolution, DataType, 
+     * @param line Line from the data file requested
+     * @param date Date of this reader request
+     * @param isLiveMode true if we're in live mode, false for backtesting mode
     @returns Enumerable iterator for returning each line of the required data.
     @Override
     public BaseData reader( SubscriptionDataConfig config, String line, LocalDate date, boolean isLiveMode ) {
@@ -279,11 +279,11 @@ public class QuoteBar extends BaseData implements IBar {
         return quoteBar;
     }
 
-    /// Get Source for Custom Data File
-    /// >> What source file location would you prefer for each type of usage:
-     * @param config">Configuration object
-     * @param date">Date of this source request if source spread across multiple files
-     * @param isLiveMode">true if we're in live mode, false for backtesting mode
+     * Get Source for Custom Data File
+     * >> What source file location would you prefer for each type of usage:
+     * @param config Configuration object
+     * @param date Date of this source request if source spread across multiple files
+     * @param isLiveMode true if we're in live mode, false for backtesting mode
     @returns String source location of the file
     @Override
     public SubscriptionDataSource getSource( SubscriptionDataConfig config, LocalDate date, boolean isLiveMode ) {
@@ -297,7 +297,7 @@ public class QuoteBar extends BaseData implements IBar {
         return new SubscriptionDataSource(source, SubscriptionTransportMedium.LocalFile, FileFormat.Csv );
     }
 
-    /// Return a new instance clone of this quote bar, used in fill forward
+     * Return a new instance clone of this quote bar, used in fill forward
     @returns A clone of the current quote bar
     @Override
     public BaseData clone() {

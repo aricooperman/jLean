@@ -54,7 +54,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Send the end of day event:
+         * Send the end of day event:
         */
         public @Override void OnEndOfDay( String symbol) {
             Debug( "ALGO>> OnEndOfDay() >> " + symbol);
@@ -62,7 +62,7 @@ package com.quantconnect.lean
     }
 
     /**
-    /// Custom Data Type: Bitcoin data from Quandl - http://www.quandl.com/help/api-for-bitcoin-data
+     * Custom Data Type: Bitcoin data from Quandl - http://www.quandl.com/help/api-for-bitcoin-data
     */
     public class Bitcoin : BaseData
     {
@@ -75,14 +75,14 @@ package com.quantconnect.lean
         public BigDecimal WeightedPrice = 0;
 
         /**
-        /// Default Constructor Required.
+         * Default Constructor Required.
         */
         public Bitcoin() {
             this.Symbol = "BTC";
         }
 
         /**
-        /// Source URL's of Backtesting and Live Streams:
+         * Source URL's of Backtesting and Live Streams:
         */
         public @Override String GetSource(SubscriptionDataConfig config, DateTime date, DataFeedEndpoint datafeed) {
             source = "";
@@ -105,7 +105,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Clone the bitcoin object, required for live data.
+         * Clone the bitcoin object, required for live data.
         */
         @returns 
         public @Override BaseData Clone() {
@@ -123,7 +123,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Backtesting & Live Bitcoin Decoder:
+         * Backtesting & Live Bitcoin Decoder:
         */
         public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, DataFeedEndpoint datafeed) {
             Bitcoin coin = new Bitcoin();

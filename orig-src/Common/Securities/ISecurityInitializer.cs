@@ -17,24 +17,24 @@
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Represents a type capable of initializing a new security
+     * Represents a type capable of initializing a new security
     */
     public interface ISecurityInitializer
     {
         /**
-        /// Initializes the specified security
+         * Initializes the specified security
         */
-         * @param security">The security to be initialized
+         * @param security The security to be initialized
         void Initialize(Security security);
     }
 
     /**
-    /// Provides static access to the <see cref="Null"/> security initializer
+     * Provides static access to the <see cref="Null"/> security initializer
     */
     public static class SecurityInitializer
     {
         /**
-        /// Gets an implementation of <see cref="ISecurityInitializer"/> that is a no-op
+         * Gets an implementation of <see cref="ISecurityInitializer"/> that is a no-op
         */
         public static final ISecurityInitializer Null = new NullSecurityInitializer();
 

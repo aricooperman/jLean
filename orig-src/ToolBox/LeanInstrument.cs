@@ -16,27 +16,27 @@
 package com.quantconnect.lean.ToolBox
 {
     /**
-    /// Represents a single instrument as listed in the file instruments.txt
+     * Represents a single instrument as listed in the file instruments.txt
     */
     public class LeanInstrument
     {
         /**
-        /// The symbol of the instrument
+         * The symbol of the instrument
         */
         public String Symbol { get; set; }
 
         /**
-        /// The name/description of the instrument
+         * The name/description of the instrument
         */
         public String Name { get; set; }
 
         /**
-        /// The instrument type
+         * The instrument type
         */
         public SecurityType Type { get; set; }
 
         /**
-        /// The point value
+         * The point value
         */
         public double PointValue { get; set; }
     }

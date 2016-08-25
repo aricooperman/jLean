@@ -18,12 +18,12 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// Shows how to set a custom benchmark for you algorithms
+     * Shows how to set a custom benchmark for you algorithms
     */
     public class CustomBenchmarkAlgorithm : QCAlgorithm
     {
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
         public @Override void Initialize() {
             SetStartDate(2013, 10, 07);  //Set Start Date
@@ -36,9 +36,9 @@ package com.quantconnect.lean.Algorithm.CSharp
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">Slice object keyed by symbol containing the stock data
+         * @param data Slice object keyed by symbol containing the stock data
         public @Override void OnData(Slice data) {
             if( !Portfolio.Invested) {
                 SetHoldings( "SPY", 1);

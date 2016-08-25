@@ -21,13 +21,13 @@ using QuantConnect.Logging;
 package com.quantconnect.lean 
 {
     /**
-    /// Isolator class - create a new instance of the algorithm and ensure it doesn't 
-    /// exceed memory or time execution limits.
+     * Isolator class - create a new instance of the algorithm and ensure it doesn't 
+     * exceed memory or time execution limits.
     */
     public class Isolator
     {
         /**
-        /// Algo cancellation controls - cancel source.
+         * Algo cancellation controls - cancel source.
         */
         public CancellationTokenSource CancellationTokenSource
         {
@@ -35,7 +35,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Algo cancellation controls - cancellation token for algorithm thread.
+         * Algo cancellation controls - cancellation token for algorithm thread.
         */
         public CancellationToken CancellationToken
         {
@@ -43,7 +43,7 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Check if this task isolator is cancelled, and exit the analysis
+         * Check if this task isolator is cancelled, and exit the analysis
         */
         public boolean IsCancellationRequested
         {
@@ -51,20 +51,20 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Isolator"/> class
+         * Initializes a new instance of the <see cref="Isolator"/> class
         */
         public Isolator() {
             CancellationTokenSource = new CancellationTokenSource();
         }
 
         /**
-        /// Execute a code block with a maximum limit on time and memory.
+         * Execute a code bsynchronizedwith a maximum limit on time and memory.
         */
-         * @param timeSpan">Timeout in timespan
-         * @param withinCustomLimits">Function used to determine if the codeBlock is within custom limits, such as with algorithm manager
-        /// timing individual time loops, return a non-null and non-empty String with a message indicating the error/reason for stoppage
-         * @param codeBlock">Action codeblock to execute
-         * @param memoryCap">Maximum memory allocation, default 1024Mb
+         * @param timeSpan Timeout in timespan
+         * @param withinCustomLimits Function used to determine if the codeBsynchronizedis within custom limits, such as with algorithm manager
+         * timing individual time loops, return a non-null and non-empty String with a message indicating the error/reason for stoppage
+         * @param codeBlock Action codebsynchronizedto execute
+         * @param memoryCap Maximum memory allocation, default 1024Mb
         @returns True if algorithm exited successfully, false if cancelled because it exceeded limits.
         public boolean ExecuteWithTimeLimit(TimeSpan timeSpan, Func<String> withinCustomLimits, Action codeBlock, long memoryCap = 1024) {
             // default to always within custom limits
@@ -123,11 +123,11 @@ package com.quantconnect.lean
         }
 
         /**
-        /// Execute a code block with a maximum limit on time and memory.
+         * Execute a code bsynchronizedwith a maximum limit on time and memory.
         */
-         * @param timeSpan">Timeout in timespan
-         * @param codeBlock">Action codeblock to execute
-         * @param memoryCap">Maximum memory allocation, default 1024Mb
+         * @param timeSpan Timeout in timespan
+         * @param codeBlock Action codebsynchronizedto execute
+         * @param memoryCap Maximum memory allocation, default 1024Mb
         @returns True if algorithm exited successfully, false if cancelled because it exceeded limits.
         public boolean ExecuteWithTimeLimit(TimeSpan timeSpan, Action codeBlock, long memoryCap = 1024) {
             return ExecuteWithTimeLimit(timeSpan, null, codeBlock, memoryCap);

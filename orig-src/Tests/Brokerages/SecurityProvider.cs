@@ -20,7 +20,7 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Tests.Brokerages
 {
     /**
-    /// Provides a test implementation of a security provider
+     * Provides a test implementation of a security provider
     */
     public class SecurityProvider : ISecurityProvider
     {

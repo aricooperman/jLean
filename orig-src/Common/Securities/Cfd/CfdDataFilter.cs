@@ -16,9 +16,9 @@
 package com.quantconnect.lean.Securities.Cfd
 {
     /**
-    /// CFD packet by packet data filtering mechanism for dynamically detecting bad ticks.
+     * CFD packet by packet data filtering mechanism for dynamically detecting bad ticks.
     */
-    /// <seealso cref="SecurityDataFilter"/>
+     * <seealso cref="SecurityDataFilter"/>
     public class CfdDataFilter : SecurityDataFilter
     {
     }

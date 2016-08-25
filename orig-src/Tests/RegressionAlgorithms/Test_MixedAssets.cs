@@ -73,7 +73,7 @@ package com.quantconnect.lean
 
 
     /**
-    /// Custom imported data -- VIX indicator:
+     * Custom imported data -- VIX indicator:
     */
     public class VIX : BaseData
     {

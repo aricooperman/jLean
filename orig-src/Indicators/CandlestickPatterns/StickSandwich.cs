@@ -18,18 +18,18 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Stick Sandwich candlestick pattern indicator
+     * Stick Sandwich candlestick pattern indicator
     */
-    /// 
-    /// Must have:
-    /// - first candle: black candle
-    /// - second candle: white candle that trades only above the prior close(low > prior close)
-    /// - third candle: black candle with the close equal to the first candle's close
-    /// The meaning of "equal" is specified with SetCandleSettings
-    /// The returned value is always positive(+1): stick sandwich is always bullish;
-    /// The user should consider that stick sandwich is significant when coming in a downtrend,
-    /// while this function does not consider it
-    /// 
+     * 
+     * Must have:
+     * - first candle: black candle
+     * - second candle: white candle that trades only above the prior close(low > prior close)
+     * - third candle: black candle with the close equal to the first candle's close
+     * The meaning of "equal" is specified with SetCandleSettings
+     * The returned value is always positive(+1): stick sandwich is always bullish;
+     * The user should consider that stick sandwich is significant when coming in a downtrend,
+     * while this function does not consider it
+     * 
     public class StickSandwich : CandlestickPattern
     {
         private final int _equalAveragePeriod;
@@ -37,23 +37,23 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _equalPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="StickSandwich"/> class using the specified name.
+         * Initializes a new instance of the <see cref="StickSandwich"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public StickSandwich( String name) 
             : base(name, CandleSettings.Get(CandleSettingType.Equal).AveragePeriod + 2 + 1) {
             _equalAveragePeriod = CandleSettings.Get(CandleSettingType.Equal).AveragePeriod;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="StickSandwich"/> class.
+         * Initializes a new instance of the <see cref="StickSandwich"/> class.
         */
         public StickSandwich()
             : this( "STICKSANDWICH") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -61,10 +61,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -72,7 +72,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _equalPeriodTotal += GetCandleRange(CandleSettingType.BodyLong, window[2]);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -91,7 +91,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = 1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -103,10 +103,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
-            _equalPeriodTotal = 0m;
+            _equalPeriodTotal = BigDecimal.ZERO;
             base.Reset();
         }
     }

@@ -17,7 +17,7 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    ///     Represents the traditional simple moving average indicator (SMA)
+     *     Represents the traditional simple moving average indicator (SMA)
     */
     public class SimpleMovingAverage : WindowIndicator<IndicatorDataPoint>
     {
@@ -25,14 +25,14 @@ package com.quantconnect.lean.Indicators
         public IndicatorBase<IndicatorDataPoint> RollingSum { get; private set; }
 
         /**
-        ///     Gets a flag indicating when this indicator is ready and fully initialized
+         *     Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady{
             get { return RollingSum.IsReady; }
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             RollingSum.Reset();
@@ -40,28 +40,28 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        ///     Initializes a new instance of the SimpleMovingAverage class with the specified name and period
+         *     Initializes a new instance of the SimpleMovingAverage class with the specified name and period
         */
-         * @param name">The name of this indicator
-         * @param period">The period of the SMA
+         * @param name The name of this indicator
+         * @param period The period of the SMA
         public SimpleMovingAverage( String name, int period)
             : base(name, period) {
             RollingSum = new Sum(name + "_Sum", period);
         }
 
         /**
-        ///     Initializes a new instance of the SimpleMovingAverage class with the default name and period
+         *     Initializes a new instance of the SimpleMovingAverage class with the default name and period
         */
-         * @param period">The period of the SMA
+         * @param period The period of the SMA
         public SimpleMovingAverage(int period)
             : this( "SMA" + period, period) {
         }
 
         /**
-        ///     Computes the next value for this indicator from the given state.
+         *     Computes the next value for this indicator from the given state.
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input value to this indicator on this time step
+         * @param window The window of data held in this indicator
+         * @param input The input value to this indicator on this time step
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             RollingSum.Update(input.Time, input.Value);

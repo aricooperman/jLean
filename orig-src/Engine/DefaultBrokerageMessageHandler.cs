@@ -26,11 +26,11 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Lean.Engine
 {
     /**
-    /// Provides a default implementation o <see cref="IBrokerageMessageHandler"/> that will forward
-    /// messages as follows:
-    /// Information -> IResultHandler.Debug
-    /// Warning     -> IResultHandler.Error &amp;&amp; IApi.SendUserEmail
-    /// Error       -> IResultHandler.Error &amp;&amp; IAlgorithm.RunTimeError
+     * Provides a default implementation o <see cref="IBrokerageMessageHandler"/> that will forward
+     * messages as follows:
+     * Information -> IResultHandler.Debug
+     * Warning     -> IResultHandler.Error &amp;&amp; IApi.SendUserEmail
+     * Error       -> IResultHandler.Error &amp;&amp; IAlgorithm.RunTimeError
     */
     public class DefaultBrokerageMessageHandler : IBrokerageMessageHandler
     {
@@ -48,14 +48,14 @@ package com.quantconnect.lean.Lean.Engine
         private CancellationTokenSource _cancellationTokenSource;
 
         /**
-        /// Initializes a new instance of the <see cref="DefaultBrokerageMessageHandler"/> class
+         * Initializes a new instance of the <see cref="DefaultBrokerageMessageHandler"/> class
         */
-         * @param algorithm">The running algorithm
-         * @param job">The job that produced the algorithm
-         * @param results">The result handler for the algorithm
-         * @param api">The api for the algorithm
+         * @param algorithm The running algorithm
+         * @param job The job that produced the algorithm
+         * @param results The result handler for the algorithm
+         * @param api The api for the algorithm
          * @param initialDelay">
-         * @param openThreshold">Defines how long before market open to re-check for brokerage reconnect message
+         * @param openThreshold Defines how long before market open to re-check for brokerage reconnect message
         public DefaultBrokerageMessageHandler(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler results, IApi api, TimeSpan? initialDelay = null, TimeSpan? openThreshold = null ) {
             _api = api;
             _job = job;
@@ -67,9 +67,9 @@ package com.quantconnect.lean.Lean.Engine
         }
 
         /**
-        /// Handles the message
+         * Handles the message
         */
-         * @param message">The message to be handled
+         * @param message The message to be handled
         public void Handle(BrokerageMessageEvent message) {
             // based on message type dispatch to result handler
             switch (message.Type) {

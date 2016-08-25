@@ -22,16 +22,16 @@ using QuantConnect.Securities.Interfaces;
 package com.quantconnect.lean.Securities.Forex
 {
     /**
-    /// Forex Transaction Model Class: Specific transaction fill models for FOREX orders
+     * Forex Transaction Model Class: Specific transaction fill models for FOREX orders
     */
-    /// <seealso cref="SecurityTransactionModel"/>
-    /// <seealso cref="ISecurityTransactionModel"/>
+     * <seealso cref="SecurityTransactionModel"/>
+     * <seealso cref="ISecurityTransactionModel"/>
     public class ForexTransactionModel : SecurityTransactionModel
     {
         /**
-        /// Initializes a new instance of the <see cref="ForexTransactionModel"/> class
+         * Initializes a new instance of the <see cref="ForexTransactionModel"/> class
         */
-         * @param monthlyTradeAmountInUSDollars">The monthly dollar volume traded
+         * @param monthlyTradeAmountInUSDollars The monthly dollar volume traded
         public ForexTransactionModel( BigDecimal monthlyTradeAmountInUSDollars = 0)
             : base(new ImmediateFillModel(), new InteractiveBrokersFeeModel(monthlyTradeAmountInUSDollars), new SpreadSlippageModel()) {   
         }

@@ -26,13 +26,13 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Securities 
 {
     /**
-    /// Enumerable security management class for grouping security objects into an array and providing any common properties.
+     * Enumerable security management class for grouping security objects into an array and providing any common properties.
     */
-    /// Implements IDictionary for the index searching of securities by symbol
+     * Implements IDictionary for the index searching of securities by symbol
     public class SecurityManager : Map<Symbol, Security>, INotifyCollectionChanged
     {
         /**
-        /// Event fired when a security is added or removed from this collection
+         * Event fired when a security is added or removed from this collection
         */
         public event NotifyCollectionChangedEventHandler CollectionChanged;
 
@@ -42,7 +42,7 @@ package com.quantconnect.lean.Securities
         private final ConcurrentMap<Symbol, Security> _securityManager;
 
         /**
-        /// Gets the most recent time this manager was updated
+         * Gets the most recent time this manager was updated
         */
         public DateTime UtcTime
         {
@@ -50,7 +50,7 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Initialise the algorithm security manager with two empty dictionaries
+         * Initialise the algorithm security manager with two empty dictionaries
         */
          * @param timeKeeper">
         public SecurityManager(TimeKeeper timeKeeper) {
@@ -59,12 +59,12 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Add a new security with this symbol to the collection.
+         * Add a new security with this symbol to the collection.
         */
-        /// IDictionary implementation
-         * @param symbol">symbol for security we're trading
-         * @param security">security object
-        /// <seealso cref="Add(Security)"/>
+         * IDictionary implementation
+         * @param symbol symbol for security we're trading
+         * @param security security object
+         * <seealso cref="Add(Security)"/>
         public void Add(Symbol symbol, Security security) {
             if( _securityManager.TryAdd(symbol, security)) {
                 security.SetLocalTimeKeeper(_timeKeeper.GetLocalTimeKeeper(security.Exchange.TimeZone));
@@ -73,92 +73,92 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Add a new security with this symbol to the collection.
+         * Add a new security with this symbol to the collection.
         */
-         * @param security">security object
+         * @param security security object
         public void Add(Security security) {
             Add(security.Symbol, security);
         }
 
         /**
-        /// Add a symbol-security by its key value pair.
+         * Add a symbol-security by its key value pair.
         */
-        /// IDictionary implementation
+         * IDictionary implementation
          * @param pair">
         public void Add(KeyValuePair<Symbol, Security> pair) {
             Add(pair.Key, pair.Value);
         }
 
         /**
-        /// Clear the securities array to delete all the portfolio and asset information.
+         * Clear the securities array to delete all the portfolio and asset information.
         */
-        /// IDictionary implementation
+         * IDictionary implementation
         public void Clear() {
             _securityManager.Clear();
         }
 
         /**
-        /// Check if this collection contains this key value pair.
+         * Check if this collection contains this key value pair.
         */
-         * @param pair">Search key-value pair
-        /// IDictionary implementation
+         * @param pair Search key-value pair
+         * IDictionary implementation
         @returns Bool true if contains this key-value pair
         public boolean Contains(KeyValuePair<Symbol, Security> pair) {
             return _securityManager.Contains(pair);
         }
 
         /**
-        /// Check if this collection contains this symbol.
+         * Check if this collection contains this symbol.
         */
-         * @param symbol">Symbol we're checking for.
-        /// IDictionary implementation
+         * @param symbol Symbol we're checking for.
+         * IDictionary implementation
         @returns Bool true if contains this symbol pair
         public boolean ContainsKey(Symbol symbol) {
             return _securityManager.ContainsKey(symbol);
         }
 
         /**
-        /// Copy from the internal array to an external array.
+         * Copy from the internal array to an external array.
         */
-         * @param array">Array we're outputting to
-         * @param number">Starting index of array
-        /// IDictionary implementation
+         * @param array Array we're outputting to
+         * @param number Starting index of array
+         * IDictionary implementation
         public void CopyTo(KeyValuePair<Symbol, Security>[] array, int number) {
             ((Map<Symbol, Security>)_securityManager).CopyTo(array, number);
         }
 
         /**
-        /// Count of the number of securities in the collection.
+         * Count of the number of securities in the collection.
         */
-        /// IDictionary implementation
+         * IDictionary implementation
         public int Count
         {
             get { return _securityManager.Count; }
         }
 
         /**
-        /// Flag indicating if the internal arrray is read only.
+         * Flag indicating if the internal arrray is read only.
         */
-        /// IDictionary implementation
+         * IDictionary implementation
         public boolean IsReadOnly
         {
             get { return false;  }
         }
 
         /**
-        /// Remove a key value of of symbol-securities from the collections.
+         * Remove a key value of of symbol-securities from the collections.
         */
-        /// IDictionary implementation
-         * @param pair">Key Value pair of symbol-security to remove
+         * IDictionary implementation
+         * @param pair Key Value pair of symbol-security to remove
         @returns Boolean true on success
         public boolean Remove(KeyValuePair<Symbol, Security> pair) {
             return Remove(pair.Key);
         }
 
         /**
-        /// Remove this symbol security: Dictionary interface implementation.
+         * Remove this symbol security: Dictionary interface implementation.
         */
-         * @param symbol">Symbol we're searching for
+         * @param symbol Symbol we're searching for
         @returns true success
         public boolean Remove(Symbol symbol) {
             Security security;
@@ -170,57 +170,57 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// List of the symbol-keys in the collection of securities.
+         * List of the symbol-keys in the collection of securities.
         */
-        /// IDictionary implementation
+         * IDictionary implementation
         public ICollection<Symbol> Keys
         {
             get { return _securityManager.Keys; }
         }
 
         /**
-        /// Try and get this security object with matching symbol and return true on success.
+         * Try and get this security object with matching symbol and return true on success.
         */
-         * @param symbol">String search symbol
-         * @param security">Output Security object
-        /// IDictionary implementation
+         * @param symbol String search symbol
+         * @param security Output Security object
+         * IDictionary implementation
         @returns True on successfully locating the security object
         public boolean TryGetValue(Symbol symbol, out Security security) {
             return _securityManager.TryGetValue(symbol, out security);
         }
 
         /**
-        /// Get a list of the security objects for this collection.
+         * Get a list of the security objects for this collection.
         */
-        /// IDictionary implementation
+         * IDictionary implementation
         public ICollection<Security> Values
         {
             get { return _securityManager.Values; }
         }
 
         /**
-        /// Get the enumerator for this security collection.
+         * Get the enumerator for this security collection.
         */
-        /// IDictionary implementation
+         * IDictionary implementation
         @returns Enumerable key value pair
         IEnumerator<KeyValuePair<Symbol, Security>> IEnumerable<KeyValuePair<Symbol, Security>>.GetEnumerator() {
             return _securityManager.GetEnumerator();
         }
 
         /**
-        /// Get the enumerator for this securities collection.
+         * Get the enumerator for this securities collection.
         */
-        /// IDictionary implementation
+         * IDictionary implementation
         @returns Enumerator.
         IEnumerator IEnumerable.GetEnumerator() {
             return _securityManager.GetEnumerator();
         }
 
         /**
-        /// Indexer method for the security manager to access the securities objects by their symbol.
+         * Indexer method for the security manager to access the securities objects by their symbol.
         */
-        /// IDictionary implementation
-         * @param symbol">Symbol object indexer
+         * IDictionary implementation
+         * @param symbol Symbol object indexer
         @returns Security
         public Security this[Symbol symbol]
         {
@@ -235,7 +235,7 @@ package com.quantconnect.lean.Securities
             {
                 Security existing;
                 if( _securityManager.TryGetValue(symbol, out existing) && existing != value) {
-                    throw new ArgumentException( "Unable to over write existing Security: " + symbol.toString());
+                    throw new IllegalArgumentException( "Unable to over write existing Security: " + symbol.toString());
                 }
 
                 // no security exists for the specified symbol key, add it now
@@ -246,10 +246,10 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Indexer method for the security manager to access the securities objects by their symbol.
+         * Indexer method for the security manager to access the securities objects by their symbol.
         */
-        /// IDictionary implementation
-         * @param ticker">string ticker symbol indexer
+         * IDictionary implementation
+         * @param ticker string ticker symbol indexer
         @returns Security
         public Security this[string ticker]
         {
@@ -272,18 +272,18 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Event invocator for the <see cref="CollectionChanged"/> event
+         * Event invocator for the <see cref="CollectionChanged"/> event
         */
-         * @param changedEventArgs">Event arguments for the <see cref="CollectionChanged"/> event
-        protected virtual void OnCollectionChanged(NotifyCollectionChangedEventArgs changedEventArgs) {
+         * @param changedEventArgs Event arguments for the <see cref="CollectionChanged"/> event
+        protected void OnCollectionChanged(NotifyCollectionChangedEventArgs changedEventArgs) {
             handler = CollectionChanged;
             if( handler != null ) handler(this, changedEventArgs);
         }
 
         /**
-        /// Creates a security and matching configuration. This applies the default leverage if
-        /// leverage is less than or equal to zero.
-        /// This method also add the new symbol mapping to the <see cref="SymbolCache"/>
+         * Creates a security and matching configuration. This applies the default leverage if
+         * leverage is less than or equal to zero.
+         * This method also add the new symbol mapping to the <see cref="SymbolCache"/>
         */
         public static Security CreateSecurity(Type factoryType,
             SecurityPortfolioManager securityPortfolioManager,
@@ -376,9 +376,9 @@ package com.quantconnect.lean.Securities
         }
 
         /**
-        /// Creates a security and matching configuration. This applies the default leverage if
-        /// leverage is less than or equal to zero.
-        /// This method also add the new symbol mapping to the <see cref="SymbolCache"/>
+         * Creates a security and matching configuration. This applies the default leverage if
+         * leverage is less than or equal to zero.
+         * This method also add the new symbol mapping to the <see cref="SymbolCache"/>
         */
         public static Security CreateSecurity(SecurityPortfolioManager securityPortfolioManager,
             SubscriptionManager subscriptionManager,

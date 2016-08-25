@@ -25,12 +25,12 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Data.UniverseSelection
 {
     /**
-    /// Provides a base class for all universes to derive from.
+     * Provides a base class for all universes to derive from.
     */
     public abstract class Universe
     {
         /**
-        /// Gets a value indicating that no change to the universe should be made
+         * Gets a value indicating that no change to the universe should be made
         */
         public static final UnchangedUniverse Unchanged = UnchangedUniverse.Instance;
 
@@ -39,7 +39,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         private final ConcurrentMap<Symbol, Member> _securities;
 
         /**
-        /// Gets the security type of this universe
+         * Gets the security type of this universe
         */
         public SecurityType SecurityType
         {
@@ -47,7 +47,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Gets the market of this universe
+         * Gets the market of this universe
         */
         public String Market
         {
@@ -55,7 +55,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Gets the settings used for subscriptons added for this universe
+         * Gets the settings used for subscriptons added for this universe
         */
         public abstract UniverseSettings UniverseSettings
         {
@@ -63,7 +63,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Gets the configuration used to get universe data
+         * Gets the configuration used to get universe data
         */
         public SubscriptionDataConfig Configuration
         {
@@ -71,7 +71,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Gets the instance responsible for initializing newly added securities
+         * Gets the instance responsible for initializing newly added securities
         */
         public ISecurityInitializer SecurityInitializer
         {
@@ -79,8 +79,8 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Gets the current listing of members in this universe. Modifications
-        /// to this dictionary do not change universe membership.
+         * Gets the current listing of members in this universe. Modifications
+         * to this dictionary do not change universe membership.
         */
         public Map<Symbol, Security> Members
         {
@@ -88,10 +88,10 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Universe"/> class
+         * Initializes a new instance of the <see cref="Universe"/> class
         */
-         * @param config">The configuration used to source data for this universe
-         * @param securityInitializer">Initializes securities when they're added to the universe
+         * @param config The configuration used to source data for this universe
+         * @param securityInitializer Initializes securities when they're added to the universe
         protected Universe(SubscriptionDataConfig config, ISecurityInitializer securityInitializer = null ) {
             _previousSelections = new HashSet<Symbol>();
             _securities = new ConcurrentMap<Symbol, Member>();
@@ -101,15 +101,15 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Determines whether or not the specified security can be removed from
-        /// this universe. This is useful to prevent securities from being taken
-        /// out of a universe before the algorithm has had enough time to make
-        /// decisions on the security
+         * Determines whether or not the specified security can be removed from
+         * this universe. This is useful to prevent securities from being taken
+         * out of a universe before the algorithm has had enough time to make
+         * decisions on the security
         */
-         * @param utcTime">The current utc time
-         * @param security">The security to check if its ok to remove
+         * @param utcTime The current utc time
+         * @param security The security to check if its ok to remove
         @returns True if we can remove the security, false otherwise
-        public virtual boolean CanRemoveMember(DateTime utcTime, Security security) {
+        public boolean CanRemoveMember(DateTime utcTime, Security security) {
             Member member;
             if( _securities.TryGetValue(security.Symbol, out member)) {
                 timeInUniverse = utcTime - member.Added;
@@ -121,10 +121,10 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Performs universe selection using the data specified
+         * Performs universe selection using the data specified
         */
-         * @param utcTime">The current utc time
-         * @param data">The symbols to remain in the universe
+         * @param utcTime The current utc time
+         * @param data The symbols to remain in the universe
         @returns The data that passes the filter
         public IEnumerable<Symbol> PerformSelection(DateTime utcTime, BaseDataCollection data) {
             result = SelectSymbols(utcTime, data);
@@ -142,22 +142,22 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Performs universe selection using the data specified
+         * Performs universe selection using the data specified
         */
-         * @param utcTime">The current utc time
-         * @param data">The symbols to remain in the universe
+         * @param utcTime The current utc time
+         * @param data The symbols to remain in the universe
         @returns The data that passes the filter
         public abstract IEnumerable<Symbol> SelectSymbols(DateTime utcTime, BaseDataCollection data);
 
         /**
-        /// Creates and configures a security for the specified symbol
+         * Creates and configures a security for the specified symbol
         */
-         * @param symbol">The symbol of the security to be created
-         * @param algorithm">The algorithm instance
-         * @param marketHoursDatabase">The market hours database
-         * @param symbolPropertiesDatabase">The symbol properties database
+         * @param symbol The symbol of the security to be created
+         * @param algorithm The algorithm instance
+         * @param marketHoursDatabase The market hours database
+         * @param symbolPropertiesDatabase The symbol properties database
         @returns The newly initialized security object
-        public virtual Security CreateSecurity(Symbol symbol, IAlgorithm algorithm, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase) {
+        public Security CreateSecurity(Symbol symbol, IAlgorithm algorithm, MarketHoursDatabase marketHoursDatabase, SymbolPropertiesDatabase symbolPropertiesDatabase) {
             // by default invoke the create security method to handle security initialization
             return SecurityManager.CreateSecurity(algorithm.Portfolio, algorithm.SubscriptionManager, marketHoursDatabase, symbolPropertiesDatabase,
                 SecurityInitializer, symbol, UniverseSettings.Resolution, UniverseSettings.FillForward, UniverseSettings.Leverage,
@@ -165,35 +165,35 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Gets the subscriptions to be added for the specified security
+         * Gets the subscriptions to be added for the specified security
         */
-        /// 
-        /// In most cases the default implementaon of returning the security's configuration is
-        /// sufficient. It's when we want multiple subscriptions (trade/quote data) that we'll need
-        /// to @Override this
-        /// 
-         * @param security">The security to get subscriptions for
+         * 
+         * In most cases the default implementaon of returning the security's configuration is
+         * sufficient. It's when we want multiple subscriptions (trade/quote data) that we'll need
+         * to @Override this
+         * 
+         * @param security The security to get subscriptions for
         @returns All subscriptions required by this security
-        public virtual IEnumerable<SubscriptionDataConfig> GetSubscriptions(Security security) {
+        public IEnumerable<SubscriptionDataConfig> GetSubscriptions(Security security) {
             return security.Subscriptions;
         }
 
         /**
-        /// Determines whether or not the specified symbol is currently a member of this universe
+         * Determines whether or not the specified symbol is currently a member of this universe
         */
-         * @param symbol">The symbol whose membership is to be checked
+         * @param symbol The symbol whose membership is to be checked
         @returns True if the specified symbol is part of this universe, false otherwise
         public boolean ContainsMember(Symbol symbol) {
             return _securities.ContainsKey(symbol);
         }
 
         /**
-        /// Adds the specified security to this universe
+         * Adds the specified security to this universe
         */
-         * @param utcTime">The current utc date time
-         * @param security">The security to be added
+         * @param utcTime The current utc date time
+         * @param security The security to be added
         @returns True if the security was successfully added,
-        /// false if the security was already in the universe
+         * false if the security was already in the universe
         internal boolean AddMember(DateTime utcTime, Security security) {
             if( _securities.ContainsKey(security.Symbol)) {
                 return false;
@@ -202,14 +202,14 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Tries to remove the specified security from the universe. This
-        /// will first check to verify that we can remove the security by
-        /// calling the <see cref="CanRemoveMember"/> function.
+         * Tries to remove the specified security from the universe. This
+         * will first check to verify that we can remove the security by
+         * calling the <see cref="CanRemoveMember"/> function.
         */
-         * @param utcTime">The current utc time
-         * @param security">The security to be removed
+         * @param utcTime The current utc time
+         * @param security The security to be removed
         @returns True if the security was successfully removed, false if
-        /// we're not allowed to remove or if the security didn't exist
+         * we're not allowed to remove or if the security didn't exist
         internal boolean RemoveMember(DateTime utcTime, Security security) {
             if( CanRemoveMember(utcTime, security)) {
                 Member member;
@@ -219,13 +219,13 @@ package com.quantconnect.lean.Data.UniverseSelection
         }
 
         /**
-        /// Provides a value to indicate that no changes should be made to the universe.
-        /// This value is intended to be return reference via <see cref="Universe.SelectSymbols"/>
+         * Provides a value to indicate that no changes should be made to the universe.
+         * This value is intended to be return reference via <see cref="Universe.SelectSymbols"/>
         */
         public sealed class UnchangedUniverse : IEnumerable<String>, IEnumerable<Symbol>
         {
             /**
-            /// Read-only instance of the <see cref="UnchangedUniverse"/> value
+             * Read-only instance of the <see cref="UnchangedUniverse"/> value
             */
             public static final UnchangedUniverse Instance = new UnchangedUniverse();
             private UnchangedUniverse() { }

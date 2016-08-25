@@ -18,20 +18,20 @@ using System;
 package com.quantconnect.lean.Data.Market
 {
     /**
-    /// Collection of TradeBars to create a data type for generic data handler:
+     * Collection of TradeBars to create a data type for generic data handler:
     */
     public class TradeBars : DataMap<TradeBar>
     {
         /**
-        /// Creates a new instance of the <see cref="TradeBars"/> dictionary
+         * Creates a new instance of the <see cref="TradeBars"/> dictionary
         */
         public TradeBars() {
         }
 
         /**
-        /// Creates a new instance of the <see cref="TradeBars"/> dictionary
+         * Creates a new instance of the <see cref="TradeBars"/> dictionary
         */
-         * @param frontier">The time associated with the data in this Map
+         * @param frontier The time associated with the data in this Map
         public TradeBars(DateTime frontier)
             : base(frontier) {
         }

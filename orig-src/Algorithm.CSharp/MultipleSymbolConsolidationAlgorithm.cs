@@ -23,28 +23,28 @@ using QuantConnect.Indicators;
 package com.quantconnect.lean.Algorithm.Examples
 {
     /**
-    /// This algorithm provides a structure for defining consolidators and indicators for many different symbols.
+     * This algorithm provides a structure for defining consolidators and indicators for many different symbols.
     */
     public class MultipleSymbolConsolidationAlgorithm : QCAlgorithm
     {
         /**
-        /// This is the period of bars we'll be creating
+         * This is the period of bars we'll be creating
         */
         public final Duration BarPeriod = Duration.ofMinutes(10);
         /**
-        /// This is the period of our sma indicators
+         * This is the period of our sma indicators
         */
         public final int SimpleMovingAveragePeriod = 10;
         /**
-        /// This is the number of consolidated bars we'll hold in symbol data for reference
+         * This is the number of consolidated bars we'll hold in symbol data for reference
         */
         public final int RollingWindowSize = 10;
         /**
-        /// Holds all of our data keyed by each symbol
+         * Holds all of our data keyed by each symbol
         */
         public final Map<String, SymbolData> Data = new Map<String, SymbolData>();
         /**
-        /// Contains all of our equity symbols
+         * Contains all of our equity symbols
         */
         public final IReadOnlyList<String> EquitySymbols = new List<String>
         {
@@ -53,7 +53,7 @@ package com.quantconnect.lean.Algorithm.Examples
             "IBM"
         };
         /**
-        /// Contains all of our forex symbols
+         * Contains all of our forex symbols
         */
         public final IReadOnlyList<String> ForexSymbols = new List<String>
         {
@@ -68,11 +68,11 @@ package com.quantconnect.lean.Algorithm.Examples
         };
 
         /**
-        /// Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
+         * Initialise the data and resolution required, as well as the cash and start-end dates for your algorithm. All algorithms must initialized.
         */
-        /// <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
-        /// <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
-        /// <seealso cref="QCAlgorithm.SetCash(decimal)"/>
+         * <seealso cref="QCAlgorithm.SetStartDate(System.DateTime)"/>
+         * <seealso cref="QCAlgorithm.SetEndDate(System.DateTime)"/>
+         * <seealso cref="QCAlgorithm.SetCash(decimal)"/>
         public @Override void Initialize() {
             SetStartDate(2014, 12, 01);
             SetEndDate(2015, 02, 01);
@@ -115,9 +115,9 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
+         * OnData event is the primary entry point for your algorithm. Each new data point will be pumped in here.
         */
-         * @param data">TradeBars IDictionary object with your stock data
+         * @param data TradeBars IDictionary object with your stock data
         public void OnData(TradeBars data) {
             // loop through each symbol in our structure
             foreach (symbolData in Data.Values) {
@@ -131,9 +131,9 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// End of a trading day event handler. This method is called at the end of the algorithm day (or multiple times if trading multiple assets).
+         * End of a trading day event handler. This method is called at the end of the algorithm day (or multiple times if trading multiple assets).
         */
-        /// Method is called 10 minutes before closing to allow user to close out position.
+         * Method is called 10 minutes before closing to allow user to close out position.
         public @Override void OnEndOfDay() {
             int i = 0;
             foreach (kvp in Data.OrderBy(x -> x.Value.Symbol)) {
@@ -145,36 +145,36 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// Contains data pertaining to a symbol in our algorithm
+         * Contains data pertaining to a symbol in our algorithm
         */
         public class SymbolData
         {
             /**
-            /// This symbol the other data in this class is associated with
+             * This symbol the other data in this class is associated with
             */
             public final String Symbol;
             /**
-            /// The security type of the symbol
+             * The security type of the symbol
             */
             public final SecurityType SecurityType;
             /**
-            /// A rolling window of data, data needs to be pumped into Bars by using Bars.Update( tradeBar ) and
-            /// can be accessed like:
-            ///  mySymbolData.Bars[0] - most first recent piece of data
-            ///  mySymbolData.Bars[5] - the sixth most recent piece of data (zero based indexing)
+             * A rolling window of data, data needs to be pumped into Bars by using Bars.Update( tradeBar ) and
+             * can be accessed like:
+             *  mySymbolData.Bars[0] - most first recent piece of data
+             *  mySymbolData.Bars[5] - the sixth most recent piece of data (zero based indexing)
             */
             public final RollingWindow<TradeBar> Bars;
             /**
-            /// The period used when population the Bars rolling window.
+             * The period used when population the Bars rolling window.
             */
             public final Duration BarPeriod;
             /**
-            /// The simple moving average indicator for our symbol
+             * The simple moving average indicator for our symbol
             */
             public SimpleMovingAverage SMA;
 
             /**
-            /// Initializes a new instance of SymbolData
+             * Initializes a new instance of SymbolData
             */
             public SymbolData( String symbol, SecurityType securityType, Duration barPeriod, int windowSize) {
                 Symbol = symbol;
@@ -184,7 +184,7 @@ package com.quantconnect.lean.Algorithm.Examples
             }
 
             /**
-            /// Returns true if all the data in this instance is ready (indicators, rolling windows, ect...)
+             * Returns true if all the data in this instance is ready (indicators, rolling windows, ect...)
             */
             public boolean IsReady
             {
@@ -192,10 +192,10 @@ package com.quantconnect.lean.Algorithm.Examples
             }
 
             /**
-            /// Returns true if the most recent trade bar time matches the current time minus the bar's period, this
-            /// indicates that update was just called on this instance
+             * Returns true if the most recent trade bar time matches the current time minus the bar's period, this
+             * indicates that update was just called on this instance
             */
-             * @param current">The current algorithm time
+             * @param current The current algorithm time
             @returns True if this instance was just updated with new data, false otherwise
             public boolean WasJustUpdated(DateTime current) {
                 return Bars.Count > 0 && Bars[0].Time == current - BarPeriod;

@@ -27,13 +27,13 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Lean.Engine.DataFeeds
 {
     /**
-    /// Datafeed interface for creating custom datafeed sources.
+     * Datafeed interface for creating custom datafeed sources.
     */
     [InheritedExport(typeof(IDataFeed))]
     public interface IDataFeed : IEnumerable<TimeSlice>
     {
         /**
-        /// Gets all of the current subscriptions this data feed is processing
+         * Gets all of the current subscriptions this data feed is processing
         */
         IEnumerable<Subscription> Subscriptions
         {
@@ -41,7 +41,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Public flag indicator that the thread is still busy.
+         * Public flag indicator that the thread is still busy.
         */
         boolean IsActive
         {
@@ -49,35 +49,35 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         /**
-        /// Initializes the data feed for the specified job and algorithm
+         * Initializes the data feed for the specified job and algorithm
         */
         void Initialize(IAlgorithm algorithm, AlgorithmNodePacket job, IResultHandler resultHandler, IMapFileProvider mapFileProvider, IFactorFileProvider factorFileProvider);
 
         /**
-        /// Adds a new subscription to provide data for the specified security.
+         * Adds a new subscription to provide data for the specified security.
         */
-         * @param universe">The universe the subscription is to be added to
-         * @param security">The security to add a subscription for
-         * @param config">The subscription config to be added
-         * @param utcStartTime">The start time of the subscription
-         * @param utcEndTime">The end time of the subscription
+         * @param universe The universe the subscription is to be added to
+         * @param security The security to add a subscription for
+         * @param config The subscription config to be added
+         * @param utcStartTime The start time of the subscription
+         * @param utcEndTime The end time of the subscription
         @returns True if the subscription was created and added successfully, false otherwise
         boolean AddSubscription(Universe universe, Security security, SubscriptionDataConfig config, DateTime utcStartTime, DateTime utcEndTime);
 
         /**
-        /// Removes the subscription from the data feed, if it exists
+         * Removes the subscription from the data feed, if it exists
         */
-         * @param configuration">The configuration of the subscription to remove
+         * @param configuration The configuration of the subscription to remove
         @returns True if the subscription was successfully removed, false otherwise
         boolean RemoveSubscription(SubscriptionDataConfig configuration);
 
         /**
-        /// Primary entry point.
+         * Primary entry point.
         */
         void Run();
 
         /**
-        /// External controller calls to signal a terminate of the thread.
+         * External controller calls to signal a terminate of the thread.
         */
         void Exit();
     }

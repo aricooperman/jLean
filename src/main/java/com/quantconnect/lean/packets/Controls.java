@@ -19,23 +19,23 @@ package com.quantconnect.lean.packets;
 //using Newtonsoft.Json;
 
 /**
-/// Specifies values used to control algorithm limits
+ * Specifies values used to control algorithm limits
 */
 public class Controls
 {
-    /// The maximum number of minute symbols
+     * The maximum number of minute symbols
 //    @JsonProperty( "iMinuteLimit")]
     public int minuteLimit = 500;
     
-    /// The maximum number of second symbols
+     * The maximum number of second symbols
 //    @JsonProperty( "iSecondLimit")]
     public int secondLimit = 100;
 
-    /// The maximum number of tick symbol
+     * The maximum number of tick symbol
 //    @JsonProperty( "iTickLimit")]
     public int tickLimit = 30;
 
-    /// Initializes a new default instance of the <see cref="Controls"/> class
+     * Initializes a new default instance of the <see cref="Controls"/> class
     public Controls() { }
 
     public Controls( int minuteLimit, int secondLimit, int tickLimit ) {
@@ -52,30 +52,30 @@ using Newtonsoft.Json;
 package com.quantconnect.lean.Packets
 {
     /**
-    /// Specifies values used to control algorithm limits
+     * Specifies values used to control algorithm limits
     */
     public class Controls
     {
         /**
-        /// The maximum number of minute symbols
+         * The maximum number of minute symbols
         */
         @JsonProperty( "iMinuteLimit")]
         public int MinuteLimit;
         
         /**
-        /// The maximum number of second symbols
+         * The maximum number of second symbols
         */
         @JsonProperty( "iSecondLimit")]
         public int SecondLimit;
 
         /**
-        /// The maximum number of tick symbol
+         * The maximum number of tick symbol
         */
         @JsonProperty( "iTickLimit")]
         public int TickLimit;
 
         /**
-        /// Initializes a new default instance of the <see cref="Controls"/> class
+         * Initializes a new default instance of the <see cref="Controls"/> class
         */
         public Controls() {
             MinuteLimit = 500;

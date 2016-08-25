@@ -18,85 +18,85 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the Ichimoku Kinko Hyo indicator. It consists of the following main indicators:
-    /// Tenkan-sen: (Highest High + Lowest Low) / 2 for the specific period (normally 9)
-    /// Kijun-sen: (Highest High + Lowest Low) / 2 for the specific period (normally 26)
-    /// Senkou A Span: (Tenkan-sen + Kijun-sen )/ 2 from a specific number of periods ago (normally 26)
-    /// Senkou B Span: (Highest High + Lowest Low) / 2 for the specific period (normally 52), from a specific number of periods ago (normally 26)
+     * This indicator computes the Ichimoku Kinko Hyo indicator. It consists of the following main indicators:
+     * Tenkan-sen: (Highest High + Lowest Low) / 2 for the specific period (normally 9)
+     * Kijun-sen: (Highest High + Lowest Low) / 2 for the specific period (normally 26)
+     * Senkou A Span: (Tenkan-sen + Kijun-sen )/ 2 from a specific number of periods ago (normally 26)
+     * Senkou B Span: (Highest High + Lowest Low) / 2 for the specific period (normally 52), from a specific number of periods ago (normally 26)
     */
     public class IchimokuKinkoHyo : TradeBarIndicator
     {
         /**
-        /// The Tenkan-sen component of the Ichimoku indicator
+         * The Tenkan-sen component of the Ichimoku indicator
         */
         public IndicatorBase<TradeBar> Tenkan { get; private set; }
 
         /**
-        /// The Kijun-sen component of the Ichimoku indicator
+         * The Kijun-sen component of the Ichimoku indicator
         */
         public IndicatorBase<TradeBar> Kijun { get; private set; }
 
         /**
-        /// The Senkou A Span component of the Ichimoku indicator
+         * The Senkou A Span component of the Ichimoku indicator
         */
         public IndicatorBase<TradeBar> SenkouA { get; private set; }
 
         /**
-        /// The Senkou B Span component of the Ichimoku indicator
+         * The Senkou B Span component of the Ichimoku indicator
         */
         public IndicatorBase<TradeBar> SenkouB { get; private set; }
 
         /**
-        /// The Tenkan-sen Maximum component of the Ichimoku indicator
+         * The Tenkan-sen Maximum component of the Ichimoku indicator
         */
         public IndicatorBase<IndicatorDataPoint> TenkanMaximum { get; private set; }
         /**
-        /// The Tenkan-sen Minimum component of the Ichimoku indicator
+         * The Tenkan-sen Minimum component of the Ichimoku indicator
         */
         public IndicatorBase<IndicatorDataPoint> TenkanMinimum { get; private set; }
         /**
-        /// The Kijun-sen Maximum component of the Ichimoku indicator
+         * The Kijun-sen Maximum component of the Ichimoku indicator
         */
         public IndicatorBase<IndicatorDataPoint> KijunMaximum { get; private set; }
         /**
-        /// The Kijun-sen Minimum component of the Ichimoku indicator
+         * The Kijun-sen Minimum component of the Ichimoku indicator
         */
         public IndicatorBase<IndicatorDataPoint> KijunMinimum { get; private set; }
         /**
-        /// The Senkou B Maximum component of the Ichimoku indicator
+         * The Senkou B Maximum component of the Ichimoku indicator
         */
         public IndicatorBase<IndicatorDataPoint> SenkouBMaximum { get; private set; }
         /**
-        /// The Senkou B Minimum component of the Ichimoku indicator
+         * The Senkou B Minimum component of the Ichimoku indicator
         */
         public IndicatorBase<IndicatorDataPoint> SenkouBMinimum { get; private set; }
         /**
-        /// The Delayed Tenkan Senkou A component of the Ichimoku indicator
+         * The Delayed Tenkan Senkou A component of the Ichimoku indicator
         */
         public WindowIndicator<IndicatorDataPoint> DelayedTenkanSenkouA { get; private set; }
         /**
-        /// The Delayed Kijun Senkou A component of the Ichimoku indicator
+         * The Delayed Kijun Senkou A component of the Ichimoku indicator
         */
         public WindowIndicator<IndicatorDataPoint> DelayedKijunSenkouA { get; private set; }
         /**
-        /// The Delayed Maximum Senkou B component of the Ichimoku indicator
+         * The Delayed Maximum Senkou B component of the Ichimoku indicator
         */
         public WindowIndicator<IndicatorDataPoint> DelayedMaximumSenkouB { get; private set; }
         /**
-        /// The Delayed Minimum Senkou B component of the Ichimoku indicator
+         * The Delayed Minimum Senkou B component of the Ichimoku indicator
         */
         public WindowIndicator<IndicatorDataPoint> DelayedMinimumSenkouB { get; private set; }
 
         /**
-        /// Creates a new IchimokuKinkoHyo indicator from the specific periods
+         * Creates a new IchimokuKinkoHyo indicator from the specific periods
         */
-         * @param name">The name of this indicator
-         * @param tenkanPeriod">The Tenkan-sen period
-         * @param kijunPeriod">The Kijun-sen period
-         * @param senkouAPeriod">The Senkou A Span period
-         * @param senkouBPeriod">The Senkou B Span period
-         * @param senkouADelayPeriod">The Senkou A Span delay
-         * @param senkouBDelayPeriod">The Senkou B Span delay
+         * @param name The name of this indicator
+         * @param tenkanPeriod The Tenkan-sen period
+         * @param kijunPeriod The Kijun-sen period
+         * @param senkouAPeriod The Senkou A Span period
+         * @param senkouBPeriod The Senkou B Span period
+         * @param senkouADelayPeriod The Senkou A Span delay
+         * @param senkouBDelayPeriod The Senkou B Span delay
         public IchimokuKinkoHyo( String name, int tenkanPeriod = 9, int kijunPeriod = 26, int senkouAPeriod = 26, int senkouBPeriod = 52, int senkouADelayPeriod = 26, int senkouBDelayPeriod = 26)
             : base(name) {
             TenkanMaximum = new Maximum(name + "_TenkanMax", tenkanPeriod);
@@ -175,7 +175,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Returns true if all of the sub-components of the Ichimoku indicator is ready
+         * Returns true if all of the sub-components of the Ichimoku indicator is ready
         */
         public @Override boolean IsReady
         {
@@ -184,9 +184,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
 
 
@@ -208,7 +208,7 @@ package com.quantconnect.lean.Indicators
         }
         
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             base.Reset();

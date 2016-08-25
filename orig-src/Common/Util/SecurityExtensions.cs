@@ -20,13 +20,13 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Provides useful infrastructure methods to the <see cref="Security"/> class.
-    /// These are added in this way to avoid mudding the class's public API
+     * Provides useful infrastructure methods to the <see cref="Security"/> class.
+     * These are added in this way to avoid mudding the class's public API
     */
     public static class SecurityExtensions
     {
         /**
-        /// Determines if all subscriptions for the security are internal feeds
+         * Determines if all subscriptions for the security are internal feeds
         */
         public static boolean IsInternalFeed(this Security security) {
             return security.Subscriptions.All(x -> x.IsInternalFeed);

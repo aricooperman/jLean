@@ -16,31 +16,31 @@
 package com.quantconnect.lean.Brokerages
 {
     /**
-    /// Represents a message received from a brokerage
+     * Represents a message received from a brokerage
     */
     public class BrokerageMessageEvent
     {
         /**
-        /// Gets the type of brokerage message
+         * Gets the type of brokerage message
         */
         public BrokerageMessageType Type { get; private set; }
 
         /**
-        /// Gets the brokerage specific code for this message, zero if no code was specified
+         * Gets the brokerage specific code for this message, zero if no code was specified
         */
         public String Code { get; private set; }
 
         /**
-        /// Gets the message text received from the brokerage
+         * Gets the message text received from the brokerage
         */
         public String Message { get; private set; }
 
         /**
-        /// Initializes a new instance of the BrokerageMessageEvent class
+         * Initializes a new instance of the BrokerageMessageEvent class
         */
-         * @param type">The type of brokerage message
-         * @param code">The brokerage specific code
-         * @param message">The message text received from the brokerage
+         * @param type The type of brokerage message
+         * @param code The brokerage specific code
+         * @param message The message text received from the brokerage
         public BrokerageMessageEvent(BrokerageMessageType type, int code, String message) {
             Type = type;
             Code = code.toString();
@@ -48,11 +48,11 @@ package com.quantconnect.lean.Brokerages
         }
 
         /**
-        /// Initializes a new instance of the BrokerageMessageEvent class
+         * Initializes a new instance of the BrokerageMessageEvent class
         */
-         * @param type">The type of brokerage message
-         * @param code">The brokerage specific code
-         * @param message">The message text received from the brokerage
+         * @param type The type of brokerage message
+         * @param code The brokerage specific code
+         * @param message The message text received from the brokerage
         public BrokerageMessageEvent(BrokerageMessageType type, String code, String message) {
             Type = type;
             Code = code;
@@ -60,30 +60,30 @@ package com.quantconnect.lean.Brokerages
         }
 
         /**
-        /// Creates a new <see cref="BrokerageMessageEvent"/> to represent a disconnect message
+         * Creates a new <see cref="BrokerageMessageEvent"/> to represent a disconnect message
         */
-         * @param message">The message from the brokerage
+         * @param message The message from the brokerage
         @returns A brokerage disconnect message
         public static BrokerageMessageEvent Disconnected( String message) {
             return new BrokerageMessageEvent(BrokerageMessageType.Disconnect, "Disconnect", message);
         }
 
         /**
-        /// Creates a new <see cref="BrokerageMessageEvent"/> to represent a reconnect message
+         * Creates a new <see cref="BrokerageMessageEvent"/> to represent a reconnect message
         */
-         * @param message">The message from the brokerage
+         * @param message The message from the brokerage
         @returns A brokerage reconnect message
         public static BrokerageMessageEvent Reconnected( String message) {
             return new BrokerageMessageEvent(BrokerageMessageType.Reconnect, "Reconnect", message);
         }
 
         /**
-        /// Returns a String that represents the current object.
+         * Returns a String that represents the current object.
         */
         @returns 
-        /// A String that represents the current object.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * A String that represents the current object.
+         * 
+         * <filterpriority>2</filterpriority>
         public @Override String toString() {
             return String.format( "%1$s - Code: %2$s - %3$s", Type, Code, Message);
         }

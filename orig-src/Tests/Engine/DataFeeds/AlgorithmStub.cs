@@ -21,7 +21,7 @@ using QuantConnect.Securities;
 package com.quantconnect.lean.Tests.Engine.DataFeeds
 {
     /**
-    /// This type allows tests to easily create an algorith that is mostly initialized in one line
+     * This type allows tests to easily create an algorith that is mostly initialized in one line
     */
     public class AlgorithmStub : QCAlgorithm
     {

@@ -16,12 +16,12 @@
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the Triple Exponential Moving Average (TEMA). 
-    /// The Triple Exponential Moving Average is calculated with the following formula:
-    /// EMA1 = EMA(t,period)
-    /// EMA2 = EMA(EMA(t,period),period)
-    /// EMA3 = EMA(EMA(EMA(t,period),period),period)
-    /// TEMA = 3 * EMA1 - 3 * EMA2 + EMA3
+     * This indicator computes the Triple Exponential Moving Average (TEMA). 
+     * The Triple Exponential Moving Average is calculated with the following formula:
+     * EMA1 = EMA(t,period)
+     * EMA2 = EMA(EMA(t,period),period)
+     * EMA3 = EMA(EMA(EMA(t,period),period),period)
+     * TEMA = 3 * EMA1 - 3 * EMA2 + EMA3
     */
     public class TripleExponentialMovingAverage : IndicatorBase<IndicatorDataPoint>
     {
@@ -31,10 +31,10 @@ package com.quantconnect.lean.Indicators
         private final ExponentialMovingAverage _ema3;
 
         /**
-        /// Initializes a new instance of the <see cref="TripleExponentialMovingAverage"/> class using the specified name and period.
+         * Initializes a new instance of the <see cref="TripleExponentialMovingAverage"/> class using the specified name and period.
         */ 
-         * @param name">The name of this indicator
-         * @param period">The period of the TEMA
+         * @param name The name of this indicator
+         * @param period The period of the TEMA
         public TripleExponentialMovingAverage( String name, int period)
             : base(name) {
             _period = period;
@@ -44,15 +44,15 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Initializes a new instance of the <see cref="TripleExponentialMovingAverage"/> class using the specified period.
+         * Initializes a new instance of the <see cref="TripleExponentialMovingAverage"/> class using the specified period.
         */ 
-         * @param period">The period of the TEMA
+         * @param period The period of the TEMA
         public TripleExponentialMovingAverage(int period)
             : this( "TEMA" + period, period) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -60,9 +60,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IndicatorDataPoint input) {
             _ema1.Update(input);
@@ -73,11 +73,11 @@ package com.quantconnect.lean.Indicators
             if( Samples > 2 * (_period - 1))
                 _ema3.Update(_ema2.Current);
 
-            return IsReady ? 3m * _ema1 - 3m * _ema2 + _ema3 : 0m;
+            return IsReady ? 3m * _ema1 - 3m * _ema2 + _ema3 : BigDecimal.ZERO;
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _ema1.Reset();

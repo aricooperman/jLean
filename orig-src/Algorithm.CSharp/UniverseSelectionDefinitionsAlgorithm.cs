@@ -21,8 +21,8 @@ using QuantConnect.Data.UniverseSelection;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// This algorithm shows some of the various helper methods available
-    /// when defining universes
+     * This algorithm shows some of the various helper methods available
+     * when defining universes
     */
     public class UniverseSelectionDefinitionsAlgorithm : QCAlgorithm
     {

@@ -20,66 +20,66 @@ using System.Linq;
 package com.quantconnect.lean.Indicators
 {
     /** 
-    /// Oscillator indicator that measures momentum and mean-reversion over a specified
-    /// period n.
-    /// Source: Harris, Michael. "Momersion Indicator." Price Action Lab.,
-    ///             13 Aug. 2015. Web. http://www.priceactionlab.com/Blog/2015/08/momersion-indicator/.
+     * Oscillator indicator that measures momentum and mean-reversion over a specified
+     * period n.
+     * Source: Harris, Michael. "Momersion Indicator." Price Action Lab.,
+     *             13 Aug. 2015. Web. http://www.priceactionlab.com/Blog/2015/08/momersion-indicator/.
     */
     public class MomersionIndicator : WindowIndicator<IndicatorDataPoint>
     {
         /**
-        /// The minimum observations needed to consider the indicator ready. After that observation
-        /// number is reached, the indicator will continue gathering data until the full period.
+         * The minimum observations needed to consider the indicator ready. After that observation
+         * number is reached, the indicator will continue gathering data until the full period.
         */
-        private int? _minPeriod;
+        private OptionalInt _minPeriod;
 
         /**
-        /// The final full period used to estimate the indicator.
+         * The final full period used to estimate the indicator.
         */
         private int _fullPeriod;
 
         /**
-        /// The rolling window used to store the momentum.
+         * The rolling window used to store the momentum.
         */
         private RollingWindow<decimal> _multipliedDiffWindow;
 
         /**
-        /// Initializes a new instance of the <see cref="MomersionIndicator"/> class.
+         * Initializes a new instance of the <see cref="MomersionIndicator"/> class.
         */
-         * @param name">The name.
-         * @param minPeriod">The minimum period.
-         * @param fullPeriod">The full period.
-        /// <exception cref="System.ArgumentException">The minimum period should be greater of 3.;minPeriod</exception>
-        public MomersionIndicator( String name, int? minPeriod, int fullPeriod)
+         * @param name The name.
+         * @param minPeriod The minimum period.
+         * @param fullPeriod The full period.
+         * <exception cref="System.ArgumentException The minimum period should be greater of 3.;minPeriod</exception>
+        public MomersionIndicator( String name, OptionalInt minPeriod, int fullPeriod)
             : base(name, 3) {
             _fullPeriod = fullPeriod;
             _multipliedDiffWindow = new RollingWindow<decimal>(fullPeriod);
             if( minPeriod < 4) {
-                throw new ArgumentException( "The minimum period should be greater of 3.", "minPeriod");
+                throw new IllegalArgumentException( "The minimum period should be greater of 3.", "minPeriod");
             }
             _minPeriod = minPeriod;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="MomersionIndicator"/> class.
+         * Initializes a new instance of the <see cref="MomersionIndicator"/> class.
         */
-         * @param minPeriod">The minimum period.
-         * @param fullPeriod">The full period.
+         * @param minPeriod The minimum period.
+         * @param fullPeriod The full period.
         public MomersionIndicator(int minPeriod, int fullPeriod)
             : this( "Momersion_" + fullPeriod, minPeriod, fullPeriod) {
         }
 
         /**
-        /// Initializes a new instance of the <see cref="MomersionIndicator"/> class.
+         * Initializes a new instance of the <see cref="MomersionIndicator"/> class.
         */
-         * @param fullPeriod">The full period.
+         * @param fullPeriod The full period.
         public MomersionIndicator(int fullPeriod)
             : this( "Momersion_" + fullPeriod, null, fullPeriod) {
         }
         
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -96,7 +96,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             base.Reset();
@@ -105,13 +105,13 @@ package com.quantconnect.lean.Indicators
 
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
          * @param window">
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns 
-        /// A new value for this indicator
-        /// 
+         * A new value for this indicator
+         * 
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             int Mc = 0;
             int MRc = 0;

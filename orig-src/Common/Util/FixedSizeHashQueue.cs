@@ -20,7 +20,7 @@ using System.Collections.Generic;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Provides an implementation of an add-only fixed length, unique queue system
+     * Provides an implementation of an add-only fixed length, unique queue system
     */
     public class FixedSizeHashQueue<T> : IEnumerable<T>
     {
@@ -29,9 +29,9 @@ package com.quantconnect.lean.Util
         private final HashSet<T> _hash; 
 
         /**
-        /// Initializes a new instance of the <see cref="FixedSizeHashQueue{T}"/> class
+         * Initializes a new instance of the <see cref="FixedSizeHashQueue{T}"/> class
         */
-         * @param size">The maximum number of items to hold
+         * @param size The maximum number of items to hold
         public FixedSizeHashQueue(int size) {
             _size = size;
             _queue = new Queue<T>(size);
@@ -39,7 +39,7 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Returns true if the item was added and didn't already exists
+         * Returns true if the item was added and didn't already exists
         */
         public boolean Add(T item) {
             if( _hash.Add(item)) {
@@ -54,7 +54,7 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Tries to inspect the first item in the queue
+         * Tries to inspect the first item in the queue
         */
         public boolean TryPeek(out T item) {
             if( _queue.Count > 0) {
@@ -66,7 +66,7 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Dequeues and returns the next item in the queue
+         * Dequeues and returns the next item in the queue
         */
         public T Dequeue() {
             item = _queue.Dequeue();
@@ -75,30 +75,30 @@ package com.quantconnect.lean.Util
         }
 
         /**
-        /// Returns true if the specified item exists in the collection
+         * Returns true if the specified item exists in the collection
         */
         public boolean Contains(T item) {
             return _hash.Contains(item);
         }
 
         /**
-        /// Returns an enumerator that iterates through the collection.
+         * Returns an enumerator that iterates through the collection.
         */
         @returns 
-        /// A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
-        /// 
-        /// <filterpriority>1</filterpriority>
+         * A <see cref="T:System.Collections.Generic.IEnumerator`1"/> that can be used to iterate through the collection.
+         * 
+         * <filterpriority>1</filterpriority>
         public IEnumerator<T> GetEnumerator() {
             return _queue.GetEnumerator();
         }
 
         /**
-        /// Returns an enumerator that iterates through a collection.
+         * Returns an enumerator that iterates through a collection.
         */
         @returns 
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+         * 
+         * <filterpriority>2</filterpriority>
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }

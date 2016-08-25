@@ -21,54 +21,54 @@ using QuantConnect.Packets;
 package com.quantconnect.lean.Commands
 {
     /**
-    /// Represents a command to submit an order to the algorithm
+     * Represents a command to submit an order to the algorithm
     */
     public sealed class OrderCommand : ICommand
     {
         /**
-        /// Gets or sets the security type for the symbol
+         * Gets or sets the security type for the symbol
         */
         public SecurityType SecurityType { get; set; }
 
         /**
-        /// Gets or sets the symbol to be ordered
+         * Gets or sets the symbol to be ordered
         */
         public Symbol Symbol { get; set; }
 
         /**
-        /// Gets or sets the order type to be submted
+         * Gets or sets the order type to be submted
         */
         public OrderType OrderType { get; set; }
 
         /**
-        /// Gets or sets the number of units to be ordered (directional)
+         * Gets or sets the number of units to be ordered (directional)
         */
         public int Quantity { get; set; }
 
         /**
-        /// Gets or sets the limit price. Only applies to <see cref="QuantConnect.Orders.OrderType.Limit"/> and <see cref="QuantConnect.Orders.OrderType.StopLimit"/>
+         * Gets or sets the limit price. Only applies to <see cref="QuantConnect.Orders.OrderType.Limit"/> and <see cref="QuantConnect.Orders.OrderType.StopLimit"/>
         */
         public BigDecimal LimitPrice { get; set; }
 
         /**
-        /// Gets or sets the stop price. Only applies to <see cref="QuantConnect.Orders.OrderType.StopLimit"/> and <see cref="QuantConnect.Orders.OrderType.StopMarket"/>
+         * Gets or sets the stop price. Only applies to <see cref="QuantConnect.Orders.OrderType.StopLimit"/> and <see cref="QuantConnect.Orders.OrderType.StopMarket"/>
         */
         public BigDecimal StopPrice { get; set; }
 
         /**
-        /// Gets or sets an arbitrary tag to be attached to the order
+         * Gets or sets an arbitrary tag to be attached to the order
         */
         public String Tag { get; set; }
 
         /**
-        /// Runs this command against the specified algorithm instance
+         * Runs this command against the specified algorithm instance
         */
-         * @param algorithm">The algorithm to run this command against
+         * @param algorithm The algorithm to run this command against
         public CommandResultPacket Run(IAlgorithm algorithm) {
             request = new SubmitOrderRequest(OrderType, SecurityType, Symbol, Quantity, StopPrice, LimitPrice, DateTime.UtcNow, Tag);
             ticket = algorithm.Transactions.ProcessRequest(request);
             response = ticket.GetMostRecentOrderResponse();
-            message = String.format( "%1$s for %2$s units of %3$s: {3}", OrderType, Quantity, Symbol, response);
+            message = String.format( "%1$s for %2$s units of %3$s: %4$s", OrderType, Quantity, Symbol, response);
             
             if( response.IsSuccess) {
                 algorithm.Debug(message);
@@ -82,12 +82,12 @@ package com.quantconnect.lean.Commands
         }
 
         /**
-        /// Returns a String that represents the current object.
+         * Returns a String that represents the current object.
         */
         @returns 
-        /// A String that represents the current object.
-        /// 
-        /// <filterpriority>2</filterpriority>
+         * A String that represents the current object.
+         * 
+         * <filterpriority>2</filterpriority>
         public @Override String toString() {
             // delegate to the order request
             return new SubmitOrderRequest(OrderType, SecurityType, Symbol, Quantity, StopPrice, LimitPrice, DateTime.UtcNow, Tag).toString();

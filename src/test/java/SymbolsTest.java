@@ -18,7 +18,7 @@ using System;
 package com.quantconnect.lean.Tests
 {
     /**
-    /// Provides symbol instancs for unit tests
+     * Provides symbol instancs for unit tests
     */
     public static class Symbols
     {

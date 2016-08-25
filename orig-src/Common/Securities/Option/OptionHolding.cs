@@ -16,15 +16,15 @@
 package com.quantconnect.lean.Securities.Option
 {
     /**
-    /// Option holdings implementation of the base securities class
+     * Option holdings implementation of the base securities class
     */
-    /// <seealso cref="SecurityHolding"/>
+     * <seealso cref="SecurityHolding"/>
     public class OptionHolding : SecurityHolding
     {
         /**
-        /// Option Holding Class constructor
+         * Option Holding Class constructor
         */
-         * @param security">The option security being held
+         * @param security The option security being held
         public OptionHolding(Security security)
             : base(security) {
         }

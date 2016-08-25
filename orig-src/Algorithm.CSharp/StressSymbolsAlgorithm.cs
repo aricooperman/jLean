@@ -21,7 +21,7 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Algorithm.Examples
 {
     /**
-    /// Randomly selects the specified number of symbols from the lists below
+     * Randomly selects the specified number of symbols from the lists below
     */
     public class StressSymbolsAlgorithm : QCAlgorithm
     {
@@ -32,7 +32,7 @@ package com.quantconnect.lean.Algorithm.Examples
         public static final int DailySymbolsToRun = 1000;
 
         /**
-        /// Add Hundreds of Stock and Forex Symbol
+         * Add Hundreds of Stock and Forex Symbol
         */
         public @Override void Initialize() {
             SetStartDate(2001, 10, 07);
@@ -86,7 +86,7 @@ package com.quantconnect.lean.Algorithm.Examples
         }
 
         /**
-        /// TradeBar data event handler
+         * TradeBar data event handler
         */
         public void OnData(TradeBars data) {
 

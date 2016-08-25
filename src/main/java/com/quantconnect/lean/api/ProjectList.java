@@ -2,10 +2,14 @@ package com.quantconnect.lean.api;
 
 import java.util.List;
 
-/// Project list response
+/**
+ * Project list response
+ */
 public class ProjectList extends RestResponse {
 
-    /// List of projects for the authenticated user
+    /**
+     * List of projects for the authenticated user
+     */
 //    @JsonProperty( "projects")]
     public List<Project> projects;
 }

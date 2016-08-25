@@ -18,9 +18,9 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// This indicator computes the Normalized Average True Range (NATR).
-    /// The Normalized Average True Range is calculated with the following formula:
-    /// NATR = (ATR(period) / Close) * 100
+     * This indicator computes the Normalized Average True Range (NATR).
+     * The Normalized Average True Range is calculated with the following formula:
+     * NATR = (ATR(period) / Close) * 100
     */
     public class NormalizedAverageTrueRange : TradeBarIndicator
     {
@@ -30,10 +30,10 @@ package com.quantconnect.lean.Indicators
         private BigDecimal _lastAtrValue;
 
         /**
-        /// Initializes a new instance of the <see cref="NormalizedAverageTrueRange"/> class using the specified name and period.
+         * Initializes a new instance of the <see cref="NormalizedAverageTrueRange"/> class using the specified name and period.
         */ 
-         * @param name">The name of this indicator
-         * @param period">The period of the NATR
+         * @param name The name of this indicator
+         * @param period The period of the NATR
         public NormalizedAverageTrueRange( String name, int period) : 
             base(name) {
             _period = period;
@@ -42,15 +42,15 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Initializes a new instance of the <see cref="NormalizedAverageTrueRange"/> class using the specified period.
+         * Initializes a new instance of the <see cref="NormalizedAverageTrueRange"/> class using the specified period.
         */ 
-         * @param period">The period of the NATR
+         * @param period The period of the NATR
         public NormalizedAverageTrueRange(int period)
             : this( "NATR" + period, period) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -58,16 +58,16 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             _tr.Update(input);
 
             if( !IsReady) {
                 _atr.Update(input);
-                return input.Close != 0 ? _atr / input.Close * 100 : 0m;
+                return input.Close != 0 ? _atr / input.Close * 100 : BigDecimal.ZERO;
             }
 
             if( Samples == _period + 1) {
@@ -81,11 +81,11 @@ package com.quantconnect.lean.Indicators
                 _lastAtrValue = (_lastAtrValue * (_period - 1) + _tr) / _period;
             }
 
-            return input.Close != 0 ? _lastAtrValue / input.Close * 100 : 0m;
+            return input.Close != 0 ? _lastAtrValue / input.Close * 100 : BigDecimal.ZERO;
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _tr.Reset();

@@ -15,11 +15,23 @@
 
 package com.quantconnect.lean.securities;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.quantconnect.lean.data.BaseData;
 import com.quantconnect.lean.data.SubscriptionDataConfig;
+import com.quantconnect.lean.orders.fees.IFeeModel;
+import com.quantconnect.lean.orders.fills.IFillModel;
+import com.quantconnect.lean.orders.slippage.ISlippageModel;
+import com.quantconnect.lean.securities.interfaces.ISecurityDataFilter;
+import com.quantconnect.lean.securities.interfaces.ISecurityTransactionModel;
+import com.quantconnect.lean.Global.DataNormalizationMode;
 import com.quantconnect.lean.Global.Resolution;
 import com.quantconnect.lean.Global.SecurityType;
+import com.quantconnect.lean.Global;
 import com.quantconnect.lean.LocalTimeKeeper;
 import com.quantconnect.lean.Symbol;
 
@@ -32,42 +44,117 @@ import com.quantconnect.lean.Symbol;
 //using QuantConnect.Securities.Forex;
 //using QuantConnect.Securities.Interfaces;
 
-/// A base vehicle properties class for providing a common interface to all assets in QuantConnect.
-/// 
-/// Security object is intended to hold properties of the specific security asset. These properties can include trade start-stop dates, 
-/// price, market hours, resolution of the security, the holdings information for this security and the specific fill model.
-/// 
+/**
+ * A base vehicle properties class for providing a common interface to all assets in QuantConnect.
+ * 
+ * Security object is intended to hold properties of the specific security asset. These properties can include trade start-stop dates, 
+ * price, market hours, resolution of the security, the holdings information for this security and the specific fill model.
+ */
 public class Security {
     
-    private final Symbol _symbol;
-    private LocalTimeKeeper _localTimeKeeper;
+    private final Symbol symbol;
+
     // using concurrent bag to avoid list enumeration threading issues
-    protected final CopyOnWriteArrayList<SubscriptionDataConfig> SubscriptionsBag;
-
-    /// Gets all the subscriptions for this security
-    public List<SubscriptionDataConfig> getSubscriptions() {
-        return SubscriptionsBag;
-    }
-
-    /// <see cref="Symbol"/> for the asset.
-    public Symbol getSymbol() {
-        return _symbol;
-    }
-
-    /// Gets the Cash object used for converting the quote currency to the account currency
-    private Cash QuoteCurrency;
+    protected final CopyOnWriteArrayList<SubscriptionDataConfig> subscriptionsBag;
     
+    private LocalTimeKeeper localTimeKeeper;
+    private boolean tradable;
+    private Cash quoteCurrency;
+    private SymbolProperties symbolProperties;
+
+    /**
+     * Data cache for the security to store previous price information.
+     * <seealso cref="EquityCache"/>
+     * <seealso cref="ForexCache"/>
+     */
+    private SecurityCache cache;
+
+    /**
+     * Holdings class contains the portfolio, cash and processes order fills.
+     * <seealso cref="EquityHolding"/>
+     * <seealso cref="ForexHolding"/>
+     */
+    private SecurityHolding holdings;
+    
+    /**
+     * Exchange class contains the market opening hours, along with pre-post market hours.
+     * <seealso cref="EquityExchange"/>
+     * <seealso cref="ForexExchange"/>
+     */
+    private SecurityExchange exchange;
+    
+    /**
+     * Fee model used to compute order fees for this security
+    */
+    private IFeeModel feeModel;
+    
+    /**
+     * Fill model used to produce fill events for this security
+    */
+    private IFillModel fillModel;
+
+    /**
+     * Slippage model use to compute slippage of market orders
+     */
+    private ISlippageModel slippageModel;
+
+    /**
+     * Gets the portfolio model used by this security
+    */
+    private ISecurityPortfolioModel portfolioModel;
+    
+    /**
+     * Gets the margin model used for this security
+    */
+    private ISecurityMarginModel marginModel;
+    
+    /**
+     * Gets the settlement model used for this security
+    */
+    private ISettlementModel settlementModel;
+    
+    /**
+     * Gets the volatility model used for this security
+     */
+    private IVolatilityModel volatilityModel;
+
+    /**
+     * Customizable data filter to filter outlier ticks before they are passed into user event handlers. 
+     * By default all ticks are passed into the user algorithms.
+     * TradeBars (seconds and minute bars) are prefiltered to ensure the ticks which build the bars are realistically tradeable
+     * <seealso cref="EquityDataFilter"/>
+     * <seealso cref="ForexDataFilter"/>
+     */
+    private ISecurityDataFilter dataFilter;
+    
+    
+    /**
+     * Gets all the subscriptions for this security
+     */
+    public List<SubscriptionDataConfig> getSubscriptions() {
+        return subscriptionsBag;
+    }
+    
+    /**
+     * <see cref="Symbol"/> for the asset.
+     */
+    public Symbol getSymbol() {
+        return symbol;
+    }
+    
+    /**
+     * Gets the Cash object used for converting the quote currency to the account currency
+     */
     public Cash getQuoteCurrency() {
-        return QuoteCurrency;
+        return quoteCurrency;
     }
 
+    
     /**
      * Gets the symbol properties for this security
      */
-    private SymbolProperties SymbolProperties;
-    
-    private SymbolProperties getSymbolProperties() {
-        return SymbolProperties;
+    public SymbolProperties getSymbolProperties() {
+        return symbolProperties;
     }
 
     /**
@@ -75,7 +162,7 @@ public class Security {
      *  QuantConnect currently only supports Equities and Forex
      */
     public SecurityType getType() {
-         return _symbol.ID.SecurityType;
+         return symbol.getId().getSecurityType();
     }
 
     /**
@@ -83,32 +170,32 @@ public class Security {
      *  Tick, second or minute resolution for QuantConnect assets.
      */
     public Resolution getResolution() {
-         return SubscriptionsBag.stream().map( x -> x.resolution ).min( Resolution::compareTo ).orElse( Resolution.Daily );
+         return subscriptionsBag.stream().map( x -> x.resolution ).min( Resolution::compareTo ).orElse( Resolution.Daily );
     }
 
     /**
      *  Indicates the data will use previous bars when there was no trading in this time period. This was a configurable datastream setting set in initialization.
      */
     public boolean isFillDataForward() {
-         return SubscriptionsBag.stream().anyMatch( x -> x.fillDataForward );
+         return subscriptionsBag.stream().anyMatch( x -> x.fillDataForward );
     }
 
     /**
      *  Indicates the security will continue feeding data after the primary market hours have closed. This was a configurable setting set in initialization.
      */
     public boolean isExtendedMarketHours() {
-        return SubscriptionsBag.stream().anyMatch( x -> x.extendedMarketHours );
+        return subscriptionsBag.stream().anyMatch( x -> x.extendedMarketHours );
     }
 
     /**
      *  Gets the data normalization mode used for this security
      */
     public DataNormalizationMode getDataNormalizationMode() {
-         return SubscriptionsBag.stream().map( x -> x.dataNormalizationMode ).findFirst().orElse( DataNormalizationMode.Adjusted );
+         return subscriptionsBag.stream().map( x -> x.dataNormalizationMode ).findFirst().orElse( DataNormalizationMode.Adjusted );
     }
 
 //    /**
-//    /// Gets the subscription configuration for this security
+//     * Gets the subscription configuration for this security
 //    */
 //    [Obsolete( "This property returns only the first subscription. Use the 'Subscriptions' property for all of this security's subscriptions.")]
 //    public SubscriptionDataConfig SubscriptionDataConfig
@@ -123,8 +210,6 @@ public class Security {
         return getLastData() != null; 
     }
 
-    private boolean tradable;
-
     /**
      * Gets or sets whether or not this security should be considered tradable
      */
@@ -136,484 +221,433 @@ public class Security {
         this.tradable = tradable;
     }
 
+    public SecurityCache getCache() {
+        return cache;
+    }
+
+    public void setCache( SecurityCache cache ) {
+        this.cache = cache;
+    }
+
+    public SecurityHolding getHoldings() {
+        return holdings;
+    }
+
+    public void setHoldings( SecurityHolding holdings ) {
+        this.holdings = holdings;
+    }
+
+    public SecurityExchange getExchange() {
+        return exchange;
+    }
+    
+    public void setExchange( SecurityExchange exchange ) {
+        this.exchange = exchange;
+    }
+
+//    /**
+//     * Transaction model class implements the fill models for the security. If the user does not define a model the default
+//     * model is used for this asset class.
+//     * This is ignored in live trading and the real fill prices are used instead
+//     * <seealso cref="EquityTransactionModel"/>
+//     * <seealso cref="ForexTransactionModel"/>
+//     */
+//    [Obsolete( "Security.Model has been made obsolete, use Security.TransactionModel instead.")]
+//    public ISecurityTransactionModel Model
+//    {
+//        get { return TransactionModel; }
+//        set { TransactionModel = value; }
+//    }
+
+
     /**
-     * Data cache for the security to store previous price information.
-    /// <seealso cref="EquityCache"/>
-    /// <seealso cref="ForexCache"/>
+     * Transaction model class implements the fill models for the security. If the user does not define a model the default
+     * model is used for this asset class.
+     * This is ignored in live trading and the real fill prices are used instead
+     * <seealso cref="EquityTransactionModel"/>
+     * <seealso cref="ForexTransactionModel"/>
+     * 
+     * these methods provided for backwards compatibility
      */
-    public SecurityCache Cache;
-    {
-        get; set;
+    public ISecurityTransactionModel getTransactionModel() {
+        // check if the FillModel/FeeModel/Slippage models are all the same reference
+        if( fillModel instanceof ISecurityTransactionModel 
+                && fillModel == feeModel
+                && feeModel == slippageModel )
+            return (ISecurityTransactionModel) fillModel;
+            
+        return new SecurityTransactionModel( fillModel, feeModel, slippageModel );
+    }
+    
+    public void setTransactionModel( ISecurityTransactionModel value ) {
+        feeModel = value;
+        fillModel = value;
+        slippageModel = value;
+    }
+
+    public IFeeModel getFeeModel() {
+        return feeModel;
+    }
+
+    public void setFeeModel( IFeeModel feeModel ) {
+        this.feeModel = feeModel;
+    }
+
+    public IFillModel getFillModel() {
+        return fillModel;
+    }
+
+    public void setFillModel( IFillModel fillModel ) {
+        this.fillModel = fillModel;
+    }
+
+    public ISlippageModel getSlippageModel() {
+        return slippageModel;
+    }
+
+    public void setSlippageModel( ISlippageModel slippageModel ) {
+        this.slippageModel = slippageModel;
+    }
+    
+    public ISecurityPortfolioModel getPortfolioModel() {
+        return portfolioModel;
+    }
+
+    public void setPortfolioModel( ISecurityPortfolioModel portfolioModel ) {
+        this.portfolioModel = portfolioModel;
+    }
+
+    public ISecurityMarginModel getMarginModel() {
+        return marginModel;
+    }
+
+    public void setMarginModel( ISecurityMarginModel marginModel ) {
+        this.marginModel = marginModel;
+    }
+
+    public ISettlementModel getSettlementModel() {
+        return settlementModel;
+    }
+
+    public void setSettlementModel( ISettlementModel settlementModel ) {
+        this.settlementModel = settlementModel;
+    }
+
+    public IVolatilityModel getVolatilityModel() {
+        return volatilityModel;
+    }
+
+    public void setVolatilityModel( IVolatilityModel volatilityModel ) {
+        this.volatilityModel = volatilityModel;
+    }
+    
+    public ISecurityDataFilter getDataFilter() {
+        return dataFilter;
+    }
+
+    public void setDataFilter( ISecurityDataFilter dataFilter ) {
+        this.dataFilter = dataFilter;
     }
 
     /**
-    /// Holdings class contains the portfolio, cash and processes order fills.
+     * Construct a new security vehicle based on the user options.
     */
-    /// <seealso cref="EquityHolding"/>
-    /// <seealso cref="ForexHolding"/>
-    public SecurityHolding Holdings
-    {
-        get; 
-        set;
+    public Security(SecurityExchangeHours exchangeHours, SubscriptionDataConfig config, Cash quoteCurrency, SymbolProperties symbolProperties ) {
+        this( config,
+                quoteCurrency,
+                symbolProperties,
+                new SecurityExchange(exchangeHours),
+                new SecurityCache(),
+                new SecurityPortfolioModel(),
+                new ImmediateFillModel(),
+                new InteractiveBrokersFeeModel(),
+                new SpreadSlippageModel(),
+                new ImmediateSettlementModel(),
+                Securities.VolatilityModel.Null,
+                new SecurityMarginModel( BigDecimal.ONE ),
+                new SecurityDataFilter() );
     }
 
     /**
-    /// Exchange class contains the market opening hours, along with pre-post market hours.
-    */
-    /// <seealso cref="EquityExchange"/>
-    /// <seealso cref="ForexExchange"/>
-    public SecurityExchange Exchange
-    {
-        get;
-        set;
+     * Construct a new security vehicle based on the user options.
+     */
+    public Security(Symbol symbol, SecurityExchangeHours exchangeHours, Cash quoteCurrency, SymbolProperties symbolProperties ) {
+        this( symbol,
+                quoteCurrency,
+                symbolProperties,
+                new SecurityExchange(exchangeHours),
+                new SecurityCache(),
+                new SecurityPortfolioModel(),
+                new ImmediateFillModel(),
+                new InteractiveBrokersFeeModel(),
+                new SpreadSlippageModel(),
+                new ImmediateSettlementModel(),
+                Securities.VolatilityModel.Null,
+                new SecurityMarginModel( BigDecimal.ONE ),
+                new SecurityDataFilter() );
     }
 
     /**
-    /// Transaction model class implements the fill models for the security. If the user does not define a model the default
-    /// model is used for this asset class.
-    */
-    /// This is ignored in live trading and the real fill prices are used instead
-    /// <seealso cref="EquityTransactionModel"/>
-    /// <seealso cref="ForexTransactionModel"/>
-    [Obsolete( "Security.Model has been made obsolete, use Security.TransactionModel instead.")]
-    public virtual ISecurityTransactionModel Model
-    {
-        get { return TransactionModel; }
-        set { TransactionModel = value; }
-    }
+     * Construct a new security vehicle based on the user options.
+     */
+    protected Security( Symbol symbol,
+            Cash quoteCurrency,
+            SymbolProperties symbolProperties,
+            SecurityExchange exchange,
+            SecurityCache cache,
+            ISecurityPortfolioModel portfolioModel,
+            IFillModel fillModel,
+            IFeeModel feeModel,
+            ISlippageModel slippageModel,
+            ISettlementModel settlementModel,
+            IVolatilityModel volatilityModel,
+            ISecurityMarginModel marginModel,
+            ISecurityDataFilter dataFilter ) {
 
-    /**
-    /// Transaction model class implements the fill models for the security. If the user does not define a model the default
-    /// model is used for this asset class.
-    */
-    /// This is ignored in live trading and the real fill prices are used instead
-    /// <seealso cref="EquityTransactionModel"/>
-    /// <seealso cref="ForexTransactionModel"/>
-    public ISecurityTransactionModel TransactionModel
-    {
-        // these methods provided for backwards compatibility
-        get
-        {
-            // check if the FillModel/FeeModel/Slippage models are all the same reference
-            if( FillModel is ISecurityTransactionModel 
-             && ReferenceEquals(FillModel, FeeModel)
-             && ReferenceEquals(FeeModel, SlippageModel)) {
-                return (ISecurityTransactionModel) FillModel;
-            }
-            return new SecurityTransactionModel(FillModel, FeeModel, SlippageModel);
-        }
-        set
-        {
-            FeeModel = value;
-            FillModel = value;
-            SlippageModel = value;
-        }
-    }
+        Objects.requireNonNull( symbolProperties, "Security requires a valid SymbolProperties instance.");
 
-    /**
-    /// Fee model used to compute order fees for this security
-    */
-    public IFeeModel FeeModel
-    {
-        get;
-        set;
-    }
+        if( !symbolProperties.getQuoteCurrency().equals( quoteCurrency.getSymbol() ) )
+            throw new IllegalArgumentException( "symbolProperties.QuoteCurrency must match the quoteCurrency.Symbol" );
 
-    /**
-    /// Fill model used to produce fill events for this security
-    */
-    public IFillModel FillModel
-    {
-        get;
-        set;
-    }
-
-    /**
-    /// Slippage model use to compute slippage of market orders
-    */
-    public ISlippageModel SlippageModel
-    {
-        get;
-        set;
-    }
-
-    /**
-    /// Gets the portfolio model used by this security
-    */
-    public ISecurityPortfolioModel PortfolioModel
-    {
-        get;
-        set;
-    }
-
-    /**
-    /// Gets the margin model used for this security
-    */
-    public ISecurityMarginModel MarginModel
-    {
-        get;
-        set;
-    }
-
-    /**
-    /// Gets the settlement model used for this security
-    */
-    public ISettlementModel SettlementModel
-    {
-        get; 
-        set;
-    }
-
-    /**
-    /// Gets the volatility model used for this security
-    */
-    public IVolatilityModel VolatilityModel
-    {
-        get;
-        set;
-    }
-
-    /**
-    /// Customizable data filter to filter outlier ticks before they are passed into user event handlers. 
-    /// By default all ticks are passed into the user algorithms.
-    */
-    /// TradeBars (seconds and minute bars) are prefiltered to ensure the ticks which build the bars are realistically tradeable
-    /// <seealso cref="EquityDataFilter"/>
-    /// <seealso cref="ForexDataFilter"/>
-    public ISecurityDataFilter DataFilter
-    {
-        get; 
-        set;
-    }
-
-    /**
-    /// Construct a new security vehicle based on the user options.
-    */
-    public Security(SecurityExchangeHours exchangeHours, SubscriptionDataConfig config, Cash quoteCurrency, SymbolProperties symbolProperties)
-        : this(config,
-            quoteCurrency,
-            symbolProperties,
-            new SecurityExchange(exchangeHours),
-            new SecurityCache(),
-            new SecurityPortfolioModel(),
-            new ImmediateFillModel(),
-            new InteractiveBrokersFeeModel(),
-            new SpreadSlippageModel(),
-            new ImmediateSettlementModel(),
-            Securities.VolatilityModel.Null,
-            new SecurityMarginModel(1m),
-            new SecurityDataFilter()) {
-    }
-
-    /**
-    /// Construct a new security vehicle based on the user options.
-    */
-    public Security(Symbol symbol, SecurityExchangeHours exchangeHours, Cash quoteCurrency, SymbolProperties symbolProperties)
-        : this(symbol,
-            quoteCurrency,
-            symbolProperties,
-            new SecurityExchange(exchangeHours),
-            new SecurityCache(),
-            new SecurityPortfolioModel(),
-            new ImmediateFillModel(),
-            new InteractiveBrokersFeeModel(),
-            new SpreadSlippageModel(),
-            new ImmediateSettlementModel(),
-            Securities.VolatilityModel.Null,
-            new SecurityMarginModel(1m),
-            new SecurityDataFilter()
-            ) {
-    }
-
-    /**
-    /// Construct a new security vehicle based on the user options.
-    */
-    protected Security(Symbol symbol,
-        Cash quoteCurrency,
-        SymbolProperties symbolProperties,
-        SecurityExchange exchange,
-        SecurityCache cache,
-        ISecurityPortfolioModel portfolioModel,
-        IFillModel fillModel,
-        IFeeModel feeModel,
-        ISlippageModel slippageModel,
-        ISettlementModel settlementModel,
-        IVolatilityModel volatilityModel,
-        ISecurityMarginModel marginModel,
-        ISecurityDataFilter dataFilter
-        ) {
-
-        if( symbolProperties == null ) {
-            throw new ArgumentNullException( "symbolProperties", "Security requires a valid SymbolProperties instance.");
-        }
-
-        if( symbolProperties.QuoteCurrency != quoteCurrency.Symbol) {
-            throw new ArgumentException( "symbolProperties.QuoteCurrency must match the quoteCurrency.Symbol");
-        }
-
-        _symbol = symbol;
-        SubscriptionsBag = new ConcurrentBag<SubscriptionDataConfig>();
-        QuoteCurrency = quoteCurrency;
-        SymbolProperties = symbolProperties;
-        IsTradable = true;
-        Cache = cache;
-        Exchange = exchange;
-        DataFilter = dataFilter;
-        PortfolioModel = portfolioModel;
-        MarginModel = marginModel;
-        FillModel = fillModel;
-        FeeModel = feeModel;
-        SlippageModel = slippageModel;
-        SettlementModel = settlementModel;
-        VolatilityModel = volatilityModel;
-        Holdings = new SecurityHolding(this);
+        this.symbol = symbol;
+        this.subscriptionsBag = new CopyOnWriteArrayList<SubscriptionDataConfig>();
+        this.quoteCurrency = quoteCurrency;
+        this.symbolProperties = symbolProperties;
+        this.tradable = true;
+        this.cache = cache;
+        this.exchange = exchange;
+        this.dataFilter = dataFilter;
+        this.portfolioModel = portfolioModel;
+        this.marginModel = marginModel;
+        this.fillModel = fillModel;
+        this.feeModel = feeModel;
+        this.slippageModel = slippageModel;
+        this.settlementModel = settlementModel;
+        this.volatilityModel = volatilityModel;
+        this.holdings = new SecurityHolding( this );
     }
 
 
     /**
-    /// Temporary convenience constructor
-    */
-    protected Security(SubscriptionDataConfig config,
-        Cash quoteCurrency,
-        SymbolProperties symbolProperties,
-        SecurityExchange exchange,
-        SecurityCache cache,
-        ISecurityPortfolioModel portfolioModel,
-        IFillModel fillModel,
-        IFeeModel feeModel,
-        ISlippageModel slippageModel,
-        ISettlementModel settlementModel,
-        IVolatilityModel volatilityModel,
-        ISecurityMarginModel marginModel,
-        ISecurityDataFilter dataFilter
-        )
-        : this(config.Symbol,
-            quoteCurrency,
-            symbolProperties,
-            exchange,
-            cache,
-            portfolioModel,
-            fillModel,
-            feeModel,
-            slippageModel,
-            settlementModel,
-            volatilityModel,
-            marginModel,
-            dataFilter
-            ) {
-        SubscriptionsBag.Add(config);
+     * Temporary convenience constructor
+     */
+    protected Security( SubscriptionDataConfig config,
+            Cash quoteCurrency,
+            SymbolProperties symbolProperties,
+            SecurityExchange exchange,
+            SecurityCache cache,
+            ISecurityPortfolioModel portfolioModel,
+            IFillModel fillModel,
+            IFeeModel feeModel,
+            ISlippageModel slippageModel,
+            ISettlementModel settlementModel,
+            IVolatilityModel volatilityModel,
+            ISecurityMarginModel marginModel,
+            ISecurityDataFilter dataFilter ) {
+        this( config.getSymbol(),
+                quoteCurrency,
+                symbolProperties,
+                exchange,
+                cache,
+                portfolioModel,
+                fillModel,
+                feeModel,
+                slippageModel,
+                settlementModel,
+                volatilityModel,
+                marginModel,
+                dataFilter );
+        subscriptionsBag.add( config );
     }
 
     /**
-    /// Read only property that checks if we currently own stock in the company.
-    */
-    public virtual boolean HoldStock 
-    {
-        get
-        {
-            //Get a boolean, true if we own this stock.
-            return Holdings.AbsoluteQuantity > 0;
-        }
+     * Read only property that checks if we currently own stock in the company.
+     */
+    public boolean isHoldStock() {
+        //Get a boolean, true if we own this stock.
+        return holdings.getAbsoluteQuantity() > 0;
     }
 
     /**
-    /// Alias for HoldStock - Do we have any of this security
-    */
-    public virtual boolean Invested 
-    {
-        get
-        {
-            return HoldStock;
-        }
+     * Alias for HoldStock - Do we have any of this security
+     */
+    public boolean isInvested() {
+        return isHoldStock();
     }
 
     /**
-    /// Local time for this market 
-    */
-    public virtual DateTime LocalTime
-    {
-        get
-        {
-            if( _localTimeKeeper == null ) {
-                throw new Exception( "Security.SetLocalTimeKeeper(LocalTimeKeeper) must be called in order to use the LocalTime property.");
-            }
-            return _localTimeKeeper.LocalTime;
-        }
+     * Local time for this market 
+     */
+    public LocalDateTime getLocalTime() {
+        if( localTimeKeeper == null )
+            throw new RuntimeException( "Security.SetLocalTimeKeeper(LocalTimeKeeper) must be called in order to use the LocalTime property." );
+
+        return localTimeKeeper.getLocalTime();
     }
 
     /**
-    /// Get the current value of the security.
-    */
-    public virtual BigDecimal Price 
-    {
-        get { return Cache.Price; }
+     * Get the current value of the security.
+     */
+    public BigDecimal getPrice() {
+        return cache.getPrice();
     }
 
     /**
-    /// Leverage for this Security.
+     * Leverage for this Security.
     */
-    public virtual BigDecimal Leverage
-    {
-        get
-        {
-            return Holdings.Leverage;
-        }
+    public BigDecimal getLeverage() {
+        return holdings.getLeverage();
     }
 
     /**
-    /// If this uses tradebar data, return the most recent high.
-    */
-    public virtual BigDecimal High
-    {
-        get { return Cache.High == 0 ? Price : Cache.High; }
+     * If this uses tradebar data, return the most recent high.
+     */
+    public BigDecimal getHigh() {
+        return cache.getHigh().signum() == 0 ? getPrice() : cache.getHigh();
     }
 
     /**
-    /// If this uses tradebar data, return the most recent low.
-    */
-    public virtual BigDecimal Low
-    {
-        get { return Cache.Low == 0 ? Price : Cache.Low; }
+     * If this uses tradebar data, return the most recent low.
+     */
+    public BigDecimal getLow() {
+        return cache.getLow().signum() == 0 ? getPrice() : cache.getLow();
     }
 
     /**
-    /// If this uses tradebar data, return the most recent close.
-    */
-    public virtual BigDecimal Close 
-    {
-        get { return Cache.Close == 0 ? Price : Cache.Close; }
+     * If this uses tradebar data, return the most recent close.
+     */
+    public BigDecimal getClose() {
+         return cache.getClose().signum() == 0 ? getPrice() : cache.getClose();
     }
 
     /**
-    /// If this uses tradebar data, return the most recent open.
-    */
-    public virtual BigDecimal Open
-    {
-        get { return Cache.Open == 0 ? Price: Cache.Open; }
+     * If this uses tradebar data, return the most recent open.
+     */
+    public BigDecimal getOpen() {
+        return cache.getOpen().signum() == 0 ? getPrice(): cache.getOpen();
     }
 
     /**
-    /// Access to the volume of the equity today
-    */
-    public virtual long Volume
-    {
-        get { return Cache.Volume; }
+     * Access to the volume of the equity today
+     */
+    public long getVolume() {
+        return cache.getVolume();
     }
 
     /**
-    /// Gets the most recent bid price if available
-    */
-    public virtual BigDecimal BidPrice
-    {
-        get { return Cache.BidPrice == 0 ? Price : Cache.BidPrice; }
+     * Gets the most recent bid price if available
+     */
+    public BigDecimal getBidPrice() {
+        return cache.getBidPrice().signum() == 0 ? getPrice() : cache.getBidPrice();
     }
 
     /**
-    /// Gets the most recent bid size if available
-    */
-    public virtual long BidSize
-    {
-        get { return Cache.BidSize; }
+     * Gets the most recent bid size if available
+     */
+    public long getBidSize() {
+        return cache.getBidSize();
     }
 
     /**
-    /// Gets the most recent ask price if available
-    */
-    public virtual BigDecimal AskPrice
-    {
-        get { return Cache.AskPrice == 0 ? Price : Cache.AskPrice; }
+     * Gets the most recent ask price if available
+     */
+    public BigDecimal getAskPrice() {
+        return cache.getAskPrice().signum() == 0 ? getPrice() : cache.getAskPrice();
     }
 
     /**
-    /// Gets the most recent ask size if available
-    */
-    public virtual long AskSize
-    {
-        get { return Cache.AskSize; }
+     * Gets the most recent ask size if available
+     */
+    public long getAskSize() {
+        return cache.getAskSize();
     }
 
     /**
-    /// Get the last price update set to the security.
-    */
-    @returns BaseData object for this security
-    public BaseData GetLastData() {
-        return Cache.GetData();
+     * Get the last price update set to the security.
+     * @returns BaseData object for this security
+     */
+    public BaseData getLastData() {
+        return cache.getData();
     }
 
     /**
-    /// Sets the <see cref="LocalTimeKeeper"/> to be used for this <see cref="Security"/>.
-    /// This is the source of this instance's time.
-    */
-     * @param localTimeKeeper">The source of this <see cref="Security"/>'s time.
-    public void SetLocalTimeKeeper(LocalTimeKeeper localTimeKeeper) {
-        _localTimeKeeper = localTimeKeeper;
-        Exchange.SetLocalDateTimeFrontier(localTimeKeeper.LocalTime);
+     * Sets the <see cref="LocalTimeKeeper"/> to be used for this <see cref="Security"/>.
+     * This is the source of this instance's time.
+     * @param localTimeKeeper The source of this <see cref="Security"/>'s time.
+     */
+    public void setLocalTimeKeeper( LocalTimeKeeper localTimeKeeper ) {
+        this.localTimeKeeper = localTimeKeeper;
+        exchange.setLocalDateTimeFrontier( localTimeKeeper.getLocalTime() );
 
-        _localTimeKeeper.TimeUpdated += (sender, args) =>
-        {
+        localTimeKeeper.addListener( (time,tz) -> {
             //Update the Exchange/Timer:
-            Exchange.SetLocalDateTimeFrontier(args.Time);
-        };
+            exchange.setLocalDateTimeFrontier( time );
+        } );
     }
     
     /**
-    /// Update any security properties based on the latest market data and time
-    */
-     * @param data">New data packet from LEAN
-    public void SetMarketPrice(BaseData data) {
+     * Update any security properties based on the latest market data and time
+     * @param data New data packet from LEAN
+     */
+    public void setMarketPrice( BaseData data ) {
         //Add new point to cache:
-        if( data == null ) return;
-        Cache.AddData(data);
-        Holdings.UpdateMarketPrice(Price);
-        VolatilityModel.Update(this, data);
+        if( data == null ) 
+            return;
+        
+        cache.addData( data );
+        holdings.updateMarketPrice( getPrice() );
+        volatilityModel.update( this, data );
     }
 
     /**
-    /// Update any security properties based on the latest realtime data and time
-    */
-     * @param data">New data packet from LEAN
-    public void SetRealTimePrice(BaseData data) {
+     * Update any security properties based on the latest realtime data and time
+     * @param data New data packet from LEAN
+     */
+    public void setRealTimePrice( BaseData data ) {
         //Add new point to cache:
-            if( data == null ) return;
-            Cache.AddData(data);
-            Holdings.UpdateMarketPrice(Price);
-        }
+        if( data == null ) 
+            return;
+        
+        cache.addData( data );
+        holdings.updateMarketPrice( getPrice() );
+    }
  
-        /**
-    /// Set the leverage parameter for this security
-    */
-     * @param leverage">Leverage for this asset
-    public void SetLeverage( BigDecimal leverage) {
-        MarginModel.SetLeverage(this, leverage);
+    /**
+     * Set the leverage parameter for this security
+     * @param leverage Leverage for this asset
+     */
+    public void setLeverage( BigDecimal leverage ) {
+        marginModel.setLeverage( this, leverage );
     }
 
     /**
-    /// Sets the data normalization mode to be used by this security
-    */
-    public void SetDataNormalizationMode(DataNormalizationMode mode) {
-        foreach (subscription in SubscriptionsBag) {
-            subscription.DataNormalizationMode = mode;
-        }
+     * Sets the data normalization mode to be used by this security
+     */
+    public void setDataNormalizationMode( DataNormalizationMode mode ) {
+        for( SubscriptionDataConfig subscription : subscriptionsBag )
+            subscription.dataNormalizationMode = mode;
     }
 
     /**
-    /// Returns a String that represents the current object.
+     * Returns a String that represents the current object.
+     * @returns A String that represents the current object.
     */
-    @returns 
-    /// A String that represents the current object.
-    /// 
-    /// <filterpriority>2</filterpriority>
-    public @Override String toString() {
-        return Symbol.toString();
+    @Override
+    public String toString() {
+        return symbol.toString();
     }
 
     /**
-    /// Adds the specified data subscription to this security.
-    */
-     * @param subscription">The subscription configuration to add. The Symbol and ExchangeTimeZone properties must match the existing Security object
-    internal void AddData(SubscriptionDataConfig subscription) {
-        if( subscription.Symbol != _symbol) throw new ArgumentException( "Symbols must match.", "subscription.Symbol");
-        if( !subscription.ExchangeTimeZone.Equals(Exchange.TimeZone)) throw new ArgumentException( "ExchangeTimeZones must match.", "subscription.ExchangeTimeZone");
-        SubscriptionsBag.Add(subscription);
+     * Adds the specified data subscription to this security.
+     * @param subscription The subscription configuration to add. The Symbol and ExchangeTimeZone properties must match the existing Security object
+     */
+    void addData( SubscriptionDataConfig subscription ) {
+        if( !subscription.getSymbol().equals( symbol ) ) 
+            throw new IllegalArgumentException( "Symbols must match. (subscription.Symbol)" );
+        
+        if( !subscription.exchangeTimeZone.equals( exchange.getTimeZone() ) ) 
+            throw new IllegalArgumentException( "ExchangeTimeZones must match. (subscription.ExchangeTimeZone)" );
+        
+        subscriptionsBag.add( subscription );
     }
 }

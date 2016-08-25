@@ -19,21 +19,21 @@ using QuantConnect.Securities.Interfaces;
 package com.quantconnect.lean.Securities 
 {
     /**
-    /// Base class implementation for packet by packet data filtering mechanism to dynamically detect bad ticks.
+     * Base class implementation for packet by packet data filtering mechanism to dynamically detect bad ticks.
     */
     public class SecurityDataFilter : ISecurityDataFilter
     {
         /**
-        /// Initialize data filter class
+         * Initialize data filter class
         */
         public SecurityDataFilter() { }
 
         /**
-        /// Filter the data packet passing through this method by returning true to accept, or false to fail/reject the data point.
+         * Filter the data packet passing through this method by returning true to accept, or false to fail/reject the data point.
         */
-         * @param data">BasData data object we're filtering
-         * @param vehicle">Security vehicle for filter
-        public virtual boolean Filter(Security vehicle, BaseData data) {
+         * @param data BasData data object we're filtering
+         * @param vehicle Security vehicle for filter
+        public boolean Filter(Security vehicle, BaseData data) {
             //By default the filter does not change data.
             return true;
         }

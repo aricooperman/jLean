@@ -39,7 +39,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 
             for (int i = 0; i < 10; i++) {
                 foreach (tick in ib.GetNextTicks()) {
-                    Console.WriteLine( "%1$s: %2$s - %3$s @ {3}", tick.Time, tick.Symbol, tick.Price, ((Tick)tick).Quantity);
+                    Console.WriteLine( "%1$s: %2$s - %3$s @ %4$s", tick.Time, tick.Symbol, tick.Price, ((Tick)tick).Quantity);
                 }
             }
 

@@ -19,24 +19,24 @@ using System;
 package com.quantconnect.lean.Securities
 {
     /**
-    /// Provides a functional implementation of <see cref="ISecurityInitializer"/>
+     * Provides a functional implementation of <see cref="ISecurityInitializer"/>
     */
     public class FuncSecurityInitializer : ISecurityInitializer
     {
         private final Action<Security> _initializer;
 
         /**
-        /// Initializes a new instance of the <see cref="FuncSecurityInitializer"/> class
+         * Initializes a new instance of the <see cref="FuncSecurityInitializer"/> class
         */
-         * @param initializer">The functional implementation of <see cref="ISecurityInitializer.Initialize"/>
+         * @param initializer The functional implementation of <see cref="ISecurityInitializer.Initialize"/>
         public FuncSecurityInitializer(Action<Security> initializer) {
             _initializer = initializer;
         }
 
         /**
-        /// Initializes the specified security
+         * Initializes the specified security
         */
-         * @param security">The security to be initialized
+         * @param security The security to be initialized
         public void Initialize(Security security) {
             _initializer(security);
         }

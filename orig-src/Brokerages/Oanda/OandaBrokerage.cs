@@ -29,7 +29,7 @@ using Order = QuantConnect.Orders.Order;
 package com.quantconnect.lean.Brokerages.Oanda
 {
     /**
-    /// Oanda Brokerage - implementation of IBrokerage interface
+     * Oanda Brokerage - implementation of IBrokerage interface
     */
     public partial class OandaBrokerage : Brokerage, IDataQueueHandler
     {
@@ -52,13 +52,13 @@ package com.quantconnect.lean.Brokerages.Oanda
         private CancellationTokenSource _cancellationTokenSource = new CancellationTokenSource();
 
         /**
-        /// Initializes a new instance of the <see cref="OandaBrokerage"/> class.
+         * Initializes a new instance of the <see cref="OandaBrokerage"/> class.
         */
-         * @param orderProvider">The order provider.
-         * @param securityProvider">The holdings provider.
-         * @param environment">The Oanda environment (Trade or Practice)
-         * @param accessToken">The Oanda access token (can be the user's personal access token or the access token obtained with OAuth by QC on behalf of the user)
-         * @param accountId">The account identifier.
+         * @param orderProvider The order provider.
+         * @param securityProvider The holdings provider.
+         * @param environment The Oanda environment (Trade or Practice)
+         * @param accessToken The Oanda access token (can be the user's personal access token or the access token obtained with OAuth by QC on behalf of the user)
+         * @param accountId The account identifier.
         public OandaBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider, Environment environment, String accessToken, int accountId)
             : base( "Oanda Brokerage") {
             _orderProvider = orderProvider;
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         #region IBrokerage implementation
 
         /**
-        /// Returns true if we're currently connected to the broker
+         * Returns true if we're currently connected to the broker
         */
         public @Override boolean IsConnected
         {
@@ -83,7 +83,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Connects the client to the broker's remote servers
+         * Connects the client to the broker's remote servers
         */
         public @Override void Connect() {
             if( IsConnected) return;
@@ -105,7 +105,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                 nextReconnectionAttemptUtcTime = DateTime.UtcNow;
                 double nextReconnectionAttemptSeconds = 1;
 
-                lock (_lockerConnectionMonitor) {
+                synchronized(_lockerConnectionMonitor) {
                     _lastHeartbeatUtcTime = DateTime.UtcNow;
                 }
 
@@ -113,7 +113,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                 {
                     while (!_cancellationTokenSource.IsCancellationRequested) {
                         Duration elapsed;
-                        lock (_lockerConnectionMonitor) {
+                        synchronized(_lockerConnectionMonitor) {
                             elapsed = DateTime.UtcNow - _lastHeartbeatUtcTime;
                         }
 
@@ -152,7 +152,7 @@ package com.quantconnect.lean.Brokerages.Oanda
 
                                             // restore rates session
                                             List<Symbol> symbolsToSubscribe;
-                                            lock (_lockerSubscriptions) {
+                                            synchronized(_lockerSubscriptions) {
                                                 symbolsToSubscribe = _subscribedSymbols.ToList();
                                             }
                                             SubscribeSymbols(symbolsToSubscribe);
@@ -184,7 +184,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Disconnects the client from the broker's remote servers
+         * Disconnects the client from the broker's remote servers
         */
         public @Override void Disconnect() {
             if( _eventsSession != null ) {
@@ -205,8 +205,8 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Gets all open orders on the account. 
-        /// NOTE: The order objects returned do not have QC order IDs.
+         * Gets all open orders on the account. 
+         * NOTE: The order objects returned do not have QC order IDs.
         */
         @returns The open orders returned from Oanda
         public @Override List<Order> GetOpenOrders() {
@@ -217,7 +217,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Gets all holdings for the account
+         * Gets all holdings for the account
         */
         @returns The current holdings from the account
         public @Override List<Holding> GetAccountHoldings() {
@@ -243,7 +243,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Gets the current cash balance for each currency held in the brokerage account
+         * Gets the current cash balance for each currency held in the brokerage account
         */
         @returns The current cash balance for each currency available for trading
         public @Override List<Cash> GetCashBalance() {
@@ -258,9 +258,9 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Places a new order and assigns a new broker ID to the order
+         * Places a new order and assigns a new broker ID to the order
         */
-         * @param order">The order to be placed
+         * @param order The order to be placed
         @returns True if the request for a new order has been placed, false otherwise
         public @Override boolean PlaceOrder(Order order) {
             requestParams = new Map<String,String>
@@ -276,7 +276,7 @@ package com.quantconnect.lean.Brokerages.Oanda
                 return false;
 
             // if market order, find fill quantity and price
-            marketOrderFillPrice = 0m;
+            marketOrderFillPrice = BigDecimal.ZERO;
             if( order.Type == OrderType.Market) {
                 marketOrderFillPrice = new BigDecimal( postOrderResponse.price);
             }
@@ -333,9 +333,9 @@ package com.quantconnect.lean.Brokerages.Oanda
 
 
         /**
-        /// Updates the order with the same id
+         * Updates the order with the same id
         */
-         * @param order">The new order information
+         * @param order The new order information
         @returns True if the request was made for the order to be updated, false otherwise
         public @Override boolean UpdateOrder(Order order) {
             Log.Trace( "OandaBrokerage.UpdateOrder(): " + order);
@@ -361,9 +361,9 @@ package com.quantconnect.lean.Brokerages.Oanda
         }
 
         /**
-        /// Cancels the order with the specified ID
+         * Cancels the order with the specified ID
         */
-         * @param order">The order to cancel
+         * @param order The order to cancel
         @returns True if the request was made for the order to be canceled, false otherwise
         public @Override boolean CancelOrder(Order order) {
             Log.Trace( "OandaBrokerage.CancelOrder(): " + order);

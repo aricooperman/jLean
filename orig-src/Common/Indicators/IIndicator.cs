@@ -19,49 +19,49 @@ using QuantConnect.Data;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// Represents an indicator that can receive data updates and emit events when the value of
-    /// the indicator has changed.
+     * Represents an indicator that can receive data updates and emit events when the value of
+     * the indicator has changed.
     */
-    /// <typeparam name="T">The indicators input data type for the <see cref="Update"/> method</typeparam>
+     * <typeparam name="T The indicators input data type for the <see cref="Update"/> method</typeparam>
     public interface IIndicator<T> : IComparable<IIndicator<T>>, IComparable
         where T : BaseData
     {
         /**
-        /// Event handler that fires after this indicator is updated
+         * Event handler that fires after this indicator is updated
         */
         event IndicatorUpdatedHandler Updated;
 
         /**
-        /// Gets a name for this indicator
+         * Gets a name for this indicator
         */
         String Name { get; }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         boolean IsReady { get; }
 
         /**
-        /// Gets the current state of this indicator. If the state has not been updated
-        /// then the time on the value will equal DateTime.MinValue.
+         * Gets the current state of this indicator. If the state has not been updated
+         * then the time on the value will equal DateTime.MinValue.
         */
         IndicatorDataPoint Current { get; }
 
         /**
-        /// Gets the number of samples processed by this indicator
+         * Gets the number of samples processed by this indicator
         */
         long Samples { get; }
 
         /**
-        /// Updates the state of this indicator with the given value and returns true
-        /// if this indicator is ready, false otherwise
+         * Updates the state of this indicator with the given value and returns true
+         * if this indicator is ready, false otherwise
         */
-         * @param input">The value to use to update this indicator
+         * @param input The value to use to update this indicator
         @returns True if this indicator is ready, false otherwise
         boolean Update(T input);
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         void Reset();
     }

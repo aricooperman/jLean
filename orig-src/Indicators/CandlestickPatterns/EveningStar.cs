@@ -20,21 +20,21 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Evening Star candlestick pattern
+     * Evening Star candlestick pattern
     */
-    /// 
-    /// Must have:
-    /// - first candle: long white real body
-    /// - second candle: star(short real body gapping up)
-    /// - third candle: black real body that moves well within the first candle's real body
-    /// The meaning of "short" and "long" is specified with SetCandleSettings
-    /// The meaning of "moves well within" is specified with penetration and "moves" should mean the real body should
-    /// not be short ( "short" is specified with SetCandleSettings) - Greg Morris wants it to be long, someone else want
-    /// it to be relatively long
-    /// The returned value is negative(-1): evening star is always bearish;
-    /// The user should consider that an evening star is significant when it appears in an uptrend,
-    /// while this function does not consider the trend
-    /// 
+     * 
+     * Must have:
+     * - first candle: long white real body
+     * - second candle: star(short real body gapping up)
+     * - third candle: black real body that moves well within the first candle's real body
+     * The meaning of "short" and "long" is specified with SetCandleSettings
+     * The meaning of "moves well within" is specified with penetration and "moves" should mean the real body should
+     * not be short ( "short" is specified with SetCandleSettings) - Greg Morris wants it to be long, someone else want
+     * it to be relatively long
+     * The returned value is negative(-1): evening star is always bearish;
+     * The user should consider that an evening star is significant when it appears in an uptrend,
+     * while this function does not consider the trend
+     * 
     public class EveningStar : CandlestickPattern
     {
         private final BigDecimal _penetration;
@@ -47,10 +47,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _bodyShortPeriodTotal2;
 
         /**
-        /// Initializes a new instance of the <see cref="EveningStar"/> class using the specified name.
+         * Initializes a new instance of the <see cref="EveningStar"/> class using the specified name.
         */
-         * @param name">The name of this indicator
-         * @param penetration">Percentage of penetration of a candle within another candle
+         * @param name The name of this indicator
+         * @param penetration Percentage of penetration of a candle within another candle
         public EveningStar( String name, BigDecimal penetration = 0.3m) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyShort).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 2 + 1) {
             _penetration = penetration;
@@ -60,15 +60,15 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="EveningStar"/> class.
+         * Initializes a new instance of the <see cref="EveningStar"/> class.
         */
-         * @param penetration">Percentage of penetration of a candle within another candle
+         * @param penetration Percentage of penetration of a candle within another candle
         public EveningStar( BigDecimal penetration = 0.3m)
             : this( "EVENINGSTAR", penetration) {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -76,10 +76,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -92,7 +92,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _bodyShortPeriodTotal2 += GetCandleRange(CandleSettingType.BodyShort, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -114,7 +114,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = -1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -132,7 +132,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             _bodyLongPeriodTotal = 0;

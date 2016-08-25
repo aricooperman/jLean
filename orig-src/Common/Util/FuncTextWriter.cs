@@ -21,37 +21,37 @@ using System.Text;
 package com.quantconnect.lean.Util
 {
     /**
-    /// Provides an implementation of <see cref="TextWriter"/> that redirects Write( String) and WriteLine( String)
+     * Provides an implementation of <see cref="TextWriter"/> that redirects Write( String) and WriteLine( String)
     */
     public class FuncTextWriter : TextWriter
     {
         private final Action<String> _writer;
 
-        /// <inheritdoc />
+         * <inheritdoc />
         public @Override Encoding Encoding
         {
             get { return Encoding.Default; }
         }
 
         /**
-        /// Initializes a new instance of the <see cref="FuncTextWriter"/> that will direct
-        /// messages to the algorithm's Debug function.
+         * Initializes a new instance of the <see cref="FuncTextWriter"/> that will direct
+         * messages to the algorithm's Debug function.
         */
-         * @param writer">The algorithm hosting the Debug function where messages will be directed
+         * @param writer The algorithm hosting the Debug function where messages will be directed
         public FuncTextWriter(Action<String> writer) {
             _writer = writer;
         }
 
         /**
-        /// Writes the String value using the delegate provided at construction
+         * Writes the String value using the delegate provided at construction
         */
-         * @param value">The String value to be written
+         * @param value The String value to be written
         public @Override void Write( String value) {
             _writer(value);
         }
 
         /**
-        /// Writes the String value using the delegate provided at construction
+         * Writes the String value using the delegate provided at construction
         */
          * @param value">
         public @Override void WriteLine( String value) {

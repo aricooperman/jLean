@@ -19,21 +19,21 @@ using Newtonsoft.Json;
 package com.quantconnect.lean.Brokerages.Tradier
 {
     /**
-    /// Inside "Account" User-account balance information.
+     * Inside "Account" User-account balance information.
     */
     public class TradierBalance
     {
-    //    /// Account Number
+    //     * Account Number
     //    @JsonProperty( "account_number")]
     //    public long AccountNumber;
 
-        /// Balances of the Tradier Account:
+         * Balances of the Tradier Account:
         @JsonProperty( "balances")]
         public TradierBalanceDetails Balances;
     }
 
     /**
-    /// Trader Balance Detail:
+     * Trader Balance Detail:
     */
     public class TradierBalanceDetails 
     {
@@ -49,59 +49,59 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "cash_available")]
         public BigDecimal CashAvailable;
 
-        /// The ProfitLoss of the current trading day’s closed positions.
+         * The ProfitLoss of the current trading day’s closed positions.
         @JsonProperty( "close_pl")]
         public BigDecimal ClosingProfitLoss;
 
-        /// The option requirement of current account positions.
+         * The option requirement of current account positions.
         @JsonProperty( "current_requirement")]
         public BigDecimal CurrentRequirement;
 
-        /// Dividend Balance
+         * Dividend Balance
         @JsonProperty( "dividend_balance")]
         public BigDecimal DividendBalance;
 
-        /// Equity Value
+         * Equity Value
         @JsonProperty( "equity")]
         public BigDecimal Equity;
 
-        /// Long Liquid Value
+         * Long Liquid Value
         @JsonProperty( "long_liquid_value")]
         public BigDecimal LongLiquidValue;
 
-        /// Long Market Value
+         * Long Market Value
         @JsonProperty( "long_market_value")]
         public BigDecimal LongMarketValue;
 
-        /// Market Value
+         * Market Value
         @JsonProperty( "market_value")]
         public BigDecimal MarketValue;
 
-        /// Net Value
+         * Net Value
         @JsonProperty( "net_value")]
         public BigDecimal NetValue;
 
-        /// The Profit Loss of current account positions.
+         * The Profit Loss of current account positions.
         @JsonProperty( "open_pl")]
         public BigDecimal OpenProfitLoss;
 
-        /// The value of long options held in the account.
+         * The value of long options held in the account.
         @JsonProperty( "option_long_value")]
         public BigDecimal OptionLongValue;
 
-        /// Option Requirement
+         * Option Requirement
         @JsonProperty( "option_requirement")]
         public BigDecimal OptionRequirement;
 
-        /// The value of short options held in the account.
+         * The value of short options held in the account.
         @JsonProperty( "option_short_value")]
         public BigDecimal OptionShortValue;
 
-        /// The amount of cash that is being held for open orders.
+         * The amount of cash that is being held for open orders.
         @JsonProperty( "pending_cash")]
         public BigDecimal PendingCash;
 
-        /// The amount of open orders.
+         * The amount of open orders.
         @JsonProperty( "pending_orders_count")]
         public int PendingOrdersCount;
 
@@ -134,21 +134,21 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "total_equity")]
         public BigDecimal TotalEquity;
 
-        /// Settings class for PDT specific accounts:
+         * Settings class for PDT specific accounts:
         @JsonProperty( "cash")]
         public TradierAccountTypeCash CashTypeSettings;
 
-        /// Settings class for PDT specific accounts:
+         * Settings class for PDT specific accounts:
         @JsonProperty( "pdt")]
         public TradierAccountTypeDayTrader PatternTraderTypeSettings;
 
-        /// Settings class for margin specific accounts
+         * Settings class for margin specific accounts
         @JsonProperty( "margin")]
         public TradierAccountTypeMargin MarginTypeSettings;
     }
 
     /**
-    /// Common Account Settings.
+     * Common Account Settings.
     */
     public class TradierAccountTypeSettings
     {
@@ -177,7 +177,7 @@ package com.quantconnect.lean.Brokerages.Tradier
     }
 
     /**
-    /// Account Type Day Trader Settings:
+     * Account Type Day Trader Settings:
     */
     public class TradierAccountTypeDayTrader : TradierAccountTypeSettings
     {
@@ -185,12 +185,12 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "day_trade_buying_power")]
         public BigDecimal DayTradeBuyingPower;
 
-        /// Constructor
+         * Constructor
         public TradierAccountTypeDayTrader() { }
     }
 
     /**
-    /// Account Type Margin Settings:
+     * Account Type Margin Settings:
     */
     public class TradierAccountTypeMargin : TradierAccountTypeSettings
     {
@@ -198,12 +198,12 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "sweep")]
         public int Sweep;
 
-        /// Constructor
+         * Constructor
         public TradierAccountTypeMargin() { }
     }
 
     /**
-    /// Account Type Margin Settings:
+     * Account Type Margin Settings:
     */
     public class TradierAccountTypeCash
     {
@@ -219,7 +219,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "unsettled_funds")]
         public BigDecimal UnsettledFunds;
 
-        /// Constructor
+         * Constructor
         public TradierAccountTypeCash() { }
     }
 }

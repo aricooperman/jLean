@@ -19,19 +19,19 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Thrusting candlestick pattern indicator
+     * Thrusting candlestick pattern indicator
     */
-    /// 
-    /// Must have:
-    /// - first candle: long black candle
-    /// - second candle: white candle with open below previous day low and close into previous day body under the midpoint;
-    /// to differentiate it from in-neck the close should not be equal to the black candle's close
-    /// The meaning of "equal" is specified with SetCandleSettings
-    /// The returned value is negative(-1): thrusting pattern is always bearish
-    /// The user should consider that the thrusting pattern is significant when it appears in a downtrend and it could be
-    /// even bullish "when coming in an uptrend or occurring twice within several days" (Steve Nison says), while this
-    /// function does not consider the trend
-    /// 
+     * 
+     * Must have:
+     * - first candle: long black candle
+     * - second candle: white candle with open below previous day low and close into previous day body under the midpoint;
+     * to differentiate it from in-neck the close should not be equal to the black candle's close
+     * The meaning of "equal" is specified with SetCandleSettings
+     * The returned value is negative(-1): thrusting pattern is always bearish
+     * The user should consider that the thrusting pattern is significant when it appears in a downtrend and it could be
+     * even bullish "when coming in an uptrend or occurring twice within several days" (Steve Nison says), while this
+     * function does not consider the trend
+     * 
     public class Thrusting : CandlestickPattern
     {
         private final int _equalAveragePeriod;
@@ -41,9 +41,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _bodyLongPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="Thrusting"/> class using the specified name.
+         * Initializes a new instance of the <see cref="Thrusting"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public Thrusting( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.Equal).AveragePeriod, CandleSettings.Get(CandleSettingType.BodyLong).AveragePeriod) + 1 + 1) {
             _equalAveragePeriod = CandleSettings.Get(CandleSettingType.Equal).AveragePeriod;
@@ -51,14 +51,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="Thrusting"/> class.
+         * Initializes a new instance of the <see cref="Thrusting"/> class.
         */
         public Thrusting()
             : this( "THRUSTING") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -66,10 +66,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -81,7 +81,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _bodyLongPeriodTotal += GetCandleRange(CandleSettingType.BodyLong, window[1]);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -101,7 +101,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = -1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -116,11 +116,11 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
-            _equalPeriodTotal = 0m;
-            _bodyLongPeriodTotal = 0m;
+            _equalPeriodTotal = BigDecimal.ZERO;
+            _bodyLongPeriodTotal = BigDecimal.ZERO;
             base.Reset();
         }
     }

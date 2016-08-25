@@ -96,7 +96,7 @@ package com.quantconnect.lean.Tests.Common.Util
         }
 
         /**
-        /// Private fields in base classes aren't found in normal reflection, so we need to recurse on base types
+         * Private fields in base classes aren't found in normal reflection, so we need to recurse on base types
         */
         private static IEnumerable<FieldInfo> GetFieldInfosIncludingBaseClasses(Type type, BindingFlags bindingFlags) {
             FieldInfo[] fieldInfos = type.GetFields(bindingFlags);

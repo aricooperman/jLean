@@ -22,47 +22,47 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Brokerages.Tradier
 {
     /**
-    /// Order parent class for deserialization
+     * Order parent class for deserialization
     */
     public class TradierOrdersContainer
     {
-        /// Orders Contents:
+         * Orders Contents:
         @JsonProperty( "orders")]
         [JsonConverter(typeof(NullStringValueConverter<TradierOrders>))]
         public TradierOrders Orders;
 
-        /// Constructor: Orders parent:
+         * Constructor: Orders parent:
         public TradierOrdersContainer() { }
     }
 
     /**
-    /// Order container class
+     * Order container class
     */
     public class TradierOrders
     {
-        /// Array of user account details:
+         * Array of user account details:
         @JsonProperty( "order")]
         [JsonConverter(typeof(SingleValueListConverter<TradierOrder>))]
         public List<TradierOrder> Orders = new List<TradierOrder>();
 
-        /// Null Constructor:
+         * Null Constructor:
         public TradierOrders() { }
     }
 
     /**
-    /// Intraday or pending order for user
+     * Intraday or pending order for user
     */
     public class TradierOrder 
     {
-        /// Unique order id.
+         * Unique order id.
         @JsonProperty( "id")]
         public long Id;
 
-        /// Market, Limit Order etc.
+         * Market, Limit Order etc.
         @JsonProperty( "type")]
         public TradierOrderType Type;
 
-        /// Symbol
+         * Symbol
         @JsonProperty( "symbol")]
         public String Symbol;
 
@@ -70,47 +70,47 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "side")]
         public TradierOrderDirection Direction;
 
-        /// Quantity
+         * Quantity
         @JsonProperty( "quantity")]
         public BigDecimal Quantity;
 
-        /// Status of the order (filled, canceled, open, expired, rejected, pending, partially_filled, submitted).
+         * Status of the order (filled, canceled, open, expired, rejected, pending, partially_filled, submitted).
         @JsonProperty( "status")]
         public TradierOrderStatus Status;
 
-        /// Duration of the order (day, gtc)
+         * Duration of the order (day, gtc)
         @JsonProperty( "duration")]
         public TradierOrderDuration Duration;
 
-        /// Percentage of gain or loss on the position.
+         * Percentage of gain or loss on the position.
         @JsonProperty( "price")]
         public BigDecimal Price;
 
-        /// Average fill price
+         * Average fill price
         @JsonProperty( "avg_fill_price")]
         public BigDecimal AverageFillPrice;
 
-        /// Quantity executed
+         * Quantity executed
         @JsonProperty( "exec_quantity")]
         public BigDecimal QuantityExecuted;
 
-        /// Last fill price
+         * Last fill price
         @JsonProperty( "last_fill_price")]
         public BigDecimal LastFillPrice;
 
-        /// Last amount filled
+         * Last amount filled
         @JsonProperty( "last_fill_quantity")]
         public BigDecimal LastFillQuantity;
 
-        /// Quantity Remaining in Order.
+         * Quantity Remaining in Order.
         @JsonProperty( "remaining_quantity")]
         public BigDecimal RemainingQuantity;
 
-        /// Date order was created.
+         * Date order was created.
         @JsonProperty( "create_date")]
         public DateTime CreatedDate;
 
-        /// Date order was created.
+         * Date order was created.
         @JsonProperty( "transaction_date")]
         public DateTime TransactionDate;
 
@@ -122,104 +122,104 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "num_legs")]
         public int NumberOfLegs;
 
-        /// Numberof legs in order
+         * Numberof legs in order
         @JsonProperty( "leg")]
         public List<TradierOrderLeg> Legs;
 
-        /// Closed position trade summary
+         * Closed position trade summary
         public TradierOrder() { }
     }
 
     /**
-    /// Detailed order parent class
+     * Detailed order parent class
     */
     public class TradierOrderDetailedContainer
     {
-        /// Details of the order
+         * Details of the order
         @JsonProperty( "order")]
         public TradierOrderDetailed DetailedOrder;
     }
 
 
     /**
-    /// Deserialization wrapper for order response:
+     * Deserialization wrapper for order response:
     */
     public class TradierOrderResponse
     {
-        /// Tradier Order information
+         * Tradier Order information
         @JsonProperty( "order")]
         public TradierOrderResponseOrder Order = new TradierOrderResponseOrder();
 
-        /// Errors in request
+         * Errors in request
         @JsonProperty( "errors")]
         public TradierOrderResponseError Errors = new TradierOrderResponseError();
     }
 
     /**
-    /// Errors result from an order request.
+     * Errors result from an order request.
     */
     public class TradierOrderResponseError
     {
-        /// List of errors
+         * List of errors
         @JsonProperty( "error")]
         [JsonConverter(typeof(SingleValueListConverter<String>))]
         public List<String> Errors;
     }
 
     /**
-    /// Order response when purchasing equity.
+     * Order response when purchasing equity.
     */
     public class TradierOrderResponseOrder
     { 
-        /// id or order response
+         * id or order response
         @JsonProperty( "id")]
         public long Id;
 
-        /// Partner id - me
+         * Partner id - me
         @JsonProperty( "partner_id")]
         public String PartnerId;
 
-        /// Status of order
+         * Status of order
         @JsonProperty( "status")]
         public String Status;
     }
 
     /**
-    /// Detailed order type.
+     * Detailed order type.
     */
     public class TradierOrderDetailed : TradierOrder
     {
-        /// Order exchange
+         * Order exchange
         @JsonProperty( "exch")]
         public String Exchange;
 
-        /// Executed Exchange
+         * Executed Exchange
         @JsonProperty( "exec_exch")]
         public String ExecutionExchange;
 
-        /// Option type
+         * Option type
         @JsonProperty( "option_type")]
         public TradierOptionType OptionType;
 
-        /// Expiration date
+         * Expiration date
         @JsonProperty( "expiration_date")]
         public DateTime OptionExpirationDate;
 
-        /// Stop Price
+         * Stop Price
         @JsonProperty( "stop_price")]
         public BigDecimal StopPrice;
     }
 
     /**
-    /// Leg of a tradier order:
+     * Leg of a tradier order:
     */
     public class TradierOrderLeg
     {
-        /// Date order was created.
+         * Date order was created.
         @JsonProperty( "type")]
         public TradierOrderType Type;
 
-        /// Symbol
+         * Symbol
         @JsonProperty( "symbol")]
         public String Symbol;
 
@@ -227,51 +227,51 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "side")]
         public TradierOrderDirection Direction;
 
-        /// Quantity
+         * Quantity
         @JsonProperty( "quantity")]
         public BigDecimal Quantity;
 
-        /// Status of the order (filled, canceled, open, expired, rejected, pending, partially_filled, submitted).
+         * Status of the order (filled, canceled, open, expired, rejected, pending, partially_filled, submitted).
         @JsonProperty( "status")]
         public TradierOrderStatus Status;
 
-        /// Duration of the order (day, gtc)
+         * Duration of the order (day, gtc)
         @JsonProperty( "duration")]
         public TradierOrderDuration Duration;
 
-        /// Percentage of gain or loss on the position.
+         * Percentage of gain or loss on the position.
         @JsonProperty( "price")]
         public BigDecimal Price;
 
-        /// Average fill price
+         * Average fill price
         @JsonProperty( "avg_fill_price")]
         public BigDecimal AverageFillPrice;
 
-        /// Quantity executed
+         * Quantity executed
         @JsonProperty( "exec_quantity")]
         public BigDecimal QuantityExecuted;
 
-        /// Last fill price
+         * Last fill price
         @JsonProperty( "last_fill_price")]
         public BigDecimal LastFillPrice;
 
-        /// Last amount filled
+         * Last amount filled
         @JsonProperty( "last_fill_quantity")]
         public BigDecimal LastFillQuantity;
 
-        /// Quantity Remaining in Order.
+         * Quantity Remaining in Order.
         @JsonProperty( "remaining_quantity")]
         public BigDecimal RemainingQuantity;
 
-        /// Date order was created.
+         * Date order was created.
         @JsonProperty( "create_date")]
         public DateTime CreatedDate;
 
-        /// Date order was created.
+         * Date order was created.
         @JsonProperty( "transaction_date")]
         public DateTime TransacionDate;
 
-        /// Constructor
+         * Constructor
         public TradierOrderLeg() { }
     }
 

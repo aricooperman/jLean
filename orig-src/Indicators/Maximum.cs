@@ -18,17 +18,17 @@ using System.Linq;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// Represents an indictor capable of tracking the maximum value and how many periods ago it occurred
+     * Represents an indictor capable of tracking the maximum value and how many periods ago it occurred
     */
     public class Maximum : WindowIndicator<IndicatorDataPoint>
     {
         /**
-        /// The number of periods since the maximum value was encountered
+         * The number of periods since the maximum value was encountered
         */
         public int PeriodsSinceMaximum { get; private set; }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -36,23 +36,23 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new Maximum indicator with the specified period
+         * Creates a new Maximum indicator with the specified period
         */
-         * @param period">The period over which to look back
+         * @param period The period over which to look back
         public Maximum(int period)
             : base( "MAX" + period, period) {
         }
 
         /**
-        /// Creates a new Maximum indicator with the specified period
+         * Creates a new Maximum indicator with the specified period
         */
-         * @param name">The name of this indicator
-         * @param period">The period over which to look back
+         * @param name The name of this indicator
+         * @param period The period over which to look back
         public Maximum( String name, int period)
             : base(name, period) {
         }
 
-        /// <inheritdoc />
+         * <inheritdoc />
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<IndicatorDataPoint> window, IndicatorDataPoint input) {
             if( Samples == 1 || input.Value >= Current.Value) {
                 // our first sample or if we're bigger than our previous indicator value
@@ -87,7 +87,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
             PeriodsSinceMaximum = 0;

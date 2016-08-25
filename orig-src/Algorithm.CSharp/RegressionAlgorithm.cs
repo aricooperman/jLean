@@ -19,7 +19,7 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Algorithm.CSharp
 {
     /**
-    /// Algorithm used for regression tests purposes
+     * Algorithm used for regression tests purposes
     */
     public class RegressionAlgorithm : QCAlgorithm
     {

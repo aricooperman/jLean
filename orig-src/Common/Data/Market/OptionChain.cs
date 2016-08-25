@@ -22,16 +22,16 @@ using QuantConnect.Util;
 package com.quantconnect.lean.Data.Market
 {
     /**
-    /// Represents an entire chain of option contracts for a single underying security.
-    /// This type is <see cref="IEnumerable{OptionContract}"/>
+     * Represents an entire chain of option contracts for a single underying security.
+     * This type is <see cref="IEnumerable{OptionContract}"/>
     */
     public class OptionChain : BaseData, IEnumerable<OptionContract>
     {
         private final Map<Type, Map<Symbol, List<BaseData>>> _auxiliaryData = new Map<Type, Map<Symbol, List<BaseData>>>();
 
         /**
-        /// Gets the most recent trade information for the underlying. This may
-        /// be a <see cref="Tick"/> or a <see cref="TradeBar"/>
+         * Gets the most recent trade information for the underlying. This may
+         * be a <see cref="Tick"/> or a <see cref="TradeBar"/>
         */
         public BaseData Underlying
         {
@@ -39,7 +39,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets all ticks for every option contract in this chain, keyed by option symbol
+         * Gets all ticks for every option contract in this chain, keyed by option symbol
         */
         public Ticks Ticks
         {
@@ -47,7 +47,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets all trade bars for every option contract in this chain, keyed by option symbol
+         * Gets all trade bars for every option contract in this chain, keyed by option symbol
         */
         public TradeBars TradeBars
         {
@@ -55,7 +55,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets all quote bars for every option contract in this chain, keyed by option symbol
+         * Gets all quote bars for every option contract in this chain, keyed by option symbol
         */
         public QuoteBars QuoteBars
         {
@@ -63,7 +63,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets all contracts in the chain, keyed by option symbol
+         * Gets all contracts in the chain, keyed by option symbol
         */
         public OptionContracts Contracts
         {
@@ -71,7 +71,7 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the set of symbols that passed the <see cref="Option.ContractFilter"/>
+         * Gets the set of symbols that passed the <see cref="Option.ContractFilter"/>
         */
         public HashSet<Symbol> FilteredContracts
         {
@@ -79,17 +79,17 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Initializes a new default instance of the <see cref="OptionChain"/> class
+         * Initializes a new default instance of the <see cref="OptionChain"/> class
         */
         private OptionChain() {
             DataType = MarketDataType.OptionChain;
         }
 
         /**
-        /// Initializes a new instance of the <see cref="OptionChain"/> class
+         * Initializes a new instance of the <see cref="OptionChain"/> class
         */
-         * @param canonicalOptionSymbol">The symbol for this chain.
-         * @param time">The time of this chain
+         * @param canonicalOptionSymbol The symbol for this chain.
+         * @param time The time of this chain
         public OptionChain(Symbol canonicalOptionSymbol, DateTime time) {
             Time = time;
             Symbol = canonicalOptionSymbol;
@@ -102,14 +102,14 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Initializes a new instance of the <see cref="OptionChain"/> class
+         * Initializes a new instance of the <see cref="OptionChain"/> class
         */
-         * @param canonicalOptionSymbol">The symbol for this chain.
-         * @param time">The time of this chain
-         * @param underlying">The most recent underlying trade data
-         * @param trades">All trade data for the entire option chain
-         * @param quotes">All quote data for the entire option chain
-         * @param contracts">All contrains for this option chain
+         * @param canonicalOptionSymbol The symbol for this chain.
+         * @param time The time of this chain
+         * @param underlying The most recent underlying trade data
+         * @param trades All trade data for the entire option chain
+         * @param quotes All quote data for the entire option chain
+         * @param contracts All contrains for this option chain
         public OptionChain(Symbol canonicalOptionSymbol, DateTime time, BaseData underlying, IEnumerable<BaseData> trades, IEnumerable<BaseData> quotes, IEnumerable<OptionContract> contracts, IEnumerable<Symbol> filteredContracts) {
             Time = time;
             Underlying = underlying;
@@ -162,10 +162,10 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets the auxiliary data with the specified type and symbol
+         * Gets the auxiliary data with the specified type and symbol
         */
-        /// <typeparam name="T">The type of auxiliary data</typeparam>
-         * @param symbol">The symbol of the auxiliary data
+         * <typeparam name="T The type of auxiliary data</typeparam>
+         * @param symbol The symbol of the auxiliary data
         @returns The last auxiliary data with the specified type and symbol
         public T GetAux<T>(Symbol symbol) {
             List<BaseData> list;
@@ -177,9 +177,9 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets all auxiliary data of the specified type as a dictionary keyed by symbol
+         * Gets all auxiliary data of the specified type as a dictionary keyed by symbol
         */
-        /// <typeparam name="T">The type of auxiliary data</typeparam>
+         * <typeparam name="T The type of auxiliary data</typeparam>
         @returns A dictionary containing all auxiliary data of the specified type
         public DataMap<T> GetAux<T>() {
             Map<Symbol, List<BaseData>> d;
@@ -197,9 +197,9 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets all auxiliary data of the specified type as a dictionary keyed by symbol
+         * Gets all auxiliary data of the specified type as a dictionary keyed by symbol
         */
-        /// <typeparam name="T">The type of auxiliary data</typeparam>
+         * <typeparam name="T The type of auxiliary data</typeparam>
         @returns A dictionary containing all auxiliary data of the specified type
         public Map<Symbol, List<BaseData>> GetAuxList<T>() {
             Map<Symbol, List<BaseData>> dictionary;
@@ -210,10 +210,10 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Gets a list of auxiliary data with the specified type and symbol
+         * Gets a list of auxiliary data with the specified type and symbol
         */
-        /// <typeparam name="T">The type of auxiliary data</typeparam>
-         * @param symbol">The symbol of the auxiliary data
+         * <typeparam name="T The type of auxiliary data</typeparam>
+         * @param symbol The symbol of the auxiliary data
         @returns The list of auxiliary data with the specified type and symbol
         public List<T> GetAuxList<T>(Symbol symbol) {
             List<BaseData> list;
@@ -225,27 +225,27 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Returns an enumerator that iterates through the collection.
+         * Returns an enumerator that iterates through the collection.
         */
         @returns 
-        /// An enumerator that can be used to iterate through the collection.
-        /// 
+         * An enumerator that can be used to iterate through the collection.
+         * 
         public IEnumerator<OptionContract> GetEnumerator() {
             return Contracts.Values.GetEnumerator();
         }
 
         /**
-        /// Returns an enumerator that iterates through a collection.
+         * Returns an enumerator that iterates through a collection.
         */
         @returns 
-        /// An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
-        /// 
+         * An <see cref="T:System.Collections.IEnumerator"/> object that can be used to iterate through the collection.
+         * 
         IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
         /**
-        /// Return a new instance clone of this object, used in fill forward
+         * Return a new instance clone of this object, used in fill forward
         */
         @returns A clone of the current object
         public @Override BaseData Clone() {
@@ -265,9 +265,9 @@ package com.quantconnect.lean.Data.Market
         }
 
         /**
-        /// Adds the specified auxiliary data to this option chain
+         * Adds the specified auxiliary data to this option chain
         */
-         * @param baseData">The auxiliary data to be added
+         * @param baseData The auxiliary data to be added
         internal void AddAuxData(BaseData baseData) {
             type = baseData.GetType();
             Map<Symbol, List<BaseData>> dictionary;

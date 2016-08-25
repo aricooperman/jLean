@@ -18,25 +18,25 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators
 {
     /**
-    /// Williams %R, or just %R, is the current closing price in relation to the high and low of
-    /// the past N days (for a given N). The value of this indicator fluctuats between -100 and 0. 
-    /// The symbol is said to be oversold when the oscillator is below -80%,
-    /// and overbought when the oscillator is above -20%. 
+     * Williams %R, or just %R, is the current closing price in relation to the high and low of
+     * the past N days (for a given N). The value of this indicator fluctuats between -100 and 0. 
+     * The symbol is said to be oversold when the oscillator is below -80%,
+     * and overbought when the oscillator is above -20%. 
     */
     public class WilliamsPercentR : TradeBarIndicator
     {
         /**
-        /// Gets the Maximum indicator
+         * Gets the Maximum indicator
         */
         public Maximum Maximum { get; private set; }
 
         /**
-        /// Gets the Minimum indicator
+         * Gets the Minimum indicator
         */
         public Minimum Minimum { get; private set; }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -44,18 +44,18 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Creates a new Williams %R.
+         * Creates a new Williams %R.
         */
-         * @param period">The lookback period to determine the highest high for the AroonDown
+         * @param period The lookback period to determine the highest high for the AroonDown
         public WilliamsPercentR(int period)
             : this( "WILR"+period, period) {
         }
 
         /**
-        /// Creates a new Williams %R.
+         * Creates a new Williams %R.
         */
-         * @param name">The name of this indicator
-         * @param period">The lookback period to determine the highest high for the AroonDown
+         * @param name The name of this indicator
+         * @param period The lookback period to determine the highest high for the AroonDown
         public WilliamsPercentR( String name, int period)
             : base(name) {
             Maximum = new Maximum(name + "_Max", period);
@@ -63,7 +63,7 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Resets this indicator and both sub-indicators (Max and Min)
+         * Resets this indicator and both sub-indicators (Max and Min)
         */
         public @Override void Reset() {
             Maximum.Reset();
@@ -72,9 +72,9 @@ package com.quantconnect.lean.Indicators
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param input">The input given to the indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(TradeBar input) {
             Minimum.Update(input.Time, input.Low);

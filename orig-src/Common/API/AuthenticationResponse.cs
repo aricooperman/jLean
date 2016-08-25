@@ -15,7 +15,7 @@
 package com.quantconnect.lean.Api
 {
     /**
-    /// Verify if the credentials are OK.
+     * Verify if the credentials are OK.
     */
     public class AuthenticationResponse : RestResponse
     {

@@ -116,13 +116,13 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
 
 
         /**
-        /// Provides an implementation of <see cref="IFillModel"/> that creates a specific
-        /// number of partial fills for marke orders only. All other order types reuse the
-        /// <see cref="ImmediateFillModel"/> behavior. This model will emit one partial fill
-        /// per time step.
-        /// NOTE: If the desired number of fills is very large, then a few more fills may be issued
-        /// due to rounding errors. This model does not hold internal state regarding orders/previous
-        /// fills.
+         * Provides an implementation of <see cref="IFillModel"/> that creates a specific
+         * number of partial fills for marke orders only. All other order types reuse the
+         * <see cref="ImmediateFillModel"/> behavior. This model will emit one partial fill
+         * per time step.
+         * NOTE: If the desired number of fills is very large, then a few more fills may be issued
+         * due to rounding errors. This model does not hold internal state regarding orders/previous
+         * fills.
         */
         public class PartialMarketFillModel : ImmediateFillModel
         {
@@ -130,13 +130,13 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
             private final IOrderProvider _orderProvider;
 
             /**
-            /// Initializes a new instance of the <see cref="PartialMarketFillModel"/> class
+             * Initializes a new instance of the <see cref="PartialMarketFillModel"/> class
             */
-            /// <code>
-            /// // split market orders into two fills
-            /// Securities["SPY"].FillModel = new PartialMarketFillModel(Transactions, 2);
-            /// </code>
-             * @param orderProvider">The order provider used for getting order tickets
+             * <code>
+             * // split market orders into two fills
+             * Securities["SPY"].FillModel = new PartialMarketFillModel(Transactions, 2);
+             * </code>
+             * @param orderProvider The order provider used for getting order tickets
              * @param numberOfFills">
             public PartialMarketFillModel(IOrderProvider orderProvider, int numberOfFills = 1) {
                 _orderProvider = orderProvider;
@@ -144,10 +144,10 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
             }
 
             /**
-            /// Performs partial market fills once per time step
+             * Performs partial market fills once per time step
             */
-             * @param asset">The security being ordered
-             * @param order">The order
+             * @param asset The security being ordered
+             * @param order The order
             @returns The order fill
             public @Override OrderEvent MarketFill(Security asset, MarketOrder order) {
                 currentUtcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);

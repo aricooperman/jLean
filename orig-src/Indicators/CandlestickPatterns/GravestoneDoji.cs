@@ -19,17 +19,17 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Indicators.CandlestickPatterns
 {
     /**
-    /// Gravestone Doji candlestick pattern indicator
+     * Gravestone Doji candlestick pattern indicator
     */
-    /// 
-    /// Must have:
-    /// - doji body
-    /// - open and close at the low of the day = no or very short lower shadow
-    /// - upper shadow(to distinguish from other dojis, here upper shadow should not be very short)
-    /// The meaning of "doji" and "very short" is specified with SetCandleSettings
-    /// The returned value is always positive(+1) but this does not mean it is bullish: gravestone doji must be considered
-    /// relatively to the trend
-    /// 
+     * 
+     * Must have:
+     * - doji body
+     * - open and close at the low of the day = no or very short lower shadow
+     * - upper shadow(to distinguish from other dojis, here upper shadow should not be very short)
+     * The meaning of "doji" and "very short" is specified with SetCandleSettings
+     * The returned value is always positive(+1) but this does not mean it is bullish: gravestone doji must be considered
+     * relatively to the trend
+     * 
     public class GravestoneDoji : CandlestickPattern
     {
         private final int _bodyDojiAveragePeriod;
@@ -39,9 +39,9 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         private BigDecimal _shadowVeryShortPeriodTotal;
 
         /**
-        /// Initializes a new instance of the <see cref="GravestoneDoji"/> class using the specified name.
+         * Initializes a new instance of the <see cref="GravestoneDoji"/> class using the specified name.
         */
-         * @param name">The name of this indicator
+         * @param name The name of this indicator
         public GravestoneDoji( String name) 
             : base(name, Math.Max(CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod, CandleSettings.Get(CandleSettingType.ShadowVeryShort).AveragePeriod) + 1) {
             _bodyDojiAveragePeriod = CandleSettings.Get(CandleSettingType.BodyDoji).AveragePeriod;
@@ -49,14 +49,14 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Initializes a new instance of the <see cref="GravestoneDoji"/> class.
+         * Initializes a new instance of the <see cref="GravestoneDoji"/> class.
         */
         public GravestoneDoji()
             : this( "GRAVESTONEDOJI") {
         }
 
         /**
-        /// Gets a flag indicating when this indicator is ready and fully initialized
+         * Gets a flag indicating when this indicator is ready and fully initialized
         */
         public @Override boolean IsReady
         {
@@ -64,10 +64,10 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Computes the next value of this indicator from the given state
+         * Computes the next value of this indicator from the given state
         */
-         * @param window">The window of data held in this indicator
-         * @param input">The input given to the indicator
+         * @param window The window of data held in this indicator
+         * @param input The input given to the indicator
         @returns A new value for this indicator
         protected @Override BigDecimal ComputeNextValue(IReadOnlyWindow<TradeBar> window, TradeBar input) {
             if( !IsReady) {
@@ -79,7 +79,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
                     _shadowVeryShortPeriodTotal += GetCandleRange(CandleSettingType.ShadowVeryShort, input);
                 }
 
-                return 0m;
+                return BigDecimal.ZERO;
             }
 
             BigDecimal value;
@@ -89,7 +89,7 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
               )
                 value = 1m;
             else
-                value = 0m;
+                value = BigDecimal.ZERO;
 
             // add the current range and subtract the first range: this is done after the pattern recognition 
             // when avgPeriod is not 0, that means "compare with the previous candles" (it excludes the current candle)
@@ -104,11 +104,11 @@ package com.quantconnect.lean.Indicators.CandlestickPatterns
         }
 
         /**
-        /// Resets this indicator to its initial state
+         * Resets this indicator to its initial state
         */
         public @Override void Reset() {
-            _bodyDojiPeriodTotal = 0m;
-            _shadowVeryShortPeriodTotal = 0m;
+            _bodyDojiPeriodTotal = BigDecimal.ZERO;
+            _shadowVeryShortPeriodTotal = BigDecimal.ZERO;
             base.Reset();
         }
     }

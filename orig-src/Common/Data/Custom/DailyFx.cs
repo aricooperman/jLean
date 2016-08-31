@@ -160,7 +160,7 @@ package com.quantconnect.lean.Data.Custom
 
             foreach (dailyfx in dailyfxList) {
                 // Custom data format without settings in market hours are assumed UTC.
-                dailyfx.Time = dailyfx.DisplayDate.Date.AddHours(dailyfx.DisplayTime.TimeOfDay.TotalHours);
+                dailyfx.Time = dailyfx.DisplayDate.Date.AddHours(dailyfx.DisplayTime Extensions.timeOfDay(  ).TotalHours);
 
                 // Assign a value to this event: 
                 // Fairly meaningless between unrelated events, but meaningful with the same event over time.

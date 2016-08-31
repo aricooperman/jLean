@@ -111,7 +111,7 @@ public class SubmitOrderRequest extends OrderRequest {
      * Sets the <see cref="OrderRequest.OrderId"/>
      * @param orderId The order id of the generated order
      */
-    protected void setOrderId( int orderId ) {
+    public void setOrderId( int orderId ) {
         this.orderId = orderId;
     }
 

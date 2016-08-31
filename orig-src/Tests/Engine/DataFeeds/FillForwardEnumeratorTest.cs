@@ -368,14 +368,14 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
         [Test]
         public void FillsForwardDailyOnHoursInMarketHours() {
-            dataResolution = Time.OneDay;
+            dataResolution = Duration.ofDays( 1 );
             reference = new DateTime(2015, 6, 25);
             data = new BaseData[]
             {
                 // thurs 6/25
-                new TradeBar{Value = 0, Time = reference, Period = Time.OneDay},
+                new TradeBar{Value = 0, Time = reference, Period = Duration.ofDays( 1 )},
                 // fri 6/26
-                new TradeBar{Value = 1, Time = reference.AddDays(1), Period = Time.OneDay},
+                new TradeBar{Value = 1, Time = reference.AddDays(1), Period = Duration.ofDays( 1 )},
             }.ToList();
             enumerator = data.GetEnumerator();
 
@@ -451,14 +451,14 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
         [Test]
         public void FillsForwardDailyMissingDays() {
-            dataResolution = Time.OneDay;
+            dataResolution = Duration.ofDays( 1 );
             reference = new DateTime(2015, 6, 25);
             data = new BaseData[]
             {
                 // thurs 6/25
-                new TradeBar{Value = 0, Time = reference, Period = Time.OneDay},
+                new TradeBar{Value = 0, Time = reference, Period = Duration.ofDays( 1 )},
                 // fri 6/26
-                new TradeBar{Value = 1, Time = reference.AddDays(5), Period = Time.OneDay},
+                new TradeBar{Value = 1, Time = reference.AddDays(5), Period = Duration.ofDays( 1 )},
             }.ToList();
             enumerator = data.GetEnumerator();
 
@@ -590,7 +590,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
         [Test]
         public void FillsForwardMissingDaysOnFillForwardResolutionOfAnHour() {
-            dataResolution = Time.OneDay;
+            dataResolution = Duration.ofDays( 1 );
             reference = new DateTime(2015, 6, 23);
             data = new BaseData[]
             {
@@ -610,7 +610,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             int hourlyBars = 0;
             while (fillForwardEnumerator.MoveNext()) {
                 Console.WriteLine(fillForwardEnumerator.Current.EndTime);
-                if( fillForwardEnumerator.Current.Time.TimeOfDay == Duration.ZERO) {
+                if( fillForwardEnumerator.Current.Time Extensions.timeOfDay(  ) == Duration.ZERO) {
                     dailyBars++;
                 }
                 else

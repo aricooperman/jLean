@@ -1200,7 +1200,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         */
         private static boolean IsWithinScheduledServerResetTimes() {
             boolean result;
-            time = DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork);
+            time = DateTime.UtcNow Extensions.convertFromUtc(TimeZones.NewYork);
             
             // don't kill algos on Saturdays if we don't have a connection
             if( time.DayOfWeek == DayOfWeek.Saturday) {
@@ -1208,7 +1208,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             }
             else
             {
-                timeOfDay = time.TimeOfDay;
+                timeOfDay = time Extensions.timeOfDay(  );
                 // from 11:45 -> 12:45 is the IB reset times, we'll go from 11:00pm->1:30am for safety margin
                 result = timeOfDay > new TimeSpan(23, 0, 0) || timeOfDay < new TimeSpan(1, 30, 0);
             }
@@ -1219,7 +1219,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         }
 
         private DateTime GetBrokerTime() {
-            return DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork).Add(_brokerTimeDiff);
+            return DateTime.UtcNow Extensions.convertFromUtc(TimeZones.NewYork).Add(_brokerTimeDiff);
         }
         void HandleBrokerTime(object sender, IB.CurrentTimeEventArgs e) {
             // keep track of csynchronizeddrift

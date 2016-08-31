@@ -40,9 +40,10 @@ import com.quantconnect.lean.data.SubscriptionDataConfig;
 import com.quantconnect.lean.data.SubscriptionDataSource;
 import com.quantconnect.lean.util.LeanData;
 
-
+/**
  * TradeBar class for second and minute resolution data: 
  * An OHLC implementation of the QuantConnect BaseData class with parameters for candles.
+ */
 public class TradeBar extends BaseData implements IBar {
     // scale factor used in QC equity/forex data files
     private static final BigDecimal _scaleFactor = BigDecimal.ONE.divide( BigDecimal.valueOf( 10000 ) );
@@ -54,10 +55,14 @@ public class TradeBar extends BaseData implements IBar {
     private BigDecimal high;
     private BigDecimal low;
 
+    /**
      * Volume:
+     */
     private long volume;
     
+    /**
      * The period of this trade bar, (second, minute, daily, ect...)
+     */
     private Duration period;
     
     public long getVolume() {
@@ -68,7 +73,9 @@ public class TradeBar extends BaseData implements IBar {
         volume = v;
     }
 
+    /**
      * Opening price of the bar: Defined as the price at the start of the time period.
+     */
     public BigDecimal getOpen() {
         return open;
     }
@@ -78,7 +85,9 @@ public class TradeBar extends BaseData implements IBar {
         open = value;
     }
 
+    /**
      * High price of the TradeBar during the time period.
+     */
     public BigDecimal getHigh() {
         return high;
     }
@@ -88,7 +97,9 @@ public class TradeBar extends BaseData implements IBar {
         high = value;
     }
 
+    /**
      * Low price of the TradeBar during the time period.
+     */
     public BigDecimal getLow() {
         return low; 
     }
@@ -98,7 +109,9 @@ public class TradeBar extends BaseData implements IBar {
         low = value;
     }
 
+    /**
      * Closing price of the TradeBar. Defined as the price at Start Time + TimeSpan.
+     */
     public BigDecimal getClose() {
         return getValue();
     }
@@ -108,7 +121,9 @@ public class TradeBar extends BaseData implements IBar {
         setValue( value );
     }
 
+    /**
      * The closing time of this bar, computed via the Time and Period
+     */
     public LocalDateTime getEndTime() {
         return getTime().plus( period );
     }
@@ -117,7 +132,6 @@ public class TradeBar extends BaseData implements IBar {
         period = Duration.between( getTime(), value ); 
     }
 
-    
     public Duration getPeriod() {
         return period;
     }
@@ -135,7 +149,9 @@ public class TradeBar extends BaseData implements IBar {
     //In Base Class: DateTime Of this TradeBar
     //public DateTime Time;
 
+    /**
      * Default initializer to setup an empty tradebar.
+     */
     public TradeBar() {
         setSymbol( Symbol.EMPTY );
         setDataType( MarketDataType.TradeBar );
@@ -143,9 +159,11 @@ public class TradeBar extends BaseData implements IBar {
         initialized = new AtomicBoolean( false );
     }
 
+    /**
      * Cloner constructor for implementing fill forward. 
      * Return a new instance with the same values as this original.
      * @param original Original tradebar object we seek to clone
+     */
     public TradeBar( TradeBar original ) {
         setDataType( MarketDataType.TradeBar );
         setTime( original.getTime() );
@@ -160,6 +178,21 @@ public class TradeBar extends BaseData implements IBar {
         this.initialized = new AtomicBoolean( true );
     }
 
+    /**
+     * Initialize Trade Bar with OHLC Values:
+     * @param time DateTime Timestamp of the bar
+     * @param symbol Market MarketType Symbol
+     * @param open Decimal Opening Price
+     * @param high Decimal High Price of this bar
+     * @param low Decimal Low Price of this bar
+     * @param close Decimal Close price of this bar
+     * @param volume Volume sum over day
+     */
+    public TradeBar( LocalDateTime time, Symbol symbol, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close, long volume ) {
+        this( time, symbol, open, high, low, close, volume, null );
+    }
+    
+    /**
      * Initialize Trade Bar with OHLC Values:
      * @param time DateTime Timestamp of the bar
      * @param symbol Market MarketType Symbol
@@ -169,10 +202,7 @@ public class TradeBar extends BaseData implements IBar {
      * @param close Decimal Close price of this bar
      * @param volume Volume sum over day
      * @param period The period of this bar, specify null for default of 1 minute
-    public TradeBar( LocalDateTime time, Symbol symbol, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close, long volume ) {
-        this( time, symbol, open, high, low, close, volume, null );
-    }
-    
+     */
     public TradeBar( LocalDateTime time, Symbol symbol, BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close, long volume, Duration period ) {
         setTime( time );
         setSymbol( symbol );
@@ -187,12 +217,14 @@ public class TradeBar extends BaseData implements IBar {
         this.initialized = new AtomicBoolean( true );
     }
 
+    /**
      * TradeBar Reader: Fetch the data from the QC storage and feed it line by line into the engine.
      * @param config Symbols, Resolution, DataType, 
      * @param line Line from the data file requested
      * @param date Date of this reader request
      * @param isLiveMode true if we're in live mode, false for backtesting mode
-    @returns Enumerable iterator for returning each line of the required data.
+     * @returns Enumerable iterator for returning each line of the required data.
+     */
     @Override
     public BaseData reader( SubscriptionDataConfig config, String line, LocalDate date, boolean isLiveMode ) {
         //Handle end of file:
@@ -229,7 +261,9 @@ public class TradeBar extends BaseData implements IBar {
         return tradeBar;
     }
 
+    /**
      * Parses the trade bar data line assuming QC data formats
+     */
     public static TradeBar parse( SubscriptionDataConfig config, String line, LocalDate baseDate ) {
         switch( config.securityType ) {
             case Equity:
@@ -245,12 +279,14 @@ public class TradeBar extends BaseData implements IBar {
         return null;
     }
 
+    /**
      * Parses equity trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
      * <typeparam name="T The requested output type, must derive from TradeBar</typeparam>
      * @param config Symbols, Resolution, DataType, 
      * @param line Line from the data file requested
      * @param date Date of this reader request
-    @returns 
+     * @returns
+     */ 
     public static <T extends TradeBar> T parseEquity( SubscriptionDataConfig config, String line, LocalDate date, Class<T> clazz ) {
         T tradeBar;
         try {
@@ -280,21 +316,24 @@ public class TradeBar extends BaseData implements IBar {
         return tradeBar;
     }
 
+    /**
      * Parses equity trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
      * @param config Symbols, Resolution, DataType, 
      * @param line Line from the data file requested
      * @param date Date of this reader request
-    @returns 
+     * @returns
+     */ 
     public static TradeBar parseEquity( SubscriptionDataConfig config, String line, LocalDate date ) {
         return parseEquity( config, line, date, TradeBar.class );
     }
 
+    /**
      * Parses forex trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
-     * <typeparam name="T The requested output type, must derive from TradeBar</typeparam>
      * @param config Symbols, Resolution, DataType, 
      * @param line Line from the data file requested
      * @param date The base data used to compute the time of the bar since the line specifies a milliseconds since midnight
-    @returns 
+     * @returns
+     */ 
     public static <T extends TradeBar> T parseForex( SubscriptionDataConfig config, String line, LocalDate date, Class<T> clazz ) {
         T tradeBar;
         try {
@@ -324,21 +363,24 @@ public class TradeBar extends BaseData implements IBar {
         return tradeBar;
     }
 
+    /**
      * Parses forex trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
      * @param config Symbols, Resolution, DataType, 
      * @param line Line from the data file requested
      * @param date The base data used to compute the time of the bar since the line specifies a milliseconds since midnight
-    @returns 
+     * @returns
+     */ 
     public static TradeBar parseForex( SubscriptionDataConfig config, String line, LocalDate date ) {
         return parseForex( config, line, date, TradeBar.class );
     }
 
+    /**
      * Parses CFD trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
-     * <typeparam name="T The requested output type, must derive from TradeBar</typeparam>
      * @param config Symbols, Resolution, DataType, 
      * @param line Line from the data file requested
      * @param date The base data used to compute the time of the bar since the line specifies a milliseconds since midnight
-    @returns 
+     * @returns
+     */ 
     public static <T extends TradeBar> T parseCfd( SubscriptionDataConfig config, String line, LocalDate date, Class<T> clazz ) {
         // CFD has the same data format as Forex
         return parseForex( config, line, date, clazz );
@@ -346,21 +388,22 @@ public class TradeBar extends BaseData implements IBar {
 
     /**
      * Parses CFD trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
-    */
      * @param config Symbols, Resolution, DataType, 
      * @param line Line from the data file requested
      * @param date The base data used to compute the time of the bar since the line specifies a milliseconds since midnight
-    @returns 
+     * @returns 
+     */
     public static TradeBar parseCfd( SubscriptionDataConfig config, String line, LocalDate date ) {
         return parseCfd( config, line, date, TradeBar.class );
     }
 
+    /**
      * Parses CFD trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
-     * <typeparam name="T The requested output type, must derive from TradeBar</typeparam>
      * @param config Symbols, Resolution, DataType, 
      * @param line Line from the data file requested
      * @param date The base data used to compute the time of the bar since the line specifies a milliseconds since midnight
-    @returns 
+     * @returns
+     */ 
     public static <T extends TradeBar> T parseOption( SubscriptionDataConfig config, String line, LocalDate date, Class<T> clazz ) {
         T tradeBar;
         try {
@@ -390,15 +433,18 @@ public class TradeBar extends BaseData implements IBar {
         return tradeBar;
     }
 
+    /**
      * Parses CFD trade bar data into the specified tradebar type, useful for custom types with OHLCV data deriving from TradeBar
      * @param config Symbols, Resolution, DataType, 
      * @param line Line from the data file requested
      * @param date The base data used to compute the time of the bar since the line specifies a milliseconds since midnight
-    @returns 
+     * @returns
+     */ 
     public static TradeBar parseOption( SubscriptionDataConfig config, String line, LocalDate date ) {
         return parseOption( config, line, date, TradeBar.class );
     }
 
+    /**
      * Update the tradebar - build the bar from this pricing information:
      * @param lastTrade This trade price
      * @param bidPrice Current bid price (not used) 
@@ -406,6 +452,7 @@ public class TradeBar extends BaseData implements IBar {
      * @param volume Volume of this trade
      * @param bidSize The size of the current bid, if available
      * @param askSize The size of the current ask, if available
+     */
     @Override
     public void update( BigDecimal lastTrade, BigDecimal bidPrice, BigDecimal askPrice, BigDecimal volume, BigDecimal bidSize, BigDecimal askSize ) {
         initialize( lastTrade );
@@ -424,11 +471,11 @@ public class TradeBar extends BaseData implements IBar {
     /**
      * Get Source for Custom Data File
      * >> What source file location would you prefer for each type of usage:
-    */
      * @param config Configuration object
      * @param date Date of this source request if source spread across multiple files
      * @param isLiveMode true if we're in live mode, false for backtesting mode
-    @returns String source location of the file
+     * @returns String source location of the file
+     */
     @Override
     public SubscriptionDataSource getSource( SubscriptionDataConfig config, LocalDate date, boolean isLiveMode ) {
         if( isLiveMode)
@@ -441,13 +488,17 @@ public class TradeBar extends BaseData implements IBar {
         return new SubscriptionDataSource( source, SubscriptionTransportMedium.LocalFile, FileFormat.Csv );
     }
 
+    /**
      * Return a new instance clone of this object
+     */
     public BaseData clone() {
         return (BaseData)super.clone();
     }
 
+    /**
      * Initializes this bar with a first data point
      * @param value The seed value for this bar
+     */
     private void initialize( BigDecimal value ) {
         if( initialized.compareAndSet( false, true ) ) {
             open = value;

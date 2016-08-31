@@ -33,16 +33,16 @@ public class SubscriptionDataSource {
     public final SubscriptionTransportMedium transportMedium;
 
     /// Initializes a new instance of the <see cref="SubscriptionDataSource"/> class.
-    /// <param name="source The subscription's data source location</param>
-    /// <param name="transportMedium The transport medium to be used to retrieve the subscription's data from the source</param>
+    /// <param name="source The subscription's data source location
+    /// <param name="transportMedium The transport medium to be used to retrieve the subscription's data from the source
     public SubscriptionDataSource( Path source, SubscriptionTransportMedium transportMedium ) {
         this( source, transportMedium, FileFormat.Csv );
     }
 
     /// Initializes a new instance of the <see cref="SubscriptionDataSource"/> class.
-    /// <param name="source The subscription's data source location</param>
-    /// <param name="format The format of the data within the source</param>
-    /// <param name="transportMedium The transport medium to be used to retrieve the subscription's data from the source</param>
+    /// <param name="source The subscription's data source location
+    /// <param name="format The format of the data within the source
+    /// <param name="transportMedium The transport medium to be used to retrieve the subscription's data from the source
     public SubscriptionDataSource( Path source, SubscriptionTransportMedium transportMedium, FileFormat format ) {
         this.source = source;
         this.format = format;
@@ -53,7 +53,7 @@ public class SubscriptionDataSource {
     /// <returns>
     /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
     /// </returns>
-    /// <param name="other An object to compare with this object.</param>
+    /// <param name="other An object to compare with this object.
     public boolean equals( SubscriptionDataSource other)  {
         if( null == other ) return false;
         if( this == other ) return true;
@@ -64,7 +64,7 @@ public class SubscriptionDataSource {
     /// <returns>
     /// true if the specified object  is equal to the current object; otherwise, false.
     /// </returns>
-    /// <param name="obj The object to compare with the current object. </param><filterpriority>2</filterpriority>
+    /// <param name="obj The object to compare with the current object. <filterpriority>2</filterpriority>
     public boolean equals( Object obj ) {
         if( null == obj ) return false;
         if( this == obj ) return true;
@@ -84,8 +84,8 @@ public class SubscriptionDataSource {
 //    /// <summary>
 //    /// Indicates whether the current object is equal to another object of the same type.
 //    /// </summary>
-//    /// <param name="left The <see cref="SubscriptionDataSource"/> instance on the left of the operator</param>
-//    /// <param name="right The <see cref="SubscriptionDataSource"/> instance on the right of the operator</param>
+//    /// <param name="left The <see cref="SubscriptionDataSource"/> instance on the left of the operator
+//    /// <param name="right The <see cref="SubscriptionDataSource"/> instance on the right of the operator
 //    /// <returns>True if the two instances are considered equal, false otherwise</returns>
 //    public static boolean operator ==(SubscriptionDataSource left, SubscriptionDataSource right)
 //    {
@@ -95,8 +95,8 @@ public class SubscriptionDataSource {
 //    /// <summary>
 //    /// Indicates whether the current object is not equal to another object of the same type.
 //    /// </summary>
-//    /// <param name="left The <see cref="SubscriptionDataSource"/> instance on the left of the operator</param>
-//    /// <param name="right The <see cref="SubscriptionDataSource"/> instance on the right of the operator</param>
+//    /// <param name="left The <see cref="SubscriptionDataSource"/> instance on the left of the operator
+//    /// <param name="right The <see cref="SubscriptionDataSource"/> instance on the right of the operator
 //    /// <returns>True if the two instances are not considered equal, false otherwise</returns>
 //    public static boolean operator !=(SubscriptionDataSource left, SubscriptionDataSource right)
 //    {

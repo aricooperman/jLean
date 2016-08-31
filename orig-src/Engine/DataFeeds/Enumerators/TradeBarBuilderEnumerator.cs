@@ -58,7 +58,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             if( !_queue.TryPeek(out working)) {
                 // the consumer took the working bar, or time ticked over into next bar
                 marketPrice = data.Value;
-                currentLocalTime = _timeProvider.GetUtcNow().ConvertFromUtc(_timeZone);
+                currentLocalTime = _timeProvider.GetUtcNow() Extensions.convertFromUtc(_timeZone);
                 barStartTime = currentLocalTime.RoundDown(_barSize);
                 working = new TradeBar(barStartTime, data.Symbol, marketPrice, marketPrice, marketPrice, marketPrice, qty, _barSize);
                 _queue.Enqueue(working);
@@ -84,7 +84,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             TradeBar working;
 
             // check if there's a bar there and if its time to pull it off (i.e, done aggregation)
-            if( _queue.TryPeek(out working) && working.EndTime.ConvertToUtc(_timeZone) <= _timeProvider.GetUtcNow()) {
+            if( _queue.TryPeek(out working) && working.EndTime Extensions.convertToUtc(_timeZone) <= _timeProvider.GetUtcNow()) {
                 // working is good to go, set it to current
                 Current = working;
                 // remove working from the queue so we can start aggregating the next bar

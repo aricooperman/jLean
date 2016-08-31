@@ -156,7 +156,7 @@ package com.quantconnect.lean.Data.UniverseSelection
             // only remove members on day changes, this prevents us from needing to
             // fast forward contracts continuously as price moves and out filtered
             // contracts change thoughout the day
-            localTime = utcTime.ConvertFromUtc(security.Exchange.TimeZone);
+            localTime = utcTime Extensions.convertFromUtc(security.Exchange.TimeZone);
             if( localTime.Date != lastData.Time.Date) {
                 return true;
             }

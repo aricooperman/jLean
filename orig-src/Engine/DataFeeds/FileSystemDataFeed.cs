@@ -91,8 +91,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 switch (args.Action) {
                     case NotifyCollectionChangedAction.Add:
                         foreach (universe in args.NewItems.OfType<Universe>()) {
-                            start = _frontierUtc != DateTime.MinValue ? _frontierUtc : _algorithm.StartDate.ConvertToUtc(_algorithm.TimeZone);
-                            AddUniverseSubscription(universe, start, _algorithm.EndDate.ConvertToUtc(_algorithm.TimeZone));
+                            start = _frontierUtc != DateTime.MinValue ? _frontierUtc : _algorithm.StartDate Extensions.convertToUtc(_algorithm.TimeZone);
+                            AddUniverseSubscription(universe, start, _algorithm.EndDate Extensions.convertToUtc(_algorithm.TimeZone));
                         }
                         break;
 
@@ -109,8 +109,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         }
 
         private Subscription CreateSubscription(Universe universe, Security security, SubscriptionDataConfig config, DateTime startTimeUtc, DateTime endTimeUtc) {
-            localStartTime = startTimeUtc.ConvertFromUtc(security.Exchange.TimeZone);
-            localEndTime = endTimeUtc.ConvertFromUtc(security.Exchange.TimeZone);
+            localStartTime = startTimeUtc Extensions.convertFromUtc(security.Exchange.TimeZone);
+            localEndTime = endTimeUtc Extensions.convertFromUtc(security.Exchange.TimeZone);
 
             tradeableDates = Time.EachTradeableDayInTimeZone(security.Exchange.Hours, localStartTime, localEndTime, config.DataTimeZone, config.ExtendedMarketHours);
 
@@ -256,7 +256,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 // OffsetProvider exists to give forward marching mapping
 
                 // compute the initial frontier time
-                currentEndTimeUtc = current.EndTime.ConvertToUtc(subscription.TimeZone);
+                currentEndTimeUtc = current.EndTime Extensions.convertToUtc(subscription.TimeZone);
                 endTime = current.EndTime.Ticks - subscription.OffsetProvider.GetOffsetTicks(currentEndTimeUtc);
                 if( endTime < frontier.Ticks) {
                     frontier = new DateTime(endTime);
@@ -264,7 +264,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             }
 
             if( frontier == DateTime.MaxValue) {
-                frontier = _algorithm.StartDate.ConvertToUtc(_algorithm.TimeZone);
+                frontier = _algorithm.StartDate Extensions.convertToUtc(_algorithm.TimeZone);
             }
             return frontier;
         }
@@ -290,8 +290,8 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 security = new Security(exchangeHours, config, _algorithm.Portfolio.CashBook[CashBook.AccountCurrency], SymbolProperties.GetDefault(CashBook.AccountCurrency));
             }
 
-            localStartTime = startTimeUtc.ConvertFromUtc(security.Exchange.TimeZone);
-            localEndTime = endTimeUtc.ConvertFromUtc(security.Exchange.TimeZone);
+            localStartTime = startTimeUtc Extensions.convertFromUtc(security.Exchange.TimeZone);
+            localEndTime = endTimeUtc Extensions.convertFromUtc(security.Exchange.TimeZone);
 
             // define our data enumerator
             IEnumerator<BaseData> enumerator;

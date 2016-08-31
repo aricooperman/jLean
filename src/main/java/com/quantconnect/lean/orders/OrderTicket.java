@@ -16,11 +16,15 @@
 package com.quantconnect.lean.orders;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 import com.google.common.collect.ImmutableList;
@@ -37,7 +41,8 @@ import com.quantconnect.lean.securities.SecurityTransactionManager;
  * updated this ticket will also get updated
  */
 public final class OrderTicket {
-    private final Object _orderEventsLock = new Object();
+    
+    private final ReentrantLock _orderEventsLock = new ReentrantLock();
     private final Object _updateRequestsLock = new Object();
     private final Object _setCancelRequestLock = new Object();
 
@@ -51,7 +56,7 @@ public final class OrderTicket {
     private final int _orderId;
     private final List<OrderEvent> _orderEvents; 
     private final SubmitOrderRequest _submitRequest;
-    private final ManualResetEvent _orderStatusClosedEvent;
+    private final Condition /*ManualResetEvent*/ _orderStatusClosedEvent;
     private final LinkedList<UpdateOrderRequest> _updateRequests;
 
     // we pull this in to provide some behavior/simplicity to the ticket API
@@ -105,8 +110,8 @@ public final class OrderTicket {
      * Gets the total qantity filled for this ticket. If no fills have been processed
      * then this will return a value of zero.
      */
-    public BigDecimal getQuantityFilled() {
-        return BigDecimal.valueOf( _quantityFilled );
+    public int getQuantityFilled() {
+        return _quantityFilled;
     }
 
     /**
@@ -159,15 +164,15 @@ public final class OrderTicket {
      * Gets a list of all order events for this ticket
      */
     public ImmutableList<OrderEvent> getOrderEvents() {
-        synchronized(_orderEventsLock) {
+        synchronized( _orderEventsLock ) {
             return ImmutableList.copyOf( _orderEvents );
         }
     }
 
     /**
-     * Gets a wait handle that can be used to wait until this order has filled
+     * Gets a Condition that can be used to wait until this order has filled
     */
-    public WaitHandle getOrderClosed() {
+    public Condition getOrderClosed() {
         return _orderStatusClosedEvent;
     }
 
@@ -183,7 +188,7 @@ public final class OrderTicket {
 
         this._orderEvents = new ArrayList<OrderEvent>();
         this._updateRequests = new LinkedList<UpdateOrderRequest>();
-        this._orderStatusClosedEvent = new ManualResetEvent( false );
+        this._orderStatusClosedEvent = _orderEventsLock.newCondition(); // new ManualResetEvent( false );
     }
 
     /**
@@ -226,15 +231,15 @@ public final class OrderTicket {
      * @returns The <see cref="OrderResponse"/> from updating the order
      */
     public OrderResponse update( UpdateOrderFields fields ) {
-        _transactionManager.updateOrder( new UpdateOrderRequest( _transactionManager.UtcTime, _submitRequest.orderId, fields ) );
-        return _updateRequests.get( _updateRequests.size() - 1 ).getResponse();
+        _transactionManager.updateOrder( new UpdateOrderRequest( _transactionManager.getUtcTime(), _submitRequest.orderId, fields ) );
+        return _updateRequests.getLast().getResponse();
     }
 
     /**
      * Submits a new request to cancel this order
      */
     public OrderResponse cancel( String tag ) {
-        final CancelOrderRequest request = new CancelOrderRequest( _transactionManager.UtcTime, _orderId, tag );
+        final CancelOrderRequest request = new CancelOrderRequest( _transactionManager.getUtcTime(), _orderId, tag );
         _transactionManager.processRequest( request );
         return _cancelRequest.getResponse();
     }
@@ -259,45 +264,50 @@ public final class OrderTicket {
         if( _cancelRequest != null )
             return _cancelRequest;
         
-        lastUpdate = _updateRequests.LastOrDefault();
+        final UpdateOrderRequest lastUpdate = _updateRequests.peekLast();
         if( lastUpdate != null )
             return lastUpdate;
         
-        return SubmitRequest;
+        return getSubmitRequest();
     }
 
     /**
      * Adds an order event to this ticket
-    */
      * @param orderEvent The order event to be added
-    internal void AddOrderEvent(OrderEvent orderEvent) {
-        synchronized(_orderEventsLock) {
-            _orderEvents.Add(orderEvent);
-            if( orderEvent.FillQuantity != 0) {
+     */
+    void addOrderEvent( OrderEvent orderEvent ) {
+        _orderEventsLock.lock();
+        try {
+            _orderEvents.add( orderEvent );
+            if( orderEvent.fillQuantity != 0 ) {
                 // keep running totals of quantity filled and the average fill price so we
                 // don't need to compute these on demand
-                _quantityFilled += orderEvent.FillQuantity;
-                quantityWeightedFillPrice = _orderEvents.Where(x -> x.Status.IsFill()).Sum(x -> x.AbsoluteFillQuantity*x.FillPrice);
-                _averageFillPrice = quantityWeightedFillPrice/Math.Abs(_quantityFilled);
+                _quantityFilled += orderEvent.fillQuantity;
+                final BigDecimal quantityWeightedFillPrice = _orderEvents.stream()
+                        .filter( x -> x.status.isFill() )
+                        .map( x -> x.fillPrice.multiply( BigDecimal.valueOf( x.getAbsoluteFillQuantity() ) ) )
+                        .reduce( BigDecimal.ZERO, BigDecimal::add );
+                _averageFillPrice = quantityWeightedFillPrice.divide( BigDecimal.valueOf( Math.abs( _quantityFilled ) ), RoundingMode.HALF_UP );
             }
-        }
-
-        // fire the wait handle indicating this order is closed
-        if( orderEvent.Status.IsClosed()) {
-            _orderStatusClosedEvent.Set();
+        
+            // fire the wait handle indicating this order is closed
+            if( orderEvent.status.isClosed() )
+                _orderStatusClosedEvent.signalAll(); //.Set();
+        } 
+        finally {
+            _orderEventsLock.unlock();
         }
     }
 
     /**
      * Updates the internal order object with the current state
-    */
      * @param order The order
-    internal void SetOrder(Order order) {
-        if( _order != null && _order.Id != order.Id) {
-            throw new IllegalArgumentException( "Order id mismatch");
-        }
+     */
+    void setOrder( Order order ) {
+        if( _order != null && _order.id != order.id )
+            throw new IllegalArgumentException( "Order id mismatch" );
 
-        _order = order;
+        this._order = order;
     }
 
     /**
@@ -337,11 +347,11 @@ public final class OrderTicket {
 
     /**
      * Creates a new <see cref="OrderTicket"/> that represents trying to cancel an order for which no ticket exists
-    */
-    public static OrderTicket InvalidCancelOrderId(SecurityTransactionManager transactionManager, CancelOrderRequest request) {
-        submit = new SubmitOrderRequest(OrderType.Market, SecurityType.Base, Symbol.Empty, 0, 0, 0, DateTime.MaxValue, string.Empty);
-        submit.SetResponse(OrderResponse.UnableToFindOrder(request));
-        ticket = new OrderTicket(transactionManager, submit);
+     */
+    public static OrderTicket invalidCancelOrderId( SecurityTransactionManager transactionManager, CancelOrderRequest request ) {
+        SubmitOrderRequest submit = new SubmitOrderRequest( OrderType.Market, SecurityType.Base, Symbol.EMPTY, 0, BigDecimal.ZERO, BigDecimal.ZERO, LocalDateTime.MAX, null );
+        submit.setResponse( OrderResponse.unableToFindOrder( request ) );
+        ticket = new OrderTicket( transactionManager, submit );
         request.SetResponse(OrderResponse.UnableToFindOrder(request));
         ticket.TrySetCancelRequest(request);
         ticket._orderStatusOverride = OrderStatus.Invalid;
@@ -407,15 +417,16 @@ public final class OrderTicket {
      * an error, where it will return the integer value of the <see cref="OrderResponseErrorCode"/> from
      * the most recent response
     */
-    public static implicit operator int(OrderTicket ticket) {
-        response = ticket.GetMostRecentOrderResponse();
-        if( response != null && response.IsError) {
-            return (int) response.ErrorCode;
-        }
-        return ticket.OrderId;
+    public int getOrderIdAsInt() {
+        final OrderResponse response = getMostRecentOrderResponse();
+        if( response != null && response.isError() )
+            return response.getErrorCode().getCode();
+        
+        return getOrderId();
     }
 
 
+    @SuppressWarnings("unchecked")
     private static <T extends Order> BigDecimal accessOrder( OrderTicket ticket, OrderField field, Function<T,BigDecimal> orderSelector, Function<SubmitOrderRequest,BigDecimal> requestSelector ) {
         final Order order = ticket._order;
         if( order == null )

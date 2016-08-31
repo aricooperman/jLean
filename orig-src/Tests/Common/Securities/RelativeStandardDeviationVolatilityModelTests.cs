@@ -30,7 +30,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             static final int periods = 3;
             periodSpan = Time.OneMinute;
             reference = new DateTime(2016, 04, 06, 12, 0, 0);
-            referenceUtc = reference.ConvertToUtc(TimeZones.NewYork);
+            referenceUtc = reference Extensions.convertToUtc(TimeZones.NewYork);
             timeKeeper = new TimeKeeper(referenceUtc);
             config = new SubscriptionDataConfig(typeof (TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, false, false);
             security = new Security(SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork), config, new Cash( "USD", 0, 0), SymbolProperties.GetDefault( "USD"));

@@ -82,7 +82,7 @@ package com.quantconnect.lean.Securities
                     //Update Vehicle Profit Tracking:
                     security.Holdings.AddNewProfit(lastTradeProfit);
                     security.Holdings.SetLastTradeProfit(lastTradeProfit);
-                    portfolio.AddTransactionRecord(security.LocalTime.ConvertToUtc(security.Exchange.TimeZone), lastTradeProfit - 2*feeThisOrder);
+                    portfolio.AddTransactionRecord(security.LocalTime Extensions.convertToUtc(security.Exchange.TimeZone), lastTradeProfit - 2*feeThisOrder);
                 }
 
                 //UPDATE HOLDINGS QUANTITY, AVG PRICE:

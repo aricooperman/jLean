@@ -1029,7 +1029,7 @@ package com.quantconnect.lean.Algorithm
                 // this is only or backtesting
                 if( !LiveMode) {
                     _startDate = start;
-                    SetDateTime(_startDate.ConvertToUtc(TimeZone));
+                    SetDateTime(_startDate Extensions.convertToUtc(TimeZone));
                 }
             } 
             else

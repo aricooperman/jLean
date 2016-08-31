@@ -159,7 +159,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         }
 
         public static SecurityExchangeHours CreateForexSecurityExchangeHours() {
-            sunday = new LocalMarketHours(DayOfWeek.Sunday, new TimeSpan(17, 0, 0), Duration.ofTicks(Time.OneDay.Ticks - 1));
+            sunday = new LocalMarketHours(DayOfWeek.Sunday, new TimeSpan(17, 0, 0), Duration.ofTicks(Duration.ofDays( 1 ).Ticks - 1));
             monday = LocalMarketHours.OpenAllDay(DayOfWeek.Monday);
             tuesday = LocalMarketHours.OpenAllDay(DayOfWeek.Tuesday);
             wednesday = LocalMarketHours.OpenAllDay(DayOfWeek.Wednesday);

@@ -14,22 +14,30 @@
  *
 */
 
-//using System.Reflection;
-//using QuantConnect.Configuration;
-
 package com.quantconnect.lean;
 
 import org.apache.commons.lang3.StringUtils;
 
 import com.quantconnect.lean.configuration.Config;
 
+/**
  * Provides application level constant values
+ */
 public class Globals {
+
+    /**
      * The directory used for storing downloaded remote files
+     */
     public static final String CACHE = "./cache/data";
+    
+    /**
      * The root directory of the data folder for this application
+     */
     private static String dataFolder;
+    
+    /**
      * The version of lean
+     */
     private static String version;
 
     static {

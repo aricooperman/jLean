@@ -44,7 +44,7 @@ package com.quantconnect.lean.Tests.Common.Orders
             static final BigDecimal priceMinusDelta = price - delta;
             tz = TimeZones.NewYork;
 
-            time = new DateTime(2016, 2, 4, 16, 0, 0).ConvertToUtc(tz);
+            time = new DateTime(2016, 2, 4, 16, 0, 0) Extensions.convertToUtc(tz);
 
             equity = new Equity(SecurityExchangeHours.AlwaysOpen(tz), new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Minute, tz, tz, true, false, false), new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
             equity.SetMarketPrice(new Tick {Value = price});

@@ -37,7 +37,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             int count = 0;
             foreach (time in times) {
                 count++;
-                Assert.AreEqual(Duration.ofHours(12), time.TimeOfDay);
+                Assert.AreEqual(Duration.ofHours(12), time Extensions.timeOfDay(  ));
             }
             Assert.AreEqual(1, count);
         }
@@ -51,7 +51,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             int count = 0;
             foreach (time in times) {
                 count++;
-                Assert.AreEqual(Duration.ofHours(12+5), time.TimeOfDay);
+                Assert.AreEqual(Duration.ofHours(12+5), time Extensions.timeOfDay(  ));
             }
             Assert.AreEqual(1, count);
         }
@@ -65,7 +65,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             int count = 0;
             foreach (time in times) {
                 count++;
-                Assert.AreEqual(Duration.ofHours(9.5 + 5), time.TimeOfDay);
+                Assert.AreEqual(Duration.ofHours(9.5 + 5), time Extensions.timeOfDay(  ));
             }
             Assert.AreEqual(1, count);
         }
@@ -79,7 +79,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             int count = 0;
             foreach (time in times) {
                 count++;
-                Assert.AreEqual(Duration.ofHours(9.5 + 5 + .5), time.TimeOfDay);
+                Assert.AreEqual(Duration.ofHours(9.5 + 5 + .5), time Extensions.timeOfDay(  ));
             }
             Assert.AreEqual(1, count);
         }
@@ -93,7 +93,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             int count = 0;
             foreach (time in times) {
                 count++;
-                Assert.AreEqual(Duration.ofHours(4 + 5), time.TimeOfDay);
+                Assert.AreEqual(Duration.ofHours(4 + 5), time Extensions.timeOfDay(  ));
             }
             Assert.AreEqual(1, count);
         }
@@ -107,7 +107,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             int count = 0;
             foreach (time in times) {
                 count++;
-                Assert.AreEqual(Duration.ofHours(4 + 5 + .5), time.TimeOfDay);
+                Assert.AreEqual(Duration.ofHours(4 + 5 + .5), time Extensions.timeOfDay(  ));
             }
             Assert.AreEqual(1, count);
         }
@@ -121,7 +121,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             int count = 0;
             foreach (time in times) {
                 count++;
-                Assert.AreEqual(Duration.ofHours(16 + 5), time.TimeOfDay);
+                Assert.AreEqual(Duration.ofHours(16 + 5), time Extensions.timeOfDay(  ));
             }
             Assert.AreEqual(1, count);
         }
@@ -135,7 +135,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             int count = 0;
             foreach (time in times) {
                 count++;
-                Assert.AreEqual(Duration.ofHours(16 + 5 - .5), time.TimeOfDay);
+                Assert.AreEqual(Duration.ofHours(16 + 5 - .5), time Extensions.timeOfDay(  ));
             }
             Assert.AreEqual(1, count);
         }
@@ -149,7 +149,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             int count = 0;
             foreach (time in times) {
                 count++;
-                Assert.AreEqual(Duration.ofHours((20 + 5)%24), time.TimeOfDay);
+                Assert.AreEqual(Duration.ofHours((20 + 5)%24), time Extensions.timeOfDay(  ));
             }
             Assert.AreEqual(1, count);
         }
@@ -163,7 +163,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             int count = 0;
             foreach (time in times) {
                 count++;
-                Assert.AreEqual(Duration.ofHours((20 + 5 - .5)%24), time.TimeOfDay);
+                Assert.AreEqual(Duration.ofHours((20 + 5 - .5)%24), time Extensions.timeOfDay(  ));
             }
             Assert.AreEqual(1, count);
         }

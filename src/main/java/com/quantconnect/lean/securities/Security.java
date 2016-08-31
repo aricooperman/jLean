@@ -35,15 +35,6 @@ import com.quantconnect.lean.Global;
 import com.quantconnect.lean.LocalTimeKeeper;
 import com.quantconnect.lean.Symbol;
 
-//using System.Linq;
-//using QuantConnect.Data;
-//using QuantConnect.Orders.Fees;
-//using QuantConnect.Orders.Fills;
-//using QuantConnect.Orders.Slippage;
-//using QuantConnect.Securities.Equity;
-//using QuantConnect.Securities.Forex;
-//using QuantConnect.Securities.Interfaces;
-
 /**
  * A base vehicle properties class for providing a common interface to all assets in QuantConnect.
  * 
@@ -356,7 +347,7 @@ public class Security {
         this( config,
                 quoteCurrency,
                 symbolProperties,
-                new SecurityExchange(exchangeHours),
+                new SecurityExchange( exchangeHours ),
                 new SecurityCache(),
                 new SecurityPortfolioModel(),
                 new ImmediateFillModel(),

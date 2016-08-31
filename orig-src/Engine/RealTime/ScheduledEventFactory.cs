@@ -61,12 +61,12 @@ package com.quantconnect.lean.Lean.Engine.RealTime
          * @param currentUtcTime Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.
         @returns The new <see cref="ScheduledEvent"/> that will fire near market close each tradeable dat
         public static ScheduledEvent EveryAlgorithmEndOfDay(IAlgorithm algorithm, IResultHandler resultHandler, DateTime start, DateTime end, Duration endOfDayDelta, DateTime? currentUtcTime = null ) {
-            if( endOfDayDelta >= Time.OneDay) {
+            if( endOfDayDelta >= Duration.ofDays( 1 )) {
                 throw new IllegalArgumentException( "Delta must be less than a day", "endOfDayDelta");
             }
 
             // set up an event to fire every tradeable date for the algorithm as a whole
-            eodEventTime = Time.OneDay.Subtract(endOfDayDelta);
+            eodEventTime = Duration.ofDays( 1 ).Subtract(endOfDayDelta);
 
             // create enumerable of end of day in algorithm's time zone
             times =
@@ -75,7 +75,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
                 // define the time of day we want the event to fire, a little before midnight
                 let eventTime = date + eodEventTime
                 // convert the event time into UTC
-                let eventUtcTime = eventTime.ConvertToUtc(algorithm.TimeZone)
+                let eventUtcTime = eventTime Extensions.convertToUtc(algorithm.TimeZone)
                 // perform filter to verify it's not before the current time
                 where !currentUtcTime.HasValue || eventUtcTime > currentUtcTime.Value
                 select eventUtcTime;
@@ -105,7 +105,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
          * @param currentUtcTime Specfies the current time in UTC, before which, no events will be scheduled. Specify null to skip this filter.
         @returns The new <see cref="ScheduledEvent"/> that will fire near market close each tradeable dat
         public static ScheduledEvent EverySecurityEndOfDay(IAlgorithm algorithm, IResultHandler resultHandler, Security security, DateTime start, DateTime end, Duration endOfDayDelta, DateTime? currentUtcTime = null ) {
-            if( endOfDayDelta >= Time.OneDay) {
+            if( endOfDayDelta >= Duration.ofDays( 1 )) {
                 throw new IllegalArgumentException( "Delta must be less than a day", "endOfDayDelta");
             }
 
@@ -119,7 +119,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
                 // define the time of day we want the event to fire before marketclose
                 let eventTime = marketClose.Subtract(endOfDayDelta)
                 // convert the event time into UTC
-                let eventUtcTime = eventTime.ConvertToUtc(security.Exchange.TimeZone)
+                let eventUtcTime = eventTime Extensions.convertToUtc(security.Exchange.TimeZone)
                 // perform filter to verify it's not before the current time
                 where !currentUtcTime.HasValue || eventUtcTime > currentUtcTime
                 select eventUtcTime;

@@ -412,7 +412,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
             }
 
             // we want to sync up our cash balance before market open
-            if( _algorithm.LiveMode && !_syncedLiveBrokerageCashToday && DateTime.Now.TimeOfDay >= _liveBrokerageCashSyncTime) {
+            if( _algorithm.LiveMode && !_syncedLiveBrokerageCashToday && DateTime.Now Extensions.timeOfDay(  ) >= _liveBrokerageCashSyncTime) {
                 try
                 {
                     // only perform cash syncs if we haven't had a fill for at least 10 seconds

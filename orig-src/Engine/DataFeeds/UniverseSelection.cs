@@ -131,7 +131,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     }
 
                     // add the new subscriptions to the data feed
-                    if( _dataFeed.AddSubscription(universe, security, config, dateTimeUtc, _algorithm.EndDate.ConvertToUtc(_algorithm.TimeZone))) {
+                    if( _dataFeed.AddSubscription(universe, security, config, dateTimeUtc, _algorithm.EndDate Extensions.convertToUtc(_algorithm.TimeZone))) {
                         addedSubscription = true;
                     }
                 }
@@ -146,7 +146,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 addedSecurities = _algorithm.Portfolio.CashBook.EnsureCurrencyDataFeeds(_algorithm.Securities, _algorithm.SubscriptionManager, _marketHoursDatabase, _symbolPropertiesDatabase, _algorithm.BrokerageModel.DefaultMarkets);
                 foreach (security in addedSecurities) {
                     // assume currency feeds are always one subscription per, these are typically quote subscriptions
-                    _dataFeed.AddSubscription(universe, security, security.Subscriptions.First(), dateTimeUtc, _algorithm.EndDate.ConvertToUtc(_algorithm.TimeZone));
+                    _dataFeed.AddSubscription(universe, security, security.Subscriptions.First(), dateTimeUtc, _algorithm.EndDate Extensions.convertToUtc(_algorithm.TimeZone));
                 }
             }
 

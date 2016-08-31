@@ -72,7 +72,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             }
 
             // the underlying enumerator returned null, check to see if time has passed for fill fowarding
-            currentLocalTime = _timeProvider.GetUtcNow().ConvertFromUtc(Exchange.TimeZone);
+            currentLocalTime = _timeProvider.GetUtcNow() Extensions.convertFromUtc(Exchange.TimeZone);
             if( nextExpectedDataPointTime <= currentLocalTime) {
                 clone = previous.Clone(true);
                 clone.Time = previous.Time + fillForwardResolution;

@@ -50,7 +50,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             timeProvider = new RealTimeProvider();
             dataQueueHandler = new FuncDataQueueHandler(fdqh =>
             {
-                time = timeProvider.GetUtcNow().ConvertFromUtc(TimeZones.EasternStandard);
+                time = timeProvider.GetUtcNow() Extensions.convertFromUtc(TimeZones.EasternStandard);
                 if( time == lastTime) return Enumerable.Empty<BaseData>();
                 lastTime = time;
                  return Enumerable.Range(0, 9).Select(x -> new Tick(time.AddMilliseconds(x*100), Symbols.EURUSD, 1.3m, 1.2m, 1.3m));
@@ -257,11 +257,11 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
                 count++;
                 receivedData = true;
-                time = ts.Slice.Min(x -> x.Value.EndTime).ConvertToUtc(TimeZones.NewYork);
+                time = ts.Slice.Min(x -> x.Value.EndTime) Extensions.convertToUtc(TimeZones.NewYork);
                 // make sure within 2 seconds
                 delta = DateTime.UtcNow.Subtract(time);
                 //Assert.IsTrue(delta <= Duration.ofSeconds(2), delta.toString());
-                Console.WriteLine( "Count: " + ts.Slice.Count + "Data time: " + time.ConvertFromUtc(TimeZones.NewYork) + " Delta (ms): "
+                Console.WriteLine( "Count: " + ts.Slice.Count + "Data time: " + time Extensions.convertFromUtc(TimeZones.NewYork) + " Delta (ms): "
                     + ((decimal) delta.TotalMilliseconds).SmartRounding() + Environment.NewLine);
             });
 
@@ -298,8 +298,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 count++;
                 receivedData = true;
                 data = (RestApiBaseData)ts.Slice[symbol];
-                time = data.EndTime.ConvertToUtc(timeZone);
-                Console.WriteLine(DateTime.UtcNow + ": Data time: " + time.ConvertFromUtc(TimeZones.NewYork) + Environment.NewLine);
+                time = data.EndTime Extensions.convertToUtc(timeZone);
+                Console.WriteLine(DateTime.UtcNow + ": Data time: " + time Extensions.convertFromUtc(TimeZones.NewYork) + Environment.NewLine);
                 if( last != null ) {
                     Assert.AreEqual(last.EndTime, data.EndTime.Subtract(resolution.ToTimeSpan()));
                 }
@@ -330,7 +330,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             static final int coarseDataPointCount = 100000;
             timer = new Timer(state =>
             {
-                currentTime = DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork);
+                currentTime = DateTime.UtcNow Extensions.convertFromUtc(TimeZones.NewYork);
                 Console.WriteLine(currentTime + ": timer.Elapsed");
 
                 synchronized(state) {
@@ -338,7 +338,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                     list.Data.AddRange(Enumerable.Range(0, coarseDataPointCount).Select(x -> new CoarseFundamental
                     {
                         Symbol = SymbolCache.GetSymbol(x.toString()),
-                        Time = currentTime - Time.OneDay, // hard-coded coarse period of one day
+                        Time = currentTime - Duration.ofDays( 1 ), // hard-coded coarse period of one day
                     }));
                 }
             }, lck, Duration.ofSeconds(3), Duration.ofSeconds(500));
@@ -423,8 +423,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             foreach (timeSlice in feed) {
                 if( !noOutput) {
                     Console.WriteLine( "\r\n" + "Now (EDT): %1$s TimeSlice.Time (EDT): %2$s",
-                        DateTime.UtcNow.ConvertFromUtc(TimeZones.NewYork).toString( "o"),
-                        timeSlice.Time.ConvertFromUtc(TimeZones.NewYork).toString( "o")
+                        DateTime.UtcNow Extensions.convertFromUtc(TimeZones.NewYork).toString( "o"),
+                        timeSlice.Time Extensions.convertFromUtc(TimeZones.NewYork).toString( "o")
                         );
                 }
 

@@ -44,8 +44,8 @@ package com.quantconnect.lean.Data.UniverseSelection
         */
         public @Override DateTime EndTime
         {
-            get { return Time + QuantConnect.Time.OneDay; }
-            set { Time = value - QuantConnect.Time.OneDay; }
+            get { return Time + QuantConnect.Duration.ofDays( 1 ); }
+            set { Time = value - QuantConnect.Duration.ofDays( 1 ); }
         }
 
         /**

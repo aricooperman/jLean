@@ -350,7 +350,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             Subscription subscription = null;
             try
             {
-                localEndTime = utcEndTime.ConvertFromUtc(security.Exchange.TimeZone);
+                localEndTime = utcEndTime Extensions.convertFromUtc(security.Exchange.TimeZone);
                 timeZoneOffsetProvider = new TimeZoneOffsetProvider(security.Exchange.TimeZone, utcStartTime, utcEndTime);
 
                 IEnumerator<BaseData> enumerator;
@@ -364,7 +364,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     refresher = new RefreshEnumerator<BaseData>(() =>
                     {
                         sourceProvider = (BaseData)Activator.CreateInstance(config.Type);
-                        dateInDataTimeZone = DateTime.UtcNow.ConvertFromUtc(config.DataTimeZone).Date;
+                        dateInDataTimeZone = DateTime.UtcNow Extensions.convertFromUtc(config.DataTimeZone).Date;
                         source = sourceProvider.GetSource(config, dateInDataTimeZone, true);
                         factory = SubscriptionDataSourceReader.ForSource(source, config, dateInDataTimeZone, false);
                         factoryReadEnumerator = factory.Read(source).GetEnumerator();
@@ -491,7 +491,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                 refresher = new RefreshEnumerator<BaseDataCollection>(() =>
                 {
                     sourceProvider = (BaseData)Activator.CreateInstance(config.Type);
-                    dateInDataTimeZone = DateTime.UtcNow.ConvertFromUtc(config.DataTimeZone).Date;
+                    dateInDataTimeZone = DateTime.UtcNow Extensions.convertFromUtc(config.DataTimeZone).Date;
                     source = sourceProvider.GetSource(config, dateInDataTimeZone, true);
                     factory = SubscriptionDataSourceReader.ForSource(source, config, dateInDataTimeZone, false);
                     factorEnumerator = factory.Read(source).GetEnumerator();

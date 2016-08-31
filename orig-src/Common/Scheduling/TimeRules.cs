@@ -103,7 +103,7 @@ package com.quantconnect.lean.Scheduling
             Func<IEnumerable<DateTime>, IEnumerable<DateTime>> applicator = dates =>
                 from date in dates
                 let localEventTime = date + timeOfDay
-                let utcEventTime = localEventTime.ConvertToUtc(timeZone)
+                let utcEventTime = localEventTime Extensions.convertToUtc(timeZone)
                 select utcEventTime;
 
             return new FuncTimeRule(name, applicator);
@@ -139,7 +139,7 @@ package com.quantconnect.lean.Scheduling
                 where security.Exchange.DateIsOpen(date)
                 let marketOpen = security.Exchange.Hours.GetNextMarketOpen(date, extendedMarketOpen)
                 let localEventTime = marketOpen + timeAfterOpen
-                let utcEventTime = localEventTime.ConvertToUtc(security.Exchange.TimeZone)
+                let utcEventTime = localEventTime Extensions.convertToUtc(security.Exchange.TimeZone)
                 select utcEventTime;
 
             return new FuncTimeRule(name, applicator);
@@ -164,7 +164,7 @@ package com.quantconnect.lean.Scheduling
                 where security.Exchange.DateIsOpen(date)
                 let marketClose = security.Exchange.Hours.GetNextMarketClose(date, extendedMarketClose)
                 let localEventTime = marketClose - timeBeforeClose
-                let utcEventTime = localEventTime.ConvertToUtc(security.Exchange.TimeZone)
+                let utcEventTime = localEventTime Extensions.convertToUtc(security.Exchange.TimeZone)
                 select utcEventTime;
 
             return new FuncTimeRule(name, applicator);
@@ -180,7 +180,7 @@ package com.quantconnect.lean.Scheduling
 
         private static IEnumerable<DateTime> EveryIntervalIterator(IEnumerable<DateTime> dates, Duration interval) {
             foreach (date in dates) {
-                for (time = Duration.ZERO; time < Time.OneDay; time += interval) {
+                for (time = Duration.ZERO; time < Duration.ofDays( 1 ); time += interval) {
                     yield return date + time;
                 }
             }

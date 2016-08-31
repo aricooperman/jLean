@@ -51,7 +51,7 @@ package com.quantconnect.lean.Securities
                 portfolio.UnsettledCashBook[currency].AddAmount(amount);
 
                 // find the correct settlement date (usually T+3 or T+1)
-                settlementDate = applicationTimeUtc.ConvertFromUtc(security.Exchange.TimeZone).Date;
+                settlementDate = applicationTimeUtc Extensions.convertFromUtc(security.Exchange.TimeZone).Date;
                 for (i = 0; i < _numberOfDays; i++) {
                     settlementDate = settlementDate.AddDays(1);
 
@@ -61,7 +61,7 @@ package com.quantconnect.lean.Securities
                 }
 
                 // use correct settlement time
-                settlementTimeUtc = settlementDate.Add(_timeOfDay).ConvertToUtc(security.Exchange.Hours.TimeZone);
+                settlementTimeUtc = settlementDate.Add(_timeOfDay) Extensions.convertToUtc(security.Exchange.Hours.TimeZone);
 
                 portfolio.AddUnsettledCashAmount(new UnsettledCashAmount(settlementTimeUtc, currency, amount));
             }

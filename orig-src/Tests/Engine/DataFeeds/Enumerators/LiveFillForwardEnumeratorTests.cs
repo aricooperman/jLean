@@ -78,7 +78,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
 
             Assert.IsTrue(fillForward.MoveNext());
             Assert.AreEqual(underlying[2].Value, fillForward.Current.Value);
-            Assert.AreEqual(timeProvider.GetUtcNow().ConvertFromUtc(TimeZones.NewYork), fillForward.Current.EndTime);
+            Assert.AreEqual(timeProvider.GetUtcNow() Extensions.convertFromUtc(TimeZones.NewYork), fillForward.Current.EndTime);
             Assert.IsTrue(fillForward.Current.IsFillForward);
 
             Assert.IsTrue(fillForward.MoveNext());
@@ -88,14 +88,14 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
 
             Assert.IsTrue(fillForward.MoveNext());
             Assert.AreEqual(underlying[2].Value, fillForward.Current.Value);
-            Assert.AreEqual(timeProvider.GetUtcNow().ConvertFromUtc(TimeZones.NewYork), fillForward.Current.EndTime);
+            Assert.AreEqual(timeProvider.GetUtcNow() Extensions.convertFromUtc(TimeZones.NewYork), fillForward.Current.EndTime);
             Assert.IsTrue(fillForward.Current.IsFillForward);
 
             timeProvider.SetCurrentTime(reference.AddSeconds(6));
 
             Assert.IsTrue(fillForward.MoveNext());
             Assert.AreEqual(underlying[2].Value, fillForward.Current.Value);
-            Assert.AreEqual(timeProvider.GetUtcNow().ConvertFromUtc(TimeZones.NewYork), fillForward.Current.EndTime);
+            Assert.AreEqual(timeProvider.GetUtcNow() Extensions.convertFromUtc(TimeZones.NewYork), fillForward.Current.EndTime);
             Assert.IsTrue(fillForward.Current.IsFillForward);
         }
     }

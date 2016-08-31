@@ -268,7 +268,7 @@ package com.quantconnect.lean.Algorithm.CSharp
         */
         private void ScanForEntrance() {
             // scan for entrances, we only want to do this before 10am
-            if( Time.TimeOfDay.Hours >= 10) return;
+            if( Time Extensions.timeOfDay(  ).Hours >= 10) return;
 
             // expect capture 10% of the daily range
             expectedCaptureRange = 0.1m*ATR14;
@@ -396,7 +396,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 // always if we're invested
                 if( Security.Invested) return true;
                 // always if it's before noon
-                if( Time.TimeOfDay.Hours < 10.25) return true;
+                if( Time Extensions.timeOfDay(  ).Hours < 10.25) return true;
                 // for an hour after our exit
                 if( Time - LastExitTime < Duration.ofMinutes(30)) return true;
 

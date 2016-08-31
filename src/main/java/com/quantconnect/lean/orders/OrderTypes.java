@@ -30,7 +30,25 @@ public class OrderTypes {
         /// Market on open type - executed on exchange open
         MarketOnOpen,
         /// Market on close type - executed on exchange close
-        MarketOnClose
+        MarketOnClose;
+        
+        /**
+         * Determines whether or not the specified order is a limit order
+         * @param orderType The order to check
+         * @returns True if the order is a limit order, false otherwise
+         */
+        public boolean isLimitOrder() {
+            return this == OrderType.Limit || this == OrderType.StopLimit;
+        }
+
+        /**
+         * Determines whether or not the specified order is a stop order
+         * @param orderType The order to check
+         * @returns True if the order is a stop order, false otherwise
+         */
+        public boolean isStopOrder() {
+            return this == OrderType.StopMarket || this == OrderType.StopLimit;
+        }
     }
 
 
@@ -85,6 +103,34 @@ public class OrderTypes {
         
         public int getValue() {
             return value;
+        }
+        
+        /**
+         * Determines if the specified status is in a closed state.
+         * @param status The status to check
+         * @returns True if the status is <see cref="OrderStatus.Filled"/>, <see cref="OrderStatus.Canceled"/>, or <see cref="OrderStatus.Invalid"/>
+         */
+        public boolean isClosed() {
+            return this == OrderStatus.Filled || this == OrderStatus.Canceled || this == OrderStatus.Invalid;
+        }
+
+        /**
+         * Determines if the specified status is in an open state.
+         * @param status The status to check
+         * @returns True if the status is not <see cref="OrderStatus.Filled"/>, <see cref="OrderStatus.Canceled"/>, or <see cref="OrderStatus.Invalid"/>
+         */
+        public boolean isOpen() {
+            return !isClosed();
+        }
+
+        /**
+         * Determines if the specified status is a fill, that is, <see cref="OrderStatus.Filled"/>
+         * order <see cref="OrderStatus.PartiallyFilled"/>
+         * @param status The status to check
+         * @returns True if the status is <see cref="OrderStatus.Filled"/> or <see cref="OrderStatus.PartiallyFilled"/>, false otherwise
+         */
+        public boolean isFill() {
+            return this == OrderStatus.Filled || this == OrderStatus.PartiallyFilled;
         }
     }
 }

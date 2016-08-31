@@ -31,7 +31,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 return null;
             }
 
-            time = QuantConnect.Time.UnixTimeStampToDateTime(double.Parse(csv[0])).ConvertFromUtc(config.DataTimeZone).Subtract(config.Increment);
+            time = QuantConnect.Time.UnixTimeStampToDateTime(double.Parse(csv[0])) Extensions.convertFromUtc(config.DataTimeZone).Subtract(config.Increment);
             return new RemoteFileBaseData
             {
                 Symbol = config.Symbol,

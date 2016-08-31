@@ -88,7 +88,7 @@ package com.quantconnect.lean.Data.UniverseSelection
             _universeSettings = universeSettings;
             _selector = time =>
             {
-                selectSymbolsResult = selector(time.ConvertFromUtc(Configuration.ExchangeTimeZone));
+                selectSymbolsResult = selector(time Extensions.convertFromUtc(Configuration.ExchangeTimeZone));
                 // if we received an unchaged then short circuit the symbol creation and return it directly
                 if( ReferenceEquals(selectSymbolsResult, Unchanged)) return Unchanged;
                 return selectSymbolsResult.Select(sym -> Symbol.Create(sym, Configuration.SecurityType, Configuration.Market));
@@ -176,8 +176,8 @@ package com.quantconnect.lean.Data.UniverseSelection
         @returns An enumerator of DateTime that defines when this universe will be invoked
         public IEnumerable<DateTime> GetTriggerTimes(DateTime startTimeUtc, DateTime endTimeUtc, MarketHoursDatabase marketHoursDatabase) {
             exchangeHours = marketHoursDatabase.GetExchangeHours(Configuration);
-            localStartTime = startTimeUtc.ConvertFromUtc(exchangeHours.TimeZone);
-            localEndTime = endTimeUtc.ConvertFromUtc(exchangeHours.TimeZone);
+            localStartTime = startTimeUtc Extensions.convertFromUtc(exchangeHours.TimeZone);
+            localEndTime = endTimeUtc Extensions.convertFromUtc(exchangeHours.TimeZone);
 
             first = true;
             foreach (dateTime in LinqExtensions.Range(localStartTime, localEndTime, dt -> dt + Interval)) {

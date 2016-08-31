@@ -39,7 +39,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
             foreach (date in dates) {
                 count++;
                 if( previous != DateTime.MinValue) {
-                    Assert.AreEqual(Time.OneDay, date - previous);
+                    Assert.AreEqual(Duration.ofDays( 1 ), date - previous);
                 }
                 previous = date;
             }

@@ -91,8 +91,8 @@ package com.quantconnect.lean.Lean.Engine.HistoricalData
         */
         private Subscription CreateSubscription(HistoryRequest request, DateTime start, DateTime end) {
             // data reader expects these values in local times
-            start = start.ConvertFromUtc(request.ExchangeHours.TimeZone);
-            end = end.ConvertFromUtc(request.ExchangeHours.TimeZone);
+            start = start Extensions.convertFromUtc(request.ExchangeHours.TimeZone);
+            end = end Extensions.convertFromUtc(request.ExchangeHours.TimeZone);
 
             config = new SubscriptionDataConfig(request.DataType, 
                 request.Symbol, 

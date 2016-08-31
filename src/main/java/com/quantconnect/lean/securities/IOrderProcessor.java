@@ -13,20 +13,19 @@
  * limitations under the License.
 */
 
-using QuantConnect.Orders;
+package com.quantconnect.lean.securities;
 
-package com.quantconnect.lean.Securities
-{
+import com.quantconnect.lean.orders.OrderRequest;
+import com.quantconnect.lean.orders.OrderTicket;
+
+/**
+ * Represents a type capable of processing orders
+ */
+public interface IOrderProcessor extends IOrderProvider {
     /**
-     * Represents a type capable of processing orders
-    */
-    public interface IOrderProcessor : IOrderProvider
-    {
-        /**
-         * Adds the specified order to be processed
-        */
-         * @param request The <see cref="OrderRequest"/> to be processed
-        @returns The <see cref="OrderTicket"/> for the corresponding <see cref="OrderRequest.OrderId"/>
-        OrderTicket Process(OrderRequest request);
-    }
+     * Adds the specified order to be processed
+     * @param request The <see cref="OrderRequest"/> to be processed
+     * @returns The <see cref="OrderTicket"/> for the corresponding <see cref="OrderRequest.OrderId"/>
+     */
+    OrderTicket process( OrderRequest request );
 }

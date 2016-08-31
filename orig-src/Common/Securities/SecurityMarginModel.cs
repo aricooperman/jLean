@@ -198,7 +198,7 @@ package com.quantconnect.lean.Securities
                 quantity *= -1;
             }
 
-            return new SubmitOrderRequest(OrderType.Market, security.Type, security.Symbol, quantity, 0, 0, security.LocalTime.ConvertToUtc(security.Exchange.TimeZone), "Margin Call");
+            return new SubmitOrderRequest(OrderType.Market, security.Type, security.Symbol, quantity, 0, 0, security.LocalTime Extensions.convertToUtc(security.Exchange.TimeZone), "Margin Call");
         }
 
         /**

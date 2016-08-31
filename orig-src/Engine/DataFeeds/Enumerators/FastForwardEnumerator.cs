@@ -69,7 +69,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
                 }
 
                 // comute the age of the data, if within limits we're done
-                age = _timeProvider.GetUtcNow().ConvertFromUtc(_timeZone) - _enumerator.Current.EndTime;
+                age = _timeProvider.GetUtcNow() Extensions.convertFromUtc(_timeZone) - _enumerator.Current.EndTime;
                 if( age <= _maximumDataAge) {
                     _current = _enumerator.Current;
                     return true;

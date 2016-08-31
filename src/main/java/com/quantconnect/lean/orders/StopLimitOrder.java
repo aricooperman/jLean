@@ -64,7 +64,7 @@ public class StopLimitOrder extends Order {
         return stopTriggered;
     }
     
-    protected void setStopTriggered( boolean stopTriggered ) {
+    public void setStopTriggered( boolean stopTriggered ) {
         this.stopTriggered = stopTriggered;
     }
     

@@ -63,7 +63,7 @@ package com.quantconnect.lean.Lean.Engine.RealTime
             _resultHandler = resultHandler;
             _cancellationTokenSource = new CancellationTokenSource();
 
-            todayInAlgorithmTimeZone = DateTime.UtcNow.ConvertFromUtc(_algorithm.TimeZone).Date;
+            todayInAlgorithmTimeZone = DateTime.UtcNow Extensions.convertFromUtc(_algorithm.TimeZone).Date;
 
             // refresh the market hours for today explicitly, and then set up an event to refresh them each day at midnight
             RefreshMarketHoursToday(todayInAlgorithmTimeZone);
@@ -71,12 +71,12 @@ package com.quantconnect.lean.Lean.Engine.RealTime
             // every day at midnight from tomorrow until the end of time
             times =
                 from date in Time.EachDay(todayInAlgorithmTimeZone.AddDays(1), Time.EndOfTime)
-                select date.ConvertToUtc(_algorithm.TimeZone);
+                select date Extensions.convertToUtc(_algorithm.TimeZone);
 
             Add(new ScheduledEvent( "RefreshMarketHours", times, (name, triggerTime) =>
             {
                 // refresh market hours from api every day
-                RefreshMarketHoursToday(triggerTime.ConvertFromUtc(_algorithm.TimeZone).Date);
+                RefreshMarketHoursToday(triggerTime Extensions.convertFromUtc(_algorithm.TimeZone).Date);
             }));
 
             // add end of day events for each tradeable day

@@ -101,7 +101,7 @@ package com.quantconnect.lean.Algorithm
                 return CreateBarCountHistoryRequests(Securities.Keys, _warmupBarCount.Value);
             }
             if( _warmupTimeSpan.HasValue) {
-                end = UtcTime.ConvertFromUtc(TimeZone);
+                end = UtcTime Extensions.convertFromUtc(TimeZone);
                 return CreateDateRangeHistoryRequests(Securities.Keys, end - _warmupTimeSpan.Value, end);
             }
 
@@ -182,7 +182,7 @@ package com.quantconnect.lean.Algorithm
                 if( config == null ) return null;
 
                 Resolution? res = resolution ?? security.Resolution;
-                start = GetStartTimeAlgoTz(x, periods, resolution).ConvertToUtc(TimeZone);
+                start = GetStartTimeAlgoTz(x, periods, resolution) Extensions.convertToUtc(TimeZone);
                 return CreateHistoryRequest(security, config, start, UtcTime.RoundDown(res.Value.ToTimeSpan()), resolution);
             });
 
@@ -363,7 +363,7 @@ package com.quantconnect.lean.Algorithm
             timeSpan = (resolution ?? security.Resolution).ToTimeSpan();
             // make this a minimum of one second
             timeSpan = timeSpan < QuantConnect.Time.OneSecond ? QuantConnect.Time.OneSecond : timeSpan;
-            localStartTime = QuantConnect.Time.GetStartTimeForTradeBars(security.Exchange.Hours, UtcTime.ConvertFromUtc(security.Exchange.TimeZone), timeSpan, periods, security.IsExtendedMarketHours);
+            localStartTime = QuantConnect.Time.GetStartTimeForTradeBars(security.Exchange.Hours, UtcTime Extensions.convertFromUtc(security.Exchange.TimeZone), timeSpan, periods, security.IsExtendedMarketHours);
             return localStartTime Extensions.convertTo(  )security.Exchange.TimeZone, TimeZone);
         }
 
@@ -440,7 +440,7 @@ package com.quantconnect.lean.Algorithm
 
         private HistoryRequest CreateHistoryRequest(Security security, SubscriptionDataConfig subscription, DateTime startAlgoTz, DateTime endAlgoTz, Resolution? resolution) {
             resolution = resolution ?? security.Resolution;
-            request = new HistoryRequest(subscription, security.Exchange.Hours, startAlgoTz.ConvertToUtc(TimeZone), endAlgoTz.ConvertToUtc(TimeZone)) {
+            request = new HistoryRequest(subscription, security.Exchange.Hours, startAlgoTz Extensions.convertToUtc(TimeZone), endAlgoTz Extensions.convertToUtc(TimeZone)) {
                 DataType = subscription.IsCustomData ? subscription.Type : resolution == Resolution.Tick ? typeof(Tick) : typeof(TradeBar),
                 Resolution = resolution.Value,
                 FillForwardResolution = subscription.FillDataForward ? resolution : null

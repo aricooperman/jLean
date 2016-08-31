@@ -158,11 +158,11 @@ public abstract class Order implements Cloneable {
     /**
      * New order constructor
      * @param symbol
-    /// <param name="symbol Symbol asset we're seeking to trade</param>
+    /// <param name="symbol Symbol asset we're seeking to trade
      * @param quantity
-    /// <param name="quantity Quantity of the asset we're seeking to trade</param>
+    /// <param name="quantity Quantity of the asset we're seeking to trade
      * @param time
-    /// <param name="time Time the order was placed</param>
+    /// <param name="time Time the order was placed
      */
     protected Order( Symbol symbol, int quantity, LocalDateTime time ) {
         this( symbol, quantity, time, "" );
@@ -171,12 +171,12 @@ public abstract class Order implements Cloneable {
     /**
      * New order constructor
      * @param symbol
-    /// <param name="symbol Symbol asset we're seeking to trade</param>
+    /// <param name="symbol Symbol asset we're seeking to trade
      * @param quantity
-    /// <param name="quantity Quantity of the asset we're seeking to trade</param>
+    /// <param name="quantity Quantity of the asset we're seeking to trade
      * @param time
-    /// <param name="time Time the order was placed</param>
-    /// <param name="tag User defined data tag for this order</param>
+    /// <param name="time Time the order was placed
+    /// <param name="tag User defined data tag for this order
      */
     protected Order( Symbol symbol, int quantity, LocalDateTime time, String tag ) {
         this.time = time;
@@ -215,7 +215,7 @@ public abstract class Order implements Cloneable {
 
     /**
      * Modifies the state of this order to match the update request
-     * @param request The request to update this order object</param>
+     * @param request The request to update this order object
      */
     public void applyUpdateOrderRequest( UpdateOrderRequest request ) {
         if( request.orderId != id )
@@ -241,7 +241,7 @@ public abstract class Order implements Cloneable {
     public abstract Order clone();
 
     /// Copies base Order properties to the specified order
-    /// <param name="order The target of the copy</param>
+    /// <param name="order The target of the copy
     protected void copyTo( Order order ) {
         order.id = id;
         order.time = time;

@@ -77,7 +77,7 @@ package com.quantconnect.lean.ToolBox.QuandlBitfinexDownloader
                         Volume = (long) (decimal.Parse(line[5])*_scaleFactor),
                         Symbol = symbol,
                         DataType = MarketDataType.TradeBar,
-                        Period = Time.OneDay
+                        Period = Duration.ofDays( 1 )
                     };
 
                     yield return bar;

@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.quantconnect.lean.securities.Security;
+import com.quantconnect.lean.securities.SecurityExchangeHours;
 
 //using NodaTime;
 //using QuantConnect.Logging;
@@ -291,48 +292,68 @@ public class Time {
      * @param from The start time in the exchange time zone
      * @param thru The end time in the exchange time zone (inclusive of the final day)
      * @param timeZone The timezone to project the dates into (inclusive of the final day)
+     * @returns 
+     */
+    public static Iterable<LocalDate> eachTradeableDayInTimeZone( SecurityExchangeHours exchange, LocalDate from, LocalDate thru, ZoneId timeZone ) {
+        return eachTradeableDayInTimeZone( exchange, from, thru, timeZone, true );
+    }
+    
+    /**
+     * Define an stream date range of tradeable dates but expressed in a different time zone.
+     * 
+     * This is mainly used to bridge the gap between exchange time zone and data time zone for file written to disk. The returned
+     * enumerable of dates is gauranteed to be the same size or longer than those generated via <see cref="EachTradeableDay(ICollection{Security},DateTime,DateTime)"/>
+     * 
+     * @param exchange The exchange hours
+     * @param from The start time in the exchange time zone
+     * @param thru The end time in the exchange time zone (inclusive of the final day)
+     * @param timeZone The timezone to project the dates into (inclusive of the final day)
      * @param includeExtendedMarketHours True to include extended market hours trading in the search, false otherwise
      * @returns 
-    */
-    public static IEnumerable<DateTime> EachTradeableDayInTimeZone(SecurityExchangeHours exchange, DateTime from, DateTime thru, ZoneId timeZone, boolean includeExtendedMarketHours = true) {
-        currentExchangeTime = from;
-        thru = thru.Date.AddDays(1); // we want to include the full thru date
+     */
+    public static Iterable<LocalDate> eachTradeableDayInTimeZone( SecurityExchangeHours exchange, LocalDate from, LocalDate thru, ZoneId timeZone, 
+            boolean includeExtendedMarketHours ) {
+        LocalDate currentExchangeTime = from;
+        thru = thru.plusDays( 1 ); // we want to include the full thru date
+        final List<LocalDate> dates = new ArrayList<>();
+        
         while (currentExchangeTime < thru) {
             // take steps of max size of one day in the data time zone
-            currentInTimeZone = currentExchangeTime Extensions.convertTo(  )exchange.TimeZone, timeZone);
+            currentInTimeZone = Extensions.convertTo( currentExchangeTime, exchange.TimeZone, timeZone );
             currentInTimeZoneEod = currentInTimeZone.Date.AddDays(1);
 
             // don't pass the end
-            if( currentInTimeZoneEod Extensions.convertTo(  )timeZone, exchange.TimeZone) > thru) {
-                currentInTimeZoneEod = thru Extensions.convertTo(  )exchange.TimeZone, timeZone);
-            }
+            if( Extensions.convertTo( currentInTimeZoneEod, timeZone, exchange.TimeZone ) > thru )
+                currentInTimeZoneEod = Extensions.convertTo( thru, exchange.TimeZone, timeZone );
 
             // perform market open checks in the exchange time zone
-            currentExchangeTimeEod = currentInTimeZoneEod Extensions.convertTo(  )timeZone, exchange.TimeZone);
-            if( exchange.IsOpen(currentExchangeTime, currentExchangeTimeEod, includeExtendedMarketHours)) {
-                yield return currentInTimeZone.Date;
-            }
+            currentExchangeTimeEod = Extensions.convertTo( currentInTimeZoneEod, timeZone, exchange.TimeZone );
+            if( exchange.IsOpen(currentExchangeTime, currentExchangeTimeEod, includeExtendedMarketHours ) )
+                dates.add( currentInTimeZone );
 
-            currentExchangeTime = currentInTimeZoneEod Extensions.convertTo(  )timeZone, exchange.TimeZone);
+            currentExchangeTime = Extensions.convertTo(currentInTimeZoneEod, timeZone, exchange.TimeZone);
         }
+        
+        return dates.stream();
     } 
 
     /**
      * Make sure this date is not a holiday, or weekend for the securities in this algorithm.
-    */
      * @param securities Security manager from the algorithm
      * @param day DateTime to check if trade-able.
-    @returns True if tradeable date
-    public static boolean TradableDate(IEnumerable<Security> securities, DateTime day) {
-        try
-        {
-            foreach (security in securities) {
-                if( security.Exchange.IsOpenDuringBar(day.Date, day.Date.AddDays(1), security.IsExtendedMarketHours)) return true;
+     * @returns True if tradeable date
+     */
+    public static boolean tradableDate( Iterable<Security> securities, LocalDate day ) {
+        try {
+            for( Security security : securities ) {
+                if( security.getExchange().IsOpenDuringBar( day, day.plusDays( 1 ), security.isExtendedMarketHours() ) ) 
+                    return true;
             }
         }
-        catch (Exception err) {
-            Log.Error(err);
+        catch( Exception err ) {
+            LOG.error( err );
         }
+        
         return false;
     }
 

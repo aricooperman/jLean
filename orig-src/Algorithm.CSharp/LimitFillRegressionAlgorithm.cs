@@ -40,7 +40,7 @@ package com.quantconnect.lean.Algorithm.CSharp
          * @param data TradeBars IDictionary object with your stock data
         public @Override void OnData(Slice data) {
             if( data.Bars.ContainsKey( "SPY")) {
-                if( Time.TimeOfDay.Ticks%Duration.ofHours(1).Ticks == 0) {
+                if( Time Extensions.timeOfDay(  ).Ticks%Duration.ofHours(1).Ticks == 0) {
                     boolean goLong = Time < StartDate + Duration.ofTicks((EndDate - StartDate).Ticks/2);
                     int negative = goLong ? 1 : -1;
                     LimitOrder( "SPY", negative*10, data["SPY"].Price);

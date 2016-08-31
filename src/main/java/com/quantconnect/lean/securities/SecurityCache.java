@@ -189,8 +189,7 @@ public class SecurityCache {
      */
     @SuppressWarnings("unchecked")
     public <T extends BaseData> T getData( Class<T> clazz ) {
-        BaseData data = dataByType.get( clazz );
-        return (T)data;
+        return (T)dataByType.get( clazz );
     }
 
     /**

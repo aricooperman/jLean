@@ -36,7 +36,7 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
             security = new Forex(symbol, exchangeHours, quoteCash, symbolProperties);
 
             reference = DateTime.Now;
-            referenceUtc = reference.ConvertToUtc(TimeZones.NewYork);
+            referenceUtc = reference Extensions.convertToUtc(TimeZones.NewYork);
             timeKeeper = new TimeKeeper(referenceUtc);
             security.SetLocalTimeKeeper(timeKeeper.GetLocalTimeKeeper(TimeZones.NewYork));
 

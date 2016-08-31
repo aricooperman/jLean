@@ -33,7 +33,6 @@ import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import com.google.common.eventbus.EventBus;
 
 public class Global {
     
@@ -102,7 +101,7 @@ public class Global {
 //        /// <summary>
 //        /// Create a simple JSON holdings from a Security holding class.
 //        /// </summary>
-//        /// <param name="security The security instance</param>
+//        /// <param name="security The security instance
 //        public Holding(Security security)
 //             : this()
 //        {
@@ -789,7 +788,7 @@ package com.quantconnect.lean
         /// <summary>
         /// Create a simple JSON holdings from a Security holding class.
         /// </summary>
-        /// <param name="security The security instance</param>
+        /// <param name="security The security instance
         public Holding(Security security)
              : this() {
             holding = security.Holdings;

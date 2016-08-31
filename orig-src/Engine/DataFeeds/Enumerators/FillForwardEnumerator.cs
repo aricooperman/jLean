@@ -234,9 +234,9 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
             // find the next fill forward time after the next market open
             nextFillForwardTime = Exchange.Hours.GetNextMarketOpen(previous.EndTime, _isExtendedMarketHours) + fillForwardResolution;
 
-            if( _dataResolution == Time.OneDay) {
+            if( _dataResolution == Duration.ofDays( 1 )) {
                 // special case for daily, we need to emit a midnight bar even though markets are closed
-                dailyBarEnd = GetNextOpenDateAfter(previous.Time.Date) + Time.OneDay;
+                dailyBarEnd = GetNextOpenDateAfter(previous.Time.Date) + Duration.ofDays( 1 );
                 if( dailyBarEnd < nextFillForwardTime) {
                     // only emit the midnight bar if it's the next bar to be emitted
                     nextFillForwardTime = dailyBarEnd;
@@ -262,7 +262,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         private DateTime GetNextOpenDateAfter(DateTime date) {
             do
             {
-                date = date + Time.OneDay;
+                date = date + Duration.ofDays( 1 );
             }
             while (!Exchange.DateIsOpen(date));
             return date;

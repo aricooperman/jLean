@@ -446,12 +446,12 @@ package com.quantconnect.lean.Tests.Common.Data
             Assert.IsNotNull(consolidated);
         }
 
-        private final Duration marketStop = new DateTime(2000, 1, 1, 12 + 4, 0, 0).TimeOfDay;
-        private final Duration marketStart = new DateTime(2000, 1, 1, 9, 30, 0).TimeOfDay;
+        private final Duration marketStop = new DateTime(2000, 1, 1, 12 + 4, 0, 0) Extensions.timeOfDay(  );
+        private final Duration marketStart = new DateTime(2000, 1, 1, 9, 30, 0) Extensions.timeOfDay(  );
         private IEnumerable<TradeBar> StreamTradeBars(DateTime start, DateTime end, Duration resolution, boolean skipAferMarketHours = true) {
             DateTime current = start;
             while (current < end) {
-                timeOfDay = current.TimeOfDay;
+                timeOfDay = current Extensions.timeOfDay(  );
                 if( skipAferMarketHours && (marketStart > timeOfDay || marketStop < timeOfDay)) {
                     // set current to the next days market start
                     current = current.Date.AddDays(1).Add(marketStart);

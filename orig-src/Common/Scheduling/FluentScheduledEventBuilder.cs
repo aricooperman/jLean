@@ -214,7 +214,7 @@ package com.quantconnect.lean.Scheduling
             security = GetSecurity(symbol);
             Func<DateTime, bool> predicate = time =>
             {
-                localTime = time.ConvertFromUtc(security.Exchange.TimeZone);
+                localTime = time Extensions.convertFromUtc(security.Exchange.TimeZone);
                 return security.Exchange.IsOpenDuringBar(localTime, localTime, extendedMarket);
             };
             _predicate = _predicate == null

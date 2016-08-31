@@ -651,7 +651,7 @@ package com.quantconnect.lean.Lean.Engine
                             else               list.Add(data);
                             paired.Add(new DataFeedPacket(security, security.Subscriptions.First(), list));
                         }
-                        timeSlice = TimeSlice.Create(slice.Time.ConvertToUtc(timeZone), timeZone, algorithm.Portfolio.CashBook, paired, SecurityChanges.None);
+                        timeSlice = TimeSlice.Create(slice.Time Extensions.convertToUtc(timeZone), timeZone, algorithm.Portfolio.CashBook, paired, SecurityChanges.None);
                     }
                     catch (Exception err) {
                         Log.Error(err);
@@ -701,7 +701,7 @@ package com.quantconnect.lean.Lean.Engine
                         hasHistoricalData = false;
                         foreach (data in timeSlice.Slice.Ticks.Values.SelectMany(x -> x).Concat<BaseData>(timeSlice.Slice.Bars.Values)) {
                             // check if any ticks in the list are on or after our last warmup point, if so, skip this data
-                            if( data.EndTime.ConvertToUtc(algorithm.Securities[data.Symbol].Exchange.TimeZone) >= lastHistoryTimeUtc) {
+                            if( data.EndTime Extensions.convertToUtc(algorithm.Securities[data.Symbol].Exchange.TimeZone) >= lastHistoryTimeUtc) {
                                 hasHistoricalData = true;
                                 break;
                             }

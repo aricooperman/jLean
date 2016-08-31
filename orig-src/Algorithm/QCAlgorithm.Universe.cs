@@ -296,7 +296,7 @@ package com.quantconnect.lean.Algorithm
                 universe = new UserDefinedUniverse(uconfig,
                     new UniverseSettings(security.Resolution, security.Leverage, security.IsFillDataForward, security.IsExtendedMarketHours, Duration.ZERO),
                     SecurityInitializer,
-                    QuantConnect.Time.OneDay,
+                    QuantConnect.Duration.ofDays( 1 ),
                     new List<Symbol> { security.Symbol }
                     );
                 UniverseManager.Add(universeSymbol, universe);

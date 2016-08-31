@@ -177,7 +177,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
                     //Algorithm is backtesting, not live:
                     algorithm.SetLiveMode(false);
                     //Set the algorithm time before we even initialize:
-                    algorithm.SetDateTime(job.PeriodStart.ConvertToUtc(algorithm.TimeZone));
+                    algorithm.SetDateTime(job.PeriodStart Extensions.convertToUtc(algorithm.TimeZone));
                     //Set the source impl for the event scheduling
                     algorithm.Schedule.SetEventSchedule(realTimeHandler);
                     //Initialise the algorithm, get the required data:

@@ -320,7 +320,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
 
             private void OnLevel1FundamentalEvent(object sender, Level1FundamentalEventArgs e) {
                 // handle split data, they're only valid today, they'll show up around 4:45am EST
-                if( e.splitDate1.Date == DateTime.Today && DateTime.Now.TimeOfDay.TotalHours <= 8) // they will always be sent premarket
+                if( e.splitDate1.Date == DateTime.Today && DateTime.Now Extensions.timeOfDay(  ).TotalHours <= 8) // they will always be sent premarket
                 {
                     // get the last price, if it doesn't exist then we'll just issue the split claiming the price was zero
                     // this should (ideally) never happen, but sending this without the price is much better then not sending
@@ -451,8 +451,8 @@ package com.quantconnect.lean.ToolBox.IQFeed
                     symbol = symbol + ".FXCM";
                 }
 
-                start = request.StartTimeUtc.ConvertFromUtc(TimeZones.NewYork);
-                DateTime? end = request.EndTimeUtc.ConvertFromUtc(TimeZones.NewYork);
+                start = request.StartTimeUtc Extensions.convertFromUtc(TimeZones.NewYork);
+                DateTime? end = request.EndTimeUtc Extensions.convertFromUtc(TimeZones.NewYork);
                 // if we're within a minute of now, don't set the end time
                 if( request.EndTimeUtc >= DateTime.UtcNow.AddMinutes(-1)) {
                     end = null;

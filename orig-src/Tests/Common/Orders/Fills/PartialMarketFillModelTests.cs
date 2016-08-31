@@ -85,7 +85,7 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
 
         private static DateTime InitializeTest(out BasicTemplateAlgorithm algorithm, out Security security, out PartialMarketFillModel model, out MarketOrder order, out OrderTicket ticket) {
             referenceTimeNY = new DateTime(2015, 12, 21, 13, 0, 0);
-            referenceTimeUtc = referenceTimeNY.ConvertToUtc(TimeZones.NewYork);
+            referenceTimeUtc = referenceTimeNY Extensions.convertToUtc(TimeZones.NewYork);
             algorithm = new BasicTemplateAlgorithm();
             algorithm.SetDateTime(referenceTimeUtc);
 
@@ -150,7 +150,7 @@ package com.quantconnect.lean.Tests.Common.Orders.Fills
              * @param order The order
             @returns The order fill
             public @Override OrderEvent MarketFill(Security asset, MarketOrder order) {
-                currentUtcTime = asset.LocalTime.ConvertToUtc(asset.Exchange.TimeZone);
+                currentUtcTime = asset.LocalTime Extensions.convertToUtc(asset.Exchange.TimeZone);
 
                 ticket = _orderProvider.GetOrderTickets(x -> x.OrderId == order.Id).FirstOrDefault();
                 if( ticket == null ) {

@@ -87,7 +87,7 @@ package com.quantconnect.lean.Packets
             Start = referenceDate.Date.AddHours(defaultStart);
             End = referenceDate.Date.AddHours(defaultEnd);
             if( defaultEnd == 24) {
-                // when we mark it as the end of the day other code that relies on .TimeOfDay has issues
+                // when we mark it as the end of the day other code that relies on  Extensions.timeOfDay(  ) has issues
                 End = End.AddTicks(-1);
             }
         }

@@ -96,7 +96,7 @@ package com.quantconnect.lean.Lean.Engine
                                 let security = kvp.Value
                                 where security.Type != SecurityType.Base
                                 let exchange = security.Exchange
-                                let localTime = _algorithm.UtcTime.ConvertFromUtc(exchange.TimeZone)
+                                let localTime = _algorithm.UtcTime Extensions.convertFromUtc(exchange.TimeZone)
                                 where exchange.IsOpenDuringBar(localTime, localTime + _openThreshold, security.IsExtendedMarketHours)
                                 select security).Any();
 
@@ -116,9 +116,9 @@ package com.quantconnect.lean.Lean.Engine
                                                  let security = kvp.Value
                                                  where security.Type != SecurityType.Base
                                                  let exchange = security.Exchange
-                                                 let localTime = _algorithm.UtcTime.ConvertFromUtc(exchange.TimeZone)
+                                                 let localTime = _algorithm.UtcTime Extensions.convertFromUtc(exchange.TimeZone)
                                                  let marketOpen = exchange.Hours.GetNextMarketOpen(localTime, security.IsExtendedMarketHours)
-                                                 let marketOpenUtc = marketOpen.ConvertToUtc(exchange.TimeZone)
+                                                 let marketOpenUtc = marketOpen Extensions.convertToUtc(exchange.TimeZone)
                                                  select marketOpenUtc).Min();
                         }
                         else

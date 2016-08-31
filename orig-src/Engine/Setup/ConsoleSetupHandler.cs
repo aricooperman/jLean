@@ -133,7 +133,7 @@ package com.quantconnect.lean.Lean.Engine.Setup
                     //Setup Base Algorithm:
                     algorithm.Initialize();
                     //Set the time frontier of the algorithm
-                    algorithm.SetDateTime(algorithm.StartDate.ConvertToUtc(algorithm.TimeZone));
+                    algorithm.SetDateTime(algorithm.StartDate Extensions.convertToUtc(algorithm.TimeZone));
 
                     //Construct the backtest job packet:
                     backtestJob.PeriodStart = algorithm.StartDate;

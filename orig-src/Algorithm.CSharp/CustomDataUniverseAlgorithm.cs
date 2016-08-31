@@ -89,8 +89,8 @@ package com.quantconnect.lean.Algorithm.CSharp
             public @Override DateTime EndTime
             {
                 // define end time as exactly 1 day after Time
-                get { return Time + QuantConnect.Time.OneDay; }
-                set { Time = value - QuantConnect.Time.OneDay; }
+                get { return Time + QuantConnect.Duration.ofDays( 1 ); }
+                set { Time = value - QuantConnect.Duration.ofDays( 1 ); }
             }
 
             private int count;

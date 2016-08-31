@@ -15,7 +15,7 @@
 
 package com.quantconnect.lean.securities;
 
-import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 import com.quantconnect.lean.orders.Order;
@@ -50,7 +50,7 @@ public interface IOrderProvider {
      * @param filter The filter predicate used to find the required order tickets. If null is specified then all tickets are returned
      * @returns An enumerable of <see cref="OrderTicket"/> matching the specified <paramref name="filter"/>
      */
-    Stream<OrderTicket> getOrderTickets( Function<OrderTicket,Boolean> filter );
+    Stream<OrderTicket> getOrderTickets( Predicate<OrderTicket> filter );
 
     default Stream<OrderTicket> getOrderTickets() {
         return getOrderTickets( null );
@@ -69,7 +69,7 @@ public interface IOrderProvider {
      * @param filter Delegate used to filter the orders
      * @returns All open orders this order provider currently holds
     */
-    Stream<Order> getOrders( Function<Order,Boolean> filter );
+    Stream<Order> getOrders( Predicate<Order> filter );
     
     default Stream<Order> getOrders() {
         return getOrders( null );

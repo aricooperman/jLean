@@ -15,33 +15,33 @@
 
 package com.quantconnect.lean.securities;
 
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-
-//using System.Linq;
-//using NodaTime;
-//using QuantConnect.Util;
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Base exchange class providing information and helper tools for reading the current exchange situation
  */
 public class SecurityExchange {
-    private LocalDateTime _localFrontier;
-    private SecurityExchangeHours _exchangeHours;
+    
+    private LocalDateTime localFrontier;
+    private SecurityExchangeHours exchangeHours;
 
     /**
      * Gets the <see cref="SecurityExchangeHours"/> for this exchange
      */
     public SecurityExchangeHours getHours() {
-        return _exchangeHours;
+        return exchangeHours;
     }
 
     /**
      * Gets the time zone for this exchange
     */
     public ZoneId getTimeZone() {
-        return _exchangeHours.TimeZone;
+        return exchangeHours.getTimeZone();
     }
 
     /**
@@ -56,14 +56,14 @@ public class SecurityExchange {
      * Time from the most recent data
      */
     public LocalDateTime getLocalTime() {
-        return _localFrontier;
+        return localFrontier;
     }
 
     /**
      * Boolean property for quickly testing if the exchange is open.
     */
     public boolean getExchangeOpen() {
-        return _exchangeHours.IsOpen( _localFrontier, false );
+        return exchangeHours.isOpen( localFrontier, false );
     }
 
     /**
@@ -72,7 +72,7 @@ public class SecurityExchange {
      * @param exchangeHours Contains the weekly exchange schedule plus holidays
      */
     public SecurityExchange( SecurityExchangeHours exchangeHours ) {
-        this._exchangeHours = exchangeHours;
+        this.exchangeHours = exchangeHours;
     }
 
     /**
@@ -80,7 +80,7 @@ public class SecurityExchange {
      * @param newLocalTime Most recent data tick
      */
     public void setLocalDateTimeFrontier( LocalDateTime newLocalTime ) {
-        _localFrontier = newLocalTime;
+        localFrontier = newLocalTime;
     }
 
     /**
@@ -90,7 +90,7 @@ public class SecurityExchange {
      * @returns Return true if the exchange is open for this date
      */
     public boolean dateIsOpen( LocalDate dateToCheck ) {
-        return _exchangeHours.IsDateOpen( dateToCheck );
+        return exchangeHours.isDateOpen( dateToCheck );
     }
 
     /**
@@ -98,33 +98,32 @@ public class SecurityExchange {
      * @param dateTime DateTime to check
      * @returns Boolean true if the market is open
      */
-    public boolean DateTimeIsOpen( LocalDateTime dateTime ) {
-        return _exchangeHours.IsOpen( dateTime, false );
+    public boolean dateTimeIsOpen( LocalDateTime dateTime ) {
+        return exchangeHours.isOpen( dateTime, false );
     }
 
     /**
      * Determines if the exchange was open at any time between start and stop
     */
-    public boolean IsOpenDuringBar(DateTime barStartTime, DateTime barEndTime, boolean isExtendedMarketHours) {
-        return _exchangeHours.IsOpen(barStartTime, barEndTime, isExtendedMarketHours);
+    public boolean isOpenDuringBar( LocalDateTime barStartTime, LocalDateTime barEndTime, boolean isExtendedMarketHours ) {
+        return exchangeHours.isOpen( barStartTime, barEndTime, isExtendedMarketHours );
     }
 
     /**
      * Sets the regular market hours for the specified days If no days are specified then
      * all days will be updated.
-    */
      * @param marketHoursSegments Specifies each segment of the market hours, such as premarket/market/postmark
      * @param days The days of the week to set these times for
-    public void SetMarketHours(IEnumerable<MarketHoursSegment> marketHoursSegments, params DayOfWeek[] days) {
-        if( days.IsNullOrEmpty()) days = Enum.GetValues(typeof(DayOfWeek)).OfType<DayOfWeek>().ToArray();
+     */
+    public void setMarketHours( Collection<MarketHoursSegment> marketHoursSegments, DayOfWeek... days ) {
+        if( days == null || days.length == 0 ) 
+            days = DayOfWeek.values();
         
-        marketHours = _exchangeHours.MarketHours.ToDictionary();
-        marketHoursSegments = marketHoursSegments as IList<MarketHoursSegment> ?? marketHoursSegments.ToList();
-        foreach (day in days) {
-            marketHours[day] = new LocalMarketHours(day, marketHoursSegments);
-        }
+        final Map<DayOfWeek,LocalMarketHours> marketHours = exchangeHours.getMarketHours();
+        for( DayOfWeek day : days )
+            marketHours.put( day, new LocalMarketHours( day, marketHoursSegments ) );
 
         // create a new exchange hours instance for the new hours
-        _exchangeHours = new SecurityExchangeHours(_exchangeHours.TimeZone, _exchangeHours.Holidays, marketHours);
+        exchangeHours = new SecurityExchangeHours( exchangeHours.getTimeZone(), exchangeHours.getHolidays(), marketHours );
     }
 }

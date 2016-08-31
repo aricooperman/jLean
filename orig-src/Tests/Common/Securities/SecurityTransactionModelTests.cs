@@ -27,7 +27,7 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class SecurityTransactionModelTests
     {
         private static final DateTime Noon = new DateTime(2014, 6, 24, 12, 0, 0);
-        private static final TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), new[] { TimeZones.NewYork });
+        private static final TimeKeeper TimeKeeper = new TimeKeeper(Noon Extensions.convertToUtc(TimeZones.NewYork), new[] { TimeZones.NewYork });
 
         [Test]
         public void PerformsMarketFillBuy() {
@@ -233,7 +233,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             security = new Security(SecurityExchangeHoursTests.CreateUsEquitySecurityExchangeHours(), config, new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
             security.SetLocalTimeKeeper(TimeKeeper.GetLocalTimeKeeper(TimeZones.NewYork));
             time = reference;
-            TimeKeeper.SetUtcDateTime(time.ConvertToUtc(TimeZones.NewYork));
+            TimeKeeper.SetUtcDateTime(time Extensions.convertToUtc(TimeZones.NewYork));
             security.SetMarketPrice(new TradeBar(time, Symbols.SPY, 1m, 2m, 0.5m, 1.33m, 100));
 
             fill = model.MarketOnOpenFill(security, order);
@@ -241,7 +241,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             
             // market opens after 30min, so this is just before market open
             time = reference.AddMinutes(29);
-            TimeKeeper.SetUtcDateTime(time.ConvertToUtc(TimeZones.NewYork));
+            TimeKeeper.SetUtcDateTime(time Extensions.convertToUtc(TimeZones.NewYork));
             security.SetMarketPrice(new TradeBar(time, Symbols.SPY, 1.33m, 2.75m, 1.15m, 1.45m, 100));
 
             fill = model.MarketOnOpenFill(security, order);
@@ -249,7 +249,7 @@ package com.quantconnect.lean.Tests.Common.Securities
 
             // market opens after 30min
             time = reference.AddMinutes(30);
-            TimeKeeper.SetUtcDateTime(time.ConvertToUtc(TimeZones.NewYork));
+            TimeKeeper.SetUtcDateTime(time Extensions.convertToUtc(TimeZones.NewYork));
             security.SetMarketPrice(new TradeBar(time, Symbols.SPY, 1.45m, 2.0m, 1.1m, 1.40m, 100));
 
             fill = model.MarketOnOpenFill(security, order);
@@ -266,7 +266,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             security = new Security(SecurityExchangeHoursTests.CreateUsEquitySecurityExchangeHours(), config, new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
             security.SetLocalTimeKeeper(TimeKeeper.GetLocalTimeKeeper(TimeZones.NewYork));
             time = reference;
-            TimeKeeper.SetUtcDateTime(time.ConvertToUtc(TimeZones.NewYork));
+            TimeKeeper.SetUtcDateTime(time Extensions.convertToUtc(TimeZones.NewYork));
             security.SetMarketPrice(new TradeBar(time, Symbols.SPY, 1m, 2m, 0.5m, 1.33m, 100));
 
             fill = model.MarketOnCloseFill(security, order);
@@ -274,7 +274,7 @@ package com.quantconnect.lean.Tests.Common.Securities
 
             // market closes after 60min, so this is just before market Close
             time = reference.AddMinutes(59);
-            TimeKeeper.SetUtcDateTime(time.ConvertToUtc(TimeZones.NewYork));
+            TimeKeeper.SetUtcDateTime(time Extensions.convertToUtc(TimeZones.NewYork));
             security.SetMarketPrice(new TradeBar(time, Symbols.SPY, 1.33m, 2.75m, 1.15m, 1.45m, 100));
 
             fill = model.MarketOnCloseFill(security, order);
@@ -282,7 +282,7 @@ package com.quantconnect.lean.Tests.Common.Securities
 
             // market closes
             time = reference.AddMinutes(60);
-            TimeKeeper.SetUtcDateTime(time.ConvertToUtc(TimeZones.NewYork));
+            TimeKeeper.SetUtcDateTime(time Extensions.convertToUtc(TimeZones.NewYork));
             security.SetMarketPrice(new TradeBar(time, Symbols.SPY, 1.45m, 2.0m, 1.1m, 1.40m, 100));
 
             fill = model.MarketOnCloseFill(security, order);

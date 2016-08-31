@@ -17,8 +17,10 @@ package com.quantconnect.lean;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +38,11 @@ import java.util.List;
 /**
  * Extensions function collections - group all static extensions functions here.
  */
+//TODO extract into seperate util classes
 public class Extensions {
     
-    private static final BigDecimal ONE_THOUSAND = BigDecimal.valueOf( 1000 );
-    private static final BigDecimal TWO = BigDecimal.valueOf( 2 );
+    public static final BigDecimal ONE_THOUSAND = BigDecimal.valueOf( 1000 );
+    public static final BigDecimal TWO = BigDecimal.valueOf( 2 );
 
     
     private Extensions() { }
@@ -498,6 +501,10 @@ public class Extensions {
 //        return from.AtLeniently(LocalDateTime.FromDateTime(time)).ToDateTimeUtc();
         
         return convertTo( time, from, Global.UTC_ZONE_ID );
+    }
+
+    public static Duration timeOfDay( LocalDateTime dateTime ) {
+        return Duration.between( dateTime.truncatedTo( ChronoUnit.DAYS ), dateTime );
     }
 
 //    /**

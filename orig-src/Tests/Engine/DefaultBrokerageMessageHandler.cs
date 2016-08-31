@@ -35,7 +35,7 @@ package com.quantconnect.lean.Tests.Engine
             referenceTime = DateTime.UtcNow;
             algorithm = new AlgorithmStub(equities: new List<String> { "SPY" });
             algorithm.SetDateTime(referenceTime);
-            algorithm.Securities[Symbols.SPY].Exchange.SetMarketHours(Enumerable.Empty<MarketHoursSegment>(), referenceTime.ConvertFromUtc(TimeZones.NewYork).DayOfWeek);
+            algorithm.Securities[Symbols.SPY].Exchange.SetMarketHours(Enumerable.Empty<MarketHoursSegment>(), referenceTime Extensions.convertFromUtc(TimeZones.NewYork).DayOfWeek);
             job = new LiveNodePacket();
             results = new TestResultHandler();//packet -> Console.WriteLine(FieldstoString(packet)));
             api = new Api.Api();
@@ -55,8 +55,8 @@ package com.quantconnect.lean.Tests.Engine
             algorithm = new AlgorithmStub(equities: new List<String> { "SPY" });
             referenceTime = DateTime.UtcNow;
             algorithm.SetDateTime(referenceTime);
-            localReferencTime = referenceTime.ConvertFromUtc(TimeZones.NewYork);
-            open = localReferencTime.AddSeconds(1).TimeOfDay;
+            localReferencTime = referenceTime Extensions.convertFromUtc(TimeZones.NewYork);
+            open = localReferencTime.AddSeconds(1) Extensions.timeOfDay(  );
             closed = Duration.ofDays(1);
             marketHours = new MarketHoursSegment(MarketHoursState.Market, open, closed);
             algorithm.Securities[Symbols.SPY].Exchange.SetMarketHours(new [] {marketHours}, localReferencTime.DayOfWeek);

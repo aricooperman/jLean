@@ -28,7 +28,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Equity
     public class EquityTransactionModelTests
     {
         private static final DateTime Noon = new DateTime(2014, 6, 24, 12, 0, 0);
-        private static final TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), new[] {TimeZones.NewYork});
+        private static final TimeKeeper TimeKeeper = new TimeKeeper(Noon Extensions.convertToUtc(TimeZones.NewYork), new[] {TimeZones.NewYork});
 
         [Test]
         public void PerformsMarketFillBuy() {

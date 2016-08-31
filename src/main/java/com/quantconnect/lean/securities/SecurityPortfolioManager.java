@@ -16,6 +16,9 @@
 package com.quantconnect.lean.securities;
 
 import java.util.List;
+import java.util.Map;
+
+import com.quantconnect.lean.Symbol;
 
 /**
  * Portfolio manager class groups popular properties and makes them accessible through one interface.
@@ -36,12 +39,12 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     /**
      * Gets the cash book that keeps track of all currency holdings (only settled cash)
     */
-    public CashBook CashBook { get; private set; }
+    public CashBook CashBook;// { get; private set; }
 
     /**
      * Gets the cash book that keeps track of all currency holdings (only unsettled cash)
     */
-    public CashBook UnsettledCashBook { get; private set; }
+    public CashBook UnsettledCashBook;// { get; private set; }
 
     /**
      * The list of pending funds waiting for settlement time
@@ -49,7 +52,7 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     private final List<UnsettledCashAmount> _unsettledCashAmounts;
 
     // The _unsettledCashAmounts list has to be synchronized because order fills are happening on a separate thread
-    private final object _unsettledCashAmountsLocker = new object();
+    private final Object _unsettledCashAmountsLocker = new Object();
 
     // Record keeping variables
     private final Cash _baseCurrencyCash;
@@ -76,12 +79,14 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
 
     /**
      * Add a new securities string-security to the portfolio.
-    */
      * @param symbol Symbol of Map
      * @param holding SecurityHoldings object
-     * <exception cref="NotImplementedException Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.</exception>
+     * @throws NotImplementedException Portfolio object is an adaptor for Security Manager. This method is not applicable for PortfolioManager class.
      * This method is not implemented and using it will throw an exception
-    public void Add(Symbol symbol, SecurityHolding holding) { throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager. To add a new asset add the required data during initialization."); }
+     */
+    public void add( Symbol symbol, SecurityHolding holding ) { 
+        throw new NotImplementedException( "Portfolio object is an adaptor for Security Manager. To add a new asset add the required data during initialization." ); 
+    }
 
     /**
      * Add a new securities key value pair to the portfolio.
@@ -230,8 +235,6 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
     IEnumerator IEnumerable.GetEnumerator() {
         return Securities.Select(x -> new KeyValuePair<Symbol, SecurityHolding>(x.Key, x.Value.Holdings)).GetEnumerator();
     }
-
-    #endregion
 
     /**
      * Sum of all currencies in account in US dollars (only settled cash)

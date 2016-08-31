@@ -52,7 +52,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             public double beta;
 
             public RestApiBaseData ToBaseData(ZoneId timeZone, Duration period, Symbol sym) {
-                dateTime = QuantConnect.Time.UnixTimeStampToDateTime(time).ConvertFromUtc(timeZone).Subtract(period);
+                dateTime = QuantConnect.Time.UnixTimeStampToDateTime(time) Extensions.convertFromUtc(timeZone).Subtract(period);
                 return new RestApiBaseData
                 {
                     Symbol = sym,

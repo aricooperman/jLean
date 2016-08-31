@@ -90,7 +90,7 @@ package com.quantconnect.lean.Tests.Common.Securities
                 // before processing the fill we must deduct the cost
                 fill = fills[i];
                 time = DateTime.Today.AddDays(i);
-                TimeKeeper.SetUtcDateTime(time.ConvertToUtc(TimeZones.NewYork));
+                TimeKeeper.SetUtcDateTime(time Extensions.convertToUtc(TimeZones.NewYork));
                 // the value of 'CASH' increments for each fill, the original test algo did this monthly
                 // the time doesn't really matter though
                 security.SetMarketPrice(new IndicatorDataPoint(CASH, time, i + 1));
@@ -489,7 +489,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             // Friday at open, cash settled
             marketOpen = securityExchangeHours.MarketHours[timeUtc.DayOfWeek].GetMarketOpen(Duration.ZERO, false);
             Assert.IsTrue(marketOpen.HasValue);
-            timeUtc = timeUtc.AddDays(1).Date.Add(marketOpen.Value).ConvertToUtc(securityExchangeHours.TimeZone);
+            timeUtc = timeUtc.AddDays(1).Date.Add(marketOpen.Value) Extensions.convertToUtc(securityExchangeHours.TimeZone);
             portfolio.ScanForCashSettlement(timeUtc);
             Assert.AreEqual(998, portfolio.Cash);
             Assert.AreEqual(0, portfolio.UnsettledCash);

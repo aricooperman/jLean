@@ -31,7 +31,7 @@ package com.quantconnect.lean.Tests.Common.Securities
         private static final DateTime Midnight = new DateTime(2016, 02, 16, 0, 0, 0);
         private static final DateTime NoonWeekend = new DateTime(2016, 02, 14, 12, 0, 0);
         private static final DateTime NoonHoliday = new DateTime(2016, 02, 15, 12, 0, 0);
-        private static final TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), TimeZones.NewYork);
+        private static final TimeKeeper TimeKeeper = new TimeKeeper(Noon Extensions.convertToUtc(TimeZones.NewYork), TimeZones.NewYork);
 
         [Test]
         public void InitializationTests() {
@@ -231,7 +231,7 @@ package com.quantconnect.lean.Tests.Common.Securities
 
         private static Security CreateSecurity(DateTime newLocalTime) {
             security = new Security(CreateUsEquitySecurityExchangeHours(), CreateTradeBarConfig(), new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
-            TimeKeeper.SetUtcDateTime(newLocalTime.ConvertToUtc(security.Exchange.TimeZone));
+            TimeKeeper.SetUtcDateTime(newLocalTime Extensions.convertToUtc(security.Exchange.TimeZone));
             security.Exchange.SetLocalDateTimeFrontier(newLocalTime);
             security.SetLocalTimeKeeper(TimeKeeper.GetLocalTimeKeeper(TimeZones.NewYork));
             security.SetMarketPrice(new IndicatorDataPoint(Symbols.SPY, newLocalTime, 100m));

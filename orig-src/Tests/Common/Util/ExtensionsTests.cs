@@ -61,7 +61,7 @@ package com.quantconnect.lean.Tests.Common.Util
             time = new DateTime(2015, 05, 02, 18, 01, 00);
             expected = new DateTime(2015, 05, 01);
             hours = MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.FXCM, null, SecurityType.Forex);
-            exchangeRounded = time.ExchangeRoundDown(Time.OneDay, hours, false);
+            exchangeRounded = time.ExchangeRoundDown(Duration.ofDays( 1 ), hours, false);
             Assert.AreEqual(expected, exchangeRounded);
         }
 
@@ -70,7 +70,7 @@ package com.quantconnect.lean.Tests.Common.Util
             time = new DateTime(2016, 1, 25, 9, 31, 0);
             expected = time.Date;
             hours = MarketHoursDatabase.FromDataFolder().GetExchangeHours(Market.USA, null, SecurityType.Equity);
-            exchangeRounded = time.ExchangeRoundDown(Time.OneDay, hours, false);
+            exchangeRounded = time.ExchangeRoundDown(Duration.ofDays( 1 ), hours, false);
         }
 
         [Test]

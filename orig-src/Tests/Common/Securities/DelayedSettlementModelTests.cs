@@ -25,7 +25,7 @@ package com.quantconnect.lean.Tests.Common.Securities
     public class DelayedSettlementModelTests
     {
         private static final DateTime Noon = new DateTime(2015, 11, 2, 12, 0, 0);
-        private static final TimeKeeper TimeKeeper = new TimeKeeper(Noon.ConvertToUtc(TimeZones.NewYork), new[] { TimeZones.NewYork });
+        private static final TimeKeeper TimeKeeper = new TimeKeeper(Noon Extensions.convertToUtc(TimeZones.NewYork), new[] { TimeZones.NewYork });
 
         [Test]
         public void SellOnMondaySettleOnThursday() {
@@ -42,7 +42,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.AreEqual(0, portfolio.UnsettledCash);
 
             // Sell on Monday
-            timeUtc = Noon.ConvertToUtc(TimeZones.NewYork);
+            timeUtc = Noon Extensions.convertToUtc(TimeZones.NewYork);
             model.ApplyFunds(portfolio, security, timeUtc, "USD", 1000);
             portfolio.ScanForCashSettlement(timeUtc);
             Assert.AreEqual(3000, portfolio.Cash);
@@ -88,7 +88,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             Assert.AreEqual(0, portfolio.UnsettledCash);
 
             // Sell on Thursday
-            timeUtc = Noon.AddDays(3).ConvertToUtc(TimeZones.NewYork);
+            timeUtc = Noon.AddDays(3) Extensions.convertToUtc(TimeZones.NewYork);
             model.ApplyFunds(portfolio, security, timeUtc, "USD", 1000);
             portfolio.ScanForCashSettlement(timeUtc);
             Assert.AreEqual(3000, portfolio.Cash);

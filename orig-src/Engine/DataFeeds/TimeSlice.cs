@@ -131,7 +131,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
             Slice slice = null;
             sliceFuture = new Lazy<Slice>(() -> slice);
 
-            algorithmTime = utcDateTime.ConvertFromUtc(algorithmTimeZone);
+            algorithmTime = utcDateTime Extensions.convertFromUtc(algorithmTimeZone);
             tradeBars = new TradeBars(algorithmTime);
             quoteBars = new QuoteBars(algorithmTime);
             ticks = new Ticks(algorithmTime);

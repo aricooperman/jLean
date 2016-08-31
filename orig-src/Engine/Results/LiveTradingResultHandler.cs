@@ -573,7 +573,7 @@ package com.quantconnect.lean.Lean.Engine.Results
             // don't send stockplots for internal feeds
             Security security;
             if( _algorithm.Securities.TryGetValue(symbol, out security) && !security.IsInternalFeed() && value > 0) {
-                now = DateTime.UtcNow.ConvertFromUtc(security.Exchange.TimeZone);
+                now = DateTime.UtcNow Extensions.convertFromUtc(security.Exchange.TimeZone);
                 if( security.Exchange.Hours.IsOpen(now, security.IsExtendedMarketHours)) {
                     Sample( "Stockplot: " + symbol.Value, "Stockplot: " + symbol.Value, 0, SeriesType.Line, time, value);
                 }

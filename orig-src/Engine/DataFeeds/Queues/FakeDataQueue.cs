@@ -127,7 +127,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
                     {
                         Time = DateTime.Now,
                         Symbol = symbol,
-                        Value = 10 + (decimal)Math.Abs(Math.Sin(DateTime.Now.TimeOfDay.TotalMinutes)),
+                        Value = 10 + (decimal)Math.Abs(Math.Sin(DateTime.Now Extensions.timeOfDay(  ).TotalMinutes)),
                         TickType = TickType.Trade,
                         Quantity = _random.Next(10, (int)_timer.Interval)
                     });

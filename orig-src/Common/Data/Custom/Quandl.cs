@@ -54,7 +54,7 @@ package com.quantconnect.lean.Data.Custom
         */
         public Duration Period
         {
-            get { return QuantConnect.Time.OneDay; }
+            get { return QuantConnect.Duration.ofDays( 1 ); }
         }
 
         /**

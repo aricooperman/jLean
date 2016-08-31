@@ -46,7 +46,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
          * leave null for the deault of <see cref="TimeZones.Utc"/>
         public ManualTimeProvider(DateTime currentTime, ZoneId setCurrentTimeTimeZone = null ) {
             _setCurrentTimeTimeZone = setCurrentTimeTimeZone ?? TimeZones.Utc;
-            _currentTime = currentTime.ConvertToUtc(_setCurrentTimeTimeZone);
+            _currentTime = currentTime Extensions.convertToUtc(_setCurrentTimeTimeZone);
         }
 
         /**
@@ -72,7 +72,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
          * @param time The local time to set the current time time, will be
          * converted into UTC
         public void SetCurrentTime(DateTime time) {
-            _currentTime = time.ConvertToUtc(_setCurrentTimeTimeZone);
+            _currentTime = time Extensions.convertToUtc(_setCurrentTimeTimeZone);
         }
 
         /**

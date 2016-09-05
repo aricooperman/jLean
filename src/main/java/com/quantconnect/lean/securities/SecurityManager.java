@@ -15,13 +15,30 @@
 
 package com.quantconnect.lean.securities;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ForkJoinPool;
 
 import com.quantconnect.lean.securities.Security;
+import com.quantconnect.lean.Global.Resolution;
+import com.quantconnect.lean.Global.SecurityType;
 import com.quantconnect.lean.Symbol;
+import com.quantconnect.lean.SymbolCache;
 import com.quantconnect.lean.TimeKeeper;
+import com.quantconnect.lean.data.BaseData;
+import com.quantconnect.lean.data.SubscriptionDataConfig;
+import com.quantconnect.lean.data.SubscriptionManager;
+import com.quantconnect.lean.event.CollectionChangedEvent;
+import com.quantconnect.lean.event.CollectionChangedEventListener;
+import com.quantconnect.lean.event.CollectionChangedEvent.CollectionChangedAction;
 
 //using System.Collections.Concurrent;
 //using System.Collections.Specialized;
@@ -32,12 +49,12 @@ import com.quantconnect.lean.TimeKeeper;
  * Enumerable security management class for grouping security objects into an array and providing any common properties.
  * Implements Map for the index searching of securities by symbol
  */
-public class SecurityManager implements Map<Symbol,Security>, INotifyCollectionChanged {
+public class SecurityManager implements Map<Symbol,Security> {
     
     /**
      * Event fired when a security is added or removed from this collection
     */
-    public /*event*/ NotifyCollectionChangedEventHandler CollectionChanged;
+    private CopyOnWriteArrayList<CollectionChangedEventListener> listeners = new CopyOnWriteArrayList<>();
 
     private final TimeKeeper _timeKeeper;
 
@@ -52,7 +69,7 @@ public class SecurityManager implements Map<Symbol,Security>, INotifyCollectionC
     }
 
     /**
-     * Initialise the algorithm security manager with two empty dictionaries
+     * Initialize the algorithm security manager with two empty dictionaries
      * @param timeKeeper">
      */
     public SecurityManager( TimeKeeper timeKeeper ) {
@@ -62,24 +79,10 @@ public class SecurityManager implements Map<Symbol,Security>, INotifyCollectionC
 
     /**
      * Add a new security with this symbol to the collection.
-     * Map implementation
-     * @param symbol symbol for security we're trading
-     * @param security security object
-     * <seealso cref="Add(Security)"/>
-    */
-    public void add( Symbol symbol, Security security ) {
-        if( _securityManager.TryAdd( symbol, security ) ) {
-            security.SetLocalTimeKeeper(_timeKeeper.GetLocalTimeKeeper(security.Exchange.TimeZone));
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, security));
-        }
-    }
-
-    /**
-     * Add a new security with this symbol to the collection.
      * @param security security object
      */
     public void add( Security security ) {
-        put( security.Symbol, security );
+        put( security.getSymbol(), security );
     }
 
     /**
@@ -87,7 +90,7 @@ public class SecurityManager implements Map<Symbol,Security>, INotifyCollectionC
      * Map implementation
      * @param pair
      */
-    public void add( Entry<Symbol,Security> pair ) {
+    public void put( Entry<Symbol,Security> pair ) {
         put( pair.getKey(), pair.getValue() );
     }
 
@@ -101,185 +104,175 @@ public class SecurityManager implements Map<Symbol,Security>, INotifyCollectionC
 
     /**
      * Check if this collection contains this key value pair.
-    */
      * @param pair Search key-value pair
      * Map implementation
-    @returns Bool true if contains this key-value pair
-    public boolean Contains(KeyValuePair<Symbol, Security> pair) {
-        return _securityManager.Contains(pair);
+     * @returns boolean true if contains this key-value pair
+     */
+    public boolean contains( Entry<Symbol, Security> pair ) {
+        return _securityManager.containsKey( pair.getKey() );
     }
 
     /**
      * Check if this collection contains this symbol.
-    */
      * @param symbol Symbol we're checking for.
      * Map implementation
-    @returns Bool true if contains this symbol pair
-    public boolean ContainsKey(Symbol symbol) {
-        return _securityManager.ContainsKey(symbol);
+     * @returns boolean true if contains this symbol pair
+     */
+    public boolean containsKey( Symbol symbol ) {
+        return _securityManager.containsKey( symbol );
     }
 
-    /**
-     * Copy from the internal array to an external array.
-    */
-     * @param array Array we're outputting to
-     * @param number Starting index of array
-     * Map implementation
-    public void CopyTo(KeyValuePair<Symbol, Security>[] array, int number) {
-        ((Map<Symbol, Security>)_securityManager).CopyTo(array, number);
-    }
+//    /**
+//     * Copy from the internal array to an external array.
+//     * @param array Array we're outputting to
+//     * @param number Starting index of array
+//     * Map implementation
+//     */
+//    public void copyTo( Entry<Symbol, Security>[] array, int number) {
+//        ((Map<Symbol, Security>)_securityManager).copyTo(array, number);
+//    }
 
     /**
      * Count of the number of securities in the collection.
-    */
      * Map implementation
-    public int Count
-    {
-        get { return _securityManager.Count; }
+     */
+    public int size() {
+        return _securityManager.size();
     }
 
     /**
-     * Flag indicating if the internal arrray is read only.
-    */
+     * Flag indicating if the internal array is read only.
      * Map implementation
-    public boolean IsReadOnly
-    {
-        get { return false;  }
-    }
-
-    /**
-     * Remove a key value of of symbol-securities from the collections.
-    */
-     * Map implementation
-     * @param pair Key Value pair of symbol-security to remove
-    @returns Boolean true on success
-    public boolean Remove(KeyValuePair<Symbol, Security> pair) {
-        return Remove(pair.Key);
-    }
-
-    /**
-     * Remove this symbol security: Dictionary interface implementation.
-    */
-     * @param symbol Symbol we're searching for
-    @returns true success
-    public boolean Remove(Symbol symbol) {
-        Security security;
-        if( _securityManager.TryRemove(symbol, out security)) {
-            OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Remove, security));
-            return true;
-        }
+     */
+    public boolean isReadOnly() {
         return false;
     }
 
     /**
-     * List of the symbol-keys in the collection of securities.
-    */
+     * Remove a key value of of symbol-securities from the collections.
      * Map implementation
-    public ICollection<Symbol> Keys
-    {
-        get { return _securityManager.Keys; }
+     * @param pair Key Value pair of symbol-security to remove
+     * @returns Boolean true on success
+     */
+    public Security remove( Entry<Symbol, Security> pair ) {
+        return remove( pair.getKey() );
+    }
+
+    /**
+     * Remove this symbol security: Dictionary interface implementation.
+     * @param symbol Symbol we're searching for
+     * @returns true success
+     */
+    public Security remove( Symbol symbol ) {
+        final Security security = _securityManager.remove( symbol );
+        if( security != null ) {
+            onCollectionChanged( new CollectionChangedEvent( CollectionChangedAction.Remove, security ) );
+            return security;
+        }
+        
+        return null;
+    }
+
+    /**
+     * List of the symbol-keys in the collection of securities.
+     * Map implementation
+     */
+    public Set<Symbol> keySet() {
+        return _securityManager.keySet();
     }
 
     /**
      * Try and get this security object with matching symbol and return true on success.
-    */
      * @param symbol String search symbol
      * @param security Output Security object
      * Map implementation
-    @returns True on successfully locating the security object
-    public boolean TryGetValue(Symbol symbol, out Security security) {
-        return _securityManager.TryGetValue(symbol, out security);
+     * @returns Security if it exists
+     */
+    public Security get( Symbol symbol ) {
+        if( !_securityManager.containsKey( symbol ) )
+            throw new IllegalArgumentException( String.format( "This asset symbol (%1$s) was not found in your security list. Please add this security or check it exists before using it with 'Securities.containsKey(\"%2$s\")'", 
+                    symbol, SymbolCache.getTicker( symbol ) ) );
+        
+        return _securityManager.get( symbol );
     }
 
     /**
      * Get a list of the security objects for this collection.
-    */
      * Map implementation
-    public ICollection<Security> Values
-    {
-        get { return _securityManager.Values; }
+     */
+    public Collection<Security> values() {
+        return _securityManager.values();
     }
 
     /**
      * Get the enumerator for this security collection.
-    */
      * Map implementation
-    @returns Enumerable key value pair
-    IEnumerator<KeyValuePair<Symbol, Security>> IEnumerable<KeyValuePair<Symbol, Security>>.GetEnumerator() {
-        return _securityManager.GetEnumerator();
+     * @returns Enumerable key value pair
+     */
+    public Set<Entry<Symbol, Security>> entrySet() {
+        return _securityManager.entrySet();
     }
 
     /**
      * Get the enumerator for this securities collection.
-    */
      * Map implementation
-    @returns Enumerator.
-    IEnumerator IEnumerable.GetEnumerator() {
-        return _securityManager.GetEnumerator();
+     * @return 
+     * @returns Enumerator.
+     */
+    public Iterator<Map.Entry<Symbol,Security>> iterator() {
+        return _securityManager.entrySet().iterator();
     }
 
     /**
      * Indexer method for the security manager to access the securities objects by their symbol.
-    */
      * Map implementation
      * @param symbol Symbol object indexer
-    @returns Security
-    public Security this[Symbol symbol]
-    {
-        get 
-        {
-            if( !_securityManager.ContainsKey(symbol)) {
-                throw new Exception( String.format( "This asset symbol (%1$s) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"%2$s\")'", symbol, SymbolCache.GetTicker(symbol)));
-            } 
-            return _securityManager[symbol];
-        }
-        set
-        {
-            Security existing;
-            if( _securityManager.TryGetValue(symbol, out existing) && existing != value) {
-                throw new IllegalArgumentException( "Unable to over write existing Security: " + symbol.toString());
-            }
+     * @returns Security
+     */
+    public Security put( Symbol symbol, Security value ) {
+        final Security existing = _securityManager.get( symbol );
+        if( existing != null && !existing.equals( value ) )
+            throw new IllegalArgumentException( "Unable to over write existing Security: " + symbol.toString() );
 
-            // no security exists for the specified symbol key, add it now
-            if( existing == null ) {
-                Add(symbol, value);
-            }
+        // no security exists for the specified symbol key, add it now
+        if( existing == null ) {
+            _securityManager.put( symbol, value ) );
+            value.setLocalTimeKeeper( _timeKeeper.getLocalTimeKeeper( value.getExchange().getTimeZone() ) );
+            onCollectionChanged( new CollectionChangedEvent( CollectionChangedAction.Add, value ) );
         }
+
+        return existing;
     }
 
     /**
      * Indexer method for the security manager to access the securities objects by their symbol.
-    */
      * Map implementation
      * @param ticker string ticker symbol indexer
-    @returns Security
-    public Security this[string ticker]
-    {
-        get
-        {
-            Symbol symbol;
-            if( !SymbolCache.TryGetSymbol(ticker, out symbol)) {
-                throw new Exception( String.format( "This asset symbol (%1$s) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"%1$s\")'", ticker));
-            }
-            return this[symbol];
-        }
-        set
-        {
-            Symbol symbol;
-            if( !SymbolCache.TryGetSymbol(ticker, out symbol)) {
-                throw new Exception( String.format( "This asset symbol (%1$s) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"%1$s\")'", ticker));
-            }
-            this[symbol] = value;
-        }
+     * @returns Security
+     */
+    public Security get( String ticker ) {
+        final Symbol symbol = SymbolCache.getSymbol( ticker );
+        if( symbol == null )
+            throw new IllegalArgumentException( String.format( "This asset symbol (%1$s) was not found in your security list. Please add this security or check it exists before using it with 'Securities.ContainsKey(\"%1$s\")'", ticker ) );
+        
+        return get( symbol );
+    }
+
+    public Security put( String ticker, Security value ) {
+        Symbol symbol = SymbolCache.getSymbol( ticker );
+        if( symbol == null )
+            throw new IllegalArgumentException( String.format( "This asset symbol (%1$s) was not found in your security list. Please add this security or check it exists before using it with 'Securities.containsKey(\"%1$s\")'", ticker ) );
+
+        put( symbol, value );
     }
 
     /**
      * Event invocator for the <see cref="CollectionChanged"/> event
-    */
-     * @param changedEventArgs Event arguments for the <see cref="CollectionChanged"/> event
-    protected void OnCollectionChanged(NotifyCollectionChangedEventArgs changedEventArgs) {
-        handler = CollectionChanged;
-        if( handler != null ) handler(this, changedEventArgs);
+     * @param changedEvent Event arguments for the <see cref="CollectionChanged"/> event
+     */
+    protected void onCollectionChanged( final CollectionChangedEvent changedEvent ) {
+        if( !listeners.isEmpty() )
+            ForkJoinPool.commonPool().execute( () -> listeners.stream().forEach( l -> l.onCollectionChanged( changedEvent ) ) );
     }
 
     /**
@@ -287,7 +280,31 @@ public class SecurityManager implements Map<Symbol,Security>, INotifyCollectionC
      * leverage is less than or equal to zero.
      * This method also add the new symbol mapping to the <see cref="SymbolCache"/>
     */
-    public static Security CreateSecurity(Type factoryType,
+    public static Security createSecurity( Class<?> factoryType,
+        SecurityPortfolioManager securityPortfolioManager,
+        SubscriptionManager subscriptionManager,
+        SecurityExchangeHours exchangeHours,
+        ZoneId dataTimeZone,
+        SymbolProperties symbolProperties,
+        ISecurityInitializer securityInitializer,
+        Symbol symbol,
+        Resolution resolution,
+        boolean fillDataForward,
+        BigDecimal leverage,
+        boolean extendedMarketHours,
+        boolean isInternalFeed,
+        boolean isCustomData ) {
+        
+        return createSecurity( factoryType, securityPortfolioManager, subscriptionManager, exchangeHours, dataTimeZone, symbolProperties, 
+                securityInitializer, symbol, resolution, fillDataForward, leverage, extendedMarketHours, isInternalFeed, isCustomData, true, true );
+    }
+    
+    /**
+     * Creates a security and matching configuration. This applies the default leverage if
+     * leverage is less than or equal to zero.
+     * This method also add the new symbol mapping to the <see cref="SymbolCache"/>
+    */
+    public static Security createSecurity( Class<? extends BaseData> factoryType,
         SecurityPortfolioManager securityPortfolioManager,
         SubscriptionManager subscriptionManager,
         SecurityExchangeHours exchangeHours,
@@ -301,22 +318,25 @@ public class SecurityManager implements Map<Symbol,Security>, INotifyCollectionC
         boolean extendedMarketHours,
         boolean isInternalFeed,
         boolean isCustomData,
-        boolean addToSymbolCache = true,
-        boolean isFilteredSubscription = true) {
+        boolean addToSymbolCache,
+        boolean isFilteredSubscription ) {
+        
         // add the symbol to our cache
-        if( addToSymbolCache) SymbolCache.Set(symbol.Value, symbol);
+        if( addToSymbolCache ) 
+            SymbolCache.set( symbol.getValue(), symbol );
 
         //Add the symbol to Data Manager -- generate unified data streams for algorithm events
-        config = subscriptionManager.Add(factoryType, symbol, resolution, dataTimeZone, exchangeHours.TimeZone, isCustomData, fillDataForward,
-            extendedMarketHours, isInternalFeed, isFilteredSubscription);
+        final SubscriptionDataConfig config = subscriptionManager.add( factoryType, symbol, resolution, dataTimeZone, exchangeHours.getTimeZone(), isCustomData, fillDataForward,
+            extendedMarketHours, isInternalFeed, isFilteredSubscription );
 
         // verify the cash book is in a ready state
-        quoteCurrency = symbolProperties.QuoteCurrency;
-        if( !securityPortfolioManager.CashBook.ContainsKey(quoteCurrency)) {
+        final String quoteCurrency = symbolProperties.getQuoteCurrency();
+        if( !securityPortfolioManager.CashBook.containsKey( quoteCurrency ) ) {
             // since we have none it's safe to say the conversion is zero
-            securityPortfolioManager.CashBook.Add(quoteCurrency, 0, 0);
+            securityPortfolioManager.CashBook.add( quoteCurrency, BigDecimal.ZERO, BigDecimal.ZERO );
         }
-        if( symbol.ID.SecurityType == SecurityType.Forex) {
+        
+        if( symbol.getId().getSecurityType() == SecurityType.Forex ) {
             // decompose the symbol into each currency pair
             String baseCurrency;
             Forex.Forex.DecomposeCurrencyPair(symbol.Value, out baseCurrency, out quoteCurrency);

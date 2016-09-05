@@ -30,7 +30,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
     {
         [Test]
         public void AtSpecificTimeFromUtc() {
-            rules = GetTimeRules(TimeZones.Utc);
+            rules = GetTimeRules(Global.UTC_ZONE_ID);
             rule = rules.At(Duration.ofHours(12));
             times = rule.CreateUtcEventTimes(new[] {new DateTime(2000, 01, 01)});
 
@@ -58,7 +58,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
 
         [Test]
         public void RegularMarketOpenNoDelta() {
-            rules = GetTimeRules(TimeZones.Utc);
+            rules = GetTimeRules(Global.UTC_ZONE_ID);
             rule = rules.AfterMarketOpen(Symbols.SPY);
             times = rule.CreateUtcEventTimes(new[] { new DateTime(2000, 01, 03) });
 
@@ -72,7 +72,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
 
         [Test]
         public void RegularMarketOpenWithDelta() {
-            rules = GetTimeRules(TimeZones.Utc);
+            rules = GetTimeRules(Global.UTC_ZONE_ID);
             rule = rules.AfterMarketOpen(Symbols.SPY, 30);
             times = rule.CreateUtcEventTimes(new[] { new DateTime(2000, 01, 03) });
 
@@ -86,7 +86,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
 
         [Test]
         public void ExtendedMarketOpenNoDelta() {
-            rules = GetTimeRules(TimeZones.Utc);
+            rules = GetTimeRules(Global.UTC_ZONE_ID);
             rule = rules.AfterMarketOpen(Symbols.SPY, 0, true);
             times = rule.CreateUtcEventTimes(new[] { new DateTime(2000, 01, 03) });
 
@@ -100,7 +100,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
 
         [Test]
         public void ExtendedMarketOpenWithDelta() {
-            rules = GetTimeRules(TimeZones.Utc);
+            rules = GetTimeRules(Global.UTC_ZONE_ID);
             rule = rules.AfterMarketOpen(Symbols.SPY, 30, true);
             times = rule.CreateUtcEventTimes(new[] { new DateTime(2000, 01, 03) });
 
@@ -114,7 +114,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
 
         [Test]
         public void RegularMarketCloseNoDelta() {
-            rules = GetTimeRules(TimeZones.Utc);
+            rules = GetTimeRules(Global.UTC_ZONE_ID);
             rule = rules.BeforeMarketClose(Symbols.SPY);
             times = rule.CreateUtcEventTimes(new[] { new DateTime(2000, 01, 03) });
 
@@ -128,7 +128,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
 
         [Test]
         public void RegularMarketCloseWithDelta() {
-            rules = GetTimeRules(TimeZones.Utc);
+            rules = GetTimeRules(Global.UTC_ZONE_ID);
             rule = rules.BeforeMarketClose(Symbols.SPY, 30);
             times = rule.CreateUtcEventTimes(new[] { new DateTime(2000, 01, 03) });
 
@@ -142,7 +142,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
 
         [Test]
         public void ExtendedMarketCloseNoDelta() {
-            rules = GetTimeRules(TimeZones.Utc);
+            rules = GetTimeRules(Global.UTC_ZONE_ID);
             rule = rules.BeforeMarketClose(Symbols.SPY, 0, true);
             times = rule.CreateUtcEventTimes(new[] { new DateTime(2000, 01, 03) });
 
@@ -156,7 +156,7 @@ package com.quantconnect.lean.Tests.Common.Scheduling
 
         [Test]
         public void ExtendedMarketCloseWithDelta() {
-            rules = GetTimeRules(TimeZones.Utc);
+            rules = GetTimeRules(Global.UTC_ZONE_ID);
             rule = rules.BeforeMarketClose(Symbols.SPY, 30, true);
             times = rule.CreateUtcEventTimes(new[] { new DateTime(2000, 01, 03) });
             

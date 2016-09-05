@@ -30,7 +30,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
         [Test]
         public void LimitsBasedOnTimeBetweenCalls() {
             currentTime = new DateTime(2015, 10, 10, 13, 6, 0);
-            timeProvider = new ManualTimeProvider(currentTime, TimeZones.Utc);
+            timeProvider = new ManualTimeProvider(currentTime, Global.UTC_ZONE_ID);
             data = Enumerable.Range(0, 100).Select(x -> new Tick {Symbol = CreateSymbol(x)}).GetEnumerator();
             rateLimit = new RateLimitEnumerator(data, timeProvider, Time.OneSecond);
 

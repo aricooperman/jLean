@@ -36,7 +36,8 @@ import com.google.common.collect.ImmutableSet;
 
 public class Global {
     
-    public static final ZoneId UTC_ZONE_ID = ZoneId.of( "UTC" );
+    public static final ZoneId UTC_ZONE_TZ_ID = ZoneId.of( "UTC" );
+    public static final ZoneId NEW_YORK_TZ_ID = ZoneId.of( "America/New_York" );
     
 //    public static final EventBus APP_EVENT_BUS = new EventBus( "Main Bus" );
     
@@ -46,6 +47,7 @@ public class Global {
             .registerModule( new JavaTimeModule() )
             .configure( DeserializationFeature.READ_ENUMS_USING_TO_STRING, true )
             .configure( SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true );
+
     
     /// Shortcut date format strings
     public static class DateFormat {

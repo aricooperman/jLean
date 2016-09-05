@@ -37,8 +37,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
                 new Tick {Time = start.AddSeconds(1)},
             };
 
-            timeProvider = new ManualTimeProvider(start, TimeZones.Utc);
-            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, TimeZones.Utc, Duration.ofSeconds(0.5));
+            timeProvider = new ManualTimeProvider(start, Global.UTC_ZONE_ID);
+            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, Global.UTC_ZONE_ID, Duration.ofSeconds(0.5));
 
             Assert.IsTrue(fastForward.MoveNext());
             Assert.AreEqual(start, fastForward.Current.Time);
@@ -54,8 +54,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
                 new Tick {Time = start.AddSeconds(1)},
             };
 
-            timeProvider = new ManualTimeProvider(start, TimeZones.Utc);
-            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, TimeZones.Utc, Duration.ofSeconds(1));
+            timeProvider = new ManualTimeProvider(start, Global.UTC_ZONE_ID);
+            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, Global.UTC_ZONE_ID, Duration.ofSeconds(1));
 
             Assert.IsTrue(fastForward.MoveNext());
             Assert.AreEqual(start.AddSeconds(-1), fastForward.Current.Time);
@@ -72,8 +72,8 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds.Enumerators
                 new Tick {Time = start.AddSeconds(2)}
             };
 
-            timeProvider = new ManualTimeProvider(start, TimeZones.Utc);
-            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, TimeZones.Utc, Duration.ofSeconds(0.5));
+            timeProvider = new ManualTimeProvider(start, Global.UTC_ZONE_ID);
+            fastForward = new FastForwardEnumerator(data.GetEnumerator(), timeProvider, Global.UTC_ZONE_ID, Duration.ofSeconds(0.5));
 
             Assert.IsTrue(fastForward.MoveNext());
             Assert.AreEqual(start.AddSeconds(1), fastForward.Current.Time);

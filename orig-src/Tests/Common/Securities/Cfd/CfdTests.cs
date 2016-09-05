@@ -27,7 +27,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Cfd
         [Test]
         public void ConstructorExtractsQuoteCurrency() {
             symbol = Symbol.Create( "DE30EUR", SecurityType.Cfd, Market.Oanda);
-            config = new SubscriptionDataConfig(typeof(TradeBar), symbol, Resolution.Minute, TimeZones.Utc, TimeZones.NewYork, true, true, true);
+            config = new SubscriptionDataConfig(typeof(TradeBar), symbol, Resolution.Minute, Global.UTC_ZONE_ID, TimeZones.NewYork, true, true, true);
             symbolProperties = new SymbolProperties( "Dax German index", "EUR", 1, 1, 1);
             cfd = new QuantConnect.Securities.Cfd.Cfd(SecurityExchangeHours.AlwaysOpen(config.DataTimeZone), new Cash( "EUR", 0, 0), config, symbolProperties);
             Assert.AreEqual( "EUR", cfd.QuoteCurrency.Symbol);

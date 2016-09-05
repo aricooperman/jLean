@@ -43,7 +43,7 @@ package com.quantconnect.lean.ToolBox
             factory = (BaseData) Activator.CreateInstance(dataType);
             
             // ignore time zones here, i.e, we're going to emit data in the data time zone
-            config = new SubscriptionDataConfig(dataType, pathComponents.Symbol, pathComponents.Resolution, TimeZones.Utc, TimeZones.Utc, false, true, false);
+            config = new SubscriptionDataConfig(dataType, pathComponents.Symbol, pathComponents.Resolution, Global.UTC_ZONE_ID, Global.UTC_ZONE_ID, false, true, false);
             using (reader = new StreamReader(stream)) {
                 String line;
                 while ((line = reader.ReadLine()) != null ) {

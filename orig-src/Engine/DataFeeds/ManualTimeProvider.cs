@@ -32,20 +32,20 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
          * Initializes a new instance of the <see cref="ManualTimeProvider"/>
         */
          * @param setCurrentTimeTimeZone Specify to use this time zone when calling <see cref="SetCurrentTime"/>,
-         * leave null for the deault of <see cref="TimeZones.Utc"/>
+         * leave null for the deault of <see cref="Global.UTC_ZONE_ID"/>
         public ManualTimeProvider(ZoneId setCurrentTimeTimeZone = null ) {
-            _setCurrentTimeTimeZone = setCurrentTimeTimeZone ?? TimeZones.Utc;
+            _setCurrentTimeTimeZone = setCurrentTimeTimeZone ?? Global.UTC_ZONE_ID;
         }
 
         /**
          * Initializes a new instance of the <see cref="ManualTimeProvider"/> class
         */
          * @param currentTime The current time in the specified time zone, if the time zone is
-         * null then the time is interpreted as being in <see cref="TimeZones.Utc"/>
+         * null then the time is interpreted as being in <see cref="Global.UTC_ZONE_ID"/>
          * @param setCurrentTimeTimeZone Specify to use this time zone when calling <see cref="SetCurrentTime"/>,
-         * leave null for the deault of <see cref="TimeZones.Utc"/>
+         * leave null for the deault of <see cref="Global.UTC_ZONE_ID"/>
         public ManualTimeProvider(DateTime currentTime, ZoneId setCurrentTimeTimeZone = null ) {
-            _setCurrentTimeTimeZone = setCurrentTimeTimeZone ?? TimeZones.Utc;
+            _setCurrentTimeTimeZone = setCurrentTimeTimeZone ?? Global.UTC_ZONE_ID;
             _currentTime = currentTime Extensions.convertToUtc(_setCurrentTimeTimeZone);
         }
 

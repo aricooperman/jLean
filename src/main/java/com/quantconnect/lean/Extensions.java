@@ -482,11 +482,11 @@ public class Extensions {
      * @returns The time in terms of the <paramref name="to"/> time zone
      */
     public static LocalDateTime convertFromUtc( LocalDateTime time, ZoneId to/*, boolean strict = false*/ ) {
-        return convertTo( time, Global.UTC_ZONE_ID, to/*, strict*/ );
+        return convertTo( time, Global.UTC_ZONE_TZ_ID, to/*, strict*/ );
     }
 
     /**
-     * Converts the specified time from the <paramref name="from"/> time zone to <see cref="TimeZones.Utc"/>
+     * Converts the specified time from the <paramref name="from"/> time zone to <see cref="Global.UTC_ZONE_ID"/>
      * @param time The time to be converted in terms of the <paramref name="from"/> time zone
      * @param from The time zone the specified <paramref name="time"/> is in
      * @param strict True for strict conversion, this will throw during ambiguitities, false for lenient conversion
@@ -500,7 +500,7 @@ public class Extensions {
 //
 //        return from.AtLeniently(LocalDateTime.FromDateTime(time)).ToDateTimeUtc();
         
-        return convertTo( time, from, Global.UTC_ZONE_ID );
+        return convertTo( time, from, Global.UTC_ZONE_TZ_ID );
     }
 
     public static Duration timeOfDay( LocalDateTime dateTime ) {

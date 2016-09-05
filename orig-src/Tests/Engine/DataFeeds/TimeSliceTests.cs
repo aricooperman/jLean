@@ -36,14 +36,14 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
                 typeof(Tick), 
                 Symbols.EURUSD, 
                 Resolution.Tick, 
-                TimeZones.Utc, 
-                TimeZones.Utc, 
+                Global.UTC_ZONE_ID, 
+                Global.UTC_ZONE_ID, 
                 true, 
                 true, 
                 false);
 
             security = new Security(
-                SecurityExchangeHours.AlwaysOpen(TimeZones.Utc), 
+                SecurityExchangeHours.AlwaysOpen(Global.UTC_ZONE_ID), 
                 subscriptionDataConfig, 
                 new Cash(CashBook.AccountCurrency, 0, 1m), 
                 SymbolProperties.GetDefault(CashBook.AccountCurrency));
@@ -57,7 +57,7 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
 
             IEnumerable<TimeSlice> timeSlices = rawTicks.Select(t -> TimeSlice.Create(
                 t.Time,
-                TimeZones.Utc,
+                Global.UTC_ZONE_ID,
                 new CashBook(),
                 new List<DataFeedPacket> {new DataFeedPacket(security, subscriptionDataConfig, new List<BaseData>() {t})},
                 new SecurityChanges(Enumerable.Empty<Security>(), Enumerable.Empty<Security>())));
@@ -83,23 +83,23 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             symbol2 = Symbol.Create( "SCF/CBOE_VX2_EW", SecurityType.Base, Market.USA);
 
             subscriptionDataConfig1 = new SubscriptionDataConfig(
-                typeof(QuandlFuture), symbol1, Resolution.Daily, TimeZones.Utc, TimeZones.Utc, true, true, false, isCustom: true);
+                typeof(QuandlFuture), symbol1, Resolution.Daily, Global.UTC_ZONE_ID, Global.UTC_ZONE_ID, true, true, false, isCustom: true);
             subscriptionDataConfig2 = new SubscriptionDataConfig(
-                typeof(QuandlFuture), symbol2, Resolution.Daily, TimeZones.Utc, TimeZones.Utc, true, true, false, isCustom: true);
+                typeof(QuandlFuture), symbol2, Resolution.Daily, Global.UTC_ZONE_ID, Global.UTC_ZONE_ID, true, true, false, isCustom: true);
 
             security1 = new Security(
-                SecurityExchangeHours.AlwaysOpen(TimeZones.Utc),
+                SecurityExchangeHours.AlwaysOpen(Global.UTC_ZONE_ID),
                 subscriptionDataConfig1,
                 new Cash(CashBook.AccountCurrency, 0, 1m),
                 SymbolProperties.GetDefault(CashBook.AccountCurrency));
 
             security2 = new Security(
-                SecurityExchangeHours.AlwaysOpen(TimeZones.Utc),
+                SecurityExchangeHours.AlwaysOpen(Global.UTC_ZONE_ID),
                 subscriptionDataConfig1,
                 new Cash(CashBook.AccountCurrency, 0, 1m),
                 SymbolProperties.GetDefault(CashBook.AccountCurrency));
 
-            timeSlice = TimeSlice.Create(DateTime.UtcNow, TimeZones.Utc, new CashBook(),
+            timeSlice = TimeSlice.Create(DateTime.UtcNow, Global.UTC_ZONE_ID, new CashBook(),
                 new List<DataFeedPacket>
                 {
                     new DataFeedPacket(security1, subscriptionDataConfig1, new List<BaseData> {new QuandlFuture { Symbol = symbol1, Time = DateTime.UtcNow.Date, Value = 15 } }),
@@ -125,17 +125,17 @@ package com.quantconnect.lean.Tests.Engine.DataFeeds
             symbol = Symbol.Create( "DFX", SecurityType.Base, Market.USA);
 
             subscriptionDataConfig = new SubscriptionDataConfig(
-                typeof(DailyFx), symbol, Resolution.Daily, TimeZones.Utc, TimeZones.Utc, true, true, false, isCustom: true);
+                typeof(DailyFx), symbol, Resolution.Daily, Global.UTC_ZONE_ID, Global.UTC_ZONE_ID, true, true, false, isCustom: true);
 
             security = new Security(
-                SecurityExchangeHours.AlwaysOpen(TimeZones.Utc),
+                SecurityExchangeHours.AlwaysOpen(Global.UTC_ZONE_ID),
                 subscriptionDataConfig,
                 new Cash(CashBook.AccountCurrency, 0, 1m),
                 SymbolProperties.GetDefault(CashBook.AccountCurrency));
 
             refTime = DateTime.UtcNow;
 
-            timeSlice = TimeSlice.Create(refTime, TimeZones.Utc, new CashBook(),
+            timeSlice = TimeSlice.Create(refTime, Global.UTC_ZONE_ID, new CashBook(),
                 new List<DataFeedPacket>
                 {
                     new DataFeedPacket(security, subscriptionDataConfig, new List<BaseData>

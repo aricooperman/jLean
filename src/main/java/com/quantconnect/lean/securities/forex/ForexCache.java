@@ -13,21 +13,21 @@
  * limitations under the License.
 */
 
-package com.quantconnect.lean.Securities.Forex
-{
+package com.quantconnect.lean.securities.forex;
+
+import com.quantconnect.lean.securities.SecurityCache;
+
+/**
+ * Forex specific caching support
+ * Class is vitually empty and scheduled to be made obsolete. Potentially could be used for user data storage.
+ * <seealso cref="SecurityCache"/>
+ */
+public class ForexCache extends SecurityCache {
     /**
-     * Forex specific caching support
-    */
-     * Class is vitually empty and scheduled to be made obsolete. Potentially could be used for user data storage.
-     * <seealso cref="SecurityCache"/>
-    public class ForexCache : SecurityCache
-    {
-        /**
-         * Initialize forex cache
-        */
-        public ForexCache()
-            : base() {
-            //Nothing to do:
-        }
-    } //End ForexCache Class
-} //End Namespace
+     * Initialize forex cache
+     */
+    public ForexCache() {
+        super();
+        //Nothing to do:
+    }
+} //End ForexCache Class

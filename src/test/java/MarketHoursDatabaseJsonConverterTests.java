@@ -148,7 +148,7 @@ package com.quantconnect.lean.Tests.Common.Util
 
         private static ZoneId ParseTimeZone( String tz) {
             // handle UTC directly
-            if( tz == "UTC") return TimeZones.Utc;
+            if( tz == "UTC") return Global.UTC_ZONE_ID;
             // if it doesn't start with UTC then it's a name, like America/New_York
             if( !tz.StartsWith( "UTC")) return ZoneIdProviders.Tzdb[tz];
 

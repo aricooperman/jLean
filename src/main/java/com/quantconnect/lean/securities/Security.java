@@ -28,11 +28,11 @@ import com.quantconnect.lean.orders.fills.IFillModel;
 import com.quantconnect.lean.orders.slippage.ISlippageModel;
 import com.quantconnect.lean.securities.interfaces.ISecurityDataFilter;
 import com.quantconnect.lean.securities.interfaces.ISecurityTransactionModel;
-import com.quantconnect.lean.Global.DataNormalizationMode;
-import com.quantconnect.lean.Global.Resolution;
-import com.quantconnect.lean.Global.SecurityType;
+import com.quantconnect.lean.DataNormalizationMode;
 import com.quantconnect.lean.Global;
 import com.quantconnect.lean.LocalTimeKeeper;
+import com.quantconnect.lean.Resolution;
+import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.Symbol;
 
 /**

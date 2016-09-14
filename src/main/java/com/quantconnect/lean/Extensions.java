@@ -41,14 +41,11 @@ import java.util.List;
 //TODO extract into seperate util classes
 public class Extensions {
     
-    public static final BigDecimal ONE_THOUSAND = BigDecimal.valueOf( 1000 );
-    public static final BigDecimal TWO = BigDecimal.valueOf( 2 );
-
     
     private Extensions() { }
 
     public static BigDecimal midPrice( BigDecimal price1, BigDecimal price2 ) {
-        return (price1.add( price2 )).divide( TWO, RoundingMode.HALF_UP );
+        return (price1.add( price2 )).divide( Global.TWO, RoundingMode.HALF_UP );
     }
     
     /**
@@ -185,7 +182,7 @@ public class Extensions {
      */
     public static BigDecimal smartRounding( BigDecimal input ) {
         // any larger numbers we still want some decimal places
-        if( input.compareTo( ONE_THOUSAND ) > 0 )
+        if( input.compareTo( Global.ONE_THOUSAND ) > 0 )
             return input.setScale( 4, RoundingMode.HALF_UP );
 
         // this is good for forex and other small numbers

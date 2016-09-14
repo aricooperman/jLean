@@ -31,8 +31,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ImmutableMap;
 import com.quantconnect.lean.Global;
-import com.quantconnect.lean.Global.SecurityType;
 import com.quantconnect.lean.Globals;
+import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.data.SubscriptionDataConfig;
 
@@ -130,7 +130,7 @@ public class MarketHoursDatabase {
      */
     public SecurityExchangeHours getExchangeHours( String market, Symbol symbol, SecurityType securityType, ZoneId overrideTimeZone ) {
         String stringSymbol = symbol == null ? null : symbol.getValue();
-        return getEntry( market, stringSymbol, securityType, overrideTimeZone ).ExchangeHours;
+        return getEntry( market, stringSymbol, securityType, overrideTimeZone ).exchangeHours;
     }
 
     /**
@@ -143,7 +143,7 @@ public class MarketHoursDatabase {
      */
     public ZoneId getDataTimeZone( String market, Symbol symbol, SecurityType securityType ) {
         final String stringSymbol = symbol == null ? null : symbol.getValue();
-        return getEntry( market, stringSymbol, securityType ).DataTimeZone;
+        return getEntry( market, stringSymbol, securityType ).dataTimeZone;
     }
 
     /**
@@ -225,8 +225,8 @@ public class MarketHoursDatabase {
 
             // perform time zone override if requested, we'll use the same exact local hours
             // and holidays, but we'll express them in a different time zone
-            if( overrideTimeZone != null && !entry.ExchangeHours.getTimeZone().equals( overrideTimeZone ) )
-                return new DatabaseEntry( overrideTimeZone, new SecurityExchangeHours( overrideTimeZone, entry.ExchangeHours.getHolidays(), entry.ExchangeHours.getMarketHours() ) );
+            if( overrideTimeZone != null && !entry.exchangeHours.getTimeZone().equals( overrideTimeZone ) )
+                return new DatabaseEntry( overrideTimeZone, new SecurityExchangeHours( overrideTimeZone, entry.exchangeHours.getHolidays(), entry.exchangeHours.getMarketHours() ) );
         }
 
         return entry;
@@ -239,12 +239,12 @@ public class MarketHoursDatabase {
         /**
          * Gets the raw data time zone for this entry
          */
-        public final ZoneId DataTimeZone;
+        public final ZoneId dataTimeZone;
 
         /**
          * Gets the exchange hours for this entry
          */
-        public final SecurityExchangeHours ExchangeHours;
+        public final SecurityExchangeHours exchangeHours;
 
         /**
          * Initializes a new instance of the <see cref="Entry"/> class
@@ -252,8 +252,8 @@ public class MarketHoursDatabase {
          * @param exchangeHours The security exchange hours for this entry
          */
         public DatabaseEntry( ZoneId dataTimeZone, SecurityExchangeHours exchangeHours ) {
-            this.DataTimeZone = dataTimeZone;
-            this.ExchangeHours = exchangeHours;
+            this.dataTimeZone = dataTimeZone;
+            this.exchangeHours = exchangeHours;
         }
     }
 

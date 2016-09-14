@@ -13,20 +13,22 @@
  * limitations under the License.
 */
 
-package com.quantconnect.lean.Securities.Equity
-{
+package com.quantconnect.lean.securities.equity;
+
+import com.quantconnect.lean.securities.SecurityCache;
+
+/**
+ * Equity cache @Override.
+ * Scheduled for obsolesence
+ * <seealso cref="SecurityCache"/>
+ */
+@Deprecated
+public class EquityCache extends SecurityCache {
+    
     /**
-     * Equity cache @Override.
-    */
-     * Scheduled for obsolesence
-     * <seealso cref="SecurityCache"/>
-    public class EquityCache : SecurityCache
-    {
-        /**
-         * Start a new Cache for the set Index Code
-        */
-        public EquityCache()
-            : base() {
-        }
+     * Start a new Cache for the set Index Code
+     */
+    public EquityCache() {
+        super();
     }
 }

@@ -33,8 +33,6 @@ import com.quantconnect.lean.securities.Security;
 import com.quantconnect.lean.securities.SecurityExchangeHours;
 
 //using NodaTime;
-//using QuantConnect.Logging;
-//using QuantConnect.Securities;
 
 /**
  * Time helper class collection for working with trading dates

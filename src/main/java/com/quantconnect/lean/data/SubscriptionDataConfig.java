@@ -22,12 +22,12 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.quantconnect.lean.Global.DataNormalizationMode;
-import com.quantconnect.lean.Global.Resolution;
-import com.quantconnect.lean.Global.SecurityType;
-import com.quantconnect.lean.Global.TickType;
+import com.quantconnect.lean.DataNormalizationMode;
+import com.quantconnect.lean.Resolution;
 import com.quantconnect.lean.SecurityIdentifier;
+import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.Symbol;
+import com.quantconnect.lean.TickType;
 import com.quantconnect.lean.data.consolidators.IDataConsolidator;
 
 

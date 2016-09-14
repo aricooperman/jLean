@@ -27,7 +27,7 @@ import java.util.Set;
 
 import com.google.common.collect.ImmutableMap;
 import com.quantconnect.lean.Currencies;
-import com.quantconnect.lean.Global.SecurityType;
+import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.data.SubscriptionManager;
 
 

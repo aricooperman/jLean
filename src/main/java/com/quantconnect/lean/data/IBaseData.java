@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import com.quantconnect.lean.Global.MarketDataType;
+import com.quantconnect.lean.MarketDataType;
 import com.quantconnect.lean.Symbol;
 
 /// Base Data Class: Type, Timestamp, Key -- Base Features.

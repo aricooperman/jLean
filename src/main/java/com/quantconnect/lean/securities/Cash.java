@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import com.google.common.collect.ImmutableMap;
-import com.quantconnect.lean.Global.SecurityType;
+import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.data.BaseData;
 import com.quantconnect.lean.data.SubscriptionManager;

@@ -21,10 +21,10 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.quantconnect.lean.Global.AlgorithmControl;
-import com.quantconnect.lean.Global.AlgorithmStatus;
-import com.quantconnect.lean.Global.Language;
-import com.quantconnect.lean.Global.StoragePermissions;
+import com.quantconnect.lean.AlgorithmControl;
+import com.quantconnect.lean.AlgorithmStatus;
+import com.quantconnect.lean.Language;
+import com.quantconnect.lean.StoragePermissions;
 import com.quantconnect.lean.api.Compile;
 import com.quantconnect.lean.api.Project;
 import com.quantconnect.lean.api.ProjectFile;

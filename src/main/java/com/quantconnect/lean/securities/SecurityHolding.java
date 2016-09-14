@@ -19,7 +19,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import com.quantconnect.lean.Extensions;
-import com.quantconnect.lean.Global.SecurityType;
+import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.orders.MarketOrder;
 
@@ -62,8 +62,8 @@ public class SecurityHolding {
      * Positive indicates long holdings, negative quantity indicates a short holding
      * <seealso cref="AbsoluteQuantity"/>
      */
-    public BigDecimal getQuantity() {
-        return BigDecimal.valueOf( quantity );
+    public int getQuantity() {
+        return quantity;
     }
 
     /**

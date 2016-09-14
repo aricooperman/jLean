@@ -28,9 +28,6 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.quantconnect.lean.Global.OptionRight;
-import com.quantconnect.lean.Global.OptionStyle;
-import com.quantconnect.lean.Global.SecurityType;
 import com.quantconnect.lean.configuration.Config;
 import com.quantconnect.lean.data.auxiliary.MapFile;
 import com.quantconnect.lean.data.auxiliary.MapFileResolver;

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import com.quantconnect.lean.Global.Resolution;
+import com.quantconnect.lean.Resolution;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.TimeKeeper;
 import com.quantconnect.lean.data.consolidators.IDataConsolidator;

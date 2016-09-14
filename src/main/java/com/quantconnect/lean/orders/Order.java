@@ -20,13 +20,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.orders.OrderTypes.OrderDirection;
 import com.quantconnect.lean.orders.OrderTypes.OrderDuration;
 import com.quantconnect.lean.orders.OrderTypes.OrderStatus;
 import com.quantconnect.lean.orders.OrderTypes.OrderType;
 import com.quantconnect.lean.securities.Security;
-import com.quantconnect.lean.Global.SecurityType;
 
 /**
  *  Order class for placing new trade

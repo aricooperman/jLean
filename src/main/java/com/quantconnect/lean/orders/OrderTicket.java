@@ -28,7 +28,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.Function;
 
 import com.google.common.collect.ImmutableList;
-import com.quantconnect.lean.Global.SecurityType;
+import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.orders.OrderTypes.OrderStatus;
 import com.quantconnect.lean.orders.OrderTypes.OrderType;

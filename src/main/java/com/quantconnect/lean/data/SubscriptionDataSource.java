@@ -17,7 +17,7 @@ package com.quantconnect.lean.data;
 
 import java.nio.file.Path;
 
-import com.quantconnect.lean.Global.SubscriptionTransportMedium;
+import com.quantconnect.lean.SubscriptionTransportMedium;
 import com.quantconnect.lean.data.FileFormat;
 
 /// Represents the source location and transport medium for a subscription

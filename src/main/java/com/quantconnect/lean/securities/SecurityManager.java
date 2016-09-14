@@ -27,15 +27,23 @@ import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ForkJoinPool;
 
+import org.apache.commons.lang3.tuple.Pair;
+
+import com.quantconnect.lean.securities.MarketHoursDatabase.DatabaseEntry;
 import com.quantconnect.lean.securities.Security;
-import com.quantconnect.lean.Global.Resolution;
-import com.quantconnect.lean.Global.SecurityType;
+import com.quantconnect.lean.securities.forex.Forex;
+import com.quantconnect.lean.Resolution;
+import com.quantconnect.lean.SecurityIdentifier;
+import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.SymbolCache;
 import com.quantconnect.lean.TimeKeeper;
 import com.quantconnect.lean.data.BaseData;
 import com.quantconnect.lean.data.SubscriptionDataConfig;
 import com.quantconnect.lean.data.SubscriptionManager;
+import com.quantconnect.lean.data.market.QuoteBar;
+import com.quantconnect.lean.data.market.Tick;
+import com.quantconnect.lean.data.market.TradeBar;
 import com.quantconnect.lean.event.CollectionChangedEvent;
 import com.quantconnect.lean.event.CollectionChangedEventListener;
 import com.quantconnect.lean.event.CollectionChangedEvent.CollectionChangedAction;
@@ -51,21 +59,17 @@ import com.quantconnect.lean.event.CollectionChangedEvent.CollectionChangedActio
  */
 public class SecurityManager implements Map<Symbol,Security> {
     
-    /**
-     * Event fired when a security is added or removed from this collection
-    */
-    private CopyOnWriteArrayList<CollectionChangedEventListener> listeners = new CopyOnWriteArrayList<>();
-
-    private final TimeKeeper _timeKeeper;
-
+    //Event fired when a security is added or removed from this collection
+    private final CopyOnWriteArrayList<CollectionChangedEventListener> listeners = new CopyOnWriteArrayList<>();
+    private final TimeKeeper timeKeeper;
     //Internal dictionary implementation:
-    private final ConcurrentMap<Symbol, Security> _securityManager;
+    private final Map<Symbol, Security> securityManager;
 
     /**
      * Gets the most recent time this manager was updated
      */
     public LocalDateTime getUtcTime() {
-        return _timeKeeper.getUtcTime();
+        return timeKeeper.getUtcTime();
     }
 
     /**
@@ -73,8 +77,8 @@ public class SecurityManager implements Map<Symbol,Security> {
      * @param timeKeeper">
      */
     public SecurityManager( TimeKeeper timeKeeper ) {
-        this._timeKeeper = timeKeeper;
-        this._securityManager = new ConcurrentHashMap<Symbol,Security>();
+        this.timeKeeper = timeKeeper;
+        this.securityManager = new ConcurrentHashMap<Symbol,Security>();
     }
 
     /**
@@ -99,7 +103,7 @@ public class SecurityManager implements Map<Symbol,Security> {
      * Map implementation
      */
     public void clear() {
-        _securityManager.clear();
+        securityManager.clear();
     }
 
     /**
@@ -109,7 +113,7 @@ public class SecurityManager implements Map<Symbol,Security> {
      * @returns boolean true if contains this key-value pair
      */
     public boolean contains( Entry<Symbol, Security> pair ) {
-        return _securityManager.containsKey( pair.getKey() );
+        return securityManager.containsKey( pair.getKey() );
     }
 
     /**
@@ -118,8 +122,8 @@ public class SecurityManager implements Map<Symbol,Security> {
      * Map implementation
      * @returns boolean true if contains this symbol pair
      */
-    public boolean containsKey( Symbol symbol ) {
-        return _securityManager.containsKey( symbol );
+    public boolean containsKey( Object symbol ) {
+        return securityManager.containsKey( symbol );
     }
 
 //    /**
@@ -137,7 +141,7 @@ public class SecurityManager implements Map<Symbol,Security> {
      * Map implementation
      */
     public int size() {
-        return _securityManager.size();
+        return securityManager.size();
     }
 
     /**
@@ -158,13 +162,20 @@ public class SecurityManager implements Map<Symbol,Security> {
         return remove( pair.getKey() );
     }
 
+    public Security remove( Object symbol ) {
+        if( symbol instanceof Symbol )
+            return remove( (Symbol)symbol );
+        else
+            return null;
+    }
+    
     /**
      * Remove this symbol security: Dictionary interface implementation.
      * @param symbol Symbol we're searching for
      * @returns true success
      */
     public Security remove( Symbol symbol ) {
-        final Security security = _securityManager.remove( symbol );
+        final Security security = securityManager.remove( symbol );
         if( security != null ) {
             onCollectionChanged( new CollectionChangedEvent( CollectionChangedAction.Remove, security ) );
             return security;
@@ -178,7 +189,14 @@ public class SecurityManager implements Map<Symbol,Security> {
      * Map implementation
      */
     public Set<Symbol> keySet() {
-        return _securityManager.keySet();
+        return securityManager.keySet();
+    }
+    
+    public Security get( Object symbol ) {
+        if( symbol instanceof Symbol )
+            return get( (Symbol)symbol );
+        else
+            return null;
     }
 
     /**
@@ -189,11 +207,11 @@ public class SecurityManager implements Map<Symbol,Security> {
      * @returns Security if it exists
      */
     public Security get( Symbol symbol ) {
-        if( !_securityManager.containsKey( symbol ) )
+        if( !securityManager.containsKey( symbol ) )
             throw new IllegalArgumentException( String.format( "This asset symbol (%1$s) was not found in your security list. Please add this security or check it exists before using it with 'Securities.containsKey(\"%2$s\")'", 
                     symbol, SymbolCache.getTicker( symbol ) ) );
         
-        return _securityManager.get( symbol );
+        return securityManager.get( symbol );
     }
 
     /**
@@ -201,7 +219,7 @@ public class SecurityManager implements Map<Symbol,Security> {
      * Map implementation
      */
     public Collection<Security> values() {
-        return _securityManager.values();
+        return securityManager.values();
     }
 
     /**
@@ -210,19 +228,34 @@ public class SecurityManager implements Map<Symbol,Security> {
      * @returns Enumerable key value pair
      */
     public Set<Entry<Symbol, Security>> entrySet() {
-        return _securityManager.entrySet();
+        return securityManager.entrySet();
     }
 
     /**
      * Get the enumerator for this securities collection.
      * Map implementation
      * @return 
-     * @returns Enumerator.
+     * @returns Iterator.
      */
     public Iterator<Map.Entry<Symbol,Security>> iterator() {
-        return _securityManager.entrySet().iterator();
+        return securityManager.entrySet().iterator();
     }
 
+    @Override
+    public boolean isEmpty() {
+        return securityManager.isEmpty();
+    }
+
+    @Override
+    public boolean containsValue( Object value ) {
+        return securityManager.containsValue( value );
+    }
+
+    @Override
+    public void putAll( Map<? extends Symbol,? extends Security> m ) {
+        securityManager.putAll( m );
+    }
+    
     /**
      * Indexer method for the security manager to access the securities objects by their symbol.
      * Map implementation
@@ -230,14 +263,14 @@ public class SecurityManager implements Map<Symbol,Security> {
      * @returns Security
      */
     public Security put( Symbol symbol, Security value ) {
-        final Security existing = _securityManager.get( symbol );
+        final Security existing = securityManager.get( symbol );
         if( existing != null && !existing.equals( value ) )
             throw new IllegalArgumentException( "Unable to over write existing Security: " + symbol.toString() );
 
         // no security exists for the specified symbol key, add it now
         if( existing == null ) {
-            _securityManager.put( symbol, value ) );
-            value.setLocalTimeKeeper( _timeKeeper.getLocalTimeKeeper( value.getExchange().getTimeZone() ) );
+            securityManager.put( symbol, value );
+            value.setLocalTimeKeeper( timeKeeper.getLocalTimeKeeper( value.getExchange().getTimeZone() ) );
             onCollectionChanged( new CollectionChangedEvent( CollectionChangedAction.Add, value ) );
         }
 
@@ -263,7 +296,7 @@ public class SecurityManager implements Map<Symbol,Security> {
         if( symbol == null )
             throw new IllegalArgumentException( String.format( "This asset symbol (%1$s) was not found in your security list. Please add this security or check it exists before using it with 'Securities.containsKey(\"%1$s\")'", ticker ) );
 
-        put( symbol, value );
+        return put( symbol, value );
     }
 
     /**
@@ -280,20 +313,20 @@ public class SecurityManager implements Map<Symbol,Security> {
      * leverage is less than or equal to zero.
      * This method also add the new symbol mapping to the <see cref="SymbolCache"/>
     */
-    public static Security createSecurity( Class<?> factoryType,
-        SecurityPortfolioManager securityPortfolioManager,
-        SubscriptionManager subscriptionManager,
-        SecurityExchangeHours exchangeHours,
-        ZoneId dataTimeZone,
-        SymbolProperties symbolProperties,
-        ISecurityInitializer securityInitializer,
-        Symbol symbol,
-        Resolution resolution,
-        boolean fillDataForward,
-        BigDecimal leverage,
-        boolean extendedMarketHours,
-        boolean isInternalFeed,
-        boolean isCustomData ) {
+    public static Security createSecurity( Class<? extends BaseData> factoryType,
+            SecurityPortfolioManager securityPortfolioManager,
+            SubscriptionManager subscriptionManager,
+            SecurityExchangeHours exchangeHours,
+            ZoneId dataTimeZone,
+            SymbolProperties symbolProperties,
+            ISecurityInitializer securityInitializer,
+            Symbol symbol,
+            Resolution resolution,
+            boolean fillDataForward,
+            BigDecimal leverage,
+            boolean extendedMarketHours,
+            boolean isInternalFeed,
+            boolean isCustomData ) {
         
         return createSecurity( factoryType, securityPortfolioManager, subscriptionManager, exchangeHours, dataTimeZone, symbolProperties, 
                 securityInitializer, symbol, resolution, fillDataForward, leverage, extendedMarketHours, isInternalFeed, isCustomData, true, true );
@@ -305,21 +338,21 @@ public class SecurityManager implements Map<Symbol,Security> {
      * This method also add the new symbol mapping to the <see cref="SymbolCache"/>
     */
     public static Security createSecurity( Class<? extends BaseData> factoryType,
-        SecurityPortfolioManager securityPortfolioManager,
-        SubscriptionManager subscriptionManager,
-        SecurityExchangeHours exchangeHours,
-        ZoneId dataTimeZone,
-        SymbolProperties symbolProperties,
-        ISecurityInitializer securityInitializer,
-        Symbol symbol,
-        Resolution resolution,
-        boolean fillDataForward,
-        BigDecimal leverage,
-        boolean extendedMarketHours,
-        boolean isInternalFeed,
-        boolean isCustomData,
-        boolean addToSymbolCache,
-        boolean isFilteredSubscription ) {
+            SecurityPortfolioManager securityPortfolioManager,
+            SubscriptionManager subscriptionManager,
+            SecurityExchangeHours exchangeHours,
+            ZoneId dataTimeZone,
+            SymbolProperties symbolProperties,
+            ISecurityInitializer securityInitializer,
+            Symbol symbol,
+            Resolution resolution,
+            boolean fillDataForward,
+            BigDecimal leverage,
+            boolean extendedMarketHours,
+            boolean isInternalFeed,
+            boolean isCustomData,
+            boolean addToSymbolCache,
+            boolean isFilteredSubscription ) {
         
         // add the symbol to our cache
         if( addToSymbolCache ) 
@@ -331,102 +364,128 @@ public class SecurityManager implements Map<Symbol,Security> {
 
         // verify the cash book is in a ready state
         final String quoteCurrency = symbolProperties.getQuoteCurrency();
-        if( !securityPortfolioManager.CashBook.containsKey( quoteCurrency ) ) {
+        final CashBook cashBook = securityPortfolioManager.getCashBook();
+        if( !cashBook.containsKey( quoteCurrency ) ) {
             // since we have none it's safe to say the conversion is zero
-            securityPortfolioManager.CashBook.add( quoteCurrency, BigDecimal.ZERO, BigDecimal.ZERO );
+            cashBook.add( quoteCurrency, BigDecimal.ZERO, BigDecimal.ZERO );
         }
         
         if( symbol.getId().getSecurityType() == SecurityType.Forex ) {
             // decompose the symbol into each currency pair
-            String baseCurrency;
-            Forex.Forex.DecomposeCurrencyPair(symbol.Value, out baseCurrency, out quoteCurrency);
-
-            if( !securityPortfolioManager.CashBook.ContainsKey(baseCurrency)) {
+            final Pair<String,String> currencyPair = Forex.decomposeCurrencyPair( symbol.getValue() );
+            final String baseCurrency = currencyPair.getLeft();
+            quoteCurrency = currencyPair.getRight();
+            
+            if( !cashBook.containsKey( baseCurrency ) ) {
                 // since we have none it's safe to say the conversion is zero
-                securityPortfolioManager.CashBook.Add(baseCurrency, 0, 0);
+                cashBook.add( baseCurrency, BigDecimal.ZERO, BigDecimal.ZERO );
             }
-            if( !securityPortfolioManager.CashBook.ContainsKey(quoteCurrency)) {
+            if( !cashBook.containsKey( quoteCurrency ) ) {
                 // since we have none it's safe to say the conversion is zero
-                securityPortfolioManager.CashBook.Add(quoteCurrency, 0, 0);
+                cashBook.add(quoteCurrency, BigDecimal.ZERO, BigDecimal.ZERO );
             }
         }
         
-        quoteCash = securityPortfolioManager.CashBook[symbolProperties.QuoteCurrency];
+        final Cash quoteCash = cashBook.get( symbolProperties.getQuoteCurrency() );
 
         Security security;
-        switch (config.SecurityType) {
-            case SecurityType.Equity:
-                security = new Equity.Equity(symbol, exchangeHours, quoteCash, symbolProperties);
+        switch( config.securityType ) {
+            case Equity:
+                security = new Equity( symbol, exchangeHours, quoteCash, symbolProperties);
                 break;
 
-            case SecurityType.Option:
-                security = new Option.Option(exchangeHours, config, securityPortfolioManager.CashBook[CashBook.AccountCurrency], symbolProperties);
+            case Option:
+                security = new Option( exchangeHours, config, cashBook.get( CashBook.ACCOUNT_CURRENCY ), symbolProperties );
                 break;
 
-            case SecurityType.Forex:
-                security = new Forex.Forex(symbol, exchangeHours, quoteCash, symbolProperties);
+            case Forex:
+                security = new Forex( symbol, exchangeHours, quoteCash, symbolProperties );
                 break;
 
-            case SecurityType.Cfd:
-                security = new Cfd.Cfd(symbol, exchangeHours, quoteCash, symbolProperties);
+            case Cfd:
+                security = new Cfd( symbol, exchangeHours, quoteCash, symbolProperties );
                 break;
 
             default:
-            case SecurityType.Base:
-                security = new Security(symbol, exchangeHours, quoteCash, symbolProperties);
+            case Base:
+                security = new Security( symbol, exchangeHours, quoteCash, symbolProperties );
                 break;
         }
 
         // if we're just creating this security and it only has an internal
         // feed, mark it as non-tradable since the user didn't request this data
-        if( !config.IsInternalFeed) {
-            security.IsTradable = true;
-        }
+        if( !config.isInternalFeed )
+            security.setTradable( true );
 
-        security.AddData(config);
+        security.addData( config );
 
         // invoke the security initializer
-        securityInitializer.Initialize(security);
+        securityInitializer.initialize( security );
 
         // if leverage was specified then apply to security after the initializer has run, parameters of this
         // method take precedence over the intializer
-        if( leverage > 0) {
-            security.SetLeverage(leverage);
-        }
+        if( leverage.signum() > 0 )
+            security.setLeverage( leverage );
 
         return security;
+    }
+    
+    /**
+     * Creates a security and matching configuration. This applies the default leverage if
+     * leverage is less than or equal to zero.
+     * This method also add the new symbol mapping to the <see cref="SymbolCache"/>
+     */
+    public static Security createSecurity( SecurityPortfolioManager securityPortfolioManager,
+            SubscriptionManager subscriptionManager,
+            MarketHoursDatabase marketHoursDatabase,
+            SymbolPropertiesDatabase symbolPropertiesDatabase,
+            ISecurityInitializer securityInitializer,
+            Symbol symbol,
+            Resolution resolution,
+            boolean fillDataForward,
+            BigDecimal leverage,
+            boolean extendedMarketHours,
+            boolean isInternalFeed,
+            boolean isCustomData ) {
+        
+        return createSecurity( securityPortfolioManager, subscriptionManager, marketHoursDatabase, symbolPropertiesDatabase, securityInitializer, symbol, 
+                resolution, fillDataForward, leverage, extendedMarketHours, isInternalFeed, isCustomData, true );
     }
 
     /**
      * Creates a security and matching configuration. This applies the default leverage if
      * leverage is less than or equal to zero.
      * This method also add the new symbol mapping to the <see cref="SymbolCache"/>
-    */
-    public static Security CreateSecurity(SecurityPortfolioManager securityPortfolioManager,
-        SubscriptionManager subscriptionManager,
-        MarketHoursDatabase marketHoursDatabase,
-        SymbolPropertiesDatabase symbolPropertiesDatabase,
-        ISecurityInitializer securityInitializer,
-        Symbol symbol,
-        Resolution resolution,
-        boolean fillDataForward,
-        BigDecimal leverage,
-        boolean extendedMarketHours,
-        boolean isInternalFeed,
-        boolean isCustomData,
-        boolean addToSymbolCache = true) {
-        marketHoursDbEntry = marketHoursDatabase.GetEntry(symbol.ID.Market, symbol.Value, symbol.ID.SecurityType);
-        exchangeHours = marketHoursDbEntry.ExchangeHours;
+     */
+    public static Security createSecurity( SecurityPortfolioManager securityPortfolioManager,
+            SubscriptionManager subscriptionManager,
+            MarketHoursDatabase marketHoursDatabase,
+            SymbolPropertiesDatabase symbolPropertiesDatabase,
+            ISecurityInitializer securityInitializer,
+            Symbol symbol,
+            Resolution resolution,
+            boolean fillDataForward,
+            BigDecimal leverage,
+            boolean extendedMarketHours,
+            boolean isInternalFeed,
+            boolean isCustomData,
+            boolean addToSymbolCache ) {
+        
+        final SecurityIdentifier id = symbol.getId();
+        final DatabaseEntry marketHoursDbEntry = marketHoursDatabase.getEntry( id.getMarket(), symbol.getValue(), id.getSecurityType() );
+        final SecurityExchangeHours exchangeHours = marketHoursDbEntry.exchangeHours;
 
-        defaultQuoteCurrency = CashBook.AccountCurrency;
-        if( symbol.ID.SecurityType == SecurityType.Forex) defaultQuoteCurrency = symbol.Value.Substring(3);
-        symbolProperties = symbolPropertiesDatabase.GetSymbolProperties(symbol.ID.Market, symbol.Value, symbol.ID.SecurityType, defaultQuoteCurrency);
+        String defaultQuoteCurrency = CashBook.ACCOUNT_CURRENCY;
+        if( id.getSecurityType() == SecurityType.Forex ) 
+            defaultQuoteCurrency = symbol.getValue().substring( 3 );
+        
+        final SymbolProperties symbolProperties = symbolPropertiesDatabase.getSymbolProperties( id.getMarket(), symbol.getValue(), id.getSecurityType(), defaultQuoteCurrency );
 
-        type = resolution == Resolution.Tick ? typeof(Tick) : typeof(TradeBar);
-        if( symbol.ID.SecurityType == SecurityType.Option && resolution != Resolution.Tick) {
-            type = typeof(QuoteBar);
-        }
-        return CreateSecurity(type, securityPortfolioManager, subscriptionManager, exchangeHours, marketHoursDbEntry.DataTimeZone, symbolProperties, securityInitializer, symbol, resolution,
-            fillDataForward, leverage, extendedMarketHours, isInternalFeed, isCustomData, addToSymbolCache);
+        Class<? extends BaseData> type = resolution == Resolution.Tick ? Tick.class : TradeBar.class;
+        if( id.getSecurityType() == SecurityType.Option && resolution != Resolution.Tick )
+            type = QuoteBar.class;
+        
+        return createSecurity( type, securityPortfolioManager, subscriptionManager, exchangeHours, marketHoursDbEntry.dataTimeZone, symbolProperties, securityInitializer, symbol, resolution,
+            fillDataForward, leverage, extendedMarketHours, isInternalFeed, isCustomData, addToSymbolCache, true );
     }
 }

@@ -30,8 +30,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import com.google.common.collect.ImmutableMap;
-import com.quantconnect.lean.Global.SecurityType;
 import com.quantconnect.lean.Globals;
+import com.quantconnect.lean.SecurityType;
 
 /**
  * Provides access to specific properties for various symbols

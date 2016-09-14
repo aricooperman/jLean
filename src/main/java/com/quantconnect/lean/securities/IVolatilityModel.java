@@ -28,7 +28,7 @@ public interface IVolatilityModel {
      * Gets an instance of <see cref="IVolatilityModel"/> that will always
      * return 0 for its volatility and does nothing during Update.
      */
-    public static final IVolatilityModel Null = new NullVolatilityModel();
+    public static final IVolatilityModel NULL = new NullVolatilityModel();
    
     /**
      * Gets the volatility of the security as a percentage

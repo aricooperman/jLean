@@ -26,13 +26,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import com.quantconnect.lean.DateFormat;
 import com.quantconnect.lean.Extensions;
-import com.quantconnect.lean.Global.DateFormat;
-import com.quantconnect.lean.Global.MarketDataType;
-import com.quantconnect.lean.Global.Resolution;
-import com.quantconnect.lean.Global.SecurityType;
-import com.quantconnect.lean.Global.SubscriptionTransportMedium;
 import com.quantconnect.lean.Globals;
+import com.quantconnect.lean.MarketDataType;
+import com.quantconnect.lean.Resolution;
+import com.quantconnect.lean.SecurityType;
+import com.quantconnect.lean.SubscriptionTransportMedium;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.data.BaseData;
 import com.quantconnect.lean.data.FileFormat;

@@ -18,7 +18,7 @@ package com.quantconnect.lean.orders;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import com.quantconnect.lean.Global.SecurityType;
+import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.orders.OrderTypes.OrderType;
 
@@ -54,7 +54,7 @@ public class SubmitOrderRequest extends OrderRequest {
      * @param time The time this request was created
      * @param tag A custom tag for this request
      */
-    public SubmitOrderRequest(OrderType orderType, SecurityType securityType, Symbol symbol, int quantity, BigDecimal stopPrice, 
+    public SubmitOrderRequest( OrderType orderType, SecurityType securityType, Symbol symbol, int quantity, BigDecimal stopPrice, 
             BigDecimal limitPrice, LocalDateTime time, String tag ) {
         super( time, OrderResponseErrorCode.UnableToFindOrder.getCode(), tag );
         this.securityType = securityType;

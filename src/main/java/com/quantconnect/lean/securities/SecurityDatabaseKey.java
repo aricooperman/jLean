@@ -17,7 +17,7 @@ package com.quantconnect.lean.securities;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.quantconnect.lean.Global.SecurityType;
+import com.quantconnect.lean.SecurityType;
 
 /**
  * Represents the key to a single entry in the <see cref="MarketHoursDatabase"/> or the <see cref="SymbolPropertiesDatabase"/>

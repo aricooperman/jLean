@@ -21,8 +21,8 @@ import java.net.URI;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
 
-import com.quantconnect.lean.Global.MarketDataType;
-import com.quantconnect.lean.Global.SubscriptionTransportMedium;
+import com.quantconnect.lean.MarketDataType;
+import com.quantconnect.lean.SubscriptionTransportMedium;
 import com.quantconnect.lean.Symbol;
 
 /// Abstract base data class of QuantConnect. It is intended to be extended to define 

@@ -17,8 +17,11 @@ package com.quantconnect.lean.securities;
 
 import java.math.BigDecimal;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.quantconnect.lean.Extensions;
-import com.quantconnect.lean.Global.SecurityType;
+import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.orders.OrderEvent;
 import com.quantconnect.lean.orders.OrderTypes.OrderDirection;
 import com.quantconnect.lean.securities.forex.Forex;
@@ -30,6 +33,8 @@ import com.quantconnect.lean.securities.forex.Forex;
  */
 public class SecurityPortfolioModel implements ISecurityPortfolioModel {
  
+    private final Logger log = LoggerFactory.getLogger( getClass() );
+
     /**
      * Performs application of an OrderEvent to the portfolio
      * @param portfolio The algorithm's portfolio
@@ -45,9 +50,10 @@ public class SecurityPortfolioModel implements ISecurityPortfolioModel {
         final boolean isShort = holdings.isShort();
         final boolean closedPosition = false;
         //Make local decimals to avoid any rounding errors from int multiplication
-        final BigDecimal quantityHoldings = holdings.getQuantity();
         final int absoluteHoldingsQuantity = holdings.getAbsoluteQuantity();
         final BigDecimal averageHoldingsPrice = holdings.getAveragePrice();
+
+        int quantityHoldings = holdings.getQuantity();
 
         try {
             // apply sales value to holdings in the account currency
@@ -58,7 +64,7 @@ public class SecurityPortfolioModel implements ISecurityPortfolioModel {
             // subtract transaction fees from the portfolio (assumes in account currency)
             final BigDecimal feeThisOrder = fill.orderFee.abs();
             holdings.addNewFee( feeThisOrder );
-            portfolio.CashBook.get( CashBook.ACCOUNT_CURRENCY ).addAmount( feeThisOrder.negate() );
+            portfolio.getCashBook().get( CashBook.ACCOUNT_CURRENCY ).addAmount( feeThisOrder.negate() );
 
             // apply the funds using the current settlement model
             security.getSettlementModel().applyFunds( portfolio, security, fill.utcTime, quoteCash.getSymbol(), BigDecimal.valueOf( -fill.fillQuantity ).multiply( fill.fillPrice ).multiply( security.getSymbolProperties().getContractMultiplier() ) );
@@ -86,12 +92,12 @@ public class SecurityPortfolioModel implements ISecurityPortfolioModel {
                 //Update Vehicle Profit Tracking:
                 holdings.addNewProfit( lastTradeProfit );
                 holdings.setLastTradeProfit( lastTradeProfit );
-                portfolio.addTransactionRecord( Extensions.convertToUtc( security.getLocalTime(), security.getExchange().getTimeZone() ), lastTradeProfit.subtract( BigDecimal.valueOf( 2 ).multiply( feeThisOrder ) );
+                portfolio.addTransactionRecord( Extensions.convertToUtc( security.getLocalTime(), security.getExchange().getTimeZone() ), lastTradeProfit.subtract( Global.TWO.multiply( feeThisOrder ) );
             }
 
             //UPDATE HOLDINGS QUANTITY, AVG PRICE:
             //Currently NO holdings. The order is ALL our holdings.
-            if( quantityHoldings.signum() == 0 ) {
+            if( quantityHoldings == 0 ) {
                 //First transaction just subtract order from cash and set our holdings:
                 averageHoldingsPrice = fill.fillPrice;
                 quantityHoldings = fill.fillQuantity;
@@ -101,55 +107,58 @@ public class SecurityPortfolioModel implements ISecurityPortfolioModel {
                 switch( fill.getDirection() ) {
                     case Buy:
                         //Update the Holding Average Price: Total Value / Total Quantity:
-                        averageHoldingsPrice = ((averageHoldingsPrice*quantityHoldings) + (fill.FillQuantity*fill.FillPrice))/(quantityHoldings + fill.FillQuantity);
+                        averageHoldingsPrice = ((averageHoldingsPrice.multiply( BigDecimal.valueOf( quantityHoldings ) )).add( fill.fillPrice.multiply( BigDecimal.valueOf( fill.fillQuantity ) )) )
+                            .divide( BigDecimal.valueOf( quantityHoldings + fill.fillQuantity ) );
                         //Add the new quantity:
-                        quantityHoldings += fill.FillQuantity;
+                        quantityHoldings += fill.fillQuantity;
                         break;
 
                     case Sell:
-                        quantityHoldings += fill.FillQuantity; //+ a short = a subtraction
-                        if( quantityHoldings < 0) {
+                        quantityHoldings += fill.fillQuantity; //+ a short = a subtraction
+                        if( quantityHoldings < 0 ) {
                             //If we've now passed through zero from selling stock: new avg price:
-                            averageHoldingsPrice = fill.FillPrice;
+                            averageHoldingsPrice = fill.fillPrice;
                         }
-                        else if( quantityHoldings == 0) {
-                            averageHoldingsPrice = 0;
-                        }
+                        else if( quantityHoldings == 0 )
+                            averageHoldingsPrice = BigDecimal.ZERO;
                         break;
                     default:
                         break;
                 }
             }
-            else if( isShort) {
+            else if( isShort ) {
                 //We're currently SHORTING the stock: What is the new position now?
-                switch (fill.Direction) {
-                    case OrderDirection.Buy:
+                switch( fill.getDirection() ) {
+                    case Buy:
                         //Buying when we're shorting moves to close position:
-                        quantityHoldings += fill.FillQuantity;
-                        if( quantityHoldings > 0) {
+                        quantityHoldings += fill.fillQuantity;
+                        if( quantityHoldings > 0 ) {
                             //If we were short but passed through zero, new average price is what we paid. The short position was closed.
-                            averageHoldingsPrice = fill.FillPrice;
+                            averageHoldingsPrice = fill.fillPrice;
                         }
-                        else if( quantityHoldings == 0) {
-                            averageHoldingsPrice = 0;
-                        }
+                        else if( quantityHoldings == 0 )
+                            averageHoldingsPrice = BigDecimal.ZERO;
                         break;
 
-                    case OrderDirection.Sell:
+                    case Sell:
                         //We are increasing a Short position:
                         //E.g.  -100 @ $5, adding -100 @ $10: Avg: $7.5
                         //      dAvg = (-500 + -1000) / -200 = 7.5
-                        averageHoldingsPrice = ((averageHoldingsPrice*quantityHoldings) + (fill.FillQuantity*fill.FillPrice))/(quantityHoldings + fill.FillQuantity);
-                        quantityHoldings += fill.FillQuantity;
+//                        averageHoldingsPrice = ((averageHoldingsPrice*quantityHoldings) + (fill.FillQuantity*fill.FillPrice))/(quantityHoldings + fill.FillQuantity);
+                        averageHoldingsPrice = ((averageHoldingsPrice.multiply( BigDecimal.valueOf( quantityHoldings ))).add( (fill.fillPrice.multiply( BigDecimal.valueOf( fill.fillQuantity ) ) ) ) )
+                            .divide( BigDecimal.valueOf( quantityHoldings + fill.fillQuantity ) );
+                        quantityHoldings += fill.fillQuantity;
+                        break;
+                    default:
                         break;
                 }
             }
         }
-        catch (Exception err) {
-            Log.Error(err);
+        catch( Exception err ) {
+            log.error( err.getMessage(), err );
         }
 
         //Set the results back to the vehicle.
-        security.Holdings.SetHoldings(averageHoldingsPrice,  Integer.parseInt( quantityHoldings));
+        security.getHoldings().setHoldings( averageHoldingsPrice,  quantityHoldings );
     }
 }

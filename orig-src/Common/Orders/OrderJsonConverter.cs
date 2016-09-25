@@ -59,7 +59,7 @@ package com.quantconnect.lean.Orders
         */
          * @param writer The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.<param name="value The value.<param name="serializer The calling serializer.
         public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
-            throw new NotImplementedException( "The OrderJsonConverter does not implement a WriteJson method;.");
+            throw new UnsupportedOperationException( "The OrderJsonConverter does not implement a WriteJson method;.");
         }
 
         /**

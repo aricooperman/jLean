@@ -157,12 +157,9 @@ public abstract class Order implements Cloneable {
 
     /**
      * New order constructor
-     * @param symbol
-    /// <param name="symbol Symbol asset we're seeking to trade
-     * @param quantity
-    /// <param name="quantity Quantity of the asset we're seeking to trade
-     * @param time
-    /// <param name="time Time the order was placed
+     * @param symbol Symbol asset we're seeking to trade
+     * @param quantity Quantity of the asset we're seeking to trade
+     * @param time Time the order was placed
      */
     protected Order( Symbol symbol, int quantity, LocalDateTime time ) {
         this( symbol, quantity, time, "" );
@@ -170,13 +167,10 @@ public abstract class Order implements Cloneable {
 
     /**
      * New order constructor
-     * @param symbol
-    /// <param name="symbol Symbol asset we're seeking to trade
-     * @param quantity
-    /// <param name="quantity Quantity of the asset we're seeking to trade
-     * @param time
-    /// <param name="time Time the order was placed
-    /// <param name="tag User defined data tag for this order
+     * @param symbol Symbol asset we're seeking to trade
+     * @param quantity Quantity of the asset we're seeking to trade
+     * @param time Time the order was placed
+     * @param tag User defined data tag for this order
      */
     protected Order( Symbol symbol, int quantity, LocalDateTime time, String tag ) {
         this.time = time;
@@ -227,11 +221,10 @@ public abstract class Order implements Cloneable {
             tag = request.getTag();
     }
 
-    /// Returns a String that represents the current object.
-    /// <returns>
-    /// A String that represents the current object.
-    /// </returns>
-    /// <filterpriority>2</filterpriority>
+    /**
+     * Returns a String that represents the current object.
+     * @return A String that represents the current object.
+     */
     public String toString() {
         return String.format( "OrderId: %d %s %3$s order for %d unit%s of %s", id, status, getType(), quantity, quantity == 1 ? "" : "s", symbol );
     }

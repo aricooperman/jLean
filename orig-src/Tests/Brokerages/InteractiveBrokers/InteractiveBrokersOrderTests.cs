@@ -46,7 +46,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         }
 
         protected @Override BigDecimal GetAskPrice(Symbol symbol) {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
 
         protected @Override IBrokerage CreateBrokerage(IOrderProvider orderProvider, ISecurityProvider securityProvider) {

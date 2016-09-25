@@ -303,7 +303,7 @@ package com.quantconnect.lean.Data.Custom
          * Write DailyFxEnum objects to JSON
         */
         public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
-            throw new NotImplementedException( "DailyFx Enum Converter is ReadOnly");
+            throw new UnsupportedOperationException( "DailyFx Enum Converter is ReadOnly");
         }
 
         /**

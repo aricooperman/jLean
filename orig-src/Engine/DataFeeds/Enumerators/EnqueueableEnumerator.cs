@@ -123,7 +123,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Enumerators
         */
          * <exception cref="T:System.InvalidOperationException The collection was modified after the enumerator was created. </exception><filterpriority>2</filterpriority>
         public void Reset() {
-            throw new NotImplementedException( "EnqueableEnumerator.Reset() has not been implemented yet.");
+            throw new UnsupportedOperationException( "EnqueableEnumerator.Reset() has not been implemented yet.");
         }
 
         /**

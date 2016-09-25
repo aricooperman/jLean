@@ -57,11 +57,11 @@ package com.quantconnect.lean.Tests.Brokerages
         }
 
         public IEnumerable<OrderTicket> GetOrderTickets(Func<OrderTicket, bool> filter = null ) {
-            throw new NotImplementedException( "This method has not been implemented");
+            throw new UnsupportedOperationException( "This method has not been implemented");
         }
 
         public OrderTicket GetOrderTicket(int orderId) {
-            throw new NotImplementedException( "This method has not been implemented");
+            throw new UnsupportedOperationException( "This method has not been implemented");
         }
 
         public IEnumerable<Order> GetOrders(Func<Order, bool> filter) {

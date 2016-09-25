@@ -31,21 +31,21 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Queues
         */
         @returns Tick
         public IEnumerable<BaseData> GetNextTicks() {
-            throw new NotImplementedException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
+            throw new UnsupportedOperationException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
         }
 
         /**
          * Desktop/Local doesn't support live data from this handler
         */
         public void Subscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
-            throw new NotImplementedException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
+            throw new UnsupportedOperationException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
         }
 
         /**
          * Desktop/Local doesn't support live data from this handler
         */
         public void Unsubscribe(LiveNodePacket job, IEnumerable<Symbol> symbols) {
-            throw new NotImplementedException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
+            throw new UnsupportedOperationException( "QuantConnect.Queues.LiveDataQueue has not implemented live data.");
         }
     }
 }

@@ -30,14 +30,16 @@ import com.quantconnect.lean.securities.ImmediateSettlementModel;
 import com.quantconnect.lean.securities.Security;
 import com.quantconnect.lean.securities.SecurityCache;
 import com.quantconnect.lean.securities.SecurityExchangeHours;
+import com.quantconnect.lean.securities.SecurityMarginModel;
 import com.quantconnect.lean.securities.SecurityPortfolioModel;
 import com.quantconnect.lean.securities.SymbolProperties;
 
 /**
- * Equity Security Type : Extension of the underlying Security class for equity specific behaviours.
+ * Equity Security Type : Extension of the underlying Security class for equity specific behaviors.
  * <seealso cref="Security"/>
  */
 public class Equity extends Security {
+   
     /**
      * The default number of days required to settle an equity sale
      */
@@ -72,7 +74,7 @@ public class Equity extends Security {
 
     /**
      * Construct the Equity Object
-    */
+     */
     public Equity( SecurityExchangeHours exchangeHours, SubscriptionDataConfig config, Cash quoteCurrency, SymbolProperties symbolProperties ) {
         super(
                 config,

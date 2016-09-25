@@ -31,25 +31,25 @@ public class SecurityMarginModel implements ISecurityMarginModel {
 
     private static final BigDecimal MARGIN_BUFFER = new BigDecimal( "0.10" );
     
-    private BigDecimal _initialMarginRequirement;
-    private BigDecimal _maintenanceMarginRequirement;
+    private BigDecimal initialMarginRequirement;
+    private BigDecimal maintenanceMarginRequirement;
 
     /**
      * Initializes a new instance of the <see cref="SecurityMarginModel"/>
      * @param initialMarginRequirement The percentage of an order's absolute cost
-     * that must be held in free cash in order to place the order
+     *      that must be held in free cash in order to place the order
      * @param maintenanceMarginRequirement The percentage of the holding's absolute
-     * cost that must be held in free cash in order to avoid a margin call
+     *      cost that must be held in free cash in order to avoid a margin call
      */
     public SecurityMarginModel( BigDecimal initialMarginRequirement, BigDecimal maintenanceMarginRequirement ) {
-        if( initialMarginRequirement < 0 || initialMarginRequirement > 1 )
-            throw new IllegalArgumentException( "Initial margin requirement must be between 0 and 1");
+        if( initialMarginRequirement.compareTo( BigDecimal.ZERO ) < 0 || initialMarginRequirement.compareTo( BigDecimal.ONE ) > 0 )
+            throw new IllegalArgumentException( "Initial margin requirement must be between 0 and 1" );
 
-        if( maintenanceMarginRequirement < 0 || maintenanceMarginRequirement > 1 )
-            throw new IllegalArgumentException( "Maintenance margin requirement must be between 0 and 1");
+        if( maintenanceMarginRequirement.compareTo( BigDecimal.ZERO ) < 0 || maintenanceMarginRequirement.compareTo( BigDecimal.ONE ) > 0 )
+            throw new IllegalArgumentException( "Maintenance margin requirement must be between 0 and 1" );
 
-        _initialMarginRequirement = initialMarginRequirement;
-        _maintenanceMarginRequirement = maintenanceMarginRequirement;
+        this.initialMarginRequirement = initialMarginRequirement;
+        this.maintenanceMarginRequirement = maintenanceMarginRequirement;
     }
 
     /**
@@ -57,11 +57,12 @@ public class SecurityMarginModel implements ISecurityMarginModel {
      * @param leverage The leverage
      */
     public SecurityMarginModel( BigDecimal leverage ) {
-        if( leverage < 1 )
+        if( leverage.compareTo( BigDecimal.ONE ) < 0 )
             throw new IllegalArgumentException( "Leverage must be greater than or equal to 1.");
 
-        _initialMarginRequirement = 1/leverage;
-        _maintenanceMarginRequirement = 1/leverage;
+        final BigDecimal inverseLeverage = BigDecimal.ONE.divide( leverage, RoundingMode.HALF_UP );
+        initialMarginRequirement = inverseLeverage;
+        maintenanceMarginRequirement = inverseLeverage;
     }
 
     /**
@@ -70,7 +71,7 @@ public class SecurityMarginModel implements ISecurityMarginModel {
      * @returns The current leverage in the security
      */
     public BigDecimal getLeverage( Security security ) {
-        return 1/getMaintenanceMarginRequirement( security );
+        return BigDecimal.ONE.divide( getMaintenanceMarginRequirement( security ), RoundingMode.HALF_UP );
     }
 
     /**
@@ -82,12 +83,12 @@ public class SecurityMarginModel implements ISecurityMarginModel {
      * @param leverage The new leverage
      */
     public void setLeverage( Security security, BigDecimal leverage ) {
-        if( leverage < 1 )
+        if( leverage.compareTo( BigDecimal.ONE ) < 0 )
             throw new IllegalArgumentException( "Leverage must be greater than or equal to 1.");
 
-        BigDecimal margin = BigDecimal.ONE.divide( leverage, RoundingMode.HALF_EVEN );
-        _initialMarginRequirement = margin;
-        _maintenanceMarginRequirement = margin;
+        final BigDecimal margin = BigDecimal.ONE.divide( leverage, RoundingMode.HALF_EVEN );
+        initialMarginRequirement = margin;
+        maintenanceMarginRequirement = margin;
     }
 
     /**
@@ -101,8 +102,8 @@ public class SecurityMarginModel implements ISecurityMarginModel {
         //Market order is approximated from the current security price and set in the MarketOrder Method in QCAlgorithm.
         final BigDecimal orderFees = security.getFeeModel().getOrderFee( security, order );
 
-        orderValue = order.getValue( security ).multiply( getInitialMarginRequirement( security ) );
-        return orderValue + Math.Sign(orderValue) * orderFees;
+        final BigDecimal orderValue = order.getValue( security ).multiply( getInitialMarginRequirement( security ) );
+        return orderValue.add( (orderValue.signum() < 0 ? orderFees.negate() : orderFees) );
     }
 
     /**
@@ -110,7 +111,7 @@ public class SecurityMarginModel implements ISecurityMarginModel {
      * @param security The security to compute maintenance margin for
      * @returns The maintenance margin required for the 
      */
-    public BigDecimal GetMaintenanceMargin(Security security) {
+    public BigDecimal getMaintenanceMargin( Security security ) {
         return security.getHoldings().getAbsoluteHoldingsCost().multiply( getMaintenanceMarginRequirement( security ) );
     }
 
@@ -136,11 +137,11 @@ public class SecurityMarginModel implements ISecurityMarginModel {
 
                 case Sell:
                     return 
-                        // portion of margin to close the existing position
-                        getMaintenanceMargin( security ).add( 
-                                // portion of margin to open the new position
-                                holdings.getAbsoluteHoldingsValue().multiply( getInitialMarginRequirement( security ) ) )
-                        .add( portfolio.getMarginRemaining() );
+                            // portion of margin to close the existing position
+                            getMaintenanceMargin( security ).add( 
+                                    // portion of margin to open the new position
+                                    holdings.getAbsoluteHoldingsValue().multiply( getInitialMarginRequirement( security ) ) )
+                            .add( portfolio.getMarginRemaining() );
                 default:
                     break;
             }
@@ -149,11 +150,11 @@ public class SecurityMarginModel implements ISecurityMarginModel {
             switch( direction ) {
                 case Buy:
                     return
-                        // portion of margin to close the existing position
-                        getMaintenanceMargin( security ).add(
-                                // portion of margin to open the new position
-                                holdings.getAbsoluteHoldingsValue().multiply( getInitialMarginRequirement( security ) )
-                                .add( portfolio.getMarginRemaining() );
+                            // portion of margin to close the existing position
+                            getMaintenanceMargin( security ).add(
+                                    // portion of margin to open the new position
+                                    holdings.getAbsoluteHoldingsValue().multiply( getInitialMarginRequirement( security ) ) )
+                            .add( portfolio.getMarginRemaining() );
 
                 case Sell:
                     return portfolio.getMarginRemaining();
@@ -176,10 +177,11 @@ public class SecurityMarginModel implements ISecurityMarginModel {
      */
     public SubmitOrderRequest generateMarginCallOrder( Security security, BigDecimal netLiquidationValue, BigDecimal totalMargin ) {
         // leave a buffer in default implementation
-        if( totalMargin <= netLiquidationValue.multiply( BigDecimal.ONE.add( MARGIN_BUFFER ) ) )
+        if( totalMargin.compareTo( netLiquidationValue.multiply( BigDecimal.ONE.add( MARGIN_BUFFER ) ) ) <= 0 )
             return null;
 
-        if( !security.getHoldings().isInvested() )
+        final SecurityHolding holdings = security.getHoldings();
+        if( !holdings.isInvested() )
             return null;
 
         if( security.getQuoteCurrency().getConversionRate().signum() == 0 ) {
@@ -191,12 +193,12 @@ public class SecurityMarginModel implements ISecurityMarginModel {
         final BigDecimal deltaInQuoteCurrency = (totalMargin.subtract( netLiquidationValue )).divide( security.getQuoteCurrency().getConversionRate(), RoundingMode.HALF_EVEN );
 
         // compute the number of shares required for the order, rounding up
-        unitPriceInQuoteCurrency = security.Price * security.SymbolProperties.ContractMultiplier;
-        int quantity = (int) (Math.Round(deltaInQuoteCurrency/unitPriceInQuoteCurrency, MidpointRounding.AwayFromZero)/GetMaintenanceMarginRequirement(security));
+        final BigDecimal unitPriceInQuoteCurrency = security.getPrice().multiply( security.getSymbolProperties().getContractMultiplier() );
+        int quantity = deltaInQuoteCurrency.divide( unitPriceInQuoteCurrency, RoundingMode.HALF_UP ).divideToIntegralValue( getMaintenanceMarginRequirement( security ) ).intValue();
 
         // don't try and liquidate more share than we currently hold, minimum value of 1, maximum value for absolute quantity
-        quantity = Math.Max(1, Math.Min((int)security.Holdings.AbsoluteQuantity, quantity));
-        if( security.Holdings.IsLong) {
+        quantity = Math.max( 1, Math.min( holdings.getAbsoluteQuantity(), quantity ) );
+        if( holdings.isLong() ) {
             // adjust to a sell for long positions
             quantity *= -1;
         }
@@ -207,15 +209,15 @@ public class SecurityMarginModel implements ISecurityMarginModel {
 
     /**
      * The percentage of an order's absolute cost that must be held in free cash in order to place the order
-    */
+     */
     protected BigDecimal getInitialMarginRequirement( Security security ) {
-        return _initialMarginRequirement;
+        return initialMarginRequirement;
     }
 
     /**
      * The percentage of the holding's absolute cost that must be held in free cash in order to avoid a margin call
-    */
+     */
     protected BigDecimal getMaintenanceMarginRequirement( Security security ) {
-        return _maintenanceMarginRequirement;
+        return maintenanceMarginRequirement;
     }
 }

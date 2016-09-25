@@ -1508,7 +1508,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                 //case TradierOrderType.Debit:
                 //case TradierOrderType.Even:
                 default:
-                    throw new NotImplementedException( "The Tradier order type " + order.Type + " is not implemented.");
+                    throw new UnsupportedOperationException( "The Tradier order type " + order.Type + " is not implemented.");
             }
             qcOrder.Symbol = Symbol.Create(order.Symbol, SecurityType.Equity, Market.USA);
             qcOrder.Quantity = ConvertQuantity(order);

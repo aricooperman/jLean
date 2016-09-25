@@ -72,8 +72,8 @@ public class MarginCallModel {
                 .sorted( Comparator.comparing( e -> portfolio.get( e.getSymbol() ).getUnrealizedProfit(), BigDecimal::compareTo ) )
                 .collect( Collectors.toList() );
         for( SubmitOrderRequest request : orderedByLosers ) {
-            final OrderTicket ticket = portfolio.Transactions.addOrder( request );
-            portfolio.Transactions.waitForOrder( request.getOrderId() );
+            final OrderTicket ticket = portfolio.transactions.addOrder( request );
+            portfolio.transactions.waitForOrder( request.getOrderId() );
             executedOrders.add( ticket );
 
             // if our margin used is back under the portfolio value then we can stop liquidating

@@ -17,31 +17,43 @@ package com.quantconnect.lean.data.market;
 
 import java.math.BigDecimal;
 
-//using System.Threading;
-
+/**
  * Base Bar Class: Open, High, Low, Close and Period.
+ */
 public class Bar implements IBar, Cloneable {
-    
+
+    /**
      * Opening price of the bar: Defined as the price at the start of the time period.
+     */
     private BigDecimal open;
 
+    /**
      * High price of the bar during the time period.
+     */
     private BigDecimal high;
 
+    /**
      * Low price of the bar during the time period.
+     */
     private BigDecimal low;
 
+    /**
      * Closing price of the bar. Defined as the price at Start Time + TimeSpan.
+     */
     private BigDecimal close;
 
+    /**
      * Default initializer to setup an empty bar.
+     */
     public Bar() { }
 
+    /**
      * Initializer to setup a bar with a given information.
      * @param open Decimal Opening Price
      * @param high Decimal High Price of this bar
      * @param low Decimal Low Price of this bar
      * @param close Decimal Close price of this bar
+     */
     public Bar( BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close ) {
         this.open = open;
         this.high = high;
@@ -81,8 +93,10 @@ public class Bar implements IBar, Cloneable {
         this.close = close;
     }
 
+    /**
      * Updates the bar with a new value. This will aggregate the OHLC bar
      * @param value The new value
+     */
     public void update( BigDecimal value ) {
         // Do not accept zero as a new value
         if( value.signum() == 0) 
@@ -98,7 +112,9 @@ public class Bar implements IBar, Cloneable {
         close = value;
     }
 
+    /**
      * Returns a clone of this bar
+     */
     public Bar clone() {
         return new Bar( open, high, low, close );
     }

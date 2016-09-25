@@ -428,7 +428,7 @@ package com.quantconnect.lean.Algorithm
          * <seealso cref="SetCash(decimal)"/>
         public void Initialize() {
             //Setup Required Data
-            throw new NotImplementedException( "Please @Override the Initialize() method");
+            throw new UnsupportedOperationException( "Please @Override the Initialize() method");
         }
 
         /**

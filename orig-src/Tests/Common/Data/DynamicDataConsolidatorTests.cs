@@ -246,11 +246,11 @@ package com.quantconnect.lean.Tests.Common.Data
         private class CustomData : DynamicData
         {
             public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             }
 
             public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             }
         }
     }

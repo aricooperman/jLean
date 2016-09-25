@@ -1,4 +1,4 @@
-/*
+﻿/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
@@ -13,20 +13,20 @@
  * limitations under the License.
 */
 
-package com.quantconnect.lean.Securities.Forex 
-{
+package com.quantconnect.lean.statistics;
+
+/**
+ * The method used to match offsetting order fills
+ */
+public enum FillMatchingMethod {
+ 
     /**
-     * FOREX holdings implementation of the base securities class
-    */
-     * <seealso cref="SecurityHolding"/>
-    public class ForexHolding : SecurityHolding 
-    {
-        /**
-         * Forex Holding Class
-        */
-         * @param security The forex security being held
-        public ForexHolding(Forex security)
-            : base(security) {
-        }
-    }
+     * First In First Out fill matching method
+     */
+    FIFO,
+
+    /**
+     * Last In Last Out fill matching method
+     */
+    LIFO
 }

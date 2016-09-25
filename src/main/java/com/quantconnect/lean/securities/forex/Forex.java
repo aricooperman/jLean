@@ -19,12 +19,18 @@ import java.math.BigDecimal;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.data.SubscriptionDataConfig;
+import com.quantconnect.lean.orders.fees.InteractiveBrokersFeeModel;
 import com.quantconnect.lean.orders.fills.ImmediateFillModel;
 import com.quantconnect.lean.orders.slippage.SpreadSlippageModel;
 import com.quantconnect.lean.securities.Cash;
+import com.quantconnect.lean.securities.IVolatilityModel;
+import com.quantconnect.lean.securities.ImmediateSettlementModel;
 import com.quantconnect.lean.securities.Security;
 import com.quantconnect.lean.securities.SecurityExchangeHours;
+import com.quantconnect.lean.securities.SecurityMarginModel;
+import com.quantconnect.lean.securities.SecurityPortfolioModel;
 import com.quantconnect.lean.securities.SymbolProperties;
 
 /**
@@ -33,7 +39,7 @@ import com.quantconnect.lean.securities.SymbolProperties;
  */
 public class Forex extends Security {
     
-    private String BaseCurrencySymbol;
+    private String baseCurrencySymbol;
 
     /**
      * Constructor for the forex security
@@ -53,15 +59,14 @@ public class Forex extends Security {
                 new InteractiveBrokersFeeModel(),
                 new SpreadSlippageModel(),
                 new ImmediateSettlementModel(),
-                Securities.VolatilityModel.Null,
+                IVolatilityModel.NULL,
                 new SecurityMarginModel( BigDecimal.valueOf( 50 ) ),
                 new ForexDataFilter() );
+        
         setHoldings( new ForexHolding( this ) );
 
         // decompose the symbol into each currency pair
-        String baseCurrencySymbol, quoteCurrencySymbol;
-        DecomposeCurrencyPair(config.Symbol.Value, out baseCurrencySymbol, out quoteCurrencySymbol);
-        BaseCurrencySymbol = baseCurrencySymbol;
+        baseCurrencySymbol = decomposeCurrencyPair( config.getSymbol().getValue() ).getLeft();
     }
 
     /**
@@ -73,24 +78,23 @@ public class Forex extends Security {
      */
     public Forex( Symbol symbol, SecurityExchangeHours exchangeHours, Cash quoteCurrency, SymbolProperties symbolProperties ) {
         super( symbol,
-            quoteCurrency,
-            symbolProperties,
-            new ForexExchange(exchangeHours),
-            new ForexCache(),
-            new SecurityPortfolioModel(),
-            new ImmediateFillModel(),
-            new InteractiveBrokersFeeModel(),
-            new SpreadSlippageModel(),
-            new ImmediateSettlementModel(),
-            Securities.VolatilityModel.Null,
-            new SecurityMarginModel( BigDecimal.valueOf( 50 ) ),
-            new ForexDataFilter() );
+                quoteCurrency,
+                symbolProperties,
+                new ForexExchange(exchangeHours),
+                new ForexCache(),
+                new SecurityPortfolioModel(),
+                new ImmediateFillModel(),
+                new InteractiveBrokersFeeModel(),
+                new SpreadSlippageModel(),
+                new ImmediateSettlementModel(),
+                IVolatilityModel.NULL,
+                new SecurityMarginModel( BigDecimal.valueOf( 50 ) ),
+                new ForexDataFilter() );
+        
         setHoldings( new ForexHolding( this ) );
 
         // decompose the symbol into each currency pair
-        String baseCurrencySymbol, quoteCurrencySymbol;
-        DecomposeCurrencyPair(symbol.Value, out baseCurrencySymbol, out quoteCurrencySymbol);
-        BaseCurrencySymbol = baseCurrencySymbol;
+        baseCurrencySymbol = decomposeCurrencyPair( symbol.getValue() ).getLeft();
     }
 
     /**
@@ -101,7 +105,7 @@ public class Forex extends Security {
      * 
      */
     public String getBaseCurrencySymbol() {
-        return BaseCurrencySymbol;
+        return baseCurrencySymbol;
     }
 
     /**

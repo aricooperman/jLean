@@ -13,20 +13,22 @@
  * limitations under the License.
 */
 
-package com.quantconnect.lean.Securities.Equity
-{
+package com.quantconnect.lean.securities.equity;
+
+import com.quantconnect.lean.securities.Security;
+import com.quantconnect.lean.securities.SecurityHolding;
+
+/**
+ * Holdings class for equities securities: no specific properties here but it is a placeholder for future equities specific behaviours.
+ * <seealso cref="SecurityHolding"/>
+ */
+public class EquityHolding extends SecurityHolding {
+    
     /**
-     * Holdings class for equities securities: no specific properties here but it is a placeholder for future equities specific behaviours.
-    */
-     * <seealso cref="SecurityHolding"/>
-    public class EquityHolding : SecurityHolding 
-    {
-        /**
-         * Constructor for equities holdings.
-        */
-         * @param security The security being held
-        public EquityHolding(Security security)
-            : base(security) {
-        }
+     * Constructor for equities holdings.
+     * @param security The security being held
+     */
+    public EquityHolding( Security security ) {
+        super( security );
     }
 }

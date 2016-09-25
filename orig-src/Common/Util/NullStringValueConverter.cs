@@ -32,7 +32,7 @@ package com.quantconnect.lean.Util
          * @param value The value.
          * @param serializer The calling serializer.
         public @Override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer) {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
 
         /**
@@ -60,7 +60,7 @@ package com.quantconnect.lean.Util
          * <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
          * 
         public @Override boolean CanConvert(Type objectType) {
-            throw new NotImplementedException();
+            throw new UnsupportedOperationException();
         }
     }
 }

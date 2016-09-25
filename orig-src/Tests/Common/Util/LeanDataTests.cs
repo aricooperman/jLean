@@ -283,7 +283,7 @@ package com.quantconnect.lean.Tests.Common.Util
                 }
                 else
                 {
-                    throw new NotImplementedException();
+                    throw new UnsupportedOperationException();
                 }
 
                 // @Override for forex/cfd

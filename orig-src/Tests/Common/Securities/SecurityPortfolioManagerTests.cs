@@ -612,7 +612,7 @@ package com.quantconnect.lean.Tests.Common.Securities
                 return new SubscriptionDataConfig(typeof (TradeBar), symbol, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, true);
             if( type == SecurityType.Forex)
                 return new SubscriptionDataConfig(typeof (TradeBar), symbol, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, true);
-            throw new NotImplementedException(type.toString());
+            throw new UnsupportedOperationException(type.toString());
         }
         
         private static TimeKeeper TimeKeeper
@@ -657,7 +657,7 @@ package com.quantconnect.lean.Tests.Common.Securities
             }
 
             public OrderTicket Process(OrderRequest request) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException();
             }
         }
     }

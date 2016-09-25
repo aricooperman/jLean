@@ -111,7 +111,7 @@ package com.quantconnect.lean.ToolBox
                     }
                     break;
             }
-            throw new NotImplementedException( "Consolidator creation is not defined for " + securityType + " " + tickType);
+            throw new UnsupportedOperationException( "Consolidator creation is not defined for " + securityType + " " + tickType);
         }
     }
 }

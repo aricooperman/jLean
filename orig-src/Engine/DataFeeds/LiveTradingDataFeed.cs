@@ -137,7 +137,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                         break;
 
                     default:
-                        throw new NotImplementedException( "The specified action is not implemented: " + args.Action);
+                        throw new UnsupportedOperationException( "The specified action is not implemented: " + args.Action);
                 }
             };
         }

@@ -49,7 +49,7 @@ package com.quantconnect.lean
          * The object value.
          * 
         public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-            throw new NotImplementedException( "The SymbolValueJsonConverter is write-only.");
+            throw new UnsupportedOperationException( "The SymbolValueJsonConverter is write-only.");
         }
 
         /**
@@ -60,7 +60,7 @@ package com.quantconnect.lean
          * <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
          * 
         public @Override boolean CanConvert(Type objectType) {
-            throw new NotImplementedException( "The SymbolValueJsonConverter is intended to be decorated on the appropriate member directly.");
+            throw new UnsupportedOperationException( "The SymbolValueJsonConverter is intended to be decorated on the appropriate member directly.");
         }
     }
 }

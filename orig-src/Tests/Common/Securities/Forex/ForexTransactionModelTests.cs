@@ -31,7 +31,7 @@ package com.quantconnect.lean.Tests.Common.Securities.Forex
                 return new SubscriptionDataConfig(typeof(TradeBar), Symbols.USDJPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, true);
             if( type == SecurityType.Forex)
                 return new SubscriptionDataConfig(typeof(TradeBar), Symbols.USDJPY, Resolution.Minute, TimeZones.EasternStandard, TimeZones.EasternStandard, true, true, true);
-            throw new NotImplementedException(type.toString());
+            throw new UnsupportedOperationException(type.toString());
         }
 
         private static final TimeKeeper TimeKeeper = new TimeKeeper(DateTime.UtcNow, new[] { TimeZones.NewYork });

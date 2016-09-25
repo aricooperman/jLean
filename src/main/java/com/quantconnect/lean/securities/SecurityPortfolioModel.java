@@ -21,6 +21,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.quantconnect.lean.Extensions;
+import com.quantconnect.lean.Global;
 import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.orders.OrderEvent;
 import com.quantconnect.lean.orders.OrderTypes.OrderDirection;
@@ -43,16 +44,15 @@ public class SecurityPortfolioModel implements ISecurityPortfolioModel {
      */
     public void processFill( SecurityPortfolioManager portfolio, Security security, OrderEvent fill ) {
         final Cash quoteCash = security.getQuoteCurrency();
-
         //Get the required information from the vehicle this order will affect
         final SecurityHolding holdings = security.getHoldings();
         final boolean isLong = holdings.isLong();
         final boolean isShort = holdings.isShort();
-        final boolean closedPosition = false;
         //Make local decimals to avoid any rounding errors from int multiplication
         final int absoluteHoldingsQuantity = holdings.getAbsoluteQuantity();
-        final BigDecimal averageHoldingsPrice = holdings.getAveragePrice();
 
+        BigDecimal averageHoldingsPrice = holdings.getAveragePrice();
+        boolean closedPosition = false;
         int quantityHoldings = holdings.getQuantity();
 
         try {
@@ -75,8 +75,7 @@ public class SecurityPortfolioModel implements ISecurityPortfolioModel {
             }
             
             // did we close or open a position further?
-            closedPosition = isLong && fill.getDirection() == OrderDirection.Sell
-                         || isShort && fill.getDirection() == OrderDirection.Buy;
+            closedPosition = isLong && fill.getDirection() == OrderDirection.Sell || isShort && fill.getDirection() == OrderDirection.Buy;
 
             // calculate the last trade profit
             if( closedPosition ) {
@@ -92,7 +91,7 @@ public class SecurityPortfolioModel implements ISecurityPortfolioModel {
                 //Update Vehicle Profit Tracking:
                 holdings.addNewProfit( lastTradeProfit );
                 holdings.setLastTradeProfit( lastTradeProfit );
-                portfolio.addTransactionRecord( Extensions.convertToUtc( security.getLocalTime(), security.getExchange().getTimeZone() ), lastTradeProfit.subtract( Global.TWO.multiply( feeThisOrder ) );
+                portfolio.addTransactionRecord( Extensions.convertToUtc( security.getLocalTime(), security.getExchange().getTimeZone() ), lastTradeProfit.subtract( Global.TWO.multiply( feeThisOrder ) ) );
             }
 
             //UPDATE HOLDINGS QUANTITY, AVG PRICE:

@@ -501,7 +501,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
         */
          * Not used
         public void Reset() {
-            throw new NotImplementedException( "Reset method not implemented. Assumes loop will only be used once.");
+            throw new UnsupportedOperationException( "Reset method not implemented. Assumes loop will only be used once.");
         }
 
         /**

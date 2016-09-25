@@ -149,14 +149,14 @@ package com.quantconnect.lean.Indicators
          * This function is purposefully not implemented.
         */
         public @Override BaseData Reader(SubscriptionDataConfig config, String line, DateTime date, boolean isLiveMode) {
-            throw new NotImplementedException( "IndicatorDataPoint does not support the Reader function. This function should never be called on this type.");
+            throw new UnsupportedOperationException( "IndicatorDataPoint does not support the Reader function. This function should never be called on this type.");
         }
 
         /**
          * This function is purposefully not implemented.
         */
         public @Override SubscriptionDataSource GetSource(SubscriptionDataConfig config, DateTime date, boolean isLiveMode) {
-            throw new NotImplementedException( "IndicatorDataPoint does not support the GetSource function. This function should never be called on this type.");
+            throw new UnsupportedOperationException( "IndicatorDataPoint does not support the GetSource function. This function should never be called on this type.");
         }
     }
 }

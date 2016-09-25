@@ -44,7 +44,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
                     return new ZipEntryNameSubscriptionDataSourceReader(config, date, isLiveMode);
 
                 default:
-                    throw new NotImplementedException( "SubscriptionFactory.ForSource( " + source + ") has not been implemented yet.");
+                    throw new UnsupportedOperationException( "SubscriptionFactory.ForSource( " + source + ") has not been implemented yet.");
             }
         }
     }

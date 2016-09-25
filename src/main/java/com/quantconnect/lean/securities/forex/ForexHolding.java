@@ -1,4 +1,4 @@
-﻿/*
+/*
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
@@ -13,25 +13,21 @@
  * limitations under the License.
 */
 
-using QuantConnect.Orders.Fees;
-using QuantConnect.Orders.Fills;
-using QuantConnect.Orders.Slippage;
-using QuantConnect.Securities.Interfaces;
+package com.quantconnect.lean.securities.forex;
 
-package com.quantconnect.lean.Securities.Equity 
-{
+import com.quantconnect.lean.securities.SecurityHolding;
+
+/**
+ * FOREX holdings implementation of the base securities class
+ * <seealso cref="SecurityHolding"/>
+ */
+public class ForexHolding extends SecurityHolding {
+       
     /**
-     * Transaction model for equity security trades. 
-    */
-     * <seealso cref="SecurityTransactionModel"/>
-     * <seealso cref="ISecurityTransactionModel"/>
-    public class EquityTransactionModel : SecurityTransactionModel 
-    {
-        /**
-         * Initializes a new instance of the <see cref="EquityTransactionModel"/>
-        */
-        public EquityTransactionModel()
-            : base(new ImmediateFillModel(), new InteractiveBrokersFeeModel(), new ConstantSlippageModel(0)) {
-        }
+     * Forex Holding Class
+     * @param security The forex security being held
+     */
+    public ForexHolding( Forex security ) {
+        super( security );
     }
 }

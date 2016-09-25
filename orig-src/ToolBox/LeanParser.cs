@@ -76,7 +76,7 @@ package com.quantconnect.lean.ToolBox
                     break;
             }
             parameters = String.join( " | ", securityType, resolution, tickType);
-            throw new NotImplementedException( "LeanParser.GetDataType does has not yet implemented: " + parameters);
+            throw new UnsupportedOperationException( "LeanParser.GetDataType does has not yet implemented: " + parameters);
         }
     }
 }

@@ -128,7 +128,7 @@ package com.quantconnect.lean.Data.UniverseSelection
                 case SecurityType.Commodity:
                 case SecurityType.Future:
                 default:
-                    throw new NotImplementedException( "The specified security type is not implemented yet: " + securityType);
+                    throw new UnsupportedOperationException( "The specified security type is not implemented yet: " + securityType);
             }
 
             return new Symbol(sid, ticker);

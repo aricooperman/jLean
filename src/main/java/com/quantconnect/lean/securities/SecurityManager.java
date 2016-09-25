@@ -31,6 +31,7 @@ import org.apache.commons.lang3.tuple.Pair;
 
 import com.quantconnect.lean.securities.MarketHoursDatabase.DatabaseEntry;
 import com.quantconnect.lean.securities.Security;
+import com.quantconnect.lean.securities.equity.Equity;
 import com.quantconnect.lean.securities.forex.Forex;
 import com.quantconnect.lean.Resolution;
 import com.quantconnect.lean.SecurityIdentifier;

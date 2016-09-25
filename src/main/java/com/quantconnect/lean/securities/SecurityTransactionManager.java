@@ -16,14 +16,13 @@
 package com.quantconnect.lean.securities;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -36,7 +35,6 @@ import com.quantconnect.lean.orders.CancelOrderRequest;
 import com.quantconnect.lean.orders.Order;
 import com.quantconnect.lean.orders.OrderRequest;
 import com.quantconnect.lean.orders.OrderTicket;
-import com.quantconnect.lean.orders.OrderTypes.OrderStatus;
 import com.quantconnect.lean.orders.SubmitOrderRequest;
 import com.quantconnect.lean.orders.UpdateOrderRequest;
 
@@ -56,7 +54,7 @@ public class SecurityTransactionManager implements IOrderProvider {
     private AtomicInteger orderId;
     private long marketOrderFillTimeout = TimeUnit.SECONDS.toMillis( 5 );
     private IOrderProcessor _orderProcessor;
-//    private Map<DateTime,BigDecimal> _transactionRecord;
+    private Map<LocalDateTime,BigDecimal> _transactionRecord;
 
     /**
      * Gets the time the security information was last updated
@@ -73,19 +71,19 @@ public class SecurityTransactionManager implements IOrderProvider {
         this.securities = security;
 
         //Internal storage for transaction records:
-//        this._transactionRecord = new HashMap<DateTime,BigDecimal>();
+        this._transactionRecord = new HashMap<>();
     }
 
-//    /**
-//     * Trade record of profits and losses for each trade statistics calculations
-//     */
-//    public Map<DateTime,BigDecimal> getTransactionRecord() {
-//        return _transactionRecord;
-//    }
-//    
-//    public void setTransactionRecord( Map<DateTime,BigDecimal> value ) {
-//        _transactionRecord = value;
-//    }
+    /**
+     * Trade record of profits and losses for each trade statistics calculations
+     */
+    public Map<LocalDateTime,BigDecimal> getTransactionRecord() {
+        return _transactionRecord;
+    }
+    
+    public void setTransactionRecord( Map<LocalDateTime,BigDecimal> value ) {
+        _transactionRecord = value;
+    }
 
     /**
      * Configurable minimum order value to ignore bad orders, or orders with unrealistic sizes
@@ -312,7 +310,8 @@ public class SecurityTransactionManager implements IOrderProvider {
         }
 
         // When order only reduces or closes a security position, capital is always sufficient
-        if( security.getHoldings().getQuantity().multiply( BigDecimal.valueOf( order.getQuantity() ) ).signum() < 0 && security.getHoldings().getQuantity().abs().compareTo( BigDecimal.valueOf( Math.abs( order.getQuantity() ) ) ) >= 0 )
+        if( security.getHoldings().getQuantity() * order.getQuantity() < 0 && 
+                Math.abs( security.getHoldings().getQuantity() ) >= Math.abs( order.getQuantity() ) )
             return true;
 
         final BigDecimal freeMargin = security.getMarginModel().getMarginRemaining( portfolio, security, order.getDirection() );

@@ -21,6 +21,11 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import com.quantconnect.lean.DataNormalizationMode;
+import com.quantconnect.lean.LocalTimeKeeper;
+import com.quantconnect.lean.Resolution;
+import com.quantconnect.lean.SecurityType;
+import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.data.BaseData;
 import com.quantconnect.lean.data.SubscriptionDataConfig;
 import com.quantconnect.lean.orders.fees.IFeeModel;
@@ -28,12 +33,6 @@ import com.quantconnect.lean.orders.fills.IFillModel;
 import com.quantconnect.lean.orders.slippage.ISlippageModel;
 import com.quantconnect.lean.securities.interfaces.ISecurityDataFilter;
 import com.quantconnect.lean.securities.interfaces.ISecurityTransactionModel;
-import com.quantconnect.lean.DataNormalizationMode;
-import com.quantconnect.lean.Global;
-import com.quantconnect.lean.LocalTimeKeeper;
-import com.quantconnect.lean.Resolution;
-import com.quantconnect.lean.SecurityType;
-import com.quantconnect.lean.Symbol;
 
 /**
  * A base vehicle properties class for providing a common interface to all assets in QuantConnect.

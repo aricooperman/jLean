@@ -23,7 +23,7 @@ package com.quantconnect.lean.Brokerages
         /**
          * Gets the type of brokerage message
         */
-        public BrokerageMessageType Type { get; private set; }
+        public BrokerageMessageType Class { get; private set; }
 
         /**
          * Gets the brokerage specific code for this message, zero if no code was specified
@@ -42,7 +42,7 @@ package com.quantconnect.lean.Brokerages
          * @param code The brokerage specific code
          * @param message The message text received from the brokerage
         public BrokerageMessageEvent(BrokerageMessageType type, int code, String message) {
-            Type = type;
+            Class = type;
             Code = code.toString();
             Message = message;
         }
@@ -54,7 +54,7 @@ package com.quantconnect.lean.Brokerages
          * @param code The brokerage specific code
          * @param message The message text received from the brokerage
         public BrokerageMessageEvent(BrokerageMessageType type, String code, String message) {
-            Type = type;
+            Class = type;
             Code = code;
             Message = message;
         }

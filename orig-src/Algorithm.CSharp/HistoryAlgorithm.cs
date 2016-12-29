@@ -112,7 +112,7 @@ package com.quantconnect.lean.Algorithm.CSharp
 
             // the return is a series of dictionaries containing all quandl data at each time
             // we can loop over it to get the individual dictionaries
-            foreach (DataMap<Quandl> quandlsDataDictionary in allQuandlData) {
+            foreach (DataDictionary<Quandl> quandlsDataDictionary in allQuandlData) {
                 // we can access the dictionary to get the quandl data we want
                 quandl = quandlsDataDictionary["YAHOO/INDEX_SPY"];
             }

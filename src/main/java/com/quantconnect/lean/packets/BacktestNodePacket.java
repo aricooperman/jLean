@@ -19,45 +19,64 @@ package com.quantconnect.lean.packets;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import com.quantconnect.lean.Global.Language;
-import com.quantconnect.lean.Global.UserPlan;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.quantconnect.lean.Language;
+import com.quantconnect.lean.UserPlan;
 
+/**
  * Algorithm backtest task information packet.
+ */
 public class BacktestNodePacket extends AlgorithmNodePacket {
 
+    /**
      * Name of the backtest as randomly defined in the IDE.
-//    @JsonProperty( "sName")]
+     */
+    @JsonProperty( "sName" )
     public String name = "";
 
+    /**
      * BacktestId / Algorithm Id for this task
-//    @JsonProperty( "sBacktestID")]
+     */
+    @JsonProperty( "sBacktestID" )
     public String backtestId = "";
 
+    /**
      * Backtest start-date as defined in the Initialize() method.
-//    @JsonProperty( "dtPeriodStart")]
+     */
+    @JsonProperty( "dtPeriodStart" )
     public LocalDate periodStart = LocalDate.now();
 
+    /**
      * Backtest end date as defined in the Initialize() method.
-//    @JsonProperty( "dtPeriodFinish")]
+     */
+    @JsonProperty( "dtPeriodFinish" )
     public LocalDate periodFinish = LocalDate.now();
 
+    /**
      * Estimated number of trading days in this backtest task based on the start-end dates.
-//    @JsonProperty( "iTradeableDates")]
+     */
+    @JsonProperty( "iTradeableDates" )
     public int tradeableDates = 0;
 
-     * Series or parallel runmode for the backtest
-     * <obsolete>The RunMode property is now obsolete and will always default to Series mode.</obsolete>
+//    /**
+//     * Series or parallel runmode for the backtest
+//     * The RunMode property is now obsolete and will always default to Series mode.
+//     */
 //    [Obsolete( "This property is no longer in use and will always default to series mode.")]
 //    @JsonProperty( "eRunMode")]
 //    public RunMode RunMode = RunMode.Series;
 
+    /**
      * Default constructor for JSON
+     */
     public BacktestNodePacket() { 
         super( PacketType.BacktestNode );
         controls = new Controls( 500, 100, 30 );
     }
 
+    /**
      * Initialize the backtest task packet.
+     */
     public BacktestNodePacket( int userId, int projectId, String sessionId, byte[] algorithmData, BigDecimal startingCapital, String name ) {
         this( userId, projectId, sessionId, algorithmData, startingCapital, name, UserPlan.Free );
     }
@@ -74,89 +93,3 @@ public class BacktestNodePacket extends AlgorithmNodePacket {
         this.language = Language.CSharp;
     }
 }
-
-/*
-
-using System;
-using Newtonsoft.Json;
-
-package com.quantconnect.lean.Packets
-{
-    /**
-     * Algorithm backtest task information packet.
-    */
-    public class BacktestNodePacket : AlgorithmNodePacket
-    {
-        /**
-         * Name of the backtest as randomly defined in the IDE.
-        */
-        @JsonProperty( "sName")]
-        public String Name = "";
-
-        /**
-         * BacktestId / Algorithm Id for this task
-        */
-        @JsonProperty( "sBacktestID")]
-        public String BacktestId = "";
-
-        /**
-         * Backtest start-date as defined in the Initialize() method.
-        */
-        @JsonProperty( "dtPeriodStart")]
-        public DateTime PeriodStart = DateTime.Now;
-
-        /**
-         * Backtest end date as defined in the Initialize() method.
-        */
-        @JsonProperty( "dtPeriodFinish")]
-        public DateTime PeriodFinish = DateTime.Now;
-
-        /**
-         * Estimated number of trading days in this backtest task based on the start-end dates.
-        */
-        @JsonProperty( "iTradeableDates")]
-        public int TradeableDates = 0;
-
-        /**
-         * Series or parallel runmode for the backtest
-        */
-         * <obsolete>The RunMode property is now obsolete and will always default to Series mode.</obsolete>
-        [Obsolete( "This property is no longer in use and will always default to series mode.")]
-        @JsonProperty( "eRunMode")]
-        public RunMode RunMode = RunMode.Series;
-
-        /**
-         * Default constructor for JSON
-        */
-        public BacktestNodePacket() 
-            : base(PacketType.BacktestNode) {
-            Controls = new Controls
-            {
-                MinuteLimit = 500,
-                SecondLimit = 100,
-                TickLimit = 30
-            };
-        }
-
-        /**
-         * Initialize the backtest task packet.
-        */
-        public BacktestNodePacket(int userId, int projectId, String sessionId, byte[] algorithmData, BigDecimal startingCapital, String name, UserPlan userPlan = UserPlan.Free) 
-            : base (PacketType.BacktestNode) {
-            UserId = userId;
-            Algorithm = algorithmData;
-            SessionId = sessionId;
-            ProjectId = projectId;
-            UserPlan = userPlan;
-            Name = name;
-            Language = Language.CSharp;
-            Controls = new Controls
-            {
-                MinuteLimit = 500,
-                SecondLimit = 100,
-                TickLimit = 30
-            };
-        }
-    }
-}
-*/

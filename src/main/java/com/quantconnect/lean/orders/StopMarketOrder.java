@@ -25,7 +25,7 @@ import com.quantconnect.lean.orders.OrderTypes.OrderType;
 import com.quantconnect.lean.securities.Security;
 
 /**
- * Stop Market Order Type Definition
+ * Stop Market Order Class Definition
  */
 public class StopMarketOrder extends Order {
         

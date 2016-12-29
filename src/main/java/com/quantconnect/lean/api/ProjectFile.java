@@ -15,39 +15,22 @@
 
 package com.quantconnect.lean.api;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
  * File for a project
-public class ProjectFile
-{
+ */
+public class ProjectFile {
+    
+    /**
      * Name of a project file
-//    @JsonProperty( "name")]
+     */
+    @JsonProperty( "name" )
     public String name;
 
+    /**
      * Contents of the project file
-//    @JsonProperty( "code")]
+     */
+    @JsonProperty( "code" )
     public String code;
 }
-
-/*
-sing Newtonsoft.Json;
-
-package com.quantconnect.lean.Api
-{
-    /**
-     * File for a project
-    */
-    public class ProjectFile
-    {
-        /**
-         * Name of a project file
-        */
-        @JsonProperty( "name")]
-        public String Name;
-
-        /**
-         * Contents of the project file
-        */
-        @JsonProperty( "code")]
-        public String Code;
-    }
-}
-*/

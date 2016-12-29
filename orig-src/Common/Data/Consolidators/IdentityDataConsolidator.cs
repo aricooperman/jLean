@@ -41,7 +41,7 @@ package com.quantconnect.lean.Data.Consolidators
         /**
          * Gets the type produced by this consolidator
         */
-        public @Override Type OutputType
+        public @Override Class OutputType
         {
             get { return typeof (T); }
         }

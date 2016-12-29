@@ -2,7 +2,7 @@
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * 
@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Represents the market hours under normal conditions for an exchange and a specific day of the week in terms of local time
@@ -61,8 +62,8 @@ public class LocalMarketHours {
     /**
      * Gets the individual market hours segments that define the hours of operation for this day
      */
-    public Iterable<MarketHoursSegment> getSegments() {
-        return Collections.unmodifiableList( Arrays.asList( segments ) );
+    public Stream<MarketHoursSegment> getSegments() {
+        return Arrays.stream( segments );
     }
 
     /**
@@ -70,7 +71,7 @@ public class LocalMarketHours {
      * @param day The day of the week these hours are applicable
      * @param segments The open/close segments defining the market hours for one day
      */
-    public LocalMarketHours( DayOfWeek day, MarketHoursSegment... segments ) {
+    public LocalMarketHours( final DayOfWeek day, final MarketHoursSegment... segments ) {
         this( day, Arrays.asList( segments ) );
     }
 
@@ -79,20 +80,20 @@ public class LocalMarketHours {
      * @param day The day of the week these hours are applicable
      * @param segments The open/close segments defining the market hours for one day
      */
-    public LocalMarketHours( DayOfWeek day, Collection<MarketHoursSegment> segments ) {
-        this.dayOfWeek = day;
+    public LocalMarketHours( final DayOfWeek day, final Collection<MarketHoursSegment> segments ) {
+        dayOfWeek = day;
         // filter out the closed states, we'll assume closed if no segment exists
         this.segments = (segments != null ? segments : Collections.<MarketHoursSegment>emptySet()).stream()
                 .filter( x -> x.getState() != MarketHoursState.Closed )
                 .toArray( i -> new MarketHoursSegment[i] );
-        this.isClosedAllDay = this.segments.length == 0;
-        this.isOpenAllDay = this.segments.length == 1 
-            && this.segments[0].getStart().equals( Duration.ZERO ) 
+        isClosedAllDay = this.segments.length == 0;
+        isOpenAllDay = this.segments.length == 1
+            && this.segments[0].getStart().equals( Duration.ZERO )
             && this.segments[0].getEnd().equals( Duration.ofDays( 1 ) )
             && this.segments[0].getState() == MarketHoursState.Market;
 
         boolean preMarket = false, postMarket = false;
-        for( MarketHoursSegment segment : segments ) {
+        for( final MarketHoursSegment segment : segments ) {
             final MarketHoursState state = segment.getState();
             if( state == MarketHoursState.PreMarket )
                 preMarket = true;
@@ -113,17 +114,17 @@ public class LocalMarketHours {
      * @param marketClose The regular market close time, must be greater than the regular market open time
      * @param extendedMarketClose The extended market close time, must be greater than or equal to the regular market close time
      */
-    public LocalMarketHours( DayOfWeek day, Duration extendedMarketOpen, Duration marketOpen, Duration marketClose, Duration extendedMarketClose ) {
-        this.dayOfWeek = day;
+    public LocalMarketHours( final DayOfWeek day, final Duration extendedMarketOpen, final Duration marketOpen, final Duration marketClose, final Duration extendedMarketClose ) {
+        dayOfWeek = day;
 
-        final List<MarketHoursSegment> segments = new ArrayList<MarketHoursSegment>();
+        final List<MarketHoursSegment> segments = new ArrayList<>();
 
         if( extendedMarketOpen != marketOpen ) {
             hasPreMarket = true;
             segments.add(new MarketHoursSegment(MarketHoursState.PreMarket, extendedMarketOpen, marketOpen));
         }
         else
-            this.hasPreMarket = false;
+            hasPreMarket = false;
 
         if( marketOpen != Duration.ZERO || marketClose != Duration.ZERO )
             segments.add(new MarketHoursSegment(MarketHoursState.Market, marketOpen, marketClose));
@@ -136,8 +137,8 @@ public class LocalMarketHours {
             hasPostMarket = true;
 
         this.segments = segments.toArray( new MarketHoursSegment[segments.size()] );
-        this.isClosedAllDay = this.segments.length == 0;
-        this.isOpenAllDay = false;
+        isClosedAllDay = this.segments.length == 0;
+        isOpenAllDay = false;
 
         // perform some sanity checks
         if( marketOpen.compareTo( extendedMarketOpen ) < 0 )
@@ -158,7 +159,7 @@ public class LocalMarketHours {
      * @param marketOpen The regular market open time
      * @param marketClose The regular market close time, must be greater than the regular market open time
      */
-    public LocalMarketHours( DayOfWeek day, Duration marketOpen, Duration marketClose ) {
+    public LocalMarketHours( final DayOfWeek day, final Duration marketOpen, final Duration marketClose ) {
         this( day, marketOpen, marketOpen, marketClose, marketClose );
     }
 
@@ -168,17 +169,17 @@ public class LocalMarketHours {
      * @param extendedMarket True to include extended market hours, false for regular market hours
      * @returns The market's opening time of day
      */
-    public Optional<Duration> getMarketOpen( Duration time, boolean extendedMarket ) {
-        for (int i = 0; i < segments.length; i++) {
-            if( segments[i].getState() == MarketHoursState.Closed || segments[i].getEnd().compareTo( time ) <= 0 )
+    public Optional<Duration> getMarketOpen( final Duration time, final boolean extendedMarket ) {
+        for( final MarketHoursSegment segment : segments ) {
+            if( segment.getState() == MarketHoursState.Closed || segment.getEnd().compareTo( time ) <= 0 )
                 continue;
 
             if( extendedMarket && hasPreMarket) {
-                if( segments[i].getState() == MarketHoursState.PreMarket )
-                    return Optional.of( segments[i].getStart() );
+                if( segment.getState() == MarketHoursState.PreMarket )
+                    return Optional.of( segment.getStart() );
             }
-            else if( segments[i].getState() == MarketHoursState.Market )
-                return Optional.of( segments[i].getStart() );
+            else if( segment.getState() == MarketHoursState.Market )
+                return Optional.of( segment.getStart() );
         }
 
         // we couldn't locate an open segment after the specified time
@@ -191,17 +192,17 @@ public class LocalMarketHours {
      * @param extendedMarket True to include extended market hours, false for regular market hours
      * @returns The market's closing time of day
      */
-    public Optional<Duration> getMarketClose( Duration time, boolean extendedMarket ) {
-        for (int i = 0; i < segments.length; i++) {
-            if( segments[i].getState() == MarketHoursState.Closed || segments[i].getEnd().compareTo( time ) <= 0 )
+    public Optional<Duration> getMarketClose( final Duration time, final boolean extendedMarket ) {
+        for( final MarketHoursSegment segment : segments ) {
+            if( segment.getState() == MarketHoursState.Closed || segment.getEnd().compareTo( time ) <= 0 )
                 continue;
 
             if( extendedMarket && hasPostMarket) {
-                if( segments[i].getState() == MarketHoursState.PostMarket )
-                    return Optional.of( segments[i].getEnd() );
+                if( segment.getState() == MarketHoursState.PostMarket )
+                    return Optional.of( segment.getEnd() );
             }
-            else if( segments[i].getState() == MarketHoursState.Market )
-                return Optional.of( segments[i].getEnd() );
+            else if( segment.getState() == MarketHoursState.Market )
+                return Optional.of( segment.getEnd() );
         }
         
         // we couldn't locate an open segment after the specified time
@@ -214,13 +215,13 @@ public class LocalMarketHours {
      * @param extendedMarket True to check exended market hours, false to check regular market hours
      * @returns True if the exchange is considered open, false otherwise
      */
-    public boolean isOpen( Duration time, boolean extendedMarket ) {
-        for (int i = 0; i < segments.length; i++ ) {
-            if( segments[i].getState() == MarketHoursState.Closed )
+    public boolean isOpen( final Duration time, final boolean extendedMarket ) {
+        for( final MarketHoursSegment segment : segments ) {
+            if( segment.getState() == MarketHoursState.Closed )
                 continue;
 
-            if( segments[i].contains( time ) )
-                return extendedMarket || segments[i].getState() == MarketHoursState.Market;
+            if( segment.contains( time ) )
+                return extendedMarket || segment.getState() == MarketHoursState.Market;
         }
 
         // if we didn't find a segment then we're closed
@@ -234,16 +235,16 @@ public class LocalMarketHours {
      * @param extendedMarket True to check exended market hours, false to check regular market hours
      * @returns True if the exchange is considered open, false otherwise
      */
-    public boolean isOpen( Duration start, Duration end, boolean extendedMarket ) {
+    public boolean isOpen( final Duration start, final Duration end, final boolean extendedMarket ) {
         if( start == end )
             return isOpen( start, extendedMarket );
         
-        for( int i = 0; i < segments.length; i++ ) {
-            if( segments[i].getState() == MarketHoursState.Closed )
+        for( final MarketHoursSegment segment : segments ) {
+            if( segment.getState() == MarketHoursState.Closed )
                 continue;
 
-            if( extendedMarket || segments[i].getState() == MarketHoursState.Market ) {
-                if( segments[i].overlaps( start, end ) )
+            if( extendedMarket || segment.getState() == MarketHoursState.Market ) {
+                if( segment.overlaps( start, end ) )
                     return true;
             }
         }
@@ -257,7 +258,7 @@ public class LocalMarketHours {
      * @param dayOfWeek The day of week
      * @returns A <see cref="LocalMarketHours"/> instance that is always closed
      */
-    public static LocalMarketHours closedAllDay( DayOfWeek dayOfWeek ) {
+    public static LocalMarketHours closedAllDay( final DayOfWeek dayOfWeek ) {
         return new LocalMarketHours( dayOfWeek );
     }
 
@@ -266,7 +267,7 @@ public class LocalMarketHours {
      * @param dayOfWeek The day of week
      * @returns A <see cref="LocalMarketHours"/> instance that is always open
      */
-    public static LocalMarketHours openAllDay( DayOfWeek dayOfWeek ) {
+    public static LocalMarketHours openAllDay( final DayOfWeek dayOfWeek ) {
         return new LocalMarketHours( dayOfWeek, new MarketHoursSegment( MarketHoursState.Market, Duration.ZERO, Duration.ofDays( 1 ) ) );
     }
 

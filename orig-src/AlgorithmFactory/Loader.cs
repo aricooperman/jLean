@@ -53,7 +53,7 @@ package com.quantconnect.lean.AlgorithmFactory
         /**
          * The algorithm's interface type that we'll be trying to load
         */
-        private static final Type AlgorithmInterfaceType = typeof (IAlgorithm);
+        private static final Class AlgorithmInterfaceType = typeof (IAlgorithm);
 
         /**
          * The full type name of QCAlgorithm, this is so we don't pick him up when querying for types
@@ -85,7 +85,7 @@ package com.quantconnect.lean.AlgorithmFactory
             _language = language;
 
             if( multipleTypeNameResolverFunction == null ) {
-                throw new ArgumentNullException( "multipleTypeNameResolverFunction");
+                throw new NullPointerException( "multipleTypeNameResolverFunction");
             }
 
             _loaderTimeLimit = loaderTimeLimit;

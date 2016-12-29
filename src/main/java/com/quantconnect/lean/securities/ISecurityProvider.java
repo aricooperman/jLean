@@ -39,6 +39,6 @@ public interface ISecurityProvider {
      */
     default BigDecimal getHoldingsQuantity( Symbol symbol ) {
         final Security security = getSecurity( symbol );
-        return security == null ? BigDecimal.ZERO : security.Holdings.getQuantity();
+        return security == null ? BigDecimal.ZERO : BigDecimal.valueOf( security.getHoldings().getQuantity() );
     }
 }

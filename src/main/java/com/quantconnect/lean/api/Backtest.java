@@ -17,7 +17,9 @@ package com.quantconnect.lean.api;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.quantconnect.lean.api.RestResponse;
+import com.quantconnect.lean.packets.BacktestResult;
 
 /**
  * Backtest response packet from the QuantConnect.com API.
@@ -27,36 +29,36 @@ public class Backtest extends RestResponse {
     /**
      * Name of the backtest
      */
-//    @JsonProperty( "name")]
+    @JsonProperty( "name" )
     public String name;
 
     /**
      * Note on the backtest attached by the user
      */
-//    @JsonProperty( "note")]
+    @JsonProperty( "note" )
     public String note;
 
     /**
      * Assigned backtest Id
      */
-//    @JsonProperty( "backtestId")]
+    @JsonProperty( "backtestId" )
     public String backtestId;
 
     /**
      * Boolean true when the backtest is completed.
      */
-//    @JsonProperty( "completed")]
+    @JsonProperty( "completed" )
     public boolean completed;
 
     /**
      * Progress of the backtest in percent 0-1.
      */
-//    @JsonProperty( "progress")]
+    @JsonProperty( "progress" )
     public BigDecimal progress;
     
     /**
      * Result packet for the backtest
      */
-//    @JsonProperty( "result")]
+    @JsonProperty( "result" )
     public BacktestResult result;
 }

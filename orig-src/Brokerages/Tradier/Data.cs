@@ -97,7 +97,7 @@ package com.quantconnect.lean.Brokerages.Tradier
 
          * Quote Type
         @JsonProperty( "type")]
-        public String Type = "";
+        public String Class = "";
 
          * Quote Last Price
         @JsonProperty( "last")]

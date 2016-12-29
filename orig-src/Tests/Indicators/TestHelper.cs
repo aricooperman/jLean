@@ -77,7 +77,7 @@ package com.quantconnect.lean.Tests.Indicators
                 if( first) {
                     first = false;
                     for (int i = 0; i < parts.Length; i++) {
-                        if( parts[i].Trim() == "Close") {
+                        if( parts[i].Trim().equals( "Close") {
                             closeIndex = i;
                         }
                         if( parts[i].Trim() == targetColumn) {
@@ -149,7 +149,7 @@ package com.quantconnect.lean.Tests.Indicators
             foreach (line in File.ReadLines(Path.Combine( "TestData", externalDataFilename))) {
                 parts = line.split(',');
                 if( first) {
-                    fileHasVolume = parts[5].Trim() == "Volume";
+                    fileHasVolume = parts[5].Trim().equals( "Volume";
                     first = false;
                     for (int i = 0; i < parts.Length; i++) {
                         if( parts[i].Trim() == targetColumn) {

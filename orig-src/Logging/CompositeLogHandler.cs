@@ -37,7 +37,7 @@ package com.quantconnect.lean.Logging
          * @param handlers The implementations to compose
         public CompositeLogHandler(ILogHandler[] handlers) {
             if( handlers == null || handlers.Length == 0) {
-                throw new ArgumentNullException( "handlers");
+                throw new NullPointerException( "handlers");
             }
 
             _handlers = handlers;

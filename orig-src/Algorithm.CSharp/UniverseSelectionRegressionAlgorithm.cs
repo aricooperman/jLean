@@ -50,7 +50,7 @@ package com.quantconnect.lean.Algorithm.CSharp
                 // select the various google symbols over the period
                 return from c in coarse
                        let sym = c.Symbol.Value
-                       where sym == "GOOG" || sym == "GOOCV" || sym == "GOOAV" || sym == "GOOGL"
+                       where sym.equals( "GOOG" || sym.equals( "GOOCV" || sym.equals( "GOOAV" || sym.equals( "GOOGL"
                        select c.Symbol;
             });
         }

@@ -51,7 +51,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             try
             {                
                 fields = line.split(',');
-                _summary = fields[0] == "P";
+                _summary = fields[0].equals( "P";
                 _symbol = fields[1];
                 _notFound = line.Contains( "Not Found");
 
@@ -100,7 +100,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 if( !double.TryParse(fields[23], out _settle)) _settle = 0;
                 if( !int.TryParse(fields[24], out _delay)) _delay = 0;
                 _shortRestricted = false;
-                if( fields[26] == "R") _shortRestricted = true;
+                if( fields[26].equals( "R") _shortRestricted = true;
                 if( !double.TryParse(fields[27], out _netAssetValue)) _netAssetValue = 0;
                 if( !double.TryParse(fields[28], out _averageMaturity)) _averageMaturity = 0;
                 if( !double.TryParse(fields[29], out _7DayYield)) _7DayYield = 0;
@@ -116,7 +116,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 if( !double.TryParse(fields[41], out _askChange)) _askChange = 0;
                 if( !double.TryParse(fields[42], out _changeFromOpen)) _changeFromOpen = 0;
                 _marketOpen = false;
-                if( fields[43] == "1") _marketOpen = true;
+                if( fields[43].equals( "1") _marketOpen = true;
                 if( !double.TryParse(fields[44], out _volatility)) _volatility = 0;
                 if( !double.TryParse(fields[45], out _marketCapitalization)) _marketCapitalization = 0;
                 _fractionDisplayCode = fields[46];

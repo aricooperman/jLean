@@ -83,7 +83,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
                 throw new IllegalArgumentException( "FxcmBrokerage.LoadAccounts(): The account id is invalid: " + _accountId);
 
             // Hedging MUST be disabled on the account
-            if( _accounts[_accountId].getParties().getFXCMPositionMaintenance() == "Y") {
+            if( _accounts[_accountId].getParties().getFXCMPositionMaintenance().equals( "Y") {
                 throw new NotSupportedException( "FxcmBrokerage.LoadAccounts(): The Lean engine does not support accounts with Hedging enabled. Please contact FXCM support to disable Hedging.");
             }
         }
@@ -157,7 +157,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
         */
          * Synchronous, blocking
         private BigDecimal GetUsdConversion( String currency) {
-            if( currency == "USD")
+            if( currency.equals( "USD")
                 return 1m;
 
             // determine the correct symbol to choose
@@ -339,7 +339,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
 
             if( message.getRequestID() == _currentRequest) {
                 if( message.isLastRptRequested()) {
-                    if( orderId == "NONE" && orderStatus.getCode() == IFixValueDefs.__Fields.FXCMORDSTATUS_REJECTED) {
+                    if( orderId.equals( "NONE" && orderStatus.getCode() == IFixValueDefs.__Fields.FXCMORDSTATUS_REJECTED) {
                         if( message.getSide() != SideFactory.UNDISCLOSED) {
                             messageText = message.getFXCMErrorDetails().Replace( "\n", "");
                             Log.Trace( "FxcmBrokerage.OnExecutionReport(): " + messageText);

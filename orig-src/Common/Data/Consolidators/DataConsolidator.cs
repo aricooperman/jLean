@@ -33,7 +33,7 @@ package com.quantconnect.lean.Data.Consolidators
         public void Update(BaseData data) {
             typedData = data as TInput;
             if( typedData == null ) {
-                throw new ArgumentNullException( "data", "Received type of " + data.GetType().Name + " but expected " + typeof(TInput).Name);
+                throw new NullPointerException( "data", "Received type of " + data.GetType().Name + " but expected " + typeof(TInput).Name);
             }
             Update(typedData);
         }
@@ -69,7 +69,7 @@ package com.quantconnect.lean.Data.Consolidators
         /**
          * Gets the type consumed by this consolidator
         */
-        public Type InputType
+        public Class InputType
         {
             get { return typeof (TInput); }
         }
@@ -77,7 +77,7 @@ package com.quantconnect.lean.Data.Consolidators
         /**
          * Gets the type produced by this consolidator
         */
-        public abstract Type OutputType
+        public abstract Class OutputType
         {
             get;
         }

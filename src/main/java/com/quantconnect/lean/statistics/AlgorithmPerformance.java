@@ -16,6 +16,8 @@
 package com.quantconnect.lean.statistics;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.SortedMap;
 
@@ -27,17 +29,17 @@ public class AlgorithmPerformance
     /**
      * The algorithm statistics on closed trades
      */
-    private TradeStatistics TradeStatistics;
+    private TradeStatistics tradeStatistics;
 
     /**
      * The algorithm statistics on portfolio
      */
-    private PortfolioStatistics PortfolioStatistics;
+    private PortfolioStatistics portfolioStatistics;
 
     /**
      * The list of closed trades
      */
-    private List<Trade> ClosedTrades;
+    private List<Trade> closedTrades;
 
     /**
      * Initializes a new instance of the <see cref="AlgorithmPerformance"/> class
@@ -48,37 +50,32 @@ public class AlgorithmPerformance
      * @param listBenchmark The list of benchmark values
      * @param startingCapital The algorithm starting capital
     */
-    public AlgorithmPerformance(
-        List<Trade> trades,
-        SortedMap<DateTime, decimal> profitLoss,
-        SortedMap<DateTime, decimal> equity,
-        List<Double> listPerformance,
-        List<Double> listBenchmark, 
-        BigDecimal startingCapital) {
-        TradeStatistics = new TradeStatistics(trades);
-        PortfolioStatistics = new PortfolioStatistics(profitLoss, equity, listPerformance, listBenchmark, startingCapital);
-        ClosedTrades = trades;
+    public AlgorithmPerformance( List<Trade> trades, SortedMap<LocalDate,BigDecimal> profitLoss, SortedMap<LocalDate,BigDecimal> equity, double[] listPerformance,
+            double[] listBenchmark, BigDecimal startingCapital ) {
+        this.tradeStatistics = new TradeStatistics(trades);
+        this.portfolioStatistics = new PortfolioStatistics(profitLoss, equity, listPerformance, listBenchmark, startingCapital);
+        this.closedTrades = trades;
     }
 
     /**
      * Initializes a new instance of the <see cref="AlgorithmPerformance"/> class
      */
     public AlgorithmPerformance() {
-        TradeStatistics = new TradeStatistics();
-        PortfolioStatistics = new PortfolioStatistics();
-        ClosedTrades = new List<Trade>();
+        this.tradeStatistics = new TradeStatistics();
+        this.portfolioStatistics = new PortfolioStatistics();
+        this.closedTrades = new ArrayList<Trade>();
     }
 
     public TradeStatistics getTradeStatistics() {
-        return TradeStatistics;
+        return tradeStatistics;
     }
 
     public PortfolioStatistics getPortfolioStatistics() {
-        return PortfolioStatistics;
+        return portfolioStatistics;
     }
 
     public List<Trade> getClosedTrades() {
-        return ClosedTrades;
+        return closedTrades;
     }
 
 }

@@ -23,16 +23,11 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ForkJoinPool;
 
 import org.apache.commons.lang3.tuple.Pair;
 
-import com.quantconnect.lean.securities.MarketHoursDatabase.DatabaseEntry;
-import com.quantconnect.lean.securities.Security;
-import com.quantconnect.lean.securities.equity.Equity;
-import com.quantconnect.lean.securities.forex.Forex;
 import com.quantconnect.lean.Resolution;
 import com.quantconnect.lean.SecurityIdentifier;
 import com.quantconnect.lean.SecurityType;
@@ -46,13 +41,14 @@ import com.quantconnect.lean.data.market.QuoteBar;
 import com.quantconnect.lean.data.market.Tick;
 import com.quantconnect.lean.data.market.TradeBar;
 import com.quantconnect.lean.event.CollectionChangedEvent;
-import com.quantconnect.lean.event.CollectionChangedEventListener;
 import com.quantconnect.lean.event.CollectionChangedEvent.CollectionChangedAction;
+import com.quantconnect.lean.event.CollectionChangedEventListener;
+import com.quantconnect.lean.securities.MarketHoursDatabase.DatabaseEntry;
+import com.quantconnect.lean.securities.cfd.Cfd;
+import com.quantconnect.lean.securities.equity.Equity;
+import com.quantconnect.lean.securities.forex.Forex;
+import com.quantconnect.lean.securities.option.Option;
 
-//using System.Collections.Concurrent;
-//using System.Collections.Specialized;
-//using System.Linq;
-//using NodaTime;
 
 /**
  * Enumerable security management class for grouping security objects into an array and providing any common properties.
@@ -364,7 +360,7 @@ public class SecurityManager implements Map<Symbol,Security> {
             extendedMarketHours, isInternalFeed, isFilteredSubscription );
 
         // verify the cash book is in a ready state
-        final String quoteCurrency = symbolProperties.getQuoteCurrency();
+        String quoteCurrency = symbolProperties.getQuoteCurrency();
         final CashBook cashBook = securityPortfolioManager.getCashBook();
         if( !cashBook.containsKey( quoteCurrency ) ) {
             // since we have none it's safe to say the conversion is zero

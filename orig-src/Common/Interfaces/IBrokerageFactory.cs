@@ -30,7 +30,7 @@ package com.quantconnect.lean.Interfaces
         /**
          * Gets the type of brokerage produced by this factory
         */
-        Type BrokerageType { get; }
+        Class BrokerageType { get; }
 
         /**
          * Gets the brokerage data required to run the brokerage from configuration/disk

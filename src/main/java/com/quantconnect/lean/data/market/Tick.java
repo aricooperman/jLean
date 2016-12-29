@@ -2,7 +2,7 @@
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * 
@@ -50,7 +50,7 @@ public class Tick extends BaseData {
     private final Logger log = LoggerFactory.getLogger( getClass() );
     
     /**
-     * Type of the Tick: Trade or Quote.
+     * Class of the Tick: Trade or Quote.
      */
     public TickType tickType = TickType.Trade;
 
@@ -120,20 +120,20 @@ public class Tick extends BaseData {
         setTime( LocalDateTime.now() );
         setDataType( MarketDataType.Tick );
         setSymbol( Symbol.EMPTY );
-        this.tickType = TickType.Trade;
-        this.quantity = 0;
-        this.exchange = "";
-        this.saleCondition = "";
-        this.suspicious = false;
-        this.bidSize = 0;
-        this.askSize = 0;
+        tickType = TickType.Trade;
+        quantity = 0;
+        exchange = "";
+        saleCondition = "";
+        suspicious = false;
+        bidSize = 0;
+        askSize = 0;
     }
 
     /**
      * Cloner constructor for fill forward engine implementation. Clone the original tick into this new tick:
      * @param original Original tick we're cloning
      */
-    public Tick( Tick original )  {
+    public Tick( final Tick original )  {
         setSymbol( original.getSymbol() );
         setTime( original.getTime() );
         setValue( original.getValue() );
@@ -157,7 +157,7 @@ public class Tick extends BaseData {
      * @param bid FX tick bid value
      * @param ask FX tick ask value
      */
-    public Tick( LocalDateTime time, Symbol symbol, BigDecimal bid, BigDecimal ask ) {
+    public Tick( final LocalDateTime time, final Symbol symbol, final BigDecimal bid, final BigDecimal ask ) {
         setDataType( MarketDataType.Tick );
         setTime( time );
         setSymbol( symbol );
@@ -168,14 +168,14 @@ public class Tick extends BaseData {
     }
 
     /**
-     * Initializer for a last-trade equity tick with bid or ask prices. 
+     * Initializer for a last-trade equity tick with bid or ask prices.
      * @param time Full date and time
      * @param symbol Underlying equity security symbol
      * @param bid Bid value
      * @param ask Ask value
      * @param last Last trade price
      */
-    public Tick( LocalDateTime time, Symbol symbol, BigDecimal last, BigDecimal bid, BigDecimal ask ) {
+    public Tick( final LocalDateTime time, final Symbol symbol, final BigDecimal last, final BigDecimal bid, final BigDecimal ask ) {
         setDataType( MarketDataType.Tick );
         setTime( time );
         setSymbol( symbol );
@@ -190,7 +190,7 @@ public class Tick extends BaseData {
      * @param symbol Symbol for underlying asset
      * @param line CSV line of data from FXCM
      */
-    public Tick( Symbol symbol, String line ) {
+    public Tick( final Symbol symbol, final String line ) {
         final String[] csv = line.split( "," );
         setDataType( MarketDataType.Tick );
         setSymbol( symbol );
@@ -207,7 +207,7 @@ public class Tick extends BaseData {
      * @param line CSV line of data from QC tick csv
      * @param baseDate The base date of the tick
      */
-    public Tick( Symbol symbol, String line, LocalDateTime baseDate ) {
+    public Tick( final Symbol symbol, final String line, final LocalDateTime baseDate ) {
         final String[] csv = line.split( "," );
         setDataType( MarketDataType.Tick );
         setSymbol( symbol );
@@ -226,7 +226,7 @@ public class Tick extends BaseData {
      * @param date Base date for the tick (ticks date is stored as int milliseconds since midnight)
      * @param config Subscription configuration object
      */
-    public Tick( SubscriptionDataConfig config, String line, LocalDate date ) {
+    public Tick( final SubscriptionDataConfig config, final String line, final LocalDate date ) {
         try {
             setDataType( MarketDataType.Tick );
 
@@ -243,7 +243,7 @@ public class Tick extends BaseData {
                     if( csv.length > 3 ) {
                         exchange = csv[3];
                         saleCondition = csv[4];
-                        suspicious = (csv[5] == "1");
+                        suspicious = csv[5].equals( "1" );
                     }
                     break;
 
@@ -281,7 +281,7 @@ public class Tick extends BaseData {
                             askSize = Integer.parseInt( csv[4] );
                         }
                         exchange = csv[5];
-                        suspicious = csv[6] == "1";
+                        suspicious = csv[6].equals( "1" );
 
                         if( bidPrice.signum() != 0 ) {
                             if( askPrice.signum() != 0 )
@@ -302,12 +302,12 @@ public class Tick extends BaseData {
                     throw new UnsupportedOperationException( config.securityType + " is not supported" );
             }
         }
-        catch( Exception err ) {
+        catch( final Exception err ) {
             log.error( "Unable to construct", err );
         }
     }
 
-    private BigDecimal scale( BigDecimal value ) {
+    private BigDecimal scale( final BigDecimal value ) {
         return value.divide( SCALE_FACTOR, RoundingMode.HALF_UP );
     }
 
@@ -320,7 +320,7 @@ public class Tick extends BaseData {
      * @returns New Initialized tick
      */
     @Override
-    public BaseData reader( SubscriptionDataConfig config, String line, LocalDate date, boolean isLiveMode ) {
+    public BaseData reader( final SubscriptionDataConfig config, final String line, final LocalDate date, final boolean isLiveMode ) {
         if( isLiveMode )
             // currently ticks don't come through the reader function
             return new Tick();
@@ -336,7 +336,7 @@ public class Tick extends BaseData {
      * @returns String source location of the file to be opened with a stream
      */
     @Override
-    public SubscriptionDataSource getSource( SubscriptionDataConfig config, LocalDate date, boolean isLiveMode ) {
+    public SubscriptionDataSource getSource( final SubscriptionDataConfig config, final LocalDate date, final boolean isLiveMode ) {
         if( isLiveMode )
             // Currently ticks aren't sourced through GetSource in live mode
             return new SubscriptionDataSource( null, SubscriptionTransportMedium.LocalFile );
@@ -358,13 +358,13 @@ public class Tick extends BaseData {
      * @param askSize The size of the current ask, if available
      */
     @Override
-    public void update( BigDecimal lastTrade, BigDecimal bidPrice, BigDecimal askPrice, BigDecimal volume, BigDecimal bidSize, BigDecimal askSize ) {
+    public void update( final BigDecimal lastTrade, final BigDecimal bidPrice, final BigDecimal askPrice, final BigDecimal volume, final BigDecimal bidSize, final BigDecimal askSize ) {
         setValue( lastTrade );
         this.bidPrice = bidPrice;
         this.askPrice = askPrice;
         this.bidSize = bidSize.longValue();
         this.askSize = askSize.longValue();
-        this.quantity = volume.intValue();
+        quantity = volume.intValue();
     }
 
     /**

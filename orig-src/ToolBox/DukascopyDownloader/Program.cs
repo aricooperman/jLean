@@ -41,7 +41,7 @@ package com.quantconnect.lean.ToolBox.DukascopyDownloader
             {
                 // Load settings from command line
                 symbols = args[0].split(',');
-                allResolutions = args[1].toLowerCase() == "all";
+                allResolutions = args[1].toLowerCase().equals( "all";
                 resolution = allResolutions ? Resolution.Tick : (Resolution)Enum.Parse(typeof(Resolution), args[1]);
                 startDate = DateTime.ParseExact(args[2], "yyyyMMdd", CultureInfo.InvariantCulture);
                 endDate = DateTime.ParseExact(args[3], "yyyyMMdd", CultureInfo.InvariantCulture);

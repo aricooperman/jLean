@@ -228,7 +228,7 @@ package com.quantconnect.lean.Tests.Common.Util
             public final DateTime Date;
             public final Resolution Resolution;
             public final TickType TickType;
-            public final Type BaseDataType;
+            public final Class BaseDataType;
             public final SubscriptionDataConfig Config;
             public final String ExpectedZipFileName;
             public final String ExpectedZipEntryName;

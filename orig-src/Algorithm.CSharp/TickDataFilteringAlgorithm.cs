@@ -114,7 +114,7 @@ package com.quantconnect.lean.Algorithm.Examples
 
             // This is a tick bar
             if( tick != null ) {
-                if( tick.Exchange == "P") //MarketCodesFilter.AllowedExchanges.Contains() {
+                if( tick.Exchange.equals( "P") //MarketCodesFilter.AllowedExchanges.Contains() {
                     return true;
                 }
             }

@@ -35,7 +35,7 @@ import com.quantconnect.lean.securities.SecurityPortfolioModel;
 import com.quantconnect.lean.securities.SymbolProperties;
 
 /**
- * Equity Security Type : Extension of the underlying Security class for equity specific behaviors.
+ * Equity Security Class : Extension of the underlying Security class for equity specific behaviors.
  * <seealso cref="Security"/>
  */
 public class Equity extends Security {

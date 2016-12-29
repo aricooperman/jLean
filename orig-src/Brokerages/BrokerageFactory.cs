@@ -25,7 +25,7 @@ package com.quantconnect.lean.Brokerages
     */
     public abstract class BrokerageFactory : IBrokerageFactory
     {
-        private final Type _brokerageType;
+        private final Class _brokerageType;
 
         /**
          * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
@@ -36,7 +36,7 @@ package com.quantconnect.lean.Brokerages
         /**
          * Gets the type of brokerage produced by this factory
         */
-        public Type BrokerageType
+        public Class BrokerageType
         {
             get { return _brokerageType; }
         }

@@ -280,7 +280,7 @@ package com.quantconnect.lean.Data.Custom
         /**
          * Parse DailyFx API enum
         */
-        public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
+        public @Override object ReadJson(JsonReader reader, Class objectType, object existingValue, JsonSerializer serializer) {
             enumString = ( String)reader.Value;
             FxDailyMeaning? meaning = null;
 

@@ -56,7 +56,7 @@ public class SymbolPropertiesDatabase {
      * @param defaultQuoteCurrency Specifies the quote currency to be used when returning a default instance of an entry is not found in the database
      * @returns The symbol properties matching the specified market/symbol/security-type or null if not found
      */
-    public SymbolProperties getSymbolProperties(    String market, String symbol, SecurityType securityType, String defaultQuoteCurrency ) {
+    public SymbolProperties getSymbolProperties( String market, String symbol, SecurityType securityType, String defaultQuoteCurrency ) {
         final SecurityDatabaseKey key = new SecurityDatabaseKey( market, symbol, securityType );
 
         SymbolProperties symbolProperties = entries.get( key );

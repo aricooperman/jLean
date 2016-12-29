@@ -30,7 +30,7 @@ package com.quantconnect.lean.Brokerages.Paper
         /**
          * Gets the type of brokerage produced by this factory
         */
-        public Type BrokerageType
+        public Class BrokerageType
         {
             get { return typeof(PaperBrokerage); }
         }

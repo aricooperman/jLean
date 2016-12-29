@@ -19,45 +19,59 @@ public class Series {
     
 //    private final Logger log = LoggerFactory.getLogger( getClass() );
 
+    /**
      * Name of the Series:
+     */
     public String name = "";
 
+    /**
      * Axis for the chart series.
+     */
     public String unit = "$";
 
+    /**
      * Index/position of the series on the chart.
+     */
     public int index = 0;
 
     /**
-     *  Values for the series plot:
+     * Values for the series plot:
      * These values are assumed to be in ascending time order (first points earliest, last points latest)
-    */
-    public List<ChartPoint> values = new ArrayList<ChartPoint>();
+     */
+    public List<ChartPoint> values = new ArrayList<>();
 
     /**
      * Chart type for the series:
-    */
+     */
     public SeriesType seriesType = SeriesType.Line;
 
-     * Color the series 
+    /**
+     * Color the series
+     */
     @JsonSerialize( using = ColorJsonSerializer.class, as = String.class ) //[JsonConverter(typeof(ColorJsonConverter))]
     @JsonDeserialize( using = ColorJsonDeserializer.class, as = Color.class )
     public Color color = null; //Color.Empty;
 
     /**
      * Shape or symbol for the marker in a scatter plot
-    */
+     */
     public ScatterMarkerSymbol scatterMarkerSymbol = ScatterMarkerSymbol.None;
 
+    /*
      * Get the index of the last fetch update request to only retrieve the "delta" of the previous request.
+     */
     private int updatePosition;
 
+    /**
      * Default constructor for chart series
+     */
     public Series() { }
 
+    /**
      * Constructor method for Chart Series
      * @param name Name of the chart series
-    public Series( String name ) {
+     */
+    public Series( final String name ) {
         this.name = name;
 //        this.seriesType = SeriesType.Line;
 //        this.unit = "$";
@@ -66,10 +80,12 @@ public class Series {
 //        this.scatterMarkerSymbol = scatterMarkerSymbol.None;
     }
 
+    /**
      * Foundational constructor on the series class
      * @param name Name of the series
-     * @param type Type of the series
-    public Series( String name, SeriesType type ) {
+     * @param type Class of the series
+     */
+    public Series( final String name, final SeriesType type ) {
         this( name );
         seriesType = type;
 //        index = 0;
@@ -78,11 +94,13 @@ public class Series {
 //        scatterMarkerSymbol = scatterMarkerSymbol.None;
     }
 
+    /**
      * Foundational constructor on the series class
      * @param name Name of the series
-     * @param type Type of the series
+     * @param type Class of the series
      * @param index Index position on the chart of the series
-    public Series( String name, SeriesType type, int index ) {
+     */
+    public Series( final String name, final SeriesType type, final int index ) {
         this( name, type );
         this.index = index;
 //        unit = "$";
@@ -90,23 +108,27 @@ public class Series {
 //        scatterMarkerSymbol = scatterMarkerSymbol.None;
     }
 
+    /**
      * Foundational constructor on the series class
      * @param name Name of the series
-     * @param type Type of the series
+     * @param type Class of the series
      * @param index Index position on the chart of the series
      * @param unit Unit for the series axis
-    public Series( String name, SeriesType type, int index, String unit ) {
+     */
+    public Series( final String name, final SeriesType type, final int index, final String unit ) {
         this( name, type, index );
         this.unit = unit;
 //        color = null;
 //        scatterMarkerSymbol = scatterMarkerSymbol.None;
     }
 
+    /**
      * Constructor method for Chart Series
      * @param name Name of the chart series
-     * @param type Type of the chart series
+     * @param type Class of the chart series
      * @param unit Unit of the serier
-    public Series( String name, SeriesType type, String unit ) {
+     */
+    public Series( final String name, final SeriesType type, final String unit ) {
         this( name, type );
         this.unit = unit;
 //        Values = new ArrayList<ChartPoint>();
@@ -115,12 +137,14 @@ public class Series {
 //        scatterMarkerSymbol = scatterMarkerSymbol.None;
     }
 
+    /**
      * Constructor method for Chart Series
      * @param name Name of the chart series
-     * @param type Type of the chart series
+     * @param type Class of the chart series
      * @param unit Unit of the serier
      * @param color Color of the series
-    public Series( String name, SeriesType type, String unit, Color color ) {
+     */
+    public Series( final String name, final SeriesType type, final String unit, final Color color ) {
         this( name, type, unit );
         this.color = color;
 //        Values = new ArrayList<ChartPoint>();
@@ -128,29 +152,33 @@ public class Series {
 //        scatterMarkerSymbol = scatterMarkerSymbol.None;
     }
 
+    /**
      * Constructor method for Chart Series
      * @param name Name of the chart series
-     * @param type Type of the chart series
+     * @param type Class of the chart series
      * @param unit Unit of the serier
      * @param color Color of the series
      * @param symbol Symbol for the marker in a scatter plot series
-    public Series( String name, SeriesType type, String unit, Color color, ScatterMarkerSymbol symbol ) {
+     */
+    public Series( final String name, final SeriesType type, final String unit, final Color color, final ScatterMarkerSymbol symbol ) {
         this( name, type, unit, color );
-        this.scatterMarkerSymbol = symbol;
+        scatterMarkerSymbol = symbol;
 //        this.Values = new List<ChartPoint>();
 //        this.index = 0;
     }
 
+    /**
      * Add a new point to this series:
      * @param time Time of the chart point
      * @param value Value of the chart point
      * @param liveMode This is a live mode point
-    public void addPoint( ZonedDateTime time, BigDecimal value ) {
+     */
+    public void addPoint( final ZonedDateTime time, final BigDecimal value ) {
         addPoint( time, value, false );
     }
     
-    public void addPoint( ZonedDateTime time, BigDecimal value, boolean liveMode ) {
-        if( values.size() >= 4000 && !liveMode ) 
+    public void addPoint( final ZonedDateTime time, final BigDecimal value, final boolean liveMode ) {
+        if( values.size() >= 4000 && !liveMode )
             // perform rate limiting in backtest mode
             return;
 
@@ -162,16 +190,18 @@ public class Series {
             values.add( chartPoint );
     }
 
+    /**
      * Get the updates since the last call to this function.
-    @returns List of the updates from the series
+     * @returns List of the updates from the series
+     */
     public Series getUpdates() {
         final Series copy = new Series( name, seriesType, index, unit );
-        copy.color = this.color;
-        copy.scatterMarkerSymbol = this.scatterMarkerSymbol;
+        copy.color = color;
+        copy.scatterMarkerSymbol = scatterMarkerSymbol;
 
 //        try {
-            //Add the updates since the last 
-            for( int i = updatePosition; i < values.size(); i++ ) 
+            //Add the updates since the last
+            for( int i = updatePosition; i < values.size(); i++ )
                 copy.values.add( values.get( i ) );
             //Shuffle the update point to now:
             updatePosition = values.size();
@@ -183,7 +213,9 @@ public class Series {
         return copy;
     }
 
+    /**
      * Removes the data from this series and resets the update position to 0
+     */
     public void purge() {
         values.clear();
         updatePosition = 0;

@@ -50,10 +50,10 @@ package com.quantconnect.lean.ToolBox
         @returns A new stream provider capable of reading files with the specified extension
         public static IStreamProvider ForExtension( String extension) {
             ext = Path.GetExtension(extension);
-            if( ext == ".zip") {
+            if( ext.equals( ".zip") {
                 return new ZipStreamProvider();
             }
-            if( ext == ".bz2") {
+            if( ext.equals( ".bz2") {
                 return new Bz2StreamProvider();
             }
 

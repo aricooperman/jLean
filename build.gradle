@@ -1,20 +1,37 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'io.spring.gradle:dependency-management-plugin:0.6.0.RELEASE'
+    }
+}
+
+apply plugin: 'io.spring.dependency-management'
 apply plugin: 'java'
 
 repositories {
     jcenter()
 }
 
+dependencyManagement {
+    imports {
+        mavenBom 'io.spring.platform:platform-bom:Athens-RELEASE'
+    }
+}
+
 // In this section you declare the dependencies for your production and test code
 dependencies {
-    compile 'org.slf4j:slf4j-api:1.7.21'
+    compile 'org.slf4j:slf4j-api' //:1.7.21'
 
-//    compile 'com.google.code.gson:gson:2.7'
-//	  compile 'org.json:json:20160212'
-	compile 'com.fasterxml.jackson.core:jackson-databind:2.8.1'
-	compile 'com.fasterxml.jackson.core:jackson-annotations:2.8.1'
-	compile 'com.fasterxml.jackson.datatype:jackson-datatype-guava:2.8.1'
-	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.1'
-	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.1'
+	compile 'org.springframework:spring-web'
+	//compile 'org.springframework:spring-contex'
+	
+	compile 'com.fasterxml.jackson.core:jackson-databind' //:2.8.1'
+	compile 'com.fasterxml.jackson.core:jackson-annotations' //:2.8.1'
+	compile 'com.fasterxml.jackson.datatype:jackson-datatype-guava' //:2.8.1'
+	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8' //:2.8.1'
+	compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310' //:2.8.1'
   
 	compile 'io.javaslang:javaslang:2.0.2'
 	compile 'org.apache.commons:commons-lang3:3.4'
@@ -22,7 +39,7 @@ dependencies {
 	compile 'com.google.guava:guava:19.0'
 	compile 'it.unimi.dsi:fastutil:7.0.12'
 	
-    testCompile 'junit:junit:4.12'
+    testCompile 'junit:junit' //:4.12'
 }
 
 task wrapper(type: Wrapper) {

@@ -20,7 +20,7 @@ using System.Globalization;
 package com.quantconnect.lean.Data.Custom
 {
     /**
-     * Quandl Data Type - Import generic data from quandl, without needing to define Reader methods. 
+     * Quandl Data Class - Import generic data from quandl, without needing to define Reader methods. 
      * This reads the headers of the data imported, and dynamically creates properties for the imported data.
     */
     public class Quandl : DynamicData

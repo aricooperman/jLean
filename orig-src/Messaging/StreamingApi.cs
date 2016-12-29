@@ -55,7 +55,7 @@ package com.quantconnect.lean.Messaging
                     Log.Error( "StreamingApi.Transmit(): UserId is not set. Check your config.json file 'job-user-id' property.");
                     return;
                 }
-                if( apiToken == "") {
+                if( apiToken.equals( "") {
                     Log.Error( "StreamingApi.Transmit(): API Access token not set. Check your config.json file 'api-access-token' property.");
                     return;
                 }
@@ -69,7 +69,7 @@ package com.quantconnect.lean.Messaging
                     try
                     {
                         result = JsonConvert.DeserializeObject<Response>(response.Content);
-                        if( result.Type == "error") {
+                        if( result.Type.equals( "error") {
                             Log.Error(new Exception(result.Message), "PacketType: " + packet.Type);
                         }
                     }
@@ -90,7 +90,7 @@ package com.quantconnect.lean.Messaging
         private class Response
         {
             /**
-             * Type of response from the streaming api.
+             * Class of response from the streaming api.
             */
              * success or error
             public String Type;

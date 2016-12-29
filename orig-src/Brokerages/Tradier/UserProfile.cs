@@ -79,7 +79,7 @@ package com.quantconnect.lean.Brokerages.Tradier
 
          * Cash or Margin Account:
         @JsonProperty( "type")]
-        public TradierAccountType Type { get; set; }
+        public TradierAccountType Class { get; set; }
 
          * Date time of the last update:
         @JsonProperty( "last_update_date")]
@@ -89,7 +89,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "status")]
         public TradierAccountStatus Status { get; set; }
 
-         * Type of user account
+         * Class of user account
         @JsonProperty( "classification")]
         public TradierAccountClassification Classification { get; set; }
 
@@ -100,7 +100,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             AccountNumber = 0;
             DayTrader = false;
             OptionLevel = 1;
-            Type = TradierAccountType.Cash;
+            Class = TradierAccountType.Cash;
             LastUpdated = new DateTime();
             Status = TradierAccountStatus.Closed;
             Classification = TradierAccountClassification.Individual;

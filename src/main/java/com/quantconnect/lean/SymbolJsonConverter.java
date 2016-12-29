@@ -2,7 +2,7 @@
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * 
@@ -29,21 +29,23 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
-//using QuantConnect.Securities;
-
- * Defines a <see cref="JsonConverter"/> to be used when deserializing to 
+/**
+ * Defines a <see cref="JsonConverter"/> to be used when deserializing to
  * the <see cref="Symbol"/> class.
+ */
 public class SymbolJsonConverter {
     
     public static class SymbolJsonSerializer extends JsonSerializer<Symbol> {
 
+        /**
          * Writes the JSON representation of the object.
          * @param writer The <see cref="T:Newtonsoft.Json.JsonWriter"/> to write to.<param name="value The value.<param name="serializer The calling serializer.
+         */
         @Override
-        public void serialize( Symbol symbol, JsonGenerator gen, SerializerProvider serializers )
+        public void serialize( final Symbol symbol, final JsonGenerator gen, final SerializerProvider serializers )
                 throws IOException, JsonProcessingException {
             
-            if( symbol == null ) 
+            if( symbol == null )
                 return;
             
             gen.writeStartObject();
@@ -61,13 +63,13 @@ public class SymbolJsonConverter {
 
     public static class SymbolJsonDeserializer extends JsonDeserializer<Symbol> {
 
+        /**
          * Reads the JSON representation of the object.
-         * @param reader The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.<param name="objectType Type of the object.<param name="existingValue The existing value of object being read.<param name="serializer The calling serializer.
-        @returns 
-         * The object value.
-         * 
+         * @param reader The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.<param name="objectType Class of the object.<param name="existingValue The existing value of object being read.<param name="serializer The calling serializer.
+         * @returns The object value.
+         */
         @Override
-        public Symbol deserialize( JsonParser p, DeserializationContext ctxt )
+        public Symbol deserialize( final JsonParser p, final DeserializationContext ctxt )
                 throws IOException, JsonProcessingException {
             
             final JsonNode node = p.getCodec().readTree( p );
@@ -83,10 +85,10 @@ public class SymbolJsonConverter {
     
 
 //     * Determines whether this instance can convert the specified object type.
-//     * @param objectType Type of the object.
-//    @returns 
+//     * @param objectType Class of the object.
+//    @returns
 //     * <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
-//     * 
+//     *
 //    public @Override boolean CanConvert(Type objectType)
 //    {
 //        return objectType == typeof (Symbol);

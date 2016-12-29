@@ -23,32 +23,42 @@ import org.slf4j.LoggerFactory;
 
 //using System.Drawing;
     
-/* 
+/** 
  * Single Parent Chart Object for Custom Charting
  */
 //    [JsonObject]
 public class Chart {
     
     private final Logger log = LoggerFactory.getLogger( getClass() );
-    
+   
+    /**
      * Name of the Chart:
+     */
     public String name = "";
 
+    /**
      * List of Series Objects for this Chart:
+     */
     public Map<String,Series> series = new HashMap<String,Series>();
 
+    /**
      * Default constructor for chart:
+     */
     public Chart() { }
 
+    /**
      * Constructor for a chart
      * @param name String name of the chart
+     */
     public Chart( String name ) {
         this.name = name;
         this.series = new HashMap<String,Series>();
     }
 
+    /**
      * Add a reference to this chart series:
      * @param series Chart series class object
+     */
     public void addSeries( Series s ) {
         //If we dont already have this series, add to the chrt:
         if( !series.containsKey( s.name ) )
@@ -57,9 +67,11 @@ public class Chart {
             throw new IllegalArgumentException( "Chart.AddSeries(): Chart series name already exists" );
     }
 
+    /**
      * Fetch the updates of the chart, and save the index position.
-    @returns 
-    public Chart GetUpdates() {
+     * @returns
+     */ 
+    public Chart getUpdates() {
         final Chart copy = new Chart( name );
         
         try {   

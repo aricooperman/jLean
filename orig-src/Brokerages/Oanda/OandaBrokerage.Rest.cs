@@ -120,7 +120,7 @@ package com.quantconnect.lean.Brokerages.Oanda
             }
 
             if( data.transaction != null ) {
-                if( data.transaction.type == "ORDER_FILLED") {
+                if( data.transaction.type.equals( "ORDER_FILLED") {
                     qcOrder = _orderProvider.GetOrderByBrokerageId(data.transaction.orderId);
                     qcOrder.PriceCurrency = _securityProvider.GetSecurity(qcOrder.Symbol).SymbolProperties.QuoteCurrency;
 
@@ -206,7 +206,7 @@ package com.quantconnect.lean.Brokerages.Oanda
 
         private static Stream GetResponseStream(WebResponse response) {
             stream = response.GetResponseStream();
-            if( response.Headers["Content-Encoding"] == "gzip") {	// if we received a gzipped response, handle that
+            if( response.Headers["Content-Encoding"].equals( "gzip") {	// if we received a gzipped response, handle that
                 if( stream != null ) stream = new GZipStream(stream, CompressionMode.Decompress);
             }
             return stream;
@@ -373,22 +373,22 @@ package com.quantconnect.lean.Brokerages.Oanda
             switch (order.type) {
                 case "limit":
                     qcOrder = new LimitOrder();
-                    if( order.side == "buy") {
+                    if( order.side.equals( "buy") {
                         ((LimitOrder)qcOrder).LimitPrice = new BigDecimal( order.lowerBound);
                     }
 
-                    if( order.side == "sell") {
+                    if( order.side.equals( "sell") {
                         ((LimitOrder)qcOrder).LimitPrice = new BigDecimal( order.upperBound);
                     }
 
                     break;
                 case "stop":
                     qcOrder = new StopLimitOrder();
-                    if( order.side == "buy") {
+                    if( order.side.equals( "buy") {
                         ((StopLimitOrder)qcOrder).LimitPrice = new BigDecimal( order.lowerBound);
                     }
 
-                    if( order.side == "sell") {
+                    if( order.side.equals( "sell") {
                         ((StopLimitOrder)qcOrder).LimitPrice = new BigDecimal( order.upperBound);
                     }
                     break;
@@ -450,11 +450,11 @@ package com.quantconnect.lean.Brokerages.Oanda
             return new Holding
             {
                 Symbol = _symbolMapper.GetLeanSymbol(position.instrument, securityType, Market.Oanda),
-                Type = securityType,
+                Class = securityType,
                 AveragePrice = (decimal)position.avgPrice,
                 ConversionRate = 1.0m,
                 CurrencySymbol = "$",
-                Quantity = position.side == "sell" ? -position.units : position.units
+                Quantity = position.side.equals( "sell" ? -position.units : position.units
             };
         }
 
@@ -463,7 +463,7 @@ package com.quantconnect.lean.Brokerages.Oanda
         */
          * Synchronous, blocking
         private BigDecimal GetUsdConversion( String currency) {
-            if( currency == "USD")
+            if( currency.equals( "USD")
                 return 1m;
 
             // determine the correct symbol to choose

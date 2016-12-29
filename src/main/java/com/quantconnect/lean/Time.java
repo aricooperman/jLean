@@ -20,11 +20,11 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.format.DateTimeParseException;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Spliterators;
-import java.util.stream.IntStream;
-import java.util.stream.StreamSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,55 +43,55 @@ public class Time {
 
     private Time() { }
     
-    /**
-     * Provides a value far enough in the future the current computer hardware will have decayed :)
-     * {@value new LocalDate(2050, 12, 31)
-     */
-    public static final LocalDate EndOfTime = LocalDate.MAX; //( 2050, 12, 31 );
+//    /**
+//     * Provides a value far enough in the future the current computer hardware will have decayed :)
+//     * {@value new LocalDate(2050, 12, 31)
+//     */
+//    public static final LocalDate EndOfTime = LocalDate.MAX; //( 2050, 12, 31 );
 
-    /**
-     * Provides a value far enough in the past that can be used as a lower bound on dates
-     * {@value DateTime.FromOADate(0) }
-     */
-    public static final LocalDateTime BeginningOfTime = LocalDateTime.MIN;
+//    /**
+//     * Provides a value far enough in the past that can be used as a lower bound on dates
+//     * {@value DateTime.FromOADate(0) }
+//     */
+//    public static final LocalDateTime BeginningOfTime = LocalDateTime.MIN;
 
     /**
      * Provides a value large enough that we won't hit the limit, while small enough
      * we can still do math against it without checking everywhere for {@link Duration.MaxValue"/>
      */
-    public static final Duration MaxTimeSpan = Duration.ofDays( 1000 * 365 );
+    public static final Duration MAX_TIME_SPAN = Duration.ofDays( 1000 * 365 );
 
     /**
      * One Day Duration Period Constant
      */
-    public static final Duration OneDay = Duration.ofDays( 1 );
+    public static final Duration ONE_DAY = Duration.ofDays( 1 );
 
     /**
      * One Hour Duration Period Constant
      */
-    public static final Duration OneHour = Duration.ofHours( 1 );
+    public static final Duration ONE_HOUR = Duration.ofHours( 1 );
     
     /**
      * One Minute Duration Period Constant
      */
-    public static final Duration OneMinute = Duration.ofMinutes( 1 );
+    public static final Duration ONE_MINUTE = Duration.ofMinutes( 1 );
 
     /**
      * One Second Duration Period Constant
      */
-    public static final Duration OneSecond = Duration.ofSeconds( 1 );
+    public static final Duration ONE_SECOND = Duration.ofSeconds( 1 );
 
     /**
      * One Millisecond Duration Period Constant
      */
-    public static final Duration OneMillisecond = Duration.ofMillis( 1 );
+    public static final Duration ONE_MILLISECOND = Duration.ofMillis( 1 );
     
-    private static final LocalDateTime EpochTime = LocalDateTime.from( Instant.EPOCH ); //( 1970, 1, 1, 0, 0, 0, 0 );
+    private static final LocalDateTime EPOCH_TIME = LocalDateTime.from( Instant.EPOCH ); //( 1970, 1, 1, 0, 0, 0, 0 );
 
     /**
      * Live charting is sensitive to timezone so need to convert the local system time to a UTC and display in browser as UTC.
      */
-    public class DateTimeWithZone {
+    public static class DateTimeWithZone {
         private final LocalDateTime utcDateTime;
         private final ZoneId timeZone;
 
@@ -136,40 +136,37 @@ public class Time {
      * @return C# date timeobject
      */
     public static LocalDateTime unixTimeStampToDateTime( long unixTimeStamp ) {
-        LocalDateTime time;
         try {
             // Unix timestamp is seconds past epoch
-            time = EpochTime.plusSeconds( unixTimeStamp );
+            return EPOCH_TIME.plus( unixTimeStamp, ChronoUnit.MILLIS );
         }
         catch( Exception err ) {
-            LOG .Error(err, "UnixTimeStamp: " + unixTimeStamp);
-            time = DateTime.Now;
+            LOG.error( "UnixTimeStamp: " + unixTimeStamp, err );
+            return LocalDateTime.now();
         }
-        return time;
     }
 
     /**
-     * Convert a Datetime to Unix Timestamp
+     * Convert a LocalDateTime to Unix Timestamp
      * @param time LocalDateTime object
      * @returns long unix timestamp
      */
     public static long dateTimeToUnixTimeStamp( LocalDateTime time ) {
-        double timestamp = 0;
         try {
-            timestamp = (time - new DateTime( 1970, 1, 1, 0, 0, 0, 0 ) ).TotalSeconds;
+            return time.atZone( ZoneId.systemDefault() ).toInstant().toEpochMilli();
         } 
         catch (Exception err) {
-            LOG.error( time.toString( "o" ), err );
+            LOG.error( time.toString(), err );
+            return 0L;
         }
-        return timestamp;
     }
 
     /**
      * Get the current time as a unix timestamp
      * @returns long value of the unix as UTC timestamp
      */
-    public static double timeStamp() {
-        return dateTimeToUnixTimeStamp( DateTime.UtcNow );
+    public static long timeStamp() {
+        return dateTimeToUnixTimeStamp( LocalDateTime.now() );
     }
     
     /**
@@ -191,32 +188,21 @@ public class Time {
      * @param dateToParse String date time to parse
      * @returns Date time
      */
-    public static DateTime ParseDate( String dateToParse) {
-        try
-        {
+    public static LocalDate parseDate( String dateToParse) {
+        try { 
             //First try the exact options:
-            DateTime date;
-            if( DateTime.TryParseExact(dateToParse, DateFormat.SixCharacter, CultureInfo.InvariantCulture, DateTimeStyles.None, out date)) {
-                return date;
-            }
-            if( DateTime.TryParseExact(dateToParse, DateFormat.EightCharacter, CultureInfo.InvariantCulture, DateTimeStyles.None, out date)) {
-                return date;
-            }
-            if( DateTime.TryParseExact(dateToParse.Substring(0, 19), DateFormat.JsonFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out date)) {
-                return date;
-            }
-            if( DateTime.TryParseExact(dateToParse, DateFormat.US, CultureInfo.InvariantCulture, DateTimeStyles.None, out date)) {
-                return date;
-            }
-            if( DateTime.TryParse(dateToParse, out date)) {
-                return date;
-            }
-        }
-        catch (Exception err) {
-            Log.Error(err);
-        }
+            return LocalDate.parse( dateToParse, DateFormat.SixCharacter );
+        } catch( DateTimeParseException e ) { }
         
-        return DateTime.Now;
+        try { return LocalDate.parse( dateToParse, DateFormat.EightCharacter ); } catch( DateTimeParseException e ) { }
+        
+        try { return LocalDate.parse( dateToParse.substring( 0, 19 ), DateFormat.JsonFormat ); } catch( DateTimeParseException e ) { }
+        
+        try { return LocalDate.parse( dateToParse, DateFormat.US ); } catch( DateTimeParseException e ) { }
+            
+        try { return LocalDate.parse( dateToParse ); } catch( DateTimeParseException e ) { }
+        
+        return LocalDate.now();
     }
 
 
@@ -224,14 +210,14 @@ public class Time {
      * Define an enumerable date range and return each date as a LocalDate object in the date range
      * @param from DateTime start date
      * @param thru DateTime end date
-     * @returns Stream date range
+     * @returns Iterable of date range
      */
-    public static Stream<LocalDate> eachDay( LocalDate from, LocalDate thru ) {
+    public static Iterable<LocalDate> eachDay( LocalDate from, LocalDate thru ) {
         final List<LocalDate> dates = new ArrayList<>();
-        for( day = from; !day.isAfter( thru ); day = day.plusDays( 1 ) )
+        for( LocalDate day = from; !day.isAfter( thru ); day = day.plusDays( 1 ) )
             dates.add( day );
         
-        return dates.stream();
+        return dates;
     }
 
 
@@ -240,16 +226,16 @@ public class Time {
      * @param securities Securities we have in portfolio
      * @param from Start date
      * @param thru End date
-     * @returns Stream date range
-    */
-    public static Stream<LocalDate> eachTradeableDay( Collection<Security> securities, LocalDate from, LocalDate thru ) {
+     * @returns Iterable of date range
+     */
+    public static Iterable<LocalDate> eachTradeableDay( Collection<Security> securities, LocalDate from, LocalDate thru ) {
         final List<LocalDate> dates = new ArrayList<>();
-        for( day = from; !day.isAfter( thru ); day = day.plusDays( 1 ) ) {
+        for( LocalDate day = from; !day.isAfter( thru ); day = day.plusDays( 1 ) ) {
             if( tradableDate( securities, day ) )
                 dates.add( day );
         }
         
-        return dates.stream();
+        return dates;
     }
 
 
@@ -258,10 +244,10 @@ public class Time {
      * @param security The security to get tradeable dates for
      * @param from Start date
      * @param thru End date
-     * @returns Stream date range
-    */
-    public static Stream<LocalDate> eachTradeableDay( Security security, LocalDate from, LocalDate thru ) {
-        return eachTradeableDay( security.Exchange.Hours, from, thru );
+     * @returns Iterable of date range
+     */
+    public static Iterable<LocalDate> eachTradeableDay( Security security, LocalDate from, LocalDate thru ) {
+        return eachTradeableDay( security.getExchange().getHours(), from, thru );
     }
 
 
@@ -272,12 +258,14 @@ public class Time {
      * @param thru End date
      * @returns Enumerable date range
     */
-    public static IEnumerable<DateTime> EachTradeableDay(SecurityExchangeHours exchange, DateTime from, DateTime thru) {
-        for (day = from.Date; day.Date <= thru.Date; day = day.AddDays(1)) {
-            if( exchange.IsDateOpen(day)) {
-                yield return day;
-            }
+    public static Iterable<LocalDate> eachTradeableDay( SecurityExchangeHours exchange, LocalDate from, LocalDate thru ) {
+        final List<LocalDate> dates = new ArrayList<>();
+        for( LocalDate day = from; !day.isAfter( thru ); day = day.plusDays( 1 ) ) {
+            if( exchange.isDateOpen( day ) )
+                dates.add( day );
         }
+        
+        return dates;
     }
 
     /**
@@ -292,7 +280,7 @@ public class Time {
      * @param timeZone The timezone to project the dates into (inclusive of the final day)
      * @returns 
      */
-    public static Iterable<LocalDate> eachTradeableDayInTimeZone( SecurityExchangeHours exchange, LocalDate from, LocalDate thru, ZoneId timeZone ) {
+    public static Iterable<LocalDateTime> eachTradeableDayInTimeZone( SecurityExchangeHours exchange, LocalDateTime from, LocalDateTime thru, ZoneId timeZone ) {
         return eachTradeableDayInTimeZone( exchange, from, thru, timeZone, true );
     }
     
@@ -300,7 +288,7 @@ public class Time {
      * Define an stream date range of tradeable dates but expressed in a different time zone.
      * 
      * This is mainly used to bridge the gap between exchange time zone and data time zone for file written to disk. The returned
-     * enumerable of dates is gauranteed to be the same size or longer than those generated via <see cref="EachTradeableDay(ICollection{Security},DateTime,DateTime)"/>
+     * enumerable of dates is guaranteed to be the same size or longer than those generated via <see cref="EachTradeableDay(ICollection{Security},DateTime,DateTime)"/>
      * 
      * @param exchange The exchange hours
      * @param from The start time in the exchange time zone
@@ -309,30 +297,30 @@ public class Time {
      * @param includeExtendedMarketHours True to include extended market hours trading in the search, false otherwise
      * @returns 
      */
-    public static Iterable<LocalDate> eachTradeableDayInTimeZone( SecurityExchangeHours exchange, LocalDate from, LocalDate thru, ZoneId timeZone, 
+    public static Iterable<LocalDateTime> eachTradeableDayInTimeZone( SecurityExchangeHours exchange, LocalDateTime from, LocalDateTime thru, ZoneId timeZone, 
             boolean includeExtendedMarketHours ) {
-        LocalDate currentExchangeTime = from;
+        LocalDateTime currentExchangeTime = from;
         thru = thru.plusDays( 1 ); // we want to include the full thru date
-        final List<LocalDate> dates = new ArrayList<>();
+        final List<LocalDateTime> dates = new ArrayList<>();
         
-        while (currentExchangeTime < thru) {
+        while( currentExchangeTime.isBefore( thru ) ) {
             // take steps of max size of one day in the data time zone
-            currentInTimeZone = Extensions.convertTo( currentExchangeTime, exchange.TimeZone, timeZone );
-            currentInTimeZoneEod = currentInTimeZone.Date.AddDays(1);
+            final LocalDateTime currentInTimeZone = Extensions.convertTo( currentExchangeTime, exchange.getTimeZone(), timeZone );
+            LocalDateTime currentInTimeZoneEod = currentInTimeZone.toLocalDate().plusDays( 1 ).atStartOfDay();
 
             // don't pass the end
-            if( Extensions.convertTo( currentInTimeZoneEod, timeZone, exchange.TimeZone ) > thru )
-                currentInTimeZoneEod = Extensions.convertTo( thru, exchange.TimeZone, timeZone );
+            if( Extensions.convertTo( currentInTimeZoneEod, timeZone, exchange.getTimeZone() ).isAfter( thru ) )
+                currentInTimeZoneEod = Extensions.convertTo( thru, exchange.getTimeZone(), timeZone );
 
             // perform market open checks in the exchange time zone
-            currentExchangeTimeEod = Extensions.convertTo( currentInTimeZoneEod, timeZone, exchange.TimeZone );
-            if( exchange.IsOpen(currentExchangeTime, currentExchangeTimeEod, includeExtendedMarketHours ) )
+            final LocalDateTime currentExchangeTimeEod = Extensions.convertTo( currentInTimeZoneEod, timeZone, exchange.getTimeZone() );
+            if( exchange.isOpen( currentExchangeTime, currentExchangeTimeEod, includeExtendedMarketHours ) )
                 dates.add( currentInTimeZone );
 
-            currentExchangeTime = Extensions.convertTo(currentInTimeZoneEod, timeZone, exchange.TimeZone);
+            currentExchangeTime = Extensions.convertTo( currentInTimeZoneEod, timeZone, exchange.getTimeZone() );
         }
         
-        return dates.stream();
+        return dates;
     } 
 
     /**
@@ -344,12 +332,12 @@ public class Time {
     public static boolean tradableDate( Iterable<Security> securities, LocalDate day ) {
         try {
             for( Security security : securities ) {
-                if( security.getExchange().IsOpenDuringBar( day, day.plusDays( 1 ), security.isExtendedMarketHours() ) ) 
+                if( security.getExchange().isOpenDuringBar( day.atStartOfDay(), day.plusDays( 1 ).atStartOfDay(), security.isExtendedMarketHours() ) ) 
                     return true;
             }
         }
         catch( Exception err ) {
-            LOG.error( err );
+            LOG.error( err.getMessage(), err );
         }
         
         return false;
@@ -358,50 +346,48 @@ public class Time {
 
     /**
      * Could of the number of tradeable dates within this period.
-    */
      * @param securities Securities we're trading
      * @param start Start of Date Loop
      * @param finish End of Date Loop
-    @returns Number of dates
-    public static int TradeableDates(ICollection<Security> securities, DateTime start, DateTime finish) {
-        count = 0;
-        Log.Trace( "Time.TradeableDates(): Security Count: " + securities.Count);
-        try 
-        {
-            foreach (day in EachDay(start, finish)) {
-                if( TradableDate(securities, day)) {
+     * @returns Number of dates
+     */
+    public static int tradeableDates( Collection<Security> securities, LocalDate start, LocalDate finish ) {
+        int count = 0;
+        LOG.trace( "Time.TradeableDates(): Security Count: {}", securities.size() );
+        try {
+            for( LocalDate day : eachDay( start, finish ) ) {
+                if( tradableDate( securities, day ) )
                     count++;
-                }
             }
         } 
-        catch (Exception err) {
-            Log.Error(err);
+        catch( Exception err ) {
+            LOG.error( err.getMessage(), err );
         }
+        
         return count;
     }
 
     /**
      * Determines the start time required to produce the requested number of bars and the given size
-    */
      * @param exchange The exchange used to test for market open hours
      * @param end The end time of the last bar over the requested period
      * @param barSize The length of each bar
      * @param barCount The number of bars requested
      * @param extendedMarketHours True to allow extended market hours bars, otherwise false for only normal market hours
-    @returns The start time that would provide the specified number of bars ending at the specified end time, rounded down by the requested bar size
-    public static DateTime GetStartTimeForTradeBars(SecurityExchangeHours exchange, DateTime end, Duration barSize, int barCount, boolean extendedMarketHours) {
-        if( barSize <= Duration.ZERO) {
-            throw new IllegalArgumentException( "barSize must be greater than Duration.ZERO", "barSize");
-        }
+     * @returns The start time that would provide the specified number of bars ending at the specified end time, rounded down by the requested bar size
+     */
+    public static LocalDateTime getStartTimeForTradeBars( SecurityExchangeHours exchange, LocalDateTime end, Duration barSize, int barCount, boolean extendedMarketHours ) {
+        if( barSize.compareTo( Duration.ZERO ) <= 0 )
+            throw new IllegalArgumentException( "barSize must be greater than Duration.ZERO" );
 
-        current = end.RoundDown(barSize);
+        LocalDateTime current = Extensions.roundDown( end, barSize);
         for (int i = 0; i < barCount;) {
-            previous = current;
-            current = current - barSize;
-            if( exchange.IsOpen(current, previous, extendedMarketHours)) {
+            LocalDateTime previous = current;
+            current = current.minus( barSize );
+            if( exchange.isOpen( current, previous, extendedMarketHours ) )
                 i++;
-            }
         }
+        
         return current;
     }
 }

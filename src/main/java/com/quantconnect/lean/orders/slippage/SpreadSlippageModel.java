@@ -18,7 +18,7 @@ package com.quantconnect.lean.orders.slippage;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-import com.quantconnect.lean.Extensions;
+import com.quantconnect.lean.Global;
 import com.quantconnect.lean.data.BaseData;
 import com.quantconnect.lean.data.market.Tick;
 import com.quantconnect.lean.orders.Order;
@@ -39,7 +39,7 @@ public class SpreadSlippageModel implements ISlippageModel {
         if( lastData instanceof Tick ) {
             final Tick lastTick = (Tick)lastData;
             // if we have tick data use the spread
-            return (lastTick.askPrice.subtract( lastTick.bidPrice )).divide( Extensions.TWO, RoundingMode.HALF_UP );
+            return (lastTick.askPrice.subtract( lastTick.bidPrice )).divide( Global.TWO, RoundingMode.HALF_UP );
         }
 
         return BigDecimal.ZERO;

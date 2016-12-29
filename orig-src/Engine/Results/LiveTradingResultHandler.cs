@@ -523,7 +523,7 @@ package com.quantconnect.lean.Lean.Engine.Results
          * Add a sample to the chart specified by the chartName, and seriesName.
         */
          * @param chartName String chart name to place the sample.
-         * @param chartType Type of chart we should create if it doesn't already exist.
+         * @param chartType Class of chart we should create if it doesn't already exist.
          * @param seriesName Series name for the chart.
          * @param seriesType Series type for the chart.
          * @param time Time for the sample

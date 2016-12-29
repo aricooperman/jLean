@@ -33,7 +33,7 @@ package com.quantconnect.lean.ToolBox
         /**
          * The instrument type
         */
-        public SecurityType Type { get; set; }
+        public SecurityType Class { get; set; }
 
         /**
          * The point value

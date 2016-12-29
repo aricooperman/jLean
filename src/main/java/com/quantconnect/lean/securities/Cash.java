@@ -18,61 +18,78 @@ package com.quantconnect.lean.securities;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-import com.google.common.collect.ImmutableMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.quantconnect.lean.Currencies;
+import com.quantconnect.lean.Global;
+import com.quantconnect.lean.Resolution;
 import com.quantconnect.lean.SecurityType;
 import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.data.BaseData;
+import com.quantconnect.lean.data.SubscriptionDataConfig;
 import com.quantconnect.lean.data.SubscriptionManager;
+import com.quantconnect.lean.data.market.Tick;
+import com.quantconnect.lean.data.market.TradeBar;
+import com.quantconnect.lean.securities.MarketHoursDatabase.DatabaseEntry;
+import com.quantconnect.lean.securities.cfd.Cfd;
+import com.quantconnect.lean.securities.forex.Forex;
+
 
 /**
  * Represents a holding of a currency in cash.
  */
 public class Cash {
-    private boolean _isBaseCurrency;
-    private boolean _invertRealTimePrice;
+    private final Logger log = LoggerFactory.getLogger( getClass() );
+    private final Object locker = new Object();
 
-    private Symbol SecuritySymbol;
-    private String Symbol;
-    private BigDecimal Amount;
+    private boolean isBaseCurrency;
+    private boolean invertRealTimePrice;
+    private Symbol securitySymbol;
+    private String symbol;
+    private BigDecimal amount;
 
-    protected BigDecimal ConversionRate;
+    protected BigDecimal conversionRate;
 
-    private final Object _locker = new Object();
 
     /**
      * Gets the symbol of the security required to provide conversion rates.
      */
     public Symbol getSecuritySymbol() { 
-        return SecuritySymbol;
+        return securitySymbol;
     }
     
     /**
      * Gets the symbol used to represent this cash
      */
     public String getSymbol() { 
-        return Symbol;
+        return symbol;
     }
     
     /**
      * Gets or sets the amount of cash held
      */
     public BigDecimal getAmount() { 
-        return Amount;
+        return amount;
     }
     
     /**
      * Gets the conversion rate into account currency
      */
     public BigDecimal getConversionRate() { 
-        return ConversionRate;
+        return conversionRate;
     }
 
     /**
      * Gets the value of this cash in the accout currency
      */
     public BigDecimal getValueInAccountCurrency() {
-        return Amount.multiply( ConversionRate );
+        return amount.multiply( conversionRate );
     }
 
     /**
@@ -85,9 +102,9 @@ public class Cash {
         if( symbol == null || symbol.length() != 3 )
             throw new IllegalArgumentException( "Cash symbols must be exactly 3 characters." );
 
-        this.Amount = amount;
-        this.ConversionRate = conversionRate;
-        this.Symbol = symbol.toUpperCase();
+        this.amount = amount;
+        this.conversionRate = conversionRate;
+        this.symbol = symbol.toUpperCase();
     }
 
     /**
@@ -95,14 +112,14 @@ public class Cash {
      * @param data The new data for this cash object
      */
     public void update( BaseData data ) {
-        if( _isBaseCurrency ) 
+        if( isBaseCurrency ) 
             return;
         
         BigDecimal rate = data.getValue();
-        if( _invertRealTimePrice )
+        if( invertRealTimePrice )
             rate = BigDecimal.ONE.divide( rate, RoundingMode.HALF_EVEN );
         
-        ConversionRate = rate;
+        conversionRate = rate;
     }
 
     /**
@@ -112,9 +129,9 @@ public class Cash {
      * @returns The amount of currency directly after the addition
      */
     public BigDecimal addAmount( BigDecimal amt ) {
-        synchronized( _locker ) {
-            Amount = Amount.add( amt );
-            return Amount;
+        synchronized( locker ) {
+            amount = amount.add( amt );
+            return amount;
         }
     }
 
@@ -123,8 +140,8 @@ public class Cash {
      * @param amount The amount to set the quantity to
      */
     public void setAmount( BigDecimal amount ) {
-        synchronized( _locker ) {
-            this.Amount = amount;
+        synchronized( locker ) {
+            this.amount = amount;
         }
     }
 
@@ -140,80 +157,90 @@ public class Cash {
      * @returns Returns the added currency security if needed, otherwise null
      */
     public Security ensureCurrencyDataFeed( SecurityManager securities, SubscriptionManager subscriptions, MarketHoursDatabase marketHoursDatabase, 
-            SymbolPropertiesDatabase symbolPropertiesDatabase, ImmutableMap<SecurityType,String> marketMap, CashBook cashBook ) {
-        if( Symbol == CashBook.AccountCurrency ) {
-            SecuritySymbol = QuantConnect.Symbol.Empty;
-            _isBaseCurrency = true;
-            ConversionRate = BigDecimal.ONE;
+            SymbolPropertiesDatabase symbolPropertiesDatabase, Map<SecurityType,String> marketMap, CashBook cashBook ) {
+        
+        if( symbol.equals( CashBook.ACCOUNT_CURRENCY ) ) {
+            this.securitySymbol = null;
+            this.isBaseCurrency = true;
+            this.conversionRate = BigDecimal.ONE;
             return null;
         }
 
-        if( subscriptions.Count == 0)
+        if( subscriptions.getCount() == 0 )
             throw new UnsupportedOperationException( "Unable to add cash when no subscriptions are present. Please add subscriptions in the Initialize() method." );
 
         // we require a subscription that converts this into the base currency
-        String normal = Symbol + CashBook.AccountCurrency;
-        String invert = CashBook.AccountCurrency + Symbol;
-        foreach (config in subscriptions.Subscriptions.Where(config -> config.SecurityType == SecurityType.Forex || config.SecurityType == SecurityType.Cfd)) {
-            if( config.Symbol.Value == normal) {
-                SecuritySymbol = config.Symbol;
+        final String normal = symbol + CashBook.ACCOUNT_CURRENCY;
+        final String invert = CashBook.ACCOUNT_CURRENCY + symbol;
+        for( SubscriptionDataConfig config : subscriptions.getSubscriptions().stream()
+                .filter( config -> config.securityType == SecurityType.Forex || config.securityType == SecurityType.Cfd )
+                .collect( Collectors.toList() ) ) {
+            
+            final Symbol symbol = config.getSymbol();
+            final String symbolValue = symbol.getValue();
+            if( symbolValue.equals( normal ) ) {
+                this.securitySymbol = symbol;
                 return null;
             }
-            if( config.Symbol.Value == invert) {
-                SecuritySymbol = config.Symbol;
-                _invertRealTimePrice = true;
+            
+            if( symbolValue.equals( invert ) ) {
+                this.securitySymbol = symbol;
+                this.invertRealTimePrice = true;
                 return null;
             }
         }
+        
         // if we've made it here we didn't find a subscription, so we'll need to add one
-        currencyPairs = Currencies.CurrencyPairs.Select( x -> {
+        final List<Symbol> currencyPairs = Currencies.CURRENCY_PAIRS.stream().map( x -> {
             // allow XAU or XAG to be used as quote currencies, but pairs including them are CFDs
-            securityType = Symbol.StartsWith( "X") ? SecurityType.Cfd : SecurityType.Forex;
-            market = marketMap[securityType];
-            return QuantConnect.Symbol.Create(x, securityType, market);
-        } );
-        minimumResolution = subscriptions.Subscriptions.Select(x -> x.Resolution).DefaultIfEmpty(Resolution.Minute).Min();
-        objectType = minimumResolution == Resolution.Tick ? typeof (Tick) : typeof (TradeBar);
-        for( symbol : currencyPairs ) {
-            if( symbol.Value == normal || symbol.Value == invert ) {
-                _invertRealTimePrice = symbol.Value == invert;
-                securityType = symbol.ID.SecurityType;
-                symbolProperties = symbolPropertiesDatabase.GetSymbolProperties(symbol.ID.Market, symbol.Value, securityType, Symbol);
-                Cash quoteCash;
-                if( !cashBook.TryGetValue(symbolProperties.QuoteCurrency, out quoteCash))
-                    throw new Exception( "Unable to resolve quote cash: " + symbolProperties.QuoteCurrency + ". This is required to add conversion feed: " + symbol.toString());
+            final SecurityType securityType = symbol.startsWith( "X" ) ? SecurityType.Cfd : SecurityType.Forex;
+            String market = marketMap.get( securityType );
+            return Symbol.create( x, securityType, market );
+        } ).collect( Collectors.toList() );
+        
+        final Resolution minimumResolution = subscriptions.getSubscriptions().stream().map( x -> x.resolution ).min( Comparator.naturalOrder() ).orElse( Resolution.Minute );
+        final Class<? extends BaseData> objectType = minimumResolution == Resolution.Tick ? Tick.class : TradeBar.class;
+        
+        for( Symbol symbol : currencyPairs ) {
+            if( symbol.getValue().equals( normal ) || symbol.getValue().equals( invert ) ) {
+                invertRealTimePrice = symbol.getValue().equals( invert );
+                final SecurityType securityType = symbol.getId().getSecurityType();
+                final SymbolProperties symbolProperties = symbolPropertiesDatabase.getSymbolProperties( symbol.getId().getMarket(), symbol.getValue(), securityType, symbol.toString() );
+                Cash quoteCash = cashBook.get( symbolProperties.getQuoteCurrency() );
+                if( quoteCash == null )
+                    throw new RuntimeException( "Unable to resolve quote cash: " + symbolProperties.getQuoteCurrency() + ". This is required to add conversion feed: " + symbol.toString() );
 
-                marketHoursDbEntry = marketHoursDatabase.GetEntry(symbol.ID.Market, symbol.Value, symbol.ID.SecurityType);
-                exchangeHours = marketHoursDbEntry.ExchangeHours;
+                final DatabaseEntry marketHoursDbEntry = marketHoursDatabase.getEntry( symbol.getId().getMarket(), symbol.getValue(), symbol.getId().getSecurityType() );
+                SecurityExchangeHours exchangeHours = marketHoursDbEntry.exchangeHours;
                 // set this as an internal feed so that the data doesn't get sent into the algorithm's OnData events
-                config = subscriptions.Add(objectType, symbol, minimumResolution, marketHoursDbEntry.DataTimeZone, exchangeHours.TimeZone, false, true, false, true);
-                SecuritySymbol = config.Symbol;
+                final SubscriptionDataConfig config = subscriptions.add( objectType, symbol, minimumResolution, marketHoursDbEntry.dataTimeZone, exchangeHours.getTimeZone(), false, true, false, true, true );
+                securitySymbol = config.getSymbol();
 
                 Security security;
-                if( securityType == SecurityType.Cfd)
-                    security = new Cfd.Cfd(exchangeHours, quoteCash, config, symbolProperties);
+                if( securityType == SecurityType.Cfd )
+                    security = new Cfd( exchangeHours, quoteCash, config, symbolProperties );
                 else
-                    security = new Forex.Forex(exchangeHours, quoteCash, config, symbolProperties);
-                securities.Add(config.Symbol, security);
-                Log.Trace( "Cash.EnsureCurrencyDataFeed(): Adding " + symbol.Value + " for cash " + Symbol + " currency feed");
+                    security = new Forex( exchangeHours, quoteCash, config, symbolProperties );
+                securities.put( config.getSymbol(), security );
+                log .trace( "Cash.EnsureCurrencyDataFeed(): Adding " + symbol.getValue() + " for cash " + symbol + " currency feed" );
                 return security;
             }
         }
 
         // if this still hasn't been set then it's an error condition
-        throw new IllegalArgumentException( String.format( "In order to maintain cash in %1$s you are required to add a subscription for Forex pair %1$s%2$s or %2$s%1$s", Symbol, CashBook.AccountCurrency));
+        throw new IllegalArgumentException( String.format( "In order to maintain cash in %1$s you are required to add a subscription for Forex pair %1$s%2$s or %2$s%1$s", symbol, CashBook.ACCOUNT_CURRENCY ) );
     }
     
     @Override
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + ((Amount == null) ? 0 : Amount.hashCode());
-        result = prime * result + ((ConversionRate == null) ? 0 : ConversionRate.hashCode());
-        result = prime * result + ((SecuritySymbol == null) ? 0 : SecuritySymbol.hashCode());
-        result = prime * result + ((Symbol == null) ? 0 : Symbol.hashCode());
-        result = prime * result + (_invertRealTimePrice ? 1231 : 1237);
-        result = prime * result + (_isBaseCurrency ? 1231 : 1237);
+        result = prime * result + ((amount == null) ? 0 : amount.hashCode());
+        result = prime * result + ((conversionRate == null) ? 0 : conversionRate.hashCode());
+        result = prime * result + ((securitySymbol == null) ? 0 : securitySymbol.hashCode());
+        result = prime * result + ((symbol == null) ? 0 : symbol.hashCode());
+        result = prime * result + (invertRealTimePrice ? 1231 : 1237);
+        result = prime * result + (isBaseCurrency ? 1231 : 1237);
         return result;
     }
 
@@ -222,25 +249,26 @@ public class Cash {
         if( this == obj ) return true;
         if( obj == null ) return false;
         if( !(obj instanceof Cash) ) return false;
-        Cash other = (Cash)obj;
-        if( Amount == null ) {
-            if( other.Amount != null ) return false;
+        
+        final Cash other = (Cash)obj;
+        if( amount == null ) {
+            if( other.amount != null ) return false;
         }
-        else if( !Amount.equals( other.Amount ) ) return false;
-        if( ConversionRate == null ) {
-            if( other.ConversionRate != null ) return false;
+        else if( amount.compareTo( other.amount ) != 0 ) return false;
+        if( conversionRate == null ) {
+            if( other.conversionRate != null ) return false;
         }
-        else if( !ConversionRate.equals( other.ConversionRate ) ) return false;
-        if( SecuritySymbol == null ) {
-            if( other.SecuritySymbol != null ) return false;
+        else if( conversionRate.compareTo( other.conversionRate ) != 0 ) return false;
+        if( securitySymbol == null ) {
+            if( other.securitySymbol != null ) return false;
         }
-        else if( !SecuritySymbol.equals( other.SecuritySymbol ) ) return false;
-        if( Symbol == null ) {
-            if( other.Symbol != null ) return false;
+        else if( !securitySymbol.equals( other.securitySymbol ) ) return false;
+        if( symbol == null ) {
+            if( other.symbol != null ) return false;
         }
-        else if( !Symbol.equals( other.Symbol ) ) return false;
-        if( _invertRealTimePrice != other._invertRealTimePrice ) return false;
-        if( _isBaseCurrency != other._isBaseCurrency ) return false;
+        else if( !symbol.equals( other.symbol ) ) return false;
+        if( invertRealTimePrice != other.invertRealTimePrice ) return false;
+        if( isBaseCurrency != other.isBaseCurrency ) return false;
         return true;
     }
 
@@ -250,14 +278,8 @@ public class Cash {
      */
     public String toString() {
         // round the conversion rate for output
-        BigDecimal rate = ConversionRate;
-        rate = rate < 1000 ? rate.setScale( 5, RoundingMode.HALF_UP ) : Math.round( rate, 2 );
-        return String.format( "%1$s: {1,15} @ ${2,10} = %4$s%5$s", 
-            Symbol, 
-            Amount.toString( "0.00" ), 
-            rate.toString( "0.00####"), 
-            Currencies.CurrencySymbols[Symbol], 
-            Math.Round( ValueInAccountCurrency, 2 )
-            );
+        BigDecimal rate = conversionRate;
+        rate = rate.compareTo( Global.ONE_THOUSAND ) < 0 ? rate.setScale( 5, RoundingMode.HALF_UP ) : rate.setScale( 2, RoundingMode.HALF_UP );
+        return String.format( "%1$s: %2$15.2f @ %3$10.6f = %4$s %5$s", symbol, amount, rate, Currencies.CURRENCY_SYMBOLS.get( symbol ), getValueInAccountCurrency().setScale( 2 ) );
     }
 }

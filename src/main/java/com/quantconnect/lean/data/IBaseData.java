@@ -22,7 +22,10 @@ import java.time.LocalDateTime;
 import com.quantconnect.lean.MarketDataType;
 import com.quantconnect.lean.Symbol;
 
-/// Base Data Class: Type, Timestamp, Key -- Base Features.
+
+/**
+ * Base Data Class: Type, Timestamp, Key -- Base Features.
+ */
 public interface IBaseData extends Cloneable {
 
     MarketDataType getDataType();
@@ -54,10 +57,9 @@ public interface IBaseData extends Cloneable {
      * Return the URL String source of the file. This will be converted to a stream 
      * @param config Configuration object
      * @param date Date of this source file
-     * @param isLiveMode Type of datafeed we're reqesting - backtest or live
-     * @return
+     * @param isLiveMode Class of datafeed we're reqesting - backtest or live
+     * @return String URL of source file.
      */
-    /// <returns>String URL of source file.</returns>
     SubscriptionDataSource getSource( SubscriptionDataConfig config, LocalDate date, boolean isLiveMode );
 
     /**

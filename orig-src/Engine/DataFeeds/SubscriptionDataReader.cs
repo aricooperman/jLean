@@ -54,7 +54,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds
 
         // Location of the datafeed - the type of this data.
 
-        // Create a single instance to invoke all Type Methods:
+        // Create a single instance to invoke all Class Methods:
         private final BaseData _dataFactory;
 
         //Start finish times of the backtest:

@@ -166,7 +166,7 @@ package com.quantconnect.lean.Data.UniverseSelection
         /**
          * Gets the data type required for the specified combination of resolution and tick type
         */
-        private static Type GetDataType(Resolution resolution, TickType tickType) {
+        private static Class GetDataType(Resolution resolution, TickType tickType) {
             if( resolution == Resolution.Tick) return typeof(Tick);
             if( tickType == TickType.Quote) return typeof(QuoteBar);
             return typeof(TradeBar);

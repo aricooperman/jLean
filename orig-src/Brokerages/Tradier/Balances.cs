@@ -41,7 +41,7 @@ package com.quantconnect.lean.Brokerages.Tradier
         @JsonProperty( "account_number")]
         public long AccountNumber;
 
-        ///Account Type (margin, cash, pdt)
+        ///Account Class (margin, cash, pdt)
         @JsonProperty( "account_type")]
         public TradierAccountType Type;
 
@@ -177,7 +177,7 @@ package com.quantconnect.lean.Brokerages.Tradier
     }
 
     /**
-     * Account Type Day Trader Settings:
+     * Account Class Day Trader Settings:
     */
     public class TradierAccountTypeDayTrader : TradierAccountTypeSettings
     {
@@ -190,7 +190,7 @@ package com.quantconnect.lean.Brokerages.Tradier
     }
 
     /**
-     * Account Type Margin Settings:
+     * Account Class Margin Settings:
     */
     public class TradierAccountTypeMargin : TradierAccountTypeSettings
     {
@@ -203,7 +203,7 @@ package com.quantconnect.lean.Brokerages.Tradier
     }
 
     /**
-     * Account Type Margin Settings:
+     * Account Class Margin Settings:
     */
     public class TradierAccountTypeCash
     {

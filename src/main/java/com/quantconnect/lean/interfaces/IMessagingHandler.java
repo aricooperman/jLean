@@ -16,79 +16,46 @@
 
 package com.quantconnect.lean.interfaces;
 
-//using System.ComponentModel.Composition;
-//using QuantConnect.Notifications;
-//using QuantConnect.Packets;
+import javax.management.Notification;
 
+import com.quantconnect.lean.packets.AlgorithmNodePacket;
+import com.quantconnect.lean.packets.Packet;
+
+
+/**
  * Messaging System Plugin Interface. 
  * Provides a common messaging pattern between desktop and cloud implementations of QuantConnect.
+ */
 public interface IMessagingHandler {
 
+    /**
      * Gets or sets whether this messaging handler has any current subscribers.
      * When set to false, messages won't be sent.
+     */
     boolean hasSubscribers();
     
     void setSubscribers( boolean send );
 
-     * Initialize the Messaging System Plugin. 
+    /**
+     * Initialize the Messaging System Plugin.
+     */ 
     void initialize();
 
+    /**
      * Set the user communication channel
-     * @param job">
+     * @param job
+     */
     void setAuthentication( AlgorithmNodePacket job );
 
+    /**
      * Send any message with a base type of Packet.
      * @param packet Packet of data to send via the messaging system plugin
+     */
     void send( Packet packet );
 
+    /**
      * Send any notification with a base type of Notification.
      * @param notification The notification to be sent.
+     */
     void sendNotification( Notification notification );
 }
-
-/*
-
-using System.ComponentModel.Composition;
-using QuantConnect.Notifications;
-using QuantConnect.Packets;
-
-package com.quantconnect.lean.Interfaces
-{
-    /**
-     * Messaging System Plugin Interface. 
-     * Provides a common messaging pattern between desktop and cloud implementations of QuantConnect.
-    */
-    [InheritedExport(typeof(IMessagingHandler))]
-    public interface IMessagingHandler
-    {
-        /**
-         * Gets or sets whether this messaging handler has any current subscribers.
-         * When set to false, messages won't be sent.
-        */
-        boolean HasSubscribers { get; set; }
-
-        /**
-         * Initialize the Messaging System Plugin. 
-        */
-        void Initialize();
-
-        /**
-         * Set the user communication channel
-        */
-         * @param job">
-        void SetAuthentication(AlgorithmNodePacket job);
-
-        /**
-         * Send any message with a base type of Packet.
-        */
-         * @param packet Packet of data to send via the messaging system plugin
-        void Send(Packet packet);
-
-        /**
-         * Send any notification with a base type of Notification.
-        */
-         * @param notification The notification to be sent.
-        void SendNotification(Notification notification);
-    }
-}
-*/

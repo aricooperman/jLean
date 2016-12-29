@@ -30,7 +30,7 @@ package com.quantconnect.lean.Logging
          * @param args Arguments to format.
         public static void Error(this ILogHandler logHandler, String text, params object[] args) {
             if( logHandler == null ) {
-                throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");
+                throw new NullPointerException( "logHandler", "Log Handler cannot be null");
             }
 
             logHandler.Error( String.format(text, args));
@@ -44,7 +44,7 @@ package com.quantconnect.lean.Logging
          * @param args Arguments to format.
         public static void Debug(this ILogHandler logHandler, String text, params object[] args) {
             if( logHandler == null ) {
-                throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");
+                throw new NullPointerException( "logHandler", "Log Handler cannot be null");
             }
 
             logHandler.Debug( String.format(text, args));
@@ -58,7 +58,7 @@ package com.quantconnect.lean.Logging
          * @param args Arguments to format.
         public static void Trace(this ILogHandler logHandler, String text, params object[] args) {
             if( logHandler == null ) {
-                throw new ArgumentNullException( "logHandler", "Log Handler cannot be null");
+                throw new NullPointerException( "logHandler", "Log Handler cannot be null");
             }
 
             logHandler.Trace( String.format(text, args));

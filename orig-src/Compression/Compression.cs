@@ -317,7 +317,7 @@ package com.quantconnect.lean
                     using (archive = new ZipArchive(File.OpenRead(zip))) {
                         foreach (file in archive.Entries) {
                             // skip directories
-                            if( file.Name == "") continue;
+                            if( file.Name.equals( "") continue;
                             filepath = Path.Combine(directory, file.FullName);
                             if( OS.IsLinux) filepath = filepath.Replace(@"\", "/");
                             outputFile = new FileInfo(filepath);
@@ -641,7 +641,7 @@ package com.quantconnect.lean
         @returns 
         public static IEnumerable<KeyValuePair<String, byte[]>> UnTar( String source) {
             //This is a tar.gz file.
-            gzip = (source.Substring(Math.Max(0, source.Length - 6)) == "tar.gz");
+            gzip = (source.Substring(Math.Max(0, source.Length - 6)).equals( "tar.gz");
 
             using (file = File.OpenRead(source)) {
                 tarIn = new TarInputStream(file);

@@ -41,7 +41,7 @@ public class SubscriptionDataConfig {
     private final SecurityIdentifier sid;
 
     /**
-     * Type of data
+     * Class of data
      */
     public final Class<?> type;
 
@@ -146,7 +146,7 @@ public class SubscriptionDataConfig {
 
     /**
      * Constructor for Data Subscriptions
-     * @param objectType Type of the data objects.
+     * @param objectType Class of the data objects.
      * @param symbol Symbol of the asset we're requesting
      * @param resolution Resolution of the asset we're requesting
      * @param dataTimeZone The time zone the raw data is time stamped in
@@ -170,7 +170,7 @@ public class SubscriptionDataConfig {
     
     /**
      * Constructor for Data Subscriptions
-     * @param objectType Type of the data objects.
+     * @param objectType Class of the data objects.
      * @param symbol Symbol of the asset we're requesting
      * @param resolution Resolution of the asset we're requesting
      * @param dataTimeZone The time zone the raw data is time stamped in
@@ -262,7 +262,7 @@ public class SubscriptionDataConfig {
     /**
      * Copy constructor with @Overrides
      * @param config The config to copy, then @Overrides are applied and all option
-     * @param objectType Type of the data objects.
+     * @param objectType Class of the data objects.
      * @param symbol Symbol of the asset we're requesting
      * @param resolution Resolution of the asset we're requesting
      * @param dataTimeZone The time zone the raw data is time stamped in

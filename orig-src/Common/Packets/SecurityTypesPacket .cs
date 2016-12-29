@@ -25,7 +25,7 @@ package com.quantconnect.lean.Packets
     public class SecurityTypesPacket : Packet
     {
         /**
-         * List of Security Type the user has requested (Equity, Forex, Futures etc).
+         * List of Security Class the user has requested (Equity, Forex, Futures etc).
         */
         @JsonProperty( "aMarkets")]
         public List<SecurityType> Types = new List<SecurityType>();

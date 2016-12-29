@@ -291,7 +291,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
                 }
                 // if quote currency is in USD don't bother making the request
                 String currency = local.Symbol.Value.Substring(3);
-                if( currency == "USD") {
+                if( currency.equals( "USD") {
                     local.ConversionRate = 1m;
                     return null;
                 }
@@ -579,7 +579,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
         */
          * Synchronous, blocking
         private BigDecimal GetUsdConversion( String currency) {
-            if( currency == "USD") {
+            if( currency.equals( "USD") {
                 return 1m;
             }
 
@@ -1140,7 +1140,7 @@ package com.quantconnect.lean.Brokerages.InteractiveBrokers
             return new Holding
             {
                 Symbol = MapSymbol(e.Contract),
-                Type = ConvertSecurityType(e.Contract.SecurityType),
+                Class = ConvertSecurityType(e.Contract.SecurityType),
                 Quantity = e.Position,
                 AveragePrice = e.AverageCost,
                 MarketPrice = e.MarketPrice,

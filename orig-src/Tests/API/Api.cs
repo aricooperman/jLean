@@ -135,7 +135,7 @@ package com.quantconnect.lean.Tests.API
                 Assert.IsTrue(backtestRead.Success);
                 Assert.IsTrue(backtestRead.Progress == 1);
                 Assert.IsTrue(backtestRead.Name == backtestName);
-                Assert.IsTrue(backtestRead.Result.Statistics["Total Trades"] == "1");
+                Assert.IsTrue(backtestRead.Result.Statistics["Total Trades"].equals( "1");
                 Console.WriteLine( "API Test: %1$s Backtest completed successfully", source.Language);
 
                 // Verify we have the backtest in our project

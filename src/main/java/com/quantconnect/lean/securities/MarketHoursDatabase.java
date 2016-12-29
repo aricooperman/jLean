@@ -2,7 +2,7 @@
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * 
@@ -68,7 +68,7 @@ public class MarketHoursDatabase {
      * Initializes a new instance of the <see cref="MarketHoursDatabase"/> class
      * @param exchangeHours The full listing of exchange hours by key
      */
-    public MarketHoursDatabase( Map<SecurityDatabaseKey,DatabaseEntry> exchangeHours ) {
+    public MarketHoursDatabase( final Map<SecurityDatabaseKey,DatabaseEntry> exchangeHours ) {
         _entries = ImmutableMap.copyOf( exchangeHours );
     }
 
@@ -84,7 +84,7 @@ public class MarketHoursDatabase {
      * This value will also be used as the time zone for SecurityType.Base with no market hours database entry.
      * If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.
      */
-    public SecurityExchangeHours getExchangeHours( SubscriptionDataConfig configuration ) {
+    public SecurityExchangeHours getExchangeHours( final SubscriptionDataConfig configuration ) {
         return getExchangeHours( configuration, null );
     }
 
@@ -96,9 +96,9 @@ public class MarketHoursDatabase {
      * This value will also be used as the time zone for SecurityType.Base with no market hours database entry.
      * If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.
      */
-    public SecurityExchangeHours getExchangeHours( SubscriptionDataConfig configuration, ZoneId overrideTimeZone ) {
+    public SecurityExchangeHours getExchangeHours( final SubscriptionDataConfig configuration, ZoneId overrideTimeZone ) {
         // we don't expect base security types to be in the market-hours-database, so set @OverrideTimeZone
-        if( configuration.securityType == SecurityType.Base && overrideTimeZone == null ) 
+        if( configuration.securityType == SecurityType.Base && overrideTimeZone == null )
             overrideTimeZone = configuration.exchangeTimeZone;
         return getExchangeHours( configuration.market, configuration.getSymbol(), configuration.securityType, overrideTimeZone );
     }
@@ -113,7 +113,7 @@ public class MarketHoursDatabase {
      * If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.
      * @returns The exchange hours for the specified security
      */
-    public SecurityExchangeHours getExchangeHours( String market, Symbol symbol, SecurityType securityType ) {
+    public SecurityExchangeHours getExchangeHours( final String market, final Symbol symbol, final SecurityType securityType ) {
         return getExchangeHours( market, symbol, securityType, null );
     }
     
@@ -128,8 +128,8 @@ public class MarketHoursDatabase {
      * If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.
      * @returns The exchange hours for the specified security
      */
-    public SecurityExchangeHours getExchangeHours( String market, Symbol symbol, SecurityType securityType, ZoneId overrideTimeZone ) {
-        String stringSymbol = symbol == null ? null : symbol.getValue();
+    public SecurityExchangeHours getExchangeHours( final String market, final Symbol symbol, final SecurityType securityType, final ZoneId overrideTimeZone ) {
+        final String stringSymbol = symbol == null ? null : symbol.getValue();
         return getEntry( market, stringSymbol, securityType, overrideTimeZone ).exchangeHours;
     }
 
@@ -141,7 +141,7 @@ public class MarketHoursDatabase {
      * @param securityType The security type of the symbol
      * @returns The raw data time zone for the specified security
      */
-    public ZoneId getDataTimeZone( String market, Symbol symbol, SecurityType securityType ) {
+    public ZoneId getDataTimeZone( final String market, final Symbol symbol, final SecurityType securityType ) {
         final String stringSymbol = symbol == null ? null : symbol.getValue();
         return getEntry( market, stringSymbol, securityType ).dataTimeZone;
     }
@@ -166,11 +166,11 @@ public class MarketHoursDatabase {
      * Reads the specified file as a market hours database instance
      * @param Files. The markeeof the <see cref="MarketHoursDatabase"/> class
      */
-    public static MarketHoursDatabase fromFile( Path path ) {
+    public static MarketHoursDatabase fromFile( final Path path ) {
         try {
             return Global.OBJECT_MAPPER.readValue( Files.newInputStream( path ), MarketHoursDatabase.class );
         }
-        catch( IOException e ) {
+        catch( final IOException e ) {
             throw new RuntimeException( e );
         }
     }
@@ -185,7 +185,7 @@ public class MarketHoursDatabase {
      * If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.
      * @returns The entry matching the specified market/symbol/security-type
      */
-    public DatabaseEntry getEntry( String market, String symbol, SecurityType securityType ) {
+    public DatabaseEntry getEntry( final String market, final String symbol, final SecurityType securityType ) {
         return getEntry( market, symbol, securityType, null );
     }
     
@@ -199,7 +199,7 @@ public class MarketHoursDatabase {
      * If null is specified, no @Override will be performed. If null is specified, and it's SecurityType.Base, then Utc will be used.
      * @returns The entry matching the specified market/symbol/security-type
      */
-    public DatabaseEntry getEntry( String market, String symbol, SecurityType securityType, ZoneId overrideTimeZone ) {
+    public DatabaseEntry getEntry( final String market, final String symbol, final SecurityType securityType, ZoneId overrideTimeZone ) {
         final SecurityDatabaseKey key = new SecurityDatabaseKey( market, symbol, securityType );
         
         DatabaseEntry entry = _entries.get( key );
@@ -216,7 +216,7 @@ public class MarketHoursDatabase {
                     return new DatabaseEntry( overrideTimeZone, SecurityExchangeHours.alwaysOpen( overrideTimeZone ) );
                 }
 
-                log.error( String.format( "MarketHoursDatabase.getExchangeHours(): Unable to locate exchange hours for %1$s. Available keys: %2$s", 
+                log.error( String.format( "MarketHoursDatabase.getExchangeHours(): Unable to locate exchange hours for %1$s. Available keys: %2$s",
                         key, _entries.keySet().stream().map( SecurityDatabaseKey::toString ).collect( Collectors.joining( ", " ) ) ) );
 
                 // there was nothing that really matched exactly... what should we do here?
@@ -234,8 +234,8 @@ public class MarketHoursDatabase {
 
     /**
      * Represents a single entry in the <see cref="MarketHoursDatabase"/>
-     */ 
-    public class DatabaseEntry {
+     */
+    public static class DatabaseEntry {
         /**
          * Gets the raw data time zone for this entry
          */
@@ -251,7 +251,7 @@ public class MarketHoursDatabase {
          * @param dataTimeZone The raw data time zone
          * @param exchangeHours The security exchange hours for this entry
          */
-        public DatabaseEntry( ZoneId dataTimeZone, SecurityExchangeHours exchangeHours ) {
+        public DatabaseEntry( final ZoneId dataTimeZone, final SecurityExchangeHours exchangeHours ) {
             this.dataTimeZone = dataTimeZone;
             this.exchangeHours = exchangeHours;
         }
@@ -259,7 +259,7 @@ public class MarketHoursDatabase {
 
     static class AlwaysOpenMarketHoursDatabase extends MarketHoursDatabase {
         @Override
-        public DatabaseEntry getEntry( String market, String symbol, SecurityType securityType, ZoneId overrideTimeZone ) {
+        public DatabaseEntry getEntry( final String market, final String symbol, final SecurityType securityType, final ZoneId overrideTimeZone ) {
             final ZoneId tz = overrideTimeZone != null ? overrideTimeZone : Global.UTC_ZONE_TZ_ID;
             return new DatabaseEntry(tz, SecurityExchangeHours.alwaysOpen( tz ) );
         }

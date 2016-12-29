@@ -5,9 +5,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMap;
-import com.quantconnect.lean.Global.SecurityType;
 
-/// Type of tradable security / underlying asset
+/// Class of tradable security / underlying asset
 public enum SecurityType {
     /// Base class for all security types:
     Base,
@@ -34,7 +33,7 @@ public enum SecurityType {
             .putAll( Arrays.stream( SecurityType.values() ).collect( Collectors.toMap( st -> st.ordinal(), Function.identity() ) ) )
             .build();
 
-    public static SecurityType fromOrdinal( int ord ) {
+    public static SecurityType fromOrdinal( final int ord ) {
         return ordinalToTypeMap.get( ord );
     }
 
@@ -42,9 +41,9 @@ public enum SecurityType {
         try {
             return SecurityType.valueOf( string );
         }
-        catch( Exception e ) {
+        catch( final Exception e ) {
             string = string.toLowerCase();
-            for( SecurityType st : SecurityType.values() ) {
+            for( final SecurityType st : SecurityType.values() ) {
                 if( st.name().toLowerCase().equals( string ) )
                     return st;
             }

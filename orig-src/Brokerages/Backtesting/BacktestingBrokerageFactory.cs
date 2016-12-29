@@ -28,7 +28,7 @@ package com.quantconnect.lean.Brokerages.Backtesting
         /**
          * Gets the type of brokerage produced by this factory
         */
-        public Type BrokerageType
+        public Class BrokerageType
         {
             get { return typeof(BacktestingBrokerage); }
         }

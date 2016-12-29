@@ -142,10 +142,10 @@ package com.quantconnect.lean.Util
         @returns The index of the item if found, otherwise the bitwise complement where the value should be per MSDN specs
         public static int BinarySearch<TItem, TSearch>(this IList<TItem> list, TSearch value, Func<TSearch, TItem,Integer> comparer) {
             if( list == null ) {
-                throw new ArgumentNullException( "list");
+                throw new NullPointerException( "list");
             }
             if( comparer == null ) {
-                throw new ArgumentNullException( "comparer");
+                throw new NullPointerException( "comparer");
             }
 
             lower = 0;

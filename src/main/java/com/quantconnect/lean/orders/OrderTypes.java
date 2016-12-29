@@ -17,13 +17,13 @@ package com.quantconnect.lean.orders;
 
 public class OrderTypes {
     
-    /// Type of the order: market, limit or stop
+    /// Class of the order: market, limit or stop
     public enum OrderType {
         /// Market Order Type
         Market,
         /// Limit Order Type
         Limit,
-        /// Stop Market Order Type - Fill at market price when break target price
+        /// Stop Market Order Class - Fill at market price when break target price
         StopMarket,
         /// Stop limit order type - trigger fill once pass the stop price; but limit fill to limit price.
         StopLimit,

@@ -2,7 +2,7 @@
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * 
@@ -19,6 +19,7 @@ package com.quantconnect.lean.packets;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.quantconnect.lean.Language;
 import com.quantconnect.lean.ServerType;
 import com.quantconnect.lean.UserPlan;
@@ -32,26 +33,26 @@ public class AlgorithmNodePacket extends Packet {
      * Default constructor for the algorithm node:
      * @param type
      */
-    public AlgorithmNodePacket( PacketType type ) {
+    public AlgorithmNodePacket( final PacketType type ) {
         super( type );
     }
 
     /**
      * User Id placing request
      */
-//    @JsonProperty( "iUserID")]
+    @JsonProperty( "iUserID" )
     public int userId = 0;
 
     /**
      * Project Id of the request
      */
-//    @JsonProperty( "iProjectID")]
+    @JsonProperty( "iProjectID" )
     public int projectId = 0;
 
     /**
      * Algorithm Id - BacktestId or DeployId - Common Id property between packets.
      */
-//    @JsonProperty( "sAlgorithmID")]
+    @JsonProperty( "sAlgorithmID" )
     public String algorithmId;
     
     
@@ -134,6 +135,6 @@ public class AlgorithmNodePacket extends Packet {
      * The parameter values used to set algorithm parameters
      */
 //    @JsonProperty( "aParameters")]
-    public Map<String,String> parameters = new HashMap<String,String>();
+    public Map<String,String> parameters = new HashMap<>();
 
-} // End Node Packet:
+}

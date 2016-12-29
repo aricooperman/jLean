@@ -35,7 +35,7 @@ package com.quantconnect.lean.Lean.Engine.DataFeeds.Transport
          * or to open the first zip entry found regardless of name
         public LocalFileSubscriptionStreamReader( String source, String entryName = null ) {
             // unzip if necessary
-            _streamReader = source.GetExtension() == ".zip"
+            _streamReader = source.GetExtension().equals( ".zip"
                 ? Compression.Unzip(source, entryName, out _zipFile)
                 : new StreamReader(source);
         }

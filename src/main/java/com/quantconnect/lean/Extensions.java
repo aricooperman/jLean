@@ -15,6 +15,7 @@
 
 package com.quantconnect.lean;
 
+import java.lang.reflect.TypeVariable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Duration;
@@ -22,7 +23,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 //using System.Collections.Concurrent;
 //using System.IO;
@@ -348,24 +351,19 @@ public class Extensions {
 //
 //    /**
 //     * Extension method to round a timeSpan to nearest timespan period.
-//    */
 //     * @param time TimeSpan To Round
 //     * @param roundingInterval Rounding Unit
 //     * @param roundingType Rounding method
-//    @returns Rounded timespan
-//    public static Duration Round(this Duration time, Duration roundingInterval, MidpointRounding roundingType) 
-//    {
-//        if( roundingInterval == Duration.ZERO)
-//        {
+//     * @returns Rounded timespan
+//     */
+//    public static Duration round( Duration time, Duration roundingInterval/*, MidpointRounding roundingType*/ ) {
+//        if( roundingInterval.isZero() ) {
 //            // divide by zero exception
 //            return time;
 //        }
 //
 //        return new TimeSpan(
-//            Convert.ToInt64(Math.Round(
-//                time.Ticks / (decimal)roundingInterval.Ticks,
-//                roundingType
-//            )) * roundingInterval.Ticks
+//            Convert.ToInt64( Math.round( time.Ticks / (decimal)roundingInterval.Ticks, roundingType ) ) * roundingInterval.Ticks
 //        );
 //    }
 //
@@ -380,23 +378,22 @@ public class Extensions {
 //    {
 //        return Round(time, roundingInterval, MidpointRounding.ToEven);
 //    }
-//
-//    /**
-//     * Extension method to round a datetime down by a timespan interval.
-//    */
-//     * @param dateTime Base DateTime object we're rounding down.
-//     * @param interval Timespan interval to round to.
-//    @returns Rounded datetime
-//    public static DateTime RoundDown(this DateTime dateTime, Duration interval)
-//    {
-//        if( interval == Duration.ZERO)
-//        {
-//            // divide by zero exception
-//            return dateTime;
-//        }
-//        return dateTime.AddTicks(-(dateTime.Ticks % interval.Ticks));
-//    }
-//
+
+    /**
+     * Extension method to round a datetime down by a timespan interval.
+     * @param dateTime Base DateTime object we're rounding down.
+     * @param interval Timespan interval to round to.
+     * @returns Rounded datetime
+     */
+    public static LocalDateTime roundDown( LocalDateTime dateTime, Duration interval ) {
+        if( interval.isZero() ) {
+            // divide by zero exception
+            return dateTime;
+        }
+        
+        return dateTime.plusNanos( -(dateTime.getNano() % interval.getNano() ) );
+    }
+
 //    /**
 //     * Extension method to round a datetime down by a timespan interval until it's
 //     * within the specified exchange's open hours. This works by first rounding down
@@ -521,7 +518,7 @@ public class Extensions {
 //     * @param type The type to test for a match
 //     * @param typeName The name of the type to match
 //    @returns True if the specified type matches the type name, false otherwise
-//    public static boolean MatchesTypeName(this Type type, String typeName)
+//    public static boolean MatchesTypeName(this Class type, String typeName)
 //    {
 //        if( type.AssemblyQualifiedName == typeName)
 //        {
@@ -545,11 +542,11 @@ public class Extensions {
 //     * @param type The type to be checked as a subclass of <paramref name="possibleSuperType"/>
 //     * @param possibleSuperType The possible superclass of <paramref name="type"/>
 //    @returns True if <paramref name="type"/> is a subclass of the generic type definition <paramref name="possibleSuperType"/>
-//    public static boolean IsSubclassOfGeneric(this Type type, Type possibleSuperType)
+//    public static boolean IsSubclassOfGeneric(this Class type, Class possibleSuperType)
 //    {
 //        while (type != null && type != typeof(object))
 //        {
-//            Type cur;
+//            Class cur;
 //            if( type.IsGenericType && possibleSuperType.IsGenericTypeDefinition)
 //            {
 //                cur = type.GetGenericTypeDefinition();
@@ -566,25 +563,24 @@ public class Extensions {
 //        }
 //        return false;
 //    }
-//
-//    /**
-//     * Gets a type's name with the generic parameters filled in the way they would look when
-//     * defined in code, such as converting Dictionary&lt;`1,`2&gt; to Dictionary&lt;string,int&gt;
-//    */
-//     * @param type The type who's name we seek
-//    @returns A better type name
-//    public static String GetBetterTypeName(this Type type)
-//    {
-//        String name = type.Name;
-//        if( type.IsGenericType)
-//        {
-//            genericArguments = type.GetGenericArguments();
-//            toBeReplaced = "`" + (genericArguments.Length);
-//            name = name.Replace(toBeReplaced, "<" + String.join( ", ", genericArguments.Select(x -> x.GetBetterTypeName())) + ">");
-//        }
-//        return name;
-//    }
-//
+
+    /**
+     * Gets a type's name with the generic parameters filled in the way they would look when
+     * defined in code, such as converting Dictionary&lt;`1,`2&gt; to Dictionary&lt;string,int&gt;
+     * @param type The type who's name we seek
+     * @returns A better type name
+     */
+    public static String getBetterTypeName( Class<?> type ) {
+        final String name = type.getName();
+        final TypeVariable<?>[] genericArguments = type.getTypeParameters();
+        if( genericArguments.length > 0 ) {
+            final String toBeReplaced = "`" + (genericArguments.length);
+            return name.replace( toBeReplaced, "<" + Arrays.stream( genericArguments ).map( TypeVariable::getTypeName ).collect( Collectors.joining( ", ") ) + ">" );
+        }
+        
+        return name;
+    }
+
 //    /**
 //     * Converts the Resolution instance into a Duration instance
 //    */
@@ -627,7 +623,7 @@ public class Extensions {
 //     * @param value The String value to be converted
 //     * @param type The output type
 //    @returns The converted value
-//    public static object ConvertTo(this String value, Type type)
+//    public static object ConvertTo(this String value, Class type)
 //    {
 //        if( type.IsEnum)
 //        {

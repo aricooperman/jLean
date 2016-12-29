@@ -19,7 +19,7 @@ using QuantConnect.Data.Market;
 package com.quantconnect.lean.Data.Consolidators
 {
     /**
-     * Type capable of consolidating trade bars from any base data instance
+     * Class capable of consolidating trade bars from any base data instance
     */
     public class BaseDataConsolidator : TradeBarConsolidatorBase<BaseData>
     {

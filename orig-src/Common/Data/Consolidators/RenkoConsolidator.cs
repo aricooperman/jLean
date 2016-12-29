@@ -88,7 +88,7 @@ package com.quantconnect.lean.Data.Consolidators
         /**
          * Gets <see cref="RenkoBar"/> which is the type emitted in the <see cref="IDataConsolidator.DataConsolidated"/> event.
         */
-        public @Override Type OutputType
+        public @Override Class OutputType
         {
             get { return typeof(RenkoBar); }
         }
@@ -180,7 +180,7 @@ package com.quantconnect.lean.Data.Consolidators
          * Updates this consolidator with the specified data.
         */
          * 
-         * Type safe shim method.
+         * Class safe shim method.
          * 
          * @param data The new data for the consolidator
         public void Update(TInput data) {

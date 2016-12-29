@@ -62,7 +62,7 @@ package com.quantconnect.lean.Scheduling
          * @param eventSchedule The event schedule implementation to be used. This is the IRealTimeHandler
         internal void SetEventSchedule(IEventSchedule eventSchedule) {
             if( eventSchedule == null ) {
-                throw new ArgumentNullException( "eventSchedule");
+                throw new NullPointerException( "eventSchedule");
             }
 
             synchronized(_eventScheduleLock) {

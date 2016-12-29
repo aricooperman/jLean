@@ -63,7 +63,7 @@ package com.quantconnect.lean.Data.Consolidators
         /**
          * Gets the type consumed by this consolidator
         */
-        public Type InputType
+        public Class InputType
         {
             get { return First.InputType; }
         }
@@ -71,7 +71,7 @@ package com.quantconnect.lean.Data.Consolidators
         /**
          * Gets the type produced by this consolidator
         */
-        public Type OutputType
+        public Class OutputType
         {
             get { return Second.OutputType; }
         }

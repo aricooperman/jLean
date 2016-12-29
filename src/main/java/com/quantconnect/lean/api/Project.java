@@ -18,83 +18,40 @@ package com.quantconnect.lean.api;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
  * Response from reading a project by id.
+ */
 public class Project extends RestResponse {
 
+    /**
      * Project id
-//    @JsonProperty( "projectId")]
+     */
+    @JsonProperty( "projectId" )
     public int projectId;
 
+    /**
      * Name of the project
-//    @JsonProperty( "name")]
+     */
+    @JsonProperty( "name" )
     public String name;
 
+    /**
      * Date the project was created
-//    @JsonProperty( "created")]
+     */
+    @JsonProperty( "created" )
     public LocalDateTime created;
 
+    /**
      * Modified date for the project
-//    @JsonProperty( "modified")]
+     */
+    @JsonProperty( "modified" )
     public LocalDateTime modified;
 
+    /**
      * Files for the project
-//    @JsonProperty( "files")]
+     */
+    @JsonProperty( "files" )
     public List<ProjectFile> files;
 }
-
-/*
-using System;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-
-package com.quantconnect.lean.Api
-{
-    /**
-     * Response from reading a project by id.
-    */
-    public class Project : RestResponse
-    {
-        /**
-         * Project id
-        */
-        @JsonProperty( "projectId")]
-        public int ProjectId;
-
-        /**
-         * Name of the project
-        */
-        @JsonProperty( "name")]
-        public String Name;
-
-        /**
-         * Date the project was created
-        */
-        @JsonProperty( "created")]
-        public DateTime Created;
-
-        /**
-         * Modified date for the project
-        */
-        @JsonProperty( "modified")]
-        public DateTime Modified;
-
-        /**
-         * Files for the project
-        */
-        @JsonProperty( "files")]
-        public List<ProjectFile> Files;
-    }
-
-    /**
-     * Project list response
-    */
-    public class ProjectList : RestResponse
-    {
-        /**
-         * List of projects for the authenticated user
-        */
-        @JsonProperty( "projects")]
-        public List<Project> Projects;
-    }
-}
-*/

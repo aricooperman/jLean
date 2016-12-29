@@ -30,7 +30,7 @@ package com.quantconnect.lean.Benchmarks
          * @param benchmark The functional benchmark implementation
         public FuncBenchmark(Func<DateTime, decimal> benchmark) {
             if( benchmark == null ) {
-                throw new ArgumentNullException( "benchmark");
+                throw new NullPointerException( "benchmark");
             }
             _benchmark = benchmark;
         }

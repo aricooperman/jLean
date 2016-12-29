@@ -281,7 +281,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
 
         private static Stream GetResponseStream(WebResponse response) {
             stream = response.GetResponseStream();
-            if( response.Headers["Content-Encoding"] == "gzip") {	// if we received a gzipped response, handle that
+            if( response.Headers["Content-Encoding"].equals( "gzip") {	// if we received a gzipped response, handle that
                 stream = new GZipStream(stream, CompressionMode.Decompress);
             }
             return stream;

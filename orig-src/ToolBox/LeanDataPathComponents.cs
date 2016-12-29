@@ -19,7 +19,7 @@ using System.IO;
 package com.quantconnect.lean.ToolBox
 {
     /**
-     * Type representing the various pieces of information emebedded into a lean data file path
+     * Class representing the various pieces of information emebedded into a lean data file path
     */
     public class LeanDataPathComponents
     {

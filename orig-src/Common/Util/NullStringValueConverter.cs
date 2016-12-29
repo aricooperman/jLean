@@ -39,14 +39,14 @@ package com.quantconnect.lean.Util
          * Reads the JSON representation of the object.
         */
          * @param reader The <see cref="T:Newtonsoft.Json.JsonReader"/> to read from.
-         * @param objectType Type of the object.
+         * @param objectType Class of the object.
          * @param existingValue The existing value of object being read.
          * @param serializer The calling serializer.
         @returns 
          * The object value.
          * 
-        public @Override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer) {
-            if( reader.TokenType == JsonToken.Null || (reader.TokenType == JsonToken.String && ( String)reader.Value == "null")) {
+        public @Override object ReadJson(JsonReader reader, Class objectType, object existingValue, JsonSerializer serializer) {
+            if( reader.TokenType == JsonToken.Null || (reader.TokenType == JsonToken.String && ( String)reader.Value.equals( "null")) {
                 return new T();
             }
             return serializer.Deserialize<T>(reader);
@@ -55,7 +55,7 @@ package com.quantconnect.lean.Util
         /**
          * Determines whether this instance can convert the specified object type.
         */
-         * @param objectType Type of the object.
+         * @param objectType Class of the object.
         @returns 
          * <c>true</c> if this instance can convert the specified object type; otherwise, <c>false</c>.
          * 

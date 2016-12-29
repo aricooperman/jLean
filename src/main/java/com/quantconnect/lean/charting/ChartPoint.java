@@ -1,36 +1,51 @@
 package com.quantconnect.lean.charting;
 
 import java.math.BigDecimal;
-import java.sql.Time;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import com.quantconnect.lean.Extensions;
+import com.quantconnect.lean.Global;
+import com.quantconnect.lean.Time;
+
 /**
- *  Single Chart Point Value Type for QCAlgorithm.Plot();
+ *  Single Chart Point Value Class for QCAlgorithm.Plot();
  */
 //    [JsonObject]
 public class ChartPoint {
+    /**
      * Time of this chart point: lower case for javascript encoding simplicty
+     */
     public long x;
 
+    /**
      * Value of this chart point:  lower case for javascript encoding simplicty
+     */
     public BigDecimal y;
 
-    ///Constructor for datetime-value arguements:
+    /**
+     * Constructor for datetime-value arguements:
+     * @param time
+     * @param value
+     */
     public ChartPoint( ZonedDateTime time, BigDecimal value ) {
-        x = time.toInstant().atZone( ZoneId.of( "UTC" ) ).toInstant().toEpochMilli();
-        y = value.SmartRounding();
+        x = time.withZoneSameInstant( Global.UTC_ZONE_TZ_ID ).toInstant().toEpochMilli();
+        y = Extensions.smartRounding( value );
     }
 
-    ///Cloner Constructor:
+    /**
+     * Cloner Constructor:
+     * @param point
+     */
     public ChartPoint( ChartPoint point ) {
         x = point.x;
-        y = point.y.SmartRounding();
+        y = Extensions.smartRounding( point.y );
     }
 
+    /**
      * Provides a readable String representation of this instance.
-    @Overrides
+     */
+    @Override
     public String toString() {
-        return Time.UnixTimeStampToDateTime(x).toString( "o") + " - " + y;
+        return Time.unixTimeStampToDateTime( x ).toString() + " - " + y;
     }
 }

@@ -53,7 +53,7 @@ package com.quantconnect.lean.Logging
         */
          * @param message Message for log
          * @param time Time of the message
-         * @param type Type of the log entry
+         * @param type Class of the log entry
         public LogEntry( String message, DateTime time, LogType type = LogType.Trace) {
             Time = time.ToUniversalTime();
             Message = message;

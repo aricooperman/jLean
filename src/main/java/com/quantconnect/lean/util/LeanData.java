@@ -39,8 +39,9 @@ import com.quantconnect.lean.data.market.QuoteBar;
 import com.quantconnect.lean.data.market.Tick;
 import com.quantconnect.lean.data.market.TradeBar;
 
-
+/**
  * Provides methods for generating lean data file content
+ */
 public class LeanData {
     
     private static final BigDecimal SCALE = BigDecimal.valueOf( 10000 );
@@ -48,7 +49,9 @@ public class LeanData {
     
     private LeanData() { }
 
+    /**
      * Converts the specified base data instance into a lean data file csv line
+     */
     public static String generateLine( IBaseData data, SecurityType securityType, Resolution resolution ) {
         final String milliseconds = Long.toString( data.getTime().toLocalTime().getLong( ChronoField.MILLI_OF_DAY ) );
         final String longTime = data.getTime().format( DateFormat.TwelveCharacter );
@@ -147,17 +150,23 @@ public class LeanData {
         throw new UnsupportedOperationException( "LeanData.generateLine has not yet been implemented for security type: " + securityType + " at resolution: " + resolution );
     }
 
+    /**
      * Generates the full zip file path rooted in the <paramref name="dataDirectory"/>
+     */
     public static Path generateZipFilePath( String dataDirectory, Symbol symbol, LocalDate date, Resolution resolution, TickType tickType ) {
         return Paths.get( dataDirectory ).resolve( generateRelativeZipFilePath( symbol, date, resolution, tickType ) );
     }
 
+    /**
      * Generates the full zip file path rooted in the <paramref name="dataDirectory"/>
+     */
     public static Path generateZipFilePath( String dataDirectory, String symbol, SecurityType securityType, String market, LocalDate date, Resolution resolution ) {
         return Paths.get( dataDirectory ).resolve( generateRelativeZipFilePath( symbol, securityType, market, date, resolution ) );
     }
 
+    /**
      * Generates the relative zip directory for the specified symbol/resolution
+     */
     public static Path generateRelativeZipFileDirectory( Symbol symbol, Resolution resolution ) {
         final boolean isHourOrDaily = resolution == Resolution.Hour || resolution == Resolution.Daily;
         SecurityType st = symbol.getId().getSecurityType();
@@ -183,12 +192,16 @@ public class LeanData {
         }
     }
 
+    /**
      * Generates the relative zip file path rooted in the /Data directory
+     */
     public static Path generateRelativeZipFilePath( Symbol symbol, LocalDate date, Resolution resolution, TickType tickType ) {
         return generateRelativeZipFileDirectory( symbol, resolution ).resolve( generateZipFileName( symbol, date, resolution, tickType ) );
     }
 
+    /**
      * Generates the relative zip file path rooted in the /Data directory
+     */
     public static Path generateRelativeZipFilePath( String symbol, SecurityType securityType, String market, LocalDate date, Resolution resolution ) {
         Path directory = Paths.get( securityType.toString().toLowerCase(), market.toLowerCase(), resolution.toString().toLowerCase() );
         if( resolution != Resolution.Daily && resolution != Resolution.Hour )
@@ -197,7 +210,9 @@ public class LeanData {
         return directory.resolve( generateZipFileName( symbol, securityType, date, resolution ) );
     }
 
+    /**
      * generate's the zip entry name to hold the specified data.
+     */
     public static String generateZipEntryName( Symbol symbol, LocalDate date, Resolution resolution, TickType tickType ) {
         final String formattedDate = date.format( DateFormat.EightCharacter );
         final boolean isHourOrDaily = resolution == Resolution.Hour || resolution == Resolution.Daily;
@@ -243,7 +258,9 @@ public class LeanData {
         }
     }
 
+    /**
      * Creates the entry name for a QC zip data file
+     */
     public static String generateZipEntryName( String symbol, SecurityType securityType, LocalDate date, Resolution resolution ) {
         return generateZipEntryName( symbol, securityType, date, resolution, TickType.Trade );
     }
@@ -264,7 +281,9 @@ public class LeanData {
         return String.format( "%s_%s_%s_%s.csv", date.format( DateFormat.EightCharacter ), symbol, resolution.toString().toLowerCase(), dataType.toString().toLowerCase() );
     }
 
+    /**
      * Generates the zip file name for the specified date of data.
+     */
     public static String generateZipFileName( Symbol symbol, LocalDate date, Resolution resolution, TickType tickType ) {
         final String tickTypeString = tickType.toString().toLowerCase();
         final String formattedDate = date.format( DateFormat.EightCharacter );
@@ -300,7 +319,9 @@ public class LeanData {
         }
     }
 
+    /**
      * Creates the zip file name for a QC zip data file
+     */
     public static String generateZipFileName( String symbol, SecurityType securityType, LocalDate date, Resolution resolution ) {
         return generateZipFileName( symbol, securityType, date, resolution, null );
     }
@@ -317,9 +338,11 @@ public class LeanData {
         return zipFileName + suffix;
     }
 
+    /**
      * Gets the tick type most commonly associated with the specified security type
      * @param securityType The security type
-    @returns The most common tick type for the specified security type
+     * @returns The most common tick type for the specified security type
+     */
     public static TickType getCommonTickType(SecurityType securityType ) {
         if( securityType == SecurityType.Forex || securityType == SecurityType.Cfd )
             return TickType.Quote;
@@ -327,11 +350,13 @@ public class LeanData {
         return TickType.Trade;
     }
 
+    /**
      * Creates a symbol from the specified zip entry name
      * @param securityType The security type of the output symbol
      * @param resolution The resolution of the data source producing the zip entry name
      * @param zipEntryName The zip entry name to be parsed
-    @returns A new symbol representing the zip entry name
+     * @returns A new symbol representing the zip entry name
+     */
     public static Symbol readSymbolFromZipEntry( SecurityType securityType, Resolution resolution, String zipEntryName ) {
         boolean isHourlyOrDaily = resolution == Resolution.Hour || resolution == Resolution.Daily;
         switch( securityType ) {
@@ -357,12 +382,16 @@ public class LeanData {
         }
     }
 
+    /**
      * scale and convert the resulting number to deci-cents int.
+     */
     private static long scale( BigDecimal value) {
         return value.multiply( SCALE ).longValue();
     }
 
+    /**
      * Create a csv line from the specified arguments
+     */
     private static String toCsv( Object... args ) {
 //        // use culture neutral formatting for decimals
 //        for( int i = 0; i < args.length; i++ ) {
@@ -374,7 +403,9 @@ public class LeanData {
         return Arrays.stream( args ).map( Object::toString ).collect( Collectors.joining( "," ) );
     }
 
+    /**
      * Creates a csv line for the bar, if null fills in empty strings
+     */
     private static String toCsv( IBar bar ) {
         if( bar == null )
             return toCsv( null, null, null, null );

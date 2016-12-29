@@ -17,6 +17,8 @@ package com.quantconnect.lean.data;
 
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -27,28 +29,40 @@ import com.quantconnect.lean.data.consolidators.IDataConsolidator;
 import com.quantconnect.lean.data.market.Tick;
 import com.quantconnect.lean.data.market.TradeBar;
 
-
+/**
  * Enumerable Subscription Management Class
+ */
 public class SubscriptionManager {
     
     private final TimeKeeper timeKeeper;
 
+    /**
      * Generic Market Data Requested and Object[] Arguments to Get it:
+     */
     private final List<SubscriptionDataConfig> subscriptions;
 
+    /**
      * Initialise the Generic Data Manager Class
      * @param timeKeeper The algoritm's time keeper
+     */
     public SubscriptionManager( TimeKeeper timeKeeper ) {
         this.timeKeeper = timeKeeper;
-        //Generic Type Data Holder:
+        //Generic Class Data Holder:
         this.subscriptions = new ArrayList<SubscriptionDataConfig>();
     }
-
+    
+    /**
      * Get the count of assets:
+     */
     public int getCount() {
         return subscriptions.size(); 
     }
 
+    public Collection<SubscriptionDataConfig> getSubscriptions() {
+        return Collections.unmodifiableCollection( subscriptions );
+    }
+
+    /**
      * Add Market Data Required (Overloaded method for backwards compatibility).
      * @param symbol Symbol of the asset we're like
      * @param resolution Resolution of Asset Required
@@ -58,7 +72,8 @@ public class SubscriptionManager {
      * @param isCustomData True if this is custom user supplied data, false for normal QC data
      * @param fillDataForward when there is no data pass the last tradebar forward
      * @param extendedMarketHours Request premarket data as well when true 
-    @returns The newly created <see cref="SubscriptionDataConfig"/>
+     * @returns The newly created <see cref="SubscriptionDataConfig"/>
+     */
     public SubscriptionDataConfig add( Symbol symbol, Resolution resolution, ZoneId timeZone, ZoneId exchangeTimeZone ) {
         return add( symbol, resolution, timeZone, exchangeTimeZone, false, true, false );
     }
@@ -74,7 +89,8 @@ public class SubscriptionManager {
         return add( dataType, symbol, resolution, timeZone, exchangeTimeZone, isCustomData, fillDataForward, extendedMarketHours, false, true );
     }
 
-     * Add Market Data Required - generic data typing support as long as Type implements BaseData.
+    /**
+     * Add Market Data Required - generic data typing support as long as Class implements BaseData.
      * @param dataType Set the type of the data we're subscribing to.
      * @param symbol Symbol of the asset we're like
      * @param resolution Resolution of Asset Required
@@ -86,7 +102,8 @@ public class SubscriptionManager {
      * @param extendedMarketHours Request premarket data as well when true 
      * @param isInternalFeed Set to true to prevent data from this subscription from being sent into the algorithm's OnData events
      * @param isFilteredSubscription True if this subscription should have filters applied to it (market hours/user filters from security), false otherwise
-    @returns The newly created <see cref="SubscriptionDataConfig"/>
+     * @returns The newly created <see cref="SubscriptionDataConfig"/>
+     */
     public SubscriptionDataConfig add( Class<? extends BaseData> dataType, Symbol symbol, Resolution resolution, ZoneId dataTimeZone, ZoneId exchangeTimeZone, 
             boolean isCustomData ) {
         return add( dataType, symbol, resolution, dataTimeZone, exchangeTimeZone, isCustomData, true, false, false, true );
@@ -113,9 +130,11 @@ public class SubscriptionManager {
         return newConfig;
     }
 
+    /**
      * Add a consolidator for the symbol
      * @param symbol Symbol of the asset to consolidate
      * @param consolidator The consolidator
+     */
     public void addConsolidator( Symbol symbol, IDataConsolidator consolidator ) {
         //Find the right subscription and add the consolidator to it
         for( int i = 0; i < subscriptions.size(); i++ ) {

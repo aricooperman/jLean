@@ -87,7 +87,7 @@ package com.quantconnect.lean.Tests.Common.Data
             Quandl quandlAapl = new Quandl { Symbol = Symbols.AAPL, Time = DateTime.Now };
             Slice slice = new Slice(DateTime.Now, new[] { quandlSpy, quandlAapl });
 
-            DataMap<Quandl> quandlData = slice.Get<Quandl>();
+            DataDictionary<Quandl> quandlData = slice.Get<Quandl>();
             Assert.AreEqual(2, quandlData.Count);
         }
 
@@ -97,7 +97,7 @@ package com.quantconnect.lean.Tests.Common.Data
             Tick TickAapl = new Tick { Symbol = Symbols.AAPL, Time = DateTime.Now };
             Slice slice = new Slice(DateTime.Now, new[] { TickSpy, TickAapl });
 
-            DataMap<Tick> TickData = slice.Get<Tick>();
+            DataDictionary<Tick> TickData = slice.Get<Tick>();
             Assert.AreEqual(2, TickData.Count);
         }
 
@@ -108,7 +108,7 @@ package com.quantconnect.lean.Tests.Common.Data
             TradeBar TradeBarAapl = new TradeBar { Symbol = Symbols.AAPL, Time = DateTime.Now };
             Slice slice = new Slice(DateTime.Now, new[] { TradeBarSpy, TradeBarAapl });
 
-            DataMap<TradeBar> TradeBarData = slice.Get<TradeBar>();
+            DataDictionary<TradeBar> TradeBarData = slice.Get<TradeBar>();
             Assert.AreEqual(2, TradeBarData.Count);
         }
 

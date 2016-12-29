@@ -33,7 +33,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         private final List<Order> _orders = new List<Order>(); 
         private InteractiveBrokersBrokerage _interactiveBrokersBrokerage;
         private static final int buyQuantity = 100;
-        private static final SecurityType Type = SecurityType.Forex;
+        private static final SecurityType Class = SecurityType.Forex;
 
         [SetUp]
         public void InitializeBrokerage() {
@@ -413,11 +413,11 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         public void GetsCashBalanceAfterConnect() {
             ib = _interactiveBrokersBrokerage;
             cashBalance = ib.GetCashBalance();
-            Assert.IsTrue(cashBalance.Any(x -> x.Symbol == "USD"));
+            Assert.IsTrue(cashBalance.Any(x -> x.Symbol.equals( "USD"));
             foreach (cash in cashBalance) {
                 Console.WriteLine(cash);
-                if( cash.Symbol == "USD") {
-                    Assert.AreNotEqual(0m, cashBalance.Single(x -> x.Symbol == "USD"));
+                if( cash.Symbol.equals( "USD") {
+                    Assert.AreNotEqual(0m, cashBalance.Single(x -> x.Symbol.equals( "USD"));
                 }
             }
         }
@@ -462,7 +462,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
         public void GetsCashBalanceAfterTrade() {
             ib = _interactiveBrokersBrokerage;
 
-            BigDecimal balance = ib.GetCashBalance().Single(x -> x.Symbol == "USD").Amount;
+            BigDecimal balance = ib.GetCashBalance().Single(x -> x.Symbol.equals( "USD").Amount;
 
             // wait for our order to fill
             manualResetEvent = new ManualResetEvent(false);
@@ -474,7 +474,7 @@ package com.quantconnect.lean.Tests.Brokerages.InteractiveBrokers
 
             manualResetEvent.WaitOneAssertFail(1500, "Didn't receive account changed event");
 
-            BigDecimal balanceAfterTrade = ib.GetCashBalance().Single(x -> x.Symbol == "USD").Amount;
+            BigDecimal balanceAfterTrade = ib.GetCashBalance().Single(x -> x.Symbol.equals( "USD").Amount;
 
             Assert.AreNotEqual(balance, balanceAfterTrade);
         }

@@ -42,7 +42,7 @@ package com.quantconnect.lean.ToolBox.OandaDownloader
             {
                 // Load settings from command line
                 tickers = args[0].split(',');
-                allResolutions = args[1].toLowerCase() == "all";
+                allResolutions = args[1].toLowerCase().equals( "all";
                 resolution = allResolutions ? Resolution.Second : (Resolution)Enum.Parse(typeof(Resolution), args[1]);
                 startDate = DateTime.ParseExact(args[2], "yyyyMMdd", CultureInfo.InvariantCulture);
                 endDate = DateTime.ParseExact(args[3], "yyyyMMdd", CultureInfo.InvariantCulture);

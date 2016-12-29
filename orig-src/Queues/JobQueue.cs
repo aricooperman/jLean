@@ -78,7 +78,7 @@ package com.quantconnect.lean.Queues
             if( _liveMode) {
                 liveJob = new LiveNodePacket
                 {
-                    Type = PacketType.LiveNode,
+                    Class = PacketType.LiveNode,
                     Algorithm = File.ReadAllBytes(AlgorithmLocation),
                     Brokerage = Config.Get( "live-mode-brokerage", PaperBrokerageTypeName),
                     Channel = AccessToken,
@@ -106,7 +106,7 @@ package com.quantconnect.lean.Queues
 
             //Default run a backtesting job.
             backtestJob = new BacktestNodePacket(0, 0, "", new byte[] {}, 10000, "local") {
-                Type = PacketType.BacktestNode,
+                Class = PacketType.BacktestNode,
                 Algorithm = File.ReadAllBytes(AlgorithmLocation),
                 Channel = AccessToken,
                 UserId = UserId,

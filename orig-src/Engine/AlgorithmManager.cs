@@ -161,7 +161,7 @@ package com.quantconnect.lean.Lean.Engine
 
             // Algorithm 3.0 data accessors
             hasOnDataSlice = algorithm.GetType().GetMethods()
-                .Where(x -> x.Name == "OnData" && x.GetParameters().Length == 1 && x.GetParameters()[0].ParameterType == typeof (Slice))
+                .Where(x -> x.Name.equals( "OnData" && x.GetParameters().Length == 1 && x.GetParameters()[0].ParameterType == typeof (Slice))
                 .FirstOrDefault(x -> x.DeclaringType == algorithm.GetType()) != null;
 
             //Go through the subscription types and create invokers to trigger the event handlers for each custom type:

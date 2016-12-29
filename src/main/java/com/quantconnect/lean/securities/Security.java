@@ -29,8 +29,11 @@ import com.quantconnect.lean.Symbol;
 import com.quantconnect.lean.data.BaseData;
 import com.quantconnect.lean.data.SubscriptionDataConfig;
 import com.quantconnect.lean.orders.fees.IFeeModel;
+import com.quantconnect.lean.orders.fees.InteractiveBrokersFeeModel;
 import com.quantconnect.lean.orders.fills.IFillModel;
+import com.quantconnect.lean.orders.fills.ImmediateFillModel;
 import com.quantconnect.lean.orders.slippage.ISlippageModel;
+import com.quantconnect.lean.orders.slippage.SpreadSlippageModel;
 import com.quantconnect.lean.securities.interfaces.ISecurityDataFilter;
 import com.quantconnect.lean.securities.interfaces.ISecurityTransactionModel;
 
@@ -148,7 +151,7 @@ public class Security {
     }
 
     /**
-     *  Type of the security.
+     *  Class of the security.
      *  QuantConnect currently only supports Equities and Forex
      */
     public SecurityType getType() {
@@ -342,7 +345,7 @@ public class Security {
     /**
      * Construct a new security vehicle based on the user options.
     */
-    public Security(SecurityExchangeHours exchangeHours, SubscriptionDataConfig config, Cash quoteCurrency, SymbolProperties symbolProperties ) {
+    public Security( SecurityExchangeHours exchangeHours, SubscriptionDataConfig config, Cash quoteCurrency, SymbolProperties symbolProperties ) {
         this( config,
                 quoteCurrency,
                 symbolProperties,
@@ -353,7 +356,7 @@ public class Security {
                 new InteractiveBrokersFeeModel(),
                 new SpreadSlippageModel(),
                 new ImmediateSettlementModel(),
-                Securities.VolatilityModel.Null,
+                IVolatilityModel.NULL,
                 new SecurityMarginModel( BigDecimal.ONE ),
                 new SecurityDataFilter() );
     }
@@ -361,18 +364,18 @@ public class Security {
     /**
      * Construct a new security vehicle based on the user options.
      */
-    public Security(Symbol symbol, SecurityExchangeHours exchangeHours, Cash quoteCurrency, SymbolProperties symbolProperties ) {
+    public Security( Symbol symbol, SecurityExchangeHours exchangeHours, Cash quoteCurrency, SymbolProperties symbolProperties ) {
         this( symbol,
                 quoteCurrency,
                 symbolProperties,
-                new SecurityExchange(exchangeHours),
+                new SecurityExchange( exchangeHours ),
                 new SecurityCache(),
                 new SecurityPortfolioModel(),
                 new ImmediateFillModel(),
                 new InteractiveBrokersFeeModel(),
                 new SpreadSlippageModel(),
                 new ImmediateSettlementModel(),
-                Securities.VolatilityModel.Null,
+                IVolatilityModel.NULL,
                 new SecurityMarginModel( BigDecimal.ONE ),
                 new SecurityDataFilter() );
     }

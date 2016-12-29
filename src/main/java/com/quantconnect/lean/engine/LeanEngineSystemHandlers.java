@@ -2,7 +2,7 @@
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * 
@@ -17,29 +17,29 @@
 package com.quantconnect.lean.engine;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 import com.quantconnect.lean.configuration.Config;
 import com.quantconnect.lean.interfaces.IApi;
+import com.quantconnect.lean.interfaces.IJobQueueHandler;
+import com.quantconnect.lean.interfaces.IMessagingHandler;
+import com.quantconnect.lean.util.Composer;
 
-//using System;
 //using System.ComponentModel.Composition;
-//using QuantConnect.Configuration;
-//using QuantConnect.Interfaces;
-//using QuantConnect.Util;
 
 /**
  * Provides a container for the system level handlers
  */
 public class LeanEngineSystemHandlers implements Closeable {
-    private /*final*/ IApi _api;
-    private /*final*/ IMessagingHandler _notify;
-    private /*final*/ IJobQueueHandler _jobQueue;
+    private final IApi api;
+    private final IMessagingHandler notify;
+    private final IJobQueueHandler jobQueue;
 
     /**
      * Gets the api instance used for communicating algorithm limits, status, and storing of log data
      */
     public IApi getApi() {
-        return _api;
+        return api;
     }
 
     /**
@@ -47,14 +47,14 @@ public class LeanEngineSystemHandlers implements Closeable {
      * debug/log messages, email/sms/web messages, as well as results and run time errors
      */
     public IMessagingHandler getNotify() {
-        return _notify;
+        return notify;
     }
 
     /**
      * Gets the job queue responsible for acquiring and acknowledging an algorithm job
      */
     public IJobQueueHandler getJobQueue() {
-        return _jobQueue;
+        return jobQueue;
     }
 
     /**
@@ -63,19 +63,19 @@ public class LeanEngineSystemHandlers implements Closeable {
      * @param api The api instance used for communicating limits and status
      * @param notify The messaging handler user for passing messages from the algorithm to listeners
      */
-    public LeanEngineSystemHandlers(IJobQueueHandler jobQueue, IApi api, IMessagingHandler notify) {
-        if( jobQueue == null ) {
-            throw new ArgumentNullException( "jobQueue");
-        }
-        if( api == null ) {
-            throw new ArgumentNullException( "api");
-        }
-        if( notify == null ) {
-            throw new ArgumentNullException( "notify");
-        }
-        _api = api;
-        _jobQueue = jobQueue;
-        _notify = notify;
+    public LeanEngineSystemHandlers( final IJobQueueHandler jobQueue, final IApi api, final IMessagingHandler notify ) {
+        if( jobQueue == null )
+            throw new NullPointerException( "jobQueue");
+        
+        if( api == null )
+            throw new NullPointerException( "api");
+        
+        if( notify == null )
+            throw new NullPointerException( "notify");
+        
+        this.api = api;
+        this.jobQueue = jobQueue;
+        this.notify = notify;
     }
 
     /**
@@ -84,27 +84,31 @@ public class LeanEngineSystemHandlers implements Closeable {
      * @returns A fully hydrates <see cref="LeanEngineSystemHandlers"/> instance.
      * @throws CompositionException Throws a CompositionException during failure to load
     */
-    public static LeanEngineSystemHandlers FromConfiguration(Composer composer) {
+    public static LeanEngineSystemHandlers fromConfiguration( final Composer composer ) {
         return new LeanEngineSystemHandlers(
-            composer.GetExportedValueByTypeName<IJobQueueHandler>(Config.Get( "job-queue-handler")),
-            composer.GetExportedValueByTypeName<IApi>(Config.Get( "api-handler")),
-            composer.GetExportedValueByTypeName<IMessagingHandler>(Config.Get( "messaging-handler"))
-            );
+                composer.<IJobQueueHandler>getExportedValueByTypeName( Config.get( "job-queue-handler" ) ),
+                composer.<IApi>getExportedValueByTypeName( Config.get( "api-handler" ) ),
+                composer.<IMessagingHandler>getExportedValueByTypeName( Config.get( "messaging-handler") )
+                );
     }
 
     /**
      * Initializes the Api, Messaging, and JobQueue components
      */
     public void initialize() {
-        Api.Initialize(Config.GetInt( "job-user-id", 0), Config.Get( "api-access-token", ""));
-        Notify.Initialize();
-        JobQueue.Initialize();
+        api.initialize( Config.getInt( "job-user-id", 0 ), Config.get( "api-access-token", "" ) );
+        notify.initialize();
+        jobQueue.initialize();
     }
 
     /**
      * Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
      */
+    @Override
     public void close() {
-        Api.Dispose();
+        try {
+            api.close();
+        }
+        catch( final IOException e ) { }
     }
 }

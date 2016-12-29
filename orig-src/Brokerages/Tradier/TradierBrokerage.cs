@@ -250,7 +250,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                         if( raw.Content.Contains( "order already in finalized state: filled")) {
                             if( request.Method == Method.DELETE) {
                                 String orderId = "[unknown]";
-                                parameter = request.Parameters.FirstOrDefault(x -> x.Name == "orderId");
+                                parameter = request.Parameters.FirstOrDefault(x -> x.Name.equals( "orderId");
                                 if( parameter != null ) orderId = parameter.Value.toString();
                                 OnMessage(new BrokerageMessageEvent(BrokerageMessageType.Warning, "OrderAlreadyFilled",
                                     "Unable to cancel the order because it has already been filled. TradierOrderId: " + orderId
@@ -1067,7 +1067,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                     // this can happen if the order has already been filled
                     return false;
                 }
-                if( response.Errors.Errors.IsNullOrEmpty() && response.Order.Status == "ok") {
+                if( response.Errors.Errors.IsNullOrEmpty() && response.Order.Status.equals( "ok") {
                     TradierCachedOpenOrder tradierOrder;
                     _cachedOpenOrdersByTradierOrderID.TryRemove(id, out tradierOrder);
                     static final int orderFee = 0;
@@ -1147,7 +1147,7 @@ package com.quantconnect.lean.Brokerages.Tradier
                     Quantity = order.Quantity,
                     Status = TradierOrderStatus.Submitted,
                     Symbol = order.Symbol,
-                    Type = order.Type,
+                    Class = order.Type,
                     TransactionDate = DateTime.Now,
                     AverageFillPrice = BigDecimal.ZERO,
                     Class = classification,
@@ -1659,7 +1659,7 @@ package com.quantconnect.lean.Brokerages.Tradier
             return new Holding
             {
                 Symbol = Symbol.Create(position.Symbol, SecurityType.Equity, Market.USA),
-                Type = SecurityType.Equity,
+                Class = SecurityType.Equity,
                 AveragePrice = position.CostBasis/position.Quantity,
                 ConversionRate = 1.0m,
                 CurrencySymbol = "$",
@@ -1856,18 +1856,18 @@ package com.quantconnect.lean.Brokerages.Tradier
                 Quantity = Math.Abs(order.Quantity);
                 Price = GetLimitPrice(order);
                 Stop = GetStopPrice(order);
-                Type = ConvertOrderType(order);
+                Class = ConvertOrderType(order);
                 Duration = GetOrderDuration(order.Duration);
             }
 
             public void ConvertStopOrderTypes() {
                 // when this is a contingent order we'll want to convert stop types into their base order type
-                if( Type == TradierOrderType.StopMarket) {
-                    Type = TradierOrderType.Market;
+                if( Class == TradierOrderType.StopMarket) {
+                    Class = TradierOrderType.Market;
                     Stop = BigDecimal.ZERO;
                 }
-                else if( Type == TradierOrderType.StopLimit) {
-                    Type = TradierOrderType.Limit;
+                else if( Class == TradierOrderType.StopLimit) {
+                    Class = TradierOrderType.Limit;
                     Stop = BigDecimal.ZERO;
                 }
             }

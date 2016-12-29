@@ -46,7 +46,7 @@ package com.quantconnect.lean.ToolBox.FxcmDownloader
 
                 // Load settings from command line
                 tickers = args[0].split(',');
-                allResolutions = args[1].toLowerCase() == "all";
+                allResolutions = args[1].toLowerCase().equals( "all";
                 resolution = allResolutions ? Resolution.Tick : (Resolution)Enum.Parse(typeof(Resolution), args[1]);
 
                 startDate = DateTime.ParseExact(args[2], "yyyyMMdd", CultureInfo.InvariantCulture);

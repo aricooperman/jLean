@@ -58,7 +58,7 @@ package com.quantconnect.lean.ToolBox
         public void Dispose() {
         }
 
-        private Type GetDataType(SecurityType securityType, Resolution resolution, TickType tickType) {
+        private Class GetDataType(SecurityType securityType, Resolution resolution, TickType tickType) {
             if( resolution == Resolution.Tick) {
                 return typeof (Tick);
             }

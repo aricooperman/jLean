@@ -93,7 +93,7 @@ package com.quantconnect.lean.Lean.Engine.TransactionHandlers
          * @param resultHandler">
         public void Initialize(IAlgorithm algorithm, IBrokerage brokerage, IResultHandler resultHandler) {
             if( brokerage == null ) {
-                throw new ArgumentNullException( "brokerage");
+                throw new NullPointerException( "brokerage");
             }
 
             // we don't need to do this today because we just initialized/synced

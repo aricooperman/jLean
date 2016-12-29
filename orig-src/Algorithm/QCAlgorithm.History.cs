@@ -141,7 +141,7 @@ package com.quantconnect.lean.Algorithm
          * @param span The span over which to retrieve recent historical data
          * @param resolution The resolution to request
         @returns An enumerable of slice containing the requested historical data
-        public IEnumerable<DataMap<T>> History<T>(TimeSpan span, Resolution? resolution = null )
+        public IEnumerable<DataDictionary<T>> History<T>(TimeSpan span, Resolution? resolution = null )
             where T : BaseData
         {
             return History<T>(Securities.Keys, span, resolution).Memoize();
@@ -156,7 +156,7 @@ package com.quantconnect.lean.Algorithm
          * @param span The span over which to retrieve recent historical data
          * @param resolution The resolution to request
         @returns An enumerable of slice containing the requested historical data
-        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, Duration span, Resolution? resolution = null )
+        public IEnumerable<DataDictionary<T>> History<T>(IEnumerable<Symbol> symbols, Duration span, Resolution? resolution = null )
             where T : BaseData
         {
             return History<T>(symbols, Time - span, Time, resolution).Memoize();
@@ -172,7 +172,7 @@ package com.quantconnect.lean.Algorithm
          * @param periods The number of bars to request
          * @param resolution The resolution to request
         @returns An enumerable of slice containing the requested historical data
-        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null ) 
+        public IEnumerable<DataDictionary<T>> History<T>(IEnumerable<Symbol> symbols, int periods, Resolution? resolution = null ) 
             where T : BaseData
         {
             requests = symbols.Select(x =>
@@ -198,7 +198,7 @@ package com.quantconnect.lean.Algorithm
          * @param end The end time in the algorithm's time zone
          * @param resolution The resolution to request
         @returns An enumerable of slice containing the requested historical data
-        public IEnumerable<DataMap<T>> History<T>(IEnumerable<Symbol> symbols, DateTime start, DateTime end, Resolution? resolution = null ) 
+        public IEnumerable<DataDictionary<T>> History<T>(IEnumerable<Symbol> symbols, DateTime start, DateTime end, Resolution? resolution = null ) 
             where T : BaseData
         {
             requests = symbols.Select(x =>
@@ -448,7 +448,7 @@ package com.quantconnect.lean.Algorithm
             return request;
         }
 
-        private static SubscriptionDataConfig GetMatchingSubscription(Security security, Type type) {
+        private static SubscriptionDataConfig GetMatchingSubscription(Security security, Class type) {
             // find a subscription matchin the requested type with a higher resolution than requested
             return (from sub in security.Subscriptions.OrderByDescending(s -> s.Resolution)
                     where type.IsAssignableFrom(sub.Type)

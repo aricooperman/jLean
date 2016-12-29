@@ -145,7 +145,7 @@ package com.quantconnect.lean.Algorithm
          * @param value Value of the point
         public void Plot( String chart, String series, BigDecimal value) {
             //Ignore the reserved chart names:
-            if( (chart == "Strategy Equity" && series == "Equity") || (chart == "Daily Performance") || (chart == "Meta")) {
+            if( (chart.equals( "Strategy Equity" && series.equals( "Equity") || (chart.equals( "Daily Performance") || (chart.equals( "Meta")) {
                 throw new Exception( "Algorithm.Plot(): 'Equity', 'Daily Performance' and 'Meta' are reserved chart names created for all charts.");
             }
 

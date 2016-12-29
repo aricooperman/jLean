@@ -2,7 +2,7 @@
  * QUANTCONNECT.COM - Democratizing Finance, Empowering Individuals.
  * Lean Algorithmic Trading Engine v2.0. Copyright 2014 QuantConnect Corporation.
  * 
- * Licensed under the Apache License, Version 2.0 (the "License"); 
+ * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
  * 
@@ -21,7 +21,6 @@ import java.time.LocalDateTime;
 
 import com.quantconnect.lean.Extensions;
 import com.quantconnect.lean.Symbol;
-import com.quantconnect.lean.orders.Order;
 import com.quantconnect.lean.orders.OrderTypes.OrderType;
 import com.quantconnect.lean.securities.Security;
 
@@ -39,7 +38,7 @@ public class LimitOrder extends Order {
         return limitPrice;
     }
 
-    void setLimitPrice( BigDecimal limitPrice ) {
+    void setLimitPrice( final BigDecimal limitPrice ) {
         this.limitPrice = limitPrice;
     }
 
@@ -63,7 +62,7 @@ public class LimitOrder extends Order {
      * @param time Time the order was placed
      * @param limitPrice Price the order should be filled at if a limit order
      */
-    public LimitOrder( Symbol symbol, int quantity, BigDecimal limitPrice, LocalDateTime time ) {
+    public LimitOrder( final Symbol symbol, final int quantity, final BigDecimal limitPrice, final LocalDateTime time ) {
         this( symbol, quantity, limitPrice, time, "" );
     }
         
@@ -75,11 +74,11 @@ public class LimitOrder extends Order {
      * @param limitPrice Price the order should be filled at if a limit order
      * @param tag User defined data tag for this order
      */
-    public LimitOrder( Symbol symbol, int quantity, BigDecimal limitPrice, LocalDateTime time, String tag ) {
+    public LimitOrder( final Symbol symbol, final int quantity, final BigDecimal limitPrice, final LocalDateTime time, final String tag ) {
         super( symbol, quantity, time, tag );
         this.limitPrice = limitPrice;
 
-        if( tag == "") {
+        if( "".equals( tag ) ) {
             //Default tag values to display limit price in GUI.
             this.tag = "Limit Price: " + NumberFormat.getCurrencyInstance().format( limitPrice );
         }
@@ -90,7 +89,7 @@ public class LimitOrder extends Order {
      * @param security The security matching this order's symbol
      */
     @Override
-    protected BigDecimal getValueImpl( Security security ) {
+    protected BigDecimal getValueImpl( final Security security ) {
         // selling, so higher price will be used
         if( quantity < 0 )
             return limitPrice.max( security.getPrice() ).multiply( BigDecimal.valueOf( quantity ) );
@@ -107,7 +106,7 @@ public class LimitOrder extends Order {
      * @param request The request to update this order object
      */
     @Override
-    public void applyUpdateOrderRequest( UpdateOrderRequest request ) {
+    public void applyUpdateOrderRequest( final UpdateOrderRequest request ) {
         super.applyUpdateOrderRequest( request );
         if( request.getLimitPrice().isPresent() )
             limitPrice = request.getLimitPrice().get();

@@ -96,7 +96,7 @@ package com.quantconnect.lean.Brokerages.Fxcm
             return new Holding
             {
                 Symbol = _symbolMapper.GetLeanSymbol(fxcmPosition.getInstrument().getSymbol(), securityType, Market.FXCM),
-                Type = securityType,
+                Class = securityType,
                 AveragePrice = new BigDecimal( fxcmPosition.getSettlPrice()),
                 ConversionRate = 1.0m,
                 CurrencySymbol = "$",

@@ -18,6 +18,7 @@ package com.quantconnect.lean;
 
 import java.math.BigDecimal;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +29,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 public class Global {
     
-    public static final ZoneId UTC_ZONE_TZ_ID = ZoneId.of( "UTC" );
+    public static final ZoneId UTC_ZONE_TZ_ID = ZoneOffset.UTC;
     public static final ZoneId NEW_YORK_TZ_ID = ZoneId.of( "America/New_York" );
     
 //    public static final EventBus APP_EVENT_BUS = new EventBus( "Main Bus" );
@@ -39,10 +40,12 @@ public class Global {
             .registerModule( new JavaTimeModule() )
             .configure( DeserializationFeature.READ_ENUMS_USING_TO_STRING, true )
             .configure( SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true );
-
     
-    public static final BigDecimal ONE_THOUSAND = BigDecimal.valueOf( 1000 );
     public static final BigDecimal TWO = BigDecimal.valueOf( 2 );
+    public static final BigDecimal FIVE = BigDecimal.valueOf( 5 );
+    public static final BigDecimal ONE_THOUSAND = BigDecimal.valueOf( 1000 );
+    
+    public static final int TRADING_DAYS_PER_YEAR = 252;
     
     
 
@@ -52,7 +55,7 @@ public class Global {
 //        /// Symbol of the Holding:
 //        public Symbol Symbol = Symbol.Empty;
 //
-//        /// Type of the security
+//        /// Class of the security
 //        public SecurityType Type;
 //
 //        /// The currency symbol of the holding, such as $
@@ -87,7 +90,7 @@ public class Global {
 //            holding = security.Holdings;
 //
 //            Symbol = holding.Symbol;
-//            Type = holding.Type;
+//            Class = holding.Type;
 //            Quantity = holding.Quantity;
 //            CurrencySymbol = Currencies.CurrencySymbols[security.QuoteCurrency.Symbol];
 //            ConversionRate = security.QuoteCurrency.ConversionRate;
@@ -112,7 +115,7 @@ public class Global {
 //            {
 //                AveragePrice = AveragePrice,
 //                Symbol = Symbol,
-//                Type = Type,
+//                Class = Type,
 //                Quantity = Quantity,
 //                MarketPrice = MarketPrice,
 //                ConversionRate  = ConversionRate,

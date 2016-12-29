@@ -148,7 +148,7 @@ package com.quantconnect.lean.Tests.Common.Util
 
         private static ZoneId ParseTimeZone( String tz) {
             // handle UTC directly
-            if( tz == "UTC") return Global.UTC_ZONE_ID;
+            if( tz.equals( "UTC") return Global.UTC_ZONE_ID;
             // if it doesn't start with UTC then it's a name, like America/New_York
             if( !tz.StartsWith( "UTC")) return ZoneIdProviders.Tzdb[tz];
 
@@ -161,10 +161,10 @@ package com.quantconnect.lean.Tests.Common.Util
 
         private static LocalMarketHours ReadCsvHours( String[] csv, int startIndex, DayOfWeek dayOfWeek) {
             ex_open = csv[startIndex];
-            if( ex_open == "-") {
+            if( ex_open.equals( "-") {
                 return LocalMarketHours.ClosedAllDay(dayOfWeek);
             }
-            if( ex_open == "+") {
+            if( ex_open.equals( "+") {
                 return LocalMarketHours.OpenAllDay(dayOfWeek);
             }
 

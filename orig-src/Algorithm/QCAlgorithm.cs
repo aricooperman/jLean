@@ -567,7 +567,7 @@ package com.quantconnect.lean.Algorithm
                 _checkedForOnDataSlice = true;
                 
                 method = GetType().GetMethods()
-                    .Where(x -> x.Name == "OnData")
+                    .Where(x -> x.Name.equals( "OnData")
                     .Where(x -> x.DeclaringType != typeof(QCAlgorithm))
                     .Where(x -> x.GetParameters().Length == 1)
                     .FirstOrDefault(x -> x.GetParameters()[0].ParameterType == typeof (Slice));
@@ -773,7 +773,7 @@ package com.quantconnect.lean.Algorithm
                 throw new Exception( "Algorithm.SetTimeZone(): Cannot change time zone after algorithm running.");
             }
 
-            if( timeZone == null ) throw new ArgumentNullException( "timeZone");
+            if( timeZone == null ) throw new NullPointerException( "timeZone");
             _timeKeeper.AddTimeZone(timeZone);
             _localTimeKeeper = _timeKeeper.GetLocalTimeKeeper(timeZone);
 
@@ -790,7 +790,7 @@ package com.quantconnect.lean.Algorithm
         [Obsolete( "This method is now obsolete and has no replacement. All algorithms now run in Series mode.")]
         public void SetRunMode(RunMode mode) {
             if( mode != RunMode.Parallel) return;
-            Debug( "Algorithm.SetRunMode(): RunMode-Parallel Type has been deprecated. Series analysis selected instead");
+            Debug( "Algorithm.SetRunMode(): RunMode-Parallel Class has been deprecated. Series analysis selected instead");
         }
 
         /**
@@ -825,7 +825,7 @@ package com.quantconnect.lean.Algorithm
          * @param handler The message handler to use
         public void SetBrokerageMessageHandler(IBrokerageMessageHandler handler) {
             if( handler == null ) {
-                throw new ArgumentNullException( "handler");
+                throw new NullPointerException( "handler");
             }
 
             BrokerageMessageHandler = handler;
@@ -1337,7 +1337,7 @@ package com.quantconnect.lean.Algorithm
          * <seealso cref="Log"/>
          * <seealso cref="Error( String)"/>
         public void Debug( String message) {
-            if( !_liveMode && (message == "" || _previousDebugMessage == message)) return;
+            if( !_liveMode && (message.equals( "" || _previousDebugMessage == message)) return;
             _debugMessages.Add(message);
             _previousDebugMessage = message;
         }
@@ -1349,7 +1349,7 @@ package com.quantconnect.lean.Algorithm
          * <seealso cref="Debug"/>
          * <seealso cref="Error( String)"/>
         public void Log( String message) {
-            if( !_liveMode && message == "") return;
+            if( !_liveMode && message.equals( "") return;
             _logMessages.Add(message);
         }
 
@@ -1360,7 +1360,7 @@ package com.quantconnect.lean.Algorithm
          * <seealso cref="Debug"/>
          * <seealso cref="Log"/>
         public void Error( String message) {
-            if( !_liveMode && (message == "" || _previousErrorMessage == message)) return;
+            if( !_liveMode && (message.equals( "" || _previousErrorMessage == message)) return;
             _errorMessages.Add(message);
             _previousErrorMessage = message;
         }
@@ -1373,7 +1373,7 @@ package com.quantconnect.lean.Algorithm
          * <seealso cref="Log"/>
         public void Error(Exception error) {
             message = error.Message;
-            if( !_liveMode && (message == "" || _previousErrorMessage == message)) return;
+            if( !_liveMode && (message.equals( "" || _previousErrorMessage == message)) return;
             _errorMessages.Add(message);
             _previousErrorMessage = message;
         }

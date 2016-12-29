@@ -109,7 +109,7 @@ package com.quantconnect.lean
                 Thread.Sleep(100);
             }
 
-            if( task.IsCompleted == false && message == "") {
+            if( task.IsCompleted == false && message.equals( "") {
                 message = "Execution Security Error: Operation timed out - " + timeSpan.TotalMinutes + " minutes max. Check for recursive loops.";
                 Log.Trace( "Isolator.ExecuteWithTimeLimit(): " + message);
             }

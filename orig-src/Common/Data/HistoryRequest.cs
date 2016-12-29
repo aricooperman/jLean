@@ -57,7 +57,7 @@ package com.quantconnect.lean.Data
         /**
          * Gets the data type used to process the subscription request, this type must derive from BaseData
         */
-        public Type DataType { get; set; }
+        public Class DataType { get; set; }
         /**
          * Gets the security type of the subscription
         */
@@ -108,7 +108,7 @@ package com.quantconnect.lean.Data
          * @param isCustomData True for custom user data, false for normal QC data
         public HistoryRequest(DateTime startTimeUtc, 
             DateTime endTimeUtc,
-            Type dataType,
+            Class dataType,
             Symbol symbol,
             SecurityType securityType,
             Resolution resolution,

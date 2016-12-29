@@ -5,7 +5,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import com.google.common.collect.ImmutableMap;
-import com.quantconnect.lean.Global.OptionRight;
 
 /// Specifies the different types of options
 public enum OptionRight {

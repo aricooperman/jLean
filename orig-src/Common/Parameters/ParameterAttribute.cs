@@ -58,7 +58,7 @@ package com.quantconnect.lean.Parameters
          * @param parameters The parameters Map
          * @param instance The instance to set parameters on
         public static void ApplyAttributes(Map<String,String> parameters, object instance) {
-            if( instance == null ) throw new ArgumentNullException( "instance");
+            if( instance == null ) throw new NullPointerException( "instance");
 
             type = instance.GetType();
 

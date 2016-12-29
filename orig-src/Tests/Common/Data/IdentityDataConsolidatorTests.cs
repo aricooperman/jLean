@@ -24,7 +24,7 @@ package com.quantconnect.lean.Tests.Common.Data
     public class IdentityDataConsolidatorTests
     {
         [Test]
-        [ExpectedException(typeof (ArgumentNullException))]
+        [ExpectedException(typeof (NullPointerException))]
         public void ThrowsOnDataOfWrongType() {
             identity = new IdentityDataConsolidator<Tick>();
             identity.Update(new TradeBar());

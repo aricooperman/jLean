@@ -13,140 +13,130 @@
  * limitations under the License.
 */
 
-using System;
-using System.Linq;
-using NUnit.Framework;
-using QuantConnect.Data;
-using QuantConnect.Data.Market;
-using QuantConnect.Securities;
-using QuantConnect.Orders.Fills;
-using QuantConnect.Orders.Fees;
-using QuantConnect.Orders.Slippage;
+//using NUnit.Framework;
 
-package com.quantconnect.lean.Tests.Common.Securities
-{
-    [TestFixture]
-    public class SecurityTests
-    {
-        [Test]
-        public void SimplePropertiesTests() {
-            exchangeHours = SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork);
-            config = CreateTradeBarConfig();
-            security = new Security(exchangeHours, config, new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
+package com.quantconnect.lean.tests.common.securities;
 
-            Assert.AreEqual(config, security.Subscriptions.Single());
-            Assert.AreEqual(config.Symbol, security.Symbol);
-            Assert.AreEqual(config.SecurityType, security.Type);
-            Assert.AreEqual(config.Resolution, security.Resolution);
-            Assert.AreEqual(config.FillDataForward, security.IsFillDataForward);
-            Assert.AreEqual(exchangeHours, security.Exchange.Hours);
-        }
+[TestFixture]
+public class SecurityTests {
+    [Test]
+    public void SimplePropertiesTests() {
+        exchangeHours = SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork);
+        config = CreateTradeBarConfig();
+        security = new Security(exchangeHours, config, new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
 
-        [Test]
-        public void ConstructorTests() {
-            security = GetSecurity();
+        Assert.AreEqual(config, security.Subscriptions.Single());
+        Assert.AreEqual(config.Symbol, security.Symbol);
+        Assert.AreEqual(config.SecurityType, security.Type);
+        Assert.AreEqual(config.Resolution, security.Resolution);
+        Assert.AreEqual(config.FillDataForward, security.IsFillDataForward);
+        Assert.AreEqual(exchangeHours, security.Exchange.Hours);
+    }
 
-            Assert.IsNotNull(security.Exchange);
-            Assert.IsInstanceOf<SecurityExchange>(security.Exchange);
-            Assert.IsNotNull(security.Cache);
-            Assert.IsInstanceOf<SecurityCache>(security.Cache);
-            Assert.IsNotNull(security.PortfolioModel);
-            Assert.IsInstanceOf<SecurityPortfolioModel>(security.PortfolioModel);
-            Assert.IsNotNull(security.FillModel);
-            Assert.IsInstanceOf<ImmediateFillModel>(security.FillModel);
-            Assert.IsNotNull(security.PortfolioModel);
-            Assert.IsInstanceOf<IntegereractiveBrokersFeeModel>(security.FeeModel);
-            Assert.IsNotNull(security.SlippageModel);
-            Assert.IsInstanceOf<SpreadSlippageModel>(security.SlippageModel);
-            Assert.IsNotNull(security.SettlementModel);
-            Assert.IsInstanceOf<ImmediateSettlementModel>(security.SettlementModel);
-            Assert.IsNotNull(security.MarginModel);
-            Assert.IsInstanceOf<SecurityMarginModel>(security.MarginModel);
-            Assert.IsNotNull(security.DataFilter);
-            Assert.IsInstanceOf<SecurityDataFilter>(security.DataFilter);
-        }
+    [Test]
+    public void ConstructorTests() {
+        security = GetSecurity();
 
-        [Test]
-        public void HoldingsTests() {
-            security = GetSecurity();
-            
-            // Long 100 stocks test
-            security.Holdings.SetHoldings(100m, 100);
-            
-            Assert.AreEqual(100m, security.Holdings.AveragePrice);
-            Assert.AreEqual(100, security.Holdings.Quantity);
-            Assert.IsTrue(security.HoldStock);
-            Assert.IsTrue(security.Invested);
-            Assert.IsTrue(security.Holdings.IsLong);
-            Assert.IsFalse(security.Holdings.IsShort);
+        Assert.IsNotNull(security.Exchange);
+        Assert.IsInstanceOf<SecurityExchange>(security.Exchange);
+        Assert.IsNotNull(security.Cache);
+        Assert.IsInstanceOf<SecurityCache>(security.Cache);
+        Assert.IsNotNull(security.PortfolioModel);
+        Assert.IsInstanceOf<SecurityPortfolioModel>(security.PortfolioModel);
+        Assert.IsNotNull(security.FillModel);
+        Assert.IsInstanceOf<ImmediateFillModel>(security.FillModel);
+        Assert.IsNotNull(security.PortfolioModel);
+        Assert.IsInstanceOf<IntegereractiveBrokersFeeModel>(security.FeeModel);
+        Assert.IsNotNull(security.SlippageModel);
+        Assert.IsInstanceOf<SpreadSlippageModel>(security.SlippageModel);
+        Assert.IsNotNull(security.SettlementModel);
+        Assert.IsInstanceOf<ImmediateSettlementModel>(security.SettlementModel);
+        Assert.IsNotNull(security.MarginModel);
+        Assert.IsInstanceOf<SecurityMarginModel>(security.MarginModel);
+        Assert.IsNotNull(security.DataFilter);
+        Assert.IsInstanceOf<SecurityDataFilter>(security.DataFilter);
+    }
 
-            // Short 100 stocks test
-            security.Holdings.SetHoldings(100m, -100);
+    [Test]
+    public void HoldingsTests() {
+        security = GetSecurity();
+        
+        // Long 100 stocks test
+        security.Holdings.SetHoldings(100m, 100);
+        
+        Assert.AreEqual(100m, security.Holdings.AveragePrice);
+        Assert.AreEqual(100, security.Holdings.Quantity);
+        Assert.IsTrue(security.HoldStock);
+        Assert.IsTrue(security.Invested);
+        Assert.IsTrue(security.Holdings.IsLong);
+        Assert.IsFalse(security.Holdings.IsShort);
 
-            Assert.AreEqual(100m, security.Holdings.AveragePrice);
-            Assert.AreEqual(-100, security.Holdings.Quantity);
-            Assert.IsTrue(security.HoldStock);
-            Assert.IsTrue(security.Invested);
-            Assert.IsFalse(security.Holdings.IsLong);
-            Assert.IsTrue(security.Holdings.IsShort);
+        // Short 100 stocks test
+        security.Holdings.SetHoldings(100m, -100);
 
-            // Flat test
-            security.Holdings.SetHoldings(100m, 0);
+        Assert.AreEqual(100m, security.Holdings.AveragePrice);
+        Assert.AreEqual(-100, security.Holdings.Quantity);
+        Assert.IsTrue(security.HoldStock);
+        Assert.IsTrue(security.Invested);
+        Assert.IsFalse(security.Holdings.IsLong);
+        Assert.IsTrue(security.Holdings.IsShort);
 
-            Assert.AreEqual(100m, security.Holdings.AveragePrice);
-            Assert.AreEqual(0, security.Holdings.Quantity);
-            Assert.IsFalse(security.HoldStock);
-            Assert.IsFalse(security.Invested);
-            Assert.IsFalse(security.Holdings.IsLong);
-            Assert.IsFalse(security.Holdings.IsShort);
+        // Flat test
+        security.Holdings.SetHoldings(100m, 0);
 
-        }
+        Assert.AreEqual(100m, security.Holdings.AveragePrice);
+        Assert.AreEqual(0, security.Holdings.Quantity);
+        Assert.IsFalse(security.HoldStock);
+        Assert.IsFalse(security.Invested);
+        Assert.IsFalse(security.Holdings.IsLong);
+        Assert.IsFalse(security.Holdings.IsShort);
 
-        [Test]
-        public void UpdatingSecurityPriceTests() {
-            security = GetSecurity();
+    }
 
-            // Update securuty price with a TradeBar
-            security.SetMarketPrice(new TradeBar(DateTime.Now, Symbols.SPY, 101m, 103m, 100m, 102m, 100000));
+    [Test]
+    public void UpdatingSecurityPriceTests() {
+        security = GetSecurity();
 
-            Assert.AreEqual(101m, security.Open);
-            Assert.AreEqual(103m, security.High);
-            Assert.AreEqual(100m, security.Low);
-            Assert.AreEqual(102m, security.Close);
-            Assert.AreEqual(100000, security.Volume);
+        // Update securuty price with a TradeBar
+        security.SetMarketPrice(new TradeBar(DateTime.Now, Symbols.SPY, 101m, 103m, 100m, 102m, 100000));
 
-            // High/Close property is only modified by IBar instances
-            security.SetMarketPrice(new Tick(DateTime.Now, Symbols.SPY, 104m, 104m, 104m));
-            Assert.AreEqual(103m, security.High);
-            Assert.AreEqual(102m, security.Close);
-            Assert.AreEqual(104m, security.Price);
+        Assert.AreEqual(101m, security.Open);
+        Assert.AreEqual(103m, security.High);
+        Assert.AreEqual(100m, security.Low);
+        Assert.AreEqual(102m, security.Close);
+        Assert.AreEqual(100000, security.Volume);
 
-            // Low/Close property is only modified by IBar instances
-            security.SetMarketPrice(new Tick(DateTime.Now, Symbols.SPY, 99m, 99m, 99m));
-            Assert.AreEqual(100m, security.Low);
-            Assert.AreEqual(102m, security.Close);
-            Assert.AreEqual(99m, security.Price);
-        }
+        // High/Close property is only modified by IBar instances
+        security.SetMarketPrice(new Tick(DateTime.Now, Symbols.SPY, 104m, 104m, 104m));
+        Assert.AreEqual(103m, security.High);
+        Assert.AreEqual(102m, security.Close);
+        Assert.AreEqual(104m, security.Price);
 
-        [Test]
-        public void SetLeverageTest() {
-            security = GetSecurity();
+        // Low/Close property is only modified by IBar instances
+        security.SetMarketPrice(new Tick(DateTime.Now, Symbols.SPY, 99m, 99m, 99m));
+        Assert.AreEqual(100m, security.Low);
+        Assert.AreEqual(102m, security.Close);
+        Assert.AreEqual(99m, security.Price);
+    }
 
-            security.SetLeverage(4m);
-            Assert.AreEqual(4m,security.Leverage);
+    [Test]
+    public void SetLeverageTest() {
+        security = GetSecurity();
 
-            security.SetLeverage(5m);
-            Assert.AreEqual(5m, security.Leverage);
+        security.SetLeverage(4m);
+        Assert.AreEqual(4m,security.Leverage);
 
-            Assert.That(() -> security.SetLeverage(0.1m),
-                Throws.TypeOf<ArgumentException>().With.Message.EqualTo( "Leverage must be greater than or equal to 1."));
-        }
-        private Security GetSecurity() {
-            return new Security(SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork), CreateTradeBarConfig(), new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
-        }
+        security.SetLeverage(5m);
+        Assert.AreEqual(5m, security.Leverage);
 
-        private static SubscriptionDataConfig CreateTradeBarConfig() {
-            return new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, false);
-        }
+        Assert.That(() -> security.SetLeverage(0.1m),
+            Throws.TypeOf<ArgumentException>().With.Message.EqualTo( "Leverage must be greater than or equal to 1."));
+    }
+    private Security GetSecurity() {
+        return new Security(SecurityExchangeHours.AlwaysOpen(TimeZones.NewYork), CreateTradeBarConfig(), new Cash(CashBook.AccountCurrency, 0, 1m), SymbolProperties.GetDefault(CashBook.AccountCurrency));
+    }
+
+    private static SubscriptionDataConfig CreateTradeBarConfig() {
+        return new SubscriptionDataConfig(typeof(TradeBar), Symbols.SPY, Resolution.Minute, TimeZones.NewYork, TimeZones.NewYork, true, true, false);
     }
 }

@@ -87,7 +87,7 @@ package com.quantconnect.lean.Packets
                 Channel            = packet.Channel;
                 SessionId          = packet.SessionId;
                 DeployId           = packet.DeployId;
-                Type               = packet.Type;
+                Class               = packet.Type;
                 UserId             = packet.UserId;
                 ProjectId          = packet.ProjectId;
                 Results            = packet.Results;

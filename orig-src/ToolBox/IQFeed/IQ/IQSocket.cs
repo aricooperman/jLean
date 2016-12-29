@@ -52,7 +52,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
             _lookupSequence = lookupSequence;
         }
         public String Id { get { return _requestId; } }
-        public LookupType Type { get { return _lookupType; } }
+        public LookupType Class { get { return _lookupType; } }
         public LookupSequence Sequence { get { return _lookupSequence; } }
         #region private
         private String _requestId;
@@ -124,7 +124,7 @@ package com.quantconnect.lean.ToolBox.IQFeed
                 if( !DateTime.TryParseExact(fields[10], "MMM dd hh':'mmtt", _enUS, DateTimeStyles.None, out _startTime)) _startTime = DateTime.MinValue;
                 if( !DateTime.TryParseExact(fields[11], "MMM dd hh':'mmtt", _enUS, DateTimeStyles.None, out _marketTime)) _marketTime = DateTime.MinValue;
                 _connected = false;
-                if( fields[12] == "Connected") { _connected = true; }
+                if( fields[12].equals( "Connected") { _connected = true; }
                 _iqFeedVersion = fields[13];
                 _loginId = fields[14];
                 if( !double.TryParse(fields[15], out _totalKbsRecv)) _totalKbsRecv = 0;

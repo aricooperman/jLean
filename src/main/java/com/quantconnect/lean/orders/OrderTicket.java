@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -42,60 +41,61 @@ import com.quantconnect.lean.securities.SecurityTransactionManager;
  */
 public final class OrderTicket {
     
-    private final ReentrantLock _orderEventsLock = new ReentrantLock();
-    private final Object _updateRequestsLock = new Object();
-    private final Object _setCancelRequestLock = new Object();
+    private final ReentrantLock orderEventsLock = new ReentrantLock();
+    private final Object updateRequestsLock = new Object();
+    private final Object setCancelRequestLock = new Object();
 
-    private Order _order;
-    private Optional<OrderStatus> _orderStatusOverride;
-    private CancelOrderRequest _cancelRequest;
+    private Order order;
+    private Optional<OrderStatus> orderStatusOverride;
+    private CancelOrderRequest cancelRequest;
 
-    private int _quantityFilled;
-    private BigDecimal _averageFillPrice;
+    private int quantityFilled;
+    private BigDecimal averageFillPrice;
 
-    private final int _orderId;
-    private final List<OrderEvent> _orderEvents; 
-    private final SubmitOrderRequest _submitRequest;
-    private final Condition /*ManualResetEvent*/ _orderStatusClosedEvent;
-    private final LinkedList<UpdateOrderRequest> _updateRequests;
+    private final int orderId;
+    private final List<OrderEvent> orderEvents; 
+    private final SubmitOrderRequest submitRequest;
+    private final Condition /*ManualResetEvent*/ orderStatusClosedEvent;
+    private final LinkedList<UpdateOrderRequest> updateRequests;
 
     // we pull this in to provide some behavior/simplicity to the ticket API
-    private final SecurityTransactionManager _transactionManager;
+    private final SecurityTransactionManager transactionManager;
 
     /**
      * Gets the order id of this ticket
      */
     public int getOrderId() {
-        return _orderId;
+        return orderId;
     }
 
     /**
      * Gets the current status of this order ticket
      */
     public OrderStatus getStatus() {
-        if( _orderStatusOverride.isPresent() ) return _orderStatusOverride.get();
-        return _order == null ? OrderStatus.New : _order.getStatus();
+        if( orderStatusOverride.isPresent() ) 
+            return orderStatusOverride.get();
+        return order == null ? OrderStatus.New : order.getStatus();
     }
 
     /**
      * Gets the symbol being ordered
      */
     public Symbol getSymbol() {
-         return _submitRequest.getSymbol();
+         return submitRequest.getSymbol();
     }
 
     /**
      * Gets the <see cref="Symbol"/>'s <see cref="SecurityType"/>
      */
     public SecurityType getSecurityType() {
-        return _submitRequest.getSecurityType();
+        return submitRequest.getSecurityType();
     }
 
     /**
      * Gets the number of units ordered
      */
     public int getQuantity() {
-        return _order == null ? _submitRequest.getQuantity() : _order.quantity;
+        return order == null ? submitRequest.getQuantity() : order.quantity;
     }
 
     /**
@@ -103,7 +103,7 @@ public final class OrderTicket {
      * then this will return a value of zero.
      */
     public BigDecimal getAverageFillPrice() {
-        return _averageFillPrice;
+        return averageFillPrice;
     }
 
     /**
@@ -111,7 +111,7 @@ public final class OrderTicket {
      * then this will return a value of zero.
      */
     public int getQuantityFilled() {
-        return _quantityFilled;
+        return quantityFilled;
     }
 
     /**
@@ -125,30 +125,30 @@ public final class OrderTicket {
      * Gets the type of order
      */
     public OrderType getOrderType() {
-        return _submitRequest.getOrderType();
+        return submitRequest.getOrderType();
     }
 
     /**
      * Gets the order's current tag
      */
     public String getTag() {
-        return _order == null ? _submitRequest.getTag() : _order.getTag();
+        return order == null ? submitRequest.getTag() : order.getTag();
     }
 
     /**
      * Gets the <see cref="SubmitOrderRequest"/> that initiated this order
      */
     public SubmitOrderRequest getSubmitRequest() {
-        return _submitRequest;
+        return submitRequest;
     }
 
     /**
      * Gets a list of <see cref="UpdateOrderRequest"/> containing an item for each
      * <see cref="UpdateOrderRequest"/> that was sent for this order id
      */
-    public ImmutableList<UpdateOrderRequest> getUpdateRequests() {
-        synchronized( _updateRequestsLock ) {
-            return ImmutableList.copyOf( _updateRequests );
+    public List<UpdateOrderRequest> getUpdateRequests() {
+        synchronized( updateRequestsLock ) {
+            return ImmutableList.copyOf( updateRequests );
         }
     }
 
@@ -157,15 +157,15 @@ public final class OrderTicket {
      * was not canceled, this will return null
      */
     public CancelOrderRequest getCancelRequest() {
-        return _cancelRequest;
+        return cancelRequest;
     }
 
     /**
      * Gets a list of all order events for this ticket
      */
-    public ImmutableList<OrderEvent> getOrderEvents() {
-        synchronized( _orderEventsLock ) {
-            return ImmutableList.copyOf( _orderEvents );
+    public List<OrderEvent> getOrderEvents() {
+        synchronized( orderEventsLock ) {
+            return ImmutableList.copyOf( orderEvents );
         }
     }
 
@@ -173,7 +173,7 @@ public final class OrderTicket {
      * Gets a Condition that can be used to wait until this order has filled
     */
     public Condition getOrderClosed() {
-        return _orderStatusClosedEvent;
+        return orderStatusClosedEvent;
     }
 
     /**
@@ -182,13 +182,13 @@ public final class OrderTicket {
      * @param submitRequest The order request that initiated this order ticket
      */
     public OrderTicket( SecurityTransactionManager transactionManager, SubmitOrderRequest submitRequest ) {
-        this._submitRequest = submitRequest;
-        this._orderId = submitRequest.orderId;
-        this._transactionManager = transactionManager;
+        this.submitRequest = submitRequest;
+        this.orderId = submitRequest.orderId;
+        this.transactionManager = transactionManager;
 
-        this._orderEvents = new ArrayList<OrderEvent>();
-        this._updateRequests = new LinkedList<UpdateOrderRequest>();
-        this._orderStatusClosedEvent = _orderEventsLock.newCondition(); // new ManualResetEvent( false );
+        this.orderEvents = new ArrayList<OrderEvent>();
+        this.updateRequests = new LinkedList<UpdateOrderRequest>();
+        this.orderStatusClosedEvent = orderEventsLock.newCondition(); // new ManualResetEvent( false );
     }
 
     /**
@@ -200,19 +200,19 @@ public final class OrderTicket {
     public BigDecimal get( OrderField field ) {
         switch( field ) {
             case LimitPrice:
-                if( _submitRequest.getOrderType() == OrderType.Limit )
+                if( submitRequest.getOrderType() == OrderType.Limit )
                     return OrderTicket.<LimitOrder>accessOrder( this, field, o -> o.getLimitPrice(), r -> r.getLimitPrice() );
                 
-                if( _submitRequest.getOrderType() == OrderType.StopLimit )
+                if( submitRequest.getOrderType() == OrderType.StopLimit )
                     return OrderTicket.<StopLimitOrder>accessOrder( this, field, o -> o.getLimitPrice(), r -> r.getLimitPrice() );
                 
                 break;
 
             case StopPrice:
-                if( _submitRequest.getOrderType() == OrderType.StopLimit )
+                if( submitRequest.getOrderType() == OrderType.StopLimit )
                     return OrderTicket.<StopLimitOrder>accessOrder( this, field, o -> o.getStopPrice(), r -> r.getStopPrice() );
                 
-                if( _submitRequest.getOrderType() == OrderType.StopMarket )
+                if( submitRequest.getOrderType() == OrderType.StopMarket )
                     return OrderTicket.<StopMarketOrder>accessOrder( this, field, o -> o.getStopPrice(), r -> r.getStopPrice() );
                 
                 break;
@@ -221,7 +221,7 @@ public final class OrderTicket {
                 throw new IllegalArgumentException( field + " is not supported" );
         }
         
-        throw new IllegalArgumentException( "Unable to get field " + field + " on order of type " + _submitRequest.getOrderType() );
+        throw new IllegalArgumentException( "Unable to get field " + field + " on order of type " + submitRequest.getOrderType() );
     }
 
     /**
@@ -231,17 +231,17 @@ public final class OrderTicket {
      * @returns The <see cref="OrderResponse"/> from updating the order
      */
     public OrderResponse update( UpdateOrderFields fields ) {
-        _transactionManager.updateOrder( new UpdateOrderRequest( _transactionManager.getUtcTime(), _submitRequest.orderId, fields ) );
-        return _updateRequests.getLast().getResponse();
+        transactionManager.updateOrder( new UpdateOrderRequest( transactionManager.getUtcTime(), submitRequest.orderId, fields ) );
+        return updateRequests.getLast().getResponse();
     }
 
     /**
      * Submits a new request to cancel this order
      */
     public OrderResponse cancel( String tag ) {
-        final CancelOrderRequest request = new CancelOrderRequest( _transactionManager.getUtcTime(), _orderId, tag );
-        _transactionManager.processRequest( request );
-        return _cancelRequest.getResponse();
+        final CancelOrderRequest request = new CancelOrderRequest( transactionManager.getUtcTime(), orderId, tag );
+        transactionManager.processRequest( request );
+        return cancelRequest.getResponse();
     }
     
     public OrderResponse cancel() {
@@ -261,10 +261,10 @@ public final class OrderTicket {
      * @returns The most recent <see cref="OrderRequest"/> for this ticket
     */
     public OrderRequest getMostRecentOrderRequest() {
-        if( _cancelRequest != null )
-            return _cancelRequest;
+        if( cancelRequest != null )
+            return cancelRequest;
         
-        final UpdateOrderRequest lastUpdate = _updateRequests.peekLast();
+        final UpdateOrderRequest lastUpdate = updateRequests.peekLast();
         if( lastUpdate != null )
             return lastUpdate;
         
@@ -276,26 +276,26 @@ public final class OrderTicket {
      * @param orderEvent The order event to be added
      */
     void addOrderEvent( OrderEvent orderEvent ) {
-        _orderEventsLock.lock();
+        orderEventsLock.lock();
         try {
-            _orderEvents.add( orderEvent );
+            orderEvents.add( orderEvent );
             if( orderEvent.fillQuantity != 0 ) {
                 // keep running totals of quantity filled and the average fill price so we
                 // don't need to compute these on demand
-                _quantityFilled += orderEvent.fillQuantity;
-                final BigDecimal quantityWeightedFillPrice = _orderEvents.stream()
+                quantityFilled += orderEvent.fillQuantity;
+                final BigDecimal quantityWeightedFillPrice = orderEvents.stream()
                         .filter( x -> x.status.isFill() )
                         .map( x -> x.fillPrice.multiply( BigDecimal.valueOf( x.getAbsoluteFillQuantity() ) ) )
                         .reduce( BigDecimal.ZERO, BigDecimal::add );
-                _averageFillPrice = quantityWeightedFillPrice.divide( BigDecimal.valueOf( Math.abs( _quantityFilled ) ), RoundingMode.HALF_UP );
+                averageFillPrice = quantityWeightedFillPrice.divide( BigDecimal.valueOf( Math.abs( quantityFilled ) ), RoundingMode.HALF_UP );
             }
         
             // fire the wait handle indicating this order is closed
             if( orderEvent.status.isClosed() )
-                _orderStatusClosedEvent.signalAll(); //.Set();
+                orderStatusClosedEvent.signalAll(); //.Set();
         } 
         finally {
-            _orderEventsLock.unlock();
+            orderEventsLock.unlock();
         }
     }
 
@@ -304,10 +304,10 @@ public final class OrderTicket {
      * @param order The order
      */
     void setOrder( Order order ) {
-        if( _order != null && _order.id != order.id )
+        if( order != null && order.id != order.id )
             throw new IllegalArgumentException( "Order id mismatch" );
 
-        this._order = order;
+        this.order = order;
     }
 
     /**
@@ -315,11 +315,11 @@ public final class OrderTicket {
      * @param request The recently processed <see cref="UpdateOrderRequest"/>
      */
      void addUpdateRequest( UpdateOrderRequest request ) {
-        if( request.orderId != _orderId )
+        if( request.orderId != orderId )
             throw new IllegalArgumentException( "Received UpdateOrderRequest for incorrect order id." );
 
-        synchronized( _updateRequestsLock ) {
-            _updateRequests.add( request );
+        synchronized( updateRequestsLock ) {
+            updateRequests.add( request );
         }
     }
 
@@ -332,14 +332,14 @@ public final class OrderTicket {
      * @returns False if the the CancelRequest has already been set, true if this call set it
      */
     boolean trySetCancelRequest( CancelOrderRequest request ) {
-        if( request.orderId != _orderId )
+        if( request.orderId != orderId )
             throw new IllegalArgumentException( "Received CancelOrderRequest for incorrect order id." );
         
-        synchronized( _setCancelRequestLock ) {
-            if( _cancelRequest != null )
+        synchronized( setCancelRequestLock ) {
+            if( cancelRequest != null )
                 return false;
             
-            _cancelRequest = request;
+            cancelRequest = request;
         }
         
         return true;
@@ -349,67 +349,69 @@ public final class OrderTicket {
      * Creates a new <see cref="OrderTicket"/> that represents trying to cancel an order for which no ticket exists
      */
     public static OrderTicket invalidCancelOrderId( SecurityTransactionManager transactionManager, CancelOrderRequest request ) {
-        SubmitOrderRequest submit = new SubmitOrderRequest( OrderType.Market, SecurityType.Base, Symbol.EMPTY, 0, BigDecimal.ZERO, BigDecimal.ZERO, LocalDateTime.MAX, null );
+        final SubmitOrderRequest submit = new SubmitOrderRequest( OrderType.Market, SecurityType.Base, Symbol.EMPTY, 0, BigDecimal.ZERO, BigDecimal.ZERO, LocalDateTime.MAX, null );
         submit.setResponse( OrderResponse.unableToFindOrder( request ) );
-        ticket = new OrderTicket( transactionManager, submit );
-        request.SetResponse(OrderResponse.UnableToFindOrder(request));
-        ticket.TrySetCancelRequest(request);
-        ticket._orderStatusOverride = OrderStatus.Invalid;
+        final OrderTicket ticket = new OrderTicket( transactionManager, submit );
+        request.setResponse( OrderResponse.unableToFindOrder( request ) );
+        ticket.trySetCancelRequest( request );
+        ticket.orderStatusOverride = Optional.of( OrderStatus.Invalid );
         return ticket;
     }
 
     /**
      * Creates a new <see cref="OrderTicket"/> tht represents trying to update an order for which no ticket exists
-    */
-    public static OrderTicket InvalidUpdateOrderId(SecurityTransactionManager transactionManager, UpdateOrderRequest request) {
-        submit = new SubmitOrderRequest(OrderType.Market, SecurityType.Base, Symbol.Empty, 0, 0, 0, DateTime.MaxValue, string.Empty);
-        submit.SetResponse(OrderResponse.UnableToFindOrder(request));
-        ticket = new OrderTicket(transactionManager, submit);
-        request.SetResponse(OrderResponse.UnableToFindOrder(request));
-        ticket.AddUpdateRequest(request);
-        ticket._orderStatusOverride = OrderStatus.Invalid;
+     */
+    public static OrderTicket invalidUpdateOrderId( SecurityTransactionManager transactionManager, UpdateOrderRequest request ) {
+        final SubmitOrderRequest submit = new SubmitOrderRequest( OrderType.Market, SecurityType.Base, Symbol.EMPTY, 0, BigDecimal.ZERO, BigDecimal.ZERO, LocalDateTime.MAX, null );
+        submit.setResponse( OrderResponse.unableToFindOrder( request ) );
+        final OrderTicket ticket = new OrderTicket( transactionManager, submit );
+        request.setResponse( OrderResponse.unableToFindOrder( request ) );
+        ticket.addUpdateRequest( request );
+        ticket.orderStatusOverride = Optional.of( OrderStatus.Invalid );
         return ticket;
     }
 
     /**
      * Creates a new <see cref="OrderTicket"/> that represents trying to submit a new order that had errors embodied in the <paramref name="response"/>
-    */
-    public static OrderTicket InvalidSubmitRequest(SecurityTransactionManager transactionManager, SubmitOrderRequest request, OrderResponse response) {
-        request.SetResponse(response);
-        return new OrderTicket(transactionManager, request) { _orderStatusOverride = OrderStatus.Invalid };
+     */
+    public static OrderTicket invalidSubmitRequest( SecurityTransactionManager transactionManager, SubmitOrderRequest request, OrderResponse response ) {
+        request.setResponse( response );
+        final OrderTicket orderTicket = new OrderTicket( transactionManager, request );
+        orderTicket.orderStatusOverride = Optional.of( OrderStatus.Invalid );
+        return  orderTicket;
     }
 
     /**
      * Creates a new <see cref="OrderTicket"/> that is invalidated because the algorithm was in the middle of warm up still
-    */
-    public static OrderTicket InvalidWarmingUp(SecurityTransactionManager transactionManager, SubmitOrderRequest submit) {
-        submit.SetResponse(OrderResponse.WarmingUp(submit));
-        ticket = new OrderTicket(transactionManager, submit);
-        ticket._orderStatusOverride = OrderStatus.Invalid;
+     */
+    public static OrderTicket invalidWarmingUp( SecurityTransactionManager transactionManager, SubmitOrderRequest submit ) {
+        submit.setResponse( OrderResponse.warmingUp( submit ) );
+        final OrderTicket ticket = new OrderTicket( transactionManager, submit );
+        ticket.orderStatusOverride = Optional.of( OrderStatus.Invalid );
         return ticket;
     }
 
     /**
      * Returns a String that represents the current object.
      * @returns A String that represents the current object.
-    */
+     */
     @Override
     public String toString() {
         final String counts = "Request Count: " + requestCount() + " Response Count: " + responseCount();
-        if( _order != null )
-            return _orderId + ": " + _order + " " + counts;
+        if( order != null )
+            return orderId + ": " + order + " " + counts;
         
-        return _orderId + ": " + counts;
+        return orderId + ": " + counts;
     }
 
     private int responseCount() {
-        return ( _submitRequest.getResponse() == OrderResponse.UNPROCESSED ? 0 : 1 ) 
-             + ( _cancelRequest == null || _cancelRequest.getResponse() == OrderResponse.UNPROCESSED ? 0 : 1 )
-             + (int)_updateRequests.stream().filter( x -> x.getResponse() != OrderResponse.UNPROCESSED ).count();
+        return ( submitRequest.getResponse() == OrderResponse.UNPROCESSED ? 0 : 1 ) 
+             + ( cancelRequest == null || cancelRequest.getResponse() == OrderResponse.UNPROCESSED ? 0 : 1 )
+             + (int)updateRequests.stream().filter( x -> x.getResponse() != OrderResponse.UNPROCESSED ).count();
     }
 
     private int requestCount() {
-        return 1 + _updateRequests.size() + (_cancelRequest == null ? 0 : 1);
+        return 1 + updateRequests.size() + (cancelRequest == null ? 0 : 1);
     }
 
     /**
@@ -428,9 +430,9 @@ public final class OrderTicket {
 
     @SuppressWarnings("unchecked")
     private static <T extends Order> BigDecimal accessOrder( OrderTicket ticket, OrderField field, Function<T,BigDecimal> orderSelector, Function<SubmitOrderRequest,BigDecimal> requestSelector ) {
-        final Order order = ticket._order;
+        final Order order = ticket.order;
         if( order == null )
-            return requestSelector.apply( ticket._submitRequest );
+            return requestSelector.apply( ticket.submitRequest );
         
         try {
             return orderSelector.apply( (T)order );

@@ -17,53 +17,29 @@ package com.quantconnect.lean.api;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+/**
  * Response from the compiler on a build event
+ */
 public class Compile extends RestResponse {
 
+    /**
      * Compile Id for a sucessful build
-//    @JsonProperty( "compileId")]
+     */
+    @JsonProperty( "compileId" )
     public String compileId;
 
+    /**
      * True on successful compile
-//    @JsonProperty( "state")]
+     */
+    @JsonProperty( "state" )
 //    [JsonConverter(typeof(StringEnumConverter))]
     public CompileState state;
 
+    /**
      * Logs of the compilation request
-//    @JsonProperty( "logs")]
+     */
+    @JsonProperty( "logs" )
     public List<String> logs;
 }
-
-/*
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-package com.quantconnect.lean.Api
-{
-    /**
-     * Response from the compiler on a build event
-    */
-    public class Compile : RestResponse
-    {
-        /**
-         * Compile Id for a sucessful build
-        */
-        @JsonProperty( "compileId")]
-        public String CompileId;
-
-        /**
-         * True on successful compile
-        */
-        @JsonProperty( "state")]
-        [JsonConverter(typeof(StringEnumConverter))]
-        public CompileState State;
-
-        /**
-         * Logs of the compilation request
-        */
-        @JsonProperty( "logs")]
-        public List<String> Logs;
-    }
-}
-*/

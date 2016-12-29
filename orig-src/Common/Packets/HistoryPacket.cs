@@ -103,14 +103,14 @@ package com.quantconnect.lean.Packets
         /**
          * Gets the type of history result
         */
-        public HistoryResultType Type { get; private set; }
+        public HistoryResultType Class { get; private set; }
 
         /**
          * Initializes a new instance of the <see cref="HistoryResult"/> class
         */
          * @param type The type of history result
         protected HistoryResult(HistoryResultType type) {
-            Type = type;
+            Class = type;
         }
     }
 

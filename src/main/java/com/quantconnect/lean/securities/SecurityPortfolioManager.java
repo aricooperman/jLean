@@ -448,7 +448,7 @@ public class SecurityPortfolioManager implements Map<Symbol,SecurityHolding>, IS
         Cash item = cashBook.get( symbol );
         if( item != null ) {
             item.setAmount( cash );
-            item.ConversionRate = conversionRate;
+            item.conversionRate = conversionRate;
         }
         else
             cashBook.add( symbol, cash, conversionRate );

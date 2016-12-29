@@ -92,7 +92,7 @@ public class SecurityHolding {
      * Acquisition cost of the security total holdings.
      */
     public BigDecimal getHoldingsCost() {
-        return averagePrice.multiply( BigDecimal.valueOf( quantity ) ).multiply( security.getQuoteCurrency().ConversionRate ).multiply( security.getSymbolProperties().getContractMultiplier() );
+        return averagePrice.multiply( BigDecimal.valueOf( quantity ) ).multiply( security.getQuoteCurrency().getConversionRate() ).multiply( security.getSymbolProperties().getContractMultiplier() );
     }
 
     /**
@@ -128,7 +128,7 @@ public class SecurityHolding {
      * Market value of our holdings.
      */
     public BigDecimal getHoldingsValue() {
-         return price.multiply( BigDecimal.valueOf( quantity ) ).multiply( security.getQuoteCurrency().ConversionRate ).multiply( security.getSymbolProperties().getContractMultiplier() );
+         return price.multiply( BigDecimal.valueOf( quantity ) ).multiply( security.getQuoteCurrency().getConversionRate() ).multiply( security.getSymbolProperties().getContractMultiplier() );
     }
 
     /**
@@ -296,7 +296,7 @@ public class SecurityHolding {
 
         return (price.subtract( averagePrice ))
                     .multiply( BigDecimal.valueOf( quantity ) )
-                    .multiply( security.getQuoteCurrency().ConversionRate )
+                    .multiply( security.getQuoteCurrency().getConversionRate() )
                     .multiply( security.getSymbolProperties().getContractMultiplier() )
                     .subtract( orderFee );
     }

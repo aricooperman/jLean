@@ -344,7 +344,7 @@ package com.quantconnect.lean.Tests.Brokerages
             Log.Trace( "GET CASH BALANCE");
             Log.Trace( "");
             balance = Brokerage.GetCashBalance();
-            Assert.AreEqual(1, balance.Count(x -> x.Symbol == "USD"));
+            Assert.AreEqual(1, balance.Count(x -> x.Symbol.equals( "USD"));
         }
 
         [Test]
